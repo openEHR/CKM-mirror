@@ -1,0 +1,114 @@
+﻿archetype (adl_version=1.4)
+	openEHR-EHR-EVALUATION.exclusion-medication.v1
+specialise
+	openEHR-EHR-EVALUATION.exclusion.v1
+
+concept
+	[at0000.1]	-- Exclusion statement - Medications
+language
+	original_language = <[ISO_639-1::en]>
+description
+	original_author = <
+		["name"] = <"Heather Leslie">
+		["organisation"] = <"Ocean Informatics">
+		["email"] = <"heather.leslie@oceaninformatics.com">
+		["date"] = <"2/03/2010">
+	>
+	details = <
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To positively record the absence or exclusion of any medication use within the health record.">
+			use = <"Use to record the positive exclusion or absence of medication use within the health record. This archetype avoids the need to use terminology to express negation about any item within the health record.
+This archetype is only to be used to record 'point in time' or event-based information. It is not to be used for a persistent storage of information as the patient should always be questioned about current or past medication use prior to initiation of any treatment or management plan.">
+			keywords = <"exclusion", "no", "nil", "significant", "relevant", "medication">
+			misuse = <"">
+			copyright = <"© openEHR Foundation">
+		>
+	>
+	lifecycle_state = <"0">
+	other_contributors = <"Sam Heard, Ocean Informatics, Australia", ...>
+	other_details = <
+		["MD5-CAM-1.0.1"] = <"500811A8724E172DE7A0C5580E09878F">
+		["references"] = <"">
+	>
+
+definition
+	EVALUATION[at0000.1] matches {	-- Exclusion statement - Medications
+		data matches {
+			ITEM_TREE[at0001] matches {	-- Tree
+				items cardinality matches {0..*; unordered} matches {
+					ELEMENT[at0002] occurrences matches {0..*} matches {	-- General Statement
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0002.1] occurrences matches {0..*} matches {	-- Global Statements
+						value matches {
+							DV_CODED_TEXT matches {
+								defining_code matches {
+									[local::
+									at0.3, 	-- Not currently taking any medication
+									at0.6]	-- Never taken any medication
+								}
+							}
+						}
+					}
+					ELEMENT[at0.4] occurrences matches {0..1} matches {	-- Not currently taking
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0.5] occurrences matches {0..1} matches {	-- Not ever taken
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+				}
+			}
+		}
+	}
+
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0.3"] = <
+					text = <"Not currently taking any medication">
+					description = <"Not currently taking any medication.">
+				>
+				["at0.4"] = <
+					text = <"Not currently taking">
+					description = <"Positive statement about medications that are explicitly not being taken or used at the time of recording.">
+				>
+				["at0.5"] = <
+					text = <"Not ever taken">
+					description = <"Positive statement about medications that are explicitly known not to have ever been taken or used at the time of recording.">
+				>
+				["at0.6"] = <
+					text = <"Never taken any medication">
+					description = <"*">
+				>
+				["at0000"] = <
+					text = <"Exclusion statement">
+					description = <"Statements that need to be positively recorded as absent or excluded.">
+				>
+				["at0000.1"] = <
+					text = <"Exclusion statement - Medications">
+					description = <"Statements about medications that need to be positively recorded as absent or excluded.">
+				>
+				["at0001"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"General Statement">
+					description = <"The statement about the absence or exclusion. Use to capture any information that is needed to be explicitly recorded as being absent or excluded within the record.">
+				>
+				["at0002.1"] = <
+					text = <"Global Statements">
+					description = <"The statement about the absence or exclusion. Use to capture any information that is needed to be explicitly recorded as being absent or excluded within the record.">
+				>
+			>
+		>
+	>
