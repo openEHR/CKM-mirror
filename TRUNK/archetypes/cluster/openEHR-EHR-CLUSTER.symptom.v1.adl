@@ -39,6 +39,15 @@ This archetype allows a 'nil significant' statement to be explicitly recorded.(e
 Not to be used for diagnoses and problems that form part of a persisting Problem List - use EVALUATION.problem_diagnosis.(en)">
 			copyright = <"© openEHR Foundation">
 		>
+		["de"] = <
+			language = <[ISO_639-1::de]>
+			purpose = <"*To record detail about a symptom - either self-recorded by an individual or recorded on the behalf of a patient by a clinician. A complete patient history may include varying level of details about a variety of symptoms.(en)">
+			use = <"*Use to record detailed information about a symptom as told to a clinician by a patient or self-recorded by the individual/patient.
+
+This archetype allows a 'nil significant' statement to be explicitly recorded.(en)">
+			misuse = <"*Sollte nur für Symptome benutzt werden. (en)">
+			copyright = <"© openEHR Foundation">
+		>
 		["en"] = <
 			language = <[ISO_639-1::en]>
 			purpose = <"To record detail about a symptom - either self-recorded by an individual or recorded on the behalf of a patient by a clinician. A complete patient history may include varying level of details about a variety of symptoms.">
@@ -51,78 +60,74 @@ This archetype allows a 'nil significant' statement to be explicitly recorded.">
 Not to be used for diagnoses and problems that form part of a persisting Problem List - use EVALUATION.problem_diagnosis.">
 			copyright = <"© openEHR Foundation">
 		>
-		["de"] = <
-			language = <[ISO_639-1::de]>
-			purpose = <"*To record detail about a symptom - either self-recorded by an individual or recorded on the behalf of a patient by a clinician. A complete patient history may include varying level of details about a variety of symptoms.(en)">
-			use = <"*Use to record detailed information about a symptom as told to a clinician by a patient or self-recorded by the individual/patient.
-
-This archetype allows a 'nil significant' statement to be explicitly recorded.(en)">
-			misuse = <"*Sollte nur für Symptome benutzt werden. (en)">
-			copyright = <"© openEHR Foundation">
-		>
 	>
 	lifecycle_state = <"AuthorDraft">
 	other_contributors = <"Sam Heard, Ocean Informatics", "Heather Leslie, Ocean Informatics, Australia (Editor)", "Ian McNicoll, Ocean Informatics, United Kingdom (Editor)">
 	other_details = <
 		["current_contact"] = <"Heather Leslie, Ocean Informatics, heather.leslie@oceaninformatics.com">
-		["MD5-CAM-1.0.1"] = <"FDFEDB4A75AD339B61F81B87FF94BDC5">
+		["MD5-CAM-1.0.1"] = <"F45AC5753EC5F8C93FA71A2593955BAD">
 	>
 
 definition
 	CLUSTER[at0000] matches {	-- Symptom
 		items cardinality matches {1..*; unordered} matches {
-			ELEMENT[at0001] matches {	-- Symptom
+			ELEMENT[at0001] matches {	-- Symptom name
 				value matches {
 					DV_TEXT matches {*}
 				}
 			}
-			ELEMENT[at0035] occurrences matches {0..1} matches {	-- Nicht signifikant
+			ELEMENT[at0035] occurrences matches {0..1} matches {	-- Nil Significant
 				value matches {
 					DV_BOOLEAN matches {
 						value matches {True}
 					}
 				}
 			}
-			ELEMENT[at0002] occurrences matches {0..1} matches {	-- Klinische Beschreibung
+			ELEMENT[at0002] occurrences matches {0..1} matches {	-- Description
 				value matches {
 					DV_TEXT matches {*}
 				}
 			}
-			allow_archetype CLUSTER[at0147] occurrences matches {0..1} matches {	-- *Location in body(en)
+			ELEMENT[at0151] occurrences matches {0..1} matches {	-- Site
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			allow_archetype CLUSTER[at0147] occurrences matches {0..1} matches {	-- Site Details
 				include
 					archetype_id/value matches {/openEHR-EHR-CLUSTER\.anatomical_location(-[a-zA-Z0-9_]+)*\.v1/}
 				exclude
 					archetype_id/value matches {/.*/}
 			}
-			ELEMENT[at0021] occurrences matches {0..1} matches {	-- Schwere
+			ELEMENT[at0021] occurrences matches {0..1} matches {	-- Impact
 				value matches {
-					1|[local::at0044], 	-- geringfügig
-					2|[local::at0023], 	-- gelinde
-					5|[local::at0024], 	-- mäßig
-					8|[local::at0025], 	-- schwer
-					9|[local::at0045]  	-- sehr schwerwiegend
+					1|[local::at0044], 	-- Trivial
+					2|[local::at0023], 	-- Mild
+					5|[local::at0024], 	-- Moderate
+					8|[local::at0025], 	-- Severe
+					9|[local::at0045]  	-- Very severe
 				}
 			}
-			CLUSTER[at0046] occurrences matches {0..1} matches {	-- *Current intensity(en)
+			CLUSTER[at0046] occurrences matches {0..*} matches {	-- Intensity
 				items cardinality matches {1..*; unordered} matches {
-					ELEMENT[at0047] occurrences matches {0..1} matches {	-- Grad
+					ELEMENT[at0047] occurrences matches {0..1} matches {	-- Degree
 						value matches {
-							0|[local::at0022], 	-- nicht anwesend
-							1|[local::at0044], 	-- geringfügig
-							2|[local::at0023], 	-- gelinde
-							5|[local::at0024], 	-- mäßig
-							8|[local::at0025], 	-- schwer
-							9|[local::at0045]  	-- sehr schwerwiegend
+							0|[local::at0022], 	-- Not present
+							1|[local::at0044], 	-- Trivial
+							2|[local::at0023], 	-- Mild
+							5|[local::at0024], 	-- Moderate
+							8|[local::at0025], 	-- Severe
+							9|[local::at0045]  	-- Very severe
 						}
 					}
-					ELEMENT[at0026] occurrences matches {0..1} matches {	-- Visuelle Analogskala
+					ELEMENT[at0026] occurrences matches {0..1} matches {	-- Visual Analogue Score
 						value matches {
 							DV_COUNT matches {
 								magnitude matches {|0..10|}
 							}
 						}
 					}
-					ELEMENT[at0150] occurrences matches {0..1} matches {	-- *New element(en)
+					ELEMENT[at0150] occurrences matches {0..1} matches {	-- Degree
 						value matches {
 							DV_PROPORTION matches {
 								numerator matches {|>=0.0|}
@@ -132,17 +137,17 @@ definition
 					}
 				}
 			}
-			ELEMENT[at0028] occurrences matches {0..1} matches {	-- Dauer
+			ELEMENT[at0028] occurrences matches {0..1} matches {	-- Duration
 				value matches {
 					DV_DURATION matches {*}
 				}
 			}
-			ELEMENT[at0031] occurrences matches {0..1} matches {	-- Anzahl der Vorkommnisse
+			ELEMENT[at0031] occurrences matches {0..1} matches {	-- Number of Occurrences
 				value matches {
 					DV_COUNT matches {*}
 				}
 			}
-			ELEMENT[at0032] occurrences matches {0..1} matches {	-- Art
+			ELEMENT[at0032] occurrences matches {0..1} matches {	-- Character
 				value matches {
 					DV_TEXT matches {*}
 				}
@@ -152,46 +157,46 @@ definition
 					DV_CODED_TEXT matches {
 						defining_code matches {
 							[local::
-							at0004, 	-- Dauerhaft
-							at0005, 	-- Zeitweise
-							at0006]	-- Variabel
+							at0004, 	-- Constant
+							at0005, 	-- Intermittent
+							at0006]	-- Fluctuating
 						}
 					}
 				}
 			}
-			CLUSTER[at0058] occurrences matches {0..1} matches {	-- Vorherige Vorfälle
+			CLUSTER[at0058] occurrences matches {0..1} matches {	-- Previous Episodes
 				items cardinality matches {1..*; unordered} matches {
-					ELEMENT[at0059] matches {	-- Frühere Vorfälle
+					ELEMENT[at0059] matches {	-- Any Previous Episodes
 						value matches {
 							DV_BOOLEAN matches {
 								value matches {True, False}
 							}
 						}
 					}
-					CLUSTER[at0090] occurrences matches {0..*} matches {	-- *Previous episode
+					CLUSTER[at0090] occurrences matches {0..*} matches {	-- Previous Episode
 						items cardinality matches {1..*; unordered} matches {
-							ELEMENT[at0142] occurrences matches {0..1} matches {	-- *Date / time of previous episode (en)
+							ELEMENT[at0142] occurrences matches {0..1} matches {	-- Date / time of previous episode
 								value matches {
 									DV_DATE_TIME matches {*}
 								}
 							}
-							ELEMENT[at0057] occurrences matches {0..1} matches {	-- Details über vorherige Symptome
+							ELEMENT[at0057] occurrences matches {0..1} matches {	-- Details
 								value matches {
 									DV_TEXT matches {*}
 								}
 							}
-							ELEMENT[at0143] occurrences matches {0..1} matches {	-- *Comparison
+							ELEMENT[at0143] occurrences matches {0..1} matches {	-- Comparison
 								value matches {
 									DV_TEXT matches {*}
 								}
 							}
-							allow_archetype CLUSTER[at0146] occurrences matches {0..1} matches {	-- *Details (en)
+							allow_archetype CLUSTER[at0146] occurrences matches {0..1} matches {	-- Details
 								include
 									archetype_id/value matches {/openEHR-EHR-CLUSTER\.symptom\.v1/}
 							}
 						}
 					}
-					ELEMENT[at0098] occurrences matches {0..1} matches {	-- *Number of previous episodes (en)
+					ELEMENT[at0098] occurrences matches {0..1} matches {	-- Number of Previous Episodes
 						value matches {
 							DV_COUNT matches {
 								magnitude matches {|>=0|}
@@ -200,89 +205,89 @@ definition
 					}
 				}
 			}
-			CLUSTER[at0033] occurrences matches {0..1} matches {	-- Verlauf
+			CLUSTER[at0033] occurrences matches {0..1} matches {	-- Course
 				items cardinality matches {1..*; unordered} matches {
-					ELEMENT[at0008] occurrences matches {0..1} matches {	-- Art des Eintretens
+					ELEMENT[at0008] occurrences matches {0..1} matches {	-- Onset Type
 						value matches {
 							DV_CODED_TEXT matches {
 								defining_code matches {
 									[local::
-									at0009, 	-- Graduell
-									at0036, 	-- rasch
-									at0010]	-- Plötzlich
+									at0009, 	-- Gradual
+									at0036, 	-- Rapid
+									at0010]	-- Sudden
 								}
 							}
 						}
 					}
-					ELEMENT[at0060] occurrences matches {0..1} matches {	-- Beschreibung des Auftretens
+					ELEMENT[at0060] occurrences matches {0..1} matches {	-- Onset Description
 						value matches {
 							DV_TEXT matches {*}
 						}
 					}
-					ELEMENT[at0030] occurrences matches {0..1} matches {	-- Zeitpunkt der maximalen Stärke
+					ELEMENT[at0030] occurrences matches {0..1} matches {	-- Time of Maximum Intensity
 						value matches {
 							DV_DATE_TIME matches {*}
 						}
 					}
-					ELEMENT[at0037] occurrences matches {0..1} matches {	-- Entwicklung
+					ELEMENT[at0037] occurrences matches {0..1} matches {	-- Progression
 						value matches {
 							DV_CODED_TEXT matches {
 								defining_code matches {
 									[local::
-									at0038, 	-- sich bessernd
-									at0039, 	-- nachlassend
-									at0040, 	-- stabil
-									at0041, 	-- zunehmend
-									at0042, 	-- sich verschlimmernd
-									at0043]	-- hat sich gelegt
+									at0038, 	-- Improving
+									at0039, 	-- Decreasing
+									at0040, 	-- Stable
+									at0041, 	-- Increasing
+									at0042, 	-- Worsening
+									at0043]	-- Has resolved
 								}
 							}
 						}
 					}
-					ELEMENT[at0011] occurrences matches {0..1} matches {	-- Ende
+					ELEMENT[at0011] occurrences matches {0..1} matches {	-- Cessation
 						value matches {
 							DV_CODED_TEXT matches {
 								defining_code matches {
 									[local::
-									at0009, 	-- Graduell
-									at0036, 	-- rasch
-									at0010]	-- Plötzlich
+									at0009, 	-- Gradual
+									at0036, 	-- Rapid
+									at0010]	-- Sudden
 								}
 							}
 						}
 					}
 				}
 			}
-			CLUSTER[at0014] occurrences matches {0..1} matches {	-- Beschleunigende Faktoren
+			CLUSTER[at0014] occurrences matches {0..1} matches {	-- Precipitating factors
 				items cardinality matches {1..*; unordered} matches {
-					ELEMENT[at0015] occurrences matches {1..*} matches {	-- Beschleunigender Faktor
+					ELEMENT[at0015] occurrences matches {1..*} matches {	-- Precipitating Factor
 						value matches {
 							DV_TEXT matches {*}
 						}
 					}
 				}
 			}
-			CLUSTER[at0016] occurrences matches {0..1} matches {	-- Modifizierende Faktoren
+			CLUSTER[at0016] occurrences matches {0..1} matches {	-- Modification
 				items cardinality matches {1..*; unordered} matches {
-					CLUSTER[at0018] occurrences matches {0..1} matches {	-- Modifizierender Faktor
+					CLUSTER[at0018] occurrences matches {0..1} matches {	-- Modifying Factor
 						items cardinality matches {1..*; unordered} matches {
-							ELEMENT[at0019] occurrences matches {0..*} matches {	-- Faktor
+							ELEMENT[at0019] occurrences matches {0..*} matches {	-- Factor
 								value matches {
 									DV_TEXT matches {*}
 								}
 							}
-							ELEMENT[at0017] occurrences matches {0..1} matches {	-- Erschwerender Faktor
+							ELEMENT[at0017] occurrences matches {0..1} matches {	-- Change
 								value matches {
-									-3|[local::at0048], 	-- Komplett gelindert
-									-2|[local::at0049], 	-- Verbessert
-									-1|[local::at0050], 	-- Etwas verbessert
-									0|[local::at0051], 	-- Keine Veränderung
-									1|[local::at0052], 	-- Etwas verschlechtert
-									2|[local::at0053], 	-- Verschlechtert
-									3|[local::at0054]  	-- Sehr viel verschlechtert
+									-3|[local::at0048], 	-- Relieved completely
+									-2|[local::at0049], 	-- Made better
+									-1|[local::at0050], 	-- Somewhat improved
+									0|[local::at0051], 	-- No change
+									1|[local::at0052], 	-- Somewhat worse
+									2|[local::at0053], 	-- Made worse
+									3|[local::at0054]  	-- Much worse
 								}
 							}
-							ELEMENT[at0056] occurrences matches {0..1} matches {	-- Details über den Effekt
+							ELEMENT[at0056] occurrences matches {0..1} matches {	-- Details
 								value matches {
 									DV_TEXT matches {*}
 								}
@@ -291,13 +296,13 @@ definition
 					}
 				}
 			}
-			allow_archetype CLUSTER[at0063] occurrences matches {0..*} matches {	-- Cluster: Zugehörige Symptome
+			allow_archetype CLUSTER[at0063] occurrences matches {0..*} matches {	-- Associated symptoms
 				include
 					archetype_id/value matches {/openEHR-EHR-CLUSTER\.symptom(-[a-zA-Z0-9_]+)*\.v1/}
 			}
-			CLUSTER[at0061] occurrences matches {0..1} matches {	-- Nicht vorhandene Merkmale
+			CLUSTER[at0061] occurrences matches {0..1} matches {	-- Features not present
 				items cardinality matches {1..*; unordered} matches {
-					ELEMENT[at0062] occurrences matches {0..*} matches {	-- Nicht vorhandenes Merkmal
+					ELEMENT[at0062] occurrences matches {0..*} matches {	-- Absent feature
 						value matches {
 							DV_TEXT matches {*}
 						}
@@ -318,12 +323,13 @@ ontology
 					description = <"*A subjective observation by an individual about departure from normal function and which may indicate the presence of disease or abnormality. Either self-recorded or recorded on the behalf of a patient by a clinician.(en)">
 				>
 				["at0001"] = <
-					text = <"العرض">
-					description = <"العرض الذي يتم الشعور به">
+					text = <"*Symptom name(en)">
+					description = <"*The symptom experienced.(en)">
+					comment = <"*Coding with an external terminology is preferred, where possible.(en)">
 				>
 				["at0002"] = <
-					text = <"الوصف السريري">
-					description = <"وصف العرض">
+					text = <"*Description(en)">
+					description = <"*A narrative description of the symptom.(en)">
 				>
 				["at0003"] = <
 					text = <"التنوع">
@@ -382,8 +388,8 @@ ontology
 					description = <"واقعة أو نشاط يُعَدِّل العرض">
 				>
 				["at0021"] = <
-					text = <"الحدة">
-					description = <"حدة العرض">
+					text = <"*Impact(en)">
+					description = <"*The severity of the symptom in its impact on daily living.(en)">
 				>
 				["at0022"] = <
 					text = <"لا يوجد">
@@ -470,8 +476,8 @@ ontology
 					description = <"العرض عند الحد الأقصى من الشدة و يمنع القيام بأي أنشطة">
 				>
 				["at0046"] = <
-					text = <"الشدة الحالية">
-					description = <"يقيس شدة العرض عند هذا الوقت">
+					text = <"*Intensity(en)">
+					description = <"*Measures of the intensity of the symptom. Assumed to be current intensity unless otherwise specified but may be used to capture e.g. maximal and  minimal intensity.(en)">
 				>
 				["at0047"] = <
 					text = <"الدرجة">
@@ -558,12 +564,16 @@ ontology
 					description = <"تفاصيل مركبة للأعراض في النوبات السابقة">
 				>
 				["at0147"] = <
-					text = <"المكان من الجسم">
-					description = <"تفاصيل حول المكان من الجسم">
+					text = <"*Site Details(en)">
+					description = <"*Details of the location in the body.(en)">
 				>
 				["at0150"] = <
 					text = <"عنصر جديد">
 					description = <"*">
+				>
+				["at0151"] = <
+					text = <"*Site(en)">
+					description = <"*The site on the body where the symptom was located.(en)">
 				>
 			>
 		>
@@ -574,12 +584,13 @@ ontology
 					description = <"*A subjective observation by an individual about departure from normal function and which may indicate the presence of disease or abnormality. Either self-recorded or recorded on the behalf of a patient by a clinician.(en)">
 				>
 				["at0001"] = <
-					text = <"Symptom">
-					description = <"das aufgetretene Symptom">
+					text = <"*Symptom name(en)">
+					description = <"*The symptom experienced.(en)">
+					comment = <"*Coding with an external terminology is preferred, where possible.(en)">
 				>
 				["at0002"] = <
-					text = <"Klinische Beschreibung">
-					description = <"Beschreibung des Symptoms">
+					text = <"*Description(en)">
+					description = <"*A narrative description of the symptom.(en)">
 				>
 				["at0003"] = <
 					text = <"Variation">
@@ -638,8 +649,8 @@ ontology
 					description = <"ein Ereignis oder eine Handlung, die das Symptom verändert">
 				>
 				["at0021"] = <
-					text = <"Schwere">
-					description = <"der Schweregrad des Symptoms">
+					text = <"*Impact(en)">
+					description = <"*The severity of the symptom in its impact on daily living.(en)">
 				>
 				["at0022"] = <
 					text = <"nicht anwesend">
@@ -726,8 +737,8 @@ ontology
 					description = <"das Symptom hat fast die maximal mögliche Intensität und verhindert jegliche Handlungen">
 				>
 				["at0046"] = <
-					text = <"*Current intensity(en)">
-					description = <"*Measures of the intensity of the symptom at this time(en)">
+					text = <"*Intensity(en)">
+					description = <"*Measures of the intensity of the symptom. Assumed to be current intensity unless otherwise specified but may be used to capture e.g. maximal and  minimal intensity.(en)">
 				>
 				["at0047"] = <
 					text = <"Grad">
@@ -814,12 +825,16 @@ ontology
 					description = <"*Structured details of symptoms in previous episodes (en)">
 				>
 				["at0147"] = <
-					text = <"*Location in body(en)">
-					description = <"*Details of the location in the body. (en)">
+					text = <"*Site Details(en)">
+					description = <"*Details of the location in the body.(en)">
 				>
 				["at0150"] = <
 					text = <"*New element(en)">
 					description = <"**(en)">
+				>
+				["at0151"] = <
+					text = <"*Site(en)">
+					description = <"*The site on the body where the symptom was located.(en)">
 				>
 			>
 		>
@@ -830,13 +845,13 @@ ontology
 					description = <"A subjective observation by an individual about departure from normal function and which may indicate the presence of disease or abnormality. Either self-recorded or recorded on the behalf of a patient by a clinician.">
 				>
 				["at0001"] = <
-					text = <"Symptom">
+					text = <"Symptom name">
 					description = <"The symptom experienced.">
 					comment = <"Coding with an external terminology is preferred, where possible.">
 				>
 				["at0002"] = <
-					text = <"Clinical Description">
-					description = <"Description of the symptom.">
+					text = <"Description">
+					description = <"A narrative description of the symptom.">
 				>
 				["at0003"] = <
 					text = <"Variation">
@@ -895,8 +910,8 @@ ontology
 					description = <"An event or activity that modifies the symptom.">
 				>
 				["at0021"] = <
-					text = <"Severity">
-					description = <"The severity of the symptom.">
+					text = <"Impact">
+					description = <"The severity of the symptom in its impact on daily living.">
 				>
 				["at0022"] = <
 					text = <"Not present">
@@ -983,8 +998,8 @@ ontology
 					description = <"The symptom is almost maximum possible intensity and prohibits any activity.">
 				>
 				["at0046"] = <
-					text = <"Current Intensity">
-					description = <"Measures of the intensity of the symptom at this time.">
+					text = <"Intensity">
+					description = <"Measures of the intensity of the symptom. Assumed to be current intensity unless otherwise specified but may be used to capture e.g. maximal and  minimal intensity.">
 				>
 				["at0047"] = <
 					text = <"Degree">
@@ -1071,12 +1086,16 @@ ontology
 					description = <"Structured details of symptoms in previous episodes.">
 				>
 				["at0147"] = <
-					text = <"Location in Body">
+					text = <"Site Details">
 					description = <"Details of the location in the body.">
 				>
 				["at0150"] = <
 					text = <"Degree">
 					description = <"The intensity of the symptom expressed as a proportion.">
+				>
+				["at0151"] = <
+					text = <"Site">
+					description = <"The site on the body where the symptom was located.">
 				>
 			>
 		>
@@ -1085,6 +1104,7 @@ ontology
 		["SNOMED-CT"] = <
 			items = <
 				["at0000"] = <[SNOMED-CT::19019007]>
+				["at0001"] = <[SNOMED-CT::19019007]>
 				["at0002"] = <[SNOMED-CT::162408000]>
 				["at0014"] = <[SNOMED-CT::57465006]>
 				["at0015"] = <[SNOMED-CT::57465006]>
