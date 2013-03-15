@@ -2,48 +2,65 @@
 	openEHR-EHR-COMPOSITION.problem_list.v1
 
 concept
-	[at0000]	-- Problem list
+	[at0000]	-- Problem List
 language
 	original_language = <[ISO_639-1::en]>
 description
 	original_author = <
 		["name"] = <"Sam Heard">
-		["organisation"] = <"Ocean Informatics">
+		["organisation"] = <"Ocean Informatics, Australia">
 		["email"] = <"sam.heard@oceaninformatics.com">
-		["date"] = <"23/03/2006">
+		["date"] = <"2013-02-19">
 	>
 	details = <
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"To maintain a managed list of significant ongoing health problems of the subject.">
-			use = <"For active and inactive problems (inactive have a resolution date set to true)">
-			keywords = <"problem list", ...>
-			misuse = <"Not for short term problems.">
+			purpose = <"To record a persistent and managed list of diagnoses identified or problems experienced by the subject, or previous procedures performed, that may influence clinical decision-making and care provision.">
+			use = <"Use to record a persistent and managed list of diagnoses identified or problems experienced by the subject, or previous procedures performed, that may influence clinical decision-making and care provision. 
+
+This list can be utilised as a source of up-to-date problem list data for exchange or as the basis for decision support. 
+
+This list can be comprised of three types of archetype:
+- statements about the positive presence of problems, diagnoses or previous procedures are recorded using the EVALUATION.problem_diagnosis and/or ACTION.procedure archetypes; OR
+- a statement about the positive exclusion of medication use can be recorded using the specific EVALUATION.exclusion-problem_diagnosis or EVALUATION.exclusion-procedure archetypes - for example: \"No significant problems or diagnoses\" or No history of significant operations or procedures\"; OR
+- a statement about no information being available - neither a positive presence of a problem, diagnosis or procedure performed nor a positive exclusion - can be recorded using the EVALUATION.absence archetype.
+
+In order for this list to be accurate and safe to use as the basis for decision support activities and for exchange, this Problem List should ideally be curated by a clinician responsible for the health record, rather than managed automatically by the clinical system through business rules alone.">
+			keywords = <"problem", "list", "diagnosis", "diagnoses", "procedure">
+			misuse = <"">
 			copyright = <"© openEHR Foundation">
 		>
 	>
-	lifecycle_state = <"AuthorDraft">
-	other_contributors = <>
+	lifecycle_state = <"CommitteeDraft">
+	other_contributors = <"Ian McNicoll, Ocean Informatics, United Kingdom (Editor)", "Heather Leslie, Ocean Informatics, Australia", "Sistine Barretto-Daniels, Ocean Informatics, Australia">
 	other_details = <
-		["references"] = <"">
-		["MD5-CAM-1.0.1"] = <"42852843CAE2212D5D98052816FD2401">
+		["current_contact"] = <"Heather Leslie, Ocean Informatics, heather.leslie@oceaninformatics.com">
+		["MD5-CAM-1.0.1"] = <"BFA848F52FAB6BB43DD1E6A9249D11DF">
 	>
 
 definition
-	COMPOSITION[at0000] matches {	-- Problem list
+	COMPOSITION[at0000] matches {	-- Problem List
 		category matches {
 			DV_CODED_TEXT matches {
 				defining_code matches {[openehr::431]}
 			}
 		}
-		content cardinality matches {0..*; unordered} matches {
-			allow_archetype EVALUATION[at0001] occurrences matches {0..*} matches {	-- EVALUATION
+		content cardinality matches {1..*; unordered} matches {
+			allow_archetype EVALUATION[at0002] occurrences matches {0..*} matches {	-- Problems or Diagnoses
 				include
-					archetype_id/value matches {/openEHR-EHR-EVALUATION\.problem\.v1|openEHR-EHR-EVALUATION\.problem-genetic\.v1|openEHR-EHR-EVALUATION\.problem-diagnosis\.v1|openEHR-EHR-EVALUATION\.problem-diagnosis-histological\.v1|openEHR-EHR-EVALUATION\.injury\.v1/}
+					archetype_id/value matches {/openEHR-EHR-EVALUATION\.problem_diagnosis(-[a-zA-Z0-9_]+)*\.v1/}
 			}
-			allow_archetype ACTION[at0002] occurrences matches {0..*} matches {	-- ACTION
+			allow_archetype ACTION[at0003] occurrences matches {0..*} matches {	-- Procedures
 				include
-					archetype_id/value matches {/.*/}
+					archetype_id/value matches {/openEHR-EHR-ACTION\.procedure(-[a-zA-Z0-9_]+)*\.v1/}
+			}
+			allow_archetype EVALUATION[at0004] occurrences matches {0..*} matches {	-- Exclusion Statements
+				include
+					archetype_id/value matches {/openEHR-EHR-EVALUATION\.exclusion-problem_diagnosis(-[a-zA-Z0-9_]+)*\.v1|openEHR-EHR-EVALUATION\.exclusion-procedure(-[a-zA-Z0-9_]+)*\.v1/}
+			}
+			allow_archetype EVALUATION[at0005] occurrences matches {0..*} matches {	-- Absent Information
+				include
+					archetype_id/value matches {/openEHR-EHR-EVALUATION\.absence(-[a-zA-Z0-9_]+)*\.v1/}
 			}
 		}
 	}
@@ -54,16 +71,25 @@ ontology
 		["en"] = <
 			items = <
 				["at0000"] = <
-					text = <"Problem list">
-					description = <"A list of the ongoing health problems of this person.">
-				>
-				["at0001"] = <
-					text = <"EVALUATION">
-					description = <"*">
+					text = <"Problem List">
+					description = <"A persistent and managed list of diagnoses identified or problems experienced by the subject, or procedures performed, that may influence clinical decision-making and care provision.">
 				>
 				["at0002"] = <
-					text = <"ACTION">
-					description = <"*">
+					text = <"Problems or Diagnoses">
+					description = <"Details about identified problems or diagnoses.">
+				>
+				["at0003"] = <
+					text = <"Procedures">
+					description = <"Details about identified procedures that have been performed.">
+				>
+				["at0004"] = <
+					text = <"Exclusion Statements">
+					description = <"Positive statement about the known exclusion of known problems or diagnoses and procedures performed.">
+					comment = <"For example: \"No significant problems or diagnoses\" or No history of significant operations or procedures\".">
+				>
+				["at0005"] = <
+					text = <"Absent Information">
+					description = <"Positive statement that no information is available about identification of problems or diagnoses, nor procedures performed.">
 				>
 			>
 		>

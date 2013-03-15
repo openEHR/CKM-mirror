@@ -2,7 +2,7 @@
 	openEHR-EHR-COMPOSITION.medication_list.v1
 
 concept
-	[at0000]	-- Medication list
+	[at0000]	-- Medication List
 language
 	original_language = <[ISO_639-1::en]>
 description
@@ -15,38 +15,58 @@ description
 	details = <
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"To maintain a managed list of ongoing medications prescribed to the subject.">
-			use = <"For ongoing medications.">
-			keywords = <"medication list", "Ongoing medications">
-			misuse = <"Not for current medications.">
+			purpose = <"To record a persistent and managed list of medicines that are reasonably assumed to be taken by the subject, and that may influence clinical decision-making and care provision. The medicines may be prescribed or acquired 'over the counter'.">
+			use = <"Use to record a persistent and managed list of all medicines, both prescribed and 'over the counter', that are assumed to be taken by the subject. 
+
+This list can be utilised as a source of up-to-date medicine data for exchange or as the basis for decision support. 
+
+This list can be comprised of three types of archetype:
+- statements about the positive use of medications are recorded using the INSTRUCTION.medication and/or ACTION.medication archetypes; OR
+- a statement about the positive exclusion of medication use can be recorded using the specific EVALUATION.exclusion-medication archetype - for example: \"Not currently taking any medications\"; OR
+- a statement about no information being available - neither a positive known use of medication nor a positive exclusion - can be recorded using the EVALUATION.absence archetype.
+
+There can be a subtle but important difference between types of medication lists. Some examples include: 'Current Medications' or 'Regular Medications'. A 'Current Medication List' may be regarded as a list of all medicines that the subject would have in their body at a given time, including a stat dose of a medicine that should be considered when prescribing an additional medication to ensure that drug-drug interaction checking continues for the duration of it's physiological influence. A 'Regular Medication List' may only include those medicines that are prescribed or used on a regular and ongoing basis. 
+
+In clinical practice it is common to create Medication Lists that have contextual or temporal constraints, including 'Admission Medication List' and 'Discharge Medication List', which will be accurate at a point in time and not managed.  It is probably better practice to record these explicitly, for example as the result of a query, to record and/or exchange the precise data applicable for that time and place and not use this archeytpe in this situation.
+
+In order for this list to be accurate and safe to use as the basis for decision support activities and for exchange, this Medication List should ideally be curated by a clinician responsible for the health record, rather than managed automatically by the clinical system through business rules alone.">
+			keywords = <"medication", "medicine", "list", "ongoing", "drug">
+			misuse = <"Not to be used to record non-persisting Medication Lists.
+
+Not to be used to record vaccinations administered.">
 			copyright = <"© openEHR Foundation">
 		>
 	>
-	lifecycle_state = <"AuthorDraft">
-	other_contributors = <"Ian McNicoll, Ocean Informatics, United Kingdom (Editor)", ...>
+	lifecycle_state = <"CommitteeDraft">
+	other_contributors = <"Ian McNicoll, Ocean Informatics, United Kingdom", "Sam Heard, Ocean Informatics, Australia", "Sistine Barretto-Daniels, Ocean Informatics, Australia", "Heather Leslie, Ocean Informatics, Australia">
 	other_details = <
-		["MD5-CAM-1.0.1"] = <"F8F5FA8769723A6D84ABAAD3FD6BA5A0">
+		["current_contact"] = <"Heather Leslie, Ocean Informatics, heather.leslie@oceaninformatics.com">
+		["MD5-CAM-1.0.1"] = <"97B6899EA00EBED30CCE883E100CBFD4">
 	>
 
 definition
-	COMPOSITION[at0000] matches {	-- Medication list
+	COMPOSITION[at0000] matches {	-- Medication List
 		category matches {
 			DV_CODED_TEXT matches {
 				defining_code matches {[openehr::431]}
 			}
 		}
-		content cardinality matches {0..*; unordered} matches {
-			allow_archetype ACTION[at0001] occurrences matches {0..*} matches {	-- Medication Action
-				include
-					archetype_id/value matches {/openEHR-EHR-ACTION\.medication.v1/}
-				exclude
-					archetype_id/value matches {/.*/}
-			}
+		content cardinality matches {1..*; unordered} matches {
 			allow_archetype INSTRUCTION[at0002] occurrences matches {0..*} matches {	-- Medication Instruction
 				include
-					archetype_id/value matches {/openEHR-EHR-INSTRUCTION\.medication.v1/}
-				exclude
-					archetype_id/value matches {/.*/}
+					archetype_id/value matches {/openEHR-EHR-INSTRUCTION\.medication(-[a-zA-Z0-9_]+)*\.v1/}
+			}
+			allow_archetype ACTION[at0001] occurrences matches {0..*} matches {	-- Medication Action
+				include
+					archetype_id/value matches {/openEHR-EHR-ACTION\.medication(-[a-zA-Z0-9_]+)*\.v1/}
+			}
+			allow_archetype EVALUATION[at0003] occurrences matches {0..*} matches {	-- Exclusion Statement
+				include
+					archetype_id/value matches {/openEHR-EHR-EVALUATION\.exclusion-medication(-[a-zA-Z0-9_]+)*\.v1/}
+			}
+			allow_archetype EVALUATION[at0004] occurrences matches {0..*} matches {	-- Absent Information
+				include
+					archetype_id/value matches {/openEHR-EHR-EVALUATION\.absence(-[a-zA-Z0-9_]+)*\.v1/}
 			}
 		}
 	}
@@ -57,16 +77,25 @@ ontology
 		["en"] = <
 			items = <
 				["at0000"] = <
-					text = <"Medication list">
-					description = <"A list of the ongoing medications prescribed to this person.">
+					text = <"Medication List">
+					description = <"A persistent and managed list of medications that are reasonably assumed to be taken by the subject, and that may influence clinical decision-making and care provision.">
 				>
 				["at0001"] = <
 					text = <"Medication Action">
-					description = <"A medication action.">
+					description = <"Details about the medications actively in use, including the pathway state.">
+					comment = <"For example: details about the actual Medication prescribed or administered, which may be subtley different to the original Medication order itself for various reasons.">
 				>
 				["at0002"] = <
 					text = <"Medication Instruction">
-					description = <"A medication instruction.">
+					description = <"Details about the medications ordered for use.">
+				>
+				["at0003"] = <
+					text = <"Exclusion Statement">
+					description = <"Positive statement about the known exclusion of medication use.">
+				>
+				["at0004"] = <
+					text = <"Absent Information">
+					description = <"Positive statement that no information is available about medication use.">
 				>
 			>
 		>
