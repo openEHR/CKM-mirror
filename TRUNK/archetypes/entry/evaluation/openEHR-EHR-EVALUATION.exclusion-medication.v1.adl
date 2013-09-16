@@ -4,7 +4,7 @@ specialise
 	openEHR-EHR-EVALUATION.exclusion.v1
 
 concept
-	[at0000.1]	-- Exclusion statement - Medications
+	[at0000.1]	-- Exclusion of a Medication
 language
 	original_language = <[ISO_639-1::en]>
 description
@@ -12,55 +12,63 @@ description
 		["name"] = <"Heather Leslie">
 		["organisation"] = <"Ocean Informatics">
 		["email"] = <"heather.leslie@oceaninformatics.com">
-		["date"] = <"2/03/2010">
+		["date"] = <"2010-03-02">
 	>
 	details = <
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"To positively record the absence or exclusion of any medication use within the health record.">
-			use = <"Use to record the positive exclusion or absence of medication use within the health record. This archetype avoids the need to use terminology to express negation about any item within the health record.
-This archetype is only to be used to record 'point in time' or event-based information. It is not to be used for a persistent storage of information as the patient should always be questioned about current or past medication use prior to initiation of any treatment or management plan.">
-			keywords = <"exclusion", "no", "nil", "significant", "relevant", "medication">
-			misuse = <"">
+			purpose = <"To positively record statement/s about the use of medications that need to be clinically excluded from the health record at a specific point in time.">
+			use = <"Use to record positive statement/s about the absence or exclusion of use of medication within the health record at a specific point in time. For example: to record that the subject is not currently taking any medications; or that the subject has never taken corticosteroids.
+
+This archetype has specifically been designed to avoid the need to use flags or terminology to express negation about any medication use within the health record. 
+
+Exclusion statements can only be considered to be current and accurate at the time of recording. For example: exclusion of use of coumarin on admission to hospital is only relevant at the time of recording, and is effectively obsolete if the subsequent diagnosis is deep venous thrombosis and the subject is commenced on heparin or coumarin.">
+			keywords = <"exclusion", "medicine", "medication">
+			misuse = <"Not to be used to record exclusion statements about adverse reactions, procedures, problems or diagnoses - use other specific specialisations of the EVALUATION.exclusion archetype for these purposes.">
 			copyright = <"© openEHR Foundation">
 		>
 	>
-	lifecycle_state = <"0">
-	other_contributors = <"Sam Heard, Ocean Informatics, Australia", ...>
+	lifecycle_state = <"AuthorDraft">
+	other_contributors = <"Sam Heard, Ocean Informatics, Australia", "Ian McNicoll, Ocean Informatics, Australia", "Stephen Chu, NEHTA, Australia", "Stephen Royce, NEHTA, Australia">
 	other_details = <
-		["references"] = <"">
-		["MD5-CAM-1.0.1"] = <"500811A8724E172DE7A0C5580E09878F">
+		["current_contact"] = <"Heather Leslie, Ocean Informatics, heather.leslie@oceaninformatics.com">
+		["references"] = <"Exclusion of a Medication, draft archetype, NEHTA Clinical Knowledge Manager [Internet]. NEHTA. Authored: 02 Mar 2010. Available at: 
+http://dcm.nehta.org.au/ckm/#showArchetype_1013.1.1303_2 (accessed 3 Sep 2013)">
+		["MD5-CAM-1.0.1"] = <"7A3453A21AF29E5DAD5594D5508EE9F5">
 	>
 
 definition
-	EVALUATION[at0000.1] matches {	-- Exclusion statement - Medications
+	EVALUATION[at0000.1] matches {	-- Exclusion of a Medication
 		data matches {
 			ITEM_TREE[at0001] matches {	-- Tree
-				items cardinality matches {0..*; unordered} matches {
-					ELEMENT[at0002] occurrences matches {0..*} matches {	-- General Statement
+				items cardinality matches {1..*; unordered} matches {
+					ELEMENT[at0002.1] occurrences matches {1..*} matches {	-- Exclusion Statement
 						value matches {
 							DV_TEXT matches {*}
 						}
 					}
-					ELEMENT[at0002.1] occurrences matches {0..*} matches {	-- Global Statements
+					ELEMENT[at0003.1] occurrences matches {0..*} matches {	-- Medication
 						value matches {
 							DV_CODED_TEXT matches {
-								defining_code matches {
-									[local::
-									at0.3, 	-- Not currently taking any medication
-									at0.6]	-- Never taken any medication
-								}
+								defining_code matches {[ac0.1]}		-- Medications
 							}
-						}
-					}
-					ELEMENT[at0.4] occurrences matches {0..1} matches {	-- Not currently taking
-						value matches {
 							DV_TEXT matches {*}
 						}
 					}
-					ELEMENT[at0.5] occurrences matches {0..1} matches {	-- Not ever taken
+				}
+			}
+		}
+		protocol matches {
+			ITEM_TREE[at0006] matches {	-- Tree
+				items cardinality matches {0..*; unordered} matches {
+					ELEMENT[at0004] occurrences matches {0..1} matches {	-- Date First Verified
 						value matches {
-							DV_TEXT matches {*}
+							DV_DATE_TIME matches {*}
+						}
+					}
+					ELEMENT[at0005] occurrences matches {0..1} matches {	-- Date Last Verified
+						value matches {
+							DV_DATE_TIME matches {*}
 						}
 					}
 				}
@@ -73,41 +81,58 @@ ontology
 	term_definitions = <
 		["en"] = <
 			items = <
-				["at0.3"] = <
-					text = <"Not currently taking any medication">
-					description = <"Not currently taking any medication.">
-				>
-				["at0.4"] = <
-					text = <"Not currently taking">
-					description = <"Positive statement about medications that are explicitly not being taken or used at the time of recording.">
-				>
-				["at0.5"] = <
-					text = <"Not ever taken">
-					description = <"Positive statement about medications that are explicitly known not to have ever been taken or used at the time of recording.">
-				>
-				["at0.6"] = <
-					text = <"Never taken any medication">
-					description = <"*">
-				>
 				["at0000"] = <
-					text = <"Exclusion statement">
-					description = <"Statements that need to be positively recorded as absent or excluded.">
+					text = <"Exclusion Statement">
+					description = <"Generic, positive statement/s that need to be recorded as clinically excluded from the health record at a specific point in time.">
 				>
 				["at0000.1"] = <
-					text = <"Exclusion statement - Medications">
-					description = <"Statements about medications that need to be positively recorded as absent or excluded.">
+					text = <"Exclusion of a Medication">
+					description = <"Statement/s about use of medication that needs to be positively recorded as clinically excluded from the health record ata a specific point in time.">
 				>
 				["at0001"] = <
 					text = <"Tree">
 					description = <"@ internal @">
 				>
 				["at0002"] = <
-					text = <"General Statement">
-					description = <"The statement about the absence or exclusion. Use to capture any information that is needed to be explicitly recorded as being absent or excluded within the record.">
+					text = <"Exclusion Statement">
+					description = <"The statement about an exclusion in the health record.">
+					comment = <"Use to capture any information that is needed to be positively recorded as being excluded within the record. The statement can support recording global statements or statements about a specified object. See specialisations for Medications, Adverse Reactions, Problem/Diagnosis and Procedures as common examples that have been explicitly modelled.">
 				>
 				["at0002.1"] = <
-					text = <"Global Statements">
-					description = <"The statement about the absence or exclusion. Use to capture any information that is needed to be explicitly recorded as being absent or excluded within the record.">
+					text = <"Exclusion Statement">
+					description = <"A statement about exclusion of use of medication in the health record.">
+					comment = <"The statement can support recording that no medications are being taken or that one or more specified medications are not being taken. For example: \"Not currently taking any medications\"; \"Never taken any medications\" or \"Not currently taking corticosteroids\".">
+				>
+				["at0003"] = <
+					text = <"Specific Object">
+					description = <"Identification of the specific object/s to which the Exclusion Statement applies.">
+				>
+				["at0003.1"] = <
+					text = <"Medication">
+					description = <"Identification of the specific medication/s to which the Exclusion Statement applies.">
+					comment = <"Coding of the Medication with a terminology is desirable, where possible.">
+				>
+				["at0004"] = <
+					text = <"Date First Verified">
+					description = <"The earliest date at which the exclusion was clinically asserted, affirmed or confirmed.">
+				>
+				["at0005"] = <
+					text = <"Date Last Verified">
+					description = <"The date at which the original confirmation was last reviewed and deemed to be correct.">
+				>
+				["at0006"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+			>
+		>
+	>
+	constraint_definitions = <
+		["en"] = <
+			items = <
+				["ac0.1"] = <
+					text = <"Medications">
+					description = <"All medications that may be taken or administered.">
 				>
 			>
 		>

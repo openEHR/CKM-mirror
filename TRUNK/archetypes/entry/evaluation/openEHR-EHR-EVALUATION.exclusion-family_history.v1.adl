@@ -4,7 +4,7 @@ specialise
 	openEHR-EHR-EVALUATION.exclusion.v1
 
 concept
-	[at0000.1]	-- Exclusion statement - Family History
+	[at0000.1]	-- Exclusion of Family History
 language
 	original_language = <[ISO_639-1::en]>
 description
@@ -12,55 +12,63 @@ description
 		["name"] = <"Heather Leslie">
 		["organisation"] = <"Ocean Informatics">
 		["email"] = <"heather.leslie@oceaninformatics.com">
-		["date"] = <"2/03/2010">
+		["date"] = <"2010-03-2">
 	>
 	details = <
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"To positively record the absence or exclusion of any problems or diagnoses in related family member within the health record.">
-			use = <"Use to record the positive exclusion or absence of problems or diagnoses in related family members within the health record. This archetype avoids the need to use terminology to express negation for any problem or diagnosis within the health record or that it is not about the patient themselves.
-This archetype is only to be used to record 'point in time' information. It is not to be used for a persistent storage of information as the patient should always be questioned about the occurrence of problems or diagnoses in family members during history taking and prior to initiation of any treatment or management plan.">
-			keywords = <"exclusion", "no", "nil", "significant", "relevant", "family", "diagnosis", "problem">
-			misuse = <"">
+			purpose = <"To positively record statement/s about family history that need to be clinically excluded from the health record at a specific point in time.">
+			use = <"Use to record positive statement/s about the absence or exclusion of family history information within the health record at a specific point in time. For example: to record that the subject does not have any significant family history; or that the subject has no family members with heart disease.
+
+This archetype has specifically been designed to avoid the need to use flags or terminology to express negation about any family history within the health record. 
+
+Exclusion statements can only be considered to be current and accurate at the time of recording. For example: recording an exclusion is only relevant at the time of recording and may be effectively obsolete immediately after the record is made if new information is discovered.">
+			keywords = <"exclusion", "family">
+			misuse = <"Not to be used to record the exclusion or absence of adverse reactions, medication use, procedures, problems or diagnoses - use specific specialisations of this archetype for this purpose.">
 			copyright = <"© openEHR Foundation">
 		>
 	>
-	lifecycle_state = <"0">
-	other_contributors = <"Sam Heard, Ocean Informatics, Australia", ...>
+	lifecycle_state = <"AuthorDraft">
+	other_contributors = <"Sam Heard, Ocean Informatics, Australia", "Ian McNicoll, Ocean Informatics, Australia", "Stephen Chu, NEHTA, Australia", "Stephen Royce, NEHTA, Australia">
 	other_details = <
-		["references"] = <"">
-		["MD5-CAM-1.0.1"] = <"E6E61B592A182489F992E240D30EA346">
+		["current_contact"] = <"Heather Leslie, Ocean Informatics, heather.leslie@oceaninformatics.com">
+		["references"] = <"Exclusion of Family History, draft archetype, NEHTA Clinical Knowledge Manager [Internet]. NEHTA. Authored: 02 Mar 2010. Available at: 
+http://dcm.nehta.org.au/ckm/#showArchetype_1013.1.1314_1(accessed 3 Sept 2013)">
+		["MD5-CAM-1.0.1"] = <"889B26E016055E2941412AF3D57FACE4">
 	>
 
 definition
-	EVALUATION[at0000.1] matches {	-- Exclusion statement - Family History
+	EVALUATION[at0000.1] matches {	-- Exclusion of Family History
 		data matches {
 			ITEM_TREE[at0001] matches {	-- Tree
-				items cardinality matches {0..*; unordered} matches {
-					ELEMENT[at0002] occurrences matches {0..*} matches {	-- General Statement
+				items cardinality matches {1..*; unordered} matches {
+					ELEMENT[at0002] occurrences matches {1..*} matches {	-- Exclusion Statement
 						value matches {
 							DV_TEXT matches {*}
 						}
 					}
-					ELEMENT[at0.3] occurrences matches {0..*} matches {	-- Global Statement
+					ELEMENT[at0003.1] occurrences matches {0..*} matches {	-- Family History
 						value matches {
+							DV_TEXT matches {*}
 							DV_CODED_TEXT matches {
-								defining_code matches {
-									[local::
-									at0.4, 	-- No significant family history 
-									at0.5]	-- No relevant family history
-								}
+								defining_code matches {[ac0.1]}		-- Family History
 							}
 						}
 					}
-					ELEMENT[at0.6] occurrences matches {0..1} matches {	-- No significant family history of
+				}
+			}
+		}
+		protocol matches {
+			ITEM_TREE[at0006] matches {	-- Tree
+				items cardinality matches {0..*; unordered} matches {
+					ELEMENT[at0004] occurrences matches {0..1} matches {	-- Date First Verified
 						value matches {
-							DV_TEXT matches {*}
+							DV_DATE_TIME matches {*}
 						}
 					}
-					ELEMENT[at0.7] occurrences matches {0..1} matches {	-- No relevant family history of
+					ELEMENT[at0005] occurrences matches {0..1} matches {	-- Date Last Verified
 						value matches {
-							DV_TEXT matches {*}
+							DV_DATE_TIME matches {*}
 						}
 					}
 				}
@@ -73,41 +81,52 @@ ontology
 	term_definitions = <
 		["en"] = <
 			items = <
-				["at0.3"] = <
-					text = <"Global Statement">
-					description = <"Global statements about the exclusion. This can be used to capture any information that is needed to be explicitly recorded as being absent or excluded within the record.">
-				>
-				["at0.4"] = <
-					text = <"No significant family history ">
-					description = <"No significant family history of any problem or diagnosis.">
-				>
-				["at0.5"] = <
-					text = <"No relevant family history">
-					description = <"No relevant family history of any problem or diagnosis.">
-				>
-				["at0.6"] = <
-					text = <"No significant family history of">
-					description = <"Positive statement about significant problems and diagnoses in related family members that are explicitly known to have not been identified at the time of recording.">
-				>
-				["at0.7"] = <
-					text = <"No relevant family history of">
-					description = <"Positive statement about relevant problems and diagnoses in related family members that are explicitly known to have not been identified at the time of recording.">
-				>
 				["at0000"] = <
-					text = <"Exclusion statement">
-					description = <"Statements that need to be positively recorded as absent or excluded.">
+					text = <"Exclusion Statement">
+					description = <"Generic, positive statement/s that need to be recorded as clinically excluded from the health record at a specific point in time.">
 				>
 				["at0000.1"] = <
-					text = <"Exclusion statement - Family History">
-					description = <"Statements about Family History that need to be positively recorded as absent or excluded.">
+					text = <"Exclusion of Family History">
+					description = <"Positive statement/s about family history that need to be recorded as clinically excluded from the health record at a specific point in time.">
 				>
 				["at0001"] = <
 					text = <"Tree">
 					description = <"@ internal @">
 				>
 				["at0002"] = <
-					text = <"General Statement">
-					description = <"The statement about the absence or exclusion. Use to capture any information that is needed to be explicitly recorded as being absent or excluded within the record.">
+					text = <"Exclusion Statement">
+					description = <"The statement about an exclusion in the health record.">
+					comment = <"Use to capture any information that is needed to be positively recorded as being excluded within the record. The statement can support recording global statements or statements about a specified object. See specialisations for Medications, Adverse Reactions, Problem/Diagnosis and Procedures as common examples that have been explicitly modelled.">
+				>
+				["at0003"] = <
+					text = <"Specific Object">
+					description = <"Identification of the specific object/s to which the Exclusion Statement applies.">
+				>
+				["at0003.1"] = <
+					text = <"Family History">
+					description = <"Identification of the specific fanily history to which the Exclusion Statement applies.">
+				>
+				["at0004"] = <
+					text = <"Date First Verified">
+					description = <"The earliest date at which the exclusion was clinically asserted, affirmed or confirmed.">
+				>
+				["at0005"] = <
+					text = <"Date Last Verified">
+					description = <"The date at which the original confirmation was last reviewed and deemed to be correct.">
+				>
+				["at0006"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+			>
+		>
+	>
+	constraint_definitions = <
+		["en"] = <
+			items = <
+				["ac0.1"] = <
+					text = <"Family History">
+					description = <"All possible findings of Family History">
 				>
 			>
 		>
