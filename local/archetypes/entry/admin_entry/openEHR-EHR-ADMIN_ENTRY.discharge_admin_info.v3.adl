@@ -1,0 +1,331 @@
+﻿archetype (adl_version=1.4)
+	openEHR-EHR-ADMIN_ENTRY.discharge_admin_info.v3
+
+concept
+	[at0000]	-- Discharge administrative information
+language
+	original_language = <[ISO_639-1::en]>
+description
+	original_author = <
+		["name"] = <"D B Hutchinson">
+		["organisation"] = <"NHS CFH">
+		["date"] = <"14/11/2007">
+	>
+	details = <
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To record general administrative information required to discharge a patient">
+			use = <"">
+			keywords = <"administration", "discharge">
+			misuse = <"">
+			copyright = <"© openEHR Foundation">
+		>
+	>
+	lifecycle_state = <"Initial">
+	other_contributors = <>
+	other_details = <
+		["references"] = <"">
+	>
+
+definition
+	ADMIN_ENTRY[at0000] matches {	-- Discharge administrative information
+		data matches {
+			ITEM_TREE[at0003] matches {	-- Tree
+				items cardinality matches {0..*; unordered} matches {
+					ELEMENT[at0004] occurrences matches {0..1} matches {	-- Date of discharge
+						value matches {
+							DV_DATE_TIME matches {
+								value matches {yyyy-??-??T??:??:??}
+							}
+						}
+					}
+					CLUSTER[at0057] occurrences matches {0..1} matches {	-- Discharge details
+						items cardinality matches {0..*; unordered} matches {
+							CLUSTER[at0072] occurrences matches {0..1} matches {	-- Discharge procedure discussed and agreed with Parent/Carer
+								items cardinality matches {0..*; unordered} matches {
+									allow_archetype CLUSTER occurrences matches {0..1} matches {
+										include
+											archetype_id/value matches {/checklist_item-general\.v1/}
+										exclude
+											archetype_id/value matches {/.*/}
+									}
+								}
+							}
+							CLUSTER[at0065] occurrences matches {0..1} matches {	-- Discharging Consultant
+								items cardinality matches {0..*; unordered} matches {
+									allow_archetype CLUSTER occurrences matches {0..1} matches {
+										include
+											archetype_id/value matches {/individual_professional\.v1/}
+										exclude
+											archetype_id/value matches {/.*/}
+									}
+								}
+							}
+							CLUSTER[at0068] occurrences matches {0..1} matches {	-- Discharging Organisation
+								items cardinality matches {0..*; unordered} matches {
+									allow_archetype CLUSTER occurrences matches {0..1} matches {
+										include
+											archetype_id/value matches {/organisation\.v2/}
+										exclude
+											archetype_id/value matches {/.*/}
+									}
+								}
+							}
+							ELEMENT[at0066] occurrences matches {0..1} matches {	-- Discharging ward
+								value matches {
+									DV_TEXT matches {*}
+								}
+							}
+							ELEMENT[at0060] occurrences matches {0..1} matches {	-- Discharging Specialty/Department
+								value matches {
+									DV_TEXT matches {*}
+								}
+							}
+							ELEMENT[at0084] occurrences matches {0..1} matches {	-- Further Action
+								value matches {
+									DV_TEXT matches {*}
+								}
+							}
+						}
+					}
+					CLUSTER[at0069] occurrences matches {0..1} matches {	-- Discharge Destination
+						items cardinality matches {0..*; unordered} matches {
+							ELEMENT[at0030] occurrences matches {0..1} matches {	-- Discharge destination type
+								value matches {
+									DV_CODED_TEXT matches {
+										defining_code matches {
+											[local::
+											at0031, 	-- Usual place of residence, includes patients with no fixed abode
+											at0032, 	-- Temporary place of residence
+											at0033, 	-- Repatriation from high security psychiatric accommodation
+											at0034, 	-- Court
+											at0035, 	-- Penal establishment or police station
+											at0036, 	-- High security psychiatric hospital, Scotland
+											at0037, 	-- NHS other - high security psychiatric accommodation
+											at0038, 	-- NHS other - medium secure unit
+											at0039, 	-- NHS other - general ward/younger physically disabled ward
+											at0040, 	-- NHS other - maternity patients or neonates
+											at0041, 	-- NHS other - mentally ill/learning disabilities
+											at0042, 	-- NHS-run care home
+											at0043, 	-- Local authority residential accommodation, care provided
+											at0044, 	-- Local authority foster care
+											at0045, 	-- Not applicable - patient died or still birth
+											at0046, 	-- Non-NHS medium secure unit
+											at0047, 	-- Non-NHS care home
+											at0048, 	-- Non-NHS hospital
+											at0049]	-- Non-NHS hospice
+										}
+									}
+								}
+							}
+							CLUSTER[at0070] occurrences matches {0..1} matches {	-- Discharge destination
+								items cardinality matches {0..*; unordered} matches {
+									allow_archetype CLUSTER occurrences matches {0..1} matches {
+										include
+											archetype_id/value matches {/organisation\.v2/}
+										exclude
+											archetype_id/value matches {/.*/}
+									}
+								}
+							}
+							CLUSTER[at0062] occurrences matches {0..1} matches {	-- Reason for Discharge
+								items cardinality matches {0..*; unordered} matches {
+									CLUSTER[at0083] occurrences matches {0..1} matches {	-- Discharge Method
+										items cardinality matches {0..*; unordered} matches {
+											allow_archetype CLUSTER occurrences matches {0..*} matches {
+												include
+													archetype_id/value matches {/checklist_item-discharge_method_hospital\.v2/}
+													archetype_id/value matches {/checklist_item-discharge_method_mental_health\.v2/}
+													archetype_id/value matches {/checklist_item-discharge_method_community\.v2/}
+												exclude
+													archetype_id/value matches {/.*/}
+											}
+										}
+									}
+									ELEMENT[at0056] occurrences matches {0..1} matches {	-- Outline of decision to discharge
+										value matches {
+											DV_TEXT matches {*}
+										}
+									}
+									CLUSTER[at0071] occurrences matches {0..1} matches {	-- Discharge delayed
+										items cardinality matches {0..*; unordered} matches {
+											allow_archetype CLUSTER occurrences matches {0..1} matches {
+												include
+													archetype_id/value matches {/checklist_item-general\.v1/}
+												exclude
+													archetype_id/value matches {/.*/}
+											}
+											ELEMENT[at0081] occurrences matches {0..1} matches {	-- Date patient/carer informed of Planned Discharge
+												value matches {
+													DV_DATE_TIME matches {
+														value matches {yyyy-??-??T??:??:??}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"Discharge administrative information">
+					description = <"The administrative information required at the time of discharge of a patient from a period of care">
+				>
+				["at0003"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0004"] = <
+					text = <"Date of discharge">
+					description = <"The date of discharge for this care episode">
+				>
+				["at0030"] = <
+					text = <"Discharge destination type">
+					description = <"The destination of a patient on completion of a hospital provder spell">
+				>
+				["at0031"] = <
+					text = <"Usual place of residence, includes patients with no fixed abode">
+					description = <"Includes patients with no fixed abode">
+				>
+				["at0032"] = <
+					text = <"Temporary place of residence">
+					description = <"*">
+				>
+				["at0033"] = <
+					text = <"Repatriation from high security psychiatric accommodation">
+					description = <"*">
+				>
+				["at0034"] = <
+					text = <"Court">
+					description = <"*">
+				>
+				["at0035"] = <
+					text = <"Penal establishment or police station">
+					description = <"*">
+				>
+				["at0036"] = <
+					text = <"High security psychiatric hospital, Scotland">
+					description = <"*">
+				>
+				["at0037"] = <
+					text = <"NHS other - high security psychiatric accommodation">
+					description = <"*">
+				>
+				["at0038"] = <
+					text = <"NHS other - medium secure unit">
+					description = <"*">
+				>
+				["at0039"] = <
+					text = <"NHS other - general ward/younger physically disabled ward">
+					description = <"*">
+				>
+				["at0040"] = <
+					text = <"NHS other - maternity patients or neonates">
+					description = <"*">
+				>
+				["at0041"] = <
+					text = <"NHS other - mentally ill/learning disabilities">
+					description = <"*">
+				>
+				["at0042"] = <
+					text = <"NHS-run care home">
+					description = <"*">
+				>
+				["at0043"] = <
+					text = <"Local authority residential accommodation, care provided">
+					description = <"*">
+				>
+				["at0044"] = <
+					text = <"Local authority foster care">
+					description = <"*">
+				>
+				["at0045"] = <
+					text = <"Not applicable - patient died or still birth">
+					description = <"*">
+				>
+				["at0046"] = <
+					text = <"Non-NHS medium secure unit">
+					description = <"*">
+				>
+				["at0047"] = <
+					text = <"Non-NHS care home">
+					description = <"*">
+				>
+				["at0048"] = <
+					text = <"Non-NHS hospital">
+					description = <"*">
+				>
+				["at0049"] = <
+					text = <"Non-NHS hospice">
+					description = <"*">
+				>
+				["at0056"] = <
+					text = <"Outline of decision to discharge">
+					description = <"An outline of the decision to discharge the patient (if applicable)">
+				>
+				["at0057"] = <
+					text = <"Discharge details">
+					description = <"*">
+				>
+				["at0060"] = <
+					text = <"Discharging Specialty/Department">
+					description = <"The department or specialty with responsibility for the patient at the time of discharge">
+				>
+				["at0062"] = <
+					text = <"Reason for Discharge">
+					description = <"The details of the discharge">
+				>
+				["at0065"] = <
+					text = <"Discharging Consultant">
+					description = <"The name of the consultant responsible for care of the patient at the time of discharge">
+				>
+				["at0066"] = <
+					text = <"Discharging ward">
+					description = <"The ward from which the patient was discharged">
+				>
+				["at0068"] = <
+					text = <"Discharging Organisation">
+					description = <"The organisation with responsibility for the patient at the time of discharge">
+				>
+				["at0069"] = <
+					text = <"Discharge Destination">
+					description = <"The details of the destination of the patient on discharge">
+				>
+				["at0070"] = <
+					text = <"Discharge destination">
+					description = <"The details of the organisation to which the patient is to be discharged if not the usual place of residence">
+				>
+				["at0071"] = <
+					text = <"Discharge delayed">
+					description = <"Was the discharge delayed for any reason">
+				>
+				["at0072"] = <
+					text = <"Discharge procedure discussed and agreed with Parent/Carer">
+					description = <"Discharge procedure discussed and agreed with Parent/Carer?">
+				>
+				["at0081"] = <
+					text = <"Date patient/carer informed of Planned Discharge">
+					description = <"*">
+				>
+				["at0083"] = <
+					text = <"Discharge Method">
+					description = <"*">
+				>
+				["at0084"] = <
+					text = <"Further Action">
+					description = <"*">
+				>
+			>
+		>
+	>

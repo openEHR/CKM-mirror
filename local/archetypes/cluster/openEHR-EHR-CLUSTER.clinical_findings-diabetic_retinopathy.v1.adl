@@ -1,0 +1,371 @@
+﻿archetype (adl_version=1.4)
+	openEHR-EHR-CLUSTER.clinical_findings-diabetic_retinopathy.v1
+specialise
+	openEHR-EHR-CLUSTER.clinical_findings.v1
+
+concept
+	[at0000.1]	-- Hallazgos clínicos en retinopatía diabética
+language
+	original_language = <[ISO_639-1::es]>
+	translations = <
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			author = <
+				["name"] = <"?">
+			>
+		>
+	>
+description
+	original_author = <
+		["name"] = <"Aitor Eguzkitza">
+		["organisation"] = <"Universidad Pública de Navarra - Complejo Hospitalario de Navarra">
+		["email"] = <"aitor.eguzkiza@unavarra.es">
+		["date"] = <"2013-11-15">
+	>
+	details = <
+		["es"] = <
+			language = <[ISO_639-1::es]>
+			purpose = <"Registrar los detalles acerca de los hallazgos clínicos relevantes en la evaluación de la retinopatía diabética.">
+			use = <"Adjuntar información acerca de los hallazgos clínicos para cada prueba diagnóstica involucrada en el estudio de la retinopatía diabética.">
+			keywords = <"diabetes", "retinopatía", "oftalmología">
+			misuse = <"">
+			copyright = <"© openEHR Foundation">
+		>
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To record details about clinical findings relevant in the assessment of diabetic retinopathy.">
+			use = <"To attach information about clinical findings, to each diagnostic test involved on the process of diagnose the diabetic retinopathy.">
+			keywords = <"diabetes", "retinopathy", "ophthalmology">
+			misuse = <"*(es)">
+			copyright = <"© openEHR Foundation">
+		>
+	>
+	lifecycle_state = <"AuthorDraft">
+	other_contributors = <>
+	other_details = <
+		["MD5-CAM-1.0.1"] = <"3EAD31E0673E71BC064B4FDF4C4A0C2C">
+	>
+
+definition
+	CLUSTER[at0000.1] matches {	-- Hallazgos clínicos en retinopatía diabética
+		items cardinality matches {1..*; unordered} matches {
+			ELEMENT[at0.1] occurrences matches {0..1} matches {	-- Microaneurisma
+				value matches {
+					DV_BOOLEAN matches {
+						value matches {True, False; False}
+					}
+				}
+			}
+			ELEMENT[at0.2] occurrences matches {0..1} matches {	-- Hemorragias intraretinianas
+				value matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {
+							[local::
+							at0.3, 	-- Sin hemorragia
+							at0.4, 	-- Hemorragia intrarretiniana en llama
+							at0.5; 	-- Hemorragia profunda
+							at0.3]	-- assumed value
+						}
+					}
+				}
+			}
+			ELEMENT[at0.6] occurrences matches {0..1} matches {	-- Exudados duros
+				value matches {
+					DV_BOOLEAN matches {
+						value matches {True, False; False}
+					}
+				}
+			}
+			ELEMENT[at0.7] occurrences matches {0..1} matches {	-- Exudados blandos (algodonosos)
+				value matches {
+					DV_BOOLEAN matches {
+						value matches {True, False; False}
+					}
+				}
+			}
+			CLUSTER[at0.8] occurrences matches {0..1} matches {	-- Arterias y venas
+				items cardinality matches {1..*; unordered} matches {
+					ELEMENT[at0.9] occurrences matches {0..1} matches {	-- Arrosariamientos venosos
+						value matches {
+							DV_BOOLEAN matches {
+								value matches {True, False; False}
+							}
+						}
+					}
+					ELEMENT[at0.10] occurrences matches {0..1} matches {	-- AMIR
+						value matches {
+							DV_BOOLEAN matches {
+								value matches {True, False; False}
+							}
+						}
+					}
+					ELEMENT[at0.11] occurrences matches {0..1} matches {	-- Neovascularización intrarretiniana
+						value matches {
+							DV_BOOLEAN matches {
+								value matches {True, False; False}
+							}
+						}
+					}
+					CLUSTER[at0.12] occurrences matches {0..1} matches {	-- Edema
+						items cardinality matches {1..*; unordered} matches {
+							ELEMENT[at0.13] occurrences matches {0..1} matches {	-- Papiloedema
+								value matches {
+									DV_BOOLEAN matches {
+										value matches {True, False; False}
+									}
+								}
+							}
+							ELEMENT[at0.14] occurrences matches {0..1} matches {	-- Edema macular diabético
+								value matches {
+									DV_CODED_TEXT matches {
+										defining_code matches {
+											[local::
+											at0.15, 	-- EMD aparentemente ausente
+											at0.16, 	-- Leve
+											at0.17, 	-- Moderado
+											at0.18]	-- Severo
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			ELEMENT[at0.19] occurrences matches {0..1} matches {	-- Hemorragias vítreas
+				value matches {
+					DV_BOOLEAN matches {
+						value matches {True, False; False}
+					}
+				}
+			}
+			ELEMENT[at0.20] occurrences matches {0..1} matches {	-- Desprendimiento de retina traccional
+				value matches {
+					DV_BOOLEAN matches {
+						value matches {True, False; False}
+					}
+				}
+			}
+			ELEMENT[at0.21] occurrences matches {0..1} matches {	-- Cicatrices de fotocoagulación
+				value matches {
+					DV_BOOLEAN matches {
+						value matches {True, False; False}
+					}
+				}
+			}
+		}
+	}
+
+
+ontology
+	terminologies_available = <"SNOMED-CT", ...>
+	term_definitions = <
+		["es"] = <
+			items = <
+				["at0.1"] = <
+					text = <"Microaneurisma">
+					description = <"Verdadero si se detecta microaneurisma">
+				>
+				["at0.10"] = <
+					text = <"AMIR">
+					description = <"Verdadero si presenta anomalías microvasculares intrarretinianas">
+				>
+				["at0.11"] = <
+					text = <"Neovascularización intrarretiniana">
+					description = <"Verdadero si se percibe neovascularización ">
+				>
+				["at0.12"] = <
+					text = <"Edema">
+					description = <"Detección y clasificación de edemas">
+				>
+				["at0.13"] = <
+					text = <"Papiloedema">
+					description = <"Verdadero si presenta edema en la papila">
+				>
+				["at0.14"] = <
+					text = <"Edema macular diabético">
+					description = <"Escala internacional para la clasificación de el edema macular diabético (EMD)">
+				>
+				["at0.15"] = <
+					text = <"EMD aparentemente ausente">
+					description = <"Aparentemente no presenta engrosamiento retiniano ni se aprecian exudados duros en el polo posterior">
+				>
+				["at0.16"] = <
+					text = <"Leve">
+					description = <"Presenta engrosamiento de la retina o exudados duros en polo posterior pero distantes del centro de la mácula">
+				>
+				["at0.17"] = <
+					text = <"Moderado">
+					description = <"Presenta engrosamiento de la retina o exudados duros cerca del centro de la mácula, pero sin afectar al centro de la misma">
+				>
+				["at0.18"] = <
+					text = <"Severo">
+					description = <"Presenta engrosamiento de la retina o exudados duros en el centro de la misma">
+				>
+				["at0.19"] = <
+					text = <"Hemorragias vítreas">
+					description = <"Verdadero si presenta hemorragias en el vítreo">
+				>
+				["at0.2"] = <
+					text = <"Hemorragias intraretinianas">
+					description = <"Identifica el tipo de hemorragia intrarretiniana presente en caso de haberla">
+				>
+				["at0.20"] = <
+					text = <"Desprendimiento de retina traccional">
+					description = <"Verdadero si presenta desprendimiento de la retina">
+				>
+				["at0.21"] = <
+					text = <"Cicatrices de fotocoagulación">
+					description = <"Verdadero si presenta cicatrices debidas a intervenciones anteriores por fotocoagulación">
+				>
+				["at0.3"] = <
+					text = <"Sin hemorragia">
+					description = <"Aparentemente no existe hemorragia intrarretiniana">
+				>
+				["at0.4"] = <
+					text = <"Hemorragia intrarretiniana en llama">
+					description = <"Presenta hemorragia intrarretiniana superficial o en forma de llama">
+				>
+				["at0.5"] = <
+					text = <"Hemorragia profunda">
+					description = <"Presenta hemorragia intrarretiniana profunda">
+				>
+				["at0.6"] = <
+					text = <"Exudados duros">
+					description = <"Verdadero si presenta exudados duros">
+				>
+				["at0.7"] = <
+					text = <"Exudados blandos (algodonosos)">
+					description = <"Verdadero si presenta exudados blandos o algodonosos">
+				>
+				["at0.8"] = <
+					text = <"Arterias y venas">
+					description = <"Anomalías detectadas en venas o arterias retinianas">
+				>
+				["at0.9"] = <
+					text = <"Arrosariamientos venosos">
+					description = <"Verdadero si presenta arrosariamiento venoso">
+				>
+				["at0000"] = <
+					text = <"Hallazgos clínicos">
+					description = <"unknown">
+				>
+				["at0000.1"] = <
+					text = <"Hallazgos clínicos en retinopatía diabética">
+					description = <"Registro de los hallazgos clínicos relacionados con el estudio de la retinopatía diabética">
+				>
+			>
+		>
+		["en"] = <
+			items = <
+				["at0.1"] = <
+					text = <"Microaneurism">
+					description = <"True if microaneurism is present">
+				>
+				["at0.10"] = <
+					text = <"IRMA">
+					description = <"True if intraretinal microvascular abnormalities are present">
+				>
+				["at0.11"] = <
+					text = <"Retinal neovascularization ">
+					description = <"True if new vessels are present">
+				>
+				["at0.12"] = <
+					text = <"Edema">
+					description = <"Detection and classification of found edemas">
+				>
+				["at0.13"] = <
+					text = <"Papilloedema">
+					description = <"True if papilloedema present">
+				>
+				["at0.14"] = <
+					text = <"Diabetic macular edema">
+					description = <"International clinical Diabetic Macular Edema (DME) scale">
+				>
+				["at0.15"] = <
+					text = <"DME apparently absent">
+					description = <"No apparent retinal thickening or hard exudates in posterior pole">
+				>
+				["at0.16"] = <
+					text = <"Mild DME">
+					description = <"Some retinal  thickening or hard exudates in posterior pole but distant from the center of the macula (not clinically significant edema)">
+				>
+				["at0.17"] = <
+					text = <"Moderate DME">
+					description = <"Retinal thickening or hard exudates approaching the center of the macula but not involving the center (clinically significant edema)">
+				>
+				["at0.18"] = <
+					text = <"Severe DME">
+					description = <"Retinal thickening or hard exudates involving the center of the macula (clinically significant edema)">
+				>
+				["at0.19"] = <
+					text = <"Vitreous bleeding">
+					description = <"True if vitreous bleeding is present">
+				>
+				["at0.2"] = <
+					text = <"Retinal haemorrhages">
+					description = <"Identification of retinal haemorrhages if present">
+				>
+				["at0.20"] = <
+					text = <"Traction retinal detachment">
+					description = <"Traction retinal detachment">
+				>
+				["at0.21"] = <
+					text = <"Photocoagulation scars">
+					description = <"True if photocoagulation scars are present">
+				>
+				["at0.3"] = <
+					text = <"No haemorrhage">
+					description = <"Aparently no retinal haemorrhage">
+				>
+				["at0.4"] = <
+					text = <"Flame haemorrhage ">
+					description = <"Flame or superficial retinal haemorrhage is present">
+				>
+				["at0.5"] = <
+					text = <"Deep haemorrhage">
+					description = <"Deep retinal haemorrhage is present">
+				>
+				["at0.6"] = <
+					text = <"Hard exudates">
+					description = <"True if hard exudates are present">
+				>
+				["at0.7"] = <
+					text = <"'Cotton Wool' artefacts">
+					description = <"True if 'cotton wool' artefacts are present">
+				>
+				["at0.8"] = <
+					text = <"Arteries and Veins">
+					description = <"Detection of disorders in arteries or veins">
+				>
+				["at0.9"] = <
+					text = <"Venous beading">
+					description = <"True if venous beading is present">
+				>
+				["at0000"] = <
+					text = <"Clinical findings">
+					description = <"Observation of information of clinical interest">
+				>
+				["at0000.1"] = <
+					text = <"Clinical findings for diabetic retinopathy">
+					description = <"Register the clinical findings related to diabetic retinopathy assessment">
+				>
+			>
+		>
+	>
+	term_bindings = <
+		["SNOMED-CT"] = <
+			items = <
+				["at0.1"] = <[SNOMED-CT::34037000]>
+				["at0.11"] = <[SNOMED-CT::61267008]>
+				["at0.13"] = <[SNOMED-CT::423488006]>
+				["at0.14"] = <[SNOMED-CT::312912001]>
+				["at0.16"] = <[SNOMED-CT::399864000]>
+				["at0.17"] = <[SNOMED-CT::312911008]>
+				["at0.2"] = <[SNOMED-CT::28998008]>
+				["at0.4"] = <[SNOMED-CT::247132001]>
+				["at0.5"] = <[SNOMED-CT::48742005]>
+				["at0.7"] = <[SNOMED-CT::39832008]>
+			>
+		>
+	>
