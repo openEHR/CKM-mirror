@@ -14,6 +14,18 @@ language
 				["email"] = <"biljana.princic@marand.si">
 			>
 		>
+		["ar-sy"] = <
+			language = <[ISO_639-1::ar-sy]>
+			author = <
+				["name"] = <"Mona Saleh">
+			>
+		>
+		["es-ar"] = <
+			language = <[ISO_639-1::es-ar]>
+			author = <
+				["name"] = <"Guillermo Palli">
+			>
+		>
 		["ru"] = <
 			language = <[ISO_639-1::ru]>
 			author = <
@@ -67,18 +79,54 @@ There is a date and time at which this ACTION took place (as there is for all AC
 			misuse = <"*Do not use when recording an instruction or order (use INSTRUCTION.medication).(en)">
 			copyright = <"© openEHR Foundation">
 		>
+		["ar-sy"] = <
+			language = <[ISO_639-1::ar-sy]>
+			purpose = <"يُمَكِّن هذا الفعل من تسجيل الأفعال التي يتم تنفيذها فيما يتعلق بالأدوية. و عادة ما يكون ذلك استجابة لأمر دوائي أو وصفة دوائية, و لكنه قد يكون إما قام المريض بتناوله بنفسه أو عن طريق الصيدلية. لا يوجد في هذا النموذج تفاصيل حول الوقت حيث إنه يشير إلى فعل تم في الواقع.">
+			use = <"*For recording the planning, issuing of a prescription, dispensing, administration, cessation, suspension, completion of a medicine, vaccine or other therapeutic good . This will usually be in response to a medication order but may be administered immediately without an order at times, thus requiring recording of the administration alone (e.g. in an emergency situation). 
+
+Such a record may be made to indicate the administration of a dose, dispensing of a certain quantity or as a record of ceasing a medication. The state of the medication instruction is altered by the action taken as indicated in the Pathway definition.
+
+There is a date and time at which this ACTION took place (as there is for all ACTIONs)  and use of this archetype indicates that some action has actually occurred.(en)">
+			keywords = <"*medication(en)", "*prescibe(en)", "*dispense(en)", "*administration(en)", "*cessation(en)", "*therapeutic good(en)", "*supply(en)", "*medicine(en)", "*drug(en)">
+			misuse = <"*Do not use when recording an instruction or order (use INSTRUCTION.medication).(en)">
+			copyright = <"© openEHR Foundation">
+		>
+		["es-ar"] = <
+			language = <[ISO_639-1::es-ar]>
+			purpose = <"Este ACTION permite la grabación de las ordenes de prescripciones. Esto será normalmente en respuesta a una orden de medicación o prescripción, pero puede ser autoadministrado o suministrada por una farmacia. No existe informacion sobre si el uso de este arquetipo implica que alguna accion haya efectivamente sido ejecutada">
+			use = <"*For recording the planning, issuing of a prescription, dispensing, administration, cessation, suspension, completion of a medicine, vaccine or other therapeutic good . This will usually be in response to a medication order but may be administered immediately without an order at times, thus requiring recording of the administration alone (e.g. in an emergency situation). 
+
+Such a record may be made to indicate the administration of a dose, dispensing of a certain quantity or as a record of ceasing a medication. The state of the medication instruction is altered by the action taken as indicated in the Pathway definition.
+
+There is a date and time at which this ACTION took place (as there is for all ACTIONs)  and use of this archetype indicates that some action has actually occurred.(en)">
+			keywords = <"*medication(en)", "*prescibe(en)", "*dispense(en)", "*administration(en)", "*cessation(en)", "*therapeutic good(en)", "*supply(en)", "*medicine(en)", "*drug(en)">
+			misuse = <"*Do not use when recording an instruction or order (use INSTRUCTION.medication).(en)">
+			copyright = <"© openEHR Foundation">
+		>
 	>
 	lifecycle_state = <"AuthorDraft">
 	other_contributors = <"Stephen Chu, NEHTA, Australia (Editor)", "Samo Drnovšek, Marand, Slovenia (Editor)", "Jacquie Garton-Smith, Royal Perth Hospital and DoHWA, Australia", "Sam Heard, Ocean Informatics, Australia (Editor)", "Robert L'egan, NEHTA, Australia", "Heather Leslie, Ocean Informatics, Australia (Editor)", "Ian McNicoll, Ocean Informatics, UK", "Jude Michel, Queensland Health, Australia", "Chris Mitchell, RACGP, Australia", "Jodie Pycroft, Adelaide Northern Division of General Practice Ltd, Australia", "Gordon Tomes, Australian Institute of Health and Welfare, Australia", "Richard Townley-O'Neill, NEHTA, Australia (Editor)", "Kylie Young, The Royal Australian College of General Practitioners, Australia">
 	other_details = <
 		["references"] = <"Based on NEHTA Medication action archetype http://dcm.nehta.org.au/ckm/#showArchetype_1013.1.876_6
 NEHTA Therapeutic Good Use Datagroup http://nehta.gov.au/data-group-library/data-specifications/dgl-therapeutic-good-action">
-		["MD5-CAM-1.0.1"] = <"E0ADAE257541A73F23D091386203D083">
+		["MD5-CAM-1.0.1"] = <"5785AFB10AEB74CC6D672E75B88908D3">
 	>
 
 definition
 	ACTION[at0000] matches {	-- Medication action
 		ism_transition matches {
+			ISM_TRANSITION[at0042] matches {	-- Recommend medication
+				current_state matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {[openehr::526]}
+					}
+				}
+				careflow_step matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {[local::at0042]}		-- Recommend medication
+					}
+				}
+			}
 			ISM_TRANSITION[at0001] matches {	-- Plan medication
 				current_state matches {
 					DV_CODED_TEXT matches {
@@ -598,6 +646,10 @@ ontology
 					text = <"Medication order modified">
 					description = <"The medication order has been changed in a manner which does not require a new instruction/order to be issued, according to local clinical rules.">
 				>
+				["at0042"] = <
+					text = <"Recommend medication">
+					description = <"The medication has been recommended, generally from one clinician to another, where the latter has the responsibility to order/authorise the medication.">
+				>
 			>
 		>
 		["sl"] = <
@@ -759,6 +811,10 @@ ontology
 					text = <"*Medication order modified(en)">
 					description = <"*The medication order has been changed in a manner which does not require a new instruction/order to be issued, according to local clinical rules.(en)">
 				>
+				["at0042"] = <
+					text = <"*Planned(en)">
+					description = <"**(en)">
+				>
 			>
 		>
 		["ru"] = <
@@ -919,6 +975,338 @@ ontology
 					text = <"*Medication order modified(en)">
 					description = <"*The medication order has been changed in a manner which does not require a new instruction/order to be issued, according to local clinical rules.(en)">
 				>
+				["at0042"] = <
+					text = <"*Planned(en)">
+					description = <"**(en)">
+				>
+			>
+		>
+		["ar-sy"] = <
+			items = <
+				["at0000"] = <
+					text = <"فعل دوائي">
+					description = <"فعل نابع من الأمر الدوائي, يتم كتابته بواسطة الطبيب السريري الذي يقوم بتحديد أي الأدوية يقوم بتناولها, متى و لأي مدة,, إلى آخره.">
+				>
+				["at0001"] = <
+					text = <"الخطة">
+					description = <"تم تخطيط استخدام الدواء و لكن لم يتم التنفيذ">
+				>
+				["at0002"] = <
+					text = <"تم عمل وصفة طبية">
+					description = <"تم تحويل الأمر إلى محل الصرف">
+				>
+				["at0003"] = <
+					text = <"تم الصرف">
+					description = <"تم صرف الدواء">
+				>
+				["at0004"] = <
+					text = <"بدأ التناول">
+					description = <"تم بالفعل تناول الدواء بواسطة المريض">
+				>
+				["at0005"] = <
+					text = <"مراجعة">
+					description = <"تمت مراجعة الأدوية">
+				>
+				["at0006"] = <
+					text = <"إعطاء الدواء - عند نقطة زمنية">
+					description = <"تم إعطاء الدواء">
+				>
+				["at0007"] = <
+					text = <"اكتمل">
+					description = <"تم استكمال الدواء كما هو بالوصفة الطبية">
+				>
+				["at0008"] = <
+					text = <"تم التأخر في الإمداد">
+					description = <"لن يتم صرف الدواء حيث إنه غير متاح/متوفر">
+				>
+				["at0009"] = <
+					text = <"تم تعليق إعطاء الدواء">
+					description = <"تم تعليق إعطاء الدواء">
+				>
+				["at0010"] = <
+					text = <"إعادة تفعيل الوصفة الطبية">
+					description = <"تم إعادة الأمر أو إعادة تفعيل الوصفة الطبية">
+				>
+				["at0011"] = <
+					text = <"تم تعليق إعادة الأمر بالدواء">
+					description = <"إعادة الأمر بالدواء غير متاحة">
+				>
+				["at0012"] = <
+					text = <"ملغى">
+					description = <"تم إلغاء تناول الدواء الذي كان مخططا له">
+				>
+				["at0013"] = <
+					text = <"تم تعليق الخطة">
+					description = <"تم تعليق الخطة الخاصة بالأمر بالدواء">
+				>
+				["at0014"] = <
+					text = <"تم إلغاء الوصفة الطبية">
+					description = <"تم إلغاء الوصفة الطبية">
+				>
+				["at0015"] = <
+					text = <"تم إلغاء الإعطاء">
+					description = <"تم إلغاء الإعطاء">
+				>
+				["at0016"] = <
+					text = <"تم تحديد توقيت البداية">
+					description = <"تم تحديد الوقت الخاص ببداية استخدام الدواء">
+				>
+				["at0017"] = <
+					text = <"*Tree(en)">
+					description = <"*@ internal @(en)">
+				>
+				["at0018"] = <
+					text = <"*Withhold medication(en)">
+					description = <"*The administration of a medication has been withheld and not given.(en)">
+				>
+				["at0019"] = <
+					text = <"*Medication declined(en)">
+					description = <"*An administration of the medication was refused by the subject of care (patient).(en)">
+				>
+				["at0020"] = <
+					text = <"*Medicine(en)">
+					description = <"*The medicine, vaccine or other therapeutic good which was the focus of the action. This element will normally be coded with a medicines terminology but free text may be required in some cases.(en)">
+				>
+				["at0021"] = <
+					text = <"*Reason(en)">
+					description = <"*The reason(s) the specific action or step was carried out. Note: This is not the reason for the medication instruction, rather the specific reason e.g. for administration or for ceasing the medication.(en)">
+				>
+				["at0022"] = <
+					text = <"*Quantity(en)">
+					description = <"*The quantity of medicine, vaccine or other therapeutic good.(en)">
+				>
+				["at0023"] = <
+					text = <"*Ingredients and form(en)">
+					description = <"*Detailed information about the ingredient(s) including form and strength.(en)">
+				>
+				["at0024"] = <
+					text = <"*Comment(en)">
+					description = <"*A comment on the action taken.(en)">
+				>
+				["at0025"] = <
+					text = <"*Sequence number(en)">
+					description = <"*The sequence number specific to the action being recorded.(en)">
+				>
+				["at0026"] = <
+					text = <"*BatchID(en)">
+					description = <"*Assigned by the manufacturer to identify the manufacturing batch of the item.(en)">
+				>
+				["at0027"] = <
+					text = <"*Administration(en)">
+					description = <"*Details about the administration of the medicine, vaccine or other therapeutic good.(en)">
+				>
+				["at0030"] = <
+					text = <"*Tree(en)">
+					description = <"*@ internal @(en)">
+				>
+				["at0031"] = <
+					text = <"*Dispensed to(en)">
+					description = <"*The name of the person to whom this was dispensed, if not the subject of care.(en)">
+				>
+				["at0032"] = <
+					text = <"*Remaining repeats(en)">
+					description = <"*The number of times the medicine, vaccine or other therapeutic good may still be dispensed without re-issue of a prescription or order. Note: This is the information required by the subject of care and prescriber.(en)">
+				>
+				["at0033"] = <
+					text = <"*Instructions(en)">
+					description = <"*Any instructions given to the subject of care or carer at the time of the action.(en)">
+				>
+				["at0035"] = <
+					text = <"*Return medication(en)">
+					description = <"*A dispensed medication is returned or not collected without use.(en)">
+				>
+				["at0036"] = <
+					text = <"*Brand substituted(en)">
+					description = <"*A different brand of the same medicine, vaccine or other therapeutic good was substituted for the one nominated in the order.(en)">
+				>
+				["at0037"] = <
+					text = <"*Number of times dispensed(en)">
+					description = <"*The number of times this order has been dispensed. The sum of this number minus one and the remaining repeats provides the number of repeats on the original order.(en)">
+				>
+				["at0038"] = <
+					text = <"*Claim category(en)">
+					description = <"*The category of reimbursement or subsidy sought for the item.(en)">
+				>
+				["at0039"] = <
+					text = <"*Change dose or timing(en)">
+					description = <"*A new instruction with changed dose or timing has been created that replaces this one.(en)">
+				>
+				["at0040"] = <
+					text = <"*Expiry date(en)">
+					description = <"*The expiry date of the medicine administered as documented by the manufacturer.(en)">
+				>
+				["at0041"] = <
+					text = <"*Medication order modified(en)">
+					description = <"*The medication order has been changed in a manner which does not require a new instruction/order to be issued, according to local clinical rules.(en)">
+				>
+				["at0042"] = <
+					text = <"*Recommend medication(en)">
+					description = <"*The medication has been recommended, generally from one clinician to another, where the latter has the responsibility to order/authorise the medication.(en)">
+				>
+			>
+		>
+		["es-ar"] = <
+			items = <
+				["at0000"] = <
+					text = <"Accion de prescripcion">
+					description = <"una acción derivada de una orden de medicamentos creado por un médico que especifique qué medicamentos tomar, cuándo, por cuánto tiempo, etc">
+				>
+				["at0001"] = <
+					text = <"Plan">
+					description = <"El medicamento se ha previsto para la administrcion, pero no ha tenido lugar aún">
+				>
+				["at0002"] = <
+					text = <"Prescribir">
+					description = <"El pedido ha sido enviado a la enfermería o a la farmacia">
+				>
+				["at0003"] = <
+					text = <"Dosificación">
+					description = <"El medicamento se ha dispensado">
+				>
+				["at0004"] = <
+					text = <"Comenzar la administración">
+					description = <"El medicamento ha sido tomada por el paciente">
+				>
+				["at0005"] = <
+					text = <"revisión">
+					description = <"El medicamento ha sido revisado">
+				>
+				["at0006"] = <
+					text = <"Administrado (punto en el tiempo)">
+					description = <"El medicamento se ha administrado">
+				>
+				["at0007"] = <
+					text = <"Completado">
+					description = <"El medicamento se ha completado según lo prescrito">
+				>
+				["at0008"] = <
+					text = <"Entrega demorada">
+					description = <"El medicamento no se ha entregado o no está disponible">
+				>
+				["at0009"] = <
+					text = <"Suspender la administración">
+					description = <"La administracion del medicamento ha sido suspendida">
+				>
+				["at0010"] = <
+					text = <"Renovar prescipcion">
+					description = <"La medicacion ha sido renovada o prescripta nuevamente">
+				>
+				["at0011"] = <
+					text = <"Suspender la renovacion">
+					description = <"No es posible la renovacion de esta medicacion">
+				>
+				["at0012"] = <
+					text = <"Cancelado">
+					description = <"La prescipcion en curso a sido cancelada">
+				>
+				["at0013"] = <
+					text = <"Plan suspendedido">
+					description = <"La prescripcion enviada ha sido suspendida">
+				>
+				["at0014"] = <
+					text = <"Prescipcion cancelada">
+					description = <"La prescripcion ha sido canselada">
+				>
+				["at0015"] = <
+					text = <"Administración cancelada">
+					description = <"La administracion ha sido cancelada">
+				>
+				["at0016"] = <
+					text = <"Fecha de inicio configurado">
+					description = <"La fecha para el inicio de la medicacion ha sido configurado">
+				>
+				["at0017"] = <
+					text = <"*Tree(en)">
+					description = <"*@ internal @(en)">
+				>
+				["at0018"] = <
+					text = <"*Withhold medication(en)">
+					description = <"*The administration of a medication has been withheld and not given.(en)">
+				>
+				["at0019"] = <
+					text = <"*Medication declined(en)">
+					description = <"*An administration of the medication was refused by the subject of care (patient).(en)">
+				>
+				["at0020"] = <
+					text = <"*Medicine(en)">
+					description = <"*The medicine, vaccine or other therapeutic good which was the focus of the action. This element will normally be coded with a medicines terminology but free text may be required in some cases.(en)">
+				>
+				["at0021"] = <
+					text = <"*Reason(en)">
+					description = <"*The reason(s) the specific action or step was carried out. Note: This is not the reason for the medication instruction, rather the specific reason e.g. for administration or for ceasing the medication.(en)">
+				>
+				["at0022"] = <
+					text = <"*Quantity(en)">
+					description = <"*The quantity of medicine, vaccine or other therapeutic good.(en)">
+				>
+				["at0023"] = <
+					text = <"*Ingredients and form(en)">
+					description = <"*Detailed information about the ingredient(s) including form and strength.(en)">
+				>
+				["at0024"] = <
+					text = <"*Comment(en)">
+					description = <"*A comment on the action taken.(en)">
+				>
+				["at0025"] = <
+					text = <"*Sequence number(en)">
+					description = <"*The sequence number specific to the action being recorded.(en)">
+				>
+				["at0026"] = <
+					text = <"*BatchID(en)">
+					description = <"*Assigned by the manufacturer to identify the manufacturing batch of the item.(en)">
+				>
+				["at0027"] = <
+					text = <"*Administration(en)">
+					description = <"*Details about the administration of the medicine, vaccine or other therapeutic good.(en)">
+				>
+				["at0030"] = <
+					text = <"*Tree(en)">
+					description = <"*@ internal @(en)">
+				>
+				["at0031"] = <
+					text = <"*Dispensed to(en)">
+					description = <"*The name of the person to whom this was dispensed, if not the subject of care.(en)">
+				>
+				["at0032"] = <
+					text = <"*Remaining repeats(en)">
+					description = <"*The number of times the medicine, vaccine or other therapeutic good may still be dispensed without re-issue of a prescription or order. Note: This is the information required by the subject of care and prescriber.(en)">
+				>
+				["at0033"] = <
+					text = <"*Instructions(en)">
+					description = <"*Any instructions given to the subject of care or carer at the time of the action.(en)">
+				>
+				["at0035"] = <
+					text = <"*Return medication(en)">
+					description = <"*A dispensed medication is returned or not collected without use.(en)">
+				>
+				["at0036"] = <
+					text = <"*Brand substituted(en)">
+					description = <"*A different brand of the same medicine, vaccine or other therapeutic good was substituted for the one nominated in the order.(en)">
+				>
+				["at0037"] = <
+					text = <"*Number of times dispensed(en)">
+					description = <"*The number of times this order has been dispensed. The sum of this number minus one and the remaining repeats provides the number of repeats on the original order.(en)">
+				>
+				["at0038"] = <
+					text = <"*Claim category(en)">
+					description = <"*The category of reimbursement or subsidy sought for the item.(en)">
+				>
+				["at0039"] = <
+					text = <"*Change dose or timing(en)">
+					description = <"*A new instruction with changed dose or timing has been created that replaces this one.(en)">
+				>
+				["at0040"] = <
+					text = <"*Expiry date(en)">
+					description = <"*The expiry date of the medicine administered as documented by the manufacturer.(en)">
+				>
+				["at0041"] = <
+					text = <"*Medication order modified(en)">
+					description = <"*The medication order has been changed in a manner which does not require a new instruction/order to be issued, according to local clinical rules.(en)">
+				>
+				["at0042"] = <
+					text = <"*Recommend medication(en)">
+					description = <"*The medication has been recommended, generally from one clinician to another, where the latter has the responsibility to order/authorise the medication.(en)">
+				>
 			>
 		>
 	>
@@ -940,6 +1328,22 @@ ontology
 			>
 		>
 		["ru"] = <
+			items = <
+				["ac0001"] = <
+					text = <"*Medication name(en)">
+					description = <"*Any valid term for a medicine or other therapeutic agent.(en)">
+				>
+			>
+		>
+		["ar-sy"] = <
+			items = <
+				["ac0001"] = <
+					text = <"*Medication name(en)">
+					description = <"*Any valid term for a medicine or other therapeutic agent.(en)">
+				>
+			>
+		>
+		["es-ar"] = <
 			items = <
 				["ac0001"] = <
 					text = <"*Medication name(en)">
