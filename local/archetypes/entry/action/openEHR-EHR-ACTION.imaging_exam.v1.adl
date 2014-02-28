@@ -1,0 +1,309 @@
+﻿archetype (adl_version=1.4)
+	openEHR-EHR-ACTION.imaging_exam.v1
+
+concept
+	[at0000]	-- Imaging examination
+language
+	original_language = <[ISO_639-1::en]>
+description
+	original_author = <
+		["name"] = <"Sam Heard">
+		["organisation"] = <"Ocean Informatics">
+		["email"] = <"sam.heard@oceaninformatics.com">
+		["date"] = <"2006-04-10">
+	>
+	details = <
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To record activity regarding the performance of imaging examinations.">
+			use = <"Use to record activity regarding the performance of imaging examinations.">
+			keywords = <"Radiology", "Ultrasound", "MRI", "CT", "scan", "tomography">
+			misuse = <"">
+			copyright = <"© openEHR Foundation">
+		>
+	>
+	lifecycle_state = <"CommitteeDraft">
+	other_contributors = <"Heather Leslie, Ocean Informatics, Australia", ...>
+	other_details = <
+		["references"] = <"Derived from Imaging Examination (action) , draft archetype, National eHealth Transition Authority [Internet]. NEHTA Clinical Knowledge Manager. Authored: 08 Nov 2010. Available at: http://dcm.nehta.org.au/ckm/OKM.html#showarchetype_1013.1.999 (accessed Jan 16, 2012).
+
+
+">
+		["MD5-CAM-1.0.1"] = <"D232231706137B7882AC0145E72C3751">
+	>
+
+definition
+	ACTION[at0000] matches {	-- Imaging examination
+		ism_transition matches {
+			ISM_TRANSITION[at0002] matches {	-- Examination planned
+				current_state matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {[openehr::526]}
+					}
+				}
+				careflow_step matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {[local::at0002]}		-- Examination planned
+					}
+				}
+			}
+			ISM_TRANSITION[at0003] matches {	-- Examination requested
+				current_state matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {[openehr::526]}
+					}
+				}
+				careflow_step matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {[local::at0003]}		-- Examination requested
+					}
+				}
+			}
+			ISM_TRANSITION[at0009] matches {	-- Examination postponed
+				current_state matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {[openehr::527]}
+					}
+				}
+				careflow_step matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {[local::at0009]}		-- Examination postponed
+					}
+				}
+			}
+			ISM_TRANSITION[at0011] matches {	-- Examination cancelled
+				current_state matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {[openehr::528]}
+					}
+				}
+				careflow_step matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {[local::at0011]}		-- Examination cancelled
+					}
+				}
+			}
+			ISM_TRANSITION[at0004] matches {	-- Appointment scheduled
+				current_state matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {[openehr::529]}
+					}
+				}
+				careflow_step matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {[local::at0004]}		-- Appointment scheduled
+					}
+				}
+			}
+			ISM_TRANSITION[at0005] matches {	-- Appointment rescheduled
+				current_state matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {[openehr::529]}
+					}
+				}
+				careflow_step matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {[local::at0005]}		-- Appointment rescheduled
+					}
+				}
+			}
+			ISM_TRANSITION[at0008] matches {	-- Examination performed
+				current_state matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {[openehr::245]}
+					}
+				}
+				careflow_step matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {[local::at0008]}		-- Examination performed
+					}
+				}
+			}
+			ISM_TRANSITION[at0014] matches {	-- Failed attempt
+				current_state matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {[openehr::245]}
+					}
+				}
+				careflow_step matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {[local::at0014]}		-- Failed attempt
+					}
+				}
+			}
+			ISM_TRANSITION[at0010] matches {	-- Examination suspended
+				current_state matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {[openehr::530]}
+					}
+				}
+				careflow_step matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {[local::at0010]}		-- Examination suspended
+					}
+				}
+			}
+			ISM_TRANSITION[at0012] matches {	-- Examination aborted
+				current_state matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {[openehr::531]}
+					}
+				}
+				careflow_step matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {[local::at0012]}		-- Examination aborted
+					}
+				}
+			}
+			ISM_TRANSITION[at0007] matches {	-- Examination complete
+				current_state matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {[openehr::532]}
+					}
+				}
+				careflow_step matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {[local::at0007]}		-- Examination complete
+					}
+				}
+			}
+		}
+		description matches {
+			ITEM_TREE[at0001] matches {	-- Tree
+				items cardinality matches {0..*; unordered} matches {
+					ELEMENT[at0017] occurrences matches {0..1} matches {	-- Examination name
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0018] occurrences matches {0..1} matches {	-- Description
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0019] occurrences matches {0..1} matches {	-- Reason
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					allow_archetype CLUSTER[at0022] occurrences matches {0..*} matches {	-- Anatomical location
+						include
+							archetype_id/value matches {/openEHR-EHR-CLUSTER\.anatomical_location(-[a-zA-Z0-9_]+)*\.v1/}
+					}
+					allow_archetype CLUSTER[at0021] occurrences matches {0..*} matches {	-- Examination detail
+						include
+							archetype_id/value matches {/.*/}
+					}
+					ELEMENT[at0020] occurrences matches {0..1} matches {	-- Comment
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+				}
+			}
+		}
+		protocol matches {
+			ITEM_TREE[at0015] matches {	-- Tree
+				items cardinality matches {0..*; unordered} matches {
+					ELEMENT[at0016] occurrences matches {0..1} matches {	-- Start date/time
+						value matches {
+							DV_DATE_TIME matches {*}
+						}
+					}
+				}
+			}
+		}
+	}
+
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"Imaging examination">
+					description = <"Clinical activity about performing an imaging examination.">
+				>
+				["at0001"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Examination planned">
+					description = <"Imaging examination is planned.">
+				>
+				["at0003"] = <
+					text = <"Examination requested">
+					description = <"Imaging examination has been requested.">
+				>
+				["at0004"] = <
+					text = <"Appointment scheduled">
+					description = <"Imaging examination appointment has been made.">
+				>
+				["at0005"] = <
+					text = <"Appointment rescheduled">
+					description = <"Appointment for imaging examination has been rescheduled.">
+				>
+				["at0007"] = <
+					text = <"Examination complete">
+					description = <"The imaging examination has been performed and all associated activities completed.">
+				>
+				["at0008"] = <
+					text = <"Examination performed">
+					description = <"The examation was performed but related activities not completed.">
+				>
+				["at0009"] = <
+					text = <"Examination postponed">
+					description = <"The examination has been postponed.">
+				>
+				["at0010"] = <
+					text = <"Examination suspended">
+					description = <"The examination has been suspended.">
+				>
+				["at0011"] = <
+					text = <"Examination cancelled">
+					description = <"The planned examination has been cancelled prior to commencement.">
+				>
+				["at0012"] = <
+					text = <"Examination aborted">
+					description = <"The examination has been aborted.">
+				>
+				["at0014"] = <
+					text = <"Failed attempt">
+					description = <"The examation was commenced but not completed successfully.">
+				>
+				["at0015"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0016"] = <
+					text = <"Start date/time">
+					description = <"The start date and/or time for the procedure. This will indicate the scheduled date/time when recorded against the 'Appointment scheduled' care pathway step or the actual Start date/time in the 'Examination performed' step.">
+				>
+				["at0017"] = <
+					text = <"Examination name">
+					description = <"The name of the examination (to be) performed. Coding of the specific procedure with a terminology is preferred, where possible.">
+				>
+				["at0018"] = <
+					text = <"Description">
+					description = <"Narrative description about the activity or care pathway step for the identified examination, for example description about the performance and findings from the the examination, the failed attempt or the cancellation of the examination.">
+				>
+				["at0019"] = <
+					text = <"Reason">
+					description = <"Reason that the activity or care pathway step for the identified examination was carried out, for example, the reason for the cancellation or suspension of the examination.">
+				>
+				["at0020"] = <
+					text = <"Comment">
+					description = <"Additional narrative about the activity or care pathway step not captured in other fields.">
+				>
+				["at0021"] = <
+					text = <"Examination detail">
+					description = <"Structured information about the examination. Use to capture detailed, structured information about method & technique etc.">
+				>
+				["at0022"] = <
+					text = <"Anatomical location">
+					description = <"Structured information about the specific anatomical location of the examination.">
+				>
+			>
+		>
+	>
