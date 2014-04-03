@@ -1,0 +1,243 @@
+﻿archetype (adl_version=1.4)
+	openEHR-EHR-EVALUATION.immunisation_summary.v1
+
+concept
+	[at0000]	-- Immunisation Summary
+language
+	original_language = <[ISO_639-1::en]>
+description
+	original_author = <
+		["name"] = <"Heather Leslie">
+		["organisation"] = <"Ocean Informatics">
+		["email"] = <"heather.leslie@oceaninformatics.com">
+		["date"] = <"2012-11-23">
+	>
+	details = <
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To record summary statements about the current immunisation status for an identified infectious disease or agent.">
+			use = <"Use to record summary statements about the current immunisation status for an identified infectious disease or agent.">
+			keywords = <"immunisation", "immunization", "vaccination", "vaccine", "infectious", "disease">
+			misuse = <"">
+			copyright = <"© National E-Health Transition Authority">
+		>
+	>
+	lifecycle_state = <"CommitteeDraft">
+	other_contributors = <"Merrilyn Curtis, AnalyzeIT, Australia", "Sistine Barretto-Daniels, Ocean Informatics, Australia", "Sam Heard, Ocean Informatics, Australia">
+	other_details = <
+		["current_contact"] = <"Heather Leslie, Ocean Informatics, heather.leslie@oceaninformatics.com">
+		["MD5-CAM-1.0.1"] = <"64FEAEA1D873693618041BAE7C3A057E">
+	>
+
+definition
+	EVALUATION[at0000] matches {	-- Immunisation Summary
+		data matches {
+			ITEM_TREE[at0001] matches {	-- Tree
+				items cardinality matches {1..*; unordered} matches {
+					ELEMENT[at0019] occurrences matches {0..1} matches {	-- Overall Vaccination Status
+						value matches {
+							DV_CODED_TEXT matches {
+								defining_code matches {
+									[local::
+									at0021, 	-- No Vaccinations Required
+									at0022, 	-- Vaccinations Required
+									at0023]	-- All Vaccinations Declined
+								}
+							}
+						}
+					}
+					ELEMENT[at0025] occurrences matches {0..1} matches {	-- Description
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					CLUSTER[at0016] occurrences matches {0..*} matches {	-- Specific Vaccine
+						items cardinality matches {1..*; unordered} matches {
+							ELEMENT[at0002] occurrences matches {1..*} matches {	-- Infectious Disease or Agent
+								value matches {
+									DV_TEXT matches {*}
+								}
+							}
+							ELEMENT[at0010] occurrences matches {0..1} matches {	-- Vaccination Status
+								value matches {
+									DV_CODED_TEXT matches {
+										defining_code matches {
+											[local::
+											at0011, 	-- Vaccination Not Required
+											at0012, 	-- Vaccination Required
+											at0017, 	-- Vaccination Not Indicated
+											at0018]	-- Vaccination Declined
+										}
+									}
+								}
+							}
+							ELEMENT[at0003] occurrences matches {0..1} matches {	-- Primary Course Status
+								value matches {
+									DV_CODED_TEXT matches {
+										defining_code matches {
+											[local::
+											at0004, 	-- Not commenced
+											at0005, 	-- Incomplete
+											at0006, 	-- Complete
+											at0007]	-- Indeterminate
+										}
+									}
+								}
+							}
+							ELEMENT[at0008] occurrences matches {0..1} matches {	-- Date Primary Course Completed
+								value matches {
+									DV_DATE_TIME matches {*}
+								}
+							}
+							ELEMENT[at0009] occurrences matches {0..1} matches {	-- Date of Last Booster
+								value matches {
+									DV_DATE_TIME matches {*}
+								}
+							}
+							ELEMENT[at0020] occurrences matches {0..1} matches {	-- Next Due
+								value matches {
+									DV_DATE_TIME matches {*}
+								}
+							}
+							ELEMENT[at0024] occurrences matches {0..1} matches {	-- Comment
+								value matches {
+									DV_TEXT matches {*}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		protocol matches {
+			ITEM_TREE[at0013] matches {	-- Tree
+				items cardinality matches {0..*; unordered} matches {
+					ELEMENT[at0014] occurrences matches {0..1} matches {	-- Next Review Due
+						value matches {
+							DV_DATE_TIME matches {*}
+						}
+					}
+					ELEMENT[at0015] occurrences matches {0..1} matches {	-- Last Updated
+						value matches {
+							DV_DATE_TIME matches {*}
+						}
+					}
+				}
+			}
+		}
+	}
+
+
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"Immunisation Summary">
+					description = <"Summary statements about the current immunisation status for an identified infectious disease or agent.">
+				>
+				["at0001"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Infectious Disease or Agent">
+					description = <"Identification of the infectious disease or agent.">
+					comment = <"There may be multiple diseases or agents that are vaccinated together - for example: diptheria, tetanus and pertussis or measles, mumps and rubella.">
+				>
+				["at0003"] = <
+					text = <"Primary Course Status">
+					description = <"Status of the primary course of immunisation.">
+				>
+				["at0004"] = <
+					text = <"Not commenced">
+					description = <"The primary course has not yet commenced.">
+				>
+				["at0005"] = <
+					text = <"Incomplete">
+					description = <"The primary course was not completed.">
+				>
+				["at0006"] = <
+					text = <"Complete">
+					description = <"The primary course was completed.">
+				>
+				["at0007"] = <
+					text = <"Indeterminate">
+					description = <"It is not known if the primary course was completed.">
+				>
+				["at0008"] = <
+					text = <"Date Primary Course Completed">
+					description = <"The date, or partial date, when the primary course of vaccination was completed.">
+				>
+				["at0009"] = <
+					text = <"Date of Last Booster">
+					description = <"The date, or partial date, when the last vaccination booster was administered.">
+				>
+				["at0010"] = <
+					text = <"Vaccination Status">
+					description = <"The vaccination status for the specific infectious disease or agent.">
+				>
+				["at0011"] = <
+					text = <"Vaccination Not Required">
+					description = <"Vaccination is not required.">
+				>
+				["at0012"] = <
+					text = <"Vaccination Required">
+					description = <"Vaccination is required.">
+				>
+				["at0013"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0014"] = <
+					text = <"Next Review Due">
+					description = <"The date when a review of the immunisation summary is next due.">
+				>
+				["at0015"] = <
+					text = <"Last Updated">
+					description = <"The date when the immunisation summary was last updated.">
+				>
+				["at0016"] = <
+					text = <"Specific Vaccine">
+					description = <"Details about the vaccination status for a specified vaccine.">
+				>
+				["at0017"] = <
+					text = <"Vaccination Not Indicated">
+					description = <"Vaccination is not indicated.">
+				>
+				["at0018"] = <
+					text = <"Vaccination Declined">
+					description = <"Vaccination for this infectious disease or agent has been declined by the subject or carer.">
+				>
+				["at0019"] = <
+					text = <"Overall Vaccination Status">
+					description = <"Statement about the status for all vaccines.">
+				>
+				["at0020"] = <
+					text = <"Next Due">
+					description = <"Date when the next vaccination is due.">
+				>
+				["at0021"] = <
+					text = <"No Vaccinations Required">
+					description = <"No vaccinations have been identified that require administration.">
+				>
+				["at0022"] = <
+					text = <"Vaccinations Required">
+					description = <"Vaccinations have been identified that need to be administered.">
+				>
+				["at0023"] = <
+					text = <"All Vaccinations Declined">
+					description = <"The subject, or carer, has declined all vaccination administration.">
+				>
+				["at0024"] = <
+					text = <"Comment">
+					description = <"Additional narrative about a specific vaccine that is not captured in structured fields.">
+				>
+				["at0025"] = <
+					text = <"Description">
+					description = <"Narrative description about the vaccination status.">
+				>
+			>
+		>
+	>

@@ -1,0 +1,218 @@
+﻿archetype (adl_version=1.4)
+	openEHR-EHR-CLUSTER.chemical_description.v1
+
+concept
+	[at0000]	-- Chemical description of medication
+language
+	original_language = <[ISO_639-1::en]>
+description
+	original_author = <
+		["name"] = <"Sam Heard">
+		["organisation"] = <"NEHTA">
+		["email"] = <"sam.heard@oceaninformatics.com">
+		["date"] = <"12/11/2010">
+	>
+	details = <
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To describe the form of the medication or chemical as well as the active or therapeutic and other ingredients. This is available as a cluster for use in settlings where the record of a medication or other chemical is required.">
+			use = <"Use to add detail to a medication order and in conjunction with Medication_amount for quantity.">
+			keywords = <"composition", "generic", "ingredient", "medication", "chemical">
+			misuse = <"">
+		>
+	>
+	lifecycle_state = <"CommitteeDraft">
+	other_contributors = <>
+	other_details = <
+		["MD5-CAM-1.0.1"] = <"E38CAC9EB3FB1DB84AB2453DB34ACD50">
+	>
+
+definition
+	CLUSTER[at0000] matches {	-- Chemical description of medication
+		items cardinality matches {1..*; unordered} matches {
+			CLUSTER[at0001] occurrences matches {0..1} matches {	-- Active ingredient
+				items cardinality matches {1..*; unordered} matches {
+					ELEMENT[at0002] matches {	-- Name
+						value matches {
+							DV_CODED_TEXT matches {
+								defining_code matches {[ac0001]}		-- Substance
+							}
+						}
+					}
+					ELEMENT[at0003] occurrences matches {0..1} matches {	-- Compound
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0004] occurrences matches {0..1} matches {	-- Strength
+						value matches {
+							C_DV_QUANTITY <
+							>
+						}
+					}
+					ELEMENT[at0005] occurrences matches {0..1} matches {	-- Role
+						value matches {
+							DV_CODED_TEXT matches {
+								defining_code matches {
+									[local::
+									at0006, 	-- Therapeutic
+									at0007, 	-- Toxic
+									at0008, 	-- Adjuvant
+									at0009]	-- Other
+								}
+							}
+						}
+					}
+				}
+			}
+			ELEMENT[at0010] occurrences matches {0..1} matches {	-- Form
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			CLUSTER[at0011] occurrences matches {0..*} matches {	-- Inactive ingredient
+				items cardinality matches {1..*; unordered} matches {
+					ELEMENT[at0012] matches {	-- Name
+						value matches {
+							DV_CODED_TEXT matches {
+								defining_code matches {[ac0002]}		-- Substance
+							}
+						}
+					}
+					ELEMENT[at0013] occurrences matches {0..1} matches {	-- Compound
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0014] occurrences matches {0..1} matches {	-- Strength
+						value matches {
+							C_DV_QUANTITY <
+							>
+						}
+					}
+					ELEMENT[at0015] occurrences matches {0..*} matches {	-- Role
+						value matches {
+							DV_CODED_TEXT matches {
+								defining_code matches {
+									[local::
+									at0016, 	-- Additive
+									at0017, 	-- Dilutant
+									at0018, 	-- Propellent
+									at0019, 	-- Preservative
+									at0020]	-- Colouring
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"Chemical description of medication">
+					description = <"The actual ingredients with strength and overall form of a chemical or medication.">
+				>
+				["at0001"] = <
+					text = <"Active ingredient">
+					description = <"Information about an ingredient that is active.">
+				>
+				["at0002"] = <
+					text = <"Name">
+					description = <"The name of the chemical or medication.">
+				>
+				["at0003"] = <
+					text = <"Compound">
+					description = <"The detailed chemical name of the compound that is an active ingredient.">
+				>
+				["at0004"] = <
+					text = <"Strength">
+					description = <"The amount or concentration of this ingredient.">
+				>
+				["at0005"] = <
+					text = <"Role">
+					description = <"The role of the ingredient. If not stated it will be assumed to be therapeutic.">
+				>
+				["at0006"] = <
+					text = <"Therapeutic">
+					description = <"The chemical has a known and desired effect which is positive.">
+				>
+				["at0007"] = <
+					text = <"Toxic">
+					description = <"This chemical is toxic and has no therapeutic effect.">
+				>
+				["at0008"] = <
+					text = <"Adjuvant">
+					description = <"The chemical is active but aids the therapeutic effect of another ingredient.">
+				>
+				["at0009"] = <
+					text = <"Other">
+					description = <"The chemical has another active role.">
+				>
+				["at0010"] = <
+					text = <"Form">
+					description = <"The formulation or presentation of the overall substance.">
+				>
+				["at0011"] = <
+					text = <"Inactive ingredient">
+					description = <"Ingredients in the substance that are not active.">
+				>
+				["at0012"] = <
+					text = <"Name">
+					description = <"The name of the inactive substance.">
+				>
+				["at0013"] = <
+					text = <"Compound">
+					description = <"The detailed chemical name of the compound which is an inactive ingredient.">
+				>
+				["at0014"] = <
+					text = <"Strength">
+					description = <"The amount or concentration of this ingredient.">
+				>
+				["at0015"] = <
+					text = <"Role">
+					description = <"The role of the ingredient.">
+				>
+				["at0016"] = <
+					text = <"Additive">
+					description = <"Inert additive.">
+				>
+				["at0017"] = <
+					text = <"Dilutant">
+					description = <"Inert dilutant.">
+				>
+				["at0018"] = <
+					text = <"Propellent">
+					description = <"Inert propellent.">
+				>
+				["at0019"] = <
+					text = <"Preservative">
+					description = <"The ingredient is present to prolong the life of the substance.">
+				>
+				["at0020"] = <
+					text = <"Colouring">
+					description = <"The ingredient is used to colour the substance.">
+				>
+			>
+		>
+	>
+	constraint_definitions = <
+		["en"] = <
+			items = <
+				["ac0001"] = <
+					text = <"Substance">
+					description = <"The name of the chemical substance which is an active ingredient.">
+				>
+				["ac0002"] = <
+					text = <"Substance">
+					description = <"The name of the chemical substance which is an active ingredient.">
+				>
+			>
+		>
+	>

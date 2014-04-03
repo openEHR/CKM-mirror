@@ -1,0 +1,308 @@
+﻿archetype (adl_version=1.4)
+	openEHR-EHR-OBSERVATION.fluid_input.v1
+
+concept
+	[at0000]	-- Fluid Input
+language
+	original_language = <[ISO_639-1::en]>
+	translations = <
+		["sl"] = <
+			language = <[ISO_639-1::sl]>
+			author = <
+				["name"] = <"?">
+			>
+		>
+	>
+description
+	original_author = <
+		["name"] = <"Dr Ian McNicoll">
+		["organisation"] = <"Ocean Informatics, United Kingdom">
+		["email"] = <"ian.mcnicoll@oceaninformatics.com">
+		["date"] = <"2009-11-11">
+	>
+	details = <
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To record details of fluid input, often used as part of fluid balance estimation.">
+			use = <"Use to record details of fluid input as part of routine nursing care.
+
+Use to record details of individual fluid input activities, in order to allow fluid balance estimations. For example: \"Oral\", \"Cup of Tea\", 220ml; or 1 litre Normal Saline infusion.
+
+May also be used to record descriptive assessments of fluid input.
+
+A fluid balance chart will typically require a combination of OBSERVATION.fluid_output, OBSERVATION.fluid_balance and this archetype to capture all the required components.">
+			keywords = <"fluid", "io", "input", "balance">
+			misuse = <"Not to be used as a primary record of the fluid administration such as intravascular therapy or haemodialyisis.
+
+Not to be used to record fluid output. Use OBSERVATION.fluid_output for this purpose.
+
+Not to be used to record fluid balance calculations. Use OBSERVATION.fluid_balance for this purpose.">
+			copyright = <"© National E-Health Transition Authority">
+		>
+		["sl"] = <
+			language = <[ISO_639-1::sl]>
+			purpose = <"*To record details of fluid input, often used as part of fluid balance estimation.(en)">
+			use = <"*Use to record details of fluid input as part of routine nursing care.
+
+Use to record details of individual fluid input activities, in order to allow fluid balance estimations. For example: \"Oral\", \"Cup of Tea\", 220ml; or 1 litre Normal Saline infusion.
+
+May also be used to record descriptive assessments of input.
+
+(en)">
+			keywords = <"*fluid(en)", "*fluid balance(en)", "*input output(en)", "*io(en)", "*input(en)">
+			misuse = <"*Do not use as a primary record of the administration of fluids e.g intravascular, dialyisis. May be used alongside administration recrods ,normally an ACTION.(en)">
+			copyright = <"© National E-Health Transition Authority">
+		>
+	>
+	lifecycle_state = <"AuthorDraft">
+	other_contributors = <"Sam Heard, Ocean Informatics, Australia", "Heather Leslie, Ocean Informatics, Australia">
+	other_details = <
+		["current_contact"] = <"Heather Leslie, Ocean Informatics, heather.leslie@oceaninformatics.com">
+		["MD5-CAM-1.0.1"] = <"A5C8CEE87902DE504CA80CEB87EFE328">
+	>
+
+definition
+	OBSERVATION[at0000] matches {	-- Fluid Input
+		data matches {
+			HISTORY[at0001] matches {	-- Event Series
+				events cardinality matches {1..*; unordered} matches {
+					POINT_EVENT[at0002] occurrences matches {0..*} matches {	-- Measurement Time
+						data matches {
+							ITEM_TREE[at0003] matches {	-- List
+								items cardinality matches {1..*; unordered} matches {
+									ELEMENT[at0034] occurrences matches {0..1} matches {	-- Route
+										value matches {
+											DV_TEXT matches {*}
+										}
+									}
+									ELEMENT[at0036] occurrences matches {0..1} matches {	-- Fluid
+										value matches {
+											DV_TEXT matches {*}
+										}
+									}
+									ELEMENT[at0035] occurrences matches {0..1} matches {	-- Volume
+										value matches {
+											C_DV_QUANTITY <
+												property = <[openehr::129]>
+												list = <
+													["1"] = <
+														units = <"ml">
+														magnitude = <|>=0.0|>
+														precision = <|0|>
+													>
+													["2"] = <
+														units = <"l">
+														magnitude = <|>=0.0|>
+														precision = <|2|>
+													>
+													["3"] = <
+														units = <"cc">
+														magnitude = <|>=0.0|>
+														precision = <|1|>
+													>
+													["4"] = <
+														units = <"fl oz">
+													>
+												>
+											>
+										}
+									}
+									ELEMENT[at0032] occurrences matches {0..1} matches {	-- Comment
+										value matches {
+											DV_TEXT matches {*}
+										}
+									}
+								}
+							}
+						}
+					}
+					INTERVAL_EVENT[at0038] occurrences matches {0..*} matches {	-- Measurement Interval
+						math_function matches {
+							DV_CODED_TEXT matches {
+								defining_code matches {[openehr::640]}
+							}
+						}
+						data matches {
+							use_node ITEM_TREE /data[at0001]/events[at0002]/data[at0003]	-- /data[Event Series]/events[Measurement Time]/data[List]
+						}
+					}
+				}
+			}
+		}
+		protocol matches {
+			ITEM_TREE[at0008] matches {	-- List
+				items cardinality matches {0..*; unordered} matches {
+					ELEMENT[at0031] occurrences matches {0..1} matches {	-- Measurement Precision
+						value matches {
+							DV_CODED_TEXT matches {
+								defining_code matches {
+									[local::
+									at0018, 	-- Estimated
+									at0019, 	-- Measured
+									at0020]	-- Stated
+								}
+							}
+						}
+					}
+					allow_archetype CLUSTER[at0033] occurrences matches {0..1} matches {	-- Input Device
+						include
+							archetype_id/value matches {/openEHR-EHR-CLUSTER\.device(-[a-zA-Z0-9_]+)*\.v1/}
+						exclude
+							archetype_id/value matches {/.*/}
+					}
+					allow_archetype CLUSTER[at0028] occurrences matches {0..1} matches {	-- Measurement Device
+						include
+							archetype_id/value matches {/openEHR-EHR-CLUSTER\.device(-[a-zA-Z0-9_]+)*\.v1/}
+						exclude
+							archetype_id/value matches {/.*/}
+					}
+				}
+			}
+		}
+	}
+
+
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"Fluid Input">
+					description = <"Record of fluid being ingested by, or administered to, the subject.">
+				>
+				["at0001"] = <
+					text = <"Event Series">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Measurement Time">
+					description = <"The measurement, or estimation, of the volume of a specified fluid input at a specified point-in-time.">
+				>
+				["at0003"] = <
+					text = <"List">
+					description = <"@ internal @">
+				>
+				["at0008"] = <
+					text = <"List">
+					description = <"@ internal @">
+				>
+				["at0018"] = <
+					text = <"Estimated">
+					description = <"The fluid volume has been estimated.">
+				>
+				["at0019"] = <
+					text = <"Measured">
+					description = <"The fluid volume has been directly measured.">
+				>
+				["at0020"] = <
+					text = <"Stated">
+					description = <"The fluid input has been stated.">
+				>
+				["at0028"] = <
+					text = <"Measurement Device">
+					description = <"Details of device used to measure the fluid input.">
+				>
+				["at0031"] = <
+					text = <"Measurement Precision">
+					description = <"Records the level of precision of the fluid input observation.">
+				>
+				["at0032"] = <
+					text = <"Comment">
+					description = <"Additional narrative about the fluid input not captured in other fields.">
+				>
+				["at0033"] = <
+					text = <"Input Device">
+					description = <"The input device, for example a nasogastric tube or a jejunal catheter.">
+				>
+				["at0034"] = <
+					text = <"Route">
+					description = <"The delivery route of the fluid.">
+					comment = <"For example: nasogastric tube; oral; intravenous or intraosseous.">
+				>
+				["at0035"] = <
+					text = <"Volume">
+					description = <"The volume of fluid ingested or administered.">
+				>
+				["at0036"] = <
+					text = <"Fluid">
+					description = <"Identification of the fluid ingested or administered.">
+					comment = <"For example: Normal Saline; cup of tea; or parenteral nutrition.">
+				>
+				["at0038"] = <
+					text = <"Measurement Interval">
+					description = <"The measurement, or estimation, of the volume of a specified fluid input during a specified interval of time.">
+				>
+			>
+		>
+		["sl"] = <
+			items = <
+				["at0000"] = <
+					text = <"*Fluid Input(en)">
+					description = <"*Record of fluid being ingested by, or administered to, the subject.(en)">
+				>
+				["at0001"] = <
+					text = <"*Event Series(en)">
+					description = <"*@ internal @(en)">
+				>
+				["at0002"] = <
+					text = <"*Measurement Time(en)">
+					description = <"*The measurement, or estimation, of the volume of a specified fluid input at a specified point-in-time.(en)">
+				>
+				["at0003"] = <
+					text = <"*List(en)">
+					description = <"*@ internal @(en)">
+				>
+				["at0008"] = <
+					text = <"*List(en)">
+					description = <"*@ internal @(en)">
+				>
+				["at0018"] = <
+					text = <"*Estimated(en)">
+					description = <"*The fluid volume has been estimated.(en)">
+				>
+				["at0019"] = <
+					text = <"*Measured(en)">
+					description = <"*The fluid volume has been directly measured.(en)">
+				>
+				["at0020"] = <
+					text = <"*Stated(en)">
+					description = <"*The fluid input has been stated.(en)">
+				>
+				["at0028"] = <
+					text = <"*Measurement Device(en)">
+					description = <"*Details of device used to measure the fluid input.(en)">
+				>
+				["at0031"] = <
+					text = <"*Measurement Precision(en)">
+					description = <"*Records the level of precision of the fluid input observation.(en)">
+				>
+				["at0032"] = <
+					text = <"*Comment(en)">
+					description = <"*Additional narrative about the fluid input not captured in other fields.(en)">
+				>
+				["at0033"] = <
+					text = <"*Input Device(en)">
+					description = <"*The input device, for example a nasogastric tube or a jejunal catheter.(en)">
+				>
+				["at0034"] = <
+					text = <"*Route(en)">
+					description = <"*The delivery route of the fluid.(en)">
+					comment = <"*For example: nasogastric tube; oral; intravenous or intraosseous.(en)">
+				>
+				["at0035"] = <
+					text = <"*Volume(en)">
+					description = <"*The volume of fluid ingested or administered.(en)">
+				>
+				["at0036"] = <
+					text = <"*Fluid(en)">
+					description = <"*Identification of the fluid ingested or administered.(en)">
+					comment = <"*For example: Normal Saline; cup of tea; or parenteral nutrition.(en)">
+				>
+				["at0038"] = <
+					text = <"*Measurement Interval(en)">
+					description = <"*The measurement, or estimation, of the volume of a specified fluid input during a specified interval of time.(en)">
+				>
+			>
+		>
+	>

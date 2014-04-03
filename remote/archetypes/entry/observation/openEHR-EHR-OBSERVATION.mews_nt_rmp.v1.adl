@@ -1,0 +1,230 @@
+﻿archetype (adl_version=1.4)
+	openEHR-EHR-OBSERVATION.mews_nt_rmp.v1
+
+concept
+	[at0000]	-- Modified Early Warning Score (NT RMP)
+language
+	original_language = <[ISO_639-1::en]>
+description
+	original_author = <
+		["name"] = <"Heather Leslie">
+		["organisation"] = <"Ocean Informatics">
+		["email"] = <"heather.leslie@oceaninformatics.com">
+		["date"] = <"2013-02-07">
+	>
+	details = <
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To record provide a composite score based on categorising physiological readings and observations, as a simple method to support objective assessment of the degree of illness in an unwell patient over the age of 14 years.">
+			use = <"Use to record a composite score to support assessmennt of the degree of illness in an unwell patient, over the age of 14 years. A score >5 has been correlated to an increased risk of death, HDU admission and ICU admission.
+
+MEWS is based on data derived from four physiological readings (systolic blood pressure, heart rate, respiratory rate, body temperature) and one observation (level of consciousness) which are compared to normal ranges. The score for each parameter is added to generate a single composite score.
+
+From the NT Remote Health Atlas: 
+\"Response: 
+- Score < 3: DMO continues management as appropriate. 
+- Score 3 – 5: ED consultant should be notified if DMO has any concerns. 
+- Score > 5: ED consultant must be notified immediately. ED consultant should consider speaking directly to referrer. Plan evacuation with Retrieval MO escort, Priority 1 or 2.\"
+
+Different MEWS are in use in different jurisdictions in Australia and in other parts of the world. This version of MEWS is mandated for use by the Remote Medical Practitioner On-Call service in the Northern Territory, Australia to support remote clincians to determine the degree of illness in a unseen patient and the need for emergency retrieval.">
+			keywords = <"MEWS", "warning", "AVPU", "RR", "HR", "BP", "Temp", "SBP", "triage">
+			misuse = <"Not to be used to record each physical measurement or clinical observation. Use specific OBSERVATION archetypes for this purpose - OBSERVATION.blood_pressure, OBSERVATION.heart_rate, OBSERVATION.respirations, OBSERVATION.body_temperature, OBSERVATION.avpu and OBSERVATION.glasgow_coma.
+
+Not to be used for children/teens under the age of 14 years.">
+			copyright = <"© National E-Health Transition Authority">
+		>
+	>
+	lifecycle_state = <"CommitteeDraft">
+	other_contributors = <"Stephen Chu, NEHTA, Australia", "Sam Heard, Ocean Informatics, Australia (Editor)", "Oliver Hosking, Remote Health NT, Australia", "Heather Leslie, Ocean Informatics, Australia (Editor)", "Ian McNicoll, Ocean Informatics UK, United Kingdom", "Gary Sinclair, NT DoH, Australia">
+	other_details = <
+		["current_contact"] = <"Heather Leslie, Ocean Informatics, heather.leslie@oceaninformatics.com">
+		["references"] = <"Remote Health Atlas: Appendix to Retrieval Algorithm for patients outside Alice Springs Hospital (MEWS Score) [PDF]. Northern Territory Government, Department of Health & Families; February 2009. Available from: http://remotehealthatlas.nt.gov.au/appendix_mews.pdf.
+
+Remote Health Atlas: Retrieval Flowchart - Primary and Interfacility [PDF]. Northern Territory Government, Department of Health & Families; October 2008. Available from: http://remotehealthatlas.nt.gov.au/retrieval_flowchart_primary_&_interfacility.pdf.">
+		["MD5-CAM-1.0.1"] = <"147F36161ECAA04D206099D71452B396">
+	>
+
+definition
+	OBSERVATION[at0000] matches {	-- Modified Early Warning Score (NT RMP)
+		data matches {
+			HISTORY[at0001] matches {	-- Event Series
+				events cardinality matches {1..*; unordered} matches {
+					POINT_EVENT[at0002] occurrences matches {0..1} matches {	-- Point in time
+						data matches {
+							ITEM_TREE[at0003] matches {	-- Tree
+								items cardinality matches {0..*; unordered} matches {
+									ELEMENT[at0004] occurrences matches {0..1} matches {	-- Systolic Blood Pressure
+										value matches {
+											0|[local::at0014], 	-- 101-199
+											1|[local::at0015], 	-- 81-100
+											2|[local::at0016], 	-- 71-80 or >199
+											3|[local::at0017]  	-- <71
+										}
+									}
+									ELEMENT[at0005] occurrences matches {0..1} matches {	-- Heart Rate
+										value matches {
+											0|[local::at0013], 	-- 51-100
+											1|[local::at0012], 	-- 41-50 or 101-110
+											2|[local::at0011], 	-- <41 or 111-129
+											3|[local::at0010]  	-- >129
+										}
+									}
+									ELEMENT[at0006] occurrences matches {0..1} matches {	-- Respiratory Rate
+										value matches {
+											0|[local::at0018], 	-- 9-14
+											1|[local::at0019], 	-- 15-20
+											2|[local::at0020], 	-- <9 or 21-29
+											3|[local::at0021]  	-- >29
+										}
+									}
+									ELEMENT[at0007] occurrences matches {0..1} matches {	-- Temperature
+										value matches {
+											0|[local::at0022], 	-- 35-38.4
+											2|[local::at0023]  	-- <35 or >38.4
+										}
+									}
+									ELEMENT[at0008] occurrences matches {0..1} matches {	-- AVPU
+										value matches {
+											0|[local::at0024], 	-- A
+											1|[local::at0025], 	-- V
+											2|[local::at0026], 	-- P
+											3|[local::at0027]  	-- U
+										}
+									}
+									ELEMENT[at0028] occurrences matches {0..1} matches {	-- Total Score
+										value matches {
+											DV_COUNT matches {
+												magnitude matches {|0..13|}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"Modified Early Warning Score (NT RMP)">
+					description = <"A simple score used to provide an objective indication of the degree of illness of a patient. This version is used by the Remote Medical Practitioner On-Call service in the Northern Territory, Australia.">
+				>
+				["at0001"] = <
+					text = <"Event Series">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Point in time">
+					description = <"A specific date and/or time which may be explicitly defined in a template or at run-time.">
+				>
+				["at0003"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0004"] = <
+					text = <"Systolic Blood Pressure">
+					description = <"Range category for the systolic blood pressure (SBP) measurement of a patient.">
+				>
+				["at0005"] = <
+					text = <"Heart Rate">
+					description = <"Range category for the heart rate (HR) measurement of a patient.">
+				>
+				["at0006"] = <
+					text = <"Respiratory Rate">
+					description = <"Range category for the respiratory rate (RR) measurement of a patient.">
+				>
+				["at0007"] = <
+					text = <"Temperature">
+					description = <"Range category for the body temperature (Temp) measurement of a patient.">
+				>
+				["at0008"] = <
+					text = <"AVPU">
+					description = <"Observed category for the AVPU scale rating of a patient's conscious state.">
+				>
+				["at0010"] = <
+					text = <">129">
+					description = <"The heart rate measurement is greater than 129 beats/min; scored as 3 points.">
+				>
+				["at0011"] = <
+					text = <"<41 or 111-129">
+					description = <"The heart rate measurement is less than 41 beats/min or between 111 and 129 beats/min; scored as 2 points.">
+				>
+				["at0012"] = <
+					text = <"41-50 or 101-110">
+					description = <"The heart rate measurement is between 41 and 50 beats/min or between 101 and 110 beats/min; scored as 1 point.">
+				>
+				["at0013"] = <
+					text = <"51-100">
+					description = <"The heart rate measurement is between 51 and 100 beats/min; scored as 0 points.">
+				>
+				["at0014"] = <
+					text = <"101-199">
+					description = <"The systolic blood pressure measurement is between 101 and 199 mmHg; scored as 0 points.">
+				>
+				["at0015"] = <
+					text = <"81-100">
+					description = <"The systolic blood pressure measurement is between 81 and 100 mmHg; scored as 1 point.">
+				>
+				["at0016"] = <
+					text = <"71-80 or >199">
+					description = <"The systolic blood pressure measurement is between 71 and 80 mmHg or greater than 199 mmHg; scored as 2 points.">
+				>
+				["at0017"] = <
+					text = <"<71">
+					description = <"The systolic blood pressure measurement is less than 71 mmHg; scored as 3 points.">
+				>
+				["at0018"] = <
+					text = <"9-14">
+					description = <"The respiratory rate measurement is between 9 and 14 breaths/min; scored as 0 points.">
+				>
+				["at0019"] = <
+					text = <"15-20">
+					description = <"The respiratory rate measurement is between 15 and 20 breaths/min; scored as 1 point.">
+				>
+				["at0020"] = <
+					text = <"<9 or 21-29">
+					description = <"The respiratory rate measurement is less than 9 breaths/min or between 21 and 29 breaths/min; scored as 2 points.">
+				>
+				["at0021"] = <
+					text = <">29">
+					description = <"The respiratory rate measurement is greater than 29 breaths/min; scored as 3 points.">
+				>
+				["at0022"] = <
+					text = <"35-38.4">
+					description = <"The body temperature measurement is between 35 and 38.4 degrees Celsius; scored as 0 points.">
+				>
+				["at0023"] = <
+					text = <"<35 or >38.4">
+					description = <"The body temperature measurement is less than 35 degrees Celsius or greater than 38.4 degrees Celsius; scored as 2 points.">
+				>
+				["at0024"] = <
+					text = <"A">
+					description = <"The patient is alert or awake; scored as 0 points.">
+				>
+				["at0025"] = <
+					text = <"V">
+					description = <"The patient responds to verbal stimulus; scored as 1 point.">
+				>
+				["at0026"] = <
+					text = <"P">
+					description = <"The patient responds to painful stimulus; scored as 2 points.">
+				>
+				["at0027"] = <
+					text = <"U">
+					description = <"The patient is unconscious and not responding to stimulation; scored as 3 points.">
+				>
+				["at0028"] = <
+					text = <"Total Score">
+					description = <"The composite total score of each MEWS parameter category.">
+				>
+			>
+		>
+	>

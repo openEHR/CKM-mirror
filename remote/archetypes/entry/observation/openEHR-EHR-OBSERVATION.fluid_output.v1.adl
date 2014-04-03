@@ -1,0 +1,305 @@
+﻿archetype (adl_version=1.4)
+	openEHR-EHR-OBSERVATION.fluid_output.v1
+
+concept
+	[at0000]	-- Fluid Output
+language
+	original_language = <[ISO_639-1::en]>
+	translations = <
+		["sl"] = <
+			language = <[ISO_639-1::sl]>
+			author = <
+				["name"] = <"?">
+			>
+		>
+	>
+description
+	original_author = <
+		["name"] = <"Dr Ian McNicoll">
+		["organisation"] = <"Ocean Informatics, United Kingdom">
+		["email"] = <"ian.mcnicoll@oceaninformatics.com">
+		["date"] = <"2009-11-11">
+	>
+	details = <
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To record any fluid output measurements or estimations from a subject, often used as part of fluid balance estimation.">
+			use = <"Use to record details of individual fluid output measurements or estimations as part of routine nursing care, often as part of fluid balance estimations. For example: \"Urine\", \"150ml\"; or \"Aspiration\", \"50 ml\".
+
+This archetype is designed to record the output from one source, for example one drain or cathether or from vomitus. If there is a multiple sources, such as in a fluid balance chart, then each source will need to be recorded using a separate archetype occurrence within the Fluid Balance Chart template.
+
+A fluid balance chart will typically require a combination of this archetype, OBSERVATION.fluid_output, plus the OBSERVATION.fluid_input and OBSERVATION.fluid_balance archetypes to capture all the required components.">
+			keywords = <"fluid", "io", "balance", "output">
+			misuse = <"Not to be used to record fluid input. Use OBSERVATION.fluid_input for this purpose.
+
+Not to be used to record fluid balance calculations. Use OBSERVATION.fluid_balance for this purpose.">
+			copyright = <"© National E-Health Transition Authority">
+		>
+		["sl"] = <
+			language = <[ISO_639-1::sl]>
+			purpose = <"*To record details of fluid input, often used as part of fluid balance estimation.(en)">
+			use = <"*Use to record details of fluid input as part of routine nursing care.
+
+Use to record details of individual fluid input activities, in order to allow fluid balance estimations. For example: \"Oral\", \"Cup of Tea\", 220ml; or 1 litre Normal Saline infusion.
+
+May also be used to record descriptive assessments of input.
+
+(en)">
+			keywords = <"*fluid(en)", "*fluid balance(en)", "*input output(en)", "*io(en)", "*input(en)">
+			misuse = <"*Do not use as a primary record of the administration of fluids e.g intravascular, dialyisis. May be used alongside administration recrods ,normally an ACTION.(en)">
+			copyright = <"© National E-Health Transition Authority">
+		>
+	>
+	lifecycle_state = <"AuthorDraft">
+	other_contributors = <"Stephen Chu, NEHTA, Australia", "Christian Ghan, The Chris O'Brien Lifehouse at RPA, Australia", "Sam Heard, Ocean Informatics, Australia (Editor)", "Oliver Hosking, Remote Health NT, Australia", "Heather Leslie, Ocean Informatics, Australia (Editor)", "Ian McNicoll, Ocean Informatics UK, United Kingdom", "Fabian Schwarz, NT Health, Australia", "Gary Sinclair, NT DoH, Australia">
+	other_details = <
+		["current_contact"] = <"Heather Leslie, Ocean Informatics, heather.leslie@oceaninformatics.com">
+		["MD5-CAM-1.0.1"] = <"895BC90CB1F2E4867B255BC8D554DFA1">
+	>
+
+definition
+	OBSERVATION[at0000] matches {	-- Fluid Output
+		data matches {
+			HISTORY[at0001] matches {	-- Event Series
+				events cardinality matches {1..*; unordered} matches {
+					POINT_EVENT[at0002] occurrences matches {0..*} matches {	-- Measurement Time
+						data matches {
+							ITEM_TREE[at0003] matches {	-- List
+								items cardinality matches {1..*; unordered} matches {
+									ELEMENT[at0036] occurrences matches {0..1} matches {	-- Fluid
+										value matches {
+											DV_TEXT matches {*}
+										}
+									}
+									ELEMENT[at0035] occurrences matches {0..1} matches {	-- Volume
+										value matches {
+											C_DV_QUANTITY <
+												property = <[openehr::129]>
+												list = <
+													["1"] = <
+														units = <"ml">
+														magnitude = <|>=0.0|>
+														precision = <|1|>
+													>
+													["2"] = <
+														units = <"l">
+														magnitude = <|>=0.0|>
+														precision = <|2|>
+													>
+													["3"] = <
+														units = <"cc">
+														magnitude = <|>=0.0|>
+														precision = <|1|>
+													>
+													["4"] = <
+														units = <"fl oz">
+													>
+												>
+											>
+										}
+									}
+									allow_archetype CLUSTER[at0038] occurrences matches {0..*} matches {	-- Fluid Details
+										include
+											archetype_id/value matches {/.*/}
+									}
+									ELEMENT[at0032] occurrences matches {0..1} matches {	-- Comment
+										value matches {
+											DV_TEXT matches {*}
+										}
+									}
+								}
+							}
+						}
+					}
+					INTERVAL_EVENT[at0039] occurrences matches {0..*} matches {	-- Measurement Interval
+						math_function matches {
+							DV_CODED_TEXT matches {
+								defining_code matches {[openehr::640]}
+							}
+						}
+						data matches {
+							use_node ITEM_TREE /data[at0001]/events[at0002]/data[at0003]	-- /data[Event Series]/events[Measurement Time]/data[List]
+						}
+					}
+				}
+			}
+		}
+		protocol matches {
+			ITEM_TREE[at0008] matches {	-- List
+				items cardinality matches {0..*; unordered} matches {
+					ELEMENT[at0031] occurrences matches {0..1} matches {	-- Measurement Precision
+						value matches {
+							DV_CODED_TEXT matches {
+								defining_code matches {
+									[local::
+									at0018, 	-- Estimated
+									at0019, 	-- Measured
+									at0020]	-- Reported
+								}
+							}
+						}
+					}
+					allow_archetype CLUSTER[at0033] occurrences matches {0..1} matches {	-- Output Device
+						include
+							archetype_id/value matches {/openEHR-EHR-CLUSTER\.device(-[a-zA-Z0-9_]+)*\.v1/}
+						exclude
+							archetype_id/value matches {/.*/}
+					}
+					allow_archetype CLUSTER[at0028] occurrences matches {0..1} matches {	-- Measurement Device
+						include
+							archetype_id/value matches {/openEHR-EHR-CLUSTER\.device(-[a-zA-Z0-9_]+)*\.v1/}
+						exclude
+							archetype_id/value matches {/.*/}
+					}
+				}
+			}
+		}
+	}
+
+
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"Fluid Output">
+					description = <"Record of any fluid output by the subject.">
+				>
+				["at0001"] = <
+					text = <"Event Series">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Measurement Time">
+					description = <"The measurement, or estimation, of the volume of a specified fluid output at a specified point-in-time.">
+				>
+				["at0003"] = <
+					text = <"List">
+					description = <"@ internal @">
+				>
+				["at0008"] = <
+					text = <"List">
+					description = <"@ internal @">
+				>
+				["at0018"] = <
+					text = <"Estimated">
+					description = <"The fluid volume has been estimated.">
+				>
+				["at0019"] = <
+					text = <"Measured">
+					description = <"The fluid volume has been directly measured.">
+				>
+				["at0020"] = <
+					text = <"Reported">
+					description = <"The fluid volume has been reported by a third party.">
+				>
+				["at0028"] = <
+					text = <"Measurement Device">
+					description = <"Details of device used to measure the fluid output.">
+				>
+				["at0031"] = <
+					text = <"Measurement Precision">
+					description = <"Records the level of precision of the fluid output observation.">
+				>
+				["at0032"] = <
+					text = <"Comment">
+					description = <"Additional narrative about the fluid output not captured in other fields.">
+				>
+				["at0033"] = <
+					text = <"Output Device">
+					description = <"Details of the device from which the fluid output was observed.">
+					comment = <"For example: a urinary catheter or a drain tube.">
+				>
+				["at0035"] = <
+					text = <"Volume">
+					description = <"The volume of fluid output.">
+				>
+				["at0036"] = <
+					text = <"Fluid">
+					description = <"Identification of the fluid type or source.">
+					comment = <"For example: urine; vomit or drain tube fluids. In a clinical application, if the same type of fluid is being observed from two or more sources such as multiple drains from the same wound, the fluid source may be described as “Drain 1” and “Drain 2”.">
+				>
+				["at0038"] = <
+					text = <"Fluid Details">
+					description = <"Details about the fluid output.">
+					comment = <"For example: further details about the urine, such as description of the color and presence of sediment.">
+				>
+				["at0039"] = <
+					text = <"Measurement Interval">
+					description = <"The measurement, or estimation, of the volume of a specified fluid output during a specified interval of time. For example: the amount of urine output over the last 4 hours.">
+				>
+			>
+		>
+		["sl"] = <
+			items = <
+				["at0000"] = <
+					text = <"*Fluid Output(en)">
+					description = <"*Record of any fluid output by the subject.(en)">
+				>
+				["at0001"] = <
+					text = <"*Event Series(en)">
+					description = <"*@ internal @(en)">
+				>
+				["at0002"] = <
+					text = <"*Measurement Time(en)">
+					description = <"*The measurement, or estimation, of the volume of a specified fluid output at a specified point-in-time.(en)">
+				>
+				["at0003"] = <
+					text = <"*List(en)">
+					description = <"*@ internal @(en)">
+				>
+				["at0008"] = <
+					text = <"*List(en)">
+					description = <"*@ internal @(en)">
+				>
+				["at0018"] = <
+					text = <"*Estimated(en)">
+					description = <"*The fluid volume has been estimated.(en)">
+				>
+				["at0019"] = <
+					text = <"*Measured(en)">
+					description = <"*The fluid volume has been directly measured.(en)">
+				>
+				["at0020"] = <
+					text = <"*Stated(en)">
+					description = <"*The fluid output has been stated.(en)">
+				>
+				["at0028"] = <
+					text = <"*Measurement Device(en)">
+					description = <"*Details of device used to measure the fluid output.(en)">
+				>
+				["at0031"] = <
+					text = <"*Measurement Precision(en)">
+					description = <"*Records the level of precision of the fluid output observation.(en)">
+				>
+				["at0032"] = <
+					text = <"*Comment(en)">
+					description = <"*Additional narrative about the fluid output not captured in other fields.(en)">
+				>
+				["at0033"] = <
+					text = <"*Output Device(en)">
+					description = <"*Details of the device from which the fluid output was observed.(en)">
+					comment = <"*For example: a urinary catheter or a drain tube.(en)">
+				>
+				["at0035"] = <
+					text = <"*Volume(en)">
+					description = <"*The volume of fluid output.(en)">
+				>
+				["at0036"] = <
+					text = <"*Fluid(en)">
+					description = <"*Identification of the fluid type or source.(en)">
+					comment = <"*For example: urine; vomit or drain tube fluids. In a clinical application, if the same type of fluid is being observed from two or more sources such as multiple drains from the same wound, the fluid source may be described as “Drain 1” and “Drain 2”.(en)">
+				>
+				["at0038"] = <
+					text = <"*Fluid Details(en)">
+					description = <"*Details about the fluid output.(en)">
+					comment = <"*For example: further details about the urine, such as description of the color and presence of sediment.(en)">
+				>
+				["at0039"] = <
+					text = <"*Measurement Interval(en)">
+					description = <"*The measurement, or estimation, of the volume of a specified fluid output during a specified interval of time. For example: the amount of urine output over the last 4 hours.(en)">
+				>
+			>
+		>
+	>

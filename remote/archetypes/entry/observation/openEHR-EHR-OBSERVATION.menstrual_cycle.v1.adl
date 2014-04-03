@@ -1,0 +1,326 @@
+﻿archetype (adl_version=1.4)
+	openEHR-EHR-OBSERVATION.menstrual_cycle.v1
+
+concept
+	[at0000]	-- Menstrual cycle
+language
+	original_language = <[ISO_639-1::en]>
+description
+	original_author = <
+		["name"] = <"Heather Leslie">
+		["organisation"] = <"Ocean Informatics">
+		["email"] = <"heather.leslie@oceaninformatics.com">
+		["date"] = <"9/03/2011">
+	>
+	details = <
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To record details about the menstrual cycle, including the menses and associated symptoms.">
+			use = <"Use to record details about a single menstrual cycle - using the 'Specific cycle' event.
+
+Use to record details about the typical, or average, menstrual pattern over multiple cycles - using the 'Multiple cycles' event.
+
+Use some of the elements to record details about menstrual bleeding and associated symptoms on a single day eg as part of a menstrual diary - using the 'Specific day in a cycle' event.">
+			keywords = <"menstruation", "menses", "cycle", "menstrual">
+			misuse = <"">
+			copyright = <"© 2011 NEHTA">
+		>
+	>
+	lifecycle_state = <"CommitteeDraft">
+	other_contributors = <"Sam Heard, Ocean Informatics, Australia", ...>
+	other_details = <
+		["MD5-CAM-1.0.1"] = <"B7786879AA9DC4660960E6877E4D4B54">
+	>
+
+definition
+	OBSERVATION[at0000] matches {	-- Menstrual cycle
+		data matches {
+			HISTORY[at0001] matches {	-- Event Series
+				events cardinality matches {1..*; unordered} matches {
+					EVENT[at0002] occurrences matches {0..1} matches {	-- Any event
+						data matches {
+							ITEM_TREE[at0003] matches {	-- Tree
+								items cardinality matches {0..*; unordered} matches {
+									ELEMENT[at0011] occurrences matches {0..1} matches {	-- Length of cycle
+										value matches {
+											DV_DURATION matches {
+												value matches {PWD/|>=P0D|}
+											}
+										}
+									}
+									ELEMENT[at0013] occurrences matches {0..1} matches {	-- Description of cycle
+										value matches {
+											DV_TEXT matches {*}
+										}
+									}
+									ELEMENT[at0004] occurrences matches {0..1} matches {	-- Start of menses
+										value matches {
+											DV_DATE_TIME matches {*}
+										}
+									}
+									ELEMENT[at0005] occurrences matches {0..1} matches {	-- End of menses
+										value matches {
+											DV_DATE_TIME matches {*}
+										}
+									}
+									ELEMENT[at0010] occurrences matches {0..1} matches {	-- Duration of menses
+										value matches {
+											DV_DURATION matches {
+												value matches {PWD/|>=P0D|}
+											}
+										}
+									}
+									ELEMENT[at0014] occurrences matches {0..1} matches {	-- Description of menses
+										value matches {
+											DV_TEXT matches {*}
+										}
+									}
+									ELEMENT[at0018] occurrences matches {0..1} matches {	-- Qualitative description of menses
+										value matches {
+											DV_CODED_TEXT matches {
+												defining_code matches {
+													[local::
+													at0016, 	-- Very heavy flow
+													at0017, 	-- Heavy flow
+													at0019, 	-- Normal, or typical, flow
+													at0020, 	-- Light flow
+													at0021]	-- Spotting only
+												}
+											}
+										}
+									}
+									ELEMENT[at0022] occurrences matches {0..1} matches {	-- Blood clots
+										value matches {
+											DV_BOOLEAN matches {
+												value matches {True, False}
+											}
+										}
+									}
+									ELEMENT[at0023] occurrences matches {0..1} matches {	-- Flooding
+										value matches {
+											DV_BOOLEAN matches {
+												value matches {True, False}
+											}
+										}
+									}
+									CLUSTER[at0024] occurrences matches {0..*} matches {	-- Sanitary products use
+										items cardinality matches {1..*; unordered} matches {
+											ELEMENT[at0025] occurrences matches {0..1} matches {	-- Type of product
+												value matches {
+													DV_CODED_TEXT matches {
+														defining_code matches {
+															[local::
+															at0028, 	-- Sanitary napkins - 'super'
+															at0029, 	-- Sanitary napkins - 'normal'
+															at0030, 	-- Sanitary napkin - 'mini'
+															at0031, 	-- Tampon - 'super'
+															at0032, 	-- Tampon - 'normal'
+															at0033]	-- Cloth pad or towel
+														}
+													}
+												}
+											}
+											ELEMENT[at0026] occurrences matches {0..1} matches {	-- Daily quantity
+												value matches {
+													C_DV_QUANTITY <
+														property = <[openehr::382]>
+														list = <
+															["1"] = <
+																units = <"/d">
+																magnitude = <|>=0.0|>
+															>
+														>
+													>
+												}
+											}
+										}
+									}
+									allow_archetype CLUSTER[at0007] occurrences matches {0..*} matches {	-- Associated symptoms
+										include
+											archetype_id/value matches {/openEHR-EHR-CLUSTER\.symptom(-[a-zA-Z0-9_]+)*\.v1/}
+									}
+								}
+							}
+						}
+						state matches {
+							ITEM_TREE[at0008] matches {	-- Tree
+								items cardinality matches {0..*; unordered} matches {
+									ELEMENT[at0009] occurrences matches {0..1} matches {	-- Contraception use
+										value matches {
+											DV_TEXT matches {*}
+										}
+									}
+								}
+							}
+						}
+					}
+					POINT_EVENT[at0006] occurrences matches {0..1} matches {	-- Specific day in a cycle
+						data matches {
+							use_node ITEM_TREE /data[at0001]/events[at0002]/data[at0003]	-- /data[Event Series]/events[Any event]/data[Tree]
+						}
+						state matches {
+							use_node ITEM_TREE /data[at0001]/events[at0002]/state[at0008]	-- /data[Event Series]/events[Any event]/state[Tree]
+						}
+					}
+					INTERVAL_EVENT[at0015] occurrences matches {0..1} matches {	-- Specific cycle
+						data matches {
+							use_node ITEM_TREE /data[at0001]/events[at0002]/data[at0003]	-- /data[Event Series]/events[Any event]/data[Tree]
+						}
+						state matches {
+							use_node ITEM_TREE /data[at0001]/events[at0002]/state[at0008]	-- /data[Event Series]/events[Any event]/state[Tree]
+						}
+					}
+					INTERVAL_EVENT[at0027] occurrences matches {0..1} matches {	-- Multiple cycles
+						data matches {
+							use_node ITEM_TREE /data[at0001]/events[at0002]/data[at0003]	-- /data[Event Series]/events[Any event]/data[Tree]
+						}
+						state matches {
+							use_node ITEM_TREE /data[at0001]/events[at0002]/state[at0008]	-- /data[Event Series]/events[Any event]/state[Tree]
+						}
+					}
+				}
+			}
+		}
+	}
+
+
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"Menstrual cycle">
+					description = <"Record information about a menstural cyclea single day within a menstrual cycle.">
+				>
+				["at0001"] = <
+					text = <"Event Series">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Any event">
+					description = <"Any event.">
+				>
+				["at0003"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0004"] = <
+					text = <"Start of menses">
+					description = <"Onset of menstrual bleeding in a single cycle.">
+				>
+				["at0005"] = <
+					text = <"End of menses">
+					description = <"End date of menstrual bleeding in a single cycle.">
+				>
+				["at0006"] = <
+					text = <"Specific day in a cycle">
+					description = <"Details of menstrual bleeding/symptoms on a specific day, eg in a menstrual diary.">
+				>
+				["at0007"] = <
+					text = <"Associated symptoms">
+					description = <"Details about symptoms related to menses. For example, menstrual cramps or headaches.">
+				>
+				["at0008"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0009"] = <
+					text = <"Contraception use">
+					description = <"Identify concurrent hormone or intrauterine contraception use. Coding with a terminology is preferred, where possible.">
+				>
+				["at0010"] = <
+					text = <"Duration of menses">
+					description = <"Duration of menstrual bleeding in a single cycle or typical duration over many cycles.">
+				>
+				["at0011"] = <
+					text = <"Length of cycle">
+					description = <"Length of single menstrual cycle or typical length over many cycles.">
+				>
+				["at0013"] = <
+					text = <"Description of cycle">
+					description = <"Narrative description of the menstrual cycle as a whole.">
+				>
+				["at0014"] = <
+					text = <"Description of menses">
+					description = <"Narrative description of the menstrual bleeding.">
+				>
+				["at0015"] = <
+					text = <"Specific cycle">
+					description = <"Details of a specific cycle.">
+				>
+				["at0016"] = <
+					text = <"Very heavy flow">
+					description = <"Very heavy menstrual flow, often causing additional problems such as flooding and clotting.">
+				>
+				["at0017"] = <
+					text = <"Heavy flow">
+					description = <"Heavy menstrual flow.">
+				>
+				["at0018"] = <
+					text = <"Qualitative description of menses">
+					description = <"Qualitative description of amount of menstrual flow.">
+				>
+				["at0019"] = <
+					text = <"Normal, or typical, flow">
+					description = <"Normal menstrual flow.">
+				>
+				["at0020"] = <
+					text = <"Light flow">
+					description = <"Light menstrual flow.">
+				>
+				["at0021"] = <
+					text = <"Spotting only">
+					description = <"Menstrual spotting only.">
+				>
+				["at0022"] = <
+					text = <"Blood clots">
+					description = <"Presence of blood clots in the menstrual flow.">
+				>
+				["at0023"] = <
+					text = <"Flooding">
+					description = <"Presence of heavy menstrual flow that exceeded capacity of sanitary napkins and other menstrual products to absorb the menstrual flow.">
+				>
+				["at0024"] = <
+					text = <"Sanitary products use">
+					description = <"Sanitary products used.">
+				>
+				["at0025"] = <
+					text = <"Type of product">
+					description = <"Type of sanitary product used.">
+				>
+				["at0026"] = <
+					text = <"Daily quantity">
+					description = <"Number of products needed per day to absorb menstrual flow.">
+				>
+				["at0027"] = <
+					text = <"Multiple cycles">
+					description = <"Details of typical menstrual pattern over multiple cycles.">
+				>
+				["at0028"] = <
+					text = <"Sanitary napkins - 'super'">
+					description = <"Use of napkin suited for heavy menstrual flow.">
+				>
+				["at0029"] = <
+					text = <"Sanitary napkins - 'normal'">
+					description = <"Use of a napkin suited for 'normal' menstrual flow.">
+				>
+				["at0030"] = <
+					text = <"Sanitary napkin - 'mini'">
+					description = <"Use of a napkin suited to very light menstrual flow or spotting.">
+				>
+				["at0031"] = <
+					text = <"Tampon - 'super'">
+					description = <"Use of tampon suited for heavy menstrual flow.">
+				>
+				["at0032"] = <
+					text = <"Tampon - 'normal'">
+					description = <"Use of tampon suited for 'normal' menstrual flow.">
+				>
+				["at0033"] = <
+					text = <"Cloth pad or towel">
+					description = <"Use of a cloth pad or towel.">
+				>
+			>
+		>
+	>

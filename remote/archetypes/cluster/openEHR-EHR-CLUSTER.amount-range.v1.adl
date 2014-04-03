@@ -1,0 +1,119 @@
+﻿archetype (adl_version=1.4)
+	openEHR-EHR-CLUSTER.amount-range.v1
+specialise
+	openEHR-EHR-CLUSTER.amount.v1
+
+concept
+	[at0000.1]	-- Amount of medication as a range
+language
+	original_language = <[ISO_639-1::en]>
+description
+	original_author = <
+		["name"] = <"Sam Heard">
+		["organisation"] = <"NEHTA">
+		["email"] = <"sam.heard@oceaninformatics.com">
+		["date"] = <"10/11/2010">
+	>
+	details = <
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To describe the amount of a substance as a range for use in Medication INSTRUCTION. Allows structured statement such as take 1 - 2 tablets (every four hours as required).">
+			use = <"In INSTRUCTION medication for the range of amount to be administered.">
+			keywords = <"amount", "dose", "dosing", "range", "maximum dose", "minimum dose">
+			misuse = <"Should only be used in an order, not administration or dispensing.">
+			copyright = <"© 2011 NEHTA">
+		>
+	>
+	lifecycle_state = <"CommitteeDraft">
+	other_contributors = <>
+	other_details = <
+		["MD5-CAM-1.0.1"] = <"3C03A992EFAF31DC357A46EB81FB525A">
+	>
+
+definition
+	CLUSTER[at0000.1] matches {	-- Amount of medication as a range
+		items cardinality matches {2..*; unordered} matches {
+			ELEMENT[at0001.1] matches {	-- Upper quantity
+				value matches {
+					DV_COUNT matches {
+						magnitude matches {|>=1|}
+					}
+					DV_PROPORTION matches {
+						numerator matches {|>=0.0|}
+						denominator matches {|>0.0|}
+					}
+				}
+			}
+			ELEMENT[at0.3] matches {	-- Lower quantity
+				value matches {
+					DV_COUNT matches {
+						magnitude matches {|>=1|}
+					}
+					DV_PROPORTION matches {
+						numerator matches {|>=0.0|}
+						denominator matches {|>0.0|}
+					}
+				}
+			}
+			ELEMENT[at0002] occurrences matches {0..1} matches {	-- Dose unit
+				value matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {[ac0001]}		-- Dose Unit
+					}
+				}
+			}
+			ELEMENT[at0003] occurrences matches {0..1} matches {	-- Quantity description
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+		}
+	}
+
+
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0.3"] = <
+					text = <"Lower quantity">
+					description = <"The lower range of amount.">
+				>
+				["at0000"] = <
+					text = <"The amount of substance">
+					description = <"The amount of a substance for medication order, administration, dispensing etc.">
+				>
+				["at0000.1"] = <
+					text = <"Amount of medication as a range">
+					description = <"The amount of a substance as a range (upper and lower) for medication order, administration, dispensing etc.">
+				>
+				["at0001"] = <
+					text = <"Quantity">
+					description = <"The upper range of quantity, number or proportion.">
+				>
+				["at0001.1"] = <
+					text = <"Upper quantity">
+					description = <"The upper range of quantity, number or proportion.">
+				>
+				["at0002"] = <
+					text = <"Dose unit">
+					description = <"The dose unit of this amount.">
+				>
+				["at0003"] = <
+					text = <"Quantity description">
+					description = <"Free text description of the amount which may consist of the quantity and dose unit.">
+				>
+			>
+		>
+	>
+	constraint_definitions = <
+		["en"] = <
+			items = <
+				["ac0001"] = <
+					text = <"Dose Unit">
+					description = <"Tablets, Capsules, Sachets, mg, L etc.">
+				>
+			>
+		>
+	>
