@@ -1,0 +1,243 @@
+﻿archetype (adl_version=1.4)
+	openEHR-EHR-CLUSTER.diabetic_retinopathy_classification.v1
+
+concept
+	[at0000]	-- Clasificación de la retinopatía diabética
+language
+	original_language = <[ISO_639-1::es]>
+	translations = <
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			author = <
+				["name"] = <"?">
+			>
+		>
+	>
+description
+	original_author = <
+		["name"] = <"Aitor Eguzkitza">
+		["organisation"] = <"Universidad Pública de Navarra - Complejo Hospitalario de Navarra">
+		["email"] = <"aitor.eguzkiza@unavarra.es">
+		["date"] = <"2014-04-08">
+	>
+	details = <
+		["es"] = <
+			language = <[ISO_639-1::es]>
+			purpose = <"Registrar la severidad de la retinopatía diabética según la clasificación internacional dispuesta para la misma.">
+			use = <"Concretar el diagnóstico de la retinopatía diabética en circuitos de seguimiento de la misma.">
+			keywords = <"diabetic retinopathy", "diabetic macular edema", "international classification">
+			misuse = <"No utilizar para clasificar afecciones diferentes a la retinopatía diabética o el edema macular diabético.">
+			copyright = <"© openEHR Foundation">
+		>
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"Register the severity for diabetic retinopathy and diabetic macular edema according to the international scale of that disease.">
+			use = <"Specify a diagnosis within diabetic retinopathy follow up.">
+			keywords = <"retinopatía diabética", "edema macular diabético", "clasificación internacional">
+			misuse = <"Do not use to classify diseases besides diabetic retinopathy or diabetic macular edema.">
+			copyright = <"© openEHR Foundation">
+		>
+	>
+	lifecycle_state = <"AuthorDraft">
+	other_contributors = <>
+	other_details = <
+		["references"] = <"- Wilkinson C, Ferris F, Klein R, Lee P, Agardh C, Davis M, et al. Proposed international clinical diabetic retinopathy and diabetic macular edema disease severity scales. Ophthalmology. 2003;110:1677-82.
+
+- Li HK, Horton M, Bursell SE, Cavallerano J, Zimmer-Galler I, Tennant M, et al. Telehealth practice recommendations for diabetic retinopathy, second edition. Telemed J E Health. 2011;17:814-37.">
+		["MD5-CAM-1.0.1"] = <"6E07AE8C30557158BB498E896AA8E0EB">
+	>
+
+definition
+	CLUSTER[at0000] matches {	-- Diabetic retinopathy classification
+		items cardinality matches {1..*; unordered} matches {
+			ELEMENT[at0001] occurrences matches {0..1} matches {	-- DR classification
+				value matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {
+							[local::
+							at0002, 	-- No apparent DR
+							at0015, 	-- Diabetic retinopathy apparent 
+							at0003, 	-- Mild nonproliferative DR
+							at0004, 	-- Moderate nonproliferative DR
+							at0005, 	-- Severe nonproliferative DR
+							at0006, 	-- Preliminary proliferative DR
+							at0007, 	-- High-risk proliferative DR
+							at0013]	-- Not assessable
+						}
+					}
+				}
+			}
+			ELEMENT[at0008] occurrences matches {0..1} matches {	-- Macular edema classification
+				value matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {
+							[local::
+							at0009, 	-- Diabetic macular edema apparently absent
+							at0010, 	-- Mild diabetic macular edema
+							at0011, 	-- Moderate diabetic macular edema
+							at0012]	-- Severe diabetic macular edema
+						}
+					}
+				}
+			}
+			ELEMENT[at0014] occurrences matches {0..1} matches {	-- Comments
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+		}
+	}
+
+
+ontology
+	terminologies_available = <"SNOMED-CT", ...>
+	term_definitions = <
+		["es"] = <
+			items = <
+				["at0000"] = <
+					text = <"Clasificación de la retinopatía diabética">
+					description = <"Clasificación internacional de gravedad de la retinopatía diabética y edema macular diabético">
+				>
+				["at0001"] = <
+					text = <"Clasificación RD">
+					description = <"Escala internacional para la clasificación de la retinopatía diabética">
+				>
+				["at0002"] = <
+					text = <"No RD aparente">
+					description = <"Niveles 10, 14, 15 en clasificación ETRDS de retinopatía diabética; Ausencia de RD">
+				>
+				["at0003"] = <
+					text = <"RD no proliferativa leve">
+					description = <"Nivel 20 en clasificación ETRDS de retinopatía diabética; RD no proliferativa muy leve">
+				>
+				["at0004"] = <
+					text = <"RD no proliferativa moderada">
+					description = <"Niveles 35, 43, 47 en clasificación ETRDS de retinopatía diabética; RD no proliferativa moderada">
+				>
+				["at0005"] = <
+					text = <"RD no proliferativa severa">
+					description = <"Niveles 53A-E en clasificación ETRDS de retinopatía diabética; RD no proliferativa severa, RD no proliferativa muy severa">
+				>
+				["at0006"] = <
+					text = <"RD proliferativa preliminar">
+					description = <"Niveles 61,65 en clasificación ETRDS de retinopatía diabética; RD proliferativa">
+				>
+				["at0007"] = <
+					text = <"RD proliferativa de alto riesgo">
+					description = <"Niveles 71,75,81,85 en clasificación ETRDS de retinopatía diabética; RD proliferativa de alto riesgo, RD proliferativa muy severa o avanzada">
+				>
+				["at0008"] = <
+					text = <"Clasificación del edema macular">
+					description = <"Niveles de clasificación para la presencia de edema macular definidos por la escala internacional">
+				>
+				["at0009"] = <
+					text = <"Edema macular diabético aparentemente ausente">
+					description = <"Aparentemente no hay estrechamiento retiniano o exudados duros (ED) en el polo posterior">
+				>
+				["at0010"] = <
+					text = <"Edema macular diabético leve">
+					description = <"Aparentemente hay estrechamiento o exudados duros en el polo posterior, aunque distantes del centro de la mácula (Clasificación ETDRS: Edema macular diabético aunque no Edema macular clínicamente significativo)">
+				>
+				["at0011"] = <
+					text = <"Edema macular diabético moderado">
+					description = <"Hay estrechamiento de la retina o exudados duros cercanos a la mácula aunque no la afectan (Clasificación ETDRS: Edema macular clínicamente significativo )">
+				>
+				["at0012"] = <
+					text = <"Edema macular diabético severo">
+					description = <"estrechamiento de la retina o exudados duros que además afecta a la mácula (Clasificación ETDRS: edema macular clínicamente significativo)">
+				>
+				["at0013"] = <
+					text = <"No valorable">
+					description = <"Las pruebas no son evaluables por la baja calidad de las capturas o por indecisión en el diagnóstico">
+				>
+				["at0014"] = <
+					text = <"Comentarios">
+					description = <"Comentarios dirigidos a los revisores especializados en la clasificación de la RD. Se pueden incluir particularidades de la prueba o cuestiones que provocaran incertidumbre al clasificar la afección. Sirve de canal de feedback para mejorar la calidad del servicio de clasificación de la RD.">
+				>
+				["at0015"] = <
+					text = <"Retinopatía diabética aparente">
+					description = <"Nivel superior a 20 en la clasificación ETRDS">
+				>
+			>
+		>
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"Diabetic retinopathy classification">
+					description = <"International clinical disease severity scale for diabetic retinopathy and diabetic macular edema">
+				>
+				["at0001"] = <
+					text = <"DR classification">
+					description = <"International scale for the classification of diabetic retinopathy">
+				>
+				["at0002"] = <
+					text = <"No apparent DR">
+					description = <"ETDRS Levels of DR 10, 14, 15; DR absent ">
+				>
+				["at0003"] = <
+					text = <"Mild nonproliferative DR">
+					description = <"ETDRS Level of DR 20; very mild nonproliferative DR">
+				>
+				["at0004"] = <
+					text = <"Moderate nonproliferative DR">
+					description = <"ETDRS Levels of DR 35, 43, 47; moderate nonproliferative DR">
+				>
+				["at0005"] = <
+					text = <"Severe nonproliferative DR">
+					description = <"ETDRS Levels of DR 53A-E; very severe nonproliferative DR">
+				>
+				["at0006"] = <
+					text = <"Preliminary proliferative DR">
+					description = <"ETDRS Levels of DR 61,65; high-risk proliferative DR">
+				>
+				["at0007"] = <
+					text = <"High-risk proliferative DR">
+					description = <"ETDRS Levels of DR 71,75,81,85; very severe or advanced proliferative DR">
+				>
+				["at0008"] = <
+					text = <"Macular edema classification">
+					description = <"Classification levels for the presence of macular edema as defined by the international scale">
+				>
+				["at0009"] = <
+					text = <"Diabetic macular edema apparently absent">
+					description = <"No apparent retinal thickening or hard exudates (HE) in posterior pole">
+				>
+				["at0010"] = <
+					text = <"Mild diabetic macular edema">
+					description = <"Apparently some retinal thickening or hard exudates in posterior pole but distant from center of the macula. Not clinically significant macular edema">
+				>
+				["at0011"] = <
+					text = <"Moderate diabetic macular edema">
+					description = <"Apparently retinal thickening or hard exudates approaching but not involving the center of the macula. Clinically significant macular edema">
+				>
+				["at0012"] = <
+					text = <"Severe diabetic macular edema">
+					description = <"Apparently retinal thickening or hard exudates involving the center of the macula. Clinically significant macular edema">
+				>
+				["at0013"] = <
+					text = <"Not assessable">
+					description = <"The test is not assessable due to the low quality of acquisitions or uncertainty of the evaluator">
+				>
+				["at0014"] = <
+					text = <"Comments">
+					description = <"Comments directed to reviewers specialized on classifying DR. It may include test details or issues that provoke uncertainty while classifying the disease. It is useful as feedback channel  to improve the quality of the DR classification service.">
+				>
+				["at0015"] = <
+					text = <"Diabetic retinopathy apparent ">
+					description = <"ETDRS Level above 20">
+				>
+			>
+		>
+	>
+	term_bindings = <
+		["SNOMED-CT"] = <
+			items = <
+				["at0003"] = <[SNOMED-CT::312903003]>
+				["at0004"] = <[SNOMED-CT::312904009]>
+				["at0005"] = <[SNOMED-CT::312905005]>
+				["at0006"] = <[SNOMED-CT::312906006]>
+				["at0007"] = <[SNOMED-CT::399865004]>
+				["at0015"] = <[SNOMED-CT::4855003]>
+			>
+		>
+	>
