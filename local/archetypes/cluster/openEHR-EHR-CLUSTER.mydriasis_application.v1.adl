@@ -1,0 +1,235 @@
+﻿archetype (adl_version=1.4)
+	openEHR-EHR-CLUSTER.mydriasis_application.v1
+
+concept
+	[at0000]	-- Aplicación de midriasis
+language
+	original_language = <[ISO_639-1::es]>
+	translations = <
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			author = <
+				["name"] = <"?">
+			>
+		>
+	>
+description
+	original_author = <
+		["name"] = <"Aitor Eguzkitza">
+		["organisation"] = <"Universidad Pública de Navarra - Complejo Hospitalario de Navarra">
+		["email"] = <"aitor.eguzkiza@unavarra.es">
+		["date"] = <"2014-05-22">
+	>
+	details = <
+		["es"] = <
+			language = <[ISO_639-1::es]>
+			purpose = <"Registrar las características de dilatación en la pupila, si se aplica midriasis.">
+			use = <"">
+			misuse = <"">
+			copyright = <"© openEHR Foundation">
+		>
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"Register the characteristics of pupil's dilation if mydriasis is applied.">
+			use = <"*(es)">
+			keywords = <"Mydriasis", ...>
+			misuse = <"*(es)">
+			copyright = <"© openEHR Foundation">
+		>
+	>
+	lifecycle_state = <"AuthorDraft">
+	other_contributors = <>
+	other_details = <
+		["MD5-CAM-1.0.1"] = <"489D59842CF7F0DDDFF1DD139B02F2AB">
+	>
+
+definition
+	CLUSTER[at0000] matches {	-- Aplicación de midriasis
+		items cardinality matches {1..*; unordered} matches {
+			ELEMENT[at0008] occurrences matches {0..1} matches {	-- Dilatación de pupila
+				value matches {
+					DV_BOOLEAN matches {
+						value matches {True, False}
+					}
+				}
+			}
+			ELEMENT[at0014] occurrences matches {0..1} matches {	-- Grado de dilatación 
+				value matches {
+					C_DV_QUANTITY <
+						property = <[openehr::122]>
+						list = <
+							["1"] = <
+								units = <"mm">
+								magnitude = <|0.0..3.0|>
+								precision = <|1|>
+							>
+						>
+						assumed_value = <
+							magnitude = <0.0>
+							units = <"mm">
+							precision = <1>
+						>
+					>
+				}
+			}
+			ELEMENT[at0003] occurrences matches {0..1} matches {	-- Método adminsitración
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			ELEMENT[at0001] occurrences matches {0..1} matches {	-- Agente midriático
+				value matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {
+							[local::
+							at0009, 	-- *Atropine(es)
+							at0010, 	-- *Homatropine(es)
+							at0011, 	-- *Cyclopentolate(es)
+							at0012, 	-- *Cyclopentolate(es)
+							at0013; 	-- *Tropicamide(es)
+							at0013]	-- assumed value
+						}
+					}
+				}
+			}
+			allow_archetype CLUSTER[at0002] occurrences matches {0..1} matches {	-- Cantidad
+				include
+					archetype_id/value matches {/openEHR-EHR-CLUSTER\.medication_amount(-[a-zA-Z0-9_]+)*\.v1/}
+				exclude
+					archetype_id/value matches {/.*/}
+			}
+			ELEMENT[at0004] occurrences matches {0..1} matches {	-- Comentarios
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+		}
+	}
+
+
+ontology
+	terminologies_available = <"SNOMED-CT", ...>
+	term_definitions = <
+		["es"] = <
+			items = <
+				["at0000"] = <
+					text = <"Aplicación de midriasis">
+					description = <"Define las características del procedimiento midriático cuando se lleva a cabo sobre un paciente.">
+				>
+				["at0001"] = <
+					text = <"Agente midriático">
+					description = <"Nombre químico del compuesto empleado para llevar a cabo la midriasis.">
+					comment = <"Coincide con el atributo DICOM (0022,0058). Los valores permitidos están definidos por el estándar DICOM (PS 3.16) dentro de la tabla con el ID de contexto o CID 4208 (Mydriatic agent).">
+				>
+				["at0002"] = <
+					text = <"Cantidad">
+					description = <"La cantidad del fármaco utilizado durante la midriasis.">
+				>
+				["at0003"] = <
+					text = <"Método adminsitración">
+					description = <"Especifica el método por el cual se aplica el fármaco midriático (p.ej. vía nebulizador o gotas).">
+				>
+				["at0004"] = <
+					text = <"Comentarios">
+					description = <"Descripción de otros aspectos de interés para el procedimiento midriático.">
+				>
+				["at0008"] = <
+					text = <"Dilatación de pupila">
+					description = <"Identifica si las pupilas del paciente fueron farmacológicamente dilatadas para llevar a cabo la adquisición. ">
+					comment = <"Coincide con el atributo DICOM (0022,000D).">
+				>
+				["at0009"] = <
+					text = <"*Atropine(es)">
+					description = <"**(es)">
+				>
+				["at0010"] = <
+					text = <"*Homatropine(es)">
+					description = <"**(es)">
+				>
+				["at0011"] = <
+					text = <"*Cyclopentolate(es)">
+					description = <"**(es)">
+				>
+				["at0012"] = <
+					text = <"*Cyclopentolate(es)">
+					description = <"**(es)">
+				>
+				["at0013"] = <
+					text = <"*Tropicamide(es)">
+					description = <"**(es)">
+				>
+				["at0014"] = <
+					text = <"Grado de dilatación ">
+					description = <"El grado de la dilatación en mm.">
+					comment = <"Coincide con el atributo DICOM (0022,000E).">
+				>
+			>
+		>
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"Mydriasis application">
+					description = <"Defines the characteristics of mydriasis procedure when carried out on a patient.">
+				>
+				["at0001"] = <
+					text = <"Mydriatic agent">
+					description = <"Chemical name of the compound used to apply midriasis.">
+					comment = <"Matches to DICOM (0022,0058) attribute. Values permitted are defined by DICOM standard (PS 3.16) inside the table with Context ID  4208 (Mydriatic agent)">
+				>
+				["at0002"] = <
+					text = <"Quantity">
+					description = <"The quantity of drug used during the mydriasis.">
+				>
+				["at0003"] = <
+					text = <"Mydriatic delivery method">
+					description = <"The method of delivery if this should be specified (e.g. via a nebuliser or drops).">
+				>
+				["at0004"] = <
+					text = <"Comments">
+					description = <"Other comments of interest about mydriasis procedure.">
+				>
+				["at0008"] = <
+					text = <"Pupil dilated">
+					description = <"Whether or not the patient’s pupils were pharmacologically dilated for the current acquisition.">
+					comment = <"Matches to DICOM (0022,000D) attribute.">
+				>
+				["at0009"] = <
+					text = <"Atropine">
+					description = <"*">
+				>
+				["at0010"] = <
+					text = <"Homatropine">
+					description = <"*">
+				>
+				["at0011"] = <
+					text = <"Cyclopentolate">
+					description = <"*">
+				>
+				["at0012"] = <
+					text = <"Phenylephrine">
+					description = <"*">
+				>
+				["at0013"] = <
+					text = <"Tropicamide">
+					description = <"*">
+				>
+				["at0014"] = <
+					text = <"Degree of dilation">
+					description = <"The degree of the dilation in mm.">
+					comment = <"Matches to DICOM (0022,000E) attribute.">
+				>
+			>
+		>
+	>
+	term_bindings = <
+		["SNOMED-CT"] = <
+			items = <
+				["at0001"] = <[SNOMED-CT::33682005]>
+				["at0009"] = <[SNOMED-CT::349947003]>
+				["at0010"] = <[SNOMED-CT::430036003]>
+				["at0011"] = <[SNOMED-CT::8348002]>
+				["at0012"] = <[SNOMED-CT::386693003]>
+				["at0013"] = <[SNOMED-CT::9190005]>
+			>
+		>
+	>
