@@ -16,13 +16,15 @@ description
 		["en"] = <
 			language = <[ISO_639-1::en]>
 			purpose = <"openEHR:
+To record additional information that will support and inform a clinical assessment of the propensity of an individual to experience an adverse reaction if exposed to a specific substance, class of substance or agent in the future,and clinical recommendations arising from this assessment.
+
 To record information about any harmful, desirable or unexpected reaction to a substance or agent, including:
 - immune mediated reactions Types I-IV (including true allergic reactions and hypersensitivities), and 
-- non-immune mediated reactions (including pseudoallergic reactions, side effects, intolerances, drug toxicities (eg Gentamicin), drug-drug interactions, food-drug interactions, drug-disease interactions and idiosyncratic reactions).
+- non-immune mediated reactions (including pseudoallergic reactions, side effects, intolerances, drug toxicities (e.g. Gentamicin), drug-drug interactions, food-drug interactions, drug-disease interactions and idiosyncratic reactions).
 
 To record information about previous exposures to a substance, allowing a persisting and evolving summary of adverse reaction events to build up over time.
 
-To record additional information that will support and inform a clinical assessment of the propensity of an individual to experience an adverse reaction if exposed to a specific substance, class of substance or agent in the future.
+
 
 FHIR: 
 Allergy/Intolerance resources are used to provide information about adverse sensitivities to substances that lead to physiologic changes that are clinically observable. An adverse sensitivity is defined as:
@@ -41,7 +43,7 @@ Use to provide a single place within the health record to record a range of clin
 
 This archetype has been designed to allow recording of information about a more generic substance, class of substance or agent, and then allow more specific details to be recorded including identification of the specific substance on a per exposure basis, including links to other parts of the health record where further details may be located. Note:  it is possible on second or subsequent exposures to a previously identified substance for a reaction not to occur and this archetype allows for these events to be closely linked in a way that will assist in determining if the adverse reaction has been incorrectly identified.
 
-Design of this archetype has been deliberatly focused on identifying a pragmatic, core data set that will be suitable for most common use clinical scenarios but permits extension of the model when additional detail is required through incorporation of additional archetypes in the 'Additional Reaction Detail', 'Additional Exposure Detail', and 'Reporting Details' slots. Examples of clinical situations where the extension will be required are for a detailed immunology assessment, for reporting to regulatory bodies or clinical trial use.
+Design of this archetype has been deliberately focused on identifying a pragmatic, core data set that will be suitable for most common use clinical scenarios but permits extension of the model when additional detail is required through incorporation of additional archetypes in the 'Additional Reaction Detail', 'Additional Exposure Detail', and 'Reporting Details' slots. Examples of clinical situations where the extension will be required are for a detailed immunology assessment, for reporting to regulatory bodies or clinical trial use.
 
 A data element for Substance Category has not been modelled as this should be able to be derived from any coded entry for Substance/Agent and be used in decision support activities. A coded Category is not adequate to support decision support if Substance/Agent is only entered via free text.
 
@@ -100,7 +102,7 @@ Riedl MA, Casillas AM. Adverse drug reactions: types and treatment options. Am F
 Royal Australian College of General Practitioners. Fact Sheet: Allergies & Adverse Reactions (Draft). 2010.
 
 Thien FC. Drug hypersensitivity. Med J Aust. 2006 Sep 18;185(6):333-8. Review. PubMed PMID: 16999678.">
-		["MD5-CAM-1.0.1"] = <"560C9A8099D22FBE419EB2084C7786E1">
+		["MD5-CAM-1.0.1"] = <"8C4C05BA3B80445D1FB08F11D14993C9">
 	>
 
 definition
@@ -162,6 +164,17 @@ definition
 							}
 						}
 					}
+					ELEMENT[at0112] occurrences matches {0..1} matches {	-- Certainty**
+						value matches {
+							DV_CODED_TEXT matches {
+								defining_code matches {
+									[local::
+									at0113, 	-- Unconfirmed
+									at0115]	-- Confirmed
+								}
+							}
+						}
+					}
 					ELEMENT[at0058] occurrences matches {0..1} matches {	-- SensitivityType**
 						value matches {
 							DV_CODED_TEXT matches {
@@ -180,6 +193,10 @@ definition
 					}
 					CLUSTER[at0009] occurrences matches {0..*} matches {	-- Adverse Reaction Event
 						items cardinality matches {2..*; unordered} matches {
+							allow_archetype CLUSTER[at0116] occurrences matches {0..*} matches {	-- Information Source
+								include
+									archetype_id/value matches {/.*/}
+							}
 							ELEMENT[at0087] occurrences matches {0..1} matches {	-- Did Not Occur Flag**
 								value matches {
 									DV_BOOLEAN matches {
@@ -222,18 +239,6 @@ definition
 								null_flavour existence matches {0..1} matches {
 									DV_CODED_TEXT matches {
 										defining_code matches {[openehr::253]}
-									}
-								}
-							}
-							ELEMENT[at0112] occurrences matches {0..1} matches {	-- Certainty**
-								value matches {
-									DV_CODED_TEXT matches {
-										defining_code matches {
-											[local::
-											at0113, 	-- Suspected
-											at0114, 	-- Probable
-											at0115]	-- Confirmed
-										}
 									}
 								}
 							}
@@ -363,7 +368,7 @@ definition
 							}
 						}
 					}
-					ELEMENT[at0049] occurrences matches {0..1} matches {	-- Future Use**
+					ELEMENT[at0049] occurrences matches {0..1} matches {	-- Future Use Recommendation
 						value matches {
 							DV_TEXT matches {*}
 						}
@@ -453,7 +458,7 @@ FHIR: Indicates the patient has a susceptibility to an adverse reaction upon exp
 				>
 				["at0002"] = <
 					text = <"Substance/Agent">
-					description = <"Identification of a substance, agent, or a class of substance, that is considered to be responsible for the Adverse Reaction.">
+					description = <"Identification of a substance, agent or a class of substance, that is considered to be responsible for the Adverse Reaction.">
 					comment = <"openEHR: Substance/Agent should be coded with a terminology, where possible but plain text is allowed.
 
 
@@ -549,7 +554,7 @@ DAM: not captured.">
 				>
 				["at0025"] = <
 					text = <"Duration of Exposure">
-					description = <"The amount of time of exposure to the Substance/Agent.">
+					description = <"The amount of time exposed to the Substance/Agent.">
 					source = <"openEHR">
 				>
 				["at0027"] = <
@@ -619,7 +624,7 @@ FHIR,DAM: Maps to Sensitivity Test">
 					source = <"openEHR">
 				>
 				["at0049"] = <
-					text = <"Future Use**">
+					text = <"Future Use Recommendation">
 					description = <"Narrative description of clinician instructions or advice related to future exposure to, or administration of, the Substance/Agent.">
 					comment = <"openEHR: ? argument for droppingf this and using Overall Comment.">
 					source = <"openEHR">
@@ -843,16 +848,16 @@ FHIR: Mandatory and includes 'unknown'.">
 					source = <"openEHR">
 				>
 				["at0113"] = <
-					text = <"Suspected">
+					text = <"Unconfirmed">
 					description = <"Possibly the causative agent.">
-				>
-				["at0114"] = <
-					text = <"Probable">
-					description = <"Likely to be the positive agent but not confirmed by testing or rechallenge.">
 				>
 				["at0115"] = <
 					text = <"Confirmed">
 					description = <"Confirmed as the causative agent by testing or rechallenge.">
+				>
+				["at0116"] = <
+					text = <"Information Source">
+					description = <"The source of information.">
 				>
 			>
 		>
