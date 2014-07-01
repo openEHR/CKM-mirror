@@ -95,7 +95,7 @@ Riedl MA, Casillas AM. Adverse drug reactions: types and treatment options. Am F
 Royal Australian College of General Practitioners. Fact Sheet: Allergies & Adverse Reactions (Draft). 2010.
 
 Thien FC. Drug hypersensitivity. Med J Aust. 2006 Sep 18;185(6):333-8. Review. PubMed PMID: 16999678.">
-		["MD5-CAM-1.0.1"] = <"59F71950F5DB544FAF548D3BE3822182">
+		["MD5-CAM-1.0.1"] = <"3890A5440C07EB488826E290F9D423EF">
 	>
 
 definition
@@ -149,8 +149,8 @@ definition
 						}
 					}
 					CLUSTER[at0009] occurrences matches {0..*} matches {	-- Reaction Event
-						items cardinality matches {2..*; unordered} matches {
-							ELEMENT[at0010] matches {	-- Specific Substance
+						items cardinality matches {1..*; unordered} matches {
+							ELEMENT[at0010] occurrences matches {0..1} matches {	-- Specific Substance
 								value matches {
 									DV_TEXT matches {*}
 								}
@@ -161,8 +161,7 @@ definition
 										defining_code matches {
 											[local::
 											at0095, 	-- Unlikely
-											at0023, 	-- Likely
-											at0024]	-- Confirmed
+											at0023]	-- Likely
 										}
 									}
 								}
@@ -374,7 +373,7 @@ FHIR: Indicates the patient has a susceptibility to an adverse reaction upon exp
 				>
 				["at0009"] = <
 					text = <"Reaction Event">
-					description = <"Details about each Adverse Reaction Event upon exposure to the identified Substance.">
+					description = <"Details about each Adverse Reaction Event linked to exposure to the identified Substance.">
 					source = <"openEHR,FHIR,DAM">
 				>
 				["at0010"] = <
@@ -414,17 +413,13 @@ FHIR: Indicates the patient has a susceptibility to an adverse reaction upon exp
 					comment = <"[**Note: openEHR - 'Certainty' applies to the whole reaction, not to a specific agent.
  FHIR - A statement of how confident that the recorder was that this exposure caused the reaction.
  FHIR - 'unknown' is captured as an openEHR 'null flavour'. 
-DAM - not captured.">
+DAM - not captured.]">
 					source = <"FHIR">
 				>
 				["at0023"] = <
 					text = <"Likely">
 					description = <"Likely to be the causative agent, but not confirmed by testing or rechallenge.">
 					source = <"openEHR">
-				>
-				["at0024"] = <
-					text = <"Confirmed">
-					description = <"Confirmed as the causative agent, by testing or rechallenge.">
 				>
 				["at0025"] = <
 					text = <"Duration of Exposure">
@@ -506,8 +501,7 @@ FHIR,DAM: Maps to Sensitivity Test">
 				["at0058"] = <
 					text = <"Reaction Type">
 					description = <"Identification of the underlying physiological mechanism for the Reaction.">
-					comment = <"[Note: openEHR - The equivalent node is Adverse Reaction Event/Reaction Type i.e. per-reaction and not for the overall sensitivity.
-FHIR: Mandatory and includes 'unknown'.">
+					comment = <"[Note: FHIR: Mandatory and includes 'unknown'.]">
 					source = <"FHIR,DAM">
 				>
 				["at0059"] = <
@@ -526,25 +520,27 @@ FHIR: Mandatory and includes 'unknown'.">
 				>
 				["at0063"] = <
 					text = <"Status">
-					description = <"Assertion about the causal relationship between the identified Substance and an Adverse Reaction Event.">
-					comment = <"If it is unclear that a reaction has been caused by the Substance, then entering the propensity with a Status of 'Suspected' will enable clinical systems to trigger clinical decision support. If further evidence of the link between the Substance and a reaction is identified, then the Status can be modified to 'Confirmed'. If further evidence is identified which removes any possible link between the substance and a reaction, the Status can be modified to 'Refuted'. If the reaction is treated, it may be possible for clinicians to assert that the risk is 'Resolved'.">
+					description = <"Assertion about the propensity, or potential risk, of a reaction to the identified Substance.">
+					comment = <"
+
+">
 					source = <"FHIR,DAM">
 				>
 				["at0064"] = <
 					text = <"Unconfirmed">
-					description = <"A suspected but unconfirmed causal relationship.">
+					description = <"A suspected but unconfirmed propensity for a reaction to the identified Substance.">
 				>
 				["at0065"] = <
 					text = <"Confirmed">
-					description = <"A causal relationship that has been confirmed with clinical evidence by testing or rechallenge.">
+					description = <"A propensity for a reaction to the identified Substance has been confirmed with a high level of clinical certainty, which may include clinical evidence by testing or rechallenge.">
 				>
 				["at0066"] = <
 					text = <"Refuted">
-					description = <"A proposed causal relationship has been disproven by testing or rechallenge, and is refuted.">
+					description = <"A propensity for a reaction to the identified Substance has been disproven with a high level of clinical certainty, which may include testing or rechallenge, and is refuted.">
 				>
 				["at0067"] = <
 					text = <"Resolved">
-					description = <"A previous proven causal relationship is clinically reassessed by testing or rechallenge and determined to be inactive or resolved.">
+					description = <"A reaction to the identified Substance has been clinically reassessed by testing or rechallenge and considered to be resolved.">
 				>
 				["at0068"] = <
 					text = <"Subject">
@@ -604,7 +600,7 @@ FHIR: Mandatory and includes 'unknown'.">
 				["at0101"] = <
 					text = <"Seriousness">
 					description = <"Estimate of the potential clinical impact, or seriousness, of the reaction to the identified Substance.">
-					comment = <"The default Seriousness value for any propensity to an Adverse Reaction should be 'Low Risk', indicating at the very least a relative contraindication to deliberate or voluntary exposure to the Substance. 'High Risk' is flagged if the clinician has has identified a propensity for a more serious or potentially life-threatening reaction, such as anaphylaxis, and implies an absolute contraindication to deliberate or voluntary exposure to the substance.">
+					comment = <"The default Seriousness value for any propensity to an Adverse Reaction should be 'Low Risk', indicating at the very least a relative contraindication to deliberate or voluntary exposure to the Substance. 'High Risk' is flagged if the clinician has identified a propensity for a more serious or potentially life-threatening reaction, such as anaphylaxis, and implies an absolute contraindication to deliberate or voluntary exposure to the substance.">
 					source = <"DAM, openEHR">
 				>
 				["at0102"] = <
