@@ -95,14 +95,14 @@ Riedl MA, Casillas AM. Adverse drug reactions: types and treatment options. Am F
 Royal Australian College of General Practitioners. Fact Sheet: Allergies & Adverse Reactions (Draft). 2010.
 
 Thien FC. Drug hypersensitivity. Med J Aust. 2006 Sep 18;185(6):333-8. Review. PubMed PMID: 16999678.">
-		["MD5-CAM-1.0.1"] = <"3890A5440C07EB488826E290F9D423EF">
+		["MD5-CAM-1.0.1"] = <"868CA67E52D78D08B5C7A4E4C7268C2D">
 	>
 
 definition
 	EVALUATION[at0000] matches {	-- Adverse Reaction
 		data matches {
 			ITEM_TREE[at0001] matches {	-- Tree
-				items cardinality matches {3..*; unordered} matches {
+				items cardinality matches {2..*; unordered} matches {
 					ELEMENT[at0002] matches {	-- Substance
 						value matches {
 							DV_TEXT matches {*}
@@ -148,6 +148,11 @@ definition
 							}
 						}
 					}
+					ELEMENT[at0006] occurrences matches {0..1} matches {	-- Comment
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
 					CLUSTER[at0009] occurrences matches {0..*} matches {	-- Reaction Event
 						items cardinality matches {1..*; unordered} matches {
 							ELEMENT[at0010] occurrences matches {0..1} matches {	-- Specific Substance
@@ -160,8 +165,8 @@ definition
 									DV_CODED_TEXT matches {
 										defining_code matches {
 											[local::
-											at0095, 	-- Unlikely
-											at0023]	-- Likely
+											at0095, 	-- Low
+											at0023]	-- High
 										}
 									}
 								}
@@ -171,16 +176,23 @@ definition
 									}
 								}
 							}
-							CLUSTER[at0111] occurrences matches {0..*} matches {	-- Manifestation details
+							CLUSTER[at0111] occurrences matches {0..*} matches {	-- Manifestation Details
 								items cardinality matches {1..*; unordered} matches {
 									ELEMENT[at0011] matches {	-- Manifestation
 										value matches {
 											DV_TEXT matches {*}
 										}
 									}
-									ELEMENT[at0110] occurrences matches {0..1} matches {	-- Severity of Manifestation
+									ELEMENT[at0110] occurrences matches {0..1} matches {	-- Severity
 										value matches {
-											DV_TEXT matches {*}
+											DV_CODED_TEXT matches {
+												defining_code matches {
+													[local::
+													at0093, 	-- Mild
+													at0092, 	-- Moderate
+													at0090]	-- Severe
+												}
+											}
 										}
 									}
 								}
@@ -202,15 +214,14 @@ definition
 									}
 								}
 							}
-							ELEMENT[at0089] occurrences matches {0..1} matches {	-- Severity of Reaction**
+							ELEMENT[at0089] occurrences matches {0..1} matches {	-- Severity of Reaction
 								value matches {
 									DV_CODED_TEXT matches {
 										defining_code matches {
 											[local::
-											at0093, 	-- Minor**
-											at0092, 	-- Moderate**
-											at0091, 	-- Serious**
-											at0090]	-- Severe**
+											at0093, 	-- Mild
+											at0092, 	-- Moderate
+											at0090]	-- Severe
 										}
 									}
 								}
@@ -224,7 +235,7 @@ definition
 									DV_DURATION matches {*}
 								}
 							}
-							ELEMENT[at0106] occurrences matches {0..1} matches {	-- Exposure Category**
+							ELEMENT[at0106] occurrences matches {0..1} matches {	-- Exposure Category
 								value matches {
 									DV_CODED_TEXT matches {
 										defining_code matches {
@@ -236,7 +247,7 @@ definition
 									}
 								}
 							}
-							ELEMENT[at0020] occurrences matches {0..1} matches {	-- Earliest Exposure
+							ELEMENT[at0020] occurrences matches {0..1} matches {	-- Initial Exposure
 								value matches {
 									DV_DATE_TIME matches {*}
 								}
@@ -275,11 +286,6 @@ definition
 									DV_TEXT matches {*}
 								}
 							}
-						}
-					}
-					ELEMENT[at0006] occurrences matches {0..1} matches {	-- Overall Comment
-						value matches {
-							DV_TEXT matches {*}
 						}
 					}
 				}
@@ -351,8 +357,6 @@ ontology
 				["at0000"] = <
 					text = <"Adverse Reaction">
 					description = <"A harmful or undesirable, physiological reaction or effect which is unique to an individual and is associated with exposure to an identified substance or agent, including: a therapeutic substance administered correctly at an appropriate dosage for the individual; food; material derived from plants or animals; or venom from animal stings.">
-					comment = <"openEHR: Substance/Agent should be coded with a terminology, where possible. but plain text is allowed
-FHIR: Indicates the patient has a susceptibility to an adverse reaction upon exposure to a specified substance.">
 					source = <"openEHR,FHIR">
 				>
 				["at0001"] = <
@@ -361,13 +365,13 @@ FHIR: Indicates the patient has a susceptibility to an adverse reaction upon exp
 				>
 				["at0002"] = <
 					text = <"Substance">
-					description = <"Identification of a substance, or a class of substance, that is considered to be responsible for the Adverse Reaction.">
+					description = <"Identification of a substance, or a group of substances, that is considered to be responsible for the Adverse Reaction.">
 					comment = <"It is strongly recommended that Substance be coded with a terminology, where possible. Plain text is allowed only if there is no appropriate terminology available.">
 					source = <"openEHR,FHIR,DAM">
 				>
 				["at0006"] = <
-					text = <"Overall Comment">
-					description = <"Additional narrative about the Adverse Reaction as a whole, not captured in other fields.">
+					text = <"Comment">
+					description = <"Additional narrative about the propensity for the Adverse Reaction, not captured in other fields.">
 					comment = <"For example: including reason for flagging a Seriousness of 'High Risk'; and instructions related to future exposure or administration of the Substance, such as administration within an Intensive Care Unit or under corticosteroid cover.">
 					source = <"openEHR">
 				>
@@ -379,13 +383,13 @@ FHIR: Indicates the patient has a susceptibility to an adverse reaction upon exp
 				["at0010"] = <
 					text = <"Specific Substance">
 					description = <"Specific identification of the Substance considered to be responsible for the Adverse Reaction event.">
-					comment = <"Coding of the Specific Substance with a terminology is preferred, where possible. This data element should only differ to the 'Substance' data element when the value for the 'Substance' is actually a class of substance, for example, Amoxycillin when the 'Substance' is the class of Penicillins.">
+					comment = <"Coding of the Specific Substance with a terminology is preferred, where possible. This data element should only differ to the 'Substance' data element when the value for the 'Substance' is a general group of substances, for example, Amoxycillin when the 'Substance' is the class of Penicillins.">
 					source = <"FHIR, openEHR,DAM">
 				>
 				["at0011"] = <
 					text = <"Manifestation">
 					description = <"Clinical manifestation of the Adverse Reaction.">
-					comment = <"Manifestation can be expressed as a single word, phrase or brief description. For example: nausea, rash or no reaction. It is preferable that Manifestation should be coded with a terminology, where possible. The values entered here may be used to display on an application screen as part of a list of adverse reactions, as recommended in the NHS CUI guidelines.
+					comment = <"Manifestation can be expressed as a single word, phrase or brief description. For example: nausea, rash or no reaction. It is preferable that Manifestation should be coded with a terminology, where possible. The values entered here may be used to display on an application screen as part of a list of adverse reactions, as recommended in the UK NHS CUI guidelines.
 
 ">
 					source = <"FHIR, openEHR,DAM">
@@ -397,14 +401,14 @@ FHIR: Indicates the patient has a susceptibility to an adverse reaction upon exp
 				>
 				["at0018"] = <
 					text = <"Exposure Description">
-					description = <"Description about exposure to the Substance.">
+					description = <"Narrative description about exposure to the Substance.">
 					source = <"openEHR">
 				>
 				["at0020"] = <
-					text = <"Earliest Exposure">
-					description = <"Record of the date and/or time of the earliest, or initial, exposure to the Specific Substance.">
+					text = <"Initial Exposure">
+					description = <"Record of the date and/or time of the first exposure to the Substance.">
 					comment = <"[Note: FHIR -Maps to AdverseReaction/exposure/date.
- DAM - Maps to Exposure/exposureDate.">
+ DAM - Maps to Exposure/exposureDate.]">
 					source = <"FHIR, openEHR,DAM">
 				>
 				["at0021"] = <
@@ -417,8 +421,8 @@ DAM - not captured.]">
 					source = <"FHIR">
 				>
 				["at0023"] = <
-					text = <"Likely">
-					description = <"Likely to be the causative agent, but not confirmed by testing or rechallenge.">
+					text = <"High">
+					description = <"There is a high level of certainty that the reaction was caused by the identified Substance.">
 					source = <"openEHR">
 				>
 				["at0025"] = <
@@ -430,18 +434,18 @@ DAM - not captured.]">
 					text = <"Onset of Reaction">
 					description = <"Record of the date and/or time of the onset of the Reaction.">
 					comment = <"[Note: FHIR - Maps to AdverseReaction/date
-. DAM -Maps to AdverseReaction/occurenceDate.]">
+. DAM -Maps to AdverseReaction/occurrenceDate.]">
 					source = <"openEHR,FHIR, DAM">
 				>
 				["at0028"] = <
 					text = <"Duration of Reaction">
-					description = <"The amount of time that the Adverse Reaction was present.">
+					description = <"The amount of time that the Adverse Reaction persisted.">
 					source = <"openEHR">
 				>
 				["at0029"] = <
 					text = <"Reaction Details">
-					description = <"Additional detail about the Adverse Reaction, including anatomical location.">
-					comment = <"[Note: FHIR - These would be extensions as specified in a profile]">
+					description = <"Additional detail about the Adverse Reaction, including anatomical location and Common Toxicity Criteria.">
+					comment = <"[Note: FHIR - These would be extensions as specified in a profile.]">
 					source = <"FHIR, openEHR">
 				>
 				["at0031"] = <
@@ -463,7 +467,7 @@ DAM - not captured.]">
 				["at0041"] = <
 					text = <"Reporting Details">
 					description = <"Additional details required for reporting to regulatory bodies.">
-					comment = <"[Note: FHIR - These would be extensions as specified in a profile]">
+					comment = <"[Note: FHIR - These would be extensions as specified in a profile.]">
 					source = <"FHIR, openEHR">
 				>
 				["at0042"] = <
@@ -555,39 +559,34 @@ FHIR,DAM: Maps to Sensitivity Test">
 					source = <"FHIR">
 				>
 				["at0089"] = <
-					text = <"Severity of Reaction**">
+					text = <"Severity of Reaction">
 					description = <"Clinical assessment of the severity of the reaction event as a whole, potentially considering multiple different manifestations.">
-					comment = <"[Note: DAM: An overall assessment of the severity of the reaction. Maps to Manifestation/severity.**]">
+					comment = <"[Note: DAM: An overall assessment of the severity of the reaction.]">
 					source = <"DAM">
 				>
 				["at0090"] = <
-					text = <"Severe**">
+					text = <"Severe">
 					description = <"Causes severe physiological effects.">
 					source = <"FHIR">
 				>
-				["at0091"] = <
-					text = <"Serious**">
-					description = <"Causes serious physiological effects.">
-					source = <"FHIR">
-				>
 				["at0092"] = <
-					text = <"Moderate**">
+					text = <"Moderate">
 					description = <"Causes moderate physiological effects.">
 					source = <"FHIR">
 				>
 				["at0093"] = <
-					text = <"Minor**">
-					description = <"Causes minor physiological effects.">
+					text = <"Mild">
+					description = <"Causes mild physiological effects.">
 					source = <"FHIR">
 				>
 				["at0095"] = <
-					text = <"Unlikely">
-					description = <"The reaction was unlikely to have been caused by the substance/agent.">
+					text = <"Low">
+					description = <"There is a low level of certainty that the reaction was caused by the identified Substance.">
 				>
 				["at0096"] = <
 					text = <"Exposure Details">
 					description = <"Additional details about the exposure, especially in situations where there may have been multiple, or cumulative, exposures.">
-					comment = <"[Note: FHIR - These would be extensions as specified in a profile]">
+					comment = <"[Note: FHIR - These would be extensions as specified in a profile.]">
 				>
 				["at0098"] = <
 					text = <"FHIR record provenance">
@@ -612,9 +611,10 @@ FHIR,DAM: Maps to Sensitivity Test">
 					description = <"The potential clinical impact of a future reaction is estimated as high risk. Future exposure to the Substance may be considered an absolute contra-indication.">
 				>
 				["at0106"] = <
-					text = <"Exposure Category**">
+					text = <"Exposure Category">
 					description = <"Identification of the category of exposure.">
-					comment = <"[Note: DAM - Maps to Exposure/exposureType.]">
+					comment = <"[Note: DAM - Maps to Exposure/exposureType.]
+The intent of this data element is not clear. The value set confuses different axes. Unless this data element can be clarified and justified the intent is to delete it.">
 					source = <"FHIR,DAM">
 				>
 				["at0107"] = <
@@ -630,17 +630,19 @@ FHIR,DAM: Maps to Sensitivity Test">
 					description = <"Exposure was accidental.">
 				>
 				["at0110"] = <
-					text = <"Severity of Manifestation">
-					description = <"Clinical assessment of the severity of this Manifestation.">
+					text = <"Severity">
+					description = <"Clinical assessment of the severity of the identified Manifestation.">
+					comment = <" If the severity is sufficiently specified in the Manifestation, then this additional data is not needed.">
 					source = <"FHIR,DAM">
 				>
 				["at0111"] = <
-					text = <"Manifestation details">
+					text = <"Manifestation Details">
 					description = <"Details of each manifestation for this Reaction Event.">
 				>
 				["at0116"] = <
 					text = <"Information Source">
-					description = <"The source of information.">
+					description = <"Details about the provenance of the information.">
+					comment = <"[Note: FHIR - These would be in a provenance resource.]">
 				>
 			>
 		>
