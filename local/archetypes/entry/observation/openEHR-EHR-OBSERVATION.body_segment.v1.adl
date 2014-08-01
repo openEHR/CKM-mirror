@@ -1,0 +1,382 @@
+﻿archetype (adl_version=1.4)
+	openEHR-EHR-OBSERVATION.body_segment.v1
+
+concept
+	[at0000]	-- Measurement of Body Segment
+language
+	original_language = <[ISO_639-1::en]>
+description
+	original_author = <
+		["name"] = <"Heather Leslie">
+		["organisation"] = <"Ocean Informatics">
+		["email"] = <"heather.leslie@oceaninformatics.com">
+		["date"] = <"2014-07-30">
+	>
+	details = <
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To record measurements of parts or regions of the human body, including the head, limbs and torso.">
+			use = <"Use to record measurements of parts or regions of the human body, including the head, limbs and torso.
+
+Use to provide insight into the shape and proportions of an individual's body, usually for purposes of clinical or anthropometric assessment.
+
+The names of the 'Length', 'Circumference', 'Area' and 'Height' measurements have been designed to utilise run-time name constraints which allows for selection of a named body segment to be specified either in a template or at run-time. This archetype contains a number of named measurements modelled as run-time name constraints, but this is not yet a complete list and it is anticipated that the number of measurements will increase over time as additional requirements are identified.
+
+The 'Unspecified Measure' and 'Unspecified Area' data elements have been included to allow for representation of any and all body segment measures, especially where the required measurement has not been included in the run-time name constraints for  'Length', 'Circumference', 'Area' and 'Height' measurements, above. In addition, these less specified data elements allow addiitonal flexibility by enabling naming to occur in templates and at run-time, or through binding to an external terminology, if this is preferred.">
+			keywords = <"anthropometry", "measurement", "estimation", "length", "height", "area", "circumference", "girth">
+			misuse = <"Not to be used to record ubiquitous clinical measurements which have their own specific archetypes:
+- the entire height or length of person - use OBSERVATION.height for this purpose.
+- the weight of the whole body - use OBSERVATION.body_weight for this purpose.
+- the circumference of a head - use OBSERVATION.head_circumference for this purpose.
+- the waist and hip circumferences - use OBSERVATION.waist_hip for this purpose.
+Not to be used to record the weight of a or a part of the body.
+Not to be used to record the dimensions of an internal body organ or a lesion.
+Not to be used to record skinfold measurements - use archetypes specific for this purpose.">
+			copyright = <"© openEHR Foundation">
+		>
+	>
+	lifecycle_state = <"AuthorDraft">
+	other_contributors = <"Micaela Thierley, Helse Bergen, Norway", ...>
+	other_details = <
+		["current_contact"] = <"Heather Leslie, Ocean Informatics, Australia, heather.leslie@oceaninformatics.com">
+		["references"] = <"National Health and Nutrition Examination Survey (NHANES) Anthropometry Procedures Manual [Internet]. Centers for Disease Control and Prevention; 2009 (cited 2014 Jul 30). Available from: http://www.cdc.gov/nchs/data/nhanes/nhanes_09_10/BodyMeasures_09.pdf.
+
+Marfell-Jones, M. Kinanthropometric Assessement [Internet] (cited 2014 Jul 30). Available from: http://www.ljmu.ac.uk/ecl/ecl_docs/2.08_kinanthreometric_asses.pdf..
+
+International Standards for Anthropometric Assessment [Internet]. International Society for the Advancement of Kinanthropometry; South Australia, 2001 (cited 2014 Jul 30). Available from: http://www.ceap.br/material/MAT17032011184632.pdf.
+
+Man-Systems Integration Standards: Volume 1 - Standards; Section 3 - Anthropometry and Biomechanics [Internet]. National Aeronautics and Space Administration (cited 2014 Jul 30). Available from: http://msis.jsc.nasa.gov/sections/section03.htm.">
+		["MD5-CAM-1.0.1"] = <"65FBBC2060BD98973F3C6C3DE843DD42">
+	>
+
+definition
+	OBSERVATION[at0000] matches {	-- Measurement of Body Segment
+		data matches {
+			HISTORY[at0001] matches {	-- Event Series
+				events cardinality matches {1..*; unordered} matches {
+					POINT_EVENT[at0002] occurrences matches {0..1} matches {	-- Any Point-In-Time Event
+						data matches {
+							ITEM_TREE[at0003] matches {	-- Tree
+								items cardinality matches {0..*; unordered} matches {
+									ELEMENT[at0004] occurrences matches {0..*} matches {	-- Length
+										name matches {
+											DV_CODED_TEXT matches {
+												defining_code matches {
+													[local::
+													at0005, 	-- Left Upper Arm Length
+													at0008, 	-- Right Upper Arm Length
+													at0006, 	-- Left Upper Leg Length
+													at0007, 	-- Right Upper Leg Length
+													at0020, 	-- Left Leg Length
+													at0009]	-- Right Leg Length
+												}
+											}
+										}
+										value matches {
+											C_DV_QUANTITY <
+												property = <[openehr::122]>
+												list = <
+													["1"] = <
+														units = <"cm">
+														magnitude = <|>=0.0|>
+														precision = <|1|>
+													>
+													["2"] = <
+														units = <"mm">
+														magnitude = <|>=0.0|>
+														precision = <|0|>
+													>
+													["3"] = <
+														units = <"m">
+														magnitude = <|>=0.0|>
+														precision = <|2|>
+													>
+												>
+											>
+										}
+									}
+									ELEMENT[at0016] occurrences matches {0..*} matches {	-- Circumference
+										name matches {
+											DV_CODED_TEXT matches {
+												defining_code matches {
+													[local::
+													at0017, 	-- Left Upper Arm Circumference (UAC)
+													at0021]	-- Right Upper Arm Circumference (UAC)
+												}
+											}
+										}
+										value matches {
+											C_DV_QUANTITY <
+												property = <[openehr::122]>
+												list = <
+													["1"] = <
+														units = <"cm">
+														magnitude = <|>=0.0|>
+														precision = <|1|>
+													>
+													["2"] = <
+														units = <"mm">
+														magnitude = <|>=0.0|>
+														precision = <|0|>
+													>
+												>
+											>
+										}
+									}
+									ELEMENT[at0012] occurrences matches {0..*} matches {	-- Area
+										name matches {
+											DV_CODED_TEXT matches {
+												defining_code matches {
+													[local::
+													at0018, 	-- Left Mid-Upper Arm Muscle Area (MUAMA)
+													at0019]	-- Right Mid-Upper Arm Muscle Area (MUAMA)
+												}
+											}
+										}
+										value matches {
+											C_DV_QUANTITY <
+												property = <[openehr::335]>
+												list = <
+													["1"] = <
+														units = <"cm2">
+														magnitude = <|>=0.0|>
+														precision = <|1|>
+													>
+													["2"] = <
+														units = <"mm2">
+														magnitude = <|>=0.0|>
+														precision = <|1|>
+													>
+												>
+											>
+										}
+									}
+									ELEMENT[at0013] occurrences matches {0..*} matches {	-- Height
+										name matches {
+											DV_CODED_TEXT matches {
+												defining_code matches {
+													[local::
+													at0014, 	-- Sitting Height
+													at0015]	-- Crown-Rump Length
+												}
+											}
+										}
+										value matches {
+											C_DV_QUANTITY <
+												property = <[openehr::122]>
+												list = <
+													["1"] = <
+														units = <"cm">
+														magnitude = <|>=0.0|>
+														precision = <|1|>
+													>
+													["2"] = <
+														units = <"mm">
+														magnitude = <|>=0.0|>
+														precision = <|0|>
+													>
+													["3"] = <
+														units = <"m">
+														magnitude = <|>=0.0|>
+														precision = <|2|>
+													>
+												>
+											>
+										}
+									}
+									ELEMENT[at0026] occurrences matches {0..*} matches {	-- Unspecified Measure
+										value matches {
+											C_DV_QUANTITY <
+												property = <[openehr::122]>
+												list = <
+													["1"] = <
+														units = <"cm">
+														magnitude = <|>=0.0|>
+														precision = <|1|>
+													>
+													["2"] = <
+														units = <"m">
+														magnitude = <|>=0.0|>
+														precision = <|2|>
+													>
+													["3"] = <
+														units = <"mm">
+														magnitude = <|>=0.0|>
+														precision = <|0|>
+													>
+												>
+											>
+										}
+									}
+									ELEMENT[at0027] occurrences matches {0..*} matches {	-- Unspecified Area
+										value matches {
+											C_DV_QUANTITY <
+											>
+										}
+									}
+									ELEMENT[at0025] occurrences matches {0..*} matches {	-- Comment
+										value matches {
+											DV_TEXT matches {*}
+										}
+									}
+								}
+							}
+						}
+					}
+					INTERVAL_EVENT[at0011] occurrences matches {0..1} matches {	-- Average Measurement
+						math_function matches {
+							DV_CODED_TEXT matches {
+								defining_code matches {[openehr::146]}
+							}
+						}
+						data matches {
+							use_node ITEM_TREE /data[at0001]/events[at0002]/data[at0003]	-- /data[Event Series]/events[Any Point-In-Time Event]/data[Tree]
+						}
+					}
+					INTERVAL_EVENT[at0022] occurrences matches {0..1} matches {	-- Discrepancy
+						math_function matches {
+							DV_CODED_TEXT matches {
+								defining_code matches {[openehr::147]}
+							}
+						}
+						data matches {
+							use_node ITEM_TREE /data[at0001]/events[at0002]/data[at0003]	-- /data[Event Series]/events[Any Point-In-Time Event]/data[Tree]
+						}
+					}
+				}
+			}
+		}
+		protocol matches {
+			ITEM_TREE[at0023] matches {	-- Tree
+				items cardinality matches {0..*; unordered} matches {
+					allow_archetype CLUSTER[at0024] occurrences matches {0..*} matches {	-- Measuring Device
+						include
+							archetype_id/value matches {/openEHR-EHR-CLUSTER\.device(-[a-zA-Z0-9_]+)*\.v1/}
+					}
+				}
+			}
+		}
+	}
+
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"Measurement of Body Segment">
+					description = <"Measurment of the length, circumference, area or height of an identified body part, using a standardised procedure.">
+				>
+				["at0001"] = <
+					text = <"Event Series">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Any Point-In-Time Event">
+					description = <"Default, unspecified point in time which may be explicitly defined in a template or at run-time.">
+				>
+				["at0003"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0004"] = <
+					text = <"Length">
+					description = <"Distance between two specified anatomical locations of an identified body part.">
+					comment = <"The term 'length' as used in this data element is also inclusive of breadth and depth. The name of the measurement is specified in the run-time name constraints.">
+				>
+				["at0005"] = <
+					text = <"Left Upper Arm Length">
+					description = <"Distance between the acromion process of the left scapula to the tip of the left olecranon, over the posterior surface of the upper arm.">
+				>
+				["at0006"] = <
+					text = <"Left Upper Leg Length">
+					description = <"Distance between the left inguinal crease to the proximal border of the left patella, over the anterior surface of the left thigh, performed with the individual sitting.">
+				>
+				["at0007"] = <
+					text = <"Right Upper Leg Length">
+					description = <"Distance between the right inguinal crease to the proximal border of the right patella, over the anterior surface of the right thigh, performed with the individual sitting.">
+				>
+				["at0008"] = <
+					text = <"Right Upper Arm Length">
+					description = <"Distance between the acromion process of the right scapula to the tip of the right olecranon, over the posterior surface of the upper arm.">
+				>
+				["at0009"] = <
+					text = <"Right Leg Length">
+					description = <"Distance between the right anterior superior iliac spine (ASIS) and the right medial malleolus.">
+				>
+				["at0011"] = <
+					text = <"Average Measurement">
+					description = <"Average measurement of all point in time 'Any Event' recordings. In anthropometric assessments, usually multiple readings are taken and the average recorded.">
+				>
+				["at0012"] = <
+					text = <"Area">
+					description = <"Calculated area of an identified region or body segment.">
+					comment = <"The name of the area is specified in the run-time name constraints.">
+				>
+				["at0013"] = <
+					text = <"Height">
+					description = <"Height of an identified body part from a fixed object.">
+					comment = <"For example: floor or chair seat.">
+				>
+				["at0014"] = <
+					text = <"Sitting Height">
+					description = <"Vertical distance between the sitting surface and the vertex of the head. A measure of trunk length, performed with the individual sitting erect.">
+				>
+				["at0015"] = <
+					text = <"Crown-Rump Length">
+					description = <"Distance between vertex of head to the lowest part of the trunk, usually the perineum or lowest surface of the buttock. A measure of trunk length, usually conducted on infants under 2 years of age, performed with the individual lying supine.">
+				>
+				["at0016"] = <
+					text = <"Circumference">
+					description = <"Distance around the girth of an identified body part at a specified anatomical location.">
+				>
+				["at0017"] = <
+					text = <"Left Upper Arm Circumference (UAC)">
+					description = <"Measurement of the girth of the left upper arm at the mid point between the acromion process of the scapula and the olecranon process of the ulna. Also referred to as Mid-Upper Arm Circumference (MUAC).">
+				>
+				["at0018"] = <
+					text = <"Left Mid-Upper Arm Muscle Area (MUAMA)">
+					description = <"Estimation of the area of the left upper arm, derived from the measurement of the upper arm circumference.">
+				>
+				["at0019"] = <
+					text = <"Right Mid-Upper Arm Muscle Area (MUAMA)">
+					description = <"Estimation of the area of the right upper arm, derived from the measurement of the upper arm circumference.">
+				>
+				["at0020"] = <
+					text = <"Left Leg Length">
+					description = <"Distance between the left anterior superior iliac spine (ASIS) and the left medial malleolus.">
+				>
+				["at0021"] = <
+					text = <"Right Upper Arm Circumference (UAC)">
+					description = <"Measurement of the girth of the right upper arm at the mid point between the acromion process of the scapula and the olecranon process of the ulna. Also referred to as Mid-Upper Arm Circumference (MUAC).">
+				>
+				["at0022"] = <
+					text = <"Discrepancy">
+					description = <"Record the difference between two measurements. For example a leg length discrepancy between left and right.">
+				>
+				["at0023"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0024"] = <
+					text = <"Measuring Device">
+					description = <"Details of the device used for measuring the body part.">
+				>
+				["at0025"] = <
+					text = <"Comment">
+					description = <"Additional narrative about the measurements, not captured in the measurement data elements.">
+					comment = <"For example, recording the absence of a limb due to amputation, or difficulties in obtaining a measurement.">
+				>
+				["at0026"] = <
+					text = <"Unspecified Measure">
+					description = <"Distance between two specified anatomical locations (length), and anotomical location and a fixed object (height), or the girth of a body part (circumference).">
+					comment = <"This data element can be bound to a terminology to provide the valid names for use in a template or at run-time, or alternatively, names can be constrained in a template.">
+				>
+				["at0027"] = <
+					text = <"Unspecified Area">
+					description = <"Calculated area of an region of the body.">
+					comment = <"This data element can be bound to a terminology to provide the valid names for use in a template or at run-time, or alternatively, names can be constrained in a template.">
+				>
+			>
+		>
+	>
