@@ -2,7 +2,7 @@
 	openEHR-EHR-OBSERVATION.exam.v1
 
 concept
-	[at0000]	-- Physical Examination Findings
+	[at0000]	-- Physical examination findings
 language
 	original_language = <[ISO_639-1::en]>
 	translations = <
@@ -13,12 +13,6 @@ language
 				["organisation"] = <"Slovenia">
 			>
 		>
-		["ar-sy"] = <
-			language = <[ISO_639-1::ar-sy]>
-			author = <
-				["name"] = <"Mona Saleh">
-			>
-		>
 		["es-ar"] = <
 			language = <[ISO_639-1::es-ar]>
 			author = <
@@ -26,6 +20,12 @@ language
 				["organisation"] = <"VinculoMedico">
 			>
 			accreditation = <"Medical Doctor">
+		>
+		["ar-sy"] = <
+			language = <[ISO_639-1::ar-sy]>
+			author = <
+				["name"] = <"Mona Saleh">
+			>
 		>
 	>
 description
@@ -58,12 +58,14 @@ Not to be used to record stand-alone clinical observations - use specific OBSERV
 		>
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"For recording a narrative description and clinical interpretation of the findings observed during the overall physical examination of a subject, and to provide a framework in which to nest detailed CLUSTER archetypes, each of which will enable specific aspects of the physical examination to be recorded in detail.">
-			use = <"Use to record a narrative description of the findings observed during the overall physical examination of a subject.
+			purpose = <"For recording details about findings on physical examination of the subject of care.">
+			use = <"Use to record details about findings on physical examination of the subject of care. This may include a narrative description of the findings, a framework in which to nest detailed CLUSTER examination archetypes, and a clinical interpretation of the findings.
 
-Use to incorporate the narrative descriptions of clinical findings within existing or legacy clinical systems into an archetyped format, using the 'Clinical Description' data element.
+Examples of detailed CLUSTER examination archetypes include those that describe inspection, palpation, auscultation, percussion and movement of body systems or anatomical structures, such as CLUSTER.exam_pupils.
 
-Use as a container archetype - to provide a common, queryable ENTRY archetype in which specific, detailed CLUSTER examination archetypes can be nested. Examples of CLUSTER examination archetypes include those that detail the inspection, palpation, auscultation, percussion and movement of body systems or anatomical structures.">
+Narrative descriptions of clinical findings from existing clinical systems may be captured using the 'Description' data element.
+
+Clinicians may sometimes want to record a summative phrase such as 'chronic otitis media' as an Interpretation of the physical examination. In the context of the physical examination archetype this should only be understood  as 'physical signs are consistent with chronic otitis media'. While the summative phrase may appear to represent a diagnosis, safe and consistent querying requires a diagnosis to be recorded using the EVALUATION.problem_diagnosis archetype, even if the phrases are identical.">
 			keywords = <"examination", "physical", "exam", "findings", "clinical">
 			misuse = <"Not to be used for recording history-taking observations - use specific OBSERVATION and CLUSTER archetypes. For example OBSERVATION.story and CLUSTER.symptom.
 
@@ -85,15 +87,15 @@ No debe ser utilizado para registrar observaciones clinicas autonomas - utilizar
 			copyright = <"© openEHR Foundation">
 		>
 	>
-	lifecycle_state = <"OrganisationDraft">
-	other_contributors = <"Sheryl Alexander, NT Department of Health, Australia", "Rita Apelt, Department of Health,NT, Australia", "Margaret Campbell, Queensland Health, Australia", "Stephen Chu, NEHTA, Australia", "Margaret Cotter, AMSANT, Australia", "Michelle Dowden, Miwatj Health Ngalkanbuy Health, Australia", "Tim Garden, NTG Department of Health, Australia", "Tanya Gardner, CAAC, Australia", "Sam Heard, Ocean Informatics, Australia (Editor)", "Heather Leslie, Ocean Informatics, Australia (Editor)", "Ian McNicoll, Ocean Informatics, United Kingdom (Editor)", "Jeremy Oats, NT Health, Australia", "Steven Schatz, Department of Health (Northern Territory), Australia", "Cherie Whitbread, Royal Darwin Hospital, Australia", "Jo Wright, NT Dept of Health, Australia (Editor)">
+	lifecycle_state = <"Published">
+	other_contributors = <"Sheryl Alexander, NT Department of Health, Australia", "Tomas Alme, DIPS, Norway", "Nadim Anani, Karolinska Institutet, Sweden", "Rita Apelt, Department of Health,NT, Australia", "Silje Bakke, Bergen Hospital Trust, Norway", "Margaret Campbell, Queensland Health, Australia", "Rong Chen, Cambio Healthcare Systems, Sweden", "Stephen Chu, NeHTA, Australia", "Margaret Cotter, AMSANT, Australia", "Michelle Dowden, Miwatj Health Ngalkanbuy Health, Australia", "Samo Drnovsek, Marand ltd, Slovenia", "Tim Garden, NTG Department of Health, Australia", "Tanya Gardner, CAAC, Australia", "Sam Heard, Ocean Informatics, Australia (Editor)", "Lars Karlsen, DIPS ASA, Norway", "Russell Leftwich, Russell B Leftwich MD, United States", "Sabine Leh, Haukeland University Hospital, Department of Pathology, Norway", "Heather Leslie, Ocean Informatics, Australia (Editor)", "Ian McNicoll, freshEHR Clinical Informatics, United Kingdom (Editor)", "Jeremy Oats, NT Health, Australia", "Steven Schatz, Department of Health (Northern Territory), Australia", "Anoop Shah, University College London, United Kingdom", "Cherie Whitbread, Royal Darwin Hospital, Australia", "Jo Wright, NT Dept of Health, Australia (Editor)", "Lin Zhang, BIPH, China">
 	other_details = <
 		["current_contact"] = <"Heather Leslie, Ocean Informatics, heather.leslie@oceaninformatics.com">
-		["MD5-CAM-1.0.1"] = <"7C0EDD2FD25E9A0E4FECE99EC3CB549D">
+		["MD5-CAM-1.0.1"] = <"E8372E063DB2FEE71319376B0B8C4400">
 	>
 
 definition
-	OBSERVATION[at0000] matches {	-- Physical Examination Findings
+	OBSERVATION[at0000] matches {	-- Physical examination findings
 		data matches {
 			HISTORY[at0001] matches {	-- Event Series
 				events cardinality matches {1..*; unordered} matches {
@@ -106,7 +108,7 @@ definition
 											DV_TEXT matches {*}
 										}
 									}
-									allow_archetype CLUSTER[at0005] occurrences matches {0..*} matches {	-- Examination Detail
+									allow_archetype CLUSTER[at0005] occurrences matches {0..*} matches {	-- Examination detail
 										include
 											archetype_id/value matches {/.*/}
 									}
@@ -126,7 +128,7 @@ definition
 						state matches {
 							ITEM_TREE[at0009] matches {	-- Tree
 								items cardinality matches {0..*; unordered} matches {
-									ELEMENT[at0008] occurrences matches {0..*} matches {	-- Confounding Factors
+									ELEMENT[at0008] occurrences matches {0..*} matches {	-- Confounding factors
 										value matches {
 											DV_TEXT matches {*}
 										}
@@ -144,6 +146,10 @@ definition
 					allow_archetype CLUSTER[at0010] occurrences matches {0..*} matches {	-- Device Details
 						include
 							archetype_id/value matches {/openEHR-EHR-CLUSTER\.device(-[a-zA-Z0-9_]+)*\.v1/}
+					}
+					allow_archetype CLUSTER[at0012] occurrences matches {0..*} matches {	-- Extension
+						include
+							archetype_id/value matches {/.*/}
 					}
 				}
 			}
@@ -165,7 +171,7 @@ ontology
 				>
 				["at0002"] = <
 					text = <"*Any event(en)">
-					description = <"*Default, unspecified point in time or interval event which may be explicitly defined in a template or at run-time.(en)">
+					description = <"*Unspecified point in time which may be explicitly defined in a template or at run-time.(en)">
 				>
 				["at0003"] = <
 					text = <"*Tree(en)">
@@ -179,6 +185,7 @@ ontology
 				["at0005"] = <
 					text = <"*Examination Detail(en)">
 					description = <"*Structured details of the physical examination.(en)">
+					comment = <"*Detailed clinical findings will be recorded as CLUSTER archetypes which can then be nested within this SLOT to represent the fractal nature of clinical examination and allow for variation in clinician's requirements for examination documentation. For example: CLUSTER.palpation_of_uterus, CLUSTER.palpation_of_cervix and CLUSTER.palpation_of_fetus can be nested in this slot or within each other to represent the specific  requirements of clinicians working in the obstetric domains - content, priorities and level of detail will differ depending on clinical context, professional background and specialty.(en)">
 				>
 				["at0006"] = <
 					text = <"*Interpretation(en)">
@@ -204,6 +211,10 @@ ontology
 				["at0011"] = <
 					text = <"*Comment(en)">
 					description = <"*Any additional narrative comment not covered by other elements.(en)">
+				>
+				["at0012"] = <
+					text = <"*Cluster(en)">
+					description = <"**(en)">
 				>
 			>
 		>
@@ -219,7 +230,7 @@ ontology
 				>
 				["at0002"] = <
 					text = <"*Any event(en)">
-					description = <"*Default, unspecified point in time or interval event which may be explicitly defined in a template or at run-time.(en)">
+					description = <"*Unspecified point in time which may be explicitly defined in a template or at run-time.(en)">
 				>
 				["at0003"] = <
 					text = <"*Tree(en)">
@@ -231,8 +242,9 @@ ontology
 					comment = <"*May be used to record a narrative summary of the complete clinical examination or key aspects of clinical examination findings, which will be supported by structured data. Details of specific structured findings can be included using CLUSTER archetypes in the 'Examination Detail' slot. This data element may be used to capture legacy data that is not available in a structured format.(en)">
 				>
 				["at0005"] = <
-					text = <"Podrobno">
-					description = <"Podatki o fizikalnem pregledu">
+					text = <"*Examination Detail(en)">
+					description = <"*Structured details of the physical examination.(en)">
+					comment = <"*Detailed clinical findings will be recorded as CLUSTER archetypes which can then be nested within this SLOT to represent the fractal nature of clinical examination and allow for variation in clinician's requirements for examination documentation. For example: CLUSTER.palpation_of_uterus, CLUSTER.palpation_of_cervix and CLUSTER.palpation_of_fetus can be nested in this slot or within each other to represent the specific  requirements of clinicians working in the obstetric domains - content, priorities and level of detail will differ depending on clinical context, professional background and specialty.(en)">
 				>
 				["at0006"] = <
 					text = <"*Interpretation(en)">
@@ -259,13 +271,17 @@ ontology
 					text = <"*Comment(en)">
 					description = <"*Any additional narrative comment not covered by other elements.(en)">
 				>
+				["at0012"] = <
+					text = <"*Cluster(en)">
+					description = <"**(en)">
+				>
 			>
 		>
 		["en"] = <
 			items = <
 				["at0000"] = <
-					text = <"Physical Examination Findings">
-					description = <"Findings observed during the physical examination of a subject.">
+					text = <"Physical examination findings">
+					description = <"Findings observed during the physical examination of a subject of care.">
 				>
 				["at0001"] = <
 					text = <"Event Series">
@@ -285,20 +301,21 @@ ontology
 					comment = <"May be used to record a narrative summary of the complete clinical examination or key aspects of clinical examination findings, which will be supported by structured data. Details of specific structured findings can be included using CLUSTER archetypes in the 'Examination Detail' slot. This data element may be used to capture legacy data that is not available in a structured format.">
 				>
 				["at0005"] = <
-					text = <"Examination Detail">
+					text = <"Examination detail">
 					description = <"Structured details of the physical examination.">
+					comment = <"Detailed clinical findings will be recorded as CLUSTER archetypes which can be nested within this SLOT to represent the fractal nature of clinical examination and allow for variation in clinician's requirements for examination documentation. For example: CLUSTER.palpation_of_uterus, CLUSTER.palpation_of_cervix and CLUSTER.palpation_of_fetus can be nested in this slot or within each other to represent the specific  requirements of clinicians working in the obstetric domains - content, priorities and level of detail will differ depending on clinical context, professional background and specialty.">
 				>
 				["at0006"] = <
 					text = <"Interpretation">
-					description = <"Single word, phrase or brief description represents the clinical meaning and significance of the physical examination findings.">
-					comment = <"Coding with a terminology is preferred, if possible. For example, normal examination or chronic otitis media.">
+					description = <"Single word, phrase or brief description which represents the clinical meaning and significance of the physical examination findings.">
+					comment = <"Coding with a terminology is preferred, if possible. For example, 'normal examination' or 'tympanic membrane perforation'. ">
 				>
 				["at0007"] = <
 					text = <"Tree">
 					description = <"@ internal @">
 				>
 				["at0008"] = <
-					text = <"Confounding Factors">
+					text = <"Confounding factors">
 					description = <"Description of any incidental factors that may have contributed to the physical examination findings.">
 				>
 				["at0009"] = <
@@ -311,7 +328,12 @@ ontology
 				>
 				["at0011"] = <
 					text = <"Comment">
-					description = <"Any additional narrative comment not covered by other elements.">
+					description = <"Additional narrative about the overall physical examination findings not captured in other fields.">
+				>
+				["at0012"] = <
+					text = <"Extension">
+					description = <"Additional information required to capture local content or to align with other reference models/formalisms.">
+					comment = <"e.g. Local information requirements or additional metadata to align with FHIR or CIMI equivalents.">
 				>
 			>
 		>
@@ -326,8 +348,8 @@ ontology
 					description = <"*@ internal @(en)">
 				>
 				["at0002"] = <
-					text = <"Cualquier evento">
-					description = <"Default, punto inespecificado en el tiempo o intervalo del evento que puede ser definido de manera explicita en una plantilla o en el tiempo de ejecucion ">
+					text = <"*Any event(en)">
+					description = <"*Unspecified point in time which may be explicitly defined in a template or at run-time.(en)">
 				>
 				["at0003"] = <
 					text = <"*Tree(en)">
@@ -339,8 +361,9 @@ ontology
 					comment = <"Puede ser utilizado para registrar un resumen narrativo del examen clinico completo o aspectos claves de los hallazgos del examen clinico, que sera apoyado con data estructurada. Los detalles de hallazgos especificos estructurados pueden ser incluidos utilizando arquetipos CLUSTER en el espacio \"Detalles del Examen\". Este elemento de data puede ser utilizado para capturar data legada que no esta disponble en un formato estructurado.">
 				>
 				["at0005"] = <
-					text = <"Detalle del Examen">
-					description = <"Detalles estructurados del examen fisico">
+					text = <"*Examination Detail(en)">
+					description = <"*Structured details of the physical examination.(en)">
+					comment = <"*Detailed clinical findings will be recorded as CLUSTER archetypes which can then be nested within this SLOT to represent the fractal nature of clinical examination and allow for variation in clinician's requirements for examination documentation. For example: CLUSTER.palpation_of_uterus, CLUSTER.palpation_of_cervix and CLUSTER.palpation_of_fetus can be nested in this slot or within each other to represent the specific  requirements of clinicians working in the obstetric domains - content, priorities and level of detail will differ depending on clinical context, professional background and specialty.(en)">
 				>
 				["at0006"] = <
 					text = <"Interpretacion">
@@ -366,6 +389,10 @@ ontology
 				["at0011"] = <
 					text = <"Comentario">
 					description = <"Cualquier comentario narrativo adicional no incluido por otros elementos">
+				>
+				["at0012"] = <
+					text = <"*Cluster(en)">
+					description = <"**(en)">
 				>
 			>
 		>
