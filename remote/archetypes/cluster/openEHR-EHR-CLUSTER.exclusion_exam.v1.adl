@@ -1,0 +1,79 @@
+﻿archetype (adl_version=1.4)
+	openEHR-EHR-CLUSTER.exclusion_exam.v1
+
+concept
+	[at0000]	-- Exclusion of examination
+language
+	original_language = <[ISO_639-1::en]>
+description
+	original_author = <
+		["name"] = <"Heather Leslie">
+		["organisation"] = <"Ocean Informatics">
+		["email"] = <"heather.leslie@oceaninformatics.com">
+		["date"] = <"2015-01-14">
+	>
+	details = <
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To record a positive statement that the physical examination, or a specified part of the physical examination, was not performed.">
+			use = <"Use to record in a clinical examination that the physical examination, or a specified part of the physical examination, was not performed, with an optional statement about the reason for the non-performance.
+
+This archetype has been designed to be used to allow recording of 'no examination was done' at multiple levels of the examination process. Inserting this archetype into the Examination Detail' SLOT within OBSERVATION.exam allows for recording that no physical examination was performed. It follows that inserting this archeytpe into the Details SLOT of any examination-related CLUSTER archetype allows for recording that no physical examination was performed only for the part of examination specified by that archetype.
+
+In particular, this archetype has specifically been designed to avoid the need to use flags or terminology to express negation about a record of physical examination within the health record.
+
+It is reasonable to assume that if the examination was partially performed, then only data about the examination performed will be recorded. If the examination was difficult to perform, for example an uncooperative patient, then this information can be included in the overall 'Confounding Factors' data element in the root OBSERVATION.exam archetype or in the 'Comment' data element in each examination CLUSTER archetype.">
+			keywords = <"exclusion", "exam", "examination", "done", "performed">
+			misuse = <"Not to be used to record positive statements about findings on physical examination.
+
+Not to be used to record the exclusion or absence of adverse reactions, family history, medication use, procedures, problems or diagnoses in the subject etc - use specific specialisations of this archetype for this purpose.">
+		>
+	>
+	lifecycle_state = <"AuthorDraft">
+	other_contributors = <>
+	other_details = <
+		["current_contact"] = <"Heather Leslie, Ocean Informatics, heather.leslie@oceaninformatics.com">
+		["MD5-CAM-1.0.1"] = <"7413F9B724C5B3FC149FA5D0EE9A6FAA">
+	>
+
+definition
+	CLUSTER[at0000] matches {	-- Exclusion of examination
+		items cardinality matches {1..*; unordered} matches {
+			ELEMENT[at0001] occurrences matches {0..1} matches {	-- Examination not done
+				value matches {
+					DV_BOOLEAN matches {
+						value matches {True}
+					}
+				}
+			}
+			ELEMENT[at0002] occurrences matches {0..1} matches {	-- Reason
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+		}
+	}
+
+
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"Exclusion of examination">
+					description = <"Positive statement to record that the physical examination, or a specified part of the physical examination, was not performed.">
+				>
+				["at0001"] = <
+					text = <"Examination not done">
+					description = <"Statement to explicity record that the examination was not performed.">
+					comment = <"Record as True if the examination was not performed.">
+				>
+				["at0002"] = <
+					text = <"Reason">
+					description = <"Reason for the 'not done' statement.">
+					comment = <"For example: patient factors, equipment factors, time constraints.">
+				>
+			>
+		>
+	>
