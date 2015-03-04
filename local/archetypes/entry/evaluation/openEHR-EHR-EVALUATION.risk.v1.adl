@@ -58,7 +58,7 @@ description
 	other_details = <
 		["current_contact"] = <"Heather Leslie, Ocean Informatics, heather.leslie@oceaninformatics.com">
 		["references"] = <"Health Risk, draft archetype, NEHTA Clinical Knowledge Manager [Internet]. Australia: National eHealth Transition Authority. Authored: 23 Apr 2006. Available at: http://dcm.nehta.org.au/ckm/#showArchetype_1013.1.1276 (accessed 04 Mar 2015). Archetype originated from the openEHR CKM.">
-		["MD5-CAM-1.0.1"] = <"61502B47D9EF8726911235C93284C015">
+		["MD5-CAM-1.0.1"] = <"EE7FCCFF968EB265F80A313E7B026C1E">
 	>
 
 definition
@@ -66,22 +66,31 @@ definition
 		data matches {
 			ITEM_TREE[at0001] matches {	-- structure
 				items cardinality matches {1..*; ordered} matches {
-					ELEMENT[at0002] matches {	-- Risk
+					ELEMENT[at0002] matches {	-- Health risk
 						value matches {
 							DV_TEXT matches {*}
 						}
 					}
-					ELEMENT[at0013] occurrences matches {0..*} matches {	-- Risk factor
-						value matches {
-							DV_TEXT matches {*}
+					CLUSTER[at0016] occurrences matches {0..*} matches {	-- Identified risk factor
+						items cardinality matches {1..*; unordered} matches {
+							ELEMENT[at0013] occurrences matches {0..*} matches {	-- Risk factor
+								value matches {
+									DV_TEXT matches {*}
+								}
+							}
+							ELEMENT[at0014] occurrences matches {0..1} matches {	-- Description
+								value matches {
+									DV_TEXT matches {*}
+								}
+							}
+							ELEMENT[at0012] occurrences matches {0..1} matches {	-- Link to evidence
+								value matches {
+									DV_URI matches {*}
+								}
+							}
 						}
 					}
-					ELEMENT[at0012] occurrences matches {0..1} matches {	-- Link to evidence
-						value matches {
-							DV_URI matches {*}
-						}
-					}
-					ELEMENT[at0003] occurrences matches {0..1} matches {	-- Risk category
+					ELEMENT[at0003] occurrences matches {0..1} matches {	-- Risk assessment
 						value matches {
 							DV_CODED_TEXT matches {
 								defining_code matches {
@@ -95,11 +104,6 @@ definition
 						}
 					}
 					ELEMENT[at0004] occurrences matches {0..1} matches {	-- Rationale
-						value matches {
-							DV_TEXT matches {*}
-						}
-					}
-					ELEMENT[at0014] occurrences matches {0..1} matches {	-- Risk description
 						value matches {
 							DV_TEXT matches {*}
 						}
@@ -138,12 +142,12 @@ ontology
 					description = <"*@ internal @(en)">
 				>
 				["at0002"] = <
-					text = <"*Risk(en)">
-					description = <"*Identified potential future disease, condition or health issue.(en)">
+					text = <"*Health risk(en)">
+					description = <"*Name of the identified potential future disease, condition or health issue.(en)">
 				>
 				["at0003"] = <
-					text = <"*Risk category(en)">
-					description = <"*The likelihood that this person will be affected by this disease, condition or health issue in the future.(en)">
+					text = <"*Risk assessment(en)">
+					description = <"*Evaluation of the likelihood that the subject will be affected by the disease, condition or health issue in the future.(en)">
 				>
 				["at0004"] = <
 					text = <"*Rationale(en)">
@@ -180,15 +184,19 @@ ontology
 				>
 				["at0013"] = <
 					text = <"*Risk factor(en)">
-					description = <"*Known risk factor that may contribute to the assessment of risk.(en)">
+					description = <"*Name of the identified risk factor.(en)">
 				>
 				["at0014"] = <
-					text = <"*Risk description(en)">
-					description = <"*Narrative description about the risk assessment.(en)">
+					text = <"*Description(en)">
+					description = <"*Narrative description about the risk factor.(en)">
 				>
 				["at0015"] = <
 					text = <"*Comment(en)">
 					description = <"*Additional narrative about the risk assessment not captured in other fields.(en)">
+				>
+				["at0016"] = <
+					text = <"*Identified risk factor(en)">
+					description = <"*Details of each identified risk factor.(en)">
 				>
 			>
 		>
@@ -203,12 +211,12 @@ ontology
 					description = <"@ internal @">
 				>
 				["at0002"] = <
-					text = <"*Risk(en)">
-					description = <"*Identified potential future disease, condition or health issue.(en)">
+					text = <"*Health risk(en)">
+					description = <"*Name of the identified potential future disease, condition or health issue.(en)">
 				>
 				["at0003"] = <
-					text = <"*Risk category(en)">
-					description = <"*The likelihood that this person will be affected by this disease, condition or health issue in the future.(en)">
+					text = <"*Risk assessment(en)">
+					description = <"*Evaluation of the likelihood that the subject will be affected by the disease, condition or health issue in the future.(en)">
 				>
 				["at0004"] = <
 					text = <"*Rationale(en)">
@@ -245,15 +253,19 @@ ontology
 				>
 				["at0013"] = <
 					text = <"*Risk factor(en)">
-					description = <"*Known risk factor that may contribute to the assessment of risk.(en)">
+					description = <"*Name of the identified risk factor.(en)">
 				>
 				["at0014"] = <
-					text = <"*Risk description(en)">
-					description = <"*Narrative description about the risk assessment.(en)">
+					text = <"*Description(en)">
+					description = <"*Narrative description about the risk factor.(en)">
 				>
 				["at0015"] = <
 					text = <"*Comment(en)">
 					description = <"*Additional narrative about the risk assessment not captured in other fields.(en)">
+				>
+				["at0016"] = <
+					text = <"*Identified risk factor(en)">
+					description = <"*Details of each identified risk factor.(en)">
 				>
 			>
 		>
@@ -268,12 +280,12 @@ ontology
 					description = <"@ internal @">
 				>
 				["at0002"] = <
-					text = <"Risk">
-					description = <"Identified potential future disease, condition or health issue.">
+					text = <"Health risk">
+					description = <"Name of the identified potential future disease, condition or health issue.">
 				>
 				["at0003"] = <
-					text = <"Risk category">
-					description = <"The likelihood that this person will be affected by this disease, condition or health issue in the future.">
+					text = <"Risk assessment">
+					description = <"Evaluation of the likelihood that the subject will be affected by the disease, condition or health issue in the future.">
 				>
 				["at0004"] = <
 					text = <"Rationale">
@@ -310,15 +322,19 @@ ontology
 				>
 				["at0013"] = <
 					text = <"Risk factor">
-					description = <"Known risk factor that may contribute to the assessment of risk.">
+					description = <"Name of the identified risk factor.">
 				>
 				["at0014"] = <
-					text = <"Risk description">
-					description = <"Narrative description about the risk assessment.">
+					text = <"Description">
+					description = <"Narrative description about the risk factor.">
 				>
 				["at0015"] = <
 					text = <"Comment">
 					description = <"Additional narrative about the risk assessment not captured in other fields.">
+				>
+				["at0016"] = <
+					text = <"Identified risk factor">
+					description = <"Details of each identified risk factor.">
 				>
 			>
 		>
