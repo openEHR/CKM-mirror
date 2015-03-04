@@ -2,7 +2,7 @@
 	openEHR-EHR-OBSERVATION.urinalysis.v1
 
 concept
-	[at0000]	-- Urinalysis
+	[at0000]	-- Urinalysis POCT
 language
 	original_language = <[ISO_639-1::en]>
 	translations = <
@@ -62,13 +62,11 @@ description
 		>
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"To record the results of a qualitative and semi-quantitative test array performed on a sample of urine, using reagent test strips.">
-			use = <"Use to record the results of a qualitative and semi-quantitative test array performed on a sample of urine, using reagent test strips. On exposure to urine, chemical reagent pads on the test strip change colour and the test result is read by visual comparison to a color chart at specified times after exposure.
+			purpose = <"To record the results of a qualitative and semi-quantitative test array using reagent test strips to indicate possible abnormalities in a sample of urine, and usually performed by clinicians at the point of care.">
+			use = <"Use to record the results of a qualitative and semi-quantitative test array performed on a sample of urine, using reagent test strips. On exposure to urine, chemical pads on the reagent test strip change colour and the test result is read by visual comparison to a color chart at specified times after exposure or by an automated device.
 
-Different commercial products carry a variety of test /reagent pads. Not all reagents need to be recorded at any one time, only those relevant to the test strip being used. The test strip used can be recorded utilising the 'Device' archetype within the 'Test Strip Used' slot.
-
-This archetype is heavily influenced by the commonly available Multistix test strips in Australia but is intended to be generically applicable, as much as is possible. If requirements for other parameters become apparent to meet the requirements for other test strips then product-specific urinalysis archetypes may need to be developed.">
-			keywords = <"urine", "test", "dip-stick", "strip", "multistix">
+Different commercial products carry a variety of test /reagent pads. This archetype is heavily influenced by the commonly available Multistix test strips in Australia, recording ten commonly used analytes, but is intended to be generically applicable. If requirements for other parameters become apparent to meet the requirements for other test strips then product-specific urinalysis archetypes may need to be developed.">
+			keywords = <"urine", "test", "dip-stick", "strip", "multistix", "urinalysis", "analysis">
 			misuse = <"Not to be used for recording urine microscopy or qualitative test results. Use the OBSERVATION.pathology_test family of archetypes for this purpose.">
 			copyright = <"© openEHR Foundation">
 		>
@@ -91,17 +89,21 @@ This archetype is heavily influenced by the commonly available Multistix test st
 		>
 	>
 	lifecycle_state = <"CommitteeDraft">
-	other_contributors = <"Sandra Bertram, Ascribe, Australia", "Stephen Chu, NEHTA, Australia", "Christian Ghan, The Chris O'Brien Lifehouse at RPA, Australia", "Sam Heard, Ocean Informatics, Australia", "Oliver Hosking, Remote Health NT, Australia", "Heather Leslie, Ocean Informatics, Australia (Editor)", "Chunlan Ma, Ocean Informatics, Australia", "Ian McNicoll, freshEHR Clinical Informatics, United Kingdom (Editor)", "Mona Saleh (Translator)", "Rosalie Schultz, Anyinginyi Health Aboriginal Corporation, Australia", "Fabian Schwarz, NT Health, Australia", "Gary Sinclair, NT DoH, Australia">
+	other_contributors = <"Tomas Alme, DIPS, Norway", "Koray Atalag, University of Auckland, New Zealand", "Sandra Bertram, Ascribe, Australia", "Rong Chen, Cambio Healthcare Systems, Sweden", "Stephen Chu, NEHTA, Australia", "Christian Ghan, The Chris O'Brien Lifehouse at RPA, Australia", "Heather Grain, Llewelyn Grain Informatics, Australia", "Sam Heard, Ocean Informatics, Australia", "Oliver Hosking, Remote Health NT, Australia", "Lars Karlsen, DIPS ASA, Norway", "Sabine Leh, Haukeland University Hospital, Department of Pathology, Norway", "Heather Leslie, Ocean Informatics, Australia (Editor)", "Chunlan Ma, Ocean Informatics, Australia", "Ian McNicoll, freshEHR Clinical Informatics, United Kingdom (Editor)", "Mona Saleh (Translator)", "Rosalie Schultz, Anyinginyi Health Aboriginal Corporation, Australia", "Fabian Schwarz, NT Health, Australia", "Gary Sinclair, NT DoH, Australia", "Micaela Thierley, Helse Bergen, Norway", "Lin Zhang, BIPH, China">
 	other_details = <
 		["current_contact"] = <"Heather Leslie, Ocean Informatics, heather.leslie@oceaninformatics.com">
 		["references"] = <"Urinalysis, unpublished archetype, National eHealth Transition Authority. NEHTA Clinical Knowledge Manager [Internet]. Authored: 08 Sep 2006. Available at: http://dcm.nehta.org.au/ckm/#showArchetype_1013.1.1071 (accessed Jan 23, 2015). Forked from original archetype on openEHR CKM to NEHTA CKM on 16 Jan 2012.
 
+Urine Dipstick Multistix (R) 10SG, Johns Hopkins Hospital. The Johns Hopkins Hospital Point-of-Care Testing Program [Internet]. Revised: Oct 2010. Available at: http://pathology.jhu.edu/department/staff/poct/selfstudy/urinedipstick-10sg.pdf (Accessed Mar 4, 2015).
+
+Multistix 9 (R) and Uristix (R) Urinalysis, UCSF Medical Center. Point of Care Testing [Internet]. Revision 2, version 1: Jun 2013. Available at: http://labmed.ucsf.edu/labmanual/mftlng-mtzn/dnld/poct-MultistixUristix.pdf (Accessed Mar 4, 2015).
+
 Various product labels.">
-		["MD5-CAM-1.0.1"] = <"867E5BEB4E2A95749604E4FBF8662DAC">
+		["MD5-CAM-1.0.1"] = <"2CF9846D732BB6EB4E3693D94E636F9F">
 	>
 
 definition
-	OBSERVATION[at0000] matches {	-- Urinalysis
+	OBSERVATION[at0000] matches {	-- Urinalysis POCT
 		data matches {
 			HISTORY[at0001] matches {	-- Event Series
 				events cardinality matches {1..*; unordered} matches {
@@ -113,18 +115,18 @@ definition
 										value matches {
 											1|[local::at0115], 	-- Negative
 											2|[local::at0116], 	-- Trace
-											3|[local::at0117], 	-- +
-											4|[local::at0118], 	-- ++
-											5|[local::at0119], 	-- +++
-											6|[local::at0120]  	-- ++++
+											3|[local::at0117], 	-- 1+
+											4|[local::at0118], 	-- 2+
+											5|[local::at0119], 	-- 3+
+											6|[local::at0120]  	-- 4+
 										}
 									}
 									ELEMENT[at0062] occurrences matches {0..1} matches {	-- Bilirubin
 										value matches {
 											1|[local::at0121], 	-- Negative
-											2|[local::at0122], 	-- +
-											3|[local::at0123], 	-- ++
-											4|[local::at0124]  	-- +++
+											2|[local::at0122], 	-- 1+
+											3|[local::at0123], 	-- 2+
+											4|[local::at0124]  	-- 3+
 										}
 									}
 									ELEMENT[at0037] occurrences matches {0..1} matches {	-- Ketones
@@ -137,7 +139,7 @@ definition
 											6|[local::at0114]  	-- Large+
 										}
 									}
-									ELEMENT[at0151] occurrences matches {0..1} matches {	-- Specific Gravity
+									ELEMENT[at0151] occurrences matches {0..1} matches {	-- Specific gravity
 										value matches {
 											1|[local::at0152], 	-- 1.000
 											2|[local::at0153], 	-- 1.005
@@ -154,9 +156,9 @@ definition
 											2|[local::at0103], 	-- Non-haemolysed Trace
 											3|[local::at0104], 	-- Non-haemolysed Moderate
 											4|[local::at0105], 	-- Haemolysed Trace
-											5|[local::at0106], 	-- +
-											6|[local::at0107], 	-- ++
-											7|[local::at0108]  	-- +++
+											5|[local::at0106], 	-- 1+
+											6|[local::at0107], 	-- 2+
+											7|[local::at0108]  	-- 3+
 										}
 									}
 									ELEMENT[at0126] occurrences matches {0..1} matches {	-- pH
@@ -178,10 +180,10 @@ definition
 										value matches {
 											1|[local::at0096], 	-- Negative
 											2|[local::at0097], 	-- Trace
-											3|[local::at0098], 	-- +
-											4|[local::at0099], 	-- ++
-											5|[local::at0100], 	-- +++
-											6|[local::at0101]  	-- ++++
+											3|[local::at0098], 	-- 1+
+											4|[local::at0099], 	-- 2+
+											5|[local::at0100], 	-- 3+
+											6|[local::at0101]  	-- 4+
 										}
 									}
 									ELEMENT[at0056] occurrences matches {0..1} matches {	-- Urobilinogen
@@ -203,16 +205,16 @@ definition
 										value matches {
 											1|[local::at0135], 	-- Negative
 											2|[local::at0136], 	-- Trace
-											3|[local::at0137], 	-- +
-											4|[local::at0138], 	-- ++
-											5|[local::at0139]  	-- +++
+											3|[local::at0137], 	-- 1+
+											4|[local::at0138], 	-- 2+
+											5|[local::at0139]  	-- 3+
 										}
 									}
-									allow_archetype CLUSTER[at0182] occurrences matches {0..*} matches {	-- Urine Description
+									allow_archetype CLUSTER[at0182] occurrences matches {0..*} matches {	-- Additional details
 										include
 											archetype_id/value matches {/.*/}
 									}
-									ELEMENT[at0181] occurrences matches {0..1} matches {	-- Clinical Interpretation
+									ELEMENT[at0181] occurrences matches {0..*} matches {	-- Clinical interpretation
 										value matches {
 											DV_TEXT matches {*}
 										}
@@ -221,6 +223,10 @@ definition
 										value matches {
 											DV_TEXT matches {*}
 										}
+									}
+									allow_archetype CLUSTER[at0185] occurrences matches {0..*} matches {	-- Exam not done
+										include
+											archetype_id/value matches {/openEHR-EHR-CLUSTER\.exclusion_exam(-[a-zA-Z0-9_]+)*\.v1/}
 									}
 								}
 							}
@@ -240,6 +246,10 @@ definition
 						include
 							archetype_id/value matches {/openEHR-EHR-CLUSTER\.device(-[a-zA-Z0-9_]+)*\.v1/}
 					}
+					allow_archetype CLUSTER[at0184] occurrences matches {0..*} matches {	-- Extension
+						include
+							archetype_id/value matches {/.*/}
+					}
 				}
 			}
 		}
@@ -252,8 +262,8 @@ ontology
 		["ar-sy"] = <
 			items = <
 				["at0000"] = <
-					text = <"*Urinalysis(en)">
-					description = <"*Qualitative and semi-quantitative test array to indicate possible abnormalities in a sample of urine, using reagent test strips.(en)">
+					text = <"*Urinalysis POCT(en)">
+					description = <"*Qualitative and semi-quantitative test array using reagent test strips to indicate possible abnormalities in a sample of urine, often performed as part of Point of Care Testing (POCT).(en)">
 				>
 				["at0001"] = <
 					text = <"*Event Series(en)">
@@ -270,7 +280,7 @@ ontology
 				["at0030"] = <
 					text = <"*Comment(en)">
 					description = <"*Narrative about the urinalysis not captured in other fields.(en)">
-					comment = <"*For example: the freshness or small volume of the urine sample, method of collection.(en)">
+					comment = <"*For example: the freshness or small volume of the urine sample, method of collection or any problems with testing.(en)">
 				>
 				["at0032"] = <
 					text = <"الدم">
@@ -317,19 +327,19 @@ ontology
 					description = <"*Trace of protein detected.(en)">
 				>
 				["at0098"] = <
-					text = <"*+(en)">
+					text = <"*1+(en)">
 					description = <"*Amount equivalent to 30mg/dL (or 0.3 g/L) detected.(en)">
 				>
 				["at0099"] = <
-					text = <"*++(en)">
+					text = <"*2+(en)">
 					description = <"*Amount equivalent to 100mg/dL (or 1.0 g/L) detected.(en)">
 				>
 				["at0100"] = <
-					text = <"*+++(en)">
+					text = <"*3+(en)">
 					description = <"*Amount equivalent to 300mg/dL (or 3.0 g/L) detected.(en)">
 				>
 				["at0101"] = <
-					text = <"*++++(en)">
+					text = <"*4+(en)">
 					description = <"*Amount equivalent to >2000mg/dL (or >20 g/L) detected.(en)">
 				>
 				["at0102"] = <
@@ -349,15 +359,15 @@ ontology
 					description = <"*Trace of haemolysed blood detected.(en)">
 				>
 				["at0106"] = <
-					text = <"*+(en)">
+					text = <"*1+(en)">
 					description = <"*Small amount of blood detected.(en)">
 				>
 				["at0107"] = <
-					text = <"*++(en)">
+					text = <"*2+(en)">
 					description = <"*Moderate amount of blood detected.(en)">
 				>
 				["at0108"] = <
-					text = <"*+++(en)">
+					text = <"*3+(en)">
 					description = <"*Large amount of blood detected.(en)">
 				>
 				["at0109"] = <
@@ -393,19 +403,19 @@ ontology
 					description = <"*Amount equivalent to 1/10 g/dl (100mg/dL or 5 mmol/L) detected.(en)">
 				>
 				["at0117"] = <
-					text = <"*+(en)">
+					text = <"*1+(en)">
 					description = <"*Amount equivalent to 1/4 g/dL (250 mg/dL or 15 mmol/L) detected.(en)">
 				>
 				["at0118"] = <
-					text = <"*++(en)">
+					text = <"*2+(en)">
 					description = <"*Amount equivalent to 1/2 g/dl (500mg/dL or 30 mmol/L) detected.(en)">
 				>
 				["at0119"] = <
-					text = <"*+++(en)">
+					text = <"*3+(en)">
 					description = <"*Amount equivalent to 1 g/dl (1000mg/dL or 60 mmol/L) detected.(en)">
 				>
 				["at0120"] = <
-					text = <"*++++(en)">
+					text = <"*4+(en)">
 					description = <"*Amount equivalent >2 g/dl (>2000mg/dL or >120 mmol/L) detected.(en)">
 				>
 				["at0121"] = <
@@ -413,15 +423,15 @@ ontology
 					description = <"*No bilirubin detected.(en)">
 				>
 				["at0122"] = <
-					text = <"*+(en)">
+					text = <"*1+(en)">
 					description = <"*Small amount detected.(en)">
 				>
 				["at0123"] = <
-					text = <"*++(en)">
+					text = <"*2+(en)">
 					description = <"*Moderate amount detected.(en)">
 				>
 				["at0124"] = <
-					text = <"*+++(en)">
+					text = <"*3+(en)">
 					description = <"*Large amount detected.(en)">
 				>
 				["at0126"] = <
@@ -469,19 +479,19 @@ ontology
 					description = <"*Trace detected.(en)">
 				>
 				["at0137"] = <
-					text = <"*+(en)">
+					text = <"*1+(en)">
 					description = <"*Small amount detected.(en)">
 				>
 				["at0138"] = <
-					text = <"*++(en)">
+					text = <"*2+(en)">
 					description = <"*Moderate amount detected.(en)">
 				>
 				["at0139"] = <
-					text = <"*+++(en)">
+					text = <"*3+(en)">
 					description = <"*Large amount detected.(en)">
 				>
 				["at0151"] = <
-					text = <"*Specific Gravity(en)">
+					text = <"*Specific gravity(en)">
 					description = <"*Measurement of the concentration of substances dissolved (solutes) in the urine sample relative to distilled water.(en)">
 				>
 				["at0152"] = <
@@ -557,25 +567,34 @@ ontology
 					description = <"*Details about the reagent strips used.(en)">
 				>
 				["at0181"] = <
-					text = <"*Clinical Interpretation(en)">
+					text = <"*Clinical interpretation(en)">
 					description = <"*Single word, phrase or brief description represents the clinical meaning and significance of the urinalysis findings.(en)">
 					comment = <"*Comment: Coding with a terminology is preferred, where possible. For example: normal urinalysis; mild proteinuria; or trace of blood. Multiple statements are allowed.(en)">
 				>
 				["at0182"] = <
-					text = <"*Urine Description(en)">
-					description = <"*Additional details about the urine being tested, including macroscopic appearance.(en)">
+					text = <"*Additional details(en)">
+					description = <"*Additional details about the point of care urinalysis, including macroscopic appearance or other tests not currently captured in the structured data.(en)">
 				>
 				["at0183"] = <
 					text = <"*Device(en)">
-					description = <"*Details about a device used to test the reagent strips.(en)">
+					description = <"*Details about the device used to automatically read the reagent strips.(en)">
+				>
+				["at0184"] = <
+					text = <"*Extension(en)">
+					description = <"*Additional information required to capture local content or to align with other reference models/formalisms.(en)">
+					comment = <"*For example:  e.g. Local information requirements or additional metadata to align with FHIR or CIMI equivalents.(en)">
+				>
+				["at0185"] = <
+					text = <"*Exam not done(en)">
+					description = <"*Details to explicitly record that POC urinalysis was not performed.(en)">
 				>
 			>
 		>
 		["zh-cn"] = <
 			items = <
 				["at0000"] = <
-					text = <"*Urinalysis(en)">
-					description = <"*Qualitative and semi-quantitative test array to indicate possible abnormalities in a sample of urine, using reagent test strips.(en)">
+					text = <"*Urinalysis POCT(en)">
+					description = <"*Qualitative and semi-quantitative test array using reagent test strips to indicate possible abnormalities in a sample of urine, often performed as part of Point of Care Testing (POCT).(en)">
 				>
 				["at0001"] = <
 					text = <"*Event Series(en)">
@@ -592,7 +611,7 @@ ontology
 				["at0030"] = <
 					text = <"*Comment(en)">
 					description = <"*Narrative about the urinalysis not captured in other fields.(en)">
-					comment = <"*For example: the freshness or small volume of the urine sample, method of collection.(en)">
+					comment = <"*For example: the freshness or small volume of the urine sample, method of collection or any problems with testing.(en)">
 				>
 				["at0032"] = <
 					text = <"血液">
@@ -639,19 +658,19 @@ ontology
 					description = <"*Trace of protein detected.(en)">
 				>
 				["at0098"] = <
-					text = <"*+(en)">
+					text = <"*1+(en)">
 					description = <"*Amount equivalent to 30mg/dL (or 0.3 g/L) detected.(en)">
 				>
 				["at0099"] = <
-					text = <"*++(en)">
+					text = <"*2+(en)">
 					description = <"*Amount equivalent to 100mg/dL (or 1.0 g/L) detected.(en)">
 				>
 				["at0100"] = <
-					text = <"*+++(en)">
+					text = <"*3+(en)">
 					description = <"*Amount equivalent to 300mg/dL (or 3.0 g/L) detected.(en)">
 				>
 				["at0101"] = <
-					text = <"*++++(en)">
+					text = <"*4+(en)">
 					description = <"*Amount equivalent to >2000mg/dL (or >20 g/L) detected.(en)">
 				>
 				["at0102"] = <
@@ -671,15 +690,15 @@ ontology
 					description = <"*Trace of haemolysed blood detected.(en)">
 				>
 				["at0106"] = <
-					text = <"*+(en)">
+					text = <"*1+(en)">
 					description = <"*Small amount of blood detected.(en)">
 				>
 				["at0107"] = <
-					text = <"*++(en)">
+					text = <"*2+(en)">
 					description = <"*Moderate amount of blood detected.(en)">
 				>
 				["at0108"] = <
-					text = <"*+++(en)">
+					text = <"*3+(en)">
 					description = <"*Large amount of blood detected.(en)">
 				>
 				["at0109"] = <
@@ -715,19 +734,19 @@ ontology
 					description = <"*Amount equivalent to 1/10 g/dl (100mg/dL or 5 mmol/L) detected.(en)">
 				>
 				["at0117"] = <
-					text = <"*+(en)">
+					text = <"*1+(en)">
 					description = <"*Amount equivalent to 1/4 g/dL (250 mg/dL or 15 mmol/L) detected.(en)">
 				>
 				["at0118"] = <
-					text = <"*++(en)">
+					text = <"*2+(en)">
 					description = <"*Amount equivalent to 1/2 g/dl (500mg/dL or 30 mmol/L) detected.(en)">
 				>
 				["at0119"] = <
-					text = <"*+++(en)">
+					text = <"*3+(en)">
 					description = <"*Amount equivalent to 1 g/dl (1000mg/dL or 60 mmol/L) detected.(en)">
 				>
 				["at0120"] = <
-					text = <"*++++(en)">
+					text = <"*4+(en)">
 					description = <"*Amount equivalent >2 g/dl (>2000mg/dL or >120 mmol/L) detected.(en)">
 				>
 				["at0121"] = <
@@ -735,15 +754,15 @@ ontology
 					description = <"*No bilirubin detected.(en)">
 				>
 				["at0122"] = <
-					text = <"*+(en)">
+					text = <"*1+(en)">
 					description = <"*Small amount detected.(en)">
 				>
 				["at0123"] = <
-					text = <"*++(en)">
+					text = <"*2+(en)">
 					description = <"*Moderate amount detected.(en)">
 				>
 				["at0124"] = <
-					text = <"*+++(en)">
+					text = <"*3+(en)">
 					description = <"*Large amount detected.(en)">
 				>
 				["at0126"] = <
@@ -791,19 +810,19 @@ ontology
 					description = <"*Trace detected.(en)">
 				>
 				["at0137"] = <
-					text = <"*+(en)">
+					text = <"*1+(en)">
 					description = <"*Small amount detected.(en)">
 				>
 				["at0138"] = <
-					text = <"*++(en)">
+					text = <"*2+(en)">
 					description = <"*Moderate amount detected.(en)">
 				>
 				["at0139"] = <
-					text = <"*+++(en)">
+					text = <"*3+(en)">
 					description = <"*Large amount detected.(en)">
 				>
 				["at0151"] = <
-					text = <"*Specific Gravity(en)">
+					text = <"*Specific gravity(en)">
 					description = <"*Measurement of the concentration of substances dissolved (solutes) in the urine sample relative to distilled water.(en)">
 				>
 				["at0152"] = <
@@ -879,25 +898,34 @@ ontology
 					description = <"*Details about the reagent strips used.(en)">
 				>
 				["at0181"] = <
-					text = <"*Clinical Interpretation(en)">
+					text = <"*Clinical interpretation(en)">
 					description = <"*Single word, phrase or brief description represents the clinical meaning and significance of the urinalysis findings.(en)">
 					comment = <"*Comment: Coding with a terminology is preferred, where possible. For example: normal urinalysis; mild proteinuria; or trace of blood. Multiple statements are allowed.(en)">
 				>
 				["at0182"] = <
-					text = <"*Urine Description(en)">
-					description = <"*Additional details about the urine being tested, including macroscopic appearance.(en)">
+					text = <"*Additional details(en)">
+					description = <"*Additional details about the point of care urinalysis, including macroscopic appearance or other tests not currently captured in the structured data.(en)">
 				>
 				["at0183"] = <
 					text = <"*Device(en)">
-					description = <"*Details about a device used to test the reagent strips.(en)">
+					description = <"*Details about the device used to automatically read the reagent strips.(en)">
+				>
+				["at0184"] = <
+					text = <"*Extension(en)">
+					description = <"*Additional information required to capture local content or to align with other reference models/formalisms.(en)">
+					comment = <"*For example:  e.g. Local information requirements or additional metadata to align with FHIR or CIMI equivalents.(en)">
+				>
+				["at0185"] = <
+					text = <"*Exam not done(en)">
+					description = <"*Details to explicitly record that POC urinalysis was not performed.(en)">
 				>
 			>
 		>
 		["en"] = <
 			items = <
 				["at0000"] = <
-					text = <"Urinalysis">
-					description = <"Qualitative and semi-quantitative test array to indicate possible abnormalities in a sample of urine, using reagent test strips.">
+					text = <"Urinalysis POCT">
+					description = <"Qualitative and semi-quantitative test array using reagent test strips to indicate possible abnormalities in a sample of urine, often performed as part of Point of Care Testing (POCT).">
 				>
 				["at0001"] = <
 					text = <"Event Series">
@@ -914,7 +942,7 @@ ontology
 				["at0030"] = <
 					text = <"Comment">
 					description = <"Narrative about the urinalysis not captured in other fields.">
-					comment = <"For example: the freshness or small volume of the urine sample, method of collection.">
+					comment = <"For example: the freshness or small volume of the urine sample, method of collection or any problems with testing.">
 				>
 				["at0032"] = <
 					text = <"Blood">
@@ -961,19 +989,19 @@ ontology
 					description = <"Trace of protein detected.">
 				>
 				["at0098"] = <
-					text = <"+">
+					text = <"1+">
 					description = <"Amount equivalent to 30mg/dL (or 0.3 g/L) detected.">
 				>
 				["at0099"] = <
-					text = <"++">
+					text = <"2+">
 					description = <"Amount equivalent to 100mg/dL (or 1.0 g/L) detected.">
 				>
 				["at0100"] = <
-					text = <"+++">
+					text = <"3+">
 					description = <"Amount equivalent to 300mg/dL (or 3.0 g/L) detected.">
 				>
 				["at0101"] = <
-					text = <"++++">
+					text = <"4+">
 					description = <"Amount equivalent to >2000mg/dL (or >20 g/L) detected.">
 				>
 				["at0102"] = <
@@ -993,15 +1021,15 @@ ontology
 					description = <"Trace of haemolysed blood detected.">
 				>
 				["at0106"] = <
-					text = <"+">
+					text = <"1+">
 					description = <"Small amount of blood detected.">
 				>
 				["at0107"] = <
-					text = <"++">
+					text = <"2+">
 					description = <"Moderate amount of blood detected.">
 				>
 				["at0108"] = <
-					text = <"+++">
+					text = <"3+">
 					description = <"Large amount of blood detected.">
 				>
 				["at0109"] = <
@@ -1037,19 +1065,19 @@ ontology
 					description = <"Amount equivalent to 1/10 g/dl (100mg/dL or 5 mmol/L) detected.">
 				>
 				["at0117"] = <
-					text = <"+">
+					text = <"1+">
 					description = <"Amount equivalent to 1/4 g/dL (250 mg/dL or 15 mmol/L) detected.">
 				>
 				["at0118"] = <
-					text = <"++">
+					text = <"2+">
 					description = <"Amount equivalent to 1/2 g/dl (500mg/dL or 30 mmol/L) detected.">
 				>
 				["at0119"] = <
-					text = <"+++">
+					text = <"3+">
 					description = <"Amount equivalent to 1 g/dl (1000mg/dL or 60 mmol/L) detected.">
 				>
 				["at0120"] = <
-					text = <"++++">
+					text = <"4+">
 					description = <"Amount equivalent >2 g/dl (>2000mg/dL or >120 mmol/L) detected.">
 				>
 				["at0121"] = <
@@ -1057,15 +1085,15 @@ ontology
 					description = <"No bilirubin detected.">
 				>
 				["at0122"] = <
-					text = <"+">
+					text = <"1+">
 					description = <"Small amount detected.">
 				>
 				["at0123"] = <
-					text = <"++">
+					text = <"2+">
 					description = <"Moderate amount detected.">
 				>
 				["at0124"] = <
-					text = <"+++">
+					text = <"3+">
 					description = <"Large amount detected.">
 				>
 				["at0126"] = <
@@ -1113,19 +1141,19 @@ ontology
 					description = <"Trace detected.">
 				>
 				["at0137"] = <
-					text = <"+">
+					text = <"1+">
 					description = <"Small amount detected.">
 				>
 				["at0138"] = <
-					text = <"++">
+					text = <"2+">
 					description = <"Moderate amount detected.">
 				>
 				["at0139"] = <
-					text = <"+++">
+					text = <"3+">
 					description = <"Large amount detected.">
 				>
 				["at0151"] = <
-					text = <"Specific Gravity">
+					text = <"Specific gravity">
 					description = <"Measurement of the concentration of substances dissolved (solutes) in the urine sample relative to distilled water.">
 				>
 				["at0152"] = <
@@ -1201,25 +1229,34 @@ ontology
 					description = <"Details about the reagent strips used.">
 				>
 				["at0181"] = <
-					text = <"Clinical Interpretation">
+					text = <"Clinical interpretation">
 					description = <"Single word, phrase or brief description represents the clinical meaning and significance of the urinalysis findings.">
 					comment = <"Comment: Coding with a terminology is preferred, where possible. For example: normal urinalysis; mild proteinuria; or trace of blood. Multiple statements are allowed.">
 				>
 				["at0182"] = <
-					text = <"Urine Description">
-					description = <"Additional details about the urine being tested, including macroscopic appearance.">
+					text = <"Additional details">
+					description = <"Additional details about the point of care urinalysis, including macroscopic appearance or other tests not currently captured in the structured data.">
 				>
 				["at0183"] = <
 					text = <"Device">
-					description = <"Details about a device used to test the reagent strips.">
+					description = <"Details about the device used to automatically read the reagent strips.">
+				>
+				["at0184"] = <
+					text = <"Extension">
+					description = <"Additional information required to capture local content or to align with other reference models/formalisms.">
+					comment = <"For example:  e.g. Local information requirements or additional metadata to align with FHIR or CIMI equivalents.">
+				>
+				["at0185"] = <
+					text = <"Exam not done">
+					description = <"Details to explicitly record that POC urinalysis was not performed.">
 				>
 			>
 		>
 		["sk"] = <
 			items = <
 				["at0000"] = <
-					text = <"*Urinalysis(en)">
-					description = <"*Qualitative and semi-quantitative test array to indicate possible abnormalities in a sample of urine, using reagent test strips.(en)">
+					text = <"*Urinalysis POCT(en)">
+					description = <"*Qualitative and semi-quantitative test array using reagent test strips to indicate possible abnormalities in a sample of urine, often performed as part of Point of Care Testing (POCT).(en)">
 				>
 				["at0001"] = <
 					text = <"*Event Series(en)">
@@ -1236,7 +1273,7 @@ ontology
 				["at0030"] = <
 					text = <"*Comment(en)">
 					description = <"*Narrative about the urinalysis not captured in other fields.(en)">
-					comment = <"*For example: the freshness or small volume of the urine sample, method of collection.(en)">
+					comment = <"*For example: the freshness or small volume of the urine sample, method of collection or any problems with testing.(en)">
 				>
 				["at0032"] = <
 					text = <"Krv">
@@ -1283,19 +1320,19 @@ ontology
 					description = <"*Trace of protein detected.(en)">
 				>
 				["at0098"] = <
-					text = <"*+(en)">
+					text = <"*1+(en)">
 					description = <"*Amount equivalent to 30mg/dL (or 0.3 g/L) detected.(en)">
 				>
 				["at0099"] = <
-					text = <"*++(en)">
+					text = <"*2+(en)">
 					description = <"*Amount equivalent to 100mg/dL (or 1.0 g/L) detected.(en)">
 				>
 				["at0100"] = <
-					text = <"*+++(en)">
+					text = <"*3+(en)">
 					description = <"*Amount equivalent to 300mg/dL (or 3.0 g/L) detected.(en)">
 				>
 				["at0101"] = <
-					text = <"*++++(en)">
+					text = <"*4+(en)">
 					description = <"*Amount equivalent to >2000mg/dL (or >20 g/L) detected.(en)">
 				>
 				["at0102"] = <
@@ -1315,15 +1352,15 @@ ontology
 					description = <"*Trace of haemolysed blood detected.(en)">
 				>
 				["at0106"] = <
-					text = <"*+(en)">
+					text = <"*1+(en)">
 					description = <"*Small amount of blood detected.(en)">
 				>
 				["at0107"] = <
-					text = <"*++(en)">
+					text = <"*2+(en)">
 					description = <"*Moderate amount of blood detected.(en)">
 				>
 				["at0108"] = <
-					text = <"*+++(en)">
+					text = <"*3+(en)">
 					description = <"*Large amount of blood detected.(en)">
 				>
 				["at0109"] = <
@@ -1359,19 +1396,19 @@ ontology
 					description = <"*Amount equivalent to 1/10 g/dl (100mg/dL or 5 mmol/L) detected.(en)">
 				>
 				["at0117"] = <
-					text = <"*+(en)">
+					text = <"*1+(en)">
 					description = <"*Amount equivalent to 1/4 g/dL (250 mg/dL or 15 mmol/L) detected.(en)">
 				>
 				["at0118"] = <
-					text = <"*++(en)">
+					text = <"*2+(en)">
 					description = <"*Amount equivalent to 1/2 g/dl (500mg/dL or 30 mmol/L) detected.(en)">
 				>
 				["at0119"] = <
-					text = <"*+++(en)">
+					text = <"*3+(en)">
 					description = <"*Amount equivalent to 1 g/dl (1000mg/dL or 60 mmol/L) detected.(en)">
 				>
 				["at0120"] = <
-					text = <"*++++(en)">
+					text = <"*4+(en)">
 					description = <"*Amount equivalent >2 g/dl (>2000mg/dL or >120 mmol/L) detected.(en)">
 				>
 				["at0121"] = <
@@ -1379,15 +1416,15 @@ ontology
 					description = <"*No bilirubin detected.(en)">
 				>
 				["at0122"] = <
-					text = <"*+(en)">
+					text = <"*1+(en)">
 					description = <"*Small amount detected.(en)">
 				>
 				["at0123"] = <
-					text = <"*++(en)">
+					text = <"*2+(en)">
 					description = <"*Moderate amount detected.(en)">
 				>
 				["at0124"] = <
-					text = <"*+++(en)">
+					text = <"*3+(en)">
 					description = <"*Large amount detected.(en)">
 				>
 				["at0126"] = <
@@ -1435,19 +1472,19 @@ ontology
 					description = <"*Trace detected.(en)">
 				>
 				["at0137"] = <
-					text = <"*+(en)">
+					text = <"*1+(en)">
 					description = <"*Small amount detected.(en)">
 				>
 				["at0138"] = <
-					text = <"*++(en)">
+					text = <"*2+(en)">
 					description = <"*Moderate amount detected.(en)">
 				>
 				["at0139"] = <
-					text = <"*+++(en)">
+					text = <"*3+(en)">
 					description = <"*Large amount detected.(en)">
 				>
 				["at0151"] = <
-					text = <"*Specific Gravity(en)">
+					text = <"*Specific gravity(en)">
 					description = <"*Measurement of the concentration of substances dissolved (solutes) in the urine sample relative to distilled water.(en)">
 				>
 				["at0152"] = <
@@ -1523,25 +1560,34 @@ ontology
 					description = <"*Details about the reagent strips used.(en)">
 				>
 				["at0181"] = <
-					text = <"*Clinical Interpretation(en)">
+					text = <"*Clinical interpretation(en)">
 					description = <"*Single word, phrase or brief description represents the clinical meaning and significance of the urinalysis findings.(en)">
 					comment = <"*Comment: Coding with a terminology is preferred, where possible. For example: normal urinalysis; mild proteinuria; or trace of blood. Multiple statements are allowed.(en)">
 				>
 				["at0182"] = <
-					text = <"*Urine Description(en)">
-					description = <"*Additional details about the urine being tested, including macroscopic appearance.(en)">
+					text = <"*Additional details(en)">
+					description = <"*Additional details about the point of care urinalysis, including macroscopic appearance or other tests not currently captured in the structured data.(en)">
 				>
 				["at0183"] = <
 					text = <"*Device(en)">
-					description = <"*Details about a device used to test the reagent strips.(en)">
+					description = <"*Details about the device used to automatically read the reagent strips.(en)">
+				>
+				["at0184"] = <
+					text = <"*Extension(en)">
+					description = <"*Additional information required to capture local content or to align with other reference models/formalisms.(en)">
+					comment = <"*For example:  e.g. Local information requirements or additional metadata to align with FHIR or CIMI equivalents.(en)">
+				>
+				["at0185"] = <
+					text = <"*Exam not done(en)">
+					description = <"*Details to explicitly record that POC urinalysis was not performed.(en)">
 				>
 			>
 		>
 		["es-ar"] = <
 			items = <
 				["at0000"] = <
-					text = <"*Urinalysis(en)">
-					description = <"*Qualitative and semi-quantitative test array to indicate possible abnormalities in a sample of urine, using reagent test strips.(en)">
+					text = <"*Urinalysis POCT(en)">
+					description = <"*Qualitative and semi-quantitative test array using reagent test strips to indicate possible abnormalities in a sample of urine, often performed as part of Point of Care Testing (POCT).(en)">
 				>
 				["at0001"] = <
 					text = <"*Event Series(en)">
@@ -1558,7 +1604,7 @@ ontology
 				["at0030"] = <
 					text = <"*Comment(en)">
 					description = <"*Narrative about the urinalysis not captured in other fields.(en)">
-					comment = <"*For example: the freshness or small volume of the urine sample, method of collection.(en)">
+					comment = <"*For example: the freshness or small volume of the urine sample, method of collection or any problems with testing.(en)">
 				>
 				["at0032"] = <
 					text = <"Sangre">
@@ -1605,19 +1651,19 @@ ontology
 					description = <"*Trace of protein detected.(en)">
 				>
 				["at0098"] = <
-					text = <"*+(en)">
+					text = <"*1+(en)">
 					description = <"*Amount equivalent to 30mg/dL (or 0.3 g/L) detected.(en)">
 				>
 				["at0099"] = <
-					text = <"*++(en)">
+					text = <"*2+(en)">
 					description = <"*Amount equivalent to 100mg/dL (or 1.0 g/L) detected.(en)">
 				>
 				["at0100"] = <
-					text = <"*+++(en)">
+					text = <"*3+(en)">
 					description = <"*Amount equivalent to 300mg/dL (or 3.0 g/L) detected.(en)">
 				>
 				["at0101"] = <
-					text = <"*++++(en)">
+					text = <"*4+(en)">
 					description = <"*Amount equivalent to >2000mg/dL (or >20 g/L) detected.(en)">
 				>
 				["at0102"] = <
@@ -1637,15 +1683,15 @@ ontology
 					description = <"*Trace of haemolysed blood detected.(en)">
 				>
 				["at0106"] = <
-					text = <"*+(en)">
+					text = <"*1+(en)">
 					description = <"*Small amount of blood detected.(en)">
 				>
 				["at0107"] = <
-					text = <"*++(en)">
+					text = <"*2+(en)">
 					description = <"*Moderate amount of blood detected.(en)">
 				>
 				["at0108"] = <
-					text = <"*+++(en)">
+					text = <"*3+(en)">
 					description = <"*Large amount of blood detected.(en)">
 				>
 				["at0109"] = <
@@ -1681,19 +1727,19 @@ ontology
 					description = <"*Amount equivalent to 1/10 g/dl (100mg/dL or 5 mmol/L) detected.(en)">
 				>
 				["at0117"] = <
-					text = <"*+(en)">
+					text = <"*1+(en)">
 					description = <"*Amount equivalent to 1/4 g/dL (250 mg/dL or 15 mmol/L) detected.(en)">
 				>
 				["at0118"] = <
-					text = <"*++(en)">
+					text = <"*2+(en)">
 					description = <"*Amount equivalent to 1/2 g/dl (500mg/dL or 30 mmol/L) detected.(en)">
 				>
 				["at0119"] = <
-					text = <"*+++(en)">
+					text = <"*3+(en)">
 					description = <"*Amount equivalent to 1 g/dl (1000mg/dL or 60 mmol/L) detected.(en)">
 				>
 				["at0120"] = <
-					text = <"*++++(en)">
+					text = <"*4+(en)">
 					description = <"*Amount equivalent >2 g/dl (>2000mg/dL or >120 mmol/L) detected.(en)">
 				>
 				["at0121"] = <
@@ -1701,15 +1747,15 @@ ontology
 					description = <"*No bilirubin detected.(en)">
 				>
 				["at0122"] = <
-					text = <"*+(en)">
+					text = <"*1+(en)">
 					description = <"*Small amount detected.(en)">
 				>
 				["at0123"] = <
-					text = <"*++(en)">
+					text = <"*2+(en)">
 					description = <"*Moderate amount detected.(en)">
 				>
 				["at0124"] = <
-					text = <"*+++(en)">
+					text = <"*3+(en)">
 					description = <"*Large amount detected.(en)">
 				>
 				["at0126"] = <
@@ -1757,19 +1803,19 @@ ontology
 					description = <"*Trace detected.(en)">
 				>
 				["at0137"] = <
-					text = <"*+(en)">
+					text = <"*1+(en)">
 					description = <"*Small amount detected.(en)">
 				>
 				["at0138"] = <
-					text = <"*++(en)">
+					text = <"*2+(en)">
 					description = <"*Moderate amount detected.(en)">
 				>
 				["at0139"] = <
-					text = <"*+++(en)">
+					text = <"*3+(en)">
 					description = <"*Large amount detected.(en)">
 				>
 				["at0151"] = <
-					text = <"*Specific Gravity(en)">
+					text = <"*Specific gravity(en)">
 					description = <"*Measurement of the concentration of substances dissolved (solutes) in the urine sample relative to distilled water.(en)">
 				>
 				["at0152"] = <
@@ -1845,17 +1891,26 @@ ontology
 					description = <"*Details about the reagent strips used.(en)">
 				>
 				["at0181"] = <
-					text = <"*Clinical Interpretation(en)">
+					text = <"*Clinical interpretation(en)">
 					description = <"*Single word, phrase or brief description represents the clinical meaning and significance of the urinalysis findings.(en)">
 					comment = <"*Comment: Coding with a terminology is preferred, where possible. For example: normal urinalysis; mild proteinuria; or trace of blood. Multiple statements are allowed.(en)">
 				>
 				["at0182"] = <
-					text = <"*Urine Description(en)">
-					description = <"*Additional details about the urine being tested, including macroscopic appearance.(en)">
+					text = <"*Additional details(en)">
+					description = <"*Additional details about the point of care urinalysis, including macroscopic appearance or other tests not currently captured in the structured data.(en)">
 				>
 				["at0183"] = <
 					text = <"*Device(en)">
-					description = <"*Details about a device used to test the reagent strips.(en)">
+					description = <"*Details about the device used to automatically read the reagent strips.(en)">
+				>
+				["at0184"] = <
+					text = <"*Extension(en)">
+					description = <"*Additional information required to capture local content or to align with other reference models/formalisms.(en)">
+					comment = <"*For example:  e.g. Local information requirements or additional metadata to align with FHIR or CIMI equivalents.(en)">
+				>
+				["at0185"] = <
+					text = <"*Exam not done(en)">
+					description = <"*Details to explicitly record that POC urinalysis was not performed.(en)">
 				>
 			>
 		>
