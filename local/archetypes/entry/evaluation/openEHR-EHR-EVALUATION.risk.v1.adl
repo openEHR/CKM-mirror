@@ -2,7 +2,7 @@
 	openEHR-EHR-EVALUATION.risk.v1
 
 concept
-	[at0000]	-- Evaluation of risk of condition
+	[at0000]	-- Health risk
 language
 	original_language = <[ISO_639-1::en]>
 	translations = <
@@ -13,15 +13,29 @@ language
 				["organisation"] = <"University of Heidelberg, Cental Queensland University">
 			>
 		>
+		["ar-sy"] = <
+			language = <[ISO_639-1::ar-sy]>
+			author = <
+				["name"] = <"Mona Saleh">
+			>
+		>
 	>
 description
 	original_author = <
 		["name"] = <"Sam Heard">
 		["organisation"] = <"Ocean Informatics">
-		["email"] = <"sam.heard@oceaninformatics.biz">
-		["date"] = <"23/04/2006">
+		["email"] = <"sam.heard@oceaninformatics.com">
+		["date"] = <"2006-04-23">
 	>
 	details = <
+		["ar-sy"] = <
+			language = <[ISO_639-1::ar-sy]>
+			purpose = <"لتسجيل التخاطر/احتمالية الخطر لظرف صحي قد يحدث في المستقبل">
+			use = <"">
+			keywords = <"تقييم", ...>
+			misuse = <"">
+			copyright = <"© openEHR Foundation">
+		>
 		["de"] = <
 			language = <[ISO_639-1::de]>
 			purpose = <"Zur Dokumentation des Vorhandenseins eines Risikos mit möglichen Auswirkungen jetzt oder in der Zukunft">
@@ -32,27 +46,42 @@ description
 		>
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"For recording the risk of a condition arising in the future">
-			use = <"">
-			keywords = <"assessment", ...>
+			purpose = <"To record known risk factors for an identified disease, condition, or other potentially adverse health issue , and/or an evaluation of the likelihood of the subject experiencing it in the future.">
+			use = <"Use to record known risk factors for an identified disease, condition, or other potentially adverse health issue , and/or an evaluation of the likelihood of the subject experiencing it in the future.">
+			keywords = <"assessment", "risk", "evaluation">
 			misuse = <"">
 			copyright = <"© openEHR Foundation">
 		>
 	>
-	lifecycle_state = <"AuthorDraft">
-	other_contributors = <>
+	lifecycle_state = <"CommitteeDraft">
+	other_contributors = <"Heather Leslie, Ocean Informatics, Australia", ...>
+	other_details = <
+		["current_contact"] = <"Heather Leslie, Ocean Informatics, heather.leslie@oceaninformatics.com">
+		["references"] = <"Health Risk, draft archetype, NEHTA Clinical Knowledge Manager [Internet]. Australia: National eHealth Transition Authority. Authored: 23 Apr 2006. Available at: http://dcm.nehta.org.au/ckm/#showArchetype_1013.1.1276 (accessed 04 Mar 2015). Archetype originated from the openEHR CKM.">
+		["MD5-CAM-1.0.1"] = <"61502B47D9EF8726911235C93284C015">
+	>
 
 definition
-	EVALUATION[at0000] matches {	-- Evaluation of risk of condition
+	EVALUATION[at0000] matches {	-- Health risk
 		data matches {
 			ITEM_TREE[at0001] matches {	-- structure
 				items cardinality matches {1..*; ordered} matches {
-					ELEMENT[at0002] matches {	-- Index condition
+					ELEMENT[at0002] matches {	-- Risk
 						value matches {
 							DV_TEXT matches {*}
 						}
 					}
-					ELEMENT[at0003] occurrences matches {0..1} matches {	-- Significance of risk
+					ELEMENT[at0013] occurrences matches {0..*} matches {	-- Risk factor
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0012] occurrences matches {0..1} matches {	-- Link to evidence
+						value matches {
+							DV_URI matches {*}
+						}
+					}
+					ELEMENT[at0003] occurrences matches {0..1} matches {	-- Risk category
 						value matches {
 							DV_CODED_TEXT matches {
 								defining_code matches {
@@ -70,13 +99,12 @@ definition
 							DV_TEXT matches {*}
 						}
 					}
-				}
-			}
-		}
-		protocol matches {
-			ITEM_LIST[at0010] matches {	-- List
-				items cardinality matches {0..*; unordered} matches {
-					ELEMENT[at0011] occurrences matches {0..1} matches {	-- Risk calculation
+					ELEMENT[at0014] occurrences matches {0..1} matches {	-- Risk description
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0015] occurrences matches {0..1} matches {	-- Comment
 						value matches {
 							DV_TEXT matches {*}
 						}
@@ -84,103 +112,213 @@ definition
 				}
 			}
 		}
+		protocol matches {
+			ITEM_TREE[at0010] matches {	-- Tree
+				items cardinality matches {0..*; unordered} matches {
+					allow_archetype CLUSTER[at0011] occurrences matches {0..*} matches {	-- Extension
+						include
+							archetype_id/value matches {/.*/}
+					}
+				}
+			}
+		}
 	}
+
 
 ontology
 	term_definitions = <
+		["ar-sy"] = <
+			items = <
+				["at0000"] = <
+					text = <"*Health risk(en)">
+					description = <"*Estimation of the potential and likelihood of future adverse health effects due to identified risk factors.(en)">
+				>
+				["at0001"] = <
+					text = <"*structure(en)">
+					description = <"*@ internal @(en)">
+				>
+				["at0002"] = <
+					text = <"*Risk(en)">
+					description = <"*Identified potential future disease, condition or health issue.(en)">
+				>
+				["at0003"] = <
+					text = <"*Risk category(en)">
+					description = <"*The likelihood that this person will be affected by this disease, condition or health issue in the future.(en)">
+				>
+				["at0004"] = <
+					text = <"*Rationale(en)">
+					description = <"*Justification for this risk assessment.(en)">
+				>
+				["at0006"] = <
+					text = <"*Not significant(en)">
+					description = <"*The person is not assessed at being at higher risk than the general population.(en)">
+				>
+				["at0007"] = <
+					text = <"*Minimal significance(en)">
+					description = <"*The person may be of somewhat greater risk of developing the condition.(en)">
+				>
+				["at0008"] = <
+					text = <"*Significant(en)">
+					description = <"*The person is considered to be more likely to develop the condition than the general population.(en)">
+				>
+				["at0009"] = <
+					text = <"*Highly significant(en)">
+					description = <"*The person is considered to be likely to develop the condition.(en)">
+				>
+				["at0010"] = <
+					text = <"*Tree(en)">
+					description = <"*@ internal @(en)">
+				>
+				["at0011"] = <
+					text = <"*Extension(en)">
+					description = <"*Additional information required to capture local content or to align with other reference models/formalisms.(en)">
+					comment = <"*For example:  e.g. Local information requirements or additional metadata to align with FHIR or CIMI equivalents.(en)">
+				>
+				["at0012"] = <
+					text = <"*Link to evidence(en)">
+					description = <"*Identification of the path to the archetype or data node for the evidence of risk.(en)">
+				>
+				["at0013"] = <
+					text = <"*Risk factor(en)">
+					description = <"*Known risk factor that may contribute to the assessment of risk.(en)">
+				>
+				["at0014"] = <
+					text = <"*Risk description(en)">
+					description = <"*Narrative description about the risk assessment.(en)">
+				>
+				["at0015"] = <
+					text = <"*Comment(en)">
+					description = <"*Additional narrative about the risk assessment not captured in other fields.(en)">
+				>
+			>
+		>
 		["de"] = <
 			items = <
 				["at0000"] = <
-					text = <"Beurteilung des Risikos eines Zustandes">
-					description = <"Beurteilung zur Angabe eines oder keines erheblichen Risikos der zu behandelnden Person mit Auswirkungen jetzt oder in der Zukunft">
+					text = <"*Health risk(en)">
+					description = <"*Estimation of the potential and likelihood of future adverse health effects due to identified risk factors.(en)">
 				>
 				["at0001"] = <
 					text = <"structure">
 					description = <"@ internal @">
 				>
 				["at0002"] = <
-					text = <"Zustand">
-					description = <"Der Zustand, auf den sich die Risikoeinschätzung bezieht">
+					text = <"*Risk(en)">
+					description = <"*Identified potential future disease, condition or health issue.(en)">
 				>
 				["at0003"] = <
-					text = <"Bedeutung des Risikos">
-					description = <"Die Wahrscheinlichkeit, dass diese Person diesen Zustand entwickelt oder in der Zukunft darunter leiden wird">
+					text = <"*Risk category(en)">
+					description = <"*The likelihood that this person will be affected by this disease, condition or health issue in the future.(en)">
 				>
 				["at0004"] = <
-					text = <"Begründung">
-					description = <"Gerechtfertigung dieser Einschätzung">
+					text = <"*Rationale(en)">
+					description = <"*Justification for this risk assessment.(en)">
 				>
 				["at0006"] = <
-					text = <"Nicht bedeutungsvoll">
-					description = <"Für die Person wird kein höheres Risiko geschätzt, als für die restliche Population">
+					text = <"*Not significant(en)">
+					description = <"*The person is not assessed at being at higher risk than the general population.(en)">
 				>
 				["at0007"] = <
-					text = <"Minimal bedeutungsvoll">
-					description = <"Die Person hat eventuell ein etwas erhöhtes Risiko diesen Zustand zu entwickeln">
+					text = <"*Minimal significance(en)">
+					description = <"*The person may be of somewhat greater risk of developing the condition.(en)">
 				>
 				["at0008"] = <
-					text = <"Bedeutungsvoll">
-					description = <"Die Person hat ein erhöhtes Risiko diesen Zustand zu entwickeln als die allgemeine Population">
+					text = <"*Significant(en)">
+					description = <"*The person is considered to be more likely to develop the condition than the general population.(en)">
 				>
 				["at0009"] = <
-					text = <"Sehr bedeutungsvoll">
-					description = <"Es ist anzunehmen, dass die Person den Zustand entwickeln wird">
+					text = <"*Highly significant(en)">
+					description = <"*The person is considered to be likely to develop the condition.(en)">
 				>
 				["at0010"] = <
-					text = <"List">
-					description = <"@ internal @">
+					text = <"*Tree(en)">
+					description = <"*@ internal @(en)">
 				>
 				["at0011"] = <
-					text = <"Risikoberechnung">
-					description = <"Die Berechnung des Risikos">
+					text = <"*Extension(en)">
+					description = <"*Additional information required to capture local content or to align with other reference models/formalisms.(en)">
+					comment = <"*For example:  e.g. Local information requirements or additional metadata to align with FHIR or CIMI equivalents.(en)">
+				>
+				["at0012"] = <
+					text = <"*Link to evidence(en)">
+					description = <"*Identification of the path to the archetype or data node for the evidence of risk.(en)">
+				>
+				["at0013"] = <
+					text = <"*Risk factor(en)">
+					description = <"*Known risk factor that may contribute to the assessment of risk.(en)">
+				>
+				["at0014"] = <
+					text = <"*Risk description(en)">
+					description = <"*Narrative description about the risk assessment.(en)">
+				>
+				["at0015"] = <
+					text = <"*Comment(en)">
+					description = <"*Additional narrative about the risk assessment not captured in other fields.(en)">
 				>
 			>
 		>
 		["en"] = <
 			items = <
 				["at0000"] = <
-					text = <"Evaluation of risk of condition">
-					description = <"Evaluation to indicate that there is, or is not, a significant risk of this subject of care having, now or in the future, a condition.">
+					text = <"Health risk">
+					description = <"Estimation of the potential and likelihood of future adverse health effects due to identified risk factors.">
 				>
 				["at0001"] = <
 					text = <"structure">
 					description = <"@ internal @">
 				>
 				["at0002"] = <
-					text = <"Index condition">
-					description = <"The condition on which the risk assessment is focussed">
+					text = <"Risk">
+					description = <"Identified potential future disease, condition or health issue.">
 				>
 				["at0003"] = <
-					text = <"Significance of risk">
-					description = <"The likelihood that this person will develop this condition or suffer in this way in the future">
+					text = <"Risk category">
+					description = <"The likelihood that this person will be affected by this disease, condition or health issue in the future.">
 				>
 				["at0004"] = <
 					text = <"Rationale">
-					description = <"Justification for this risk assessment">
+					description = <"Justification for this risk assessment.">
 				>
 				["at0006"] = <
 					text = <"Not significant">
-					description = <"The person is not assessed at being at higher risk than the general population">
+					description = <"The person is not assessed at being at higher risk than the general population.">
 				>
 				["at0007"] = <
 					text = <"Minimal significance">
-					description = <"The person may be of somewhat greater risk of developing the condition ">
+					description = <"The person may be of somewhat greater risk of developing the condition.">
 				>
 				["at0008"] = <
 					text = <"Significant">
-					description = <"The person is considered to be more likely to develop the condition than the general population">
+					description = <"The person is considered to be more likely to develop the condition than the general population.">
 				>
 				["at0009"] = <
 					text = <"Highly significant">
-					description = <"The person is considered to be likely to develop the condition">
+					description = <"The person is considered to be likely to develop the condition.">
 				>
 				["at0010"] = <
-					text = <"List">
+					text = <"Tree">
 					description = <"@ internal @">
 				>
 				["at0011"] = <
-					text = <"Risk calculation">
-					description = <"*">
+					text = <"Extension">
+					description = <"Additional information required to capture local content or to align with other reference models/formalisms.">
+					comment = <"For example:  e.g. Local information requirements or additional metadata to align with FHIR or CIMI equivalents.">
+				>
+				["at0012"] = <
+					text = <"Link to evidence">
+					description = <"Identification of the path to the archetype or data node for the evidence of risk.">
+				>
+				["at0013"] = <
+					text = <"Risk factor">
+					description = <"Known risk factor that may contribute to the assessment of risk.">
+				>
+				["at0014"] = <
+					text = <"Risk description">
+					description = <"Narrative description about the risk assessment.">
+				>
+				["at0015"] = <
+					text = <"Comment">
+					description = <"Additional narrative about the risk assessment not captured in other fields.">
 				>
 			>
 		>
