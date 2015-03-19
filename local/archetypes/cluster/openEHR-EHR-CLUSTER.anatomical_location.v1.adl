@@ -53,14 +53,18 @@ description
 		>
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"To record details about a single physical site in the human body in precise anatomical terms.">
-			use = <"Use to record details about a single physical site in the human body. This archetype is designed to be used within the context of other ENTRY or CLUSTER archetypes and soley to provide a structured and consistent way to represent identified body sites.
+			purpose = <"To record details about a single physical site on or within the human body in gross anatomical terms.">
+			use = <"Use to record details about a single physical site on or within the human body, identifiable without any magnifying device. 
+
+This archetype is designed to be used within the context of other ENTRY or CLUSTER archetypes and solely to provide a structured and consistent way to represent identified body sites. It also carries a SLOT which allows for inclusion of other more complex body locations, if these are required in addition.
 
 In practice, some archetypes carry a single data element for carrying a simple description of body site - for example, OBSERVATION.blood_pressure and CLUSTER.symptom when describing ear pain. In this situation, where the value set is predictable and simple to define, this is a very accurate and pragmatic way to record the site in the body and to query at a later date.
 
-However in the situation where the anatomical location is not well defined or needs to be determined at run-time, it may be more flexible to use this archetype. For example, in the situation where any symptom can be recorded without any predefined scope of the type of symptom, then allowing the use of this archetype to specifically define an anatomical location in the body may be useful. In this case the CLUSTER.symptom archetype also carries a SLOT for 'Complex Body Location' which can hold both this archetype plus the CLUSTER.relative_location to support maximal flexibility.">
-			keywords = <"location", "site", "anatomical">
-			misuse = <"Not to be used for specifiying unilateral/bilateral occurence - this is related to an evaluation which perhaps includes multiple locations.
+However in the situation where the anatomical location is not well defined or needs to be determined at run-time, it may be more flexible to use this archetype. For example, in the situation where any symptom can be recorded without any predefined scope of the type of symptom, then allowing the use of this archetype to specifically define an anatomical location in the body may be useful. In this case the CLUSTER.symptom archetype also carries a SLOT for 'Complex Body Location' which can hold both this archetype plus the CLUSTER.relative_location to support maximal flexibility.
+
+If this archetype is used within other archetypes where the clinical context or specified subject of care is not the individual for whom the record is being created - the key example being a fetus in-utero - then in that situation the anatomical location will be identifying a body site appropriate to the specified context or on/within the specified subject of care.">
+			keywords = <"location", "site", "anatomical", "anatomic region", "topographic anatomy", "macroscopic anatomy", "macroscopic", "anatomic">
+			misuse = <"Not to be used for specifiying unilateral/bilateral occurrences of a physical object or anatomical feature.
 
 Not to be used to specify a relative location of a physical site in the body in terms of its relationship to identifiable anatomical landmarks. Use the CLUSTER.relative_location for this purpose.
 
@@ -77,23 +81,16 @@ Not to be used as a stand-alone archetype.">
 		>
 	>
 	lifecycle_state = <"AuthorDraft">
-	other_contributors = <"Heather Leslie, Ocean Informatics, Australia (Editor)", "Ian McNicoll, freshEHR Clinical Informatics, United Kingdom (Editor)", "Dunmail Hodkinson, Black Pear Software Ltd, UK">
+	other_contributors = <"Vebjoern Arntzen, Oslo university hospital, Norway", "Koray Atalag, University of Auckland, New Zealand", "Silje Ljosland Bakke, Bergen Hospital Trust, Norway", "Lars Bitsch-Larsen, Haukeland University hospital, Norway", "Rong Chen, Cambio Healthcare Systems, Sweden", "Stephen Chu, Queensland Health, Australia", "Aitor Eguzkitza, UPNA (Public University of Navarre) - CHN (Complejo Hospitalario de Navarra), Spain", "Shahla Foozonkhah, Ocean Informatics, Australia", "Heather Grain, Llewelyn Grain Informatics, Australia", "Ingrid Heitmann, NTNU, Norway", "Dunmail Hodkinson, Black Pear Software Ltd, UK", "Lars Karlsen, DIPS ASA, Norway", "Sabine Leh, Haukeland University Hospital, Department of Pathology, Norway", "Heather Leslie, Ocean Informatics, Australia (Editor)", "Vesna Levasic, Orthopaedic Hospital Valdoltra, Slovenia", "Luis Marco Ruiz, Norwegian Center for Integrated Care and Telemedicine, Norway", "Ian McNicoll, freshEHR Clinical Informatics, United Kingdom (Editor)", "Erik Nissen, Cambio Healthcare Systems AB, Sweden", "Rowan Thomas, St. Vincent's Hospital Melbourne, Australia", "Richard Townley-O'Neill, NEHTA, Australia", "Dmitri Wall, Irish Skin Foundation, Ireland">
 	other_details = <
-		["references"] = <"Clinical use cases:
-- apex beat normally felt at fifth left intercostal space, midclavicular line (5LICS, MCL);
-- a lesion noted on the left forearm, 2cm anterior to the cubital fossa;
-- right iliac fossa;
-- a laceration 5 cm below left tibial tuberosity;
-- a lump 2 cm medial to right nipple;
-- liver palpated to 4 cm below right costal margin in midclavicular line; and
-- right femur.">
-		["MD5-CAM-1.0.1"] = <"4E2547F07FE924A8BF062E2B37D404F1">
+		["current_contact"] = <"Heather Leslie, Ocean Informatics, heather.leslie@oceaninformatics.com">
+		["MD5-CAM-1.0.1"] = <"FA36606F806DE63C9C73E9B693F61239">
 	>
 
 definition
 	CLUSTER[at0000] matches {	-- Anatomical Location
 		items cardinality matches {1..*; unordered} matches {
-			ELEMENT[at0001] occurrences matches {0..1} matches {	-- Location name
+			ELEMENT[at0001] matches {	-- Location name
 				value matches {
 					DV_TEXT matches {*}
 				}
@@ -104,8 +101,7 @@ definition
 						defining_code matches {
 							[local::
 							at0003, 	-- Left
-							at0004, 	-- Right
-							at0051]	-- Bilateral
+							at0004]	-- Right
 						}
 					}
 				}
@@ -115,26 +111,13 @@ definition
 					DV_TEXT matches {*}
 				}
 			}
-			ELEMENT[at0052] occurrences matches {0..*} matches {	-- Multimedia representation
-				value matches {
-					DV_MULTIMEDIA matches {
-						media_type matches {
-							[openEHR::
-							425, 
-							426, 
-							427, 
-							428, 
-							429, 
-							401, 
-							402, 
-							404, 
-							405, 
-							406, 
-							407, 
-							414]
-						}
-					}
-				}
+			allow_archetype CLUSTER[at0053] occurrences matches {0..*} matches {	-- Complex location
+				include
+					archetype_id/value matches {/openEHR-EHR-CLUSTER\.relative_location(-[a-zA-Z0-9_]+)*\.v1|openEHR-EHR-CLUSTER\.precise_location(-[a-zA-Z0-9_]+)*\.v1/}
+			}
+			allow_archetype CLUSTER[at0054] occurrences matches {0..*} matches {	-- Multimedia representation
+				include
+					archetype_id/value matches {/openEHR-EHR-CLUSTER\.multimedia(-[a-zA-Z0-9_]+)*\.v1/}
 			}
 		}
 	}
@@ -147,16 +130,18 @@ ontology
 			items = <
 				["at0000"] = <
 					text = <"*Anatomical Location(en)">
-					description = <"*A physical site in the human body.(en)">
+					description = <"*A physical site on or within the human body.(en)">
 				>
 				["at0001"] = <
 					text = <"*Location name(en)">
 					description = <"*Named body site.(en)">
-					comment = <"*It is strongly recommended that 'Location name' be coded with a terminology capable of triggering decision support, where possible. Free text should be used only if there is no appropriate terminology available. (en)">
+					comment = <"*It is strongly recommended that 'Location name' be coded with a terminology capable of triggering decision support, where possible. Free text should be used only if there is no appropriate terminology available.(en)">
 				>
 				["at0002"] = <
 					text = <"*Laterality(en)">
 					description = <"*The side of the body involved.(en)">
+					comment = <"*If the anatomical location has no laterality, this data element can be left unfilled.
+If the 'Location name' data element uses pre-coordinated terms that include laterality, then this data element is redundant.(en)">
 				>
 				["at0003"] = <
 					text = <"*Left(en)">
@@ -167,14 +152,15 @@ ontology
 					description = <"*Right side of the body.(en)">
 				>
 				["at0023"] = <
-					text = <"الوصف">
-					description = <"وصف المكان التشريحي">
+					text = <"*Description(en)">
+					description = <"*Narrative description about the named anatomical location.(en)">
 				>
-				["at0051"] = <
-					text = <"*Bilateral(en)">
-					description = <"*Both left and right sides of the body.(en)">
+				["at0053"] = <
+					text = <"*Complex location(en)">
+					description = <"*Details about other more complex anatomical locations.(en)">
+					comment = <"*For example, relative location or precise locations using coordinates. (en)">
 				>
-				["at0052"] = <
+				["at0054"] = <
 					text = <"*Multimedia representation(en)">
 					description = <"*Image or other media used to support identification of the location on the body.(en)">
 				>
@@ -184,16 +170,18 @@ ontology
 			items = <
 				["at0000"] = <
 					text = <"*Anatomical Location(en)">
-					description = <"*A physical site in the human body.(en)">
+					description = <"*A physical site on or within the human body.(en)">
 				>
 				["at0001"] = <
 					text = <"*Location name(en)">
 					description = <"*Named body site.(en)">
-					comment = <"*It is strongly recommended that 'Location name' be coded with a terminology capable of triggering decision support, where possible. Free text should be used only if there is no appropriate terminology available. (en)">
+					comment = <"*It is strongly recommended that 'Location name' be coded with a terminology capable of triggering decision support, where possible. Free text should be used only if there is no appropriate terminology available.(en)">
 				>
 				["at0002"] = <
 					text = <"*Laterality(en)">
 					description = <"*The side of the body involved.(en)">
+					comment = <"*If the anatomical location has no laterality, this data element can be left unfilled.
+If the 'Location name' data element uses pre-coordinated terms that include laterality, then this data element is redundant.(en)">
 				>
 				["at0003"] = <
 					text = <"*Left(en)">
@@ -204,14 +192,15 @@ ontology
 					description = <"*Right side of the body.(en)">
 				>
 				["at0023"] = <
-					text = <"Opis">
-					description = <"*Description of anatomical location.(en)">
+					text = <"*Description(en)">
+					description = <"*Narrative description about the named anatomical location.(en)">
 				>
-				["at0051"] = <
-					text = <"*Bilateral(en)">
-					description = <"*Both left and right sides of the body.(en)">
+				["at0053"] = <
+					text = <"*Complex location(en)">
+					description = <"*Details about other more complex anatomical locations.(en)">
+					comment = <"*For example, relative location or precise locations using coordinates. (en)">
 				>
-				["at0052"] = <
+				["at0054"] = <
 					text = <"*Multimedia representation(en)">
 					description = <"*Image or other media used to support identification of the location on the body.(en)">
 				>
@@ -221,16 +210,18 @@ ontology
 			items = <
 				["at0000"] = <
 					text = <"Anatomical Location">
-					description = <"A physical site in the human body.">
+					description = <"A physical site on or within the human body.">
 				>
 				["at0001"] = <
 					text = <"Location name">
 					description = <"Named body site.">
-					comment = <"It is strongly recommended that 'Location name' be coded with a terminology capable of triggering decision support, where possible. Free text should be used only if there is no appropriate terminology available. ">
+					comment = <"It is strongly recommended that 'Location name' be coded with a terminology capable of triggering decision support, where possible. Free text should be used only if there is no appropriate terminology available.">
 				>
 				["at0002"] = <
 					text = <"Laterality">
 					description = <"The side of the body involved.">
+					comment = <"If the anatomical location has no laterality, this data element can be left unfilled.
+If the 'Location name' data element uses pre-coordinated terms that include laterality, then this data element is redundant.">
 				>
 				["at0003"] = <
 					text = <"Left">
@@ -242,13 +233,14 @@ ontology
 				>
 				["at0023"] = <
 					text = <"Description">
-					description = <"Description of anatomical location.">
+					description = <"Narrative description about the named anatomical location.">
 				>
-				["at0051"] = <
-					text = <"Bilateral">
-					description = <"Both left and right sides of the body.">
+				["at0053"] = <
+					text = <"Complex location">
+					description = <"Details about other more complex anatomical locations.">
+					comment = <"For example, relative location or precise locations using coordinates. ">
 				>
-				["at0052"] = <
+				["at0054"] = <
 					text = <"Multimedia representation">
 					description = <"Image or other media used to support identification of the location on the body.">
 				>
@@ -258,16 +250,18 @@ ontology
 			items = <
 				["at0000"] = <
 					text = <"*Anatomical Location(en)">
-					description = <"*A physical site in the human body.(en)">
+					description = <"*A physical site on or within the human body.(en)">
 				>
 				["at0001"] = <
 					text = <"*Location name(en)">
 					description = <"*Named body site.(en)">
-					comment = <"*It is strongly recommended that 'Location name' be coded with a terminology capable of triggering decision support, where possible. Free text should be used only if there is no appropriate terminology available. (en)">
+					comment = <"*It is strongly recommended that 'Location name' be coded with a terminology capable of triggering decision support, where possible. Free text should be used only if there is no appropriate terminology available.(en)">
 				>
 				["at0002"] = <
 					text = <"*Laterality(en)">
 					description = <"*The side of the body involved.(en)">
+					comment = <"*If the anatomical location has no laterality, this data element can be left unfilled.
+If the 'Location name' data element uses pre-coordinated terms that include laterality, then this data element is redundant.(en)">
 				>
 				["at0003"] = <
 					text = <"*Left(en)">
@@ -278,14 +272,15 @@ ontology
 					description = <"*Right side of the body.(en)">
 				>
 				["at0023"] = <
-					text = <"besrkivelse">
-					description = <"Beskrivelse av det anatomiske sted.">
+					text = <"*Description(en)">
+					description = <"*Narrative description about the named anatomical location.(en)">
 				>
-				["at0051"] = <
-					text = <"*Bilateral(en)">
-					description = <"*Both left and right sides of the body.(en)">
+				["at0053"] = <
+					text = <"*Complex location(en)">
+					description = <"*Details about other more complex anatomical locations.(en)">
+					comment = <"*For example, relative location or precise locations using coordinates. (en)">
 				>
-				["at0052"] = <
+				["at0054"] = <
 					text = <"*Multimedia representation(en)">
 					description = <"*Image or other media used to support identification of the location on the body.(en)">
 				>
