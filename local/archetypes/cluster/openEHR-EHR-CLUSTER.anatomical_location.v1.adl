@@ -62,6 +62,8 @@ In practice, some archetypes carry a single data element for carrying a simple d
 
 However in the situation where the anatomical location is not well defined or needs to be determined at run-time, it may be more flexible to use this archetype. For example, in the situation where any symptom can be recorded without any predefined scope of the type of symptom, then allowing the use of this archetype to specifically define an anatomical location in the body may be useful. In this case the CLUSTER.symptom archetype also carries a SLOT for 'Complex Body Location' which can hold both this archetype plus the CLUSTER.relative_location to support maximal flexibility.
 
+In the situation where this archetype can only be used to name a large and/or non-specific body part, the additional use of the CLUSTER.relative_location archetype in the 'Complex Location' SLOT will support recording of a more precise location - for example, 2 cm anterior to the cubital fossa of the left forearm or 4 cm below R costal margin on the chest wall in the mid-clavicular line.
+
 If this archetype is used within other archetypes where the clinical context or specified subject of care is not the individual for whom the record is being created - the key example being a fetus in-utero - then in that situation the anatomical location will be identifying a body site appropriate to the specified context or on/within the specified subject of care.">
 			keywords = <"location", "site", "anatomical", "anatomic region", "topographic anatomy", "macroscopic anatomy", "macroscopic", "anatomic">
 			misuse = <"Not to be used for specifiying unilateral/bilateral occurrences of a physical object or anatomical feature.">
@@ -80,13 +82,13 @@ If this archetype is used within other archetypes where the clinical context or 
 	other_contributors = <"Vebjoern Arntzen, Oslo university hospital, Norway", "Koray Atalag, University of Auckland, New Zealand", "Silje Ljosland Bakke, Bergen Hospital Trust, Norway", "Lars Bitsch-Larsen, Haukeland University hospital, Norway", "Rong Chen, Cambio Healthcare Systems, Sweden", "Stephen Chu, Queensland Health, Australia", "Aitor Eguzkitza, UPNA (Public University of Navarre) - CHN (Complejo Hospitalario de Navarra), Spain", "Shahla Foozonkhah, Ocean Informatics, Australia", "Heather Grain, Llewelyn Grain Informatics, Australia", "Ingrid Heitmann, NTNU, Norway", "Dunmail Hodkinson, Black Pear Software Ltd, UK", "Lars Karlsen, DIPS ASA, Norway", "Sabine Leh, Haukeland University Hospital, Department of Pathology, Norway", "Heather Leslie, Ocean Informatics, Australia (Editor)", "Vesna Levasic, Orthopaedic Hospital Valdoltra, Slovenia", "Luis Marco Ruiz, Norwegian Center for Integrated Care and Telemedicine, Norway", "Ian McNicoll, freshEHR Clinical Informatics, United Kingdom (Editor)", "Erik Nissen, Cambio Healthcare Systems AB, Sweden", "Rowan Thomas, St. Vincent's Hospital Melbourne, Australia", "Richard Townley-O'Neill, NEHTA, Australia", "Dmitri Wall, Irish Skin Foundation, Ireland">
 	other_details = <
 		["current_contact"] = <"Heather Leslie, Ocean Informatics, heather.leslie@oceaninformatics.com">
-		["MD5-CAM-1.0.1"] = <"96176EC94E8A245ECF5C0C5A4AE2783C">
+		["MD5-CAM-1.0.1"] = <"67A0E36F8AE56D574FCBFB95022E9C6D">
 	>
 
 definition
 	CLUSTER[at0000] matches {	-- Anatomical location
 		items cardinality matches {1..*; unordered} matches {
-			ELEMENT[at0001] matches {	-- Location name
+			ELEMENT[at0001] occurrences matches {1..*} matches {	-- Location name
 				value matches {
 					DV_TEXT matches {*}
 				}
@@ -100,6 +102,23 @@ definition
 							at0004]	-- Right
 						}
 					}
+				}
+			}
+			ELEMENT[at0055] occurrences matches {0..1} matches {	-- Anatomical Line
+				value matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {
+							[local::
+							at0062, 	-- Midline
+							at0056, 	-- Midaxillary line
+							at0057, 	-- Anterior axillary line
+							at0058, 	-- Posterior axillary line
+							at0059, 	-- Mid-clavicular line
+							at0060, 	-- Mid-pupillary line
+							at0061]	-- Mid-inguinal point
+						}
+					}
+					DV_TEXT matches {*}
 				}
 			}
 			ELEMENT[at0023] occurrences matches {0..1} matches {	-- Description
@@ -131,7 +150,7 @@ ontology
 				["at0001"] = <
 					text = <"*Location name(en)">
 					description = <"*Named body site.(en)">
-					comment = <"*It is strongly recommended that 'Location name' be coded with a terminology capable of triggering decision support, where possible. Free text should be used only if there is no appropriate terminology available.(en)">
+					comment = <"*It is strongly recommended that 'Location name' be coded with a terminology capable of triggering decision support, where possible. Free text should be used only if there is no appropriate terminology available. Multiple  occurrences will allow for a single complex site to be described using multiple codes, for example, palm and thumb on the same side.(en)">
 				>
 				["at0002"] = <
 					text = <"*Laterality(en)">
@@ -149,8 +168,8 @@ If the 'Location name' data element uses pre-coordinated terms that include late
 				>
 				["at0023"] = <
 					text = <"*Description(en)">
-					description = <"*Narrative description about the named anatomical location.(en)">
-					comment = <"*For example, additional detail about where a pain is maximal in the right upper quadrant of the abdomen.(en)">
+					description = <"*Narrative description that identifies, or helps to identify, the location.(en)">
+					comment = <"*For example: a tattoo covers the bottom half of this area.(en)">
 				>
 				["at0053"] = <
 					text = <"*Complex location(en)">
@@ -160,6 +179,39 @@ If the 'Location name' data element uses pre-coordinated terms that include late
 				["at0054"] = <
 					text = <"*Multimedia representation(en)">
 					description = <"*Image or other media used to support identification of the location on the body.(en)">
+				>
+				["at0055"] = <
+					text = <"*Anatomical Line(en)">
+					description = <"*Theoretical lines drawn through anatomical structures used to provide a consistent reference point.(en)">
+					comment = <"*Common anatomical lines have been included as a value set, which can be extended over time. The additional use of this data element allows for recording of the typical position of the heart's apex beat at 5th left intercostal space, mid-clavicular line.(en)">
+				>
+				["at0056"] = <
+					text = <"*Midaxillary line(en)">
+					description = <"*Line running vertically down the surface of the body passing through the apex of the axilla.(en)">
+				>
+				["at0057"] = <
+					text = <"*Anterior axillary line(en)">
+					description = <"*Line running vertically down the surface of the body passing through the anterior axillary skinfold.(en)">
+				>
+				["at0058"] = <
+					text = <"*Posterior axillary line(en)">
+					description = <"*Line running vertically down the surface of the body passing through theposterior axillary skinfold.(en)">
+				>
+				["at0059"] = <
+					text = <"*Mid-clavicular line(en)">
+					description = <"*Line running vertically down the surface of the body passing through the midpoint of the clavicle.(en)">
+				>
+				["at0060"] = <
+					text = <"*Mid-pupillary line(en)">
+					description = <"*Line running vertically down the face through the midpoint of the pupil when looking directly forward.(en)">
+				>
+				["at0061"] = <
+					text = <"*Mid-inguinal point(en)">
+					description = <"*Point midway between the anterior superior iliac spine and the pubic symphysis.(en)">
+				>
+				["at0062"] = <
+					text = <"*Midline(en)">
+					description = <"*Line running vertically which divides the body into left and right portions, passing through the head, spinal cord, and umbilicus. Alternatively it can refer to a line dividing a body part into two equal portions, for example a digit.(en)">
 				>
 			>
 		>
@@ -172,7 +224,7 @@ If the 'Location name' data element uses pre-coordinated terms that include late
 				["at0001"] = <
 					text = <"*Location name(en)">
 					description = <"*Named body site.(en)">
-					comment = <"*It is strongly recommended that 'Location name' be coded with a terminology capable of triggering decision support, where possible. Free text should be used only if there is no appropriate terminology available.(en)">
+					comment = <"*It is strongly recommended that 'Location name' be coded with a terminology capable of triggering decision support, where possible. Free text should be used only if there is no appropriate terminology available. Multiple  occurrences will allow for a single complex site to be described using multiple codes, for example, palm and thumb on the same side.(en)">
 				>
 				["at0002"] = <
 					text = <"*Laterality(en)">
@@ -190,8 +242,8 @@ If the 'Location name' data element uses pre-coordinated terms that include late
 				>
 				["at0023"] = <
 					text = <"*Description(en)">
-					description = <"*Narrative description about the named anatomical location.(en)">
-					comment = <"*For example, additional detail about where a pain is maximal in the right upper quadrant of the abdomen.(en)">
+					description = <"*Narrative description that identifies, or helps to identify, the location.(en)">
+					comment = <"*For example: a tattoo covers the bottom half of this area.(en)">
 				>
 				["at0053"] = <
 					text = <"*Complex location(en)">
@@ -201,6 +253,39 @@ If the 'Location name' data element uses pre-coordinated terms that include late
 				["at0054"] = <
 					text = <"*Multimedia representation(en)">
 					description = <"*Image or other media used to support identification of the location on the body.(en)">
+				>
+				["at0055"] = <
+					text = <"*Anatomical Line(en)">
+					description = <"*Theoretical lines drawn through anatomical structures used to provide a consistent reference point.(en)">
+					comment = <"*Common anatomical lines have been included as a value set, which can be extended over time. The additional use of this data element allows for recording of the typical position of the heart's apex beat at 5th left intercostal space, mid-clavicular line.(en)">
+				>
+				["at0056"] = <
+					text = <"*Midaxillary line(en)">
+					description = <"*Line running vertically down the surface of the body passing through the apex of the axilla.(en)">
+				>
+				["at0057"] = <
+					text = <"*Anterior axillary line(en)">
+					description = <"*Line running vertically down the surface of the body passing through the anterior axillary skinfold.(en)">
+				>
+				["at0058"] = <
+					text = <"*Posterior axillary line(en)">
+					description = <"*Line running vertically down the surface of the body passing through theposterior axillary skinfold.(en)">
+				>
+				["at0059"] = <
+					text = <"*Mid-clavicular line(en)">
+					description = <"*Line running vertically down the surface of the body passing through the midpoint of the clavicle.(en)">
+				>
+				["at0060"] = <
+					text = <"*Mid-pupillary line(en)">
+					description = <"*Line running vertically down the face through the midpoint of the pupil when looking directly forward.(en)">
+				>
+				["at0061"] = <
+					text = <"*Mid-inguinal point(en)">
+					description = <"*Point midway between the anterior superior iliac spine and the pubic symphysis.(en)">
+				>
+				["at0062"] = <
+					text = <"*Midline(en)">
+					description = <"*Line running vertically which divides the body into left and right portions, passing through the head, spinal cord, and umbilicus. Alternatively it can refer to a line dividing a body part into two equal portions, for example a digit.(en)">
 				>
 			>
 		>
@@ -213,7 +298,7 @@ If the 'Location name' data element uses pre-coordinated terms that include late
 				["at0001"] = <
 					text = <"Location name">
 					description = <"Named body site.">
-					comment = <"It is strongly recommended that 'Location name' be coded with a terminology capable of triggering decision support, where possible. Free text should be used only if there is no appropriate terminology available.">
+					comment = <"It is strongly recommended that 'Location name' be coded with a terminology capable of triggering decision support, where possible. Free text should be used only if there is no appropriate terminology available. Multiple  occurrences will allow for a single complex site to be described using multiple codes, for example, palm and thumb on the same side.">
 				>
 				["at0002"] = <
 					text = <"Laterality">
@@ -231,8 +316,8 @@ If the 'Location name' data element uses pre-coordinated terms that include late
 				>
 				["at0023"] = <
 					text = <"Description">
-					description = <"Narrative description about the named anatomical location.">
-					comment = <"For example, additional detail about where a pain is maximal in the right upper quadrant of the abdomen.">
+					description = <"Narrative description that identifies, or helps to identify, the location.">
+					comment = <"For example: a tattoo covers the bottom half of this area.">
 				>
 				["at0053"] = <
 					text = <"Complex location">
@@ -242,6 +327,39 @@ If the 'Location name' data element uses pre-coordinated terms that include late
 				["at0054"] = <
 					text = <"Multimedia representation">
 					description = <"Image or other media used to support identification of the location on the body.">
+				>
+				["at0055"] = <
+					text = <"Anatomical Line">
+					description = <"Theoretical lines drawn through anatomical structures used to provide a consistent reference point.">
+					comment = <"Common anatomical lines have been included as a value set, which can be extended over time. The additional use of this data element allows for recording of the typical position of the heart's apex beat at 5th left intercostal space, mid-clavicular line.">
+				>
+				["at0056"] = <
+					text = <"Midaxillary line">
+					description = <"Line running vertically down the surface of the body passing through the apex of the axilla.">
+				>
+				["at0057"] = <
+					text = <"Anterior axillary line">
+					description = <"Line running vertically down the surface of the body passing through the anterior axillary skinfold.">
+				>
+				["at0058"] = <
+					text = <"Posterior axillary line">
+					description = <"Line running vertically down the surface of the body passing through theposterior axillary skinfold.">
+				>
+				["at0059"] = <
+					text = <"Mid-clavicular line">
+					description = <"Line running vertically down the surface of the body passing through the midpoint of the clavicle.">
+				>
+				["at0060"] = <
+					text = <"Mid-pupillary line">
+					description = <"Line running vertically down the face through the midpoint of the pupil when looking directly forward.">
+				>
+				["at0061"] = <
+					text = <"Mid-inguinal point">
+					description = <"Point midway between the anterior superior iliac spine and the pubic symphysis.">
+				>
+				["at0062"] = <
+					text = <"Midline">
+					description = <"Line running vertically which divides the body into left and right portions, passing through the head, spinal cord, and umbilicus. Alternatively it can refer to a line dividing a body part into two equal portions, for example a digit.">
 				>
 			>
 		>
@@ -254,7 +372,7 @@ If the 'Location name' data element uses pre-coordinated terms that include late
 				["at0001"] = <
 					text = <"*Location name(en)">
 					description = <"*Named body site.(en)">
-					comment = <"*It is strongly recommended that 'Location name' be coded with a terminology capable of triggering decision support, where possible. Free text should be used only if there is no appropriate terminology available.(en)">
+					comment = <"*It is strongly recommended that 'Location name' be coded with a terminology capable of triggering decision support, where possible. Free text should be used only if there is no appropriate terminology available. Multiple  occurrences will allow for a single complex site to be described using multiple codes, for example, palm and thumb on the same side.(en)">
 				>
 				["at0002"] = <
 					text = <"*Laterality(en)">
@@ -272,8 +390,8 @@ If the 'Location name' data element uses pre-coordinated terms that include late
 				>
 				["at0023"] = <
 					text = <"*Description(en)">
-					description = <"*Narrative description about the named anatomical location.(en)">
-					comment = <"*For example, additional detail about where a pain is maximal in the right upper quadrant of the abdomen.(en)">
+					description = <"*Narrative description that identifies, or helps to identify, the location.(en)">
+					comment = <"*For example: a tattoo covers the bottom half of this area.(en)">
 				>
 				["at0053"] = <
 					text = <"*Complex location(en)">
@@ -283,6 +401,39 @@ If the 'Location name' data element uses pre-coordinated terms that include late
 				["at0054"] = <
 					text = <"*Multimedia representation(en)">
 					description = <"*Image or other media used to support identification of the location on the body.(en)">
+				>
+				["at0055"] = <
+					text = <"*Anatomical Line(en)">
+					description = <"*Theoretical lines drawn through anatomical structures used to provide a consistent reference point.(en)">
+					comment = <"*Common anatomical lines have been included as a value set, which can be extended over time. The additional use of this data element allows for recording of the typical position of the heart's apex beat at 5th left intercostal space, mid-clavicular line.(en)">
+				>
+				["at0056"] = <
+					text = <"*Midaxillary line(en)">
+					description = <"*Line running vertically down the surface of the body passing through the apex of the axilla.(en)">
+				>
+				["at0057"] = <
+					text = <"*Anterior axillary line(en)">
+					description = <"*Line running vertically down the surface of the body passing through the anterior axillary skinfold.(en)">
+				>
+				["at0058"] = <
+					text = <"*Posterior axillary line(en)">
+					description = <"*Line running vertically down the surface of the body passing through theposterior axillary skinfold.(en)">
+				>
+				["at0059"] = <
+					text = <"*Mid-clavicular line(en)">
+					description = <"*Line running vertically down the surface of the body passing through the midpoint of the clavicle.(en)">
+				>
+				["at0060"] = <
+					text = <"*Mid-pupillary line(en)">
+					description = <"*Line running vertically down the face through the midpoint of the pupil when looking directly forward.(en)">
+				>
+				["at0061"] = <
+					text = <"*Mid-inguinal point(en)">
+					description = <"*Point midway between the anterior superior iliac spine and the pubic symphysis.(en)">
+				>
+				["at0062"] = <
+					text = <"*Midline(en)">
+					description = <"*Line running vertically which divides the body into left and right portions, passing through the head, spinal cord, and umbilicus. Alternatively it can refer to a line dividing a body part into two equal portions, for example a digit.(en)">
 				>
 			>
 		>
