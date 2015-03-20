@@ -2,7 +2,7 @@
 	openEHR-EHR-CLUSTER.relative_location.v1
 
 concept
-	[at0000]	-- Relative Anatomical Location
+	[at0000]	-- Relative anatomical location
 language
 	original_language = <[ISO_639-1::en]>
 	translations = <
@@ -53,18 +53,21 @@ description
 		>
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"To record details about a single physical location on the human body in terms of its relationship to other anatomical landmarks.">
-			use = <"Use to record details about a single physical location in the human body. It may be neccessary to describe the physical location using more than one relative location - for example, 2 cm inferior to 'landmark A' and 3 cm medial to 'landmark B'. This archetype is designed to be used within the context of other ENTRY or CLUSTER archetypes and soley to provide a structured and consistent way to represent identified body sites.
+			purpose = <"To record details about a single physical location on or within the human body in terms of its relationship to other macroscopic anatomical landmarks.">
+			use = <"Use to record details about a single physical location in the human body. It may be necessary to describe the single physical location using more than one relative location - for example, 2 cm inferior to 'landmark A' and 3 cm medial to 'landmark B'. This archetype is designed to be used within the context of other ENTRY or CLUSTER archetypes, including CLUSTER.anatomical location, and solely to provide a structured and consistent way to represent identified body sites.
 
-In practice, some archetypes carry a single data element for carrying a simple description of body site - for example, OBSERVATION.blood_pressure and CLUSTER.symptom when describing ear pain. In this situation, where the value set is predictable and simple to define, this is a very accurate and pragmatic way to record the site in the body and to query at a later date.
+Examples: 
+- 5 cm below L tibial tuberosity
+- 2 cm medial to R nipple
+- medial aspect of R great toe nail.
 
-However in the situation where the anatomical location is not able to be named as a specific site, it may be more flexible to use this archetype. For example, the CLUSTER.symptom archetype also carries a SLOT for 'Complex Body Location' which can hold both this archetype plus the CLUSTER.anatomical_location to support maximal flexibility.">
-			keywords = <"location", "site", "anatomical", "relative", "approximate">
-			misuse = <"Not to be used for specifiying unilateral/bilateral occurence - this is related to an evaluation which perhaps includes multiple locations.
+In practice, some archetypes carry a single data element for carrying a simple description of body site - for example, OBSERVATION.blood_pressure and CLUSTER.symptom when describing ear pain. In this situation, where the value set is predictable and simple to define, this is a very accurate and pragmatic way to record the site in the body and to query at a later date. However, if the anatomical location is not able to be named as a specific site, it may be more flexible to use this archetype. For example, the CLUSTER.symptom archetype also carries a SLOT for 'Complex Body Location' which can hold both this archetype plus the CLUSTER.anatomical_location to support maximal flexibility.
 
-Not to be used to specify a specific location of a named physical site in the body. Use the CLUSTER.anatomical_location for this purpose.
+In the situation where the CLUSTER.anatomical_location can only be used to name a large and/or non-specific body part, the use of this archetype within the 'Complex Location' SLOT will support recording of a more precise location - for example, 2 cm anterior to the cubital fossa of the left forearm or or 4 cm below R costal margin on the chest wall in the mid-clavicular line.">
+			keywords = <"location", "site", "anatomical", "relative", "approximate", "anatomic region", "topographic anatomy", "macroscopic anatomy", "macroscopic", "anatomic">
+			misuse = <"Not to be used for specifying unilateral/bilateral occurrences of a physical object or anatomical feature.
 
-Not to be used as a stand-alone archetype.">
+Not to be used to specify a simple location of a named physical site in the body, such as left femur or midline of nose. Use the CLUSTER.anatomical_location for this purpose.">
 			copyright = <"© openEHR Foundation">
 		>
 		["nb"] = <
@@ -77,41 +80,46 @@ Not to be used as a stand-alone archetype.">
 		>
 	>
 	lifecycle_state = <"CommitteeDraft">
-	other_contributors = <"Heather Leslie, Ocean Informatics, Australia (Editor)", "Ian McNicoll, freshEHR Clinical Informatics, United Kingdom (Editor)", "Dunmail Hodkinson, Black Pear Software Ltd, UK">
+	other_contributors = <"Vebjoern Arntzen, Oslo university hospital, Norway", "Silje Ljosland Bakke, Bergen Hospital Trust, Norway", "Lars Bitsch-Larsen, Haukeland University hospital, Norway", "Shahla Foozonkhah, Ocean Informatics, Australia", "Dunmail Hodkinson, Black Pear Software Ltd, UK", "Lars Karlsen, DIPS ASA, Norway", "Sabine Leh, Haukeland University Hospital, Department of Pathology, Norway", "Heather Leslie, Ocean Informatics, Australia (Editor)", "Vesna Levasic, Orthopaedic Hospital Valdoltra, Slovenia", "Luis Marco Ruiz, Norwegian Center for Integrated Care and Telemedicine, Norway", "Ian McNicoll, freshEHR Clinical Informatics, United Kingdom (Editor)", "Dmitri Wall, Irish Skin Foundation, Ireland">
 	other_details = <
-		["references"] = <"Use cases:
-
-- 5LICS, midclavicular line
-
-- L forearm, 2cm anterior to the cubital fossa
-
-- Right iliac fossa
-
-- 5 cm below L tibial tuberosity
-
-- 2 cm medial to R nipple
-
-- 4 cm below R costal margin in midclavicular line
-
-- R femur
-
-- midline nose
-
-- medial aspect of R great toe nail.">
-		["MD5-CAM-1.0.1"] = <"5428580BD0F7E8B60CB5CAD0A831953B">
+		["MD5-CAM-1.0.1"] = <"431463A7FC3FF51B3357ABDDAD20530C">
 	>
 
 definition
-	CLUSTER[at0000] matches {	-- Relative Anatomical Location
+	CLUSTER[at0000] matches {	-- Relative anatomical location
 		items cardinality matches {1..*; unordered} matches {
 			CLUSTER[at0020] occurrences matches {0..*} matches {	-- Relative location
 				items cardinality matches {1..*; unordered} matches {
-					ELEMENT[at0021] occurrences matches {0..1} matches {	-- Identified landmark
+					ELEMENT[at0021] matches {	-- Identified landmark
 						value matches {
 							DV_TEXT matches {*}
 						}
 					}
-					ELEMENT[at0006] occurrences matches {0..1} matches {	-- Aspect
+					ELEMENT[at0022] occurrences matches {0..1} matches {	-- Distance from landmark
+						value matches {
+							C_DV_QUANTITY <
+								property = <[openehr::122]>
+								list = <
+									["1"] = <
+										units = <"cm">
+										magnitude = <|>=0.0|>
+										precision = <|1|>
+									>
+									["2"] = <
+										units = <"in">
+										magnitude = <|>=0.0|>
+										precision = <|1|>
+									>
+									["3"] = <
+										units = <"mm">
+										magnitude = <|>=0.0|>
+										precision = <|0|>
+									>
+								>
+							>
+						}
+					}
+					ELEMENT[at0006] occurrences matches {0..2} matches {	-- Aspect
 						value matches {
 							DV_CODED_TEXT matches {
 								defining_code matches {
@@ -122,32 +130,15 @@ definition
 									at0010, 	-- Inferior to
 									at0012, 	-- Anterior to
 									at0013, 	-- Posterior to
-									at0014, 	-- Below
-									at0015, 	-- Above
-									at0016, 	-- Inferolateral to
-									at0017, 	-- Superolateral to
-									at0018, 	-- Inferomedial to
-									at0019]	-- Superomedial to
+									at0055, 	-- Proximal to
+									at0056, 	-- Distal to
+									at0057, 	-- Superficial to
+									at0058, 	-- Deep to
+									at0059, 	-- Within
+									at0060]	-- External to
 								}
 							}
-						}
-					}
-					ELEMENT[at0022] occurrences matches {0..1} matches {	-- Distance from landmark
-						value matches {
-							C_DV_QUANTITY <
-								property = <[openehr::122]>
-								list = <
-									["1"] = <
-										units = <"cm">
-									>
-									["2"] = <
-										units = <"in">
-									>
-									["3"] = <
-										units = <"mm">
-									>
-								>
-							>
+							DV_TEXT matches {*}
 						}
 					}
 				}
@@ -162,26 +153,9 @@ definition
 					DV_TEXT matches {*}
 				}
 			}
-			ELEMENT[at0052] occurrences matches {0..*} matches {	-- Multimedia representation
-				value matches {
-					DV_MULTIMEDIA matches {
-						media_type matches {
-							[openEHR::
-							425, 
-							426, 
-							427, 
-							428, 
-							429, 
-							401, 
-							402, 
-							404, 
-							405, 
-							406, 
-							407, 
-							414]
-						}
-					}
-				}
+			allow_archetype CLUSTER[at0054] occurrences matches {0..*} matches {	-- Multimedia representation
+				include
+					archetype_id/value matches {/openEHR-EHR-CLUSTER\.multimedia(-[a-zA-Z0-9_]+)*\.v1/}
 			}
 		}
 	}
@@ -223,30 +197,6 @@ ontology
 					text = <"خلفي">
 					description = <"المكان النسبي هو خلف المَعْلَم ">
 				>
-				["at0014"] = <
-					text = <"أسفل">
-					description = <"المكان النسبي هو أسفل المَعْلَم">
-				>
-				["at0015"] = <
-					text = <"فوق">
-					description = <"المكان النسبي هو أعلى المَعْلَم">
-				>
-				["at0016"] = <
-					text = <"جانبي سفلي">
-					description = <"المكان النسبي هو سفلي متوسط بالنسبة للمَعْلَم">
-				>
-				["at0017"] = <
-					text = <"علوي جانبي">
-					description = <"المكان النسبي هو علوي و جانبي بالنسبة للمَعْلَم">
-				>
-				["at0018"] = <
-					text = <"سفلي متوسط">
-					description = <"المكان النسبي هو سفلي و متوسط بالنسبة للمَعْلَم">
-				>
-				["at0019"] = <
-					text = <"علوي متوسط">
-					description = <"المكان النسبي هو علوي و متوسط بالنسبة للمَعْلَم">
-				>
 				["at0020"] = <
 					text = <"*Relative location(en)">
 					description = <"*Details required to identify a single physical location on the human body in terms of its relationship to other anatomical landmarks.(en)">
@@ -262,15 +212,40 @@ ontology
 				>
 				["at0023"] = <
 					text = <"*Description(en)">
-					description = <"*Narrative description about the anatomical location.(en)">
-				>
-				["at0052"] = <
-					text = <"*Multimedia representation(en)">
-					description = <"*Image or other media used to support identification of the location on the body.(en)">
+					description = <"*Narrative description that identifies, or helps to identify, the location.(en)">
+					comment = <"*For example: a tattoo covers the bottom half of this area.(en)">
 				>
 				["at0053"] = <
 					text = <"العلامات/الاتجاهات البصرية">
 					description = <"وصف أي علامات بصرية مستخدمة لتوجيه من ينظر, مثل: النقاط المرجعية الخارجية, الدَّرْز الخاص, علامات الحبر">
+				>
+				["at0054"] = <
+					text = <"*Cluster(en)">
+					description = <"**(en)">
+				>
+				["at0055"] = <
+					text = <"*Proximal to(en)">
+					description = <"**(en)">
+				>
+				["at0056"] = <
+					text = <"*Distal to(en)">
+					description = <"**(en)">
+				>
+				["at0057"] = <
+					text = <"*Superficial to(en)">
+					description = <"**(en)">
+				>
+				["at0058"] = <
+					text = <"*Deep to(en)">
+					description = <"**(en)">
+				>
+				["at0059"] = <
+					text = <"*Within(en)">
+					description = <"**(en)">
+				>
+				["at0060"] = <
+					text = <"*External to(en)">
+					description = <"*Outside the landmark.(en)">
 				>
 			>
 		>
@@ -308,30 +283,6 @@ ontology
 					text = <"Zadaj">
 					description = <"*Relative location posterior to the landmark.(en)">
 				>
-				["at0014"] = <
-					text = <"Spodaj">
-					description = <"*Relative location below the landmark.(en)">
-				>
-				["at0015"] = <
-					text = <"Zgoraj">
-					description = <"*Relative location above the landmark.(en)">
-				>
-				["at0016"] = <
-					text = <"Nižje ob strani">
-					description = <"*Relative location inferior and lateral to the landmark.(en)">
-				>
-				["at0017"] = <
-					text = <"Višje ob strani">
-					description = <"*Relative location superior and lateral to the landmark.(en)">
-				>
-				["at0018"] = <
-					text = <"Nižje v sredini">
-					description = <"*Relative location inferior and medial to the landmark.(en)">
-				>
-				["at0019"] = <
-					text = <"Višje v sredini">
-					description = <"*Relative location superior and medial to the landmark.(en)">
-				>
 				["at0020"] = <
 					text = <"*Relative location(en)">
 					description = <"*Details required to identify a single physical location on the human body in terms of its relationship to other anatomical landmarks.(en)">
@@ -347,75 +298,77 @@ ontology
 				>
 				["at0023"] = <
 					text = <"*Description(en)">
-					description = <"*Narrative description about the anatomical location.(en)">
-				>
-				["at0052"] = <
-					text = <"*Multimedia representation(en)">
-					description = <"*Image or other media used to support identification of the location on the body.(en)">
+					description = <"*Narrative description that identifies, or helps to identify, the location.(en)">
+					comment = <"*For example: a tattoo covers the bottom half of this area.(en)">
 				>
 				["at0053"] = <
 					text = <"*Visual markings/orientation(en)">
 					description = <"*Description of any visual markings used to orientate the viewer e.g external reference points, special sutures, ink markings.(en)">
+				>
+				["at0054"] = <
+					text = <"*Cluster(en)">
+					description = <"**(en)">
+				>
+				["at0055"] = <
+					text = <"*Proximal to(en)">
+					description = <"**(en)">
+				>
+				["at0056"] = <
+					text = <"*Distal to(en)">
+					description = <"**(en)">
+				>
+				["at0057"] = <
+					text = <"*Superficial to(en)">
+					description = <"**(en)">
+				>
+				["at0058"] = <
+					text = <"*Deep to(en)">
+					description = <"**(en)">
+				>
+				["at0059"] = <
+					text = <"*Within(en)">
+					description = <"**(en)">
+				>
+				["at0060"] = <
+					text = <"*External to(en)">
+					description = <"*Outside the landmark.(en)">
 				>
 			>
 		>
 		["en"] = <
 			items = <
 				["at0000"] = <
-					text = <"Relative Anatomical Location">
-					description = <"A physical location on the human body that is described in terms of its relationship to other body parts.">
+					text = <"Relative anatomical location">
+					description = <"A physical location on within the human body that is described in terms of its relationship to other body parts.">
 				>
 				["at0006"] = <
 					text = <"Aspect">
 					description = <"Qualifier to identify which direction the anatomical location is in relation to the identified landmark.">
+					comment = <"Common anatomical aspects have been included as a value set, which can be extended over time.">
 				>
 				["at0007"] = <
 					text = <"Medial to">
-					description = <"Relative location medial to the landmark.">
+					description = <"Towards the middle, from the landmark.">
 				>
 				["at0008"] = <
 					text = <"Lateral to">
-					description = <"Relative location lateral to the landmark.">
+					description = <"Towards the side, from the landmark.">
 				>
 				["at0009"] = <
 					text = <"Superior to">
-					description = <"Relative location superior to the landmark.">
+					description = <"Above the landmark, often referring towards the head.">
 				>
 				["at0010"] = <
 					text = <"Inferior to">
-					description = <"Relative location inferior to the landmark.">
+					description = <"Below the landmark, often referring towards the feet.">
 				>
 				["at0012"] = <
 					text = <"Anterior to">
-					description = <"Relative location anterior to the landmark.">
+					description = <"Towards the front, or ventral aspect, from the landmark.">
 				>
 				["at0013"] = <
 					text = <"Posterior to">
-					description = <"Relative location posterior to the landmark.">
-				>
-				["at0014"] = <
-					text = <"Below">
-					description = <"Relative location below the landmark.">
-				>
-				["at0015"] = <
-					text = <"Above">
-					description = <"Relative location above the landmark.">
-				>
-				["at0016"] = <
-					text = <"Inferolateral to">
-					description = <"Relative location inferior and lateral to the landmark.">
-				>
-				["at0017"] = <
-					text = <"Superolateral to">
-					description = <"Relative location superior and lateral to the landmark.">
-				>
-				["at0018"] = <
-					text = <"Inferomedial to">
-					description = <"Relative location inferior and medial to the landmark.">
-				>
-				["at0019"] = <
-					text = <"Superomedial to">
-					description = <"Relative location superior and medial to the landmark.">
+					description = <"Towards the back, or dorsal aspect, from the landmark.">
 				>
 				["at0020"] = <
 					text = <"Relative location">
@@ -425,6 +378,7 @@ ontology
 				["at0021"] = <
 					text = <"Identified landmark">
 					description = <"Identified anatomical site used as the reference point.">
+					comment = <"'Location name' should be coded with a terminology, where possible. Free text should be used only if there is no appropriate terminology available.">
 				>
 				["at0022"] = <
 					text = <"Distance from landmark">
@@ -432,15 +386,40 @@ ontology
 				>
 				["at0023"] = <
 					text = <"Description">
-					description = <"Narrative description about the anatomical location.">
-				>
-				["at0052"] = <
-					text = <"Multimedia representation">
-					description = <"Image or other media used to support identification of the location on the body.">
+					description = <"Narrative description that identifies, or helps to identify, the location.">
+					comment = <"For example: a tattoo covers the bottom half of this area.">
 				>
 				["at0053"] = <
 					text = <"Visual markings/orientation">
 					description = <"Description of any visual markings used to orientate the viewer e.g external reference points, special sutures, ink markings.">
+				>
+				["at0054"] = <
+					text = <"Multimedia representation">
+					description = <"Image or other media used to support identification of the location on the body.">
+				>
+				["at0055"] = <
+					text = <"Proximal to">
+					description = <"Closer to the body, relative to the landmark.">
+				>
+				["at0056"] = <
+					text = <"Distal to">
+					description = <"Further from the body, relative to the landmark.">
+				>
+				["at0057"] = <
+					text = <"Superficial to">
+					description = <"Nearer the outer surface, relative to the landmark.">
+				>
+				["at0058"] = <
+					text = <"Deep to">
+					description = <"Further away from the outer surface, relative to the landmark.">
+				>
+				["at0059"] = <
+					text = <"Within">
+					description = <"Inside the landmark.">
+				>
+				["at0060"] = <
+					text = <"External to">
+					description = <"Outside the landmark.">
 				>
 			>
 		>
@@ -478,30 +457,6 @@ ontology
 					text = <"Posteriort">
 					description = <"Det relative sted posteriort til landemerket.">
 				>
-				["at0014"] = <
-					text = <"Under">
-					description = <"Det relative sted under landemerket.">
-				>
-				["at0015"] = <
-					text = <"Over">
-					description = <"Det relative sted over landemerket.">
-				>
-				["at0016"] = <
-					text = <"Inferiorlateralt">
-					description = <"Det relative sted inferirot og lateralt til landemerket.">
-				>
-				["at0017"] = <
-					text = <"Superiorlateralt">
-					description = <"Det relative sted superiort og lateralt til landelmerket.">
-				>
-				["at0018"] = <
-					text = <"Inferiormedialt">
-					description = <"Det relative sted inferiort og medialt for landemerket.">
-				>
-				["at0019"] = <
-					text = <"Superiormedialt">
-					description = <"Det relative sted superiort og medialt til landemerket.">
-				>
 				["at0020"] = <
 					text = <"*Relative location(en)">
 					description = <"*Details required to identify a single physical location on the human body in terms of its relationship to other anatomical landmarks.(en)">
@@ -517,15 +472,40 @@ ontology
 				>
 				["at0023"] = <
 					text = <"*Description(en)">
-					description = <"*Narrative description about the anatomical location.(en)">
-				>
-				["at0052"] = <
-					text = <"*Multimedia representation(en)">
-					description = <"*Image or other media used to support identification of the location on the body.(en)">
+					description = <"*Narrative description that identifies, or helps to identify, the location.(en)">
+					comment = <"*For example: a tattoo covers the bottom half of this area.(en)">
 				>
 				["at0053"] = <
 					text = <"Visuel markering/orientering">
 					description = <"Beskrivelse av alle visuelle markeringer brukes til å orientere betrakteren f.eks eksterne referansepunkter, spesielle suturer, blekk markeringer.">
+				>
+				["at0054"] = <
+					text = <"*Cluster(en)">
+					description = <"**(en)">
+				>
+				["at0055"] = <
+					text = <"*Proximal to(en)">
+					description = <"**(en)">
+				>
+				["at0056"] = <
+					text = <"*Distal to(en)">
+					description = <"**(en)">
+				>
+				["at0057"] = <
+					text = <"*Superficial to(en)">
+					description = <"**(en)">
+				>
+				["at0058"] = <
+					text = <"*Deep to(en)">
+					description = <"**(en)">
+				>
+				["at0059"] = <
+					text = <"*Within(en)">
+					description = <"**(en)">
+				>
+				["at0060"] = <
+					text = <"*External to(en)">
+					description = <"*Outside the landmark.(en)">
 				>
 			>
 		>
