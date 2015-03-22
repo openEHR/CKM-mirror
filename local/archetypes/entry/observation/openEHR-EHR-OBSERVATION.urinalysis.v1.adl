@@ -2,7 +2,7 @@
 	openEHR-EHR-OBSERVATION.urinalysis.v1
 
 concept
-	[at0000]	-- Urinalysis POCT
+	[at0000]	-- Urinalysis
 language
 	original_language = <[ISO_639-1::en]>
 	translations = <
@@ -21,6 +21,12 @@ language
 			>
 			accreditation = <"What go here?">
 		>
+		["ar-sy"] = <
+			language = <[ISO_639-1::ar-sy]>
+			author = <
+				["name"] = <"?">
+			>
+		>
 		["es-ar"] = <
 			language = <[ISO_639-1::es-ar]>
 			author = <
@@ -28,12 +34,6 @@ language
 				["organisation"] = <"Bitios.com">
 			>
 			accreditation = <"Medical Doctor (Internal Medicine Specialist)">
-		>
-		["ar-sy"] = <
-			language = <[ISO_639-1::ar-sy]>
-			author = <
-				["name"] = <"?">
-			>
 		>
 	>
 description
@@ -62,12 +62,14 @@ description
 		>
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"To record the results of a qualitative and semi-quantitative test array using reagent test strips to indicate possible abnormalities in a sample of urine, and usually performed by clinicians at the point of care.">
+			purpose = <"To record the results of a qualitative and semi-quantitative test array using reagent test strips to indicate possible abnormalities in a sample of urine. This test may be performed by clinicians at the point of care, technicians in a laboratory setting or individuals at home.">
 			use = <"Use to record the results of a qualitative and semi-quantitative test array performed on a sample of urine, using reagent test strips. On exposure to urine, chemical pads on the reagent test strip change colour and the test result is read by visual comparison to a color chart at specified times after exposure or by an automated device.
 
 Different commercial products carry a variety of test /reagent pads. This archetype is heavily influenced by the commonly available Multistix test strips in Australia, recording ten commonly used analytes, but is intended to be generically applicable. If requirements for other parameters become apparent to meet the requirements for other test strips then product-specific urinalysis archetypes may need to be developed.">
-			keywords = <"urine", "test", "dip-stick", "strip", "multistix", "urinalysis", "analysis">
-			misuse = <"Not to be used for recording urine microscopy or qualitative test results. Use the OBSERVATION.pathology_test family of archetypes for this purpose.">
+			keywords = <"urine", "test", "dip-stick", "strip", "multistix", "urinalysis", "analysis", "dipstick", "urinalyses">
+			misuse = <"Not to be used for recording urine microscopy or quantitative test results. Use the OBSERVATION.laboratory_test family of archetypes for this purpose.
+
+Not to be used for recording urine pregnancy tests. Use the OBSERVATION.pregnancy_test for this purpose.">
 			copyright = <"© openEHR Foundation">
 		>
 		["ar-sy"] = <
@@ -99,11 +101,11 @@ Urine Dipstick Multistix (R) 10SG, Johns Hopkins Hospital. The Johns Hopkins Hos
 Multistix 9 (R) and Uristix (R) Urinalysis, UCSF Medical Center. Point of Care Testing [Internet]. Revision 2, version 1: Jun 2013. Available at: http://labmed.ucsf.edu/labmanual/mftlng-mtzn/dnld/poct-MultistixUristix.pdf (Accessed Mar 4, 2015).
 
 Various product labels.">
-		["MD5-CAM-1.0.1"] = <"2CF9846D732BB6EB4E3693D94E636F9F">
+		["MD5-CAM-1.0.1"] = <"B5B1792C616E8CB9B0A6DDF8C82F8A0D">
 	>
 
 definition
-	OBSERVATION[at0000] matches {	-- Urinalysis POCT
+	OBSERVATION[at0000] matches {	-- Urinalysis
 		data matches {
 			HISTORY[at0001] matches {	-- Event Series
 				events cardinality matches {1..*; unordered} matches {
@@ -242,7 +244,18 @@ definition
 						include
 							archetype_id/value matches {/openEHR-EHR-CLUSTER\.device(-[a-zA-Z0-9_]+)*\.v1/}
 					}
-					allow_archetype CLUSTER[at0183] occurrences matches {0..*} matches {	-- Device
+					ELEMENT[at0186] occurrences matches {0..1} matches {	-- Method
+						value matches {
+							DV_CODED_TEXT matches {
+								defining_code matches {
+									[local::
+									at0187, 	-- Manual
+									at0188]	-- Automatic
+								}
+							}
+						}
+					}
+					allow_archetype CLUSTER[at0183] occurrences matches {0..1} matches {	-- Device
 						include
 							archetype_id/value matches {/openEHR-EHR-CLUSTER\.device(-[a-zA-Z0-9_]+)*\.v1/}
 					}
@@ -262,7 +275,7 @@ ontology
 		["ar-sy"] = <
 			items = <
 				["at0000"] = <
-					text = <"*Urinalysis POCT(en)">
+					text = <"*Urinalysis(en)">
 					description = <"*Qualitative and semi-quantitative test array using reagent test strips to indicate possible abnormalities in a sample of urine, often performed as part of Point of Care Testing (POCT).(en)">
 				>
 				["at0001"] = <
@@ -582,18 +595,31 @@ ontology
 				["at0184"] = <
 					text = <"*Extension(en)">
 					description = <"*Additional information required to capture local content or to align with other reference models/formalisms.(en)">
-					comment = <"*For example:  e.g. Local information requirements or additional metadata to align with FHIR or CIMI equivalents.(en)">
+					comment = <"*For example: Local information requirements or additional metadata to align with FHIR or CIMI equivalents.(en)">
 				>
 				["at0185"] = <
 					text = <"*Exam not done(en)">
-					description = <"*Details to explicitly record that POC urinalysis was not performed.(en)">
+					description = <"*Details to explicitly record that urinalysis was not performed.(en)">
+					comment = <"*Use this SLOT and associated CLUSTER archetype if there is an explicit need to record that the test was not done, for example, if urine could not be obtained from a child even though it was ordered or neccessary.(en)">
+				>
+				["at0186"] = <
+					text = <"*Method(en)">
+					description = <"*Method by which the reagent strips were read.(en)">
+				>
+				["at0187"] = <
+					text = <"*Manual(en)">
+					description = <"*The urinalysis results were detemined by a person.(en)">
+				>
+				["at0188"] = <
+					text = <"*Automatic(en)">
+					description = <"*The urinalysis results were detemined by a medical device.(en)">
 				>
 			>
 		>
 		["zh-cn"] = <
 			items = <
 				["at0000"] = <
-					text = <"*Urinalysis POCT(en)">
+					text = <"*Urinalysis(en)">
 					description = <"*Qualitative and semi-quantitative test array using reagent test strips to indicate possible abnormalities in a sample of urine, often performed as part of Point of Care Testing (POCT).(en)">
 				>
 				["at0001"] = <
@@ -913,18 +939,31 @@ ontology
 				["at0184"] = <
 					text = <"*Extension(en)">
 					description = <"*Additional information required to capture local content or to align with other reference models/formalisms.(en)">
-					comment = <"*For example:  e.g. Local information requirements or additional metadata to align with FHIR or CIMI equivalents.(en)">
+					comment = <"*For example: Local information requirements or additional metadata to align with FHIR or CIMI equivalents.(en)">
 				>
 				["at0185"] = <
 					text = <"*Exam not done(en)">
-					description = <"*Details to explicitly record that POC urinalysis was not performed.(en)">
+					description = <"*Details to explicitly record that urinalysis was not performed.(en)">
+					comment = <"*Use this SLOT and associated CLUSTER archetype if there is an explicit need to record that the test was not done, for example, if urine could not be obtained from a child even though it was ordered or neccessary.(en)">
+				>
+				["at0186"] = <
+					text = <"*Method(en)">
+					description = <"*Method by which the reagent strips were read.(en)">
+				>
+				["at0187"] = <
+					text = <"*Manual(en)">
+					description = <"*The urinalysis results were detemined by a person.(en)">
+				>
+				["at0188"] = <
+					text = <"*Automatic(en)">
+					description = <"*The urinalysis results were detemined by a medical device.(en)">
 				>
 			>
 		>
 		["en"] = <
 			items = <
 				["at0000"] = <
-					text = <"Urinalysis POCT">
+					text = <"Urinalysis">
 					description = <"Qualitative and semi-quantitative test array using reagent test strips to indicate possible abnormalities in a sample of urine, often performed as part of Point of Care Testing (POCT).">
 				>
 				["at0001"] = <
@@ -1244,18 +1283,31 @@ ontology
 				["at0184"] = <
 					text = <"Extension">
 					description = <"Additional information required to capture local content or to align with other reference models/formalisms.">
-					comment = <"For example:  e.g. Local information requirements or additional metadata to align with FHIR or CIMI equivalents.">
+					comment = <"For example: Local information requirements or additional metadata to align with FHIR or CIMI equivalents.">
 				>
 				["at0185"] = <
 					text = <"Exam not done">
-					description = <"Details to explicitly record that POC urinalysis was not performed.">
+					description = <"Details to explicitly record that urinalysis was not performed.">
+					comment = <"Use this SLOT and associated CLUSTER archetype if there is an explicit need to record that the test was not done, for example, if urine could not be obtained from a child even though it was ordered or neccessary.">
+				>
+				["at0186"] = <
+					text = <"Method">
+					description = <"Method by which the reagent strips were read.">
+				>
+				["at0187"] = <
+					text = <"Manual">
+					description = <"The urinalysis results were detemined by a person.">
+				>
+				["at0188"] = <
+					text = <"Automatic">
+					description = <"The urinalysis results were detemined by a medical device.">
 				>
 			>
 		>
 		["sk"] = <
 			items = <
 				["at0000"] = <
-					text = <"*Urinalysis POCT(en)">
+					text = <"*Urinalysis(en)">
 					description = <"*Qualitative and semi-quantitative test array using reagent test strips to indicate possible abnormalities in a sample of urine, often performed as part of Point of Care Testing (POCT).(en)">
 				>
 				["at0001"] = <
@@ -1575,18 +1627,31 @@ ontology
 				["at0184"] = <
 					text = <"*Extension(en)">
 					description = <"*Additional information required to capture local content or to align with other reference models/formalisms.(en)">
-					comment = <"*For example:  e.g. Local information requirements or additional metadata to align with FHIR or CIMI equivalents.(en)">
+					comment = <"*For example: Local information requirements or additional metadata to align with FHIR or CIMI equivalents.(en)">
 				>
 				["at0185"] = <
 					text = <"*Exam not done(en)">
-					description = <"*Details to explicitly record that POC urinalysis was not performed.(en)">
+					description = <"*Details to explicitly record that urinalysis was not performed.(en)">
+					comment = <"*Use this SLOT and associated CLUSTER archetype if there is an explicit need to record that the test was not done, for example, if urine could not be obtained from a child even though it was ordered or neccessary.(en)">
+				>
+				["at0186"] = <
+					text = <"*Method(en)">
+					description = <"*Method by which the reagent strips were read.(en)">
+				>
+				["at0187"] = <
+					text = <"*Manual(en)">
+					description = <"*The urinalysis results were detemined by a person.(en)">
+				>
+				["at0188"] = <
+					text = <"*Automatic(en)">
+					description = <"*The urinalysis results were detemined by a medical device.(en)">
 				>
 			>
 		>
 		["es-ar"] = <
 			items = <
 				["at0000"] = <
-					text = <"*Urinalysis POCT(en)">
+					text = <"*Urinalysis(en)">
 					description = <"*Qualitative and semi-quantitative test array using reagent test strips to indicate possible abnormalities in a sample of urine, often performed as part of Point of Care Testing (POCT).(en)">
 				>
 				["at0001"] = <
@@ -1906,11 +1971,24 @@ ontology
 				["at0184"] = <
 					text = <"*Extension(en)">
 					description = <"*Additional information required to capture local content or to align with other reference models/formalisms.(en)">
-					comment = <"*For example:  e.g. Local information requirements or additional metadata to align with FHIR or CIMI equivalents.(en)">
+					comment = <"*For example: Local information requirements or additional metadata to align with FHIR or CIMI equivalents.(en)">
 				>
 				["at0185"] = <
 					text = <"*Exam not done(en)">
-					description = <"*Details to explicitly record that POC urinalysis was not performed.(en)">
+					description = <"*Details to explicitly record that urinalysis was not performed.(en)">
+					comment = <"*Use this SLOT and associated CLUSTER archetype if there is an explicit need to record that the test was not done, for example, if urine could not be obtained from a child even though it was ordered or neccessary.(en)">
+				>
+				["at0186"] = <
+					text = <"*Method(en)">
+					description = <"*Method by which the reagent strips were read.(en)">
+				>
+				["at0187"] = <
+					text = <"*Manual(en)">
+					description = <"*The urinalysis results were detemined by a person.(en)">
+				>
+				["at0188"] = <
+					text = <"*Automatic(en)">
+					description = <"*The urinalysis results were detemined by a medical device.(en)">
 				>
 			>
 		>
