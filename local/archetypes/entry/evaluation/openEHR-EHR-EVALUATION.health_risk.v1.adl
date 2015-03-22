@@ -2,7 +2,7 @@
 	openEHR-EHR-EVALUATION.health_risk.v1
 
 concept
-	[at0000]	-- Health risk
+	[at0000]	-- Health risk assessment
 language
 	original_language = <[ISO_639-1::en]>
 	translations = <
@@ -46,23 +46,27 @@ description
 		>
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"To record known risk factors for an identified disease, condition, or other potentially adverse health issue , and/or an evaluation of the likelihood of the subject experiencing it in the future.">
+			purpose = <"To record known risk factors for an identified disease, condition, or other potentially adverse health issue , and/or an evaluation of the likelihood of the subject experiencing it in the future.
+
+The scope of this archetype is deliberately left open and broad in scope. The 'Health Risk' could be determined from risk factors from any or all of: medical; biomarker; lifestyle; social; occupational hazard; or environmental domains.
+
+The intent of this archetype is to document potential risk at a point in time, and to support decision-making that may reduce the identified risk, whether by clinicians or the individual themselves.">
 			use = <"Use to record known risk factors for an identified disease, condition, or other potentially adverse health issue , and/or an evaluation of the likelihood of the subject experiencing it in the future.">
-			keywords = <"assessment", "risk", "evaluation">
+			keywords = <"assessment", "risk", "evaluation", "risk stratiication", "adverse", "factor", "health", "issue", "estimated", "management", "risk factor">
 			misuse = <"">
 			copyright = <"© openEHR Foundation">
 		>
 	>
 	lifecycle_state = <"CommitteeDraft">
-	other_contributors = <"Heather Leslie, Ocean Informatics, Australia", ...>
+	other_contributors = <"Nadim Anani, Karolinska Institutet, Sweden", "Vebjoern Arntzen, Oslo university hospital, Norway", "Koray Atalag, University of Auckland, New Zealand", "Silje Ljosland Bakke, Bergen Hospital Trust, Norway", "Lars Bitsch-Larsen, Haukeland University hospital, Norway", "Rong Chen, Cambio Healthcare Systems, Sweden", "Stephen Chu, Queensland Health, Australia", "Shahla Foozonkhah, Ocean Informatics, Australia", "Heather Grain, Llewelyn Grain Informatics, Australia", "Anca Heyd, DIPS ASA, Norway", "Lars Karlsen, DIPS ASA, Norway", "Heather Leslie, Ocean Informatics, Australia (Editor)", "Hallvard Lærum, Oslo University Hospital, Norway", "Luis Marco Ruiz, Norwegian Center for Integrated Care and Telemedicine, Norway", "Ian McNicoll, freshEHR Clinical Informatics, United Kingdom (Editor)", "Jussara Rotzsch, UNB, Brazil", "John Tore Valand, Helse Bergen, Norway">
 	other_details = <
 		["current_contact"] = <"Heather Leslie, Ocean Informatics, heather.leslie@oceaninformatics.com">
 		["references"] = <"Health Risk, draft archetype, NEHTA Clinical Knowledge Manager [Internet]. Australia: National eHealth Transition Authority. Authored: 23 Apr 2006. Available at: http://dcm.nehta.org.au/ckm/#showArchetype_1013.1.1276 (accessed 04 Mar 2015). Archetype originated from the openEHR CKM.">
-		["MD5-CAM-1.0.1"] = <"E01601CD4F2A0BDA69252348E5FADF11">
+		["MD5-CAM-1.0.1"] = <"9D51634FE3174C77203DF6498DB85820">
 	>
 
 definition
-	EVALUATION[at0000] matches {	-- Health risk
+	EVALUATION[at0000] matches {	-- Health risk assessment
 		data matches {
 			ITEM_TREE[at0001] matches {	-- structure
 				items cardinality matches {1..*; ordered} matches {
@@ -73,7 +77,7 @@ definition
 					}
 					CLUSTER[at0016] occurrences matches {0..*} matches {	-- Identified risk factor
 						items cardinality matches {1..*; unordered} matches {
-							ELEMENT[at0013] occurrences matches {0..*} matches {	-- Risk factor
+							ELEMENT[at0013] matches {	-- Risk factor
 								value matches {
 									DV_TEXT matches {*}
 								}
@@ -104,14 +108,27 @@ definition
 					ELEMENT[at0003] occurrences matches {0..1} matches {	-- Risk assessment
 						value matches {
 							DV_CODED_TEXT matches {
+								defining_code matches {[local::]}
+							}
+							DV_PROPORTION matches {
+								numerator matches {*}
+							}
+						}
+					}
+					ELEMENT[at0020] occurrences matches {0..1} matches {	-- Assessment type
+						value matches {
+							DV_CODED_TEXT matches {
 								defining_code matches {
 									[local::
-									at0006, 	-- Not significant
-									at0007, 	-- Minimal significance
-									at0008, 	-- Significant
-									at0009]	-- Highly significant
+									at0021, 	-- Relative risk
+									at0022]	-- Absolute risk
 								}
 							}
+						}
+					}
+					ELEMENT[at0023] occurrences matches {0..1} matches {	-- Relevant timeframe
+						value matches {
+							DV_DURATION matches {*}
 						}
 					}
 					ELEMENT[at0004] occurrences matches {0..1} matches {	-- Rationale
@@ -130,6 +147,16 @@ definition
 		protocol matches {
 			ITEM_TREE[at0010] matches {	-- Tree
 				items cardinality matches {0..*; unordered} matches {
+					ELEMENT[at0024] occurrences matches {0..1} matches {	-- Last Updated
+						value matches {
+							DV_DATE_TIME matches {*}
+						}
+					}
+					ELEMENT[at0025] occurrences matches {0..1} matches {	-- Assessment method
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
 					allow_archetype CLUSTER[at0011] occurrences matches {0..*} matches {	-- Extension
 						include
 							archetype_id/value matches {/.*/}
@@ -145,8 +172,8 @@ ontology
 		["ar-sy"] = <
 			items = <
 				["at0000"] = <
-					text = <"*Health risk(en)">
-					description = <"*Estimation of the potential and likelihood of future adverse health effects due to identified risk factors.(en)">
+					text = <"*Health risk assessment(en)">
+					description = <"*Assessment of the potential and likelihood of future adverse health effects as determined by identified risk factors.(en)">
 				>
 				["at0001"] = <
 					text = <"*structure(en)">
@@ -154,31 +181,18 @@ ontology
 				>
 				["at0002"] = <
 					text = <"*Health risk(en)">
-					description = <"*Name of the identified potential future disease, condition or health issue.(en)">
+					description = <"*Identification of the potential future disease, condition or health issue for which the risk is being assessed, by name.(en)">
+					comment = <"*For example: risk of cardiovascular disease, with risk factors of hypertension and hypercholesterolaemia.(en)">
 				>
 				["at0003"] = <
 					text = <"*Risk assessment(en)">
 					description = <"*Evaluation of the likelihood that the subject will be affected by the disease, condition or health issue in the future.(en)">
+					comment = <"*There may be multiple variations on the assessment of risk. The Choice data type allows for recording of the assessment as either free text, value sets, a proportion, a fraction or a percentage.(en)">
 				>
 				["at0004"] = <
 					text = <"*Rationale(en)">
 					description = <"*Justification for this risk assessment.(en)">
-				>
-				["at0006"] = <
-					text = <"*Not significant(en)">
-					description = <"*The person is not assessed at being at higher risk than the general population.(en)">
-				>
-				["at0007"] = <
-					text = <"*Minimal significance(en)">
-					description = <"*The person may be of somewhat greater risk of developing the condition.(en)">
-				>
-				["at0008"] = <
-					text = <"*Significant(en)">
-					description = <"*The person is considered to be more likely to develop the condition than the general population.(en)">
-				>
-				["at0009"] = <
-					text = <"*Highly significant(en)">
-					description = <"*The person is considered to be likely to develop the condition.(en)">
+					comment = <"*Details that may be added to this data element may include information about the population subgroups etc against which the determination of risk is assessed.(en)">
 				>
 				["at0010"] = <
 					text = <"*Tree(en)">
@@ -187,7 +201,7 @@ ontology
 				["at0011"] = <
 					text = <"*Extension(en)">
 					description = <"*Additional information required to capture local content or to align with other reference models/formalisms.(en)">
-					comment = <"*For example:  e.g. Local information requirements or additional metadata to align with FHIR or CIMI equivalents.(en)">
+					comment = <"*For example:  local information requirements or additional metadata to align with FHIR or CIMI equivalents.(en)">
 				>
 				["at0012"] = <
 					text = <"*Link to evidence(en)">
@@ -195,7 +209,9 @@ ontology
 				>
 				["at0013"] = <
 					text = <"*Risk factor(en)">
-					description = <"*Name of the identified risk factor.(en)">
+					description = <"*Identification of the risk factor, by name.(en)">
+					comment = <"*For example: hypertension and hypercholesterolaemia, which may be used as part of the overall assessment for cardiovascular disease.
+'Risk factor' should be coded with a terminology, where possible.(en)">
 				>
 				["at0014"] = <
 					text = <"*Description(en)">
@@ -220,14 +236,40 @@ ontology
 				["at0019"] = <
 					text = <"*Absent(en)">
 					description = <"*The risk factor hs not been identified for this subject.(en)">
+				>
+				["at0020"] = <
+					text = <"*Assessment type(en)">
+					description = <"*Record of whether the risk assessment is a relative or absolute.(en)">
+				>
+				["at0021"] = <
+					text = <"*Relative risk(en)">
+					description = <"*Ratio of probability of a health event or condition occurring compared to a population with similar characteristics eg same age and sex.(en)">
+				>
+				["at0022"] = <
+					text = <"*Absolute risk(en)">
+					description = <"*Ratio of probability of a health event or condition occurring compared to the population as a whole.(en)">
+				>
+				["at0023"] = <
+					text = <"*Relevant timeframe(en)">
+					description = <"*The future timeframe in which the predicted health risk applies.(en)">
+					comment = <"*That is: the risk of experiencing the identified 'Health risk' in the next <X> years.(en)">
+				>
+				["at0024"] = <
+					text = <"*Last Updated(en)">
+					description = <"*The date this health risk assessment was last updated.(en)">
+				>
+				["at0025"] = <
+					text = <"*Assessment method(en)">
+					description = <"*Identification of the algorithm or guideline used to make the assessment of risk.(en)">
+					comment = <"*For example: Framingham cardiovascular risk calculator.(en)">
 				>
 			>
 		>
 		["de"] = <
 			items = <
 				["at0000"] = <
-					text = <"*Health risk(en)">
-					description = <"*Estimation of the potential and likelihood of future adverse health effects due to identified risk factors.(en)">
+					text = <"*Health risk assessment(en)">
+					description = <"*Assessment of the potential and likelihood of future adverse health effects as determined by identified risk factors.(en)">
 				>
 				["at0001"] = <
 					text = <"structure">
@@ -235,31 +277,18 @@ ontology
 				>
 				["at0002"] = <
 					text = <"*Health risk(en)">
-					description = <"*Name of the identified potential future disease, condition or health issue.(en)">
+					description = <"*Identification of the potential future disease, condition or health issue for which the risk is being assessed, by name.(en)">
+					comment = <"*For example: risk of cardiovascular disease, with risk factors of hypertension and hypercholesterolaemia.(en)">
 				>
 				["at0003"] = <
 					text = <"*Risk assessment(en)">
 					description = <"*Evaluation of the likelihood that the subject will be affected by the disease, condition or health issue in the future.(en)">
+					comment = <"*There may be multiple variations on the assessment of risk. The Choice data type allows for recording of the assessment as either free text, value sets, a proportion, a fraction or a percentage.(en)">
 				>
 				["at0004"] = <
 					text = <"*Rationale(en)">
 					description = <"*Justification for this risk assessment.(en)">
-				>
-				["at0006"] = <
-					text = <"*Not significant(en)">
-					description = <"*The person is not assessed at being at higher risk than the general population.(en)">
-				>
-				["at0007"] = <
-					text = <"*Minimal significance(en)">
-					description = <"*The person may be of somewhat greater risk of developing the condition.(en)">
-				>
-				["at0008"] = <
-					text = <"*Significant(en)">
-					description = <"*The person is considered to be more likely to develop the condition than the general population.(en)">
-				>
-				["at0009"] = <
-					text = <"*Highly significant(en)">
-					description = <"*The person is considered to be likely to develop the condition.(en)">
+					comment = <"*Details that may be added to this data element may include information about the population subgroups etc against which the determination of risk is assessed.(en)">
 				>
 				["at0010"] = <
 					text = <"*Tree(en)">
@@ -268,7 +297,7 @@ ontology
 				["at0011"] = <
 					text = <"*Extension(en)">
 					description = <"*Additional information required to capture local content or to align with other reference models/formalisms.(en)">
-					comment = <"*For example:  e.g. Local information requirements or additional metadata to align with FHIR or CIMI equivalents.(en)">
+					comment = <"*For example:  local information requirements or additional metadata to align with FHIR or CIMI equivalents.(en)">
 				>
 				["at0012"] = <
 					text = <"*Link to evidence(en)">
@@ -276,7 +305,9 @@ ontology
 				>
 				["at0013"] = <
 					text = <"*Risk factor(en)">
-					description = <"*Name of the identified risk factor.(en)">
+					description = <"*Identification of the risk factor, by name.(en)">
+					comment = <"*For example: hypertension and hypercholesterolaemia, which may be used as part of the overall assessment for cardiovascular disease.
+'Risk factor' should be coded with a terminology, where possible.(en)">
 				>
 				["at0014"] = <
 					text = <"*Description(en)">
@@ -302,13 +333,39 @@ ontology
 					text = <"*Absent(en)">
 					description = <"*The risk factor hs not been identified for this subject.(en)">
 				>
+				["at0020"] = <
+					text = <"*Assessment type(en)">
+					description = <"*Record of whether the risk assessment is a relative or absolute.(en)">
+				>
+				["at0021"] = <
+					text = <"*Relative risk(en)">
+					description = <"*Ratio of probability of a health event or condition occurring compared to a population with similar characteristics eg same age and sex.(en)">
+				>
+				["at0022"] = <
+					text = <"*Absolute risk(en)">
+					description = <"*Ratio of probability of a health event or condition occurring compared to the population as a whole.(en)">
+				>
+				["at0023"] = <
+					text = <"*Relevant timeframe(en)">
+					description = <"*The future timeframe in which the predicted health risk applies.(en)">
+					comment = <"*That is: the risk of experiencing the identified 'Health risk' in the next <X> years.(en)">
+				>
+				["at0024"] = <
+					text = <"*Last Updated(en)">
+					description = <"*The date this health risk assessment was last updated.(en)">
+				>
+				["at0025"] = <
+					text = <"*Assessment method(en)">
+					description = <"*Identification of the algorithm or guideline used to make the assessment of risk.(en)">
+					comment = <"*For example: Framingham cardiovascular risk calculator.(en)">
+				>
 			>
 		>
 		["en"] = <
 			items = <
 				["at0000"] = <
-					text = <"Health risk">
-					description = <"Estimation of the potential and likelihood of future adverse health effects due to identified risk factors.">
+					text = <"Health risk assessment">
+					description = <"Assessment of the potential and likelihood of future adverse health effects as determined by identified risk factors.">
 				>
 				["at0001"] = <
 					text = <"structure">
@@ -316,31 +373,18 @@ ontology
 				>
 				["at0002"] = <
 					text = <"Health risk">
-					description = <"Name of the identified potential future disease, condition or health issue.">
+					description = <"Identification of the potential future disease, condition or health issue for which the risk is being assessed, by name.">
+					comment = <"For example: risk of cardiovascular disease, with risk factors of hypertension and hypercholesterolaemia.">
 				>
 				["at0003"] = <
 					text = <"Risk assessment">
 					description = <"Evaluation of the likelihood that the subject will be affected by the disease, condition or health issue in the future.">
+					comment = <"There may be multiple variations on the assessment of risk. The Choice data type allows for recording of the assessment as either free text, value sets, a proportion, a fraction or a percentage.">
 				>
 				["at0004"] = <
 					text = <"Rationale">
 					description = <"Justification for this risk assessment.">
-				>
-				["at0006"] = <
-					text = <"Not significant">
-					description = <"The person is not assessed at being at higher risk than the general population.">
-				>
-				["at0007"] = <
-					text = <"Minimal significance">
-					description = <"The person may be of somewhat greater risk of developing the condition.">
-				>
-				["at0008"] = <
-					text = <"Significant">
-					description = <"The person is considered to be more likely to develop the condition than the general population.">
-				>
-				["at0009"] = <
-					text = <"Highly significant">
-					description = <"The person is considered to be likely to develop the condition.">
+					comment = <"Details that may be added to this data element may include information about the population subgroups etc against which the determination of risk is assessed.">
 				>
 				["at0010"] = <
 					text = <"Tree">
@@ -349,7 +393,7 @@ ontology
 				["at0011"] = <
 					text = <"Extension">
 					description = <"Additional information required to capture local content or to align with other reference models/formalisms.">
-					comment = <"For example:  e.g. Local information requirements or additional metadata to align with FHIR or CIMI equivalents.">
+					comment = <"For example:  local information requirements or additional metadata to align with FHIR or CIMI equivalents.">
 				>
 				["at0012"] = <
 					text = <"Link to evidence">
@@ -357,7 +401,9 @@ ontology
 				>
 				["at0013"] = <
 					text = <"Risk factor">
-					description = <"Name of the identified risk factor.">
+					description = <"Identification of the risk factor, by name.">
+					comment = <"For example: hypertension and hypercholesterolaemia, which may be used as part of the overall assessment for cardiovascular disease.
+'Risk factor' should be coded with a terminology, where possible.">
 				>
 				["at0014"] = <
 					text = <"Description">
@@ -382,6 +428,32 @@ ontology
 				["at0019"] = <
 					text = <"Absent">
 					description = <"The risk factor has not been identified for this subject.">
+				>
+				["at0020"] = <
+					text = <"Assessment type">
+					description = <"Record of whether the risk assessment is a relative or absolute.">
+				>
+				["at0021"] = <
+					text = <"Relative risk">
+					description = <"Ratio of probability of a health event or condition occurring compared to a population with similar characteristics eg same age and sex.">
+				>
+				["at0022"] = <
+					text = <"Absolute risk">
+					description = <"Ratio of probability of a health event or condition occurring compared to the population as a whole.">
+				>
+				["at0023"] = <
+					text = <"Relevant timeframe">
+					description = <"The future timeframe in which the predicted health risk applies.">
+					comment = <"That is: the risk of experiencing the identified 'Health risk' in the next <X> years.">
+				>
+				["at0024"] = <
+					text = <"Last Updated">
+					description = <"The date this health risk assessment was last updated.">
+				>
+				["at0025"] = <
+					text = <"Assessment method">
+					description = <"Identification of the algorithm or guideline used to make the assessment of risk.">
+					comment = <"For example: Framingham cardiovascular risk calculator.">
 				>
 			>
 		>
