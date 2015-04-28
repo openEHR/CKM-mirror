@@ -2,7 +2,7 @@
 	openEHR-EHR-EVALUATION.reason_for_encounter.v1
 
 concept
-	[at0000]	-- Reason for Encounter
+	[at0000]	-- Reason for encounter
 language
 	original_language = <[ISO_639-1::en]>
 	translations = <
@@ -24,19 +24,18 @@ description
 	details = <
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"To record the reason/s for initiation of any type of healthcare contact between a healthcare provider and a patient.">
-			use = <"To record the reason/s for initiation of any type of healthcare contact between a healthcare provider and a patient, 
+			purpose = <"To record the reason, or reasons, for initiation of any type of healthcare encounter or contact by the individual who is the subject of care.">
+			use = <"Use to record the reason, or reasons, for initiation of any type of healthcare encounter or contact between a healthcare provider and the individual who is the subject of care. The reason may be for clinical, social or administrative purposes.
 
-Reason for Encounter is a common phrase used in clinical medicine, however the term is often used in two common ways - one that refers to an administrative category for provision of healthcare and the other that reflects the clinical drive to seek healthcare.
+Reason for Encounter is a common phrase used in clinical medicine, however the term is often used in two common ways - one that refers to an administrative category for provision of healthcare and the other that reflects clinical or social problems that motivate individuals to seek healthcare.
 
 In an effort to clarify the phrases and intent, this archetype contains two data elements:
-- The first, 'Reason for Contact', to document the administrative type of healthcare sought or required - for example the type of consultation, emergency care, pre-operative assessment, routine antenatal visit or elective admission. This data element reflects the administrative category of care provision. Use of the phrase 'Reason for Contact', rather than 'Reason for Encounter' or 'Reason for Visit' reflects the increasing trend towards alternative methods of healthcare provision that may not result in face-to-face contact between the healthcare provider and patient within a consulting room.
-- The second, 'Presenting Problem', to document the clinical reasons for healthcare contact. These are intended mainly to capture the patient's perceived issues or symptoms which have triggered them to seek healthcare advice, such as desire to quit smoking, stress, shortness of breath or abdominal pain. Signs such as impaired conscious state may also be captured here, for example by paramedical staff with an unconscious patient.
-
-Chief Complaint is another phrase in common usage. In effect it is probably a type of Presenting Problem but has not currently been modelled explicitly. As Presenting Problem has occurrences set to unbounded, multiple Presenting Problems can be recorded.  Feedback will be sought regarding the need for this to be modelled in it's own right.">
+- The first, 'Reason for contact', to document the administrative type of healthcare sought or required - for example the type of consultation, emergency care, pre-operative assessment, routine antenatal visit or elective admission. This data element reflects the administrative category of care provision. Use of the phrase 'Reason for contact', rather than 'Reason for encounter' or 'Reason for visit' reflects the increasing trend towards alternative methods of healthcare provision that may not result in face-to-face contact between the healthcare provider and patient within a consulting room.
+- The second, 'Presenting problem', to document the clinical reasons for healthcare contact. Chief complaint is regarded as a synonym for Presenting Problem. These are intended mainly to capture the patient's perceived issues or symptoms which have triggered them to seek healthcare advice, such as desire to quit smoking, stress, shortness of breath, genetic counselling or abdominal pain. Signs such as impaired conscious state may also be captured here, for example by paramedical staff with an unconscious patient.">
 			keywords = <"presentation", "presenting complaint", "reason for encounter", "reason", "chief complaint", "visit", "reason for visit">
 			misuse = <"Not to be used to record specific details of the patient's story or history of symptoms. Use OBSERVATION.story to capture the narrative and the related nested CLUSTER archetypes for structured content eg CLUSTER.symptom, CLUSTER.event and CLUSTER.issue.
-Not to be used to record specific diagnosis details that may be required in addition to a Reason for Encounter eg Admission or Pre-operative Diagnosis as part of admission for a hospital procedure. Use the EVALUATION.problem_diagnosis (and related specialisations) for this purpose.">
+
+Not to be used to record specific diagnosis details that may be required in addition to a Reason for Encounter. For example, to record a Pre-operative Diagnosis as part of admission for a hospital procedure. Use the EVALUATION.problem_diagnosis archetype for this purpose.">
 			copyright = <"© openEHR Foundation">
 		>
 		["pt-br"] = <
@@ -72,23 +71,23 @@ Não deve ser utilizado para registrar os detalhes específicos de diagnóstico 
 		>
 	>
 	lifecycle_state = <"AuthorDraft">
-	other_contributors = <"Ian McNicoll, Ocean Informatics, Australia", "Sergio Carmona, Chile", "Sebastian Garde, Ocean Informatics, Germany", "Beatriz de Faria Leão, Brazil", "Omer Hotomaroglu, Turkey", "Sundaresan Jagannathan, Scottish NHS, United Kingdom">
+	other_contributors = <"Nadim Anani, Karolinska Institutet, Sweden", "Vebjoern Arntzen, Oslo university hospital, Norway", "Koray Atalag, University of Auckland, New Zealand", "Lars Bitsch-Larsen, Haukeland University hospital, Norway", "Sergio Carmona, Chile", "Beatriz de Faria Leão, Brazil", "Shahla Foozonkhah, Ocean Informatics, Australia", "Sebastian Garde, Ocean Informatics, Germany", "Heather Grain, Llewelyn Grain Informatics, Australia", "Omer Hotomaroglu, Turkey", "Sundaresan Jagannathan, Scottish NHS, United Kingdom", "Lars Karlsen, DIPS ASA, Norway", "Heather Leslie, Ocean Informatics, Australia (Editor)", "Hallvard Lærum, Oslo University Hospital, Norway", "Ian McNicoll, freshEHR Clinical Informatics, United Kingdom (Editor)">
 	other_details = <
-		["references"] = <"openEHR Foundation. openEHR wiki: Reason for Encountrer or Chief Complaint [Internet]. 2008 Feb 13 [cited June 17 2012];  Available at http://www.openehr.org/wiki/display/healthmod/Reason+for+encounter+or+Chief+complaint.">
-		["MD5-CAM-1.0.1"] = <"FC2AEE0EC7548A7ED317D60BCE2767FA">
+		["references"] = <"openEHR Foundation. openEHR wiki: Reason for Encounter or Chief Complaint [Internet]. 2008 Feb 13 [cited 2012 Jun 17];  Available at http://www.openehr.org/wiki/display/healthmod/Reason+for+encounter+or+Chief+complaint.">
+		["MD5-CAM-1.0.1"] = <"92B5E9D7E2435FF347116FEC6610C98C">
 	>
 
 definition
-	EVALUATION[at0000] matches {	-- Reason for Encounter
+	EVALUATION[at0000] matches {	-- Reason for encounter
 		data matches {
 			ITEM_TREE[at0001] matches {	-- Tree
 				items cardinality matches {0..*; unordered} matches {
-					ELEMENT[at0002] occurrences matches {0..1} matches {	-- Reason for Contact
+					ELEMENT[at0002] occurrences matches {0..*} matches {	-- Contact type
 						value matches {
 							DV_TEXT matches {*}
 						}
 					}
-					ELEMENT[at0004] occurrences matches {0..*} matches {	-- Presenting Problem
+					ELEMENT[at0004] occurrences matches {0..*} matches {	-- Presenting problem
 						value matches {
 							DV_TEXT matches {*}
 						}
@@ -99,53 +98,53 @@ definition
 	}
 
 
-
 ontology
 	term_definitions = <
 		["en"] = <
 			items = <
 				["at0000"] = <
-					text = <"Reason for Encounter">
-					description = <"Record the administrative and/or clinical reason/s for initiation of a healthcare encounter or contact.">
+					text = <"Reason for encounter">
+					description = <"The reason for initiation of any healthcare encounter or contact by the individual who is the subject of care.">
 				>
 				["at0001"] = <
 					text = <"Tree">
 					description = <"@ internal @">
 				>
 				["at0002"] = <
-					text = <"Reason for Contact">
-					description = <"Identification of administrative reason for seeking healthcare.">
-					comment = <"Examples: a clinical consultation, emergency consultation, pre-employment medical, routine antenatal visit, women's health check, pre-operative assessment, or annual medical check-up.
-Coding of the Reason for Contact with a terminology is desirable, where possible.">
+					text = <"Contact type">
+					description = <"Identification of the type, or administrative category, of healthcare sought or required by the subject of care.">
+					comment = <"oding of the Reason for Contact with a terminology is desirable, where possible. Examples include: pre-employment medical, routine antenatal visit, women's health check, pre-operative assessment, or annual medical check-up.
+">
 				>
 				["at0004"] = <
-					text = <"Presenting Problem">
-					description = <"Identification of the clinical reason for seeking healthcare.">
-					comment = <"Clinical reasons for seeking healthcare can include health issues, symptoms or physical signs. Examples: health issues - desire to quit smoking or to lose weight; symptoms - abdominal pain or shortness of breath; physical signs - an altered conscious state. May also be referred to as Presenting Complaint.
- Coding of the Presenting Problem with a terminology is desirable, where possible.">
+					text = <"Presenting problem">
+					description = <"Identification of the clinical or social problem motivating the subject of care to seeking healthcare.">
+					comment = <"Coding of the Presenting Problem with a terminology is desirable, where possible. Clinical or social reasons for seeking healthcare can include health issues, symptoms or physical signs. Examples: health issues - desire to quit smoking, domestic violence; symptoms - abdominal pain , shortness of breath; physical signs - an altered conscious state. 'Chief complaint' may be used as a valid synonym for Presenting Problem in templates.
+ ">
 				>
 			>
 		>
 		["pt-br"] = <
 			items = <
 				["at0000"] = <
-					text = <"Motivos da Consulta (Encontro)(br)">
-					description = <"Registros administrativos e/ou clinicos motivo/s para inicio do cuidado á saúde">
+					text = <"*Reason for encounter(en)">
+					description = <"*The reason for initiation of any healthcare encounter or contact by the individual who is the subject of care.(en)">
 				>
 				["at0001"] = <
 					text = <"*Tree(en)">
 					description = <"*@ internal @">
 				>
 				["at0002"] = <
-					text = <"Motivo da Consulta">
-					description = <"Identificação administrativa do motivo para consulta de cuidados a saúde.">
-					comment = <"*For example, a clinical consultation, emergency consultation, pre-employment medical, routine antenatal visit, women's health check, pre-operative assessment, or annual medical check-up. Coding of the Reason for Encounter with a terminology is desirable, where possible.(en)">
+					text = <"*Contact type(en)">
+					description = <"*Identification of the type, or administrative category, of healthcare sought or required by the subject of care.(en)">
+					comment = <"*oding of the Reason for Contact with a terminology is desirable, where possible. Examples include: pre-employment medical, routine antenatal visit, women's health check, pre-operative assessment, or annual medical check-up.
+(en)">
 				>
 				["at0004"] = <
-					text = <"Queixas atuais">
-					description = <"Identificação dos motivos clinicos para busca por acuidados a saúde.">
-					comment = <"*Clinical reasons for seeking healthcare can include health issues, symptoms or physical signs. Examples: health issues - desire to quit smoking or to lose weight; symptoms - abdominal pain or shortness of breath; physical signs - an altered conscious state. May also be referred to as Presenting Complaint.
- Coding of the Presentic Problem with a terminology is desirable, where possible.(en)">
+					text = <"*Presenting problem(en)">
+					description = <"*Identification of the clinical or social problem motivating the subject of care to seeking healthcare.(en)">
+					comment = <"*Coding of the Presenting Problem with a terminology is desirable, where possible. Clinical or social reasons for seeking healthcare can include health issues, symptoms or physical signs. Examples: health issues - desire to quit smoking, domestic violence; symptoms - abdominal pain , shortness of breath; physical signs - an altered conscious state. 'Chief complaint' may be used as a valid synonym for Presenting Problem in templates.
+ (en)">
 				>
 			>
 		>
