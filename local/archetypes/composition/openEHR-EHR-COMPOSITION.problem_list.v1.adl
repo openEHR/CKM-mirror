@@ -2,7 +2,7 @@
 	openEHR-EHR-COMPOSITION.problem_list.v1
 
 concept
-	[at0000]	-- Problem List
+	[at0000]	-- Problem list
 language
 	original_language = <[ISO_639-1::en]>
 	translations = <
@@ -30,20 +30,34 @@ description
 		["date"] = <"2013-02-19">
 	>
 	details = <
+		["ar-sy"] = <
+			language = <[ISO_639-1::ar-sy]>
+			purpose = <"للمحافظة على قائمة مُحكَمة للمشكلات الصحية الحالية المؤثرة التي يُعتَدّ بها للشخص.">
+			use = <"للمشكلات النشطة و غير النشطة - و تُعرف المشكلات غير النشطة بوجود تاريخ البُرْء/الشفاء">
+			keywords = <"قائمة المشكلات", ...>
+			misuse = <"لا يستخدم للمشكلات قصيرة المدى">
+			copyright = <"© openEHR Foundation">
+		>
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"To record a persistent and managed list of diagnoses identified or problems experienced by the subject, or previous procedures performed, that may influence clinical decision-making and care provision.">
-			use = <"Use to record a persistent and managed list of diagnoses identified or problems experienced by the subject, or previous procedures performed, that may influence clinical decision-making and care provision. 
+			purpose = <"To record a persistent and managed list of diagnoses identified, problems experienced by the subject or previous procedures performed, that may influence clinical decision-making and care provision.">
+			use = <"Use as a suggested framework to support consistent modelling of the Problem list as a persistent and managed list of diagnoses identified, problems experienced by the subject or previous procedures performed. 
 
 This list can be utilised as a source of up-to-date problem list data for exchange or as the basis for decision support. 
 
-This list can be comprised of three types of archetype:
+This list can be comprised of three types of statements, each represented by specific archetypes:
 - statements about the positive presence of problems, diagnoses or previous procedures are recorded using the EVALUATION.problem_diagnosis and/or ACTION.procedure archetypes; OR
-- a statement about the positive exclusion of medication use can be recorded using the specific EVALUATION.exclusion-problem_diagnosis or EVALUATION.exclusion-procedure archetypes - for example: \"No significant problems or diagnoses\" or No history of significant operations or procedures\"; OR
-- a statement about no information being available - neither a positive presence of a problem, diagnosis or procedure performed nor a positive exclusion - can be recorded using the EVALUATION.absence archetype.
+- statements about the positive exclusion of problems, diagnoses or previous procedures can be recorded using the specific EVALUATION.exclusion-problem_diagnosis or EVALUATION.exclusion-procedure archetypes - for example: \"No significant problems or diagnoses\" or \"No history of significant operations or procedures\"; OR
+- statements about no information being available - neither a positive presence of a problem, diagnosis or procedure performed nor a positive exclusion - can be recorded using the EVALUATION.absence archetype.
 
-In order for this list to be accurate and safe to use as the basis for decision support activities and for exchange, this Problem List should ideally be curated by a clinician responsible for the health record, rather than managed automatically by the clinical system through business rules alone.">
-			keywords = <"problem", "list", "diagnosis", "diagnoses", "procedure">
+In order for this list to be accurate and safe to use as the basis for decision support activities and for exchange, this Problem List should ideally be curated by a clinician responsible for the health record, rather than managed automatically by the clinical system through business rules alone.
+
+In a closed clincial system, it is expected that provenance of this Problem list can be managed through versioning of this COMPOSITION and its contents, with the additional option of a system-based audit trail.
+
+While it may be ideal to have only one Problem list for each subject of care, it is more realistic to expect that in a distributed environment there may be multiple Problem lists for a single subject of care, each managed and prioritised for a specific clinician, episode of care or other context. For example, a Problem list for a primary care clinician may a be very different configuration to that which is useful for a specialist surgeon or for reference during a hospital inpatient episode. In primary care it is common to organise the Problem list based on active or inactive problems or diagnoses; specialists may prefer to see their list organised around primary diagnoses which are related to their specific speciality and secondary ones which are not; and an inpatient admission may include additional issues related to immediate nursing priorities that would not be relevant once discharged home - for these purposes there is a Status SLOT in the Problem/Diagnosis archetype, which allow use of an archetype that could support clinical systems to organise Problem lists according to the preference of the clinical users of the system, without perpetuating these contextual status labels to other clinical scenarios or for persistence.
+
+This archetype is usually managed as a persistent list, however there are situations where the list may be used within episodic care and require additional attributes such as context etc to enable accurate recording. The openEHR reference model currently only allows context to be recorded within Event-based COMPOSITION archetypes. As a result, this archetype has been modelled as an Event, rather than Persistent, COMPOSITION, to allow for flexibility so that some clinical systems can safely manage Problem lists for episodes of care, while others will choose to implement this COMPOSITION to act in a persistent manner.">
+			keywords = <"problem", "list", "diagnosis", "diagnoses", "procedure", "problem list">
 			misuse = <"">
 			copyright = <"© openEHR Foundation">
 		>
@@ -67,32 +81,31 @@ In order for this list to be accurate and safe to use as the basis for decision 
 			misuse = <"">
 			copyright = <"© openEHR Foundation">
 		>
-		["ar-sy"] = <
-			language = <[ISO_639-1::ar-sy]>
-			purpose = <"للمحافظة على قائمة مُحكَمة للمشكلات الصحية الحالية المؤثرة التي يُعتَدّ بها للشخص.">
-			use = <"للمشكلات النشطة و غير النشطة - و تُعرف المشكلات غير النشطة بوجود تاريخ البُرْء/الشفاء">
-			keywords = <"قائمة المشكلات", ...>
-			misuse = <"لا يستخدم للمشكلات قصيرة المدى">
-			copyright = <"© openEHR Foundation">
-		>
 	>
 	lifecycle_state = <"CommitteeDraft">
-	other_contributors = <"Ian McNicoll, Ocean Informatics, United Kingdom (Editor)", "Heather Leslie, Ocean Informatics, Australia", "Sistine Barretto-Daniels, Ocean Informatics, Australia">
+	other_contributors = <"Nadim Anani, Karolinska Institutet, Sweden", "Vebjoern Arntzen, Oslo university hospital, Norway", "Koray Atalag, University of Auckland, New Zealand", "Silje Ljosland Bakke, Bergen Hospital Trust, Norway (Editor)", "Sistine Barretto-Daniels, Ocean Informatics, Australia", "Lars Bitsch-Larsen, Haukeland University hospital, Norway", "Shahla Foozonkhah, Ocean Informatics, Australia", "Einar Fosse, National Centre for Integrated Care and Telemedicine, Norway", "Sebastian Garde, Ocean Informatics, Germany", "Heather Grain, Llewelyn Grain Informatics, Australia", "Lars Karlsen, DIPS ASA, Norway", "Heather Leslie, Ocean Informatics, Australia (Editor)", "Hallvard Lærum, Oslo University Hospital, Norway", "Ian McNicoll, freshEHR Clinical Informatics, United Kingdom (Editor)", "Jussara Rotzsch, UNB, Brazil", "Rowan Thomas, St. Vincent's Hospital Melbourne, Australia">
 	other_details = <
 		["current_contact"] = <"Heather Leslie, Ocean Informatics, heather.leslie@oceaninformatics.com">
-		["references"] = <"Derived from: Problem List, draft archetype, National eHealth Transition Authority [Internet]. NEHTA Clinical Knowledge Manager. Authored: 19 Feb 2013. Available at: http://dcm.nehta.org.au/ckm/#showArchetype_1013.1.1235  (accessed Feb 27, 2012).">
-		["MD5-CAM-1.0.1"] = <"058A1A6342314282E0FC5E439457FDD6">
+		["references"] = <"Problem List, draft archetype [Internet]. National eHealth Transition Authority, NEHTA Clinical Knowledge Manager. Authored: 2013 Feb 19. Available at: http://dcm.nehta.org.au/ckm/#showArchetype_1013.1.1235 [accessed 2015 Apr 28].">
+		["MD5-CAM-1.0.1"] = <"D1E297EA8823B17C891CB7945613B5FE">
 	>
 
 definition
-	COMPOSITION[at0000] matches {	-- Problem List
+	COMPOSITION[at0000] matches {	-- Problem list
 		category matches {
 			DV_CODED_TEXT matches {
-				defining_code matches {[openehr::431]}
+				defining_code matches {[openehr::433]}
+			}
+		}
+		context matches {
+			EVENT_CONTEXT matches {
+				other_context matches {
+					ITEM_TREE[at0006] matches {*}
+				}
 			}
 		}
 		content cardinality matches {1..*; unordered} matches {
-			allow_archetype EVALUATION[at0002] occurrences matches {0..*} matches {	-- Problems or Diagnoses
+			allow_archetype EVALUATION[at0002] occurrences matches {0..*} matches {	-- Problems, diagnoses, concerns or Health issue threads
 				include
 					archetype_id/value matches {/openEHR-EHR-EVALUATION\.problem_diagnosis(-[a-zA-Z0-9_]+)*\.v1/}
 			}
@@ -100,13 +113,17 @@ definition
 				include
 					archetype_id/value matches {/openEHR-EHR-ACTION\.procedure(-[a-zA-Z0-9_]+)*\.v1/}
 			}
-			allow_archetype EVALUATION[at0004] occurrences matches {0..*} matches {	-- Exclusion Statements
+			allow_archetype EVALUATION[at0004] occurrences matches {0..*} matches {	-- Exclusion statements
 				include
 					archetype_id/value matches {/openEHR-EHR-EVALUATION\.exclusion-problem_diagnosis(-[a-zA-Z0-9_]+)*\.v1|openEHR-EHR-EVALUATION\.exclusion-procedure(-[a-zA-Z0-9_]+)*\.v1/}
 			}
-			allow_archetype EVALUATION[at0005] occurrences matches {0..*} matches {	-- Absent Information
+			allow_archetype EVALUATION[at0005] occurrences matches {0..*} matches {	-- Absent information
 				include
 					archetype_id/value matches {/openEHR-EHR-EVALUATION\.absence(-[a-zA-Z0-9_]+)*\.v1/}
+			}
+			allow_archetype SECTION[at0007] occurrences matches {0..*} matches {	-- Other
+				include
+					archetype_id/value matches {/openEHR-EHR-SECTION\.problem_list(-[a-zA-Z0-9_]+)*\.v1/}
 			}
 		}
 	}
@@ -114,28 +131,69 @@ definition
 
 ontology
 	term_definitions = <
+		["ar-sy"] = <
+			items = <
+				["at0000"] = <
+					text = <"قائمة المشكلات">
+					description = <"قائمة من المشكلات الصحية الحالية لهذا الشخص.">
+				>
+				["at0002"] = <
+					text = <"فعل">
+					description = <"*">
+				>
+				["at0003"] = <
+					text = <"*Procedures(en)">
+					description = <"*Details about identified procedures that have been performed.(en)">
+				>
+				["at0004"] = <
+					text = <"*Exclusion Statements(en)">
+					description = <"*Positive statement about the known exclusion of known problems or diagnoses and procedures performed.(en)">
+					comment = <"*For example: \"No significant problems or diagnoses\" or No history of significant operations or procedures\".(en)">
+				>
+				["at0005"] = <
+					text = <"*Absent Information(en)">
+					description = <"*Positive statement that no information is available about identification of problems or diagnoses, nor procedures performed.(en)">
+				>
+				["at0006"] = <
+					text = <"*Tree(en)">
+					description = <"*@ internal @(en)">
+				>
+				["at0007"] = <
+					text = <"*ENTRY(en)">
+					description = <"**(en)">
+				>
+			>
+		>
 		["en"] = <
 			items = <
 				["at0000"] = <
-					text = <"Problem List">
-					description = <"A persistent and managed list of diagnoses identified or problems experienced by the subject, or procedures performed, that may influence clinical decision-making and care provision.">
+					text = <"Problem list">
+					description = <"A persistent and managed list of any combination of diagnoses, problems and/or procedures that may influence clinical decision-making and care provision for the subject of care.">
 				>
 				["at0002"] = <
-					text = <"Problems or Diagnoses">
-					description = <"Details about identified problems or diagnoses.">
+					text = <"Problems, diagnoses, concerns or Health issue threads">
+					description = <"Detail about identified problems, diagnoses, concerns or health issue threads.">
 				>
 				["at0003"] = <
 					text = <"Procedures">
-					description = <"Details about identified procedures that have been performed.">
+					description = <"Detail about identified procedures that have been performed.">
 				>
 				["at0004"] = <
-					text = <"Exclusion Statements">
+					text = <"Exclusion statements">
 					description = <"Positive statement about the known exclusion of known problems or diagnoses and procedures performed.">
-					comment = <"For example: \"No significant problems or diagnoses\" or No history of significant operations or procedures\".">
+					comment = <"For example: \"No significant problems or diagnoses\" or \"No history of significant operations or procedures\".">
 				>
 				["at0005"] = <
-					text = <"Absent Information">
+					text = <"Absent information">
 					description = <"Positive statement that no information is available about identification of problems or diagnoses, nor procedures performed.">
+				>
+				["at0006"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0007"] = <
+					text = <"Other">
+					description = <"SLOT to contain SECTION archetypes which support alternative modelling patterns for Problem lists in specific clinical scenarios.">
 				>
 			>
 		>
@@ -162,30 +220,13 @@ ontology
 					text = <"정보 없음">
 					description = <"문제나 진단 또는 시행된 처치를 확인하는데 있어서 이용가능한 정보가 없다는 진술문.">
 				>
-			>
-		>
-		["ar-sy"] = <
-			items = <
-				["at0000"] = <
-					text = <"قائمة المشكلات">
-					description = <"قائمة من المشكلات الصحية الحالية لهذا الشخص.">
+				["at0006"] = <
+					text = <"*Tree(en)">
+					description = <"*@ internal @(en)">
 				>
-				["at0002"] = <
-					text = <"فعل">
-					description = <"*">
-				>
-				["at0003"] = <
-					text = <"*Procedures(en)">
-					description = <"*Details about identified procedures that have been performed.(en)">
-				>
-				["at0004"] = <
-					text = <"*Exclusion Statements(en)">
-					description = <"*Positive statement about the known exclusion of known problems or diagnoses and procedures performed.(en)">
-					comment = <"*For example: \"No significant problems or diagnoses\" or No history of significant operations or procedures\".(en)">
-				>
-				["at0005"] = <
-					text = <"*Absent Information(en)">
-					description = <"*Positive statement that no information is available about identification of problems or diagnoses, nor procedures performed.(en)">
+				["at0007"] = <
+					text = <"*ENTRY(en)">
+					description = <"**(en)">
 				>
 			>
 		>
