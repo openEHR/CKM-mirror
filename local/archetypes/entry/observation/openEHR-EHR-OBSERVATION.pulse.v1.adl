@@ -13,6 +13,13 @@ language
 				["organisation"] = <"University of Heidelberg, Central Queensland University">
 			>
 		>
+		["es-co"] = <
+			language = <[ISO_639-1::es-co]>
+			author = <
+				["name"] = <"Jose Florez-Arango">
+			>
+			accreditation = <"MD MS PhD">
+		>
 		["ar-sy"] = <
 			language = <[ISO_639-1::ar-sy]>
 			author = <
@@ -93,13 +100,38 @@ Concepts such as Target Heart Rate should be recorded in separate EVALUATION arc
 Такие понятия, как максимальная или целевая частота сердечных сокращений, должны записываться в отдельных архетипах, предназначенных специально для осуществления оценки.">
 			copyright = <"© openEHR Foundation">
 		>
+		["es-co"] = <
+			language = <[ISO_639-1::es-co]>
+			purpose = <"Registrar la medida de la frecuencia de pulso, la frecuencia cardiaca, y la descripción de las características asociadas como uno de los componentes de las observación de signos vitales">
+			use = <"*Use to record the presence or absence of a pulse rate or heart rate. 
+
+Use to record the measurement of the pulse rate, or heart rate, and observation about the associated rhythm.
+
+Use to record a simple description of characteristics that are associated with the pulse or heart beat, that might be commonly recorded as part of a vital signs obervation.
+
+Measurements such as the maximum pulse or heart rate over an interval of time can be recorded using \"Maximum' event. Others point-in-time or interval events may be specified within a template or at run-time.
+
+In practice, the terms heart rate and pulse rate are often used interchangeably. This archetype allows either term to be used when the measurement site is not specified, to suit clincian preferences.
+
+In certain situations, however, it is important to differentiate between a pulse rate observed at a peripheral artery, such as the radial artery, in contrast to the centrally observed heart rate. This archetype allows the data to be very specific and differentiate between central heart rate and the pulse rate recorded at a specified artery.(en)">
+			misuse = <"*Not to be used to record the R-R rate in the context of an Electrocardiograph report - this is to be recorded using the OBSERVATION.ecg archetype.
+
+Not to be used to record other details of the full cardiovascular examination or assessment. Other specific CLUSTER archetypes will be used to record characteristics such as apex beat, murmurs and bruits, auscultatory findings,
+
+In particular, this archetype is not intended to record the assessment of peripheral vascular disease, which requires documentation of the presence and strength of each peripheral pulse.  A specific CLUSTER archetype will be used to record the general findings on examiantion of peripheral pulses.  
+
+Not to be used to record fetal heart rate - this is recorded using the OBSERVATION.fetal_heart archetype.
+
+Concepts such as Target Heart Rate should be recorded in separate EVALUATION archetypes related to goals and exercise assessment.(en)">
+			copyright = <"© openEHR Foundation">
+		>
 	>
 	lifecycle_state = <"CommitteeDraft">
-	other_contributors = <"Koray Atalag, University of Auckland, New Zealand", "Rong Chen, Cambio Healthcare Systems, Sweden", "Stephen Chu, NeHTA, Australia", "Angela de Zwart, Orion Health, New Zealand", "Graham Denyer, Australian Antarctic Division, Australia", "Paul Donaldson, Nursing Informatics Australia, Australia", "Sebastian Garde, Ocean Informatics, Germany", "Sam Heard, Ocean Informatics, Australia", "Evelyn Hovenga, EJSH Consulting, Australia", "Eugene Igras, IRIS Systems, Inc., Canada", "Athanasios Kleontas, Ergobyte Informatics, Greece", "Shinji Kobayashi, Ehime University, Japan", "Robert Legan, NEHTA, Australia", "Heather Leslie, Ocean Informatics, Australia (Editor)", "Rohan Martin, Ambulance Victoria, Australia", "Ian McNicoll, Ocean Informatics, United Kingdom (Editor)", "Jeroen Meintjens, Medisch Centrum Alkmaar, Netherlands", "Monica Merchat, Hospital Cardiac Electrophysiology, MS Health Informatics Student, former ICU nurse, former Anesthesia Technician, United States", "Arturo Romero, SESCAM, Spain">
+	other_contributors = <"Koray Atalag, University of Auckland, New Zealand", "Rong Chen, Cambio Healthcare Systems, Sweden", "Stephen Chu, Queensland Health, Australia", "Angela de Zwart, Orion Health, New Zealand", "Graham Denyer, Australian Antarctic Division, Australia", "Paul Donaldson, Nursing Informatics Australia, Australia", "Sebastian Garde, Ocean Informatics, Germany", "Sam Heard, Ocean Informatics, Australia", "Evelyn Hovenga, EJSH Consulting, Australia", "Eugene Igras, IRIS Systems, Inc., Canada", "Athanasios Kleontas, Ergobyte Informatics, Greece", "Shinji Kobayashi, Kyoto University, Japan", "Robert Legan, NEHTA, Australia", "Heather Leslie, Ocean Informatics, Australia (Editor)", "Rohan Martin, Ambulance Victoria, Australia", "Ian McNicoll, freshEHR Clinical Informatics, United Kingdom (Editor)", "Jeroen Meintjens, Medisch Centrum Alkmaar, Netherlands", "Monica Merchat, Hospital Cardiac Electrophysiology, MS Health Informatics Student, former ICU nurse, former Anesthesia Technician, United States", "Arturo Romero, SESCAM, Spain">
 	other_details = <
 		["current_contact"] = <"Heather Leslie, Ocean Informatics, heather.leslie@oceaninformatics.com">
 		["references"] = <"Direct communication with clinicians.">
-		["MD5-CAM-1.0.1"] = <"CA632AFE25F2CAFF4D62EA41C065CEDB">
+		["MD5-CAM-1.0.1"] = <"DFEEA15E8D430B5B8A6A1FAF0B86ECE9">
 	>
 
 definition
@@ -111,7 +143,7 @@ definition
 						data matches {
 							ITEM_TREE[at0001] matches {	-- structure
 								items cardinality matches {0..*; unordered} matches {
-									ELEMENT[at1005] occurrences matches {0..1} matches {	-- Pulse Presence
+									ELEMENT[at1005] occurrences matches {0..1} matches {	-- Pulse presence
 										value matches {
 											DV_CODED_TEXT matches {
 												defining_code matches {
@@ -151,7 +183,16 @@ definition
 												defining_code matches {
 													[local::
 													at0006, 	-- Regular
-													at1028, 	-- Irregular
+													at1028]	-- Irregular
+												}
+											}
+										}
+									}
+									ELEMENT[at1045] occurrences matches {0..1} matches {	-- Irregularity
+										value matches {
+											DV_CODED_TEXT matches {
+												defining_code matches {
+													[local::
 													at0007, 	-- Regularly Irregular
 													at0008]	-- Irregularly Irregular
 												}
@@ -163,12 +204,12 @@ definition
 											DV_TEXT matches {*}
 										}
 									}
-									ELEMENT[at1022] occurrences matches {0..1} matches {	-- Clinical Description
+									ELEMENT[at1022] occurrences matches {0..1} matches {	-- Description
 										value matches {
 											DV_TEXT matches {*}
 										}
 									}
-									ELEMENT[at1023] occurrences matches {0..*} matches {	-- Clinical Interpretation
+									ELEMENT[at1023] occurrences matches {0..*} matches {	-- Clinical interpretation
 										value matches {
 											DV_TEXT matches {*}
 										}
@@ -251,6 +292,7 @@ definition
 									at1044]	-- Femoral Artery - Right
 								}
 							}
+							DV_TEXT matches {*}
 						}
 					}
 					allow_archetype CLUSTER[at1013] occurrences matches {0..1} matches {	-- Device
@@ -300,11 +342,11 @@ ontology
 				>
 				["at0007"] = <
 					text = <"*Regularly Irregular(en)">
-					description = <"*The rhythm is regularly irregular.(en)">
+					description = <"*The rhythm is irregular in a regular pattern, such as a dropped beat every 'n' beats.(en)">
 				>
 				["at0008"] = <
 					text = <"*Irregularly Irregular(en)">
-					description = <"*The rhythm is irregular in a chaotic manner.(en)">
+					description = <"*The rhythm is irregular in a chaotic and unpredictable manner.(en)">
 				>
 				["at0010"] = <
 					text = <"*List(en)">
@@ -335,7 +377,7 @@ ontology
 					description = <"*The subject was standing.(en)">
 				>
 				["at1005"] = <
-					text = <"*Pulse Presence(en)">
+					text = <"*Pulse presence(en)">
 					description = <"*Identification of a pulse or heart beat.(en)">
 					comment = <"*It can be implied that the pulse is present if Rate >0 beats/min.(en)">
 				>
@@ -358,11 +400,11 @@ ontology
 					comment = <"*For example, auscultation or electronic monitoring. (en)">
 				>
 				["at1022"] = <
-					text = <"*Clinical Description(en)">
-					description = <"*Narrative description about the findings.(en)">
+					text = <"*Description(en)">
+					description = <"*Narrative description about the pulse findings.(en)">
 				>
 				["at1023"] = <
-					text = <"*Clinical Interpretation(en)">
+					text = <"*Clinical interpretation(en)">
 					description = <"*Single word, phrase or brief description represents the clinical meaning and significance of the pulse or heart beat findings.(en)">
 					comment = <"*Coding with a terminology is preferred, where possible. For example: Bradycardia, Extrasystoles or Sinus rhythm. Multiple statements are allowed. (en)">
 				>
@@ -439,6 +481,11 @@ ontology
 					text = <"*Femoral Artery - Right(en)">
 					description = <"*The right femoral artery.(en)">
 				>
+				["at1045"] = <
+					text = <"*Irregularity(en)">
+					description = <"*The observed irregularity of the pulse or heart beat.(en)">
+					comment = <"*Selection of a value from this value set is only valid if 'Irregular' is selected from the 'Regularity' data element. In practice, systems could offer users the finer grained choices about irregularity from this data element alongside 'Regular' from the 'Regularity' data element. A possible user interface could therefore display the mutually exclusive data set of 'Regular', 'Regularly irregular' and 'Irregularly irregular', with the assumption that if one of the irregular values is selected, then the 'Irregular' value in the 'Regularity' data element is effectively also selected automatically.(en)">
+				>
 			>
 		>
 		["en"] = <
@@ -474,11 +521,11 @@ ontology
 				>
 				["at0007"] = <
 					text = <"Regularly Irregular">
-					description = <"The rhythm is regularly irregular.">
+					description = <"The rhythm is irregular in a regular pattern, such as a dropped beat every 'n' beats.">
 				>
 				["at0008"] = <
 					text = <"Irregularly Irregular">
-					description = <"The rhythm is irregular in a chaotic manner.">
+					description = <"The rhythm is irregular in a chaotic and unpredictable manner.">
 				>
 				["at0010"] = <
 					text = <"List">
@@ -509,7 +556,7 @@ ontology
 					description = <"The subject was standing.">
 				>
 				["at1005"] = <
-					text = <"Pulse Presence">
+					text = <"Pulse presence">
 					description = <"Identification of a pulse or heart beat.">
 					comment = <"It can be implied that the pulse is present if Rate >0 beats/min.">
 				>
@@ -532,11 +579,11 @@ ontology
 					comment = <"For example, auscultation or electronic monitoring. ">
 				>
 				["at1022"] = <
-					text = <"Clinical Description">
-					description = <"Narrative description about the findings.">
+					text = <"Description">
+					description = <"Narrative description about the pulse findings.">
 				>
 				["at1023"] = <
-					text = <"Clinical Interpretation">
+					text = <"Clinical interpretation">
 					description = <"Single word, phrase or brief description represents the clinical meaning and significance of the pulse or heart beat findings.">
 					comment = <"Coding with a terminology is preferred, where possible. For example: Bradycardia, Extrasystoles or Sinus rhythm. Multiple statements are allowed. ">
 				>
@@ -613,6 +660,11 @@ ontology
 					text = <"Femoral Artery - Right">
 					description = <"The right femoral artery.">
 				>
+				["at1045"] = <
+					text = <"Irregularity">
+					description = <"The observed irregularity of the pulse or heart beat.">
+					comment = <"Selection of a value from this value set is only valid if 'Irregular' is selected from the 'Regularity' data element. In practice, systems could offer users the finer grained choices about irregularity from this data element alongside 'Regular' from the 'Regularity' data element. A possible user interface could therefore display the mutually exclusive data set of 'Regular', 'Regularly irregular' and 'Irregularly irregular', with the assumption that if one of the irregular values is selected, then the 'Irregular' value in the 'Regularity' data element is effectively also selected automatically.">
+				>
 			>
 		>
 		["de"] = <
@@ -648,11 +700,11 @@ ontology
 				>
 				["at0007"] = <
 					text = <"*Regularly Irregular(en)">
-					description = <"*The rhythm is regularly irregular.(en)">
+					description = <"*The rhythm is irregular in a regular pattern, such as a dropped beat every 'n' beats.(en)">
 				>
 				["at0008"] = <
 					text = <"*Irregularly Irregular(en)">
-					description = <"*The rhythm is irregular in a chaotic manner.(en)">
+					description = <"*The rhythm is irregular in a chaotic and unpredictable manner.(en)">
 				>
 				["at0010"] = <
 					text = <"List">
@@ -683,7 +735,7 @@ ontology
 					description = <"*The subject was standing.(en)">
 				>
 				["at1005"] = <
-					text = <"*Pulse Presence(en)">
+					text = <"*Pulse presence(en)">
 					description = <"*Identification of a pulse or heart beat.(en)">
 					comment = <"*It can be implied that the pulse is present if Rate >0 beats/min.(en)">
 				>
@@ -706,11 +758,11 @@ ontology
 					comment = <"*For example, auscultation or electronic monitoring. (en)">
 				>
 				["at1022"] = <
-					text = <"*Clinical Description(en)">
-					description = <"*Narrative description about the findings.(en)">
+					text = <"*Description(en)">
+					description = <"*Narrative description about the pulse findings.(en)">
 				>
 				["at1023"] = <
-					text = <"*Clinical Interpretation(en)">
+					text = <"*Clinical interpretation(en)">
 					description = <"*Single word, phrase or brief description represents the clinical meaning and significance of the pulse or heart beat findings.(en)">
 					comment = <"*Coding with a terminology is preferred, where possible. For example: Bradycardia, Extrasystoles or Sinus rhythm. Multiple statements are allowed. (en)">
 				>
@@ -786,6 +838,11 @@ ontology
 				["at1044"] = <
 					text = <"*Femoral Artery - Right(en)">
 					description = <"*The right femoral artery.(en)">
+				>
+				["at1045"] = <
+					text = <"*Irregularity(en)">
+					description = <"*The observed irregularity of the pulse or heart beat.(en)">
+					comment = <"*Selection of a value from this value set is only valid if 'Irregular' is selected from the 'Regularity' data element. In practice, systems could offer users the finer grained choices about irregularity from this data element alongside 'Regular' from the 'Regularity' data element. A possible user interface could therefore display the mutually exclusive data set of 'Regular', 'Regularly irregular' and 'Irregularly irregular', with the assumption that if one of the irregular values is selected, then the 'Irregular' value in the 'Regularity' data element is effectively also selected automatically.(en)">
 				>
 			>
 		>
@@ -822,11 +879,11 @@ ontology
 				>
 				["at0007"] = <
 					text = <"*Regularly Irregular(en)">
-					description = <"*The rhythm is regularly irregular.(en)">
+					description = <"*The rhythm is irregular in a regular pattern, such as a dropped beat every 'n' beats.(en)">
 				>
 				["at0008"] = <
 					text = <"*Irregularly Irregular(en)">
-					description = <"*The rhythm is irregular in a chaotic manner.(en)">
+					description = <"*The rhythm is irregular in a chaotic and unpredictable manner.(en)">
 				>
 				["at0010"] = <
 					text = <"Дерево">
@@ -857,7 +914,7 @@ ontology
 					description = <"*The subject was standing.(en)">
 				>
 				["at1005"] = <
-					text = <"*Pulse Presence(en)">
+					text = <"*Pulse presence(en)">
 					description = <"*Identification of a pulse or heart beat.(en)">
 					comment = <"*It can be implied that the pulse is present if Rate >0 beats/min.(en)">
 				>
@@ -880,11 +937,11 @@ ontology
 					comment = <"*For example, auscultation or electronic monitoring. (en)">
 				>
 				["at1022"] = <
-					text = <"*Clinical Description(en)">
-					description = <"*Narrative description about the findings.(en)">
+					text = <"*Description(en)">
+					description = <"*Narrative description about the pulse findings.(en)">
 				>
 				["at1023"] = <
-					text = <"*Clinical Interpretation(en)">
+					text = <"*Clinical interpretation(en)">
 					description = <"*Single word, phrase or brief description represents the clinical meaning and significance of the pulse or heart beat findings.(en)">
 					comment = <"*Coding with a terminology is preferred, where possible. For example: Bradycardia, Extrasystoles or Sinus rhythm. Multiple statements are allowed. (en)">
 				>
@@ -960,6 +1017,186 @@ ontology
 				["at1044"] = <
 					text = <"*Femoral Artery - Right(en)">
 					description = <"*The right femoral artery.(en)">
+				>
+				["at1045"] = <
+					text = <"*Irregularity(en)">
+					description = <"*The observed irregularity of the pulse or heart beat.(en)">
+					comment = <"*Selection of a value from this value set is only valid if 'Irregular' is selected from the 'Regularity' data element. In practice, systems could offer users the finer grained choices about irregularity from this data element alongside 'Regular' from the 'Regularity' data element. A possible user interface could therefore display the mutually exclusive data set of 'Regular', 'Regularly irregular' and 'Irregularly irregular', with the assumption that if one of the irregular values is selected, then the 'Irregular' value in the 'Regularity' data element is effectively also selected automatically.(en)">
+				>
+			>
+		>
+		["es-co"] = <
+			items = <
+				["at0000"] = <
+					text = <"*Pulse(en)">
+					description = <"*Measurement of the pulse rate, or heart rate, and description of associated characteristics.(en)">
+				>
+				["at0001"] = <
+					text = <"*structure(en)">
+					description = <"*@ internal @(en)">
+				>
+				["at0002"] = <
+					text = <"*history(en)">
+					description = <"*@ internal @(en)">
+				>
+				["at0003"] = <
+					text = <"*Any event(en)">
+					description = <"*Default, unspecified point in time or interval event which may be explicitly defined in a template or at run-time.(en)">
+				>
+				["at0004"] = <
+					text = <"*Rate(en)">
+					description = <"*The rate, measured in beats per minute.(en)">
+				>
+				["at0005"] = <
+					text = <"*Regularity(en)">
+					description = <"*The observed regularity of the pulse or heart beat.(en)">
+				>
+				["at0006"] = <
+					text = <"*Regular(en)">
+					description = <"*The rhythm is regular.(en)">
+				>
+				["at0007"] = <
+					text = <"*Regularly Irregular(en)">
+					description = <"*The rhythm is irregular in a regular pattern, such as a dropped beat every 'n' beats.(en)">
+				>
+				["at0008"] = <
+					text = <"*Irregularly Irregular(en)">
+					description = <"*The rhythm is irregular in a chaotic and unpredictable manner.(en)">
+				>
+				["at0010"] = <
+					text = <"*List(en)">
+					description = <"*@ internal @(en)">
+				>
+				["at0012"] = <
+					text = <"*List(en)">
+					description = <"*@ internal @(en)">
+				>
+				["at0013"] = <
+					text = <"*Position(en)">
+					description = <"*The body position of the subject during the observation.(en)">
+				>
+				["at1000"] = <
+					text = <"*Lying(en)">
+					description = <"*The subject was lying flat.(en)">
+				>
+				["at1001"] = <
+					text = <"*Sitting(en)">
+					description = <"*The subject was sitting (for example on bed or chair).(en)">
+				>
+				["at1002"] = <
+					text = <"*Reclining(en)">
+					description = <"*The subject was reclining.(en)">
+				>
+				["at1003"] = <
+					text = <"*Standing(en)">
+					description = <"*The subject was standing.(en)">
+				>
+				["at1005"] = <
+					text = <"*Pulse presence(en)">
+					description = <"*Identification of a pulse or heart beat.(en)">
+					comment = <"*It can be implied that the pulse is present if Rate >0 beats/min.(en)">
+				>
+				["at1013"] = <
+					text = <"*Device(en)">
+					description = <"*Details about the device used to observe the pulse or heart beat.(en)">
+				>
+				["at1017"] = <
+					text = <"*Exertion(en)">
+					description = <"*Details about physical exertion being undertaken during the examination.(en)">
+				>
+				["at1018"] = <
+					text = <"*Confounding Factors(en)">
+					description = <"*Narrative description about any incidental factors that may be affect interpretation of the physical findings.(en)">
+				>
+				["at1019"] = <
+					text = <"*Method(en)">
+					description = <"*Method used to the pulse observe the pulse or heart beat.(en)">
+				>
+				["at1022"] = <
+					text = <"*Description(en)">
+					description = <"*Narrative description about the pulse findings.(en)">
+				>
+				["at1023"] = <
+					text = <"*Clinical interpretation(en)">
+					description = <"*Single word, phrase or brief description represents the clinical meaning and significance of the pulse or heart beat findings.(en)">
+					comment = <"*Coding with a terminology is preferred, where possible. For example: Bradycardia, Extrasystoles or Sinus rhythm. Multiple statements are allowed. (en)">
+				>
+				["at1024"] = <
+					text = <"*Present(en)">
+					description = <"*A pulse or heart beat can be detected.(en)">
+				>
+				["at1025"] = <
+					text = <"*Absent(en)">
+					description = <"*A pulse or heart beat cannot be detected.(en)">
+				>
+				["at1026"] = <
+					text = <"*Pulse Rate(en)">
+					description = <"*The pulse rate, measured in beats per minute.(en)">
+				>
+				["at1027"] = <
+					text = <"*Heart Rate(en)">
+					description = <"*The heart rate, measured in beats per minute.(en)">
+				>
+				["at1028"] = <
+					text = <"*Irregular(en)">
+					description = <"*The rhythm is irregular.(en)">
+				>
+				["at1030"] = <
+					text = <"*Character(en)">
+					description = <"*Description of the character of the pulse or heart beat.(en)">
+				>
+				["at1032"] = <
+					text = <"*Palpation(en)">
+					description = <"*The findings are observed by physical touch of the observer on the subject.(en)">
+				>
+				["at1033"] = <
+					text = <"*Auscultation(en)">
+					description = <"*The findings are observed with the assistance of a device, such as a stethoscope.(en)">
+				>
+				["at1034"] = <
+					text = <"*Device(en)">
+					description = <"*The pulse findings are observed using a device, such as a pulse oximeter or cardiac monitor.(en)">
+				>
+				["at1036"] = <
+					text = <"*Maximum(en)">
+					description = <"*Maximum rate of the pulse or heart beat observed during a period of exertion.(en)">
+				>
+				["at1037"] = <
+					text = <"*Findings Location(en)">
+					description = <"*Body site where the pulse or heart beat findings were observed.(en)">
+				>
+				["at1038"] = <
+					text = <"*Radial Artery - Left(en)">
+					description = <"*The left radial artery.(en)">
+				>
+				["at1039"] = <
+					text = <"*Radial Artery - Right(en)">
+					description = <"*The right radial artery.(en)">
+				>
+				["at1040"] = <
+					text = <"*Heart(en)">
+					description = <"*The region of the heart.(en)">
+				>
+				["at1041"] = <
+					text = <"*Carotid Artery - Left(en)">
+					description = <"*The left carotid artery.(en)">
+				>
+				["at1042"] = <
+					text = <"*Carotid Artery - Right(en)">
+					description = <"*The right carotid artery.(en)">
+				>
+				["at1043"] = <
+					text = <"*Femoral Artery - Left(en)">
+					description = <"*The left femoral artery.(en)">
+				>
+				["at1044"] = <
+					text = <"*Femoral Artery - Right(en)">
+					description = <"*The right femoral artery.(en)">
+				>
+				["at1045"] = <
+					text = <"*Irregularity(en)">
+					description = <"*The observed irregularity of the pulse or heart beat.(en)">
+					comment = <"*Selection of a value from this value set is only valid if 'Irregular' is selected from the 'Regularity' data element. In practice, systems could offer users the finer grained choices about irregularity from this data element alongside 'Regular' from the 'Regularity' data element. A possible user interface could therefore display the mutually exclusive data set of 'Regular', 'Regularly irregular' and 'Irregularly irregular', with the assumption that if one of the irregular values is selected, then the 'Irregular' value in the 'Regularity' data element is effectively also selected automatically.(en)">
 				>
 			>
 		>
