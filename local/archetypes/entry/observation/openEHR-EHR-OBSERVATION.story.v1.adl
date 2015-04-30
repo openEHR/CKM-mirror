@@ -36,13 +36,6 @@ description
 		["date"] = <"2008-05-15">
 	>
 	details = <
-		["ar-sy"] = <
-			language = <[ISO_639-1::ar-sy]>
-			purpose = <"*To record a narrative description of the clinical history, as told to a clinician or recorded directly by an individual/patient, and to provide a framework in which to nest detailed CLUSTER archetypes, each of which will describe the various aspects of the clinical history in further detail.(en)">
-			use = <"">
-			misuse = <"">
-			copyright = <"© openEHR Foundation">
-		>
 		["es-ar"] = <
 			language = <[ISO_639-1::es-ar]>
 			purpose = <"*To record a narrative description of the clinical history, as told to a clinician or recorded directly by an individual/patient, and to provide a framework in which to nest detailed CLUSTER archetypes, each of which will describe the various aspects of the clinical history in further detail.(en)">
@@ -64,39 +57,52 @@ description
 		>
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"To record a narrative description of the clinical history, as told to a clinician or recorded directly by an individual/patient, and to provide a framework in which to nest detailed CLUSTER archetypes, each of which will describe the various aspects of the clinical history in further detail.">
-			use = <"Use to record the formal 'History of Presenting Complaint' by a clinician, as told to them by a patient; or use to record an individual's own account of their 'story' of symptoms, for example in a personal health record.
+			purpose = <"To record a narrative description of the clinical history of the subject of care and to provide a framework in which to nest detailed CLUSTER archetypes, each of which will support the narrative with additional structured detail.
 
-Use to incorporate the narrative descriptions of clinical history within existing or legacy clinical systems into an archetyped format, using the 'Story' data element.
+Use to record detail about a single symptom as reported by an individual, parent, care-giver or other party. It may be recorded by a clinician as part of a clinical history record as reported to them, or self-recorded as part of a clinical questionnaire or personal health record.">
+			use = <"Use to record a description about subjective health-related observations or impressions from the point of view of the subject of care. 
 
-Use to record a simple narrative and/or as a container archetype - to provide a common, queryable ENTRY archetype framework which can be extended by the inclusion of additional, specific and detailed CLUSTER archetypes, each of which will describe the various aspects of the clinical history. Examples of history-related CLUSTER archetypes include CLUSTER.symptom or CLUSTER.health_event.">
+When recorded by a clinician within the context of healthcare provision the story can be used for capturing the clinical history, as reported by the subject themselves, a parent, care-giver or other related party. If recorded by the subject, it can be used as an account of their 'story' of symptoms and health experiences, which might be used to share with healthcare providers or to document within their own personal health record.
+
+Use:
+- to record a simple narrative; and/or 
+- as a container archetype to enable recording of a detailed structured history by inclusion of relevant CLUSTER archetypes within the 'Detail' SLOT. For example: CLUSTER.symptom, CLUSTER.issue or CLUSTER.health_event archetypes can be appropriately used in this SLOT.
+
+Use to incorporate the narrative descriptions of clinical history captured from existing or legacy clinical systems into an archetyped format, using the 'Story' text data element.">
 			keywords = <"history", "presenting", "complaint", "story">
+			misuse = <"Not to be used to record formal assessments by clincians which would usually be recorded using the EVALUATION class of archetypes.">
+			copyright = <"© openEHR Foundation">
+		>
+		["ar-sy"] = <
+			language = <[ISO_639-1::ar-sy]>
+			purpose = <"*To record a narrative description of the clinical history, as told to a clinician or recorded directly by an individual/patient, and to provide a framework in which to nest detailed CLUSTER archetypes, each of which will describe the various aspects of the clinical history in further detail.(en)">
+			use = <"">
 			misuse = <"">
 			copyright = <"© openEHR Foundation">
 		>
 	>
-	lifecycle_state = <"AuthorDraft">
-	other_contributors = <"Sam Heard, Ocean Informatic, Australia", ...>
+	lifecycle_state = <"CommitteeDraft">
+	other_contributors = <"Sam Heard, Ocean Informatics, Australia", ...>
 	other_details = <
 		["current_contact"] = <"Heather Leslie, Ocean Informatics, heather.leslie@oceaninformatics.com">
-		["MD5-CAM-1.0.1"] = <"FE1660C9372AFA772F77A1EA8F028E03">
+		["MD5-CAM-1.0.1"] = <"6E0A0D1374E8690B95931D8810201FEE">
 	>
 
 definition
-	OBSERVATION[at0000] matches {	-- Story/History
+	OBSERVATION[at0000] matches {	-- *Story/History(en)
 		data matches {
-			HISTORY[at0001] matches {	-- Event Series
+			HISTORY[at0001] matches {	-- *Event Series(en)
 				events cardinality matches {1..*; unordered} matches {
-					EVENT[at0002] occurrences matches {0..1} matches {	-- Any event
+					EVENT[at0002] occurrences matches {0..1} matches {	-- *Any event(en)
 						data matches {
-							ITEM_TREE[at0003] matches {	-- Tree
+							ITEM_TREE[at0003] matches {	-- *Tree(en)
 								items cardinality matches {1..*; unordered} matches {
-									ELEMENT[at0004] occurrences matches {0..1} matches {	-- Story
+									ELEMENT[at0004] occurrences matches {0..1} matches {	-- *Story(en)
 										value matches {
 											DV_TEXT matches {*}
 										}
 									}
-									allow_archetype CLUSTER[at0006] occurrences matches {0..*} matches {	-- Details
+									allow_archetype CLUSTER[at0006] occurrences matches {0..*} matches {	-- *Detail(en)
 										include
 											archetype_id/value matches {/openEHR-EHR-CLUSTER\.symptom(-[a-zA-Z0-9_]+)*\.v1|openEHR-EHR-CLUSTER\.health_event(-[a-zA-Z0-9_]+)*\.v1|openEHR-EHR-CLUSTER\.issue(-[a-zA-Z0-9_]+)*\.v1/}
 									}
@@ -115,8 +121,8 @@ ontology
 		["ar-sy"] = <
 			items = <
 				["at0000"] = <
-					text = <"قصة المرض أو التاريخ - سوابق المرض">
-					description = <"*The clinical history of a person, as told to a clinician or recorded directly by an individual/patient.(en)">
+					text = <"*Story/History(en)">
+					description = <"*The subjective clinical history of the subject of care as recorded directly by the subject, or reported to a clinician by the subject or a carer.(en)">
 				>
 				["at0001"] = <
 					text = <"*Event Series(en)">
@@ -131,12 +137,12 @@ ontology
 					description = <"*@ internal @(en)">
 				>
 				["at0004"] = <
-					text = <"قصة المريض">
-					description = <"*Narrative description of the clinical history or story.(en)">
+					text = <"*Story(en)">
+					description = <"*Narrative description of the story or clinical history for the subject of care.(en)">
 				>
 				["at0006"] = <
-					text = <"التفاصيل">
-					description = <"*Additional structured details about the individual's story or patient's history.(en)">
+					text = <"*Detail(en)">
+					description = <"*Structured detail about the individual's story or patient's history.(en)">
 					comment = <"*For example: a specific symptom such as nausea or pain; an event such as a fall off a bicycle; or an issue such as a desire to quit using tobacco.(en)">
 				>
 			>
@@ -145,7 +151,7 @@ ontology
 			items = <
 				["at0000"] = <
 					text = <"Story/History">
-					description = <"The clinical history of a person, as told to a clinician or recorded directly by an individual/patient.">
+					description = <"The subjective clinical history of the subject of care as recorded directly by the subject, or reported to a clinician by the subject or a carer.">
 				>
 				["at0001"] = <
 					text = <"Event Series">
@@ -161,11 +167,11 @@ ontology
 				>
 				["at0004"] = <
 					text = <"Story">
-					description = <"Narrative description of the clinical history or story.">
+					description = <"Narrative description of the story or clinical history for the subject of care.">
 				>
 				["at0006"] = <
-					text = <"Details">
-					description = <"Additional structured details about the individual's story or patient's history.">
+					text = <"Detail">
+					description = <"Structured detail about the individual's story or patient's history.">
 					comment = <"For example: a specific symptom such as nausea or pain; an event such as a fall off a bicycle; or an issue such as a desire to quit using tobacco.">
 				>
 			>
@@ -173,8 +179,8 @@ ontology
 		["es-ar"] = <
 			items = <
 				["at0000"] = <
-					text = <"Evolucion o historia">
-					description = <"*The clinical history of a person, as told to a clinician or recorded directly by an individual/patient.(en)">
+					text = <"*Story/History(en)">
+					description = <"*The subjective clinical history of the subject of care as recorded directly by the subject, or reported to a clinician by the subject or a carer.(en)">
 				>
 				["at0001"] = <
 					text = <"Eventos">
@@ -189,12 +195,12 @@ ontology
 					description = <"@ internal @">
 				>
 				["at0004"] = <
-					text = <"Historia">
-					description = <"*Narrative description of the clinical history or story.(en)">
+					text = <"*Story(en)">
+					description = <"*Narrative description of the story or clinical history for the subject of care.(en)">
 				>
 				["at0006"] = <
-					text = <"Detalles">
-					description = <"*Additional structured details about the individual's story or patient's history.(en)">
+					text = <"*Detail(en)">
+					description = <"*Structured detail about the individual's story or patient's history.(en)">
 					comment = <"*For example: a specific symptom such as nausea or pain; an event such as a fall off a bicycle; or an issue such as a desire to quit using tobacco.(en)">
 				>
 			>
@@ -203,7 +209,7 @@ ontology
 			items = <
 				["at0000"] = <
 					text = <"*Story/History(en)">
-					description = <"의사에게 이야기하거나 개인/환자에 의해 직접 기록된 개인의 임상 병력">
+					description = <"*The subjective clinical history of the subject of care as recorded directly by the subject, or reported to a clinician by the subject or a carer.(en)">
 				>
 				["at0001"] = <
 					text = <"*Event Series(en)">
@@ -218,13 +224,13 @@ ontology
 					description = <"*@ internal @(en)">
 				>
 				["at0004"] = <
-					text = <"이야기">
-					description = <"임상 병력 또는 이야기의 서술">
+					text = <"*Story(en)">
+					description = <"*Narrative description of the story or clinical history for the subject of care.(en)">
 				>
 				["at0006"] = <
-					text = <"상세내용">
-					description = <"개인의 이야기 또는 환자의 병력에 대한 추가적인 구조화된 상세내용">
-					comment = <"예를 들어: 구역 또는 통증과 같은 특정한 증상; 자전거에서 낙상과 같은 이벤트; 또는 금연에 대한 욕구와 같은 문제">
+					text = <"*Detail(en)">
+					description = <"*Structured detail about the individual's story or patient's history.(en)">
+					comment = <"*For example: a specific symptom such as nausea or pain; an event such as a fall off a bicycle; or an issue such as a desire to quit using tobacco.(en)">
 				>
 			>
 		>
