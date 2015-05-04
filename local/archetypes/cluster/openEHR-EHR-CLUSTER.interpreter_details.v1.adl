@@ -1,0 +1,89 @@
+﻿archetype (adl_version=1.4)
+	openEHR-EHR-CLUSTER.interpreter_details.v1
+
+concept
+	[at0000]	-- Interpreter Details
+language
+	original_language = <[ISO_639-1::en]>
+description
+	original_author = <
+		["name"] = <"Heather Leslie">
+		["organisation"] = <"Ocean Informatics">
+		["email"] = <"heather.leslie@oceaninformatics.com">
+		["date"] = <"2015-05-04">
+	>
+	details = <
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To record details about an Interpreter who was involved in, or will be required to be involved in, a clinical activity.">
+			use = <"">
+			keywords = <"interpreter", "language">
+			misuse = <"">
+			copyright = <"© openEHR Foundation">
+		>
+	>
+	lifecycle_state = <"CommitteeDraft">
+	other_contributors = <>
+	other_details = <
+		["current_contact"] = <"Heather Leslie, Ocean Informatics<heather.leslie@oceaninformatics.com>">
+		["MD5-CAM-1.0.1"] = <"902BD36B16405D577BE29880A08FA47A">
+	>
+
+definition
+	CLUSTER[at0000] matches {	-- Interpreter Details
+		items cardinality matches {1..*; unordered} matches {
+			ELEMENT[at0001] occurrences matches {0..1} matches {	-- Interpreter?
+				value matches {
+					DV_BOOLEAN matches {
+						value matches {True, False}
+					}
+				}
+			}
+			ELEMENT[at0002] occurrences matches {0..1} matches {	-- Language
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			allow_archetype CLUSTER[at0004] occurrences matches {0..*} matches {	-- Interpreter
+				include
+					archetype_id/value matches {/.*/}
+			}
+			ELEMENT[at0003] occurrences matches {0..1} matches {	-- Comment
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+		}
+	}
+
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"Interpreter Details">
+					description = <"Details about an Interpreter involved in, or required to be involved in, a clinical activity.">
+				>
+				["at0001"] = <
+					text = <"Interpreter?">
+					description = <"Was an interpreter present during a clinical activity, or will be required for a future clinical activity?">
+					comment = <"Record as True if the interpreter was present during a completed clinical activity, or will be required in a future clinical activity.">
+				>
+				["at0002"] = <
+					text = <"Language">
+					description = <"Identification of the language being interpreted.">
+				>
+				["at0003"] = <
+					text = <"Comment">
+					description = <"Additional narrative description about the interpreter.">
+					comment = <"For example, the interaction with the interpreter was unsatisfactory and so the subject may not understand the content of the discussion with a clinician.">
+				>
+				["at0004"] = <
+					text = <"Interpreter">
+					description = <"Identification of the Interpreter.">
+					comment = <"Only use this SLOT if Participations are not implemented.">
+				>
+			>
+		>
+	>
