@@ -1,8 +1,8 @@
-﻿archetype (adl_version=1.4)
-	openEHR-EHR-CLUSTER.problem_status.v1
+﻿archetype (adl_version=1.4; uid=0d6e9883-1e37-4b1f-a416-f3e342e052c3)
+	openEHR-EHR-CLUSTER.problem_status.v0
 
 concept
-	[at0000]	-- Problem context qualifiers
+	[at0000]	-- Problem status
 language
 	original_language = <[ISO_639-1::en]>
 	translations = <
@@ -23,6 +23,14 @@ description
 		["date"] = <"2013-05-29">
 	>
 	details = <
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To record various status and context qualifiers which though commonly used within applications and in clinical messages but which are  highly contextually dependent or variably defined and used in practice.">
+			use = <"Use to qualify an EVALUATION.problem_diagnosis.v1 archetype, adding context and state specific information.  These qualifiers should be used with care as they are variably used in practice and interopaerablility cannot be assured unless usage is clearly defined within the community of sharing.">
+			keywords = <"problem", "active", "inactive", "status", "episode">
+			misuse = <"It should not be assumed that these qualifiers are safely interoperable unless further definition and alignment is agreed between all sharing parties. A problem which has been defined as 'Inactive' during a hospital admission cannot be assumed to be regarded as 'Inactive' in a primary care setting , where a much longer term perspective is being taken. Similarly terms such as Initial, Interim and Final, whilst helpful to the human observer are unlikely to be precisely enough defined to be safely computable e.g. for decision support.">
+			copyright = <"© openEHR Foundation">
+		>
 		["sl"] = <
 			language = <[ISO_639-1::sl]>
 			purpose = <"Za zapisovanje različnih statusov, ki se ponavadi uporablja za aplikacijskimi in kliničnimi sporočili, ki so odvisna od definirane vsebine
@@ -33,38 +41,23 @@ description
 			misuse = <"It should not be assumed that these qualifiers are safely interoperable unless further definition and alignment is agreed between all sharing parties. A problem which has been defined as 'Inactive' during a hospital admission cannot be assumed to be regarded as 'Inactive' in a primary care setting , where a much longer term perspective is being taken. Similarly terms such as Initial, Interim and Final, whilst helpful to the human observer are unlikely to be precisely enough defined to be safely computable e.g. for decision support. ">
 			copyright = <"© openEHR Foundation">
 		>
-		["en"] = <
-			language = <[ISO_639-1::en]>
-			purpose = <"To record various status and context qualifiers which though commonly used within applications and in clinical messages but which are  highly contextually dependent or variably defined and used in practice.">
-			use = <"Use to qualify an EVALUATION.problem_diagnosis.v1 archetype, adding context and state specific information.  These qualifiers should be used with care as they are variably used in practice and interopaerablility cannot be assured unless usage is clearly defined within the community of sharing.">
-			keywords = <"problem", "active", "inactive", "status", "episode">
-			misuse = <"It should not be assumed that these qualifiers are safely interoperable unless further definition and alignment is agreed between all sharing parties. A problem which has been defined as 'Inactive' during a hospital admission cannot be assumed to be regarded as 'Inactive' in a primary care setting , where a much longer term perspective is being taken. Similarly terms such as Initial, Interim and Final, whilst helpful to the human observer are unlikely to be precisely enough defined to be safely computable e.g. for decision support.">
-			copyright = <"© openEHR Foundation">
-		>
 	>
-	lifecycle_state = <"AuthorDraft">
-	other_contributors = <"Heather Leslie, Ocean Informatics, Australia", "Hugh Leslie, Ocean Informatics, Australia", "Sam Heard, Ocean Informatics, Australia">
+	lifecycle_state = <"in_development">
+	other_contributors = <"Silje Ljosland Bakke, Bergen Hospital Trust, Norway (openEHR Editor)", "Sam Heard, Ocean Informatics, Australia", "Heather Leslie, Ocean Informatics, Australia (openEHR Editor)", "Hugh Leslie, Ocean Informatics, Australia", "Ian McNicoll, freshEHR Clinical Informatics, United Kingdom (openEHR Editor)">
 	other_details = <
-		["MD5-CAM-1.0.1"] = <"B302D2C353B8DFD6407C76E8A183E13F">
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
+		["revision"] = <"0.0.1-alpha">
+		["build_uid"] = <"f15788a6-c5d0-41c3-a885-19dc84181acd">
+		["original_namespace"] = <"org.openehr">
+		["original_publisher"] = <"openEHR Foundation">
+		["MD5-CAM-1.0.1"] = <"D925601454D3978DC6A0878DA3AC9CE6">
+		["custodian_namespace"] = <"org.openehr">
+		["custodian_organisation"] = <"openEHR Foundation">
 	>
 
 definition
-	CLUSTER[at0000] matches {	-- Problem context qualifiers
+	CLUSTER[at0000] matches {	-- Problem status
 		items cardinality matches {1..*; unordered} matches {
-			ELEMENT[at0029] occurrences matches {0..1} matches {	-- Certainty
-				value matches {
-					DV_CODED_TEXT matches {
-						defining_code matches {
-							[local::
-							at0045, 	-- Possible
-							at0046, 	-- Equivocal
-							at0047, 	-- Probable
-							at0048, 	-- Definite
-							at0049]	-- Confirmed
-						}
-					}
-				}
-			}
 			ELEMENT[at0024] occurrences matches {0..1} matches {	-- Impact
 				value matches {
 					DV_CODED_TEXT matches {
@@ -185,7 +178,7 @@ ontology
 		["en"] = <
 			items = <
 				["at0000"] = <
-					text = <"Problem context qualifiers">
+					text = <"Problem status">
 					description = <"Additional status and contextual qualifiers factors related to a problem/diagnosis.">
 				>
 				["at0001"] = <
@@ -236,10 +229,6 @@ ontology
 					text = <"Resolved">
 					description = <"The problem or diagnosis is completely resolved and therefore not relevant to the current clinical context.">
 				>
-				["at0029"] = <
-					text = <"Certainty">
-					description = <"The level of confidence in the identification of the problem or diagnosis.">
-				>
 				["at0033"] = <
 					text = <"First ever">
 					description = <"The first ever occurence of this problem or diagnosis.">
@@ -275,26 +264,6 @@ ontology
 				["at0044"] = <
 					text = <"Fatal">
 					description = <"The problem was fatal to the subject.">
-				>
-				["at0045"] = <
-					text = <"Possible">
-					description = <"The probem has been identified with a low level of certainty.">
-				>
-				["at0046"] = <
-					text = <"Equivocal">
-					description = <"The probem has been identified with only a moderate level of certainty.">
-				>
-				["at0047"] = <
-					text = <"Probable">
-					description = <"The probem has been identified with a high level of certainty.">
-				>
-				["at0048"] = <
-					text = <"Definite">
-					description = <"The probem has been identified with a very-high level of certainty.">
-				>
-				["at0049"] = <
-					text = <"Confirmed">
-					description = <"The probem has been identified and confirmed against recognised criteria.">
 				>
 				["at0051"] = <
 					text = <"Category">
@@ -373,7 +342,7 @@ ontology
 		["sl"] = <
 			items = <
 				["at0000"] = <
-					text = <"*Problem context qualifiers(en)">
+					text = <"*Problem status(en)">
 					description = <"*Additional status and contextual qualifiers factors related to a problem/diagnosis.(en)">
 				>
 				["at0001"] = <
@@ -424,10 +393,6 @@ ontology
 					text = <"Razrešen">
 					description = <"Problem j erazrešen">
 				>
-				["at0029"] = <
-					text = <"Zanesljivost">
-					description = <"Zanesljivost opredeljenega problema oz. posatvljene diagnoze">
-				>
 				["at0033"] = <
 					text = <"Prvič">
 					description = <"Problem se je pojavil prvič">
@@ -463,26 +428,6 @@ ontology
 				["at0044"] = <
 					text = <"Fatalen">
 					description = <"Diagnoz aoz problem je fatalen za pacienta">
-				>
-				["at0045"] = <
-					text = <"*Possible(en)">
-					description = <"*The probem has been identified with a low level of certainty.(en)">
-				>
-				["at0046"] = <
-					text = <"*Equivocal(en)">
-					description = <"*The probem has been identified with only a moderate level of certainty.(en)">
-				>
-				["at0047"] = <
-					text = <"*Probable(en)">
-					description = <"*The probem has been identified with a high level of certainty.(en)">
-				>
-				["at0048"] = <
-					text = <"*Definite(en)">
-					description = <"*The probem has been identified with a very-high level of certainty.(en)">
-				>
-				["at0049"] = <
-					text = <"*Confirmed(en)">
-					description = <"*The probem has been identified and confirmed against recognised criteria.(en)">
 				>
 				["at0051"] = <
 					text = <"*Category(en)">
