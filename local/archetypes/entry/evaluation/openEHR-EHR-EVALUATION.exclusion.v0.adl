@@ -1,0 +1,130 @@
+﻿archetype (adl_version=1.4; uid=a6be87f2-17cc-4a4f-aee3-b75fb1c61643)
+	openEHR-EHR-EVALUATION.exclusion.v0
+
+concept
+	[at0000]	-- Exclusion Statement
+language
+	original_language = <[ISO_639-1::en]>
+description
+	original_author = <
+		["name"] = <"Heather Leslie">
+		["organisation"] = <"Ocean Informatics">
+		["email"] = <"heather.leslie@oceaninformatics.com">
+		["date"] = <"2010-02-03">
+	>
+	details = <
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To record a statement about clinical conditions, issues or concerns that are either not currently present, or have not been present in the past. ">
+			use = <"Use to record a specific statement that clinical conditions, issues or concerns are not currently present, or have not been present in the past. 
+
+This archetype has been specifically designed to make a clear and unambiguous statement of exclusion of any clinical item within the health record. This approach is used in preference to relying on flags or terminology to express negation.
+
+Specialisations of this archetype have been developed to capture specific and more detailed information about common exclusions, such as problems or diagnoses. 
+
+Please note that exclusion statements can only be considered to be current and accurate at the point-in-time of recording. It is possible for a record to be able to state that an individual has NO KNOWN history of XYZ (using an exclusion statement) at the same time as recording the evidence of their first experience of XYZ (using the corresponding archetype that records the first experience eg via an EVALUATION for a diagnosis or adverse reaction). In future record statements, the individual may subsequently have a KNOWN history of XYZ recorded in their problem list.">
+			keywords = <"exclusion", ...>
+			misuse = <"Not to be used to record the exclusion of adverse reactions - use the EVALUATION.exclusion-adverse_reaction archetype for this purpose.
+
+Not to be used to record the exclusion  of medication use - use the EVALUATION.exclusion-medication archetype for this purpose.
+
+Not to be used to record the exclusion of procedures - use the EVALUATION.exclusion-procedure archetype for this purpose.
+
+Not to be used to record the exclusion of problems or diagnoses - use the EVALUATION.exclusion-problem_diagnosis archetype for this purpose.
+
+Not to be used to record the exclusion of family history - use the EVALUATION.exclusion-family_history archetype for this purpose.
+
+Not to be used to record the exclusion of any component of physical examination - use the CLUSTER.exclusion_exam archetype within an appropriate OBSERVATION or CLUSTER archetype.">
+			copyright = <"© openEHR Foundation">
+		>
+	>
+	lifecycle_state = <"in_development">
+	other_contributors = <"Koray Atalag, University of Auckland, New Zealand", "Gustavo Bacelar-Silva, Healthcare Designs, Brazil (openEHR Editor)", "Lars Bitsch-Larsen, Haukeland University hospital, Norway", "Stephen Chu, NEHTA, Australia", "Einar Fosse, National Centre for Integrated Care and Telemedicine, Norway", "Sam Heard, Ocean Informatics, Australia", "Shinji Kobayashi, Kyoto University, Japan", "Heather Leslie, Ocean Informatics, Australia (openEHR Editor)", "Ian McNicoll, freshEHR Clinical Informatics, United Kingdom (openEHR Editor)", "Andrej Orel, Marand d.o.o., Slovenia", "Stephen Royce, NEHTA, Australia", "Norwegian Review Summary, Nasjonal IKT, Norway">
+	other_details = <
+		["current_contact"] = <"Heather Leslie, Ocean Informatics, heather.leslie@oceaninformatics.com">
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
+		["revision"] = <"0.0.1-alpha">
+		["references"] = <"Exclusion Statement, draft archetype, NEHTA Clinical Knowledge Manager [Internet]. NEHTA. Authored: 02 Mar 2010. Available at: 
+http://dcm.nehta.org.au/ckm/#showArchetype_1013.1.1301_2 (accessed 3 Sept 2013)">
+		["build_uid"] = <"bac57062-1256-429c-a439-a29f8940a2e7">
+		["original_namespace"] = <"org.openehr">
+		["original_publisher"] = <"openEHR Foundation">
+		["MD5-CAM-1.0.1"] = <"B794F2703C0DB3E48F733A89CB289E83">
+		["custodian_namespace"] = <"org.openehr">
+		["custodian_organisation"] = <"openEHR Foundation">
+	>
+
+definition
+	EVALUATION[at0000] matches {	-- Exclusion Statement
+		data matches {
+			ITEM_TREE[at0001] matches {	-- Tree
+				items cardinality matches {1..*; unordered} matches {
+					ELEMENT[at0002] occurrences matches {1..*} matches {	-- Exclusion Statement
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0003] occurrences matches {0..*} matches {	-- Specific Item
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0007] occurrences matches {0..1} matches {	-- Comment
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+				}
+			}
+		}
+		protocol matches {
+			ITEM_TREE[at0006] matches {	-- Tree
+				items cardinality matches {0..*; unordered} matches {
+					ELEMENT[at0004] occurrences matches {0..1} matches {	-- Last updated
+						value matches {
+							DV_DATE_TIME matches {*}
+						}
+					}
+				}
+			}
+		}
+	}
+
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"Exclusion Statement">
+					description = <"Statement about clinical conditions, issues or concerns that are either not currently present, or have not been present in the past.">
+				>
+				["at0001"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Exclusion Statement">
+					description = <"Statement of exclusion of a condition, issue or concern.">
+					comment = <"Use to capture any information that is needed to be positively recorded as being excluded within the record. This statement can support recording general statements  such as \"No previous/past ...\" or \" No known ...\". Or it can support more exacting statements about a specified object such as \"No known history of ...\" where the 'Specific Item' identifies the condition, issue or concern. See specialisations for Medications, Adverse Reactions, Family History, Problem/Diagnosis and Procedures as common examples that have been explicitly modelled.">
+				>
+				["at0003"] = <
+					text = <"Specific Item">
+					description = <"Identification of the specific clinical item to which the Exclusion Statement applies.">
+					comment = <"In this generic context of this parent archetype it is not easy to identify a commonly used example, however in context of the specialisations from this archetype, this data element would be used to enable exact statements that include: corticosteriods have never been used; there has never been an adverse reaction to penicillin; there is no family history of heart disease; or there is no past history of diabetes for the individual. In these examples, 'corticosteroids', 'penicillin', 'heart disease', 'diabetes' woudl be examples of the 'Specific item' and the rest of the example phrase would be carried in the 'Exclusion statement'.">
+				>
+				["at0004"] = <
+					text = <"Last updated">
+					description = <"The date at which the exclusion was last updated.">
+				>
+				["at0006"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0007"] = <
+					text = <"Comment">
+					description = <"Additional narrative about the Exclusion not captured in other fields.">
+				>
+			>
+		>
+	>
