@@ -1,5 +1,5 @@
-﻿archetype (adl_version=1.4)
-	openEHR-EHR-EVALUATION.goal.v1
+﻿archetype (adl_version=1.4; uid=25865936-afdc-4a93-8321-18718e984661)
+	openEHR-EHR-EVALUATION.goal.v0
 
 concept
 	[at0000]	-- Goal
@@ -31,18 +31,25 @@ description
 		>
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"To record details about an aim or desired health state or goal that is likely to contribute to improving the overall health of the subject of care.">
+			purpose = <"To record details about a health-related goal and any associated targets and deadlines.">
 			use = <"Use to record a health-related goal, as well as one or more specific, measurable targets that will support assessment of success or allow for recording difficulties in achieving the target.">
 			keywords = <"target", "goal", "plan">
 			misuse = <"">
 			copyright = <"© openEHR Foundation">
 		>
 	>
-	lifecycle_state = <"CommitteeDraft">
-	other_contributors = <"Heather Leslie, Ocean Informatics, Australia (Editor)", "Ian McNicoll, Ocean Informatics, United Kingdom (Editor)">
+	lifecycle_state = <"in_development">
+	other_contributors = <"Nadim Anani, Karolinska Institutet, Sweden", "Koray Atalag, University of Auckland, New Zealand", "Gustavo Bacelar-Silva, Healthcare Designs, Brazil (openEHR Editor)", "Lars Bitsch-Larsen, Haukeland University hospital, Norway", "Shahla Foozonkhah, Ocean Informatics, Australia", "Einar Fosse, National Centre for Integrated Care and Telemedicine, Norway", "Heather Grain, Llewelyn Grain Informatics, Australia", "Sam Heard, Ocean Informatics, Australia", "Lars Karlsen, DIPS ASA, Norway", "Shinji Kobayashi, Kyoto University, Japan", "Heather Leslie, Ocean Informatics, Australia (openEHR Editor)", "Ian McNicoll, freshEHR Clinical Informatics, United Kingdom (openEHR Editor)", "Andrej Orel, Marand d.o.o., Slovenia", "Jussara Rotzsch, UNB, Brazil">
 	other_details = <
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
+		["revision"] = <"0.0.1-alpha">
 		["references"] = <"Goal, Draft Archetype [Internet]. National eHealth Transition Authority, NEHTA Clinical Knowledge Manager [cited: 2015-04-30]. Available from: http://dcm.nehta.org.au/ckm/#showArchetype_1013.1.1093">
-		["MD5-CAM-1.0.1"] = <"CBB1AF20F50FF03780FE76F1B8234972">
+		["build_uid"] = <"449b6a65-147d-425d-b843-4c415b775392">
+		["original_namespace"] = <"org.openehr">
+		["original_publisher"] = <"openEHR Foundation">
+		["MD5-CAM-1.0.1"] = <"DA9A65121035B3B7AFC8DD0B5E960B11">
+		["custodian_namespace"] = <"org.openehr">
+		["custodian_organisation"] = <"openEHR Foundation">
 	>
 
 definition
@@ -55,46 +62,55 @@ definition
 							DV_TEXT matches {*}
 						}
 					}
-					ELEMENT[at0012] occurrences matches {0..1} matches {	-- Description
+					ELEMENT[at0012] occurrences matches {0..1} matches {	-- Goal description
 						value matches {
 							DV_TEXT matches {*}
 						}
 					}
-					ELEMENT[at0010] occurrences matches {0..*} matches {	-- Related problem
+					ELEMENT[at0010] occurrences matches {0..*} matches {	-- Clinical indication
 						value matches {
 							DV_TEXT matches {*}
 						}
 					}
-					ELEMENT[at0003] occurrences matches {0..1} matches {	-- Proposed date
+					ELEMENT[at0025] occurrences matches {0..1} matches {	-- Goal start date
+						value matches {
+							DV_DATE_TIME matches {*}
+						}
+					}
+					ELEMENT[at0003] occurrences matches {0..1} matches {	-- Goal proposed date
 						value matches {
 							DV_DATE matches {*}
 						}
 					}
-					ELEMENT[at0004] occurrences matches {0..1} matches {	-- End date
+					ELEMENT[at0004] occurrences matches {0..1} matches {	-- Goal end date
 						value matches {
 							DV_DATE matches {*}
 						}
 					}
-					ELEMENT[at0013] occurrences matches {0..1} matches {	-- Outcome
+					ELEMENT[at0013] occurrences matches {0..1} matches {	-- Goal outcome
 						value matches {
 							DV_TEXT matches {*}
 							DV_CODED_TEXT matches {
 								defining_code matches {
 									[local::
-									at0015, 	-- Successful
-									at0016, 	-- Partially successful
-									at0017]	-- Not successful
+									at0015, 	-- Achieved
+									at0016, 	-- Partially achieved
+									at0017]	-- Not achieved
 								}
 							}
 						}
 					}
-					ELEMENT[at0022] occurrences matches {0..1} matches {	-- Comment
+					ELEMENT[at0022] occurrences matches {0..1} matches {	-- Goal comment
 						value matches {
 							DV_TEXT matches {*}
 						}
 					}
+					allow_archetype CLUSTER[at0028] occurrences matches {0..*} matches {	-- Readiness for change
+						include
+							archetype_id/value matches {/openEHR-EHR-CLUSTER\.change(-[a-zA-Z0-9_]+)*\.v1/}
+					}
 					CLUSTER[at0005] occurrences matches {0..*} matches {	-- Target
-						items cardinality matches {1..5; ordered} matches {
+						items cardinality matches {1..*; ordered} matches {
 							ELEMENT[at0011] occurrences matches {0..1} matches {	-- Target name
 								value matches {
 									DV_TEXT matches {*}
@@ -140,7 +156,7 @@ definition
 									DV_URI matches {*}
 								}
 							}
-							ELEMENT[at0008] occurrences matches {0..1} matches {	-- Proposed target date
+							ELEMENT[at0008] occurrences matches {0..1} matches {	-- Target proposed date
 								value matches {
 									DV_DATE matches {*}
 								}
@@ -173,6 +189,21 @@ definition
 				}
 			}
 		}
+		protocol matches {
+			ITEM_TREE[at0026] matches {	-- Tree
+				items cardinality matches {0..*; unordered} matches {
+					ELEMENT[at0029] occurrences matches {0..1} matches {	-- Last updated
+						value matches {
+							DV_DATE_TIME matches {*}
+						}
+					}
+					allow_archetype CLUSTER[at0027] occurrences matches {0..*} matches {	-- Extension
+						include
+							archetype_id/value matches {/.*/}
+					}
+				}
+			}
+		}
 	}
 
 
@@ -182,7 +213,7 @@ ontology
 			items = <
 				["at0000"] = <
 					text = <"*Goal(en)">
-					description = <"*A desired future health state for the subject of care.(en)">
+					description = <"*A desired health, or well-being, outcome for the subject of care.(en)">
 				>
 				["at0001"] = <
 					text = <"*Tree(en)">
@@ -190,16 +221,16 @@ ontology
 				>
 				["at0002"] = <
 					text = <"*Goal name(en)">
-					description = <"*The name of the desired health state.(en)">
+					description = <"*The name of the desired health outcome.(en)">
 					comment = <"*For example: reduced blood pressure; 10 kilogram weight loss; or diabetes control.(en)">
 				>
 				["at0003"] = <
-					text = <"*Proposed date(en)">
-					description = <"*The date by which it is intended that the goal will be achieved.(en)">
+					text = <"*Goal proposed date(en)">
+					description = <"*The desired or proposed date for achieving the goal.(en)">
 				>
 				["at0004"] = <
-					text = <"*End date(en)">
-					description = <"*The actual date the goal was successfully completed or removed from the record for other reasons.(en)">
+					text = <"*Goal end date(en)">
+					description = <"*The actual date that the goal was achieved or abandoned.(en)">
 				>
 				["at0005"] = <
 					text = <"*Target(en)">
@@ -216,43 +247,43 @@ ontology
 					description = <"*The intended target.(en)">
 				>
 				["at0008"] = <
-					text = <"*Proposed target date(en)">
-					description = <"*The proposed date for achieving the target.(en)">
+					text = <"*Target proposed date(en)">
+					description = <"*The desired or proposed date for achieving the target.(en)">
 				>
 				["at0009"] = <
 					text = <"*Target end date(en)">
-					description = <"*The actual date the target was successfully completed or removed from the record for other reasons.(en)">
+					description = <"*The actual date that the target was achieved or abandoned.(en)">
 				>
 				["at0010"] = <
-					text = <"*Related problem(en)">
-					description = <"*The clinical problem or diagnosis which is intended to be effected by this goal.(en)">
+					text = <"*Clinical indication(en)">
+					description = <"*Name of the problem or diagnosis which is intended to be impacted by achievement of this goal.(en)">
 					comment = <"*For example: Hypertension; Obesity; or Diabetes Type 2.(en)">
 				>
 				["at0011"] = <
 					text = <"*Target name(en)">
 					description = <"*Identification of the intended target, by name.(en)">
-					comment = <"*For example: weight reduction; or blood sugar control.(en)">
+					comment = <"*For example: systolic blood pressure under 140 mmHg; lose 10 kilograms; or HBA1c in the normal range.(en)">
 				>
 				["at0012"] = <
-					text = <"*Description(en)">
+					text = <"*Goal description(en)">
 					description = <"*A narrative description of the goal, including target/s to be achieved if relevant.(en)">
 				>
 				["at0013"] = <
-					text = <"*Outcome(en)">
+					text = <"*Goal outcome(en)">
 					description = <"*Single word, phrase or brief description which represents the outcome actually achieved for the goal.(en)">
 					comment = <"*Coding with a terminology is preferred, where possible. For example: target weight acheived; poor diabetes control; or successful completion.(en)">
 				>
 				["at0015"] = <
-					text = <"*Successful(en)">
-					description = <"*The goal was achieved.(en)">
+					text = <"*Achieved(en)">
+					description = <"*The proposed goal was realised.(en)">
 				>
 				["at0016"] = <
-					text = <"*Partially successful(en)">
-					description = <"*The goal was partially achieved.(en)">
+					text = <"*Partially achieved(en)">
+					description = <"*The proposed goal was partially realised.(en)">
 				>
 				["at0017"] = <
-					text = <"*Not successful(en)">
-					description = <"*The goal was not achieved.(en)">
+					text = <"*Not achieved(en)">
+					description = <"*The proposed goal was abandoned.(en)">
 				>
 				["at0018"] = <
 					text = <"*Target outcome(en)">
@@ -272,7 +303,7 @@ ontology
 					description = <"*The target was not achieved.(en)">
 				>
 				["at0022"] = <
-					text = <"*Comment(en)">
+					text = <"*Goal comment(en)">
 					description = <"*Additional narrative about the goal not captured in other fields.(en)">
 					comment = <"*For example: the reason why the goal was not achieved, or a description about how the goal was partially achieved.(en)">
 				>
@@ -285,13 +316,35 @@ ontology
 					text = <"*Target description(en)">
 					description = <"*Narrative description about the intended target.(en)">
 				>
+				["at0025"] = <
+					text = <"*Goal start date(en)">
+					description = <"*The anticipated or proposed date for commencing work towards the goal.(en)">
+					comment = <"*Note: this date may not be the date of recording of the goal.(en)">
+				>
+				["at0026"] = <
+					text = <"*Tree(en)">
+					description = <"*@ internal @(en)">
+				>
+				["at0027"] = <
+					text = <"*Extension(en)">
+					description = <"*Additional information required to capture local content or to align with other reference models/formalisms.(en)">
+					comment = <"*For example: local information requirements or additional metadata to align with FHIR or CIMI equivalents.(en)">
+				>
+				["at0028"] = <
+					text = <"*Readiness for change(en)">
+					description = <"*Details about the readiness to change behaviour to achieve the desired goal.(en)">
+				>
+				["at0029"] = <
+					text = <"*Last updated(en)">
+					description = <"*The date on which the goal was last updated.(en)">
+				>
 			>
 		>
 		["en"] = <
 			items = <
 				["at0000"] = <
 					text = <"Goal">
-					description = <"A desired future health state for the subject of care.">
+					description = <"A desired health, or well-being, outcome for the subject of care.">
 				>
 				["at0001"] = <
 					text = <"Tree">
@@ -299,16 +352,16 @@ ontology
 				>
 				["at0002"] = <
 					text = <"Goal name">
-					description = <"The name of the desired health state.">
+					description = <"The name of the desired health outcome.">
 					comment = <"For example: reduced blood pressure; 10 kilogram weight loss; or diabetes control.">
 				>
 				["at0003"] = <
-					text = <"Proposed date">
-					description = <"The date by which it is intended that the goal will be achieved.">
+					text = <"Goal proposed date">
+					description = <"The desired or proposed date for achieving the goal.">
 				>
 				["at0004"] = <
-					text = <"End date">
-					description = <"The actual date the goal was successfully completed or removed from the record for other reasons.">
+					text = <"Goal end date">
+					description = <"The actual date that the goal was achieved or abandoned.">
 				>
 				["at0005"] = <
 					text = <"Target">
@@ -325,43 +378,43 @@ ontology
 					description = <"The intended target.">
 				>
 				["at0008"] = <
-					text = <"Proposed target date">
-					description = <"The proposed date for achieving the target.">
+					text = <"Target proposed date">
+					description = <"The desired or proposed date for achieving the target.">
 				>
 				["at0009"] = <
 					text = <"Target end date">
-					description = <"The actual date the target was successfully completed or removed from the record for other reasons.">
+					description = <"The actual date that the target was achieved or abandoned.">
 				>
 				["at0010"] = <
-					text = <"Related problem">
-					description = <"The clinical problem or diagnosis which is intended to be effected by this goal.">
+					text = <"Clinical indication">
+					description = <"Name of the problem or diagnosis which is intended to be impacted by achievement of this goal.">
 					comment = <"For example: Hypertension; Obesity; or Diabetes Type 2.">
 				>
 				["at0011"] = <
 					text = <"Target name">
 					description = <"Identification of the intended target, by name.">
-					comment = <"For example: weight reduction; or blood sugar control.">
+					comment = <"For example: systolic blood pressure under 140 mmHg; lose 10 kilograms; or HBA1c in the normal range.">
 				>
 				["at0012"] = <
-					text = <"Description">
+					text = <"Goal description">
 					description = <"A narrative description of the goal, including target/s to be achieved if relevant.">
 				>
 				["at0013"] = <
-					text = <"Outcome">
+					text = <"Goal outcome">
 					description = <"Single word, phrase or brief description which represents the outcome actually achieved for the goal.">
 					comment = <"Coding with a terminology is preferred, where possible. For example: target weight acheived; poor diabetes control; or successful completion.">
 				>
 				["at0015"] = <
-					text = <"Successful">
-					description = <"The goal was achieved.">
+					text = <"Achieved">
+					description = <"The proposed goal was realised.">
 				>
 				["at0016"] = <
-					text = <"Partially successful">
-					description = <"The goal was partially achieved.">
+					text = <"Partially achieved">
+					description = <"The proposed goal was partially realised.">
 				>
 				["at0017"] = <
-					text = <"Not successful">
-					description = <"The goal was not achieved.">
+					text = <"Not achieved">
+					description = <"The proposed goal was abandoned.">
 				>
 				["at0018"] = <
 					text = <"Target outcome">
@@ -381,7 +434,7 @@ ontology
 					description = <"The target was not achieved.">
 				>
 				["at0022"] = <
-					text = <"Comment">
+					text = <"Goal comment">
 					description = <"Additional narrative about the goal not captured in other fields.">
 					comment = <"For example: the reason why the goal was not achieved, or a description about how the goal was partially achieved.">
 				>
@@ -393,6 +446,28 @@ ontology
 				["at0024"] = <
 					text = <"Target description">
 					description = <"Narrative description about the intended target.">
+				>
+				["at0025"] = <
+					text = <"Goal start date">
+					description = <"The anticipated or proposed date for commencing work towards the goal.">
+					comment = <"Note: this date may not be the date of recording of the goal.">
+				>
+				["at0026"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0027"] = <
+					text = <"Extension">
+					description = <"Additional information required to capture local content or to align with other reference models/formalisms.">
+					comment = <"For example: local information requirements or additional metadata to align with FHIR or CIMI equivalents.">
+				>
+				["at0028"] = <
+					text = <"Readiness for change">
+					description = <"Details about the readiness to change behaviour to achieve the desired goal.">
+				>
+				["at0029"] = <
+					text = <"Last updated">
+					description = <"The date on which the goal was last updated.">
 				>
 			>
 		>
