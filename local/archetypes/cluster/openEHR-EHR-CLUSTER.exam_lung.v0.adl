@@ -15,10 +15,14 @@ description
 	details = <
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"For recording a narrative description and clinical interpretation of the findings observed during the physical examination of a single lung, and to provide a framework in which to nest detailed CLUSTER archetypes, each of which can further describe specific aspects of the lung examination in more detail.">
-			use = <"Use to record a narrative description of the overall findings observed during the physical examination of a single lung. 
+			purpose = <"For recording a narrative description and clinical interpretation of the findings observed during the physical examination of the lung.">
+			use = <"Use to record a narrative description of the overall findings observed during the physical examination of a single lung. This initial draft archetype consists only of the core examination pattern data elements (as per CLUSTER.exam_pattern) and will likely be expanded further over time as specific clinical requirements are identified.
 
-Use to provide a framework in which CLUSTER archetypes can be nested in the 'Examination findings' SLOT to record additional structured physical examination findings - for example, CLUSTER.exam_breath_sounds. In addition, the CLUSTER.exclusion_exam archetype can be nested within the 'Examination not done' SLOT to optionally record explicit details about the examination not being performed.
+This archetype has been specifically designed to be used in the 'Examination findings' SLOT within the CLUSTER.exam_chest archetype, but can also be used within the OBSERVATION.exam and other OBSERVATION or CLUSTER archetypes, where clinically appropriate. Record findings of the second lung in a second instance of this archetype within the same SLOT.
+
+Use to provide a framework in which CLUSTER archetypes can be nested in the 'Examination findings' SLOT to record additional structured physical examination findings - for example, CLUSTER.auscultation_lung. 
+
+The CLUSTER.exclusion_exam archetype can be nested within the 'Examination not done' SLOT to optionally record explicit details about the examination not being performed.
 
 Use to incorporate the narrative descriptions of clinical findings within existing or legacy clinical systems into an archetyped format, using the 'Clinical Description' data element.">
 			misuse = <"Not to be used for recording data not related to the physical examination of the lungs.
@@ -34,10 +38,10 @@ Not to be used to record stand-alone clinical observations or measurements or te
 	other_details = <
 		["revision"] = <"0.0.1-alpha">
 		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
-		["build_uid"] = <"d68fa2eb-412b-4944-a48a-7605a79bffed">
+		["build_uid"] = <"f99f2bda-0603-46ec-a174-de8387dffc52">
 		["original_publisher"] = <"openEHR Foundation">
 		["original_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"CBE2EBC4EEF72C89BB8C17B787184634">
+		["MD5-CAM-1.0.1"] = <"D1C29F7322A70C399DE42BC0EAA6C71E">
 		["custodian_namespace"] = <"org.openehr">
 		["custodian_organisation"] = <"openEHR Foundation">
 	>
@@ -45,13 +49,13 @@ Not to be used to record stand-alone clinical observations or measurements or te
 definition
 	CLUSTER[at0000] matches {	-- Examination of the lung
 		items cardinality matches {1..*; unordered} matches {
-			ELEMENT[at0009] occurrences matches {0..1} matches {	-- Lung examined
+			ELEMENT[at0001] occurrences matches {0..1} matches {	-- Lung examined
 				value matches {
 					DV_CODED_TEXT matches {
 						defining_code matches {
 							[local::
-							at0010, 	-- Left
-							at0011]	-- Right
+							at0009, 	-- Left
+							at0010]	-- Right
 						}
 					}
 				}
@@ -70,7 +74,7 @@ definition
 			}
 			allow_archetype CLUSTER[at0004] occurrences matches {0..*} matches {	-- Examination findings
 				include
-					archetype_id/value matches {/openEHR-EHR-CLUSTER\.exam_breath_sounds(-[a-zA-Z0-9_]+)*\.v0/}
+					archetype_id/value matches {/openEHR-EHR-CLUSTER\.auscultation_lung(-[a-zA-Z0-9_]+)*\.v0/}
 			}
 			allow_archetype CLUSTER[at0005] occurrences matches {0..*} matches {	-- Multimedia representation
 				include
@@ -102,6 +106,10 @@ ontology
 					text = <"Examination of the lung">
 					description = <"Findings observed during the physical examination of a single lung.">
 				>
+				["at0001"] = <
+					text = <"Lung examined">
+					description = <"Identification of the the lung under examination.">
+				>
 				["at0002"] = <
 					text = <"No abnormality detected">
 					description = <"Statement that no abnormality was detected (NAD) on physical examination.">
@@ -132,14 +140,10 @@ ontology
 					description = <"Details to explicitly record that this examination was not performed.">
 				>
 				["at0009"] = <
-					text = <"Lung examined">
-					description = <"Identification of the the lung under examination.">
-				>
-				["at0010"] = <
 					text = <"Left">
 					description = <"The left lung was examined.">
 				>
-				["at0011"] = <
+				["at0010"] = <
 					text = <"Right">
 					description = <"The right lung was examined.">
 				>
