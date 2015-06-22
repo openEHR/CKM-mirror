@@ -2,7 +2,7 @@
 	openEHR-EHR-CLUSTER.exam_oedema.v0
 
 concept
-	[at0000]	-- Examination of oedema
+	[at0000]	-- Oedema
 language
 	original_language = <[ISO_639-1::en]>
 	translations = <
@@ -31,10 +31,14 @@ description
 	details = <
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"To record details about oedema.">
-			use = <"To be included in an entry archetype that identifies the object of examination.">
+			purpose = <"For recording a narrative description and details about oedema on physical examination.">
+			use = <"Use to record a narrative description of the oedema observed during the physical examination.
+
+This archetype has been designed to be used within the 'Examination findings' SLOT of CLUSTER archetypes for physical examination findings. If used within a CLUSTER.exam_pattern related archetype, the 'Body site' data element and 'Structured body site' SLOT are redundant as the location of oedema will be identified in the Exam CLUSTER. If used within the OBSERVATION.exam archetype or CLUSTERs where the site has not been identified, then 'Body site' and/or 'Structured body site' SLOT will be required.
+
+Use to incorporate the narrative descriptions of clinical findings within existing or legacy clinical systems into an archetyped format, using the 'Clinical Description' data element.">
 			keywords = <"oedema", "swelling">
-			misuse = <"">
+			misuse = <"Not to be used for recording the clinical history - use specific OBSERVATION and CLUSTER archetypes. For example OBSERVATION.story and CLUSTER.symptom.">
 			copyright = <"© openEHR Foundation">
 		>
 		["ar-sy"] = <
@@ -57,20 +61,44 @@ description
 	lifecycle_state = <"in_development">
 	other_contributors = <"Heather Leslie, Ocean Informatics, Australia (Editor)", "Ian McNicoll, Ocean Informatics, United Kingdom (Editor)">
 	other_details = <
-		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
 		["revision"] = <"0.0.1-alpha">
-		["build_uid"] = <"4ac4b0d3-6ff2-41b0-82f8-4ce0a58beea1">
-		["original_namespace"] = <"org.openehr">
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
+		["build_uid"] = <"41cc6f98-1ae4-4b76-a1c3-f9dc71429801">
 		["original_publisher"] = <"openEHR Foundation">
-		["MD5-CAM-1.0.1"] = <"3E17F7E382EF84AAF9F41B98760C6300">
+		["original_namespace"] = <"org.openehr">
+		["MD5-CAM-1.0.1"] = <"DC65F4A8CA21E197A20E00E3CE832C90">
 		["custodian_namespace"] = <"org.openehr">
 		["custodian_organisation"] = <"openEHR Foundation">
 	>
 
 definition
-	CLUSTER[at0000] matches {	-- Examination of oedema
+	CLUSTER[at0000] matches {	-- Oedema
 		items cardinality matches {1..*; unordered} matches {
-			ELEMENT[at0013] occurrences matches {0..1} matches {	-- Body site
+			ELEMENT[at0001] occurrences matches {0..1} matches {	-- Clinical description
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			ELEMENT[at0011] occurrences matches {0..1} matches {	-- Pitting
+				value matches {
+					DV_BOOLEAN matches {
+						value matches {True, False}
+					}
+				}
+			}
+			ELEMENT[at0006] occurrences matches {0..1} matches {	-- Severity
+				value matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {
+							[local::
+							at0007, 	-- Mild (+)
+							at0008, 	-- Moderate (++)
+							at0009]	-- Severe (+++)
+						}
+					}
+				}
+			}
+			ELEMENT[at0013] occurrences matches {0..*} matches {	-- Body site name
 				value matches {
 					DV_TEXT matches {*}
 				}
@@ -79,35 +107,7 @@ definition
 				include
 					archetype_id/value matches {/openEHR-EHR-CLUSTER\.anatomical_location(-[a-zA-Z0-9_]+)*\.v1|openEHR-EHR-CLUSTER\.anatomical_location_relative(-[a-zA-Z0-9_]+)*\.v1/}
 			}
-			CLUSTER[at0010] occurrences matches {0..1} matches {	-- Character
-				items cardinality matches {1..*; unordered} matches {
-					ELEMENT[at0001] occurrences matches {0..1} matches {	-- Description
-						value matches {
-							DV_TEXT matches {*}
-						}
-					}
-					ELEMENT[at0011] occurrences matches {0..1} matches {	-- Pitting
-						value matches {
-							DV_BOOLEAN matches {
-								value matches {True, False}
-							}
-						}
-					}
-				}
-			}
-			ELEMENT[at0005] occurrences matches {0..1} matches {	-- Extent
-				value matches {
-					DV_TEXT matches {*}
-				}
-			}
-			ELEMENT[at0006] occurrences matches {0..1} matches {	-- Degree
-				value matches {
-					1|[local::at0007], 	-- Mild +
-					2|[local::at0008], 	-- Moderate ++
-					3|[local::at0009]  	-- Severe +++
-				}
-			}
-			ELEMENT[at0012] occurrences matches {0..1} matches {	-- Comments
+			ELEMENT[at0012] occurrences matches {0..1} matches {	-- Comment
 				value matches {
 					DV_TEXT matches {*}
 				}
@@ -121,156 +121,138 @@ ontology
 		["en"] = <
 			items = <
 				["at0000"] = <
-					text = <"Examination of oedema">
-					description = <"Record details about oedema.">
+					text = <"Oedema">
+					description = <"Abnormal accumulation of fluid in the skin.">
 				>
 				["at0001"] = <
-					text = <"Description">
-					description = <"Description of character of the oedema.">
-				>
-				["at0005"] = <
-					text = <"Extent">
-					description = <"Describe the extent and/or borders of the oedema.">
+					text = <"Clinical description">
+					description = <"Narrative description about the oedema.">
 				>
 				["at0006"] = <
-					text = <"Degree">
-					description = <"The degree of oedema.">
+					text = <"Severity">
+					description = <"Estimation of the severity of oedema.">
 				>
 				["at0007"] = <
-					text = <"Mild +">
-					description = <"Mild oedema.">
+					text = <"Mild (+)">
+					description = <"The oedema is mild.">
 				>
 				["at0008"] = <
-					text = <"Moderate ++">
-					description = <"Moderate oedema.">
+					text = <"Moderate (++)">
+					description = <"The oedema is moderate.">
 				>
 				["at0009"] = <
-					text = <"Severe +++">
-					description = <"Severe oedema.">
-				>
-				["at0010"] = <
-					text = <"Character">
-					description = <"Describe the character of the oedema.">
+					text = <"Severe (+++)">
+					description = <"The oedema is severe.">
 				>
 				["at0011"] = <
 					text = <"Pitting">
 					description = <"Does the oedema pit from finger pressure?">
 				>
 				["at0012"] = <
-					text = <"Comments">
-					description = <"Addtional comments about the oedema.">
+					text = <"Comment">
+					description = <"Additional narrative about the oedema, not captured in other fields.">
 				>
 				["at0013"] = <
-					text = <"Body site">
-					description = <"Record of a simple body site where the  oedema was located.">
+					text = <"Body site name">
+					description = <"Identification of a simple anatomical site where the oedema is located.">
+					comment = <"If the body site has previously been identified in another archetype in which this archetype is nested, this data element becomes redundant.">
 				>
 				["at0014"] = <
 					text = <"Structured body site">
 					description = <"Slot to contain detailed and structured anatomical location details.">
+					comment = <"If the body site has previously been identified in another archetype in which this archetype is then nested, this SLOT becomes redundant.">
 				>
 			>
 		>
 		["ar-sy"] = <
 			items = <
 				["at0000"] = <
-					text = <"*Examination of oedema(en)">
-					description = <"*Record details about oedema.(en)">
+					text = <"*Oedema(en)">
+					description = <"*Abnormal accumulation of fluid in the skin.(en)">
 				>
 				["at0001"] = <
-					text = <"الوصف">
-					description = <"وصف خاصية/صفة الوذمة">
-				>
-				["at0005"] = <
-					text = <"المدى">
-					description = <"وصف مدى و/أو حواف الوذمة">
+					text = <"*Clinical description(en)">
+					description = <"*Narrative description about the oedema.(en)">
 				>
 				["at0006"] = <
-					text = <"الدرجة">
-					description = <"*">
+					text = <"*Severity(en)">
+					description = <"*Estimation of the severity of oedema.(en)">
 				>
 				["at0007"] = <
-					text = <"+">
-					description = <"طفيف">
+					text = <"*Mild (+)(en)">
+					description = <"*The oedema is mild.(en)">
 				>
 				["at0008"] = <
-					text = <"++">
-					description = <"متوسط">
+					text = <"*Moderate (++)(en)">
+					description = <"*The oedema is moderate.(en)">
 				>
 				["at0009"] = <
-					text = <"+++">
-					description = <"*">
-				>
-				["at0010"] = <
-					text = <"الصفة/الخاصية">
-					description = <"لوصف خاصية/صفة الوذمة.">
+					text = <"*Severe (+++)(en)">
+					description = <"*The oedema is severe.(en)">
 				>
 				["at0011"] = <
 					text = <"الانطباع">
 					description = <"هل للوذمة انطباع من الضغط بالإصبع">
 				>
 				["at0012"] = <
-					text = <"تعليقات">
-					description = <"*">
+					text = <"*Comment(en)">
+					description = <"*Additional narrative about the oedema, not captured in other fields.(en)">
 				>
 				["at0013"] = <
-					text = <"*Body site(en)">
-					description = <"*Record of a simple body site where the  oedema was located.(en)">
+					text = <"*Body site name(en)">
+					description = <"*Identification of a simple anatomical site where the oedema is located.(en)">
+					comment = <"*If the body site has previously been identified in another archetype in which this archetype is nested, this data element becomes redundant.(en)">
 				>
 				["at0014"] = <
 					text = <"*Structured body site(en)">
 					description = <"*Slot to contain detailed and structured anatomical location details.(en)">
+					comment = <"*If the body site has previously been identified in another archetype in which this archetype is then nested, this SLOT becomes redundant.(en)">
 				>
 			>
 		>
 		["ru"] = <
 			items = <
 				["at0000"] = <
-					text = <"*Examination of oedema(en)">
-					description = <"*Record details about oedema.(en)">
+					text = <"*Oedema(en)">
+					description = <"*Abnormal accumulation of fluid in the skin.(en)">
 				>
 				["at0001"] = <
-					text = <"Описание">
-					description = <"Описание характера отека">
-				>
-				["at0005"] = <
-					text = <"Границы">
-					description = <"Описание распространенности отека">
+					text = <"*Clinical description(en)">
+					description = <"*Narrative description about the oedema.(en)">
 				>
 				["at0006"] = <
-					text = <"Выраженность">
-					description = <"Описание выраженности отека">
+					text = <"*Severity(en)">
+					description = <"*Estimation of the severity of oedema.(en)">
 				>
 				["at0007"] = <
-					text = <"+">
-					description = <"Незначительно">
+					text = <"*Mild (+)(en)">
+					description = <"*The oedema is mild.(en)">
 				>
 				["at0008"] = <
-					text = <"++">
-					description = <"Выраженный">
+					text = <"*Moderate (++)(en)">
+					description = <"*The oedema is moderate.(en)">
 				>
 				["at0009"] = <
-					text = <"+++">
-					description = <"*">
-				>
-				["at0010"] = <
-					text = <"Характер отека">
-					description = <"Описание характера отека">
+					text = <"*Severe (+++)(en)">
+					description = <"*The oedema is severe.(en)">
 				>
 				["at0011"] = <
 					text = <"Продавливание">
 					description = <"Остаётся ли след после пальпации">
 				>
 				["at0012"] = <
-					text = <"Примечание">
-					description = <"*">
+					text = <"*Comment(en)">
+					description = <"*Additional narrative about the oedema, not captured in other fields.(en)">
 				>
 				["at0013"] = <
-					text = <"*Body site(en)">
-					description = <"*Record of a simple body site where the  oedema was located.(en)">
+					text = <"*Body site name(en)">
+					description = <"*Identification of a simple anatomical site where the oedema is located.(en)">
+					comment = <"*If the body site has previously been identified in another archetype in which this archetype is nested, this data element becomes redundant.(en)">
 				>
 				["at0014"] = <
 					text = <"*Structured body site(en)">
 					description = <"*Slot to contain detailed and structured anatomical location details.(en)">
+					comment = <"*If the body site has previously been identified in another archetype in which this archetype is then nested, this SLOT becomes redundant.(en)">
 				>
 			>
 		>
