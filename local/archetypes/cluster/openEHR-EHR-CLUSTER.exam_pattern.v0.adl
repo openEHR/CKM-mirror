@@ -2,7 +2,7 @@
 	openEHR-EHR-CLUSTER.exam_pattern.v0
 
 concept
-	[at0000]	-- Examination of the XYZ
+	[at0000]	-- Examination of XYZ
 language
 	original_language = <[ISO_639-1::en]>
 description
@@ -13,11 +13,17 @@ description
 	details = <
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"For recording the findings on physical examination of the XYZ by a clinician.">
-			use = <"Use to record the findings on physical examination of the XYZ by a clinician.
+			purpose = <"For recording a narrative description and clinical interpretation of the findings observed during the physical examination of XYZ, and to provide a framework in which to nest detailed CLUSTER archetypes, each of which can further describe specific aspects of the XYZ examination in more detail.">
+			use = <"Use to record a narrative description of the overall findings observed during the physical examination of XYZ. 
 
-Designed to be used within the OBSERVATION.exam or CLUSTER.ABC archetypes, but may be used in any appropriate SLOT within archetypes representing physical examination.">
-			misuse = <"">
+Use as a container archetype - to provide a framework in which specific, detailed CLUSTER archetypes related to XYZ examination findings can be nested. For example, CLUSTER.exam_ABC and CLUSTER.exam.DEF can be inserted into relevant slots to record detailed physical examination findings. In addition the CLUSTER.exclusion_exam can be used to record that the examination was not done.
+
+Use to incorporate the narrative descriptions of clinical findings within existing or legacy clinical systems into an archetyped format, using the 'Clinical Description' data element.">
+			misuse = <"Not to be used for recording data not related to the physical examination of XYZ.
+
+Not to be used for recording the clinical history - use specific OBSERVATION and CLUSTER archetypes. For example OBSERVATION.story and CLUSTER.symptom.
+
+Not to be used to record stand-alone clinical observations or measurements or test results - use specific OBSERVATION archetypes. For example OBSERVATION.blood_pressure or OBSERVATION.imaging_exam.">
 			copyright = <"© openEHR Foundation">
 		>
 	>
@@ -26,16 +32,16 @@ Designed to be used within the OBSERVATION.exam or CLUSTER.ABC archetypes, but m
 	other_details = <
 		["revision"] = <"0.0.1-alpha">
 		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
-		["build_uid"] = <"daa1e638-7443-48db-8605-e884ada1afc6">
+		["build_uid"] = <"87f89302-4a80-424e-b6fb-f4cb9c6d6e08">
 		["original_publisher"] = <"openEHR Foundation">
 		["original_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"6F63221D42C30628437B29AFB2A75F54">
+		["MD5-CAM-1.0.1"] = <"4C703504EB4DFAF9F902C3B0DE696E40">
 		["custodian_namespace"] = <"org.openehr">
 		["custodian_organisation"] = <"openEHR Foundation">
 	>
 
 definition
-	CLUSTER[at0000] matches {	-- Examination of the XYZ
+	CLUSTER[at0000] matches {	-- Examination of XYZ
 		items cardinality matches {1..*; unordered} matches {
 			ELEMENT[at0009] occurrences matches {0..1} matches {	-- XYZ examined
 				value matches {
@@ -51,7 +57,7 @@ definition
 			ELEMENT[at0002] occurrences matches {0..1} matches {	-- No abnormality detected
 				value matches {
 					DV_BOOLEAN matches {
-						value matches {True, False}
+						value matches {True}
 					}
 				}
 			}
@@ -60,7 +66,7 @@ definition
 					DV_TEXT matches {*}
 				}
 			}
-			allow_archetype CLUSTER[at0004] occurrences matches {0..*} matches {	-- Unspecified SLOT
+			allow_archetype CLUSTER[at0004] occurrences matches {0..*} matches {	-- Examination findings
 				include
 					archetype_id/value matches {/.*/}
 			}
@@ -68,7 +74,7 @@ definition
 				include
 					archetype_id/value matches {/openEHR-EHR-CLUSTER\.multimedia(-[a-zA-Z0-9_]+)*\.v1/}
 			}
-			ELEMENT[at0006] occurrences matches {0..1} matches {	-- Clinical interpretation
+			ELEMENT[at0006] occurrences matches {0..*} matches {	-- Clinical interpretation
 				value matches {
 					DV_TEXT matches {*}
 				}
@@ -91,28 +97,29 @@ ontology
 		["en"] = <
 			items = <
 				["at0000"] = <
-					text = <"Examination of the XYZ">
-					description = <"Physical examination of the XYZ by a clinician.">
+					text = <"Examination of XYZ">
+					description = <"Findings observed during the physical examination of XYZ.">
 				>
 				["at0002"] = <
 					text = <"No abnormality detected">
-					description = <"Statement that no abnormality was detected (NAD) on examination of the XYZ.">
+					description = <"Statement that no abnormality was detected (NAD) on physical examination.">
+					comment = <"Record as True if no abnormality was detected on examination. Specific statements about the examination can be included in the 'Clinical Interpretation' data element.">
 				>
 				["at0003"] = <
 					text = <"Clinical description">
-					description = <"Narrative description of findings observed by a clinician during a physical examination of the XYZ.">
+					description = <"Narrative description of the overall findings observed during the physical examination.">
 				>
 				["at0004"] = <
-					text = <"Unspecified SLOT">
-					description = <"Specific details about XYZ.">
+					text = <"Examination findings">
+					description = <"Structured details about the  physical examination findings.">
 				>
 				["at0005"] = <
 					text = <"Multimedia representation">
-					description = <"Image or video taken during the physical examination of the XYZ.">
+					description = <"Digital image, video or diagram representing the physical examination findings.">
 				>
 				["at0006"] = <
 					text = <"Clinical interpretation">
-					description = <"Single word, phrase or brief description representing a summary of the examination findings.">
+					description = <"Single word, phrase or brief description that represents the clinical meaning and significance of the physical examination findings.">
 				>
 				["at0007"] = <
 					text = <"Comment">
