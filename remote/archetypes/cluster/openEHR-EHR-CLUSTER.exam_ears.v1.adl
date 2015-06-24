@@ -1,4 +1,4 @@
-﻿archetype (adl_version=1.4)
+﻿archetype (adl_version=1.4; uid=b59ea28e-6eac-465c-ab52-dd0a4a65b0d8)
 	openEHR-EHR-CLUSTER.exam_ears.v1
 
 concept
@@ -15,10 +15,14 @@ description
 	details = <
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"For recording a narrative description and clinical interpretation of the findings observed during the physical examination of the ears, and to provide a framework in which to nest detailed CLUSTER archetypes, each of which can further describe specific aspects of the ear examination in more detail.">
+			purpose = <"For recording a narrative description and clinical interpretation of the findings observed during the physical examination of the ears.">
 			use = <"Use to record a narrative description of the overall findings observed during the physical examination of the ears. 
 
-Use as a container archetype - to provide a framework in which specific, detailed CLUSTER archetypes related to ear examination findings can be nested. For example,  CLUSTER.exam_tympanic_membrane, CLUSTER.exam_auditory_canal and CLUSTER.exam.pinna can be inserted into relevant slots to record detailed physical examination findings for a specific ear. In addition the CLUSTER.exclusion_exam can be used to record that an ear examination was not done, if inserted at root level 'Other Details' SLOT, or that examination of a specified ear was not done, if inserted in the 'Details' SLOT of the relevant ear.
+This archetype has been specifically designed to be used in the 'Examination detail' SLOT within the OBSERVATION.exam archetype, but can also be used within other OBSERVATION or CLUSTER archetypes, where clinically appropriate.
+
+Use to provide a framework in which CLUSTER archetypes can be nested in the 'Examination findings' SLOT to record additional structured physical examination findings - for example, CLUSTER.exam_tympanic_membrane, CLUSTER.exam_auditory_canal and CLUSTER.exam.pinna. 
+
+The CLUSTER.exclusion_exam archetype can be nested within the 'Examination not done' SLOT to optionally record explicit details about the examination not being performed.
 
 Use to incorporate the narrative descriptions of clinical findings within existing or legacy clinical systems into an archetyped format, using the 'Clinical Description' data element.">
 			keywords = <"examination", "physical", "clinical", "findings", "ear", "exam">
@@ -28,97 +32,65 @@ Not to be used to record data about ear testing - use specific purpose-built OBS
 
 Not to be used for recording the clinical history - use specific OBSERVATION and CLUSTER archetypes. For example OBSERVATION.story and CLUSTER.symptom.
 
-Not to be used to record stand-alone clinical observations or measurements - use specific OBSERVATION archetypes. For example OBSERVATION.blood_pressure, OBSERVATION.body_weight, or OBSERVATION.height.">
-			copyright = <"© National E-Health Transition Authority">
+Not to be used to record stand-alone clinical observations or measurements or test results - use specific OBSERVATION archetypes. For example OBSERVATION.blood_pressure or OBSERVATION.imaging_exam.">
+			copyright = <"© openEHR Foundation">
 		>
 	>
-	lifecycle_state = <"CommitteeDraft">
-	other_contributors = <>
+	lifecycle_state = <"NotSet">
+	other_contributors = <"Silje Ljosland Bakke, Bergen Hospital Trust, Norway", "Ian McNicoll, freshEHR Clinical Informatics, United Kingdom", "John Tore Valand, Haukeland Universitetssjukehus, Norway", "Heather Leslie, Ocean Informatics, Australia">
 	other_details = <
-		["current_contact"] = <"Heather Leslie, Ocean Informatics, heather.leslie@oceaninformatics.com">
-		["MD5-CAM-1.0.1"] = <"D4F9840273427BAE5910425D0C9D0AF4">
+		["current_contact"] = <"Heather Leslie, Ocean Informatics<heather.leslie@oceaninformatics.com>">
+		["revision"] = <"0.0.1-alpha">
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
+		["build_uid"] = <"daa1e638-7443-48db-8605-e884ada1afc6">
+		["original_publisher"] = <"openEHR Foundation">
+		["original_namespace"] = <"org.openehr">
+		["MD5-CAM-1.0.1"] = <"D904DC02F941D5F9F0C27E92F9F54422">
+		["custodian_namespace"] = <"org.openehr">
+		["custodian_organisation"] = <"openEHR Foundation">
 	>
 
 definition
 	CLUSTER[at0000] matches {	-- Examination of Ears
 		items cardinality matches {1..*; unordered} matches {
-			ELEMENT[at0001] occurrences matches {0..1} matches {	-- Clinical description
-				value matches {
-					DV_TEXT matches {*}
-				}
-			}
-			ELEMENT[at0006] occurrences matches {0..1} matches {	-- No abnormality detected
+			ELEMENT[at0002] occurrences matches {0..1} matches {	-- No abnormality detected
 				value matches {
 					DV_BOOLEAN matches {
-						value matches {True, False}
+						value matches {True}
 					}
 				}
 			}
-			ELEMENT[at0007] occurrences matches {0..1} matches {	-- Symmetry?
+			ELEMENT[at0003] occurrences matches {0..1} matches {	-- Clinical description
 				value matches {
 					DV_TEXT matches {*}
 				}
 			}
-			CLUSTER[at0008] occurrences matches {0..1} matches {	-- Right ear
-				items cardinality matches {1..*; unordered} matches {
-					ELEMENT[at0009] occurrences matches {0..1} matches {	-- No abnormality detected
-						value matches {
-							DV_BOOLEAN matches {
-								value matches {True, False}
-							}
-						}
-					}
-					allow_archetype CLUSTER[at0014] occurrences matches {0..*} matches {	-- Details
-						include
-							archetype_id/value matches {/openEHR-EHR-CLUSTER\.exam_tympanic_membrane(-[a-zA-Z0-9_]+)*\.v1|openEHR-EHR-CLUSTER\.exam_pinna(-[a-zA-Z0-9_]+)*\.v1|openEHR-EHR-CLUSTER\.exam_auditory_canal(-[a-zA-Z0-9_]+)*\.v1|openEHR-EHR-CLUSTER\.exclusion_exam(-[a-zA-Z0-9_]+)*\.v1/}
-					}
+			ELEMENT[at0011] occurrences matches {0..1} matches {	-- Symmetry?
+				value matches {
+					DV_TEXT matches {*}
 				}
 			}
-			CLUSTER[at0010] occurrences matches {0..1} matches {	-- Left ear
-				items cardinality matches {1..*; unordered} matches {
-					ELEMENT[at0011] occurrences matches {0..1} matches {	-- No abnormality detected
-						value matches {
-							DV_BOOLEAN matches {
-								value matches {True, False}
-							}
-						}
-					}
-					allow_archetype CLUSTER[at0013] occurrences matches {0..*} matches {	-- Details
-						include
-							archetype_id/value matches {/openEHR-EHR-CLUSTER\.exam_auditory_canal(-[a-zA-Z0-9_]+)*\.v1|openEHR-EHR-CLUSTER\.exam_tympanic_membrane(-[a-zA-Z0-9_]+)*\.v1|openEHR-EHR-CLUSTER\.exam_pinna(-[a-zA-Z0-9_]+)*\.v1|openEHR-EHR-CLUSTER\.exclusion_exam(-[a-zA-Z0-9_]+)*\.v1/}
-					}
+			allow_archetype CLUSTER[at0004] occurrences matches {0..*} matches {	-- Examination details
+				include
+					archetype_id/value matches {/openEHR-EHR-CLUSTER\.exam_tympanic_membrane(-[a-zA-Z0-9_]+)*\.v1|openEHR-EHR-CLUSTER\.exam_pinna(-[a-zA-Z0-9_]+)*\.v1|openEHR-EHR-CLUSTER\.exam_auditory_canal(-[a-zA-Z0-9_]+)*\.v1/}
+			}
+			allow_archetype CLUSTER[at0005] occurrences matches {0..*} matches {	-- Multimedia representation
+				include
+					archetype_id/value matches {/openEHR-EHR-CLUSTER\.multimedia(-[a-zA-Z0-9_]+)*\.v1/}
+			}
+			ELEMENT[at0006] occurrences matches {0..*} matches {	-- Clinical interpretation
+				value matches {
+					DV_TEXT matches {*}
 				}
 			}
-			allow_archetype CLUSTER[at0002] occurrences matches {0..*} matches {	-- Other details
+			ELEMENT[at0007] occurrences matches {0..1} matches {	-- Comment
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			allow_archetype CLUSTER[at0008] occurrences matches {0..*} matches {	-- Exam not done
 				include
 					archetype_id/value matches {/openEHR-EHR-CLUSTER\.exclusion_exam(-[a-zA-Z0-9_]+)*\.v1/}
-			}
-			ELEMENT[at0003] occurrences matches {0..*} matches {	-- Clinical interpretation
-				value matches {
-					DV_TEXT matches {*}
-				}
-			}
-			ELEMENT[at0005] occurrences matches {0..*} matches {	-- Multimedia representation
-				value matches {
-					DV_MULTIMEDIA matches {
-						media_type matches {
-							[openEHR::
-							425, 
-							426, 
-							427, 
-							428, 
-							429, 
-							401, 
-							402, 
-							404, 
-							405, 
-							406, 
-							407, 
-							414, 
-							518]
-						}
-					}
-				}
 			}
 		}
 	}
@@ -133,56 +105,38 @@ ontology
 					text = <"Examination of Ears">
 					description = <"Findings observed during the physical examination of the ears.">
 				>
-				["at0001"] = <
-					text = <"Clinical description">
-					description = <"Narrative description of the overall findings observed during a physical examination of the ears.">
-					comment = <"May be used to record a narrative summary of the complete clinical examination of the body system or anatomical strucutre or key aspects of physical examination findings, which will be further supported by the additional structured data, using CLUSTER archetypes in the 'Examination Detail' slot. This data element may be used to capture legacy data that is not available in a structured format.">
-				>
 				["at0002"] = <
-					text = <"Other details">
-					description = <"Structured details about the physical examination of the ears not captured elsewhere in this archetype.">
-					comment = <"For example: information required to capture local context; information required to align with other reference models/formalisms; or recording that the examination was not performed.">
+					text = <"No abnormality detected">
+					description = <"Statement that no abnormality was detected (NAD) on examination of both ears.">
+					comment = <"Record as True if no abnormality was detected on examination. Specific statements about the examination can be included in the 'Clinical Interpretation' data element.">
 				>
 				["at0003"] = <
-					text = <"Clinical interpretation">
-					description = <"Single word, phrase or brief description represents the clinical meaning and significance of the physical examination findings.">
-					comment = <"Coding with a terminology is preferred, if possible. For example, normal examination or a specific physical finding.">
+					text = <"Clinical description">
+					description = <"Narrative description of the overall findings observed during the physical examination.">
+				>
+				["at0004"] = <
+					text = <"Examination details">
+					description = <"Structured details about the physical examination findings.">
 				>
 				["at0005"] = <
 					text = <"Multimedia representation">
-					description = <"Digital image or video taken, or a diagram drawn, during the physical examination of the ears.">
+					description = <"Digital image, video or diagram representing the physical examination findings.">
 				>
 				["at0006"] = <
-					text = <"No abnormality detected">
-					description = <"Statement that no abnormality was detected (NAD) on examination of both ears.">
+					text = <"Clinical interpretation">
+					description = <"Single word, phrase or brief description that represents the clinical meaning and significance of the physical examination findings.">
 				>
 				["at0007"] = <
-					text = <"Symmetry?">
-					description = <"Description of the appearance of symmetry of both ears in comparison to one another.">
+					text = <"Comment">
+					description = <"Additional narrative about the physical examination findings, not captured in other fields.">
 				>
 				["at0008"] = <
-					text = <"Right ear">
-					description = <"Details about physical examination findings for the right ear.">
-				>
-				["at0009"] = <
-					text = <"No abnormality detected">
-					description = <"Statement that no abnormality was detected (NAD) on overall examination of the right ear.">
-				>
-				["at0010"] = <
-					text = <"Left ear">
-					description = <"Details about physical examination findings for the left ear.">
+					text = <"Exam not done">
+					description = <"Details to explicitly record that this examination was not performed.">
 				>
 				["at0011"] = <
-					text = <"No abnormality detected">
-					description = <"Statement that no abnormality was detected (NAD) on overall examination of the left ear.">
-				>
-				["at0013"] = <
-					text = <"Details">
-					description = <"Structured details of the physical examination for the left ear.">
-				>
-				["at0014"] = <
-					text = <"Details">
-					description = <"Structured details of the physical examination for the right ear.">
+					text = <"Symmetry?">
+					description = <"Description of the appearance of symmetry of both ears in comparison to one another.">
 				>
 			>
 		>
