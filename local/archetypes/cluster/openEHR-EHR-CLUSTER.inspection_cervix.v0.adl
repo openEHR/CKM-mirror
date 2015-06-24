@@ -1,0 +1,294 @@
+﻿archetype (adl_version=1.4; uid=a4bb0f04-72e6-4562-9257-8521d3742508)
+	openEHR-EHR-CLUSTER.inspection_cervix.v0
+
+concept
+	[at0000]	-- Inspection of the cervix
+language
+	original_language = <[ISO_639-1::en]>
+description
+	original_author = <
+		["name"] = <"">
+		["date"] = <"2015-06-08">
+	>
+	details = <
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"For recording a narrative description and clinical interpretation of the findings observed during the inspection of the cervix.">
+			use = <"Use to record a narrative description of the overall findings observed during the physical inspection of the cervix. This initial draft archetype consists only of the core examination pattern data elements (as per CLUSTER.exam_pattern) and will likely be expanded further over time as specific clinical requirements are identified.
+
+This archetype has been specifically designed to be used in the 'Examination findings' SLOT within the CLUSTER.inspection_vagina archetype or the OBSERVATION.exam, but can also be used within any other OBSERVATION or CLUSTER archetypes, where clinically appropriate.
+
+Use to provide a framework in which CLUSTER archetypes can be nested in the 'Examination findings' SLOT to record additional structured physical examination findings.
+
+The CLUSTER.exclusion_exam archetype can be nested within the 'Examination not done' SLOT to optionally record explicit details about the examination not being performed.
+
+Use to incorporate the narrative descriptions of clinical findings within existing or legacy clinical systems into an archetyped format, using the 'Clinical Description' data element.">
+			misuse = <"Not to be used for recording data not related to the physical examination of XYZ.
+
+Not to be used for recording the clinical history - use specific OBSERVATION and CLUSTER archetypes. For example OBSERVATION.story and CLUSTER.symptom.
+
+Not to be used to record stand-alone clinical observations or measurements or test results - use specific OBSERVATION archetypes. For example OBSERVATION.blood_pressure or OBSERVATION.imaging_exam.">
+			copyright = <"© openEHR Foundation">
+		>
+	>
+	lifecycle_state = <"in_development">
+	other_contributors = <"Silje Ljosland Bakke, Bergen Hospital Trust, Norway", "Ian McNicoll, freshEHR Clinical Informatics, United Kingdom", "John Tore Valand, Haukeland Universitetssjukehus, Norway", "Heather Leslie, Ocean Informatics, Australia">
+	other_details = <
+		["revision"] = <"0.0.1-alpha">
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
+		["build_uid"] = <"2fb6f665-3d4e-41c0-8f55-6d1afadfe08f">
+		["original_publisher"] = <"openEHR Foundation">
+		["original_namespace"] = <"org.openehr">
+		["MD5-CAM-1.0.1"] = <"64B90BFF09314A9E82BDEDF0595E8612">
+		["custodian_namespace"] = <"org.openehr">
+		["custodian_organisation"] = <"openEHR Foundation">
+	>
+
+definition
+	CLUSTER[at0000] matches {	-- Inspection of the cervix
+		items cardinality matches {1..*; unordered} matches {
+			ELEMENT[at0002] occurrences matches {0..1} matches {	-- No abnormality detected
+				value matches {
+					DV_BOOLEAN matches {
+						value matches {True}
+					}
+				}
+			}
+			ELEMENT[at0003] occurrences matches {0..1} matches {	-- Clinical description
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			allow_archetype CLUSTER[at0004] occurrences matches {0..*} matches {	-- Examination findings
+				include
+					archetype_id/value matches {/.*/}
+			}
+			allow_archetype CLUSTER[at0005] occurrences matches {0..*} matches {	-- Multimedia representation
+				include
+					archetype_id/value matches {/openEHR-EHR-CLUSTER\.multimedia(-[a-zA-Z0-9_]+)*\.v1/}
+			}
+			ELEMENT[at0006] occurrences matches {0..*} matches {	-- Clinical interpretation
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			ELEMENT[at0007] occurrences matches {0..1} matches {	-- Comment
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			allow_archetype CLUSTER[at0008] occurrences matches {0..*} matches {	-- Examination not done
+				include
+					archetype_id/value matches {/openEHR-EHR-CLUSTER\.exclusion_exam(-[a-zA-Z0-9_]+)*\.v1/}
+			}
+			CLUSTER[at0011] occurrences matches {0..1} matches {	-- Discharge
+				items cardinality matches {1..*; unordered} matches {
+					ELEMENT[at0014] occurrences matches {0..1} matches {	-- Presence
+						value matches {
+							DV_BOOLEAN matches {
+								value matches {True, False}
+							}
+						}
+					}
+					ELEMENT[at0013] occurrences matches {0..1} matches {	-- Appearance
+						value matches {
+							DV_CODED_TEXT matches {
+								defining_code matches {
+									[local::
+									at0015, 	-- Clear
+									at0016, 	-- Mucopurulent
+									at0017, 	-- Brick-coloured
+									at0018]	-- Fresh bleeding
+								}
+							}
+						}
+					}
+				}
+			}
+			CLUSTER[at0019] occurrences matches {0..1} matches {	-- Ectopia
+				items cardinality matches {1..*; unordered} matches {
+					ELEMENT[at0020] occurrences matches {0..1} matches {	-- Presence
+						value matches {
+							DV_BOOLEAN matches {
+								value matches {True, False}
+							}
+						}
+					}
+					ELEMENT[at0021] occurrences matches {0..1} matches {	-- Description
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+				}
+			}
+			CLUSTER[at0022] occurrences matches {0..*} matches {	-- Findings
+				items cardinality matches {1..*; unordered} matches {
+					ELEMENT[at0023] occurrences matches {0..1} matches {	-- Finding
+						value matches {
+							DV_CODED_TEXT matches {
+								defining_code matches {
+									[local::
+									at0024, 	-- Warts
+									at0025, 	-- Friable
+									at0026, 	-- Tumour
+									at0027]	-- Nabothian cyst
+								}
+							}
+						}
+					}
+					ELEMENT[at0028] occurrences matches {0..1} matches {	-- Presence
+						value matches {
+							DV_BOOLEAN matches {
+								value matches {True, False}
+							}
+						}
+					}
+					ELEMENT[at0029] occurrences matches {0..1} matches {	-- Description
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0030] occurrences matches {0..1} matches {	-- Number
+						value matches {
+							DV_COUNT matches {*}
+						}
+					}
+					ELEMENT[at0031] occurrences matches {0..*} matches {	-- Site
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					allow_archetype CLUSTER[at0032] occurrences matches {0..*} matches {	-- Structured anatomical location
+						include
+							archetype_id/value matches {/.*/}
+					}
+				}
+			}
+		}
+	}
+
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"Inspection of the cervix">
+					description = <"Findings observed during the inspection of the cervix.">
+				>
+				["at0002"] = <
+					text = <"No abnormality detected">
+					description = <"Statement that no abnormality was detected (NAD) on physical examination.">
+					comment = <"Record as True if no abnormality was detected on examination. Specific statements about the examination can be included in the 'Clinical Interpretation' data element.">
+				>
+				["at0003"] = <
+					text = <"Clinical description">
+					description = <"Narrative description of the overall findings observed during the physical examination.">
+				>
+				["at0004"] = <
+					text = <"Examination findings">
+					description = <"Structured details about the  physical examination findings.">
+				>
+				["at0005"] = <
+					text = <"Multimedia representation">
+					description = <"Digital image, video or diagram representing the physical examination findings.">
+				>
+				["at0006"] = <
+					text = <"Clinical interpretation">
+					description = <"Single word, phrase or brief description that represents the clinical meaning and significance of the physical examination findings.">
+				>
+				["at0007"] = <
+					text = <"Comment">
+					description = <"Additional narrative about the physical examination findings, not captured in other fields.">
+				>
+				["at0008"] = <
+					text = <"Examination not done">
+					description = <"Details to explicitly record that this examination was not performed.">
+				>
+				["at0011"] = <
+					text = <"Discharge">
+					description = <"Structured elements relating to cervical discharge.">
+				>
+				["at0013"] = <
+					text = <"Appearance">
+					description = <"Appearance of the cervical discharge.">
+				>
+				["at0014"] = <
+					text = <"Presence">
+					description = <"The presence or absence of cervical discharge.">
+				>
+				["at0015"] = <
+					text = <"Clear">
+					description = <"The cervical discharge is clear in appearance.">
+				>
+				["at0016"] = <
+					text = <"Mucopurulent">
+					description = <"The cervical discharge is mucopurulent in appearance.">
+				>
+				["at0017"] = <
+					text = <"Brick-coloured">
+					description = <"The cervical discharge is brick-coloured in appearance.">
+				>
+				["at0018"] = <
+					text = <"Fresh bleeding">
+					description = <"The cervical discharge is fresh blood.">
+				>
+				["at0019"] = <
+					text = <"Ectopia">
+					description = <"Structured elements relating to cervical ectopia.">
+				>
+				["at0020"] = <
+					text = <"Presence">
+					description = <"The presence or absence of cervical ectopia.">
+				>
+				["at0021"] = <
+					text = <"Description">
+					description = <"Narrative description about the cervical ectopia.">
+				>
+				["at0022"] = <
+					text = <"Findings">
+					description = <"Structured elements relating to other specific findings.">
+				>
+				["at0023"] = <
+					text = <"Finding">
+					description = <"Identification of the finding.">
+				>
+				["at0024"] = <
+					text = <"Warts">
+					description = <"*">
+				>
+				["at0025"] = <
+					text = <"Friable">
+					description = <"*">
+				>
+				["at0026"] = <
+					text = <"Tumour">
+					description = <"*">
+				>
+				["at0027"] = <
+					text = <"Nabothian cyst">
+					description = <"*">
+				>
+				["at0028"] = <
+					text = <"Presence">
+					description = <"The presence or absence of the specified finding.">
+				>
+				["at0029"] = <
+					text = <"Description">
+					description = <"Narrative description about the specific finding.">
+				>
+				["at0030"] = <
+					text = <"Number">
+					description = <"The number of the specified finding observed.">
+				>
+				["at0031"] = <
+					text = <"Site">
+					description = <"The site where the specified finding is observed.">
+				>
+				["at0032"] = <
+					text = <"Structured anatomical location">
+					description = <"A structured anatomical location of the finding.">
+				>
+			>
+		>
+	>
