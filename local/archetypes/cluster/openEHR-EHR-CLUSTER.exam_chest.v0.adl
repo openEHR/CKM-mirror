@@ -2,9 +2,19 @@
 	openEHR-EHR-CLUSTER.exam_chest.v0
 
 concept
-	[at0000]	-- Examination of the chest
+	[at0000]	-- Examination of chest
 language
 	original_language = <[ISO_639-1::en]>
+	translations = <
+		["nb"] = <
+			language = <[ISO_639-1::nb]>
+			author = <
+				["name"] = <"Anca Heyd">
+				["organisation"] = <"Dips ASA">
+				["ahe@dips.no"] = <"ahe@dips.no">
+			>
+		>
+	>
 description
 	original_author = <
 		["name"] = <"Heather Leslie">
@@ -32,54 +42,74 @@ Not to be used for recording the clinical history - use specific OBSERVATION and
 Not to be used to record stand-alone clinical observations or measurements or test results - use specific OBSERVATION archetypes. For example OBSERVATION.blood_pressure or OBSERVATION.imaging_exam.">
 			copyright = <"© openEHR Foundation">
 		>
+		["nb"] = <
+			language = <[ISO_639-1::nb]>
+			purpose = <"Dokumentasjon av samlede funn og klinisk interpretasjon observert ved undersøkelse av thorax.">
+			use = <"Brukes for å dokumentere en beskrivelse av samlede funn og klinisk interpretasjon ved klinisk undersøkelse av thorax. Denne initielle mønsterarketypen inneholder kun kjernedata (som i CLUSTER.exam_pattern) og vil sansynligvis utvides over tid etter som nye kliniske behov kommer frem.
+
+Denne arketypen er spesiell utviklet for bruk i \"Undersøkelsesfunn\" Slotet i arketype OBSERVATION.funn_ved_klinisk_undersøkelse arketypen eller innenfor andre Observation eller Cluster arketyper, der dette er klinisk hensiktsmessig. 
+
+Brukes for å gi et rammeverk hvor andre Cluster arketyper kan legges inn i \"Undersøkelsesfunn\" Slot for å dokumentere tilleggsfunn på en strukturert måte, f.eks. CLUSTER.exam_heart and CLUSTER.exam.lung.
+
+Cluster arketypen \"CLUSTER.exclusion_exam\" kan legges inn i \"Undersøkelse ikke gjennomført slotet for å dokumentere eksplistte detaljer som beskriver at undersøkelsen ikke ble gjennomført.
+
+Brukes for å bygge inn i en beskrivelse av kliniske funn i eksisterende eller .... (legacy) kliniske sytemer i arketypeformat ved å bruke dataelementet \"klinisk beskrivelse\".
+">
+			misuse = <"Skal ikke brukes for å dokumentere data som ikke er relatert til fysisk undersøkelse av lungene. 
+
+Skal ikke brukes for å dokumentere anamnese - bruk spesifikke Observation og Cluster arketyper til dette formålet. For eksempel OBSERVATION.anamnese og CLUSTER.symptom.
+
+Skal ikke brukes for å dokumenter egenstendige kliniske observasjoner, målinger eller testresultater. For eksempel OBSERVATION.blodtrykk eller OBSERVATION.resultat_av_funn_ved_billeddiagnostisk_undersøkelse.
+">
+		>
 	>
 	lifecycle_state = <"in_development">
 	other_contributors = <"Silje Ljosland Bakke, Bergen Hospital Trust, Norway", "Ian McNicoll, freshEHR Clinical Informatics, United Kingdom", "John Tore Valand, Haukeland Universitetssjukehus, Norway", "Heather Leslie, Ocean Informatics, Australia">
 	other_details = <
 		["revision"] = <"0.0.1-alpha">
 		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
-		["build_uid"] = <"05c23c39-a16f-4ae4-9aaa-edfc1de92985">
+		["build_uid"] = <"1e0c6296-5990-4018-b097-1f47d3514a4b">
 		["original_publisher"] = <"openEHR Foundation">
 		["original_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"3B18FA13F5484D106E99F228B14045F6">
+		["MD5-CAM-1.0.1"] = <"60506F2DE40B7E3E4A134E63DA9C9ED3">
 		["custodian_namespace"] = <"org.openehr">
 		["custodian_organisation"] = <"openEHR Foundation">
 	>
 
 definition
-	CLUSTER[at0000] matches {	-- Examination of the chest
+	CLUSTER[at0000] matches {	-- Thoraxundersøkelse
 		items cardinality matches {1..*; unordered} matches {
-			ELEMENT[at0002] occurrences matches {0..1} matches {	-- No abnormality detected
+			ELEMENT[at0002] occurrences matches {0..1} matches {	-- Uten anmerkning
 				value matches {
 					DV_BOOLEAN matches {
 						value matches {True}
 					}
 				}
 			}
-			ELEMENT[at0003] occurrences matches {0..1} matches {	-- Clinical description
+			ELEMENT[at0003] occurrences matches {0..1} matches {	-- Klinisk beskrivelse
 				value matches {
 					DV_TEXT matches {*}
 				}
 			}
-			allow_archetype CLUSTER[at0004] occurrences matches {0..*} matches {	-- Examination findings
+			allow_archetype CLUSTER[at0004] occurrences matches {0..*} matches {	-- Undersøkelsesfunn
 				include
-					archetype_id/value matches {/openEHR-EHR-CLUSTER\.exam_heart(-[a-zA-Z0-9_]+)*\.v0|openEHR-EHR-CLUSTER\.exam_lung(-[a-zA-Z0-9_]+)*\.v0|openEHR-EHR-CLUSTER\.auscultation_lung(-[a-zA-Z0-9_]+)*\.v0/}
+					archetype_id/value matches {/openEHR-EHR-CLUSTER\.exam_heart(-[a-zA-Z0-9_]+)*\.v0|openEHR-EHR-CLUSTER\.exam_lung(-[a-zA-Z0-9_]+)*\.v0|openEHR-EHR-CLUSTER\.auscultation_lung(-[a-zA-Z0-9_]+)*\.v0|openEHR-EHR-CLUSTER\.exam_lungs(-[a-zA-Z0-9_]+)*\.v0/}
 			}
-			allow_archetype CLUSTER[at0005] occurrences matches {0..*} matches {	-- Multimedia representation
+			allow_archetype CLUSTER[at0005] occurrences matches {0..*} matches {	-- Multimedia representasjon
 				include
 					archetype_id/value matches {/openEHR-EHR-CLUSTER\.multimedia(-[a-zA-Z0-9_]+)*\.v1/}
 			}
-			ELEMENT[at0006] occurrences matches {0..*} matches {	-- Clinical interpretation
+			ELEMENT[at0006] occurrences matches {0..*} matches {	-- Klinisk interpretasjon
 				value matches {
 					DV_TEXT matches {*}
 				}
 			}
-			ELEMENT[at0007] occurrences matches {0..1} matches {	-- Comment
+			ELEMENT[at0007] occurrences matches {0..1} matches {	-- Kommentar
 				value matches {
 					DV_TEXT matches {*}
 				}
 			}
-			allow_archetype CLUSTER[at0008] occurrences matches {0..*} matches {	-- Exam not done
+			allow_archetype CLUSTER[at0008] occurrences matches {0..*} matches {	-- Undersøkelse ikke gjennomført
 				include
 					archetype_id/value matches {/openEHR-EHR-CLUSTER\.exclusion_exam(-[a-zA-Z0-9_]+)*\.v1/}
 			}
@@ -92,7 +122,7 @@ ontology
 		["en"] = <
 			items = <
 				["at0000"] = <
-					text = <"Examination of the chest">
+					text = <"Examination of chest">
 					description = <"Findings observed during the physical examination of the chest.">
 				>
 				["at0002"] = <
@@ -121,8 +151,45 @@ ontology
 					description = <"Additional narrative about the physical examination findings, not captured in other fields.">
 				>
 				["at0008"] = <
-					text = <"Exam not done">
+					text = <"Examination not done">
 					description = <"Details to explicitly record that this examination was not performed.">
+				>
+			>
+		>
+		["nb"] = <
+			items = <
+				["at0000"] = <
+					text = <"Thoraxundersøkelse">
+					description = <"Funn observert ved kliniskn undersøkelse av thorax.">
+				>
+				["at0002"] = <
+					text = <"Uten anmerkning">
+					description = <"Konstatering at funn ved undersøkelse ikke viste noe unormalt.">
+					comment = <"Dokumenter som Sann dersom intet unormalt ble funnet ved undersøkelse. Spesifikke uttalelser vedrørende undersøkelse kan bli inkludert i dataelementet \"klinisk interpretasjon\".">
+				>
+				["at0003"] = <
+					text = <"Klinisk beskrivelse">
+					description = <"En tekstlig beskrivelse av samlede funn observert ved den kliniske undersøkelsen.">
+				>
+				["at0004"] = <
+					text = <"Undersøkelsesfunn">
+					description = <"Strukturerte detaljer vedrørende funn ved fysisk undersøkelse.">
+				>
+				["at0005"] = <
+					text = <"Multimedia representasjon">
+					description = <"Digitale bilder, video eller diagram som representerer funnene ved klinisk undersøkelse.">
+				>
+				["at0006"] = <
+					text = <"Klinisk interpretasjon">
+					description = <"Enkelt ord, frase eller kort beskrivelse som representerer klinisk betydning og signifikans av funnene ved klinisk undersøkelse.">
+				>
+				["at0007"] = <
+					text = <"Kommentar">
+					description = <"Tekstlig tilleggsinformasjon vedrørende klinisk undersøkelse, som ikke er fanget opp i de andre dataelementene.">
+				>
+				["at0008"] = <
+					text = <"Undersøkelse ikke gjennomført">
+					description = <"Detaljer for å dokumentere eksplisitt at undersøkelsen ikke er gjennomført.">
 				>
 			>
 		>
