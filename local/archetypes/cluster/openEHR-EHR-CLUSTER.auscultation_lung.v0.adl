@@ -2,9 +2,19 @@
 	openEHR-EHR-CLUSTER.auscultation_lung.v0
 
 concept
-	[at0000]	-- Auscultation of the lung
+	[at0000]	-- Auscultation of lung
 language
 	original_language = <[ISO_639-1::en]>
+	translations = <
+		["nb"] = <
+			language = <[ISO_639-1::nb]>
+			author = <
+				["name"] = <"Anca Heyd">
+				["organisation"] = <"DIPS ASA">
+				["email"] = <"ahe@dips.no">
+			>
+		>
+	>
 description
 	original_author = <
 		["name"] = <"Heather Leslie">
@@ -13,9 +23,30 @@ description
 		["date"] = <"2015-06-22">
 	>
 	details = <
+		["nb"] = <
+			language = <[ISO_639-1::nb]>
+			purpose = <"Å dokumentere beskrivelse og klinisk interpretasjon av funn observert ved lungeauskultasjon.">
+			use = <"Brukes for å dokumentere en beskrivelse av samlete funn og klinisk interpretasjon ved klinisk undersøkelse av en lunge. 
+Denne initielle mønsterarketypen inneholder kun kjernedata (som i CLUSTER.exam_pattern) og vil sannsynligvis utvides over tid etter som nye kliniske behov kommer frem.
+
+Denne arketypen er spesiell utviklet for bruk i \"Undersøkelsesfunn\" Slotet i arketype CLUSTER.exam_lung, men kan også brukes i \"OBSERVATION.funn ved klinisk undersøkelse arketypen eller innenfor andre Observation eller Cluster arketyper, der dette er klinisk hensiktsmessig - f.eks. CLUSTER.exam_heart 
+
+Cluster arketypen \"CLUSTER.exclusion_exam\" kan legges inn i \"Undersøkelse ikke gjennomført slotet for å dokumentere eksplistte detaljer som beskriver at undersøkelsen ikke ble gjennomført.
+
+Brukes for å bygge en en beskrivelse av kliniske funn i eksisterende eller .... (legacy) kliniske sytemer i arketypeformat ved å bfuke dataelementet \"klinisk beskrivelse\".
+
+
+">
+			misuse = <"Skal ikke brukes for å dokumentere data som ikke er relatert til auskultasjon av lungene. 
+
+Skal ikke brukes for å dokumentere anamnese - bruk spesifikke Observation og Cluster akretyper til dette formålet. For eksempel OBSERVATION.anamnese og CLUSTER.symptom.
+
+Skal ikke brukes for å dokumenter egenstendige kliniske observasjoner, målinger eller testresultaer. For eksempel OBSERVATION.blodtrykk eller OBSERVATION.resultat_av_funn_ved_billeddiagnostiks_undersøkelse
+">
+		>
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"For recording a narrative description and clinical interpretation of the findings observed during the auscultation of the lung.">
+			purpose = <"For recording a narrative description and clinical interpretation of the findings observed during the auscultation of both lungs together, a specified lung or a specified part of a lung.">
 			use = <"Use to record a narrative description of the overall findings and clinical interpretation of observations made during auscultation of the lung. This initial draft archetype consists only of the core examination pattern data elements (as per CLUSTER.exam_pattern) and will likely be expanded further over time as specific clinical requirements are identified.
 
 This archetype has been specifically designed to be used in the 'Examination findings' SLOT within the CLUSTER.exam_lung archetype, but can also be used within the OBSERVATION.exam and other OBSERVATION or CLUSTER archetypes, where clinically appropriate - for example, CLUSTER.exam_heart. 
@@ -36,26 +67,20 @@ Not to be used to record stand-alone clinical observations or measurements or te
 	other_details = <
 		["revision"] = <"0.0.1-alpha">
 		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
-		["build_uid"] = <"788436a2-5d49-42a0-ae67-f199e65781ff">
+		["build_uid"] = <"7b4fb746-c553-498e-91d3-bf0a17e92c01">
 		["original_publisher"] = <"openEHR Foundation">
 		["original_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"6FB8D9575CE148EF982C92B2C50260CA">
+		["MD5-CAM-1.0.1"] = <"F0CA9F6D720ABE8A11F5EE1C5F4384F4">
 		["custodian_namespace"] = <"org.openehr">
 		["custodian_organisation"] = <"openEHR Foundation">
 	>
 
 definition
-	CLUSTER[at0000] matches {	-- Auscultation of the lung
+	CLUSTER[at0000] matches {	-- Auscultation of lung
 		items cardinality matches {1..*; unordered} matches {
-			ELEMENT[at0001] occurrences matches {0..1} matches {	-- Lung examined
+			ELEMENT[at0001] occurrences matches {0..1} matches {	-- Lung structure examined
 				value matches {
-					DV_CODED_TEXT matches {
-						defining_code matches {
-							[local::
-							at0009, 	-- Left
-							at0010]	-- Right
-						}
-					}
+					DV_TEXT matches {*}
 				}
 			}
 			ELEMENT[at0002] occurrences matches {0..1} matches {	-- No abnormality detected
@@ -97,13 +122,13 @@ ontology
 		["en"] = <
 			items = <
 				["at0000"] = <
-					text = <"Auscultation of the lung">
-					description = <"Findings observed during the auscultation of the lung.">
+					text = <"Auscultation of lung">
+					description = <"Findings observed during the auscultation of a lung structure.">
 				>
 				["at0001"] = <
-					text = <"Lung examined">
-					description = <"Identification of the lung under examination.">
-					comment = <"If the side of the lung being examined has previously been identified in another archetype in which this archetype is nested, this data element becomes redundant.">
+					text = <"Lung structure examined">
+					description = <"Identification of the lung structure under auscultation.">
+					comment = <"For example: both lungs together; left lung; or right upper lobe. This data element should be coded using a terminology, if available. If the structure of the lung being examined has previously been identified in another archetype in which this archetype is nested, this data element becomes redundant.">
 				>
 				["at0002"] = <
 					text = <"No abnormality detected">
@@ -130,13 +155,43 @@ ontology
 					text = <"Exam not done">
 					description = <"Details to explicitly record that this examination was not performed.">
 				>
-				["at0009"] = <
-					text = <"Left">
-					description = <"The left lung was examined.">
+			>
+		>
+		["nb"] = <
+			items = <
+				["at0000"] = <
+					text = <"*Auscultation of lung(en)">
+					description = <"*Findings observed during the auscultation of a lung structure.(en)">
 				>
-				["at0010"] = <
-					text = <"Right">
-					description = <"The right lung was examined.">
+				["at0001"] = <
+					text = <"*Lung structure examined(en)">
+					description = <"*Identification of the lung structure under auscultation.(en)">
+					comment = <"*For example: both lungs together; left lung; or right upper lobe. This data element should be coded using a terminology, if available. If the structure of the lung being examined has previously been identified in another archetype in which this archetype is nested, this data element becomes redundant.(en)">
+				>
+				["at0002"] = <
+					text = <"Uten anmerkning">
+					description = <"Konstatering at funn ved undersøkelse ikke viste noe unormalt.">
+					comment = <"Dokumenter som Sann dersom intet unormalt ble funnet ved undersøkelse. Spesifikke uttalelser vedrørende undersøkelse kan bli inkludert i dataelementet \"klinisk interpretasjon\".">
+				>
+				["at0003"] = <
+					text = <"Klinisk beskrivelse">
+					description = <"En tekstlig beskrivelse av samlete funn observert ved den fysiske undersøkelsen.">
+				>
+				["at0005"] = <
+					text = <"Multimedia representasjon">
+					description = <"Digitale bilder, video eller diagram som representerer funnene ved klinisk undersøkelse.">
+				>
+				["at0006"] = <
+					text = <"Klinisk interpretasjon">
+					description = <"Enkelt ord, frase eller kort beskrivelse som representerer klinisk betydning og signifikans av funnene ved klinisk undersøkelse.">
+				>
+				["at0007"] = <
+					text = <"Kommentar">
+					description = <"Tekstlig tilleggsinformasjon vedrørende klinisk undersøkelse, som ikke er fanget opp i de andre dataelementene.">
+				>
+				["at0008"] = <
+					text = <"Undersøkelse ikke gjennomført">
+					description = <"Detaljer for å dokumentere eksplisitt at undersøkelsen ikke er gjennomført.">
 				>
 			>
 		>
