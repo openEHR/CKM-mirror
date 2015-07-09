@@ -2,7 +2,7 @@
 	openEHR-EHR-CLUSTER.exam_eyes.v0
 
 concept
-	[at0000]	-- Examination of eyes
+	[at0000]	-- Examination of both eyes
 language
 	original_language = <[ISO_639-1::en]>
 description
@@ -15,7 +15,7 @@ description
 	details = <
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"For recording a narrative description and clinical interpretation of the findings observed during the physical examination of the eyes.">
+			purpose = <"For recording a narrative description and clinical interpretation of the findings observed during the physical examination of both eyes, including comparative findings between both eyes.">
 			use = <"Use to record a narrative description of the overall findings observed during the physical examination of the eyes. 
 
 Use to provide a framework in which CLUSTER archetypes can be nested in the 'Examination findings' SLOT to record additional structured physical examination findings - for example, CLUSTER.exam_pupils. 
@@ -24,7 +24,7 @@ In addition, the CLUSTER.exclusion_exam archetype can be nested within the 'Exam
 
 Use to incorporate the narrative descriptions of clinical findings within existing or legacy clinical systems into an archetyped format, using the 'Clinical Description' data element.">
 			keywords = <"examination", "physical", "clinical", "findings", "exam", "eye">
-			misuse = <"Not to be used for recording data not related to the physical examination of the eyes.
+			misuse = <"Not to be used for recording data not related to the physical examination of a single eye  - use CLUSTER.exam_eye for this purpose.
 
 Not to be used to record data about eye testing - use specific purpose-built OBSERVATION archetypes. For example, OBSERVATION .visual_acuity or OBSERVATION.visual_field_measurement.
 
@@ -40,18 +40,28 @@ Not to be used to record stand-alone clinical observations or measurements or te
 		["current_contact"] = <"Heather Leslie, Ocean Informatics<heather.leslie@oceaninformatics.com>">
 		["revision"] = <"0.0.1-alpha">
 		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
-		["build_uid"] = <"acdf8f49-cacd-4cb7-9c2f-3eee5c5b7b7c">
+		["build_uid"] = <"416c984b-4c9b-4618-9626-1d3c40eaa192">
 		["original_publisher"] = <"openEHR Foundation">
 		["original_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"DDBAE71235A4090472AE3CAC3323AADE">
+		["MD5-CAM-1.0.1"] = <"62302397FFC9D36DD4DF99FAD45E2D8D">
 		["custodian_namespace"] = <"org.openehr">
 		["custodian_organisation"] = <"openEHR Foundation">
 	>
 
 definition
-	CLUSTER[at0000] matches {	-- Examination of eyes
+	CLUSTER[at0000] matches {	-- Examination of both eyes
 		items cardinality matches {1..*; unordered} matches {
 			ELEMENT[at0002] occurrences matches {0..1} matches {	-- No abnormality detected
+				name matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {
+							[local::
+							at0012, 	-- PERL
+							at0013, 	-- PERLA
+							at0014]	-- No abnormality detected
+						}
+					}
+				}
 				value matches {
 					DV_BOOLEAN matches {
 						value matches {True}
@@ -70,7 +80,7 @@ definition
 			}
 			allow_archetype CLUSTER[at0004] occurrences matches {0..*} matches {	-- Examination details
 				include
-					archetype_id/value matches {/openEHR-EHR-CLUSTER\.exam_pupils(-[a-zA-Z0-9_]+)*\.v1|openEHR-EHR-CLUSTER\.exclusion_exam(-[a-zA-Z0-9_]+)*\.v1/}
+					archetype_id/value matches {/openEHR-EHR-CLUSTER\.exam_eye(-[a-zA-Z0-9_]+)*\.v0/}
 			}
 			allow_archetype CLUSTER[at0005] occurrences matches {0..*} matches {	-- Multimedia representation
 				include
@@ -86,7 +96,7 @@ definition
 					DV_TEXT matches {*}
 				}
 			}
-			allow_archetype CLUSTER[at0008] occurrences matches {0..*} matches {	-- Exam not done
+			allow_archetype CLUSTER[at0008] occurrences matches {0..*} matches {	-- Examination not done
 				include
 					archetype_id/value matches {/openEHR-EHR-CLUSTER\.exclusion_exam(-[a-zA-Z0-9_]+)*\.v1/}
 			}
@@ -99,12 +109,12 @@ ontology
 		["en"] = <
 			items = <
 				["at0000"] = <
-					text = <"Examination of eyes">
-					description = <"Findings observed during the physical examination of the eyes.">
+					text = <"Examination of both eyes">
+					description = <"Findings observed during the physical examination of both eyes.">
 				>
 				["at0002"] = <
 					text = <"No abnormality detected">
-					description = <"Statement that no abnormality was detected (NAD) on examination of both eyes.">
+					description = <"Commonly used statement that no abnormality was detected (NAD) on examination of both eyes.">
 					comment = <"Record as True if no abnormality was detected on examination. Specific statements about the examination can be included in the 'Clinical Interpretation' data element.">
 				>
 				["at0003"] = <
@@ -128,12 +138,24 @@ ontology
 					description = <"Additional narrative about the physical examination findings, not captured in other fields.">
 				>
 				["at0008"] = <
-					text = <"Exam not done">
+					text = <"Examination not done">
 					description = <"Details to explicitly record that this examination was not performed.">
 				>
 				["at0011"] = <
 					text = <"Symmetry?">
 					description = <"Description of the appearance of symmetry of both eyes in comparison to one another.">
+				>
+				["at0012"] = <
+					text = <"PERL">
+					description = <"Pupils are equal and reactive to light.">
+				>
+				["at0013"] = <
+					text = <"PERLA">
+					description = <"Pupils are equal and reactive to light and accomodation.">
+				>
+				["at0014"] = <
+					text = <"No abnormality detected">
+					description = <"Commonly used statement no abnormality was detected (NAD) on examination of both pupils.">
 				>
 			>
 		>
