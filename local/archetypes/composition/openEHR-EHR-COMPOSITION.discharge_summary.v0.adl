@@ -1,0 +1,84 @@
+﻿archetype (adl_version=1.4; uid=be3b5b47-9cf4-4622-a3b4-a0811aa95f79)
+	openEHR-EHR-COMPOSITION.discharge_summary.v0
+
+concept
+	[at0000]	-- Discharge Summary
+language
+	original_language = <[ISO_639-1::en]>
+description
+	original_author = <
+		["name"] = <"Sistine Barretto-Daniels">
+		["organisation"] = <"Ocean Informatics Pty Ltd">
+		["email"] = <"Sistine.Barretto-Daniels@oceaninformatics.com">
+		["date"] = <"2012-01-30">
+	>
+	details = <
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"Summary document to support transfer of care from a healthcare organisation back to their nominated primary healthcare provider.">
+			use = <"Use to provide a summary report about about an episode, or period, of care provided by a healthcare organisation,  to support continuity of care as the patient returns to their community. This report will typically convey information about events that occurred during the period of care, diagnoses, investigation results, management at discharge and plans for follow-up.
+
+Primary recipients of this report are expected to be healthcare providers who supply care for the patient within their community: including the patient's usual primary health service, referring clinician, community pharmacy, residential aged care facility where the patient usually resides and other health professionals who will need to be involved in the patient's post-discharge care.">
+			keywords = <"discharge summary", "community", "transfer", "continuity">
+			misuse = <"Not to be used to represent the notes recorded as part of a single clinical encounters or visits. Use COMPOSITION.encounter for this purpose.">
+			copyright = <"© openEHR Foundation">
+		>
+	>
+	lifecycle_state = <"in_development">
+	other_contributors = <>
+	other_details = <
+		["current_contact"] = <"Heather Leslie, Ocean Informatics<heather.leslie@oceaninformatics.com>">
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
+		["revision"] = <"0.0.1-alpha">
+		["build_uid"] = <"6b35e567-d5b0-4dac-89e4-defde9cea051">
+		["original_namespace"] = <"org.openehr">
+		["original_publisher"] = <"openEHR Foundation">
+		["MD5-CAM-1.0.1"] = <"2B6BCD584E6756D8994067A531F00325">
+		["custodian_namespace"] = <"org.openehr">
+		["custodian_organisation"] = <"openEHR Foundation">
+	>
+
+definition
+	COMPOSITION[at0000] matches {	-- Discharge Summary
+		category matches {
+			DV_CODED_TEXT matches {
+				defining_code matches {[openehr::433]}
+			}
+		}
+		context matches {
+			EVENT_CONTEXT matches {
+				other_context matches {
+					ITEM_TREE[at0001] matches {	-- Tree
+						items cardinality matches {0..*; unordered} matches {
+							allow_archetype CLUSTER[at0002] occurrences matches {0..*} matches {	-- Extension
+								include
+									archetype_id/value matches {/openEHR-EHR-CLUSTER\.document_entry_metadata(-[a-zA-Z0-9_]+)*\.v1/}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"Discharge Summary">
+					description = <"Summary document issued on or after separation of a patient from a healthcare organisation, to support transfer of care back to their nominated primary healthcare provider.">
+				>
+				["at0001"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Extension">
+					description = <"Additional information required to capture local context or to align with other reference models/formalisms.">
+					comment = <"For example: Local hospital departmental infomation or additional metadata to align with FHIR or CIMI equivalents.">
+				>
+			>
+		>
+	>
