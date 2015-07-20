@@ -1,0 +1,184 @@
+﻿archetype (adl_version=1.4; uid=dbb8a3c4-4235-41e6-91a0-4e27a7c32262)
+	openEHR-EHR-CLUSTER.specimen_preparation.v0
+
+concept
+	[at0000]	-- Specimen preparation
+language
+	original_language = <[ISO_639-1::en]>
+description
+	original_author = <
+		["name"] = <"Dr Ian McNicoll">
+		["organisation"] = <"Ocean Informatics">
+		["email"] = <"ian.mcnicoll@oceaninformatics.com">
+		["date"] = <"2009-01-27">
+	>
+	details = <
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To record details of laboratory specimen processing.">
+			use = <"Generally used within a CLUSTER.specimen archetype.
+
+In general laboratory specimen processing are handled internally by a Laboratory Information system (LIS) and are not reported back to the requesting clinician or persisted in the patient record. However there are some circumstances, particularly in histopathology, where such details are regarded as being critical to interpretation of the results and are carried into the patient record.">
+			keywords = <"specimen", "laboratory", "sample", "histopathology", "histology", "pathology">
+			misuse = <"">
+			copyright = <"© openEHR Foundation">
+		>
+	>
+	lifecycle_state = <"in_development">
+	other_contributors = <"Sam Heard Ocean Informatics", "Heather Leslie Ocean Informatics", "Koray Atalag University of Auckland">
+	other_details = <
+		["revision"] = <"0.0.1-alpha">
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
+		["references"] = <"Digital Imaging and Communications in Medicine (DICOM) Supplement 122: Specimen Module and Revised Pathology SOP Classes
+DICOM Standards Committee, Working Groups 26, Pathology
+
+IHE Anatomic Pathology Technical Framework Volume 1 (PAT TF-1) Revision 1.2 – Trial Implementation
+November 24, 2008">
+		["build_uid"] = <"67446c83-0bea-4625-af56-1a1627477510">
+		["original_namespace"] = <"org.openehr">
+		["original_publisher"] = <"openEHR Foundation">
+		["MD5-CAM-1.0.1"] = <"2DAB139AF0B9CFFD3030203FAF6B3701">
+		["custodian_namespace"] = <"org.openehr">
+		["custodian_organisation"] = <"openEHR Foundation">
+	>
+
+definition
+	CLUSTER[at0000] matches {	-- Specimen preparation
+		items cardinality matches {1..*; unordered} matches {
+			ELEMENT[at0072] occurrences matches {0..1} matches {	-- Datetime of processing step
+				value matches {
+					DV_DATE_TIME matches {*}
+				}
+			}
+			ELEMENT[at0071] occurrences matches {0..1} matches {	-- Processing step type
+				value matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {
+							[local::
+							at0078, 	-- Specimen collection
+							at0079, 	-- Specimen receiving
+							at0080, 	-- Sampling of tissue specimen
+							at0081, 	-- Staining
+							at0082, 	-- Specimen processing
+							at0083]	-- Specimen storage
+						}
+					}
+				}
+			}
+			ELEMENT[at0074] occurrences matches {0..1} matches {	-- Specimen processing type
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			ELEMENT[at0087] occurrences matches {0..1} matches {	-- Description
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			allow_archetype CLUSTER[at0088] occurrences matches {0..*} matches {	-- Device details
+				include
+					archetype_id/value matches {/.*/}
+			}
+			CLUSTER[at0086] occurrences matches {0..1} matches {	-- Specific preparation
+				items cardinality matches {1; unordered} matches {
+					ELEMENT[at0073] occurrences matches {0..1} matches {	-- Sampling method
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0084] occurrences matches {0..1} matches {	-- Staining method
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0075] occurrences matches {0..1} matches {	-- Embedding medium
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0076] occurrences matches {0..1} matches {	-- Fixative
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+				}
+			}
+		}
+	}
+
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"Specimen preparation">
+					description = <"To record details of laboratory specimen processing.">
+				>
+				["at0071"] = <
+					text = <"Processing step type">
+					description = <"A DICOM compatible code describing a single processing step.">
+				>
+				["at0072"] = <
+					text = <"Datetime of processing step">
+					description = <"The data and time that the processing step occured.">
+				>
+				["at0073"] = <
+					text = <"Sampling method">
+					description = <"The sampling method used. e.g dissection, block sampling.">
+				>
+				["at0074"] = <
+					text = <"Specimen processing type">
+					description = <"A physical process applied to the specimen e.g.  block embedding.">
+				>
+				["at0075"] = <
+					text = <"Embedding medium">
+					description = <"The medium within which the specimen is embedded e.g paraffin.">
+				>
+				["at0076"] = <
+					text = <"Fixative">
+					description = <"The fixative used.">
+				>
+				["at0078"] = <
+					text = <"Specimen collection">
+					description = <"The specimen has been collected.">
+				>
+				["at0079"] = <
+					text = <"Specimen receiving">
+					description = <"The specimen has been received.">
+				>
+				["at0080"] = <
+					text = <"Sampling of tissue specimen">
+					description = <"The specimen has been sampled.">
+				>
+				["at0081"] = <
+					text = <"Staining">
+					description = <"The specimen has been stained.">
+				>
+				["at0082"] = <
+					text = <"Specimen processing">
+					description = <"The specimen has been processed.">
+				>
+				["at0083"] = <
+					text = <"Specimen storage">
+					description = <"The specimen has been stored.">
+				>
+				["at0084"] = <
+					text = <"Staining method">
+					description = <"Stain used for a microscopy slide.">
+				>
+				["at0086"] = <
+					text = <"Specific preparation">
+					description = <"Details of the specific preparation carried out during a single processing step.">
+				>
+				["at0087"] = <
+					text = <"Description">
+					description = <"A general description of the specimen prepartion.">
+				>
+				["at0088"] = <
+					text = <"Device details">
+					description = <"Details of the device used in specimen preparation.">
+				>
+			>
+		>
+	>
