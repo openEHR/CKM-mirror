@@ -1,0 +1,284 @@
+﻿archetype (adl_version=1.4; uid=1570d6f6-b0b7-4f28-b050-2dbff9d2d863)
+	openEHR-EHR-OBSERVATION.intraocular_pressure.v0
+
+concept
+	[at0000]	-- Intraocular pressure
+language
+	original_language = <[ISO_639-1::en]>
+description
+	original_author = <
+		["name"] = <"Gustavo M Bacelar-Silva">
+		["organisation"] = <"Faculty of Medicine - University of Porto">
+		["email"] = <"mail@gustavobacelar.com">
+		["date"] = <"2012-06-05">
+	>
+	details = <
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To record the measurement of intraocular pressure in a single eye.">
+			use = <"Use to record the measurement of intraocular pressure in a single eye.  
+
+The CLUSTER.exclusion_exam archetype can be nested within the 'Measurement not done' SLOT to optionally record explicit details about the measurement not being performed.">
+			keywords = <"IOP", "toniometry", "glaucoma", "eye">
+			misuse = <"Where details of methodology carried under protocol change between the examination of each eye, a new Entry must be created at run-time.">
+			copyright = <"© openEHR Foundation">
+		>
+	>
+	lifecycle_state = <"in_development">
+	other_contributors = <"Ian McNicoll, freshEHR Informatics, UK ", "Heather Leslie, Ocean Informatics, Australia">
+	other_details = <
+		["current_contact"] = <"Gustavo M Bacelar-Silva, mail@gustavobacelar.com">
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
+		["revision"] = <"0.0.1-alpha">
+		["references"] = <"IHE Eye Care Domain. General Eye Evaluation (GEE) [Internet]. IHE; 2012. Available from: http://www.ihe.net/Technical_Framework/upload/IHE_EyeCare_Supp_GEE_Rev1-1_TI_2012-06-29.pdf
+
+Royal College of Opthalmologists. Cataract National Dataset for Adults [Internet]. 2011. Available from: http://www.rcophth.ac.uk/page.asp?section=583&sectionTitle=Cataract+National+Data+Set+for+Adults
+
+CfH, UK. Do Once & Share - Glaucoma [Internet]. [cited 2012 Sep 26]. Available from: http://www.doasglaucoma.org/
+
+DICOM Supplement 30 [Internet]. [cited 2012 Sep 26]. Available from: http://medical.nema.org/
+
+Lamparter, J., & Hoffmann, E. M. (2009). Messung des Augeninnendrucks (Tonometrie) mit unterschiedlichen Verfahren. Der Ophthalmologe, 106(8), 676-682.">
+		["build_uid"] = <"757a9a08-08b7-48f3-b816-aaa568f80ba2">
+		["original_namespace"] = <"org.openehr">
+		["original_publisher"] = <"openEHR Foundation">
+		["MD5-CAM-1.0.1"] = <"C12D09F82C18E6E9AF5C3C1E3C4B1B77">
+		["custodian_namespace"] = <"org.openehr">
+		["custodian_organisation"] = <"openEHR Foundation">
+	>
+
+definition
+	OBSERVATION[at0000] matches {	-- Intraocular pressure
+		data matches {
+			HISTORY[at0001] matches {	-- Event Series
+				events cardinality matches {1..*; unordered} matches {
+					EVENT[at0002] occurrences matches {0..1} matches {	-- Any event
+						data matches {
+							ITEM_TREE[at0003] matches {	-- Tree
+								items cardinality matches {0..*; unordered} matches {
+									ELEMENT[at0057] occurrences matches {0..1} matches {	-- Eye examined
+										value matches {
+											DV_CODED_TEXT matches {
+												defining_code matches {
+													[local::
+													at0058, 	-- Left
+													at0059]	-- Right
+												}
+											}
+										}
+									}
+									ELEMENT[at0042] occurrences matches {0..1} matches {	-- Pressure
+										value matches {
+											C_DV_QUANTITY <
+												property = <[openehr::125]>
+												list = <
+													["1"] = <
+														units = <"mm[Hg]">
+														magnitude = <|0.0..90.0|>
+														precision = <|1|>
+													>
+												>
+											>
+										}
+									}
+									ELEMENT[at0065] occurrences matches {0..1} matches {	-- Applanation time
+										value matches {
+											C_DV_QUANTITY <
+												property = <[openehr::128]>
+												list = <
+													["1"] = <
+														units = <"millisec">
+														magnitude = <|>=0.0|>
+														precision = <|0|>
+													>
+												>
+											>
+										}
+									}
+									allow_archetype CLUSTER[at0080] occurrences matches {0..*} matches {	-- Multimedia
+										include
+											archetype_id/value matches {/openEHR-EHR-CLUSTER\.multimedia(-[a-zA-Z0-9_]+)*\.v1/}
+									}
+									ELEMENT[at0061] occurrences matches {0..*} matches {	-- Clinical interpretation
+										value matches {
+											DV_TEXT matches {*}
+										}
+									}
+									ELEMENT[at0063] occurrences matches {0..1} matches {	-- Comment
+										value matches {
+											DV_TEXT matches {*}
+										}
+									}
+									allow_archetype CLUSTER[at0078] occurrences matches {0..*} matches {	-- Measurement not done
+										include
+											archetype_id/value matches {/openEHR-EHR-CLUSTER\.exclusion_exam(-[a-zA-Z0-9_]+)*\.v1/}
+									}
+								}
+							}
+						}
+						state matches {
+							ITEM_TREE[at0007] matches {	-- Tree
+								items cardinality matches {0..*; unordered} matches {
+									ELEMENT[at0074] occurrences matches {0..*} matches {	-- Confounding factors
+										value matches {
+											DV_TEXT matches {*}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		protocol matches {
+			ITEM_TREE[at0068] matches {	-- Tree
+				items cardinality matches {0..*; unordered} matches {
+					ELEMENT[at0046] occurrences matches {0..1} matches {	-- Tonometry Method
+						value matches {
+							DV_CODED_TEXT matches {
+								defining_code matches {
+									[local::
+									at0047, 	-- Goldmann
+									at0048, 	-- Perkins
+									at0049, 	-- Tono-Pen
+									at0050, 	-- Icare (Rebound)
+									at0051, 	-- Dynamic Contour
+									at0052, 	-- Ocular Response Analyzer
+									at0053, 	-- TGDc-01
+									at0066]	-- Non-contact tonometry
+								}
+							}
+							DV_TEXT matches {*}
+						}
+					}
+					allow_archetype CLUSTER[at0055] occurrences matches {0..1} matches {	-- Device details
+						include
+							archetype_id/value matches {/openEHR-EHR-CLUSTER\.device(-[a-zA-Z0-9_]+)*\.v1/}
+					}
+					allow_archetype CLUSTER[at0079] occurrences matches {0..*} matches {	-- Extension
+						include
+							archetype_id/value matches {/.*/}
+					}
+				}
+			}
+		}
+	}
+
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"Intraocular pressure">
+					description = <"The local measurement of intraocular pressure, most commonly using a tonometry device.">
+				>
+				["at0001"] = <
+					text = <"Event Series">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Any event">
+					description = <"Default, unspecified point in time or interval event which may be explicitly defined in a template or at run-time.">
+				>
+				["at0003"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0007"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0042"] = <
+					text = <"Pressure">
+					description = <"Measured intraocular pressure.">
+				>
+				["at0046"] = <
+					text = <"Tonometry Method">
+					description = <"Type of tonometery used to measure intracoular pressure.">
+				>
+				["at0047"] = <
+					text = <"Goldmann">
+					description = <"Goldmann tonometry.">
+				>
+				["at0048"] = <
+					text = <"Perkins">
+					description = <"Perkins tonometry.">
+				>
+				["at0049"] = <
+					text = <"Tono-Pen">
+					description = <"Tono-Pen tonometry.">
+				>
+				["at0050"] = <
+					text = <"Icare (Rebound)">
+					description = <"Icare (Rebound) tonometry.">
+				>
+				["at0051"] = <
+					text = <"Dynamic Contour">
+					description = <"Dynamic Contour tonometry.">
+				>
+				["at0052"] = <
+					text = <"Ocular Response Analyzer">
+					description = <"Ocular Response Analyzer.">
+				>
+				["at0053"] = <
+					text = <"TGDc-01">
+					description = <"A TGDc-01 device was used to perform the test.">
+				>
+				["at0055"] = <
+					text = <"Device details">
+					description = <"Details about the tonometry device used to measure intraocular pressure.">
+				>
+				["at0057"] = <
+					text = <"Eye examined">
+					description = <"Identification of the eye under examination.">
+				>
+				["at0058"] = <
+					text = <"Left">
+					description = <"The left eye was examined.">
+				>
+				["at0059"] = <
+					text = <"Right">
+					description = <"The right eye was examined.">
+				>
+				["at0061"] = <
+					text = <"Clinical interpretation">
+					description = <"Single word, phrase or brief description that represents the clinical meaning and significance of the physical examination findings.">
+				>
+				["at0063"] = <
+					text = <"Comment">
+					description = <"Additional narrative about the measurement, not captured in other fields.">
+				>
+				["at0065"] = <
+					text = <"Applanation time">
+					description = <"The time taken for a non-contact tonometer to flatten the cornea, used to calculate intraocular pressure.">
+				>
+				["at0066"] = <
+					text = <"Non-contact tonometry">
+					description = <"Non-contact tonometry was used to perfrom the test.">
+				>
+				["at0068"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0074"] = <
+					text = <"Confounding factors">
+					description = <"Description of any incidental factors related to the state of the subject which may affect clinical interpretation of the measurement.">
+				>
+				["at0078"] = <
+					text = <"Measurement not done">
+					description = <"Details to explicitly record that this measurement was not performed.">
+				>
+				["at0079"] = <
+					text = <"Extension">
+					description = <"Additional information required to capture local content or to align with other reference models/formalisms.">
+					comment = <"For example: local information requirements or additional metadata to align with FHIR or CIMI equivalents.">
+				>
+				["at0080"] = <
+					text = <"Multimedia">
+					description = <"Digital image, video or diagram representing the measurement of intraocular pressure.">
+				>
+			>
+		>
+	>
