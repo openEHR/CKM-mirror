@@ -1,0 +1,300 @@
+﻿archetype (adl_version=1.4; uid=b5590215-14ff-404b-8034-ef77748dada2)
+	openEHR-EHR-CLUSTER.daily_timing.v0
+
+concept
+	[at0000]	-- Daily timing
+language
+	original_language = <[ISO_639-1::en]>
+	translations = <
+		["sl"] = <
+			language = <[ISO_639-1::sl]>
+			author = <
+				["name"] = <"?">
+			>
+		>
+	>
+description
+	original_author = <
+		["name"] = <"Sam Heard">
+		["organisation"] = <"NEHTA">
+		["email"] = <"sam.heard@oceaninformatics.com">
+		["date"] = <"12/11/2010">
+	>
+	details = <
+		["sl"] = <
+			language = <[ISO_639-1::sl]>
+			purpose = <"">
+			use = <"">
+			misuse = <"">
+			copyright = <"© Nasjonal IKT HF">
+		>
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To provide structured information on time schedules within a single day that is suitable for computation and display for human interpretation.">
+			use = <"For use with medication orders and other instructions where timing is complex and needs to be computable.">
+			keywords = <"timing", "administration", "dosing", "frequency">
+			misuse = <"">
+			copyright = <"© Nasjonal IKT HF">
+		>
+	>
+	lifecycle_state = <"in_development">
+	other_contributors = <"Sharmila Biswas, Dr Sharmila Biswas, Australia", "Stephen Chu, NEHTA, Australia (Editor)", "David Evans, Queensland Health, Australia", "Sam Heard, Ocean Informatics, Australia (Editor)", "Heather Leslie, Ocean Informatics, Australia (Editor)", "Richard Townley-O'Neill, NEHTA, Australia (Editor)">
+	other_details = <
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
+		["revision"] = <"0.0.1-alpha">
+		["build_uid"] = <"9a1712fb-5827-4872-916c-9b2958847017">
+		["original_publisher"] = <"openEHR Foundation">
+		["original_namespace"] = <"org.openehr">
+		["MD5-CAM-1.0.1"] = <"F23C1C02C441A46204234675CFFD1BD3">
+		["custodian_namespace"] = <"org.openehr">
+		["custodian_organisation"] = <"openEHR Foundation">
+	>
+
+definition
+	CLUSTER[at0000] matches {	-- Daily timing
+		items cardinality matches {1..*; unordered} matches {
+			ELEMENT[at0003] occurrences matches {0..1} matches {	-- Frequency
+				value matches {
+					C_DV_QUANTITY <
+						property = <[openehr::382]>
+						list = <
+							["1"] = <
+								units = <"1/d">
+								magnitude = <|0.0..1.0|>
+								precision = <|0|>
+							>
+							["2"] = <
+								units = <"1/min">
+								magnitude = <|>=0.0|>
+							>
+							["3"] = <
+								units = <"1/s">
+								magnitude = <|>=0.0|>
+							>
+							["4"] = <
+								units = <"1/h">
+								magnitude = <|>=0.0|>
+							>
+						>
+					>
+					DV_INTERVAL<DV_QUANTITY> matches {
+						upper matches {
+							C_DV_QUANTITY <
+								property = <[openehr::382]>
+								list = <
+									["1"] = <
+										units = <"1/d">
+										magnitude = <|<=1.0|>
+										precision = <|0|>
+									>
+									["2"] = <
+										units = <"1/min">
+										magnitude = <|>=0.0|>
+									>
+									["3"] = <
+										units = <"1/s">
+										magnitude = <|>=0.0|>
+									>
+									["4"] = <
+										units = <"1/h">
+										magnitude = <|0.0..24.0|>
+										precision = <|0|>
+									>
+								>
+							>
+						}
+						lower matches {
+							C_DV_QUANTITY <
+								property = <[openehr::382]>
+								list = <
+									["1"] = <
+										units = <"1/d">
+										magnitude = <|>=0.0|>
+									>
+									["2"] = <
+										units = <"1/min">
+										magnitude = <|>=0.0|>
+									>
+									["3"] = <
+										units = <"1/s">
+										magnitude = <|>=0.0|>
+									>
+									["4"] = <
+										units = <"1/h">
+										magnitude = <|>=0.0|>
+									>
+								>
+							>
+						}
+					}
+				}
+			}
+			ELEMENT[at0030] occurrences matches {0..1} matches {	-- Interval
+				value matches {
+					DV_DURATION matches {
+						value matches {PTHMS/|PT0H..PT24H|}
+					}
+				}
+			}
+			CLUSTER[at0027] occurrences matches {0..1} matches {	-- Interval range
+				items cardinality matches {1..*; unordered} matches {
+					ELEMENT[at0028] occurrences matches {0..1} matches {	-- Lower interval
+						value matches {
+							DV_DURATION matches {
+								value matches {PDTHMS/|P0D..P1D|}
+							}
+						}
+					}
+					ELEMENT[at0029] occurrences matches {0..1} matches {	-- Upper interval
+						value matches {
+							DV_DURATION matches {
+								value matches {PDTHMS/|P0D..P1D|}
+							}
+						}
+					}
+				}
+			}
+			ELEMENT[at0004] occurrences matches {0..*} matches {	-- Specific time
+				value matches {
+					DV_TIME matches {*}
+				}
+			}
+			ELEMENT[at0026] occurrences matches {0..*} matches {	-- Named time event
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			ELEMENT[at0023] occurrences matches {0..1} matches {	-- Exact timing critical
+				value matches {
+					DV_BOOLEAN matches {
+						value matches {True, False}
+					}
+				}
+			}
+			ELEMENT[at0024] occurrences matches {0..1} matches {	-- As required
+				value matches {
+					DV_BOOLEAN matches {
+						value matches {True, False}
+					}
+				}
+			}
+			ELEMENT[at0025] occurrences matches {0..1} matches {	-- Trigger condition
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+		}
+	}
+
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"Daily timing">
+					description = <"Structured information about the timing (intended or actual) of administration or use of a medicine, other therapeutic good or other intervention that is given on a scheduled basis.">
+				>
+				["at0003"] = <
+					text = <"Frequency">
+					description = <"The frequency as number of times per time period (limited to a single day) that the activity is to take place.">
+					comment = <"e.g. \"4 times per day\" or \"\"3 to 4 times per hour\"">
+				>
+				["at0004"] = <
+					text = <"Specific time">
+					description = <"A specific time during a single day when the activity should occur.">
+					comment = <"e.g \"at 0800, 1400, 15.25.\"">
+				>
+				["at0023"] = <
+					text = <"Exact timing critical">
+					description = <"Is exact timing of the activity critical to patient safety or wellbeing?">
+				>
+				["at0024"] = <
+					text = <"As required">
+					description = <"The activity should only occur when the \"as required\" trigger condition is met. ">
+				>
+				["at0025"] = <
+					text = <"Trigger condition">
+					description = <"The condition which triggers an 'as required' activity.">
+					comment = <"e.g. as required for pain.">
+				>
+				["at0026"] = <
+					text = <"Named time event">
+					description = <"A specific, named time event within a single day, when the activity should occur.">
+					comment = <"e.g. before each meal, at bedtime, in the morning.">
+				>
+				["at0027"] = <
+					text = <"Interval range">
+					description = <"The minimum and maximum range of an interval between each scheduled activity. ">
+					comment = <"e.g. \"Every 4 to 6 hours\".">
+				>
+				["at0028"] = <
+					text = <"Lower interval">
+					description = <"The lower range of a scheduled interval.">
+				>
+				["at0029"] = <
+					text = <"Upper interval">
+					description = <"The upper range of a scheduled interval.">
+				>
+				["at0030"] = <
+					text = <"Interval">
+					description = <"The time interval between each scheduled activity, limited to a single day.">
+					comment = <"e.g. \"Every 4 hours\".">
+				>
+			>
+		>
+		["sl"] = <
+			items = <
+				["at0000"] = <
+					text = <"*Daily timing(en)">
+					description = <"*Structured information about the timing (intended or actual) of administration or use of a medicine, other therapeutic good or other intervention that is given on a scheduled basis.(en)">
+				>
+				["at0003"] = <
+					text = <"*Frequency(en)">
+					description = <"*The frequency as number of times per time period (limited to a single day) that the activity is to take place.(en)">
+					comment = <"*e.g. \"4 times per day\" or \"\"3 to 4 times per hour\"(en)">
+				>
+				["at0004"] = <
+					text = <"*Specific time(en)">
+					description = <"*A specific time during a single day when the activity should occur.(en)">
+					comment = <"*e.g \"at 0800, 1400, 15.25.\"(en)">
+				>
+				["at0023"] = <
+					text = <"*Exact timing critical(en)">
+					description = <"*Is exact timing of the activity critical to patient safety or wellbeing?(en)">
+				>
+				["at0024"] = <
+					text = <"*As required(en)">
+					description = <"*The activity should only occur when the \"as required\" trigger condition is met. (en)">
+				>
+				["at0025"] = <
+					text = <"*Trigger condition(en)">
+					description = <"*The condition which triggers an 'as required' activity.(en)">
+					comment = <"*e.g. as required for pain.(en)">
+				>
+				["at0026"] = <
+					text = <"*Named time event(en)">
+					description = <"*A specific, named time event within a single day, when the activity should occur.(en)">
+					comment = <"*e.g. before each meal, at bedtime, in the morning.(en)">
+				>
+				["at0027"] = <
+					text = <"*Interval range(en)">
+					description = <"*The minimum and maximum range of an interval between each scheduled activity. (en)">
+					comment = <"*e.g. \"Every 4 to 6 hours\".(en)">
+				>
+				["at0028"] = <
+					text = <"*Lower interval(en)">
+					description = <"*The lower range of a scheduled interval.(en)">
+				>
+				["at0029"] = <
+					text = <"*Upper interval(en)">
+					description = <"*The upper range of a scheduled interval.(en)">
+				>
+				["at0030"] = <
+					text = <"*Interval(en)">
+					description = <"*The time interval between each scheduled activity, limited to a single day.(en)">
+					comment = <"*e.g. \"Every 4 hours\".(en)">
+				>
+			>
+		>
+	>

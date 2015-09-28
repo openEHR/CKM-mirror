@@ -1,5 +1,5 @@
-﻿archetype (adl_version=1.4)
-	openEHR-EHR-COMPOSITION.prescription.v1
+﻿archetype (adl_version=1.4; uid=dd3c4fc0-05cf-487e-b6e2-9b22d49489b0)
+	openEHR-EHR-COMPOSITION.prescription.v0
 
 concept
 	[at0000]	-- Prescription
@@ -22,10 +22,17 @@ description
 			copyright = <"copyright (c) 2009 openEHR Foundation">
 		>
 	>
-	lifecycle_state = <"AuthorDraft">
+	lifecycle_state = <"in_development">
 	other_contributors = <>
 	other_details = <
-		["references"] = <"">
+		["revision"] = <"0.0.1-alpha">
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
+		["build_uid"] = <"d40a4bb3-fbd7-415f-aad1-aca2f77d7c6c">
+		["original_publisher"] = <"openEHR Foundation">
+		["original_namespace"] = <"org.openehr">
+		["MD5-CAM-1.0.1"] = <"3445581984A06538D0A5347052D0FA38">
+		["custodian_namespace"] = <"org.openehr">
+		["custodian_organisation"] = <"openEHR Foundation">
 	>
 
 definition
@@ -43,26 +50,17 @@ definition
 							ELEMENT[at0002] occurrences matches {0..1} matches {	-- Prescription category
 								value matches {
 									DV_CODED_TEXT matches {
-										defining_code matches {
-											[local::
-											at0003, 	-- PBS
-											at0004, 	-- RPBS
-											at0005]	-- Private
-										}
+										defining_code matches {[local::]}
 									}
 								}
+							}
+							allow_archetype CLUSTER[at0007] occurrences matches {0..*} matches {	-- Extension
+								include
+									archetype_id/value matches {/.*/}
 							}
 						}
 					}
 				}
-			}
-		}
-		content cardinality matches {0..*; unordered} matches {
-			allow_archetype SECTION[at0006] matches {
-				include
-					archetype_id/value matches {/openEHR-EHR-SECTION\.medications\.v1/}
-				exclude
-					archetype_id/value matches {/.*/}
 			}
 		}
 	}
@@ -84,21 +82,10 @@ ontology
 					text = <"Prescription category">
 					description = <"Australian prescription category">
 				>
-				["at0003"] = <
-					text = <"PBS">
-					description = <"Australian pharmaceutical benefits scheme">
-				>
-				["at0004"] = <
-					text = <"RPBS">
-					description = <"Repatriation pharmaceutical benefits scheme (ADF)">
-				>
-				["at0005"] = <
-					text = <"Private">
-					description = <"Entire cost met by patient or agent">
-				>
-				["at0006"] = <
-					text = <"Section: Medications">
-					description = <"*">
+				["at0007"] = <
+					text = <"Extension">
+					description = <"Additional information required to capture local context or to align with other reference models/formalisms.">
+					comment = <"e.g. Local hospital departmental infomation or additional metadata to align with FHIR or CIMI equivalents.">
 				>
 			>
 		>
