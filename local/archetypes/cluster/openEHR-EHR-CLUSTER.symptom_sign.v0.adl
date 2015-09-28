@@ -96,13 +96,13 @@ Not to be used for diagnoses and problems that form part of a persisting Problem
 	other_contributors = <"Tomas Alme, DIPS, Norway", "Vebjoern Arntzen, Oslo university hospital, Norway", "Koray Atalag, University of Auckland, New Zealand", "Silje Ljosland Bakke, Bergen Hospital Trust, Norway (openEHR Editor)", "Lars Bitsch-Larsen, Haukeland University hospital, Norway", "Rong Chen, Cambio Healthcare Systems, Sweden", "Stephen Chu, Queensland Health, Australia", "Einar Fosse, National Centre for Integrated Care and Telemedicine, Norway", "Samuel Frade, Marand, Portugal", "Sebastian Garde, Ocean Informatics, Germany", "Heather Grain, Llewelyn Grain Informatics, Australia", "Sam Heard, Ocean Informatics, Australia", "Lars Karlsen, DIPS ASA, Norway", "Shinji Kobayashi, Kyoto University, Japan", "Sabine Leh, Haukeland University Hospital, Department of Pathology, Norway", "Heather Leslie, Ocean Informatics, Australia (openEHR Editor)", "Hallvard Lærum, Oslo University Hospital, Norway", "Luis Marco Ruiz, Norwegian Center for Integrated Care and Telemedicine, Norway", "Ian McNicoll, freshEHR Clinical Informatics, United Kingdom (openEHR Editor)", "Bjoern Naess, DIPS ASA, Norway", "Andrej Orel, Marand d.o.o., Slovenia", "Jussara Rotzsch, UNB, Brazil", "Anoop Shah, University College London, United Kingdom", "Norwegian Review Summary, Nasjonal IKT, Norway", "Rowan Thomas, St. Vincent's Hospital Melbourne, Australia", "John Tore Valand, Helse Bergen, Norway">
 	other_details = <
 		["current_contact"] = <"Heather Leslie, Ocean Informatics, heather.leslie@oceaninformatics.com">
-		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
 		["revision"] = <"0.0.1-alpha">
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
 		["references"] = <"Common Terminology Criteria for Adverse Events (CTCAE) [Internet]. National Cancer Institute, USA. Available from: http://ctep.cancer.gov/protocolDevelopment/electronic_applications/ctc.htm (accessed 2015-07-13).">
-		["build_uid"] = <"cd1ee0f0-346e-4038-a70b-fda546ce9b37">
+		["build_uid"] = <"7d88bd0e-6e11-45ce-9626-f729c8dc2618">
 		["original_publisher"] = <"openEHR Foundation">
 		["original_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"8005D1C4F88AF4788B3641F0C96DAD18">
+		["MD5-CAM-1.0.1"] = <"0D6223AC46112F6F3EFAB8BFA35848D3">
 		["custodian_namespace"] = <"org.openehr">
 		["custodian_organisation"] = <"openEHR Foundation">
 	>
@@ -210,53 +210,7 @@ definition
 					DV_TEXT matches {*}
 				}
 			}
-			CLUSTER[at0165] occurrences matches {0..2} matches {	-- Temporal association
-				name matches {
-					DV_CODED_TEXT matches {
-						defining_code matches {
-							[local::
-							at0167, 	-- Onset association
-							at0168]	-- Resolution association
-						}
-					}
-				}
-				items cardinality matches {1..*; unordered} matches {
-					ELEMENT[at0169] occurrences matches {0..1} matches {	-- Sequence
-						value matches {
-							DV_CODED_TEXT matches {
-								defining_code matches {
-									[local::
-									at0172, 	-- Before
-									at0173, 	-- During
-									at0174]	-- After
-								}
-							}
-						}
-					}
-					ELEMENT[at0170] occurrences matches {0..1} matches {	-- Event
-						value matches {
-							DV_TEXT matches {*}
-						}
-					}
-					allow_archetype CLUSTER[at0154] occurrences matches {0..*} matches {	-- Associated events
-						include
-							archetype_id/value matches {/openEHR-EHR-CLUSTER\.health_event(-[a-zA-Z0-9_]+)*\.v1/}
-					}
-					ELEMENT[at0171] occurrences matches {0..1} matches {	-- Time interval
-						value matches {
-							DV_DURATION matches {
-								value matches {|>=P0D|}
-							}
-						}
-					}
-					ELEMENT[at0185] occurrences matches {0..1} matches {	-- Description
-						value matches {
-							DV_TEXT matches {*}
-						}
-					}
-				}
-			}
-			CLUSTER[at0018] occurrences matches {0..*} matches {	-- Modifying Factor
+			CLUSTER[at0018] occurrences matches {0..*} matches {	-- Modifying factor
 				items cardinality matches {1..*; unordered} matches {
 					ELEMENT[at0019] occurrences matches {0..1} matches {	-- Factor
 						value matches {
@@ -276,6 +230,40 @@ definition
 						}
 					}
 					ELEMENT[at0056] occurrences matches {0..1} matches {	-- Description
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+				}
+			}
+			CLUSTER[at0165] occurrences matches {0..*} matches {	-- Onset/resolution factor
+				name matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {
+							[local::
+							at0167, 	-- Onset factor
+							at0168]	-- Resolution factor
+						}
+					}
+				}
+				items cardinality matches {1..*; unordered} matches {
+					ELEMENT[at0170] occurrences matches {0..1} matches {	-- Factor
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					allow_archetype CLUSTER[at0154] occurrences matches {0..*} matches {	-- Factor detail
+						include
+							archetype_id/value matches {/openEHR-EHR-CLUSTER\.health_event(-[a-zA-Z0-9_]+)*\.v1|openEHR-EHR-CLUSTER\.symptom_sign(-[a-zA-Z0-9_]+)*\.v0/}
+					}
+					ELEMENT[at0171] occurrences matches {0..1} matches {	-- Time interval
+						value matches {
+							DV_DURATION matches {
+								value matches {|>=P0D|}
+							}
+						}
+					}
+					ELEMENT[at0185] occurrences matches {0..1} matches {	-- Description
 						value matches {
 							DV_TEXT matches {*}
 						}
@@ -358,7 +346,7 @@ ontology
 					description = <"*Perceived effect of the modifying factor on the symptom or sign.(en)">
 				>
 				["at0018"] = <
-					text = <"*Modifying Factor(en)">
+					text = <"*Modifying factor(en)">
 					description = <"*Detail about how a specific factor effects the identified symptom or sign during this episode.(en)">
 				>
 				["at0019"] = <
@@ -448,8 +436,8 @@ If the anatomical location is included in the Symptom name via precoordinated co
 					comment = <"*For example: CTCAE grading.(en)">
 				>
 				["at0154"] = <
-					text = <"*Associated events(en)">
-					description = <"*Structured details about an associated event related to the symptom or sign.(en)">
+					text = <"*Factor detail(en)">
+					description = <"*Structured details about an associated event or symptom associated with the identified symptom or sign.(en)">
 				>
 				["at0155"] = <
 					text = <"*Impact(en)">
@@ -483,42 +471,26 @@ If the anatomical location is included in the Symptom name via precoordinated co
 					comment = <"*The type of the onset can be coded with a terminology, if desired. For example: gradual; or sudden.(en)">
 				>
 				["at0165"] = <
-					text = <"*Temporal association(en)">
-					description = <"*Identification of timing association between a clinical event activity and the onset/resolution of the identified symptom or sign.(en)">
+					text = <"*Onset/resolution factor(en)">
+					description = <"*Details about an event or symptom associated with the onset or resolution of the symptom or sign.(en)">
 					comment = <"*For example: onset of headache occurred one week prior to menstruation; or onset of headache occurred one hour after fall of bicycle.(en)">
 				>
 				["at0167"] = <
-					text = <"*Onset association(en)">
-					description = <"*Identification of events related to the onset of the symptom or sign.(en)">
+					text = <"*Onset factor(en)">
+					description = <"*Identification of factors/events associated with onset or commencement of the symptom or sign.(en)">
 				>
 				["at0168"] = <
-					text = <"*Resolution association(en)">
-					description = <"*Identification of associations related to the resolution of the symptom or sign.(en)">
-				>
-				["at0169"] = <
-					text = <"*Sequence(en)">
-					description = <"*Identification of the timing sequence of onset/resolution of the symptom or sign.(en)">
+					text = <"*Resolution factor(en)">
+					description = <"*Identification of factors/events associated with resolution or cessation of the symptom or sign.(en)">
 				>
 				["at0170"] = <
-					text = <"*Event(en)">
-					description = <"*Name of a clinical event.(en)">
+					text = <"*Factor(en)">
+					description = <"*Name of the clinical event.(en)">
 					comment = <"*For example: onset of another symptom; onset of menstruation; or fall off bicycle.(en)">
 				>
 				["at0171"] = <
 					text = <"*Time interval(en)">
-					description = <"*The amount of time between the  the identified event and onset/resultion of the symptom or sign.(en)">
-				>
-				["at0172"] = <
-					text = <"*Before(en)">
-					description = <"*Onse/resolutiont of the identified symptom or sign occurred before the identified event.(en)">
-				>
-				["at0173"] = <
-					text = <"*During(en)">
-					description = <"*Onse/resolutiont of the identified symptom or sign occurred during the identified event.(en)">
-				>
-				["at0174"] = <
-					text = <"*After(en)">
-					description = <"*Onse/resolution of the identified symptom or sign occurred after the identified event.(en)">
+					description = <"*The interval of time between the occurrence or onset of the factor and onset/resolution of the symptom or sign.(en)">
 				>
 				["at0175"] = <
 					text = <"*Episodicity(en)">
@@ -588,7 +560,7 @@ If the anatomical location is included in the Symptom name via precoordinated co
 					description = <"Perceived effect of the modifying factor on the symptom or sign.">
 				>
 				["at0018"] = <
-					text = <"Modifying Factor">
+					text = <"Modifying factor">
 					description = <"Detail about how a specific factor effects the identified symptom or sign during this episode.">
 				>
 				["at0019"] = <
@@ -678,8 +650,8 @@ If the anatomical location is included in the Symptom name via precoordinated co
 					comment = <"For example: CTCAE grading.">
 				>
 				["at0154"] = <
-					text = <"Associated events">
-					description = <"Structured details about an associated event related to the symptom or sign.">
+					text = <"Factor detail">
+					description = <"Structured details about an associated event or symptom associated with the identified symptom or sign.">
 				>
 				["at0155"] = <
 					text = <"Impact">
@@ -713,42 +685,26 @@ If the anatomical location is included in the Symptom name via precoordinated co
 					comment = <"The type of the onset can be coded with a terminology, if desired. For example: gradual; or sudden.">
 				>
 				["at0165"] = <
-					text = <"Temporal association">
-					description = <"Identification of timing association between a clinical event activity and the onset/resolution of the identified symptom or sign.">
+					text = <"Onset/resolution factor">
+					description = <"Details about an event or symptom associated with the onset or resolution of the symptom or sign.">
 					comment = <"For example: onset of headache occurred one week prior to menstruation; or onset of headache occurred one hour after fall of bicycle.">
 				>
 				["at0167"] = <
-					text = <"Onset association">
-					description = <"Identification of events related to the onset of the symptom or sign.">
+					text = <"Onset factor">
+					description = <"Identification of factors/events associated with onset or commencement of the symptom or sign.">
 				>
 				["at0168"] = <
-					text = <"Resolution association">
-					description = <"Identification of associations related to the resolution of the symptom or sign.">
-				>
-				["at0169"] = <
-					text = <"Sequence">
-					description = <"Identification of the timing sequence of onset/resolution of the symptom or sign.">
+					text = <"Resolution factor">
+					description = <"Identification of factors/events associated with resolution or cessation of the symptom or sign.">
 				>
 				["at0170"] = <
-					text = <"Event">
-					description = <"Name of a clinical event.">
+					text = <"Factor">
+					description = <"Name of the clinical event.">
 					comment = <"For example: onset of another symptom; onset of menstruation; or fall off bicycle.">
 				>
 				["at0171"] = <
 					text = <"Time interval">
-					description = <"The amount of time between the  the identified event and onset/resultion of the symptom or sign.">
-				>
-				["at0172"] = <
-					text = <"Before">
-					description = <"Onse/resolutiont of the identified symptom or sign occurred before the identified event.">
-				>
-				["at0173"] = <
-					text = <"During">
-					description = <"Onse/resolutiont of the identified symptom or sign occurred during the identified event.">
-				>
-				["at0174"] = <
-					text = <"After">
-					description = <"Onse/resolution of the identified symptom or sign occurred after the identified event.">
+					description = <"The interval of time between the occurrence or onset of the factor and onset/resolution of the symptom or sign.">
 				>
 				["at0175"] = <
 					text = <"Episodicity">
@@ -818,7 +774,7 @@ If the anatomical location is included in the Symptom name via precoordinated co
 					description = <"*Perceived effect of the modifying factor on the symptom or sign.(en)">
 				>
 				["at0018"] = <
-					text = <"*Modifying Factor(en)">
+					text = <"*Modifying factor(en)">
 					description = <"*Detail about how a specific factor effects the identified symptom or sign during this episode.(en)">
 				>
 				["at0019"] = <
@@ -908,8 +864,8 @@ If the anatomical location is included in the Symptom name via precoordinated co
 					comment = <"*For example: CTCAE grading.(en)">
 				>
 				["at0154"] = <
-					text = <"*Associated events(en)">
-					description = <"*Structured details about an associated event related to the symptom or sign.(en)">
+					text = <"*Factor detail(en)">
+					description = <"*Structured details about an associated event or symptom associated with the identified symptom or sign.(en)">
 				>
 				["at0155"] = <
 					text = <"*Impact(en)">
@@ -943,42 +899,26 @@ If the anatomical location is included in the Symptom name via precoordinated co
 					comment = <"*The type of the onset can be coded with a terminology, if desired. For example: gradual; or sudden.(en)">
 				>
 				["at0165"] = <
-					text = <"*Temporal association(en)">
-					description = <"*Identification of timing association between a clinical event activity and the onset/resolution of the identified symptom or sign.(en)">
+					text = <"*Onset/resolution factor(en)">
+					description = <"*Details about an event or symptom associated with the onset or resolution of the symptom or sign.(en)">
 					comment = <"*For example: onset of headache occurred one week prior to menstruation; or onset of headache occurred one hour after fall of bicycle.(en)">
 				>
 				["at0167"] = <
-					text = <"*Onset association(en)">
-					description = <"*Identification of events related to the onset of the symptom or sign.(en)">
+					text = <"*Onset factor(en)">
+					description = <"*Identification of factors/events associated with onset or commencement of the symptom or sign.(en)">
 				>
 				["at0168"] = <
-					text = <"*Resolution association(en)">
-					description = <"*Identification of associations related to the resolution of the symptom or sign.(en)">
-				>
-				["at0169"] = <
-					text = <"*Sequence(en)">
-					description = <"*Identification of the timing sequence of onset/resolution of the symptom or sign.(en)">
+					text = <"*Resolution factor(en)">
+					description = <"*Identification of factors/events associated with resolution or cessation of the symptom or sign.(en)">
 				>
 				["at0170"] = <
-					text = <"*Event(en)">
-					description = <"*Name of a clinical event.(en)">
+					text = <"*Factor(en)">
+					description = <"*Name of the clinical event.(en)">
 					comment = <"*For example: onset of another symptom; onset of menstruation; or fall off bicycle.(en)">
 				>
 				["at0171"] = <
 					text = <"*Time interval(en)">
-					description = <"*The amount of time between the  the identified event and onset/resultion of the symptom or sign.(en)">
-				>
-				["at0172"] = <
-					text = <"*Before(en)">
-					description = <"*Onse/resolutiont of the identified symptom or sign occurred before the identified event.(en)">
-				>
-				["at0173"] = <
-					text = <"*During(en)">
-					description = <"*Onse/resolutiont of the identified symptom or sign occurred during the identified event.(en)">
-				>
-				["at0174"] = <
-					text = <"*After(en)">
-					description = <"*Onse/resolution of the identified symptom or sign occurred after the identified event.(en)">
+					description = <"*The interval of time between the occurrence or onset of the factor and onset/resolution of the symptom or sign.(en)">
 				>
 				["at0175"] = <
 					text = <"*Episodicity(en)">
@@ -1048,7 +988,7 @@ If the anatomical location is included in the Symptom name via precoordinated co
 					description = <"*Perceived effect of the modifying factor on the symptom or sign.(en)">
 				>
 				["at0018"] = <
-					text = <"*Modifying Factor(en)">
+					text = <"*Modifying factor(en)">
 					description = <"*Detail about how a specific factor effects the identified symptom or sign during this episode.(en)">
 				>
 				["at0019"] = <
@@ -1138,8 +1078,8 @@ If the anatomical location is included in the Symptom name via precoordinated co
 					comment = <"*For example: CTCAE grading.(en)">
 				>
 				["at0154"] = <
-					text = <"*Associated events(en)">
-					description = <"*Structured details about an associated event related to the symptom or sign.(en)">
+					text = <"*Factor detail(en)">
+					description = <"*Structured details about an associated event or symptom associated with the identified symptom or sign.(en)">
 				>
 				["at0155"] = <
 					text = <"*Impact(en)">
@@ -1173,42 +1113,26 @@ If the anatomical location is included in the Symptom name via precoordinated co
 					comment = <"*The type of the onset can be coded with a terminology, if desired. For example: gradual; or sudden.(en)">
 				>
 				["at0165"] = <
-					text = <"*Temporal association(en)">
-					description = <"*Identification of timing association between a clinical event activity and the onset/resolution of the identified symptom or sign.(en)">
+					text = <"*Onset/resolution factor(en)">
+					description = <"*Details about an event or symptom associated with the onset or resolution of the symptom or sign.(en)">
 					comment = <"*For example: onset of headache occurred one week prior to menstruation; or onset of headache occurred one hour after fall of bicycle.(en)">
 				>
 				["at0167"] = <
-					text = <"*Onset association(en)">
-					description = <"*Identification of events related to the onset of the symptom or sign.(en)">
+					text = <"*Onset factor(en)">
+					description = <"*Identification of factors/events associated with onset or commencement of the symptom or sign.(en)">
 				>
 				["at0168"] = <
-					text = <"*Resolution association(en)">
-					description = <"*Identification of associations related to the resolution of the symptom or sign.(en)">
-				>
-				["at0169"] = <
-					text = <"*Sequence(en)">
-					description = <"*Identification of the timing sequence of onset/resolution of the symptom or sign.(en)">
+					text = <"*Resolution factor(en)">
+					description = <"*Identification of factors/events associated with resolution or cessation of the symptom or sign.(en)">
 				>
 				["at0170"] = <
-					text = <"*Event(en)">
-					description = <"*Name of a clinical event.(en)">
+					text = <"*Factor(en)">
+					description = <"*Name of the clinical event.(en)">
 					comment = <"*For example: onset of another symptom; onset of menstruation; or fall off bicycle.(en)">
 				>
 				["at0171"] = <
 					text = <"*Time interval(en)">
-					description = <"*The amount of time between the  the identified event and onset/resultion of the symptom or sign.(en)">
-				>
-				["at0172"] = <
-					text = <"*Before(en)">
-					description = <"*Onse/resolutiont of the identified symptom or sign occurred before the identified event.(en)">
-				>
-				["at0173"] = <
-					text = <"*During(en)">
-					description = <"*Onse/resolutiont of the identified symptom or sign occurred during the identified event.(en)">
-				>
-				["at0174"] = <
-					text = <"*After(en)">
-					description = <"*Onse/resolution of the identified symptom or sign occurred after the identified event.(en)">
+					description = <"*The interval of time between the occurrence or onset of the factor and onset/resolution of the symptom or sign.(en)">
 				>
 				["at0175"] = <
 					text = <"*Episodicity(en)">
