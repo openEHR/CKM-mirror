@@ -2,7 +2,7 @@
 	openEHR-EHR-CLUSTER.problem_status.v0
 
 concept
-	[at0000]	-- Problem status
+	[at0000]	-- Problem/Diagnosis status
 language
 	original_language = <[ISO_639-1::en]>
 	translations = <
@@ -23,14 +23,6 @@ description
 		["date"] = <"2013-05-29">
 	>
 	details = <
-		["en"] = <
-			language = <[ISO_639-1::en]>
-			purpose = <"To record various status and context qualifiers which though commonly used within applications and in clinical messages but which are  highly contextually dependent or variably defined and used in practice.">
-			use = <"Use to qualify an EVALUATION.problem_diagnosis.v1 archetype, adding context and state specific information.  These qualifiers should be used with care as they are variably used in practice and interopaerablility cannot be assured unless usage is clearly defined within the community of sharing.">
-			keywords = <"problem", "active", "inactive", "status", "episode">
-			misuse = <"It should not be assumed that these qualifiers are safely interoperable unless further definition and alignment is agreed between all sharing parties. A problem which has been defined as 'Inactive' during a hospital admission cannot be assumed to be regarded as 'Inactive' in a primary care setting , where a much longer term perspective is being taken. Similarly terms such as Initial, Interim and Final, whilst helpful to the human observer are unlikely to be precisely enough defined to be safely computable e.g. for decision support.">
-			copyright = <"© openEHR Foundation">
-		>
 		["sl"] = <
 			language = <[ISO_639-1::sl]>
 			purpose = <"Za zapisovanje različnih statusov, ki se ponavadi uporablja za aplikacijskimi in kliničnimi sporočili, ki so odvisna od definirane vsebine
@@ -41,90 +33,67 @@ description
 			misuse = <"It should not be assumed that these qualifiers are safely interoperable unless further definition and alignment is agreed between all sharing parties. A problem which has been defined as 'Inactive' during a hospital admission cannot be assumed to be regarded as 'Inactive' in a primary care setting , where a much longer term perspective is being taken. Similarly terms such as Initial, Interim and Final, whilst helpful to the human observer are unlikely to be precisely enough defined to be safely computable e.g. for decision support. ">
 			copyright = <"© openEHR Foundation">
 		>
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To record clinical context-specific or time-specific status qualifiers for a specified problem or diagnosis.">
+			use = <"Use to record context-specific or time-specific qualifiers that can be used to provide additional detail when recording a problem or diagnosis that are relevant at the time of recording or within the clinical context where it is recorded, but which may not be appropriate to assume as appropriate at another time or in another clinical context.
+
+This archetype is designed to be included in Status SLOT in the EVALUATION.problem_diagnosis archetype.
+
+These status qualifiers should be used with care as they are variably applied in practice and interoperability cannot be assured unless usage guidelines are clearly defined within the clinical community in which the 'Problem/Diagnosis' and 'Problem status' archetype pair may be shared.
+
+The 'Unspecified' data element has been added to support addition of other qualifiers that might only be used locally or where the use case has not been clearly established at the time of this archetype being published. As other qualifiers are identified they can be added to this archetype as a backwardly compatible revision.">
+			keywords = <"problem", "active", "inactive", "status", "episode", "diagnosis">
+			misuse = <"Not to be used to represent Differential diagnosis - use the archetype EVALUATION.differential_diagnosis for this purpose.">
+			copyright = <"© openEHR Foundation">
+		>
 	>
 	lifecycle_state = <"in_development">
-	other_contributors = <"Silje Ljosland Bakke, Bergen Hospital Trust, Norway (openEHR Editor)", "Sam Heard, Ocean Informatics, Australia", "Heather Leslie, Ocean Informatics, Australia (openEHR Editor)", "Hugh Leslie, Ocean Informatics, Australia", "Ian McNicoll, freshEHR Clinical Informatics, United Kingdom (openEHR Editor)">
+	other_contributors = <"Nadim Anani, Karolinska Institutet, Sweden", "Vebjoern Arntzen, Oslo university hospital, Norway", "Koray Atalag, University of Auckland, New Zealand", "Silje Ljosland Bakke, National ICT Norway, Norway (openEHR Editor)", "Lars Bitsch-Larsen, Haukeland University hospital, Norway", "Aitor Eguzkitza, UPNA (Public University of Navarre) - CHN (Complejo Hospitalario de Navarra), Spain", "Einar Fosse, National Centre for Integrated Care and Telemedicine, Norway", "Heather Grain, Llewelyn Grain Informatics, Australia", "Sam Heard, Ocean Informatics, Australia", "Lars Karlsen, DIPS ASA, Norway", "Shinji Kobayashi, Kyoto University, Japan", "Sabine Leh, Haukeland University Hospital, Department of Pathology, Norway", "Heather Leslie, Ocean Informatics, Australia (openEHR Editor)", "Hugh Leslie, Ocean Informatics, Australia", "Ian McNicoll, freshEHR Clinical Informatics, United Kingdom (openEHR Editor)", "Andrej Orel, Marand d.o.o., Slovenia", "Jussara Rotzsch, UNB, Brazil", "Anoop Shah, University College London, United Kingdom", "Norwegian Review Summary, Nasjonal IKT, Norway", "John Tore Valand, Helse Bergen, Norway (openEHR Editor)">
 	other_details = <
-		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
 		["revision"] = <"0.0.1-alpha">
-		["build_uid"] = <"f15788a6-c5d0-41c3-a885-19dc84181acd">
-		["original_namespace"] = <"org.openehr">
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
+		["build_uid"] = <"ac06c39f-d15a-4297-aaed-d5825d9fcae8">
 		["original_publisher"] = <"openEHR Foundation">
-		["MD5-CAM-1.0.1"] = <"D925601454D3978DC6A0878DA3AC9CE6">
+		["original_namespace"] = <"org.openehr">
+		["MD5-CAM-1.0.1"] = <"4D04ECD63DA2C5EEBE93787DC8601CA7">
 		["custodian_namespace"] = <"org.openehr">
 		["custodian_organisation"] = <"openEHR Foundation">
 	>
 
 definition
-	CLUSTER[at0000] matches {	-- Problem status
+	CLUSTER[at0000] matches {	-- Problem/Diagnosis status
 		items cardinality matches {1..*; unordered} matches {
-			ELEMENT[at0024] occurrences matches {0..1} matches {	-- Impact
+			ELEMENT[at0004] occurrences matches {0..1} matches {	-- Phase
 				value matches {
 					DV_CODED_TEXT matches {
 						defining_code matches {
 							[local::
-							at0036, 	-- None
-							at0037, 	-- Insignificant
-							at0038, 	-- Significant
-							at0039, 	-- Life-threatening
-							at0044]	-- Fatal
+							at0016, 	-- Preliminary
+							at0017, 	-- Working
+							at0018]	-- Established
 						}
 					}
 				}
 			}
-			ELEMENT[at0051] occurrences matches {0..1} matches {	-- Category
+			ELEMENT[at0060] occurrences matches {0..1} matches {	-- Current?
 				value matches {
 					DV_CODED_TEXT matches {
 						defining_code matches {
 							[local::
-							at0052, 	-- Condition
-							at0053, 	-- Symptom
-							at0054, 	-- Finding
-							at0055, 	-- Complaint
-							at0056, 	-- Functional limitation
-							at0057, 	-- Problem
-							at0058]	-- Diagnosis
+							at0062, 	-- Current
+							at0061]	-- Past
 						}
 					}
 				}
 			}
-			ELEMENT[at0003] occurrences matches {0..1} matches {	-- Active status
+			ELEMENT[at0003] occurrences matches {0..1} matches {	-- Active?
 				value matches {
 					DV_CODED_TEXT matches {
 						defining_code matches {
 							[local::
 							at0026, 	-- Active
-							at0027, 	-- Inactive
-							at0028, 	-- Resolved
-							at0059]	-- In remission
-						}
-					}
-				}
-			}
-			ELEMENT[at0043] occurrences matches {0..1} matches {	-- Active status comment
-				value matches {
-					DV_TEXT matches {*}
-				}
-			}
-			ELEMENT[at0004] occurrences matches {0..1} matches {	-- Evolution
-				value matches {
-					DV_CODED_TEXT matches {
-						defining_code matches {
-							[local::
-							at0016, 	-- Initial assessment
-							at0017, 	-- Interim/working assessment
-							at0018]	-- Final assessment
-						}
-					}
-				}
-			}
-			ELEMENT[at0060] occurrences matches {0..1} matches {	-- Temporal context
-				value matches {
-					DV_CODED_TEXT matches {
-						defining_code matches {
-							[local::
-							at0061, 	-- Past
-							at0062]	-- Current
+							at0027]	-- Inactive
 						}
 					}
 				}
@@ -134,39 +103,58 @@ definition
 					DV_CODED_TEXT matches {
 						defining_code matches {
 							[local::
-							at0033, 	-- First ever
-							at0034, 	-- New
-							at0035]	-- Ongoing
+							at0034, 	-- New episode
+							at0035, 	-- Ongoing episode
+							at0070]	-- Indeterminate
 						}
 					}
 				}
 			}
-			ELEMENT[at0063] occurrences matches {0..1} matches {	-- Episodic care status
+			ELEMENT[at0071] occurrences matches {0..1} matches {	-- First ever?
+				value matches {
+					DV_BOOLEAN matches {
+						value matches {True}
+					}
+				}
+			}
+			ELEMENT[at0077] occurrences matches {0..1} matches {	-- Course
 				value matches {
 					DV_CODED_TEXT matches {
 						defining_code matches {
 							[local::
-							at0064, 	-- Primary diagnosis
-							at0069, 	-- Primary procedure
-							at0066, 	-- Co-morbidity
-							at0067, 	-- Complication
-							at0068]	-- Other current problem
+							at0081, 	-- Acute
+							at0078, 	-- Relapsing
+							at0079]	-- Chronic
 						}
 					}
 				}
 			}
-			ELEMENT[at0006] occurrences matches {0..1} matches {	-- Priority
+			ELEMENT[at0063] occurrences matches {0..1} matches {	-- DRG category
 				value matches {
-					DV_TEXT matches {*}
-					DV_COUNT matches {*}
+					DV_CODED_TEXT matches {
+						defining_code matches {
+							[local::
+							at0064, 	-- Principal diagnosis
+							at0066, 	-- Secondary diagnosis
+							at0076]	-- Complication
+						}
+					}
 				}
 			}
-			ELEMENT[at0007] occurrences matches {0..1} matches {	-- Summarisation
+			ELEMENT[at0073] occurrences matches {0..1} matches {	-- Present on admission?
 				value matches {
+					DV_BOOLEAN matches {
+						value matches {True}
+					}
+				}
+			}
+			ELEMENT[at0082] occurrences matches {0..*} matches {	-- Unspecified
+				value matches {
+					DV_TEXT matches {*}
 					DV_BOOLEAN matches {
 						value matches {True, False}
 					}
-					DV_TEXT matches {*}
+					DV_COUNT matches {*}
 				}
 			}
 		}
@@ -174,48 +162,39 @@ definition
 
 
 ontology
+	terminologies_available = <"SNOMED-CT", ...>
 	term_definitions = <
 		["en"] = <
 			items = <
 				["at0000"] = <
-					text = <"Problem status">
-					description = <"Additional status and contextual qualifiers factors related to a problem/diagnosis.">
+					text = <"Problem/Diagnosis status">
+					description = <"Context- or time-specific qualifiers for a specified problem or diagnosis.">
 				>
 				["at0001"] = <
 					text = <"Episodicity">
-					description = <"Episodicity is used within a primary care context to distinguish between ongoing and new episodes of a problem or diagnosis, primarily for public health or quality assessment purposes.">
+					description = <"Category  new, recurring and ongoing issues, problems or diagnoses.">
+					comment = <"This data element is usually recorded as part of a clinical consultation.">
 				>
 				["at0003"] = <
-					text = <"Active status">
-					description = <"The degree to which the problem is active and relevant within the current clinical context.">
+					text = <"Active?">
+					description = <"Category that supports division of problems and diagnoses into Active or Inactive problem lists.">
 				>
 				["at0004"] = <
-					text = <"Evolution">
-					description = <"Records temporal/evidential progress towards identification of the problem or diagnosis, recognising that precise identification may take time to evolve as increasing amounts of evidence become available.">
-				>
-				["at0006"] = <
-					text = <"Priority">
-					description = <"A numeric or textual representation of the priority assigned to the problem, relative to other problems in a list. This may be used to sort items according to perceived clinical priority or to filter problems felt to be of greater /lesser significance.">
-				>
-				["at0007"] = <
-					text = <"Summarisation">
-					description = <"A flag or text/ coded item recording whether this problem/diagnosis should be presented in a patient summary. Applications may implement this in a variety of ways.">
+					text = <"Phase">
+					description = <"Stage or phase of diagnostic process.">
+					comment = <"The phase is usually determined by a combination of the timing of diagnosis plus availability of supporting test results and clinical advice. It can also imply a level of clinical certainty. Terms aligned with SNOMED CT.">
 				>
 				["at0016"] = <
-					text = <"Initial assessment">
-					description = <"The diagnosis has been made at the outset of the diagnostic process with limited evidence available.">
+					text = <"Preliminary">
+					description = <"The initial diagnosis made, based on limited available clinical evidence. It may change as test results or advice become available.">
 				>
 				["at0017"] = <
-					text = <"Interim/working assessment">
-					description = <"The problem or diagnosis has been identified with some confidence but further evidence has yet to be considered.">
+					text = <"Working">
+					description = <"Interim diagnosis, based on substantiated clinical evidence but pending further test results or clinical advice. It may still change as test results or advice become available.">
 				>
 				["at0018"] = <
-					text = <"Final assessment">
-					description = <"The problem or diagnosis is made at the end of the diagnostic process taking into account all available significant evidence. It is not expected to change.">
-				>
-				["at0024"] = <
-					text = <"Impact">
-					description = <"Description of the impact of the problem or diagnosis on the patient as a whole. Unlike 'severity' this can be used to compare the clinical impact of different problems.">
+					text = <"Established">
+					description = <"Final substantiated diagnosis, based on all relevant test results and clinical advice. It is not expected to change.">
 				>
 				["at0026"] = <
 					text = <"Active">
@@ -225,85 +204,18 @@ ontology
 					text = <"Inactive">
 					description = <"The problem or diagnosis is not completely resolved but is inactive or felt less relevant to the current clinical context.">
 				>
-				["at0028"] = <
-					text = <"Resolved">
-					description = <"The problem or diagnosis is completely resolved and therefore not relevant to the current clinical context.">
-				>
-				["at0033"] = <
-					text = <"First ever">
-					description = <"The first ever occurence of this problem or diagnosis.">
-				>
 				["at0034"] = <
-					text = <"New">
-					description = <"A new occurence of an existing problem or diagnosis.">
+					text = <"New episode">
+					description = <"A first occurrence of a new diagnosis or new occurrence of a previous diagnosis. A flag for 'First ever' occurrence can be recorded separately.">
 				>
 				["at0035"] = <
-					text = <"Ongoing">
-					description = <"Part of an ongoing occurence of an existing problem or diagnosis.">
-				>
-				["at0036"] = <
-					text = <"None">
-					description = <"The problem has had no impact on the subject.">
-				>
-				["at0037"] = <
-					text = <"Insignificant">
-					description = <"The problem has had very little overall impact on the subject's life or health.">
-				>
-				["at0038"] = <
-					text = <"Significant">
-					description = <"The problem has had considerable overall impact on the subject's life or health.">
-				>
-				["at0039"] = <
-					text = <"Life-threatening">
-					description = <"The problem has threatened the subject's life.">
-				>
-				["at0043"] = <
-					text = <"Active status comment">
-					description = <"A text comment on the active status e.g describing the circumstances or evidence for resolution of a problem.">
-				>
-				["at0044"] = <
-					text = <"Fatal">
-					description = <"The problem was fatal to the subject.">
-				>
-				["at0051"] = <
-					text = <"Category">
-					description = <"Cateories of problem/ diagnosis/issue.">
-				>
-				["at0052"] = <
-					text = <"Condition">
-					description = <"The issue is a condition.">
-				>
-				["at0053"] = <
-					text = <"Symptom">
-					description = <"The issue is a symptom.">
-				>
-				["at0054"] = <
-					text = <"Finding">
-					description = <"The issue is a clinical finding.">
-				>
-				["at0055"] = <
-					text = <"Complaint">
-					description = <"The issue is a patient complaint.">
-				>
-				["at0056"] = <
-					text = <"Functional limitation">
-					description = <"The issue is a functional limitation.">
-				>
-				["at0057"] = <
-					text = <"Problem">
-					description = <"The issue is recognised to be causing a problem.">
-				>
-				["at0058"] = <
-					text = <"Diagnosis">
-					description = <"The issue is regarded as a biomedical diagnosis.">
-				>
-				["at0059"] = <
-					text = <"In remission">
-					description = <"The problem or issue is of a recurring nature but is currently quiescent.">
+					text = <"Ongoing episode">
+					description = <"The issue, problem or diagnosis continues, without occurrences of new episodes.">
 				>
 				["at0060"] = <
-					text = <"Temporal context">
-					description = <"Temporal context indicator aligned with SNOMEDCT.">
+					text = <"Current?">
+					description = <"Category that supports division of problems and diagnoses into Current or Past problem lists.">
+					comment = <"Aligned with SNOMEDCT.">
 				>
 				["at0061"] = <
 					text = <"Past">
@@ -314,72 +226,89 @@ ontology
 					description = <"An issue which ocurred at present.">
 				>
 				["at0063"] = <
-					text = <"Episodic care status">
+					text = <"DRG category">
 					description = <"In episodic care contexts (commonly  secondary care) it is common to categorise/ organise problems according to their relationship to the principal problem or diagnosis being addressed during that episode of care. These categories may also be used for clinical coding, reporting and billing purposes.">
 				>
 				["at0064"] = <
-					text = <"Primary diagnosis">
-					description = <"The main condition treated or investigated during the relevant episode of care.">
+					text = <"Principal diagnosis">
+					description = <"The diagnosis determined to be chiefly responsible for occasionaing an episode of admitted patient care, an episode of residential care or an attendance at the health care establishment.">
 				>
 				["at0066"] = <
-					text = <"Co-morbidity">
-					description = <"A co-morbidity is a condition that exists at the start of the episode of care, which requires treatment, diagnostic procedures or increased clinical care/monitoring.">
+					text = <"Secondary diagnosis">
+					description = <"A problem or diagnosis that is occurs at the same time as the primary problem or diagnosis. May also be known as a comorbid condition.">
 				>
-				["at0067"] = <
+				["at0070"] = <
+					text = <"Indeterminate">
+					description = <"It is not possible to determine if this occurrence of the problem or diagnosis is new or ongoing.">
+				>
+				["at0071"] = <
+					text = <"First ever?">
+					description = <"Is this the first ever occurrence of this problem or diagnosis?">
+					comment = <"Record as True if this is the first ever occurrence of this problem or diagnosis.">
+				>
+				["at0073"] = <
+					text = <"Present on admission?">
+					description = <"Was the problem or diagnosis present at admission?">
+					comment = <"Record as True if the problem or diagnosis was present on admission. Used to support identification of in-admission complications among secondary diagnoses that arise during admission.">
+				>
+				["at0076"] = <
 					text = <"Complication">
-					description = <"A complication is a condition not present at the start of the episode of care which arises during the episode of care, or is a result of a procedure or treatment during that episode.">
+					description = <"An unfavorable evolution of a problem or diagnosis.">
 				>
-				["at0068"] = <
-					text = <"Other current problem">
-					description = <"Any other problem or issue deemed significant to the patient's care which does not fall into the one of other categories.">
+				["at0077"] = <
+					text = <"Course">
+					description = <"The pattern or evolution of the problem or diagnosis.">
 				>
-				["at0069"] = <
-					text = <"Primary procedure">
-					description = <"The main procedure performed during the relevant episode of care.">
+				["at0078"] = <
+					text = <"Relapsing">
+					description = <"A recurring problem or diagnosis, with periods of remission in between.">
+				>
+				["at0079"] = <
+					text = <"Chronic">
+					description = <"A problem or diagnosis with persistent or long-lasting effects, or that evolves over time.">
+				>
+				["at0081"] = <
+					text = <"Acute">
+					description = <"A problem or diagnosis with a rapid onset, a short course, or both.">
+				>
+				["at0082"] = <
+					text = <"Unspecified">
+					description = <"Unspecified qualifier that will be renamed, data type selected and potential value sets specified in a template.">
+					comment = <"For example: The boolean data type could be used to signify that the problem/diagnosis can be included in a patient summary; the text data type could be used to categorise in a similar way to 'Current?' or Active?'; and the count data type could be used to assert a priority key or order to problems and diagnoses in a list. If any uses are identified as frequently required, they could be added explicitly to this archetype as an explicit data element.">
 				>
 			>
 		>
 		["sl"] = <
 			items = <
 				["at0000"] = <
-					text = <"*Problem status(en)">
-					description = <"*Additional status and contextual qualifiers factors related to a problem/diagnosis.(en)">
+					text = <"*Problem/Diagnosis status(en)">
+					description = <"*Context- or time-specific qualifiers for a specified problem or diagnosis.(en)">
 				>
 				["at0001"] = <
-					text = <"Epizoda">
-					description = <"Epizoda problema">
+					text = <"*Episodicity(en)">
+					description = <"*Category  new, recurring and ongoing issues, problems or diagnoses.(en)">
+					comment = <"*This data element is usually recorded as part of a clinical consultation.(en)">
 				>
 				["at0003"] = <
-					text = <"Aktivnost">
-					description = <"Stopnja aktivnosti problema">
+					text = <"*Active?(en)">
+					description = <"*Category that supports division of problems and diagnoses into Active or Inactive problem lists.(en)">
 				>
 				["at0004"] = <
-					text = <"*Evolution(en)">
-					description = <"*Records temporal/evidential progress towards identification of the problem or diagnosis, recognising that precise identification may take time to evolve as increasing amounts of evidence become available.(en)">
-				>
-				["at0006"] = <
-					text = <"Prioriteta">
-					description = <"Prioriteta problema">
-				>
-				["at0007"] = <
-					text = <"Povzetek">
-					description = <"Povzetek opisa">
+					text = <"*Phase(en)">
+					description = <"*Stage or phase of diagnostic process.(en)">
+					comment = <"*The phase is usually determined by a combination of the timing of diagnosis plus availability of supporting test results and clinical advice. It can also imply a level of clinical certainty. Terms aligned with SNOMED CT.(en)">
 				>
 				["at0016"] = <
-					text = <"Začetna diagnoza">
-					description = <"Opredelitev začetne diagnoze">
+					text = <"*Preliminary(en)">
+					description = <"*The initial diagnosis made, based on limited available clinical evidence. It may change as test results or advice become available.(en)">
 				>
 				["at0017"] = <
-					text = <"Vmesna diagnoza">
-					description = <"Opredelitev vmesne diagnoze">
+					text = <"*Working(en)">
+					description = <"*Interim diagnosis, based on substantiated clinical evidence but pending further test results or clinical advice. It may still change as test results or advice become available.(en)">
 				>
 				["at0018"] = <
-					text = <"Končna diagnoza">
-					description = <"Opredelitev končne diagnoze">
-				>
-				["at0024"] = <
-					text = <"Vpliv">
-					description = <"Opis vpliva problema/diagnoze">
+					text = <"*Established(en)">
+					description = <"*Final substantiated diagnosis, based on all relevant test results and clinical advice. It is not expected to change.(en)">
 				>
 				["at0026"] = <
 					text = <"Aktiven">
@@ -389,85 +318,18 @@ ontology
 					text = <"Ni aktiven">
 					description = <"Problem trenutno ni aktiven">
 				>
-				["at0028"] = <
-					text = <"Razrešen">
-					description = <"Problem j erazrešen">
-				>
-				["at0033"] = <
-					text = <"Prvič">
-					description = <"Problem se je pojavil prvič">
-				>
 				["at0034"] = <
-					text = <"Nova">
-					description = <"Nova ponovitev starega problema/ ali diagnoze">
+					text = <"*New episode(en)">
+					description = <"*A first occurrence of a new diagnosis or new occurrence of a previous diagnosis. A flag for 'First ever' occurrence can be recorded separately.(en)">
 				>
 				["at0035"] = <
-					text = <"Sedanja">
-					description = <"Del epizode postavljene diagnoze lai problema">
-				>
-				["at0036"] = <
-					text = <"Ni vpliva">
-					description = <"Problem oz. diagnoza nima vpliva">
-				>
-				["at0037"] = <
-					text = <"Nepomemben">
-					description = <"Problem ima nepomemben vpliv">
-				>
-				["at0038"] = <
-					text = <"Pomemben">
-					description = <"Problem ima pomemben vpliv">
-				>
-				["at0039"] = <
-					text = <"Življensko nevaren">
-					description = <"Problem ogroža življenje pacienta">
-				>
-				["at0043"] = <
-					text = <"*Active status comment(en)">
-					description = <"*A text comment on the active status e.g describing the circumstances or evidence for resolution of a problem.(en)">
-				>
-				["at0044"] = <
-					text = <"Fatalen">
-					description = <"Diagnoz aoz problem je fatalen za pacienta">
-				>
-				["at0051"] = <
-					text = <"*Category(en)">
-					description = <"*Cateories of problem/ diagnosis/issue.(en)">
-				>
-				["at0052"] = <
-					text = <"*Condition(en)">
-					description = <"*The issue is a condition.(en)">
-				>
-				["at0053"] = <
-					text = <"*Symptom(en)">
-					description = <"*The issue is a symptom.(en)">
-				>
-				["at0054"] = <
-					text = <"*Finding(en)">
-					description = <"*The issue is a clinical finding.(en)">
-				>
-				["at0055"] = <
-					text = <"*Complaint(en)">
-					description = <"*The issue is a patient complaint.(en)">
-				>
-				["at0056"] = <
-					text = <"*Functional limitation(en)">
-					description = <"*The issue is a functional limitation.(en)">
-				>
-				["at0057"] = <
-					text = <"*Problem(en)">
-					description = <"*The issue is recognised to be causing a problem.(en)">
-				>
-				["at0058"] = <
-					text = <"*Diagnosis(en)">
-					description = <"*The issue is regarded as a biomedical diagnosis.(en)">
-				>
-				["at0059"] = <
-					text = <"*In remission(en)">
-					description = <"*The problem or issue is of a recurring nature but is currently quiescent.(en)">
+					text = <"*Ongoing episode(en)">
+					description = <"*The issue, problem or diagnosis continues, without occurrences of new episodes.(en)">
 				>
 				["at0060"] = <
-					text = <"*Temporal context(en)">
-					description = <"**(en)">
+					text = <"*Current?(en)">
+					description = <"*Category that supports division of problems and diagnoses into Current or Past problem lists.(en)">
+					comment = <"*Aligned with SNOMEDCT.(en)">
 				>
 				["at0061"] = <
 					text = <"*Past(en)">
@@ -478,29 +340,73 @@ ontology
 					description = <"*An issue which ocurred at present.(en)">
 				>
 				["at0063"] = <
-					text = <"*New element(en)">
-					description = <"**(en)">
+					text = <"*DRG category(en)">
+					description = <"*In episodic care contexts (commonly  secondary care) it is common to categorise/ organise problems according to their relationship to the principal problem or diagnosis being addressed during that episode of care. These categories may also be used for clinical coding, reporting and billing purposes.(en)">
 				>
 				["at0064"] = <
-					text = <"*Primary diagnosis(en)">
-					description = <"**(en)">
+					text = <"*Principal diagnosis(en)">
+					description = <"*The diagnosis determined to be chiefly responsible for occasionaing an episode of admitted patient care, an episode of residential care or an attendance at the health care establishment.(en)">
 				>
 				["at0066"] = <
-					text = <"*Co-morbidity(en)">
-					description = <"**(en)">
+					text = <"*Secondary diagnosis(en)">
+					description = <"*A problem or diagnosis that is occurs at the same time as the primary problem or diagnosis. May also be known as a comorbid condition.(en)">
 				>
-				["at0067"] = <
+				["at0070"] = <
+					text = <"*Indeterminate(en)">
+					description = <"*It is not possible to determine if this occurrence of the problem or diagnosis is new or ongoing.(en)">
+				>
+				["at0071"] = <
+					text = <"*First ever?(en)">
+					description = <"*Is this the first ever occurrence of this problem or diagnosis?(en)">
+					comment = <"*Record as True if this is the first ever occurrence of this problem or diagnosis.(en)">
+				>
+				["at0073"] = <
+					text = <"*Present on admission?(en)">
+					description = <"*Was the problem or diagnosis present at admission?(en)">
+					comment = <"*Record as True if the problem or diagnosis was present on admission. Used to support identification of in-admission complications among secondary diagnoses that arise during admission.(en)">
+				>
+				["at0076"] = <
 					text = <"*Complication(en)">
-					description = <"**(en)">
+					description = <"*An unfavorable evolution of a problem or diagnosis.(en)">
 				>
-				["at0068"] = <
-					text = <"*Other/ ongoing Problem(en)">
-					description = <"**(en)">
+				["at0077"] = <
+					text = <"*Course(en)">
+					description = <"*The pattern or evolution of the problem or diagnosis.(en)">
 				>
-				["at0069"] = <
-					text = <"*Primary procedure(en)">
-					description = <"*The main procedure performed during the relevant episode of care.(en)">
+				["at0078"] = <
+					text = <"*Relapsing(en)">
+					description = <"*A recurring problem or diagnosis, with periods of remission in between.(en)">
 				>
+				["at0079"] = <
+					text = <"*Chronic(en)">
+					description = <"*A problem or diagnosis with persistent or long-lasting effects, or that evolves over time.(en)">
+				>
+				["at0081"] = <
+					text = <"*Acute(en)">
+					description = <"*A problem or diagnosis with a rapid onset, a short course, or both.(en)">
+				>
+				["at0082"] = <
+					text = <"*Unspecified(en)">
+					description = <"*Unspecified qualifier that will be renamed, data type selected and potential value sets specified in a template.(en)">
+					comment = <"*For example: The boolean data type could be used to signify that the problem/diagnosis can be included in a patient summary; the text data type could be used to categorise in a similar way to 'Current?' or Active?'; and the count data type could be used to assert a priority key or order to problems and diagnoses in a list. If any uses are identified as frequently required, they could be added explicitly to this archetype as an explicit data element.(en)">
+				>
+			>
+		>
+	>
+	term_bindings = <
+		["SNOMED-CT"] = <
+			items = <
+				["at0001"] = <[SNOMED-CT::288526004]>
+				["at0004"] = <[SNOMED-CT::106229004]>
+				["at0016"] = <[SNOMED-CT::148006]>
+				["at0017"] = <[SNOMED-CT::5558000]>
+				["at0018"] = <[SNOMED-CT::14657009]>
+				["at0060"] = <[SNOMED-CT::410511007]>
+				["at0061"] = <[SNOMED-CT::410513005]>
+				["at0062"] = <[SNOMED-CT::15240007]>
+				["at0077"] = <[SNOMED-CT::288524001]>
+				["at0078"] = <[SNOMED-CT::255227004]>
+				["at0079"] = <[SNOMED-CT::90734009]>
 			>
 		>
 	>
