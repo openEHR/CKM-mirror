@@ -21,20 +21,18 @@ description
 		["date"] = <"2010-11-12">
 	>
 	details = <
+		["sl"] = <
+			language = <[ISO_639-1::sl]>
+			purpose = <"*To provide structured information on time schedules within a single day that is suitable for computation and display for human interpretation.(en)">
+			use = <"">
+			misuse = <"">
+		>
 		["en"] = <
 			language = <[ISO_639-1::en]>
 			purpose = <"To provide structured information on time schedules within a single day that is suitable for computation and display for human interpretation.">
 			use = <"For use with medication orders and other instructions where timing is complex and needs to be computable.">
 			keywords = <"timing", "administration", "dosing", "frequency">
 			misuse = <"">
-			copyright = <"© openEHR Foundation">
-		>
-		["sl"] = <
-			language = <[ISO_639-1::sl]>
-			purpose = <"*To provide structured information on time schedules within a single day that is suitable for computation and display for human interpretation.(en)">
-			use = <"">
-			misuse = <"">
-			copyright = <"© openEHR Foundation">
 		>
 	>
 	lifecycle_state = <"in_development">
@@ -42,12 +40,8 @@ description
 	other_details = <
 		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
 		["revision"] = <"0.0.1-alpha">
-		["build_uid"] = <"57ca4ec5-e09d-47cf-b749-85ffa287af9b">
-		["original_namespace"] = <"org.openehr">
-		["original_publisher"] = <"openEHR Foundation">
-		["MD5-CAM-1.0.1"] = <"DE90A3271AB9E34BAB791CE936EED629">
-		["custodian_namespace"] = <"org.openehr">
-		["custodian_organisation"] = <"openEHR Foundation">
+		["build_uid"] = <"ec6efb57-2e7f-4429-9900-8c3103002ee9">
+		["MD5-CAM-1.0.1"] = <"1D906F9DE286B28DC285F58E7DA5769D">
 	>
 
 definition
@@ -162,6 +156,15 @@ definition
 			ELEMENT[at0026] occurrences matches {0..*} matches {	-- Named time event
 				value matches {
 					DV_TEXT matches {*}
+					DV_CODED_TEXT matches {
+						defining_code matches {
+							[local::
+							at0031, 	-- immediately (stat)
+							at0032, 	-- in the morning
+							at0033, 	-- at night
+							at0034]	-- in the morning and at night
+						}
+					}
 				}
 			}
 			ELEMENT[at0023] occurrences matches {0..1} matches {	-- Exact timing critical
@@ -178,7 +181,7 @@ definition
 					}
 				}
 			}
-			ELEMENT[at0025] occurrences matches {0..1} matches {	-- Trigger condition
+			ELEMENT[at0025] occurrences matches {0..1} matches {	-- As required criterion
 				value matches {
 					DV_TEXT matches {*}
 				}
@@ -212,16 +215,18 @@ ontology
 				["at0024"] = <
 					text = <"As required">
 					description = <"The activity should only occur when the \"as required\" trigger condition is met.">
+					comment = <"Termed 'PRN' in some cultures.">
 				>
 				["at0025"] = <
-					text = <"Trigger condition">
+					text = <"As required criterion">
 					description = <"The condition which triggers an 'as required' activity.">
 					comment = <"e.g. as required for pain.">
 				>
 				["at0026"] = <
 					text = <"Named time event">
 					description = <"A specific, named time event within a single day, when the activity should occur.">
-					comment = <"e.g. before each meal, at bedtime, in the morning.">
+					comment = <"e.g. before each meal, at bedtime, in the morning.
+It is understood that these terms may not equate to the same exact times in different cultures.">
 				>
 				["at0027"] = <
 					text = <"Interval range">
@@ -240,6 +245,22 @@ ontology
 					text = <"Interval">
 					description = <"The time interval between each scheduled activity, limited to a single day.">
 					comment = <"e.g. \"Every 4 hours\".">
+				>
+				["at0031"] = <
+					text = <"immediately (stat)">
+					description = <"Perform the activity immediately.">
+				>
+				["at0032"] = <
+					text = <"in the morning">
+					description = <"Perform the activity in the morning.">
+				>
+				["at0033"] = <
+					text = <"at night">
+					description = <"Perform the activity at night.">
+				>
+				["at0034"] = <
+					text = <"in the morning and at night">
+					description = <"Perform the activity in the morning and at night.">
 				>
 			>
 		>
@@ -265,17 +286,19 @@ ontology
 				>
 				["at0024"] = <
 					text = <"*As required(en)">
-					description = <"*The activity should only occur when the \"as required\" trigger condition is met. (en)">
+					description = <"*The activity should only occur when the \"as required\" trigger condition is met.(en)">
+					comment = <"*Termed 'PRN' in some cultures.(en)">
 				>
 				["at0025"] = <
-					text = <"*Trigger condition(en)">
+					text = <"*As required criterion(en)">
 					description = <"*The condition which triggers an 'as required' activity.(en)">
 					comment = <"*e.g. as required for pain.(en)">
 				>
 				["at0026"] = <
 					text = <"*Named time event(en)">
 					description = <"*A specific, named time event within a single day, when the activity should occur.(en)">
-					comment = <"*e.g. before each meal, at bedtime, in the morning.(en)">
+					comment = <"*e.g. before each meal, at bedtime, in the morning.
+It is understood that these terms may not equate to the same exact times in different cultures.(en)">
 				>
 				["at0027"] = <
 					text = <"*Interval range(en)">
@@ -294,6 +317,22 @@ ontology
 					text = <"*Interval(en)">
 					description = <"*The time interval between each scheduled activity, limited to a single day.(en)">
 					comment = <"*e.g. \"Every 4 hours\".(en)">
+				>
+				["at0031"] = <
+					text = <"*immediately (stat)(en)">
+					description = <"*Perform the activity immediately.(en)">
+				>
+				["at0032"] = <
+					text = <"*in the morning(en)">
+					description = <"*Perform the activity in the morning.(en)">
+				>
+				["at0033"] = <
+					text = <"*at night(en)">
+					description = <"*Perform the activity at night.(en)">
+				>
+				["at0034"] = <
+					text = <"*in the morning and at night(en)">
+					description = <"*Perform the activity in the morning and at night.(en)">
 				>
 			>
 		>
