@@ -2,7 +2,7 @@
 	openEHR-EHR-CLUSTER.timing_repetition.v0
 
 concept
-	[at0000]	-- Timing repetition pattern
+	[at0000]	-- Timing repetition
 language
 	original_language = <[ISO_639-1::en]>
 description
@@ -18,19 +18,24 @@ description
 			purpose = <"To record details of scheduled activities over periods longer than a single day.">
 			use = <"">
 			misuse = <"">
+			copyright = <"© openEHR Foundation">
 		>
 	>
 	lifecycle_state = <"in_development">
 	other_contributors = <>
 	other_details = <
-		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
 		["revision"] = <"0.0.1-alpha">
-		["build_uid"] = <"a2cc74d2-2ada-4134-9387-1b33833e0b26">
-		["MD5-CAM-1.0.1"] = <"D09D8B270B903F78D9CE0840DBD34FCF">
+		["build_uid"] = <"7f3def4d-16d7-41ae-8dc0-7f303f360db6">
+		["original_namespace"] = <"org.openehr">
+		["original_publisher"] = <"openEHR Foundation">
+		["MD5-CAM-1.0.1"] = <"18AAB8D98F91DAFA9ECE064C7373E4C6">
+		["custodian_namespace"] = <"org.openehr">
+		["custodian_organisation"] = <"openEHR Foundation">
 	>
 
 definition
-	CLUSTER[at0000] matches {	-- Timing repetition pattern
+	CLUSTER[at0000] matches {	-- Timing repetition
 		items cardinality matches {1..*; unordered} matches {
 			ELEMENT[at0001] occurrences matches {0..*} matches {	-- Specific date
 				value matches {
@@ -40,7 +45,7 @@ definition
 			ELEMENT[at0002] occurrences matches {0..1} matches {	-- Repetition interval
 				value matches {
 					DV_DURATION matches {
-						value matches {PYMW/|>=P0W|}
+						value matches {PYMWD/|>=P0W|}
 					}
 				}
 			}
@@ -54,7 +59,7 @@ definition
 			ELEMENT[at0004] occurrences matches {0..*} matches {	-- Specific day of month
 				value matches {
 					DV_COUNT matches {
-						magnitude matches {|0..31|}
+						magnitude matches {|1..31|}
 					}
 				}
 			}
@@ -68,7 +73,32 @@ definition
 					ELEMENT[at0009] occurrences matches {0..1} matches {	-- Start interval
 						value matches {
 							DV_DURATION matches {
-								value matches {PYMWD/|>=P0M|}
+								value matches {PYMWD}
+							}
+						}
+					}
+				}
+			}
+			CLUSTER[at0010] occurrences matches {0..*} matches {	-- On /off cycle
+				items cardinality matches {1..*; unordered} matches {
+					ELEMENT[at0011] occurrences matches {0..1} matches {	-- On
+						value matches {
+							DV_DURATION matches {
+								value matches {PYMWD/|>=P0Y|}
+							}
+						}
+					}
+					ELEMENT[at0012] occurrences matches {0..1} matches {	-- Off
+						value matches {
+							DV_DURATION matches {
+								value matches {PYWD/|>=P0Y|}
+							}
+						}
+					}
+					ELEMENT[at0013] occurrences matches {0..1} matches {	-- Repetitions
+						value matches {
+							DV_COUNT matches {
+								magnitude matches {|>=0|}
 							}
 						}
 					}
@@ -83,7 +113,7 @@ ontology
 		["en"] = <
 			items = <
 				["at0000"] = <
-					text = <"Timing repetition pattern">
+					text = <"Timing repetition">
 					description = <"Details of timing schedules repeating over periods longer than a single day.">
 				>
 				["at0001"] = <
@@ -116,8 +146,25 @@ ontology
 				>
 				["at0009"] = <
 					text = <"Start interval">
-					description = <"The period of time before or after the named event when the activity should take place.">
-					comment = <"e.g. '3 days after onset of menstruation', '2 weeks prior to admission'.">
+					description = <"The period of time before or after the named event when the activity should take place. Negative durations can be used to signifify that the activity should be taken before a known event.">
+					comment = <"e.g. '3 days after onset of menstruation = menstrual onset + 3 days', '2 weeks prior to admission= admission -2 weeks'.">
+				>
+				["at0010"] = <
+					text = <"On /off cycle">
+					description = <"A cycle of activity where an on-off pattern is required.">
+					comment = <"e.g. 'take 3 tablets daily for 1 week, omit a week, then take 3 tablets daily for 1 week, repeat 4 times'">
+				>
+				["at0011"] = <
+					text = <"On">
+					description = <"The period of time for which the activity should take place.">
+				>
+				["at0012"] = <
+					text = <"Off">
+					description = <"The period of time for which the activity should NOT take place.">
+				>
+				["at0013"] = <
+					text = <"Repetitions">
+					description = <"The number of repetitions of the on/off cycle.">
 				>
 			>
 		>
