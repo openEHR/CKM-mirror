@@ -34,26 +34,30 @@ The content is potentially complex. Where the content is re-usable in other cont
 			misuse = <"Not to be used to record administration, use or dispensing. (For those use ACTION.medication)
 
 Not to be used to record ordering of blood products, implants or major devices such as pacemakers and defibrillators, etc.">
+			copyright = <"© openEHR Foundation">
 		>
 	>
 	lifecycle_state = <"in_development">
 	other_contributors = <"Silje Ljosland Bakke, Helse Bergen HF, Norway (Editor)", "John Bennett, NEHTA, Australia", "Sharmila Biswas, Australia", "Stephen Chu, NEHTA, Australia (Editor)", "Matthew Cordell, NEHTA, Australia", "Gail Easterbrook, Flinders Medical Centre, Australia", "David Evans, Queensland Health, Australia", "Sarah Gaunt, NEHTA, Australia", "Trina Gregory, cpc, Australia", "Sam Heard, Ocean Informatics, Australia (Editor)", "Mary Kelaher, NEHTA, Australia", "Robert L'egan, NEHTA, Australia", "Heather Leslie, Ocean Informatics, Australia (Editor)", "Susan McIndoe, Royal District Nursing Service, Australia", "David McKillop, NEHTA, Australia", "Chris Mitchell, RACGP, Australia", "Stewart Morrison, NEHTA, Australia", "Chris Pearce, Melbourne East GP Network, Australia", "Camilla Preeston, Royal Australian College of General Practitioners, Australia", "Margaret Prichard, NEHTA, Australia", "Cathy Richardson, NEHTA, Australia", "Robyn Richards, NEHTA - Clinical Terminology, Australia", "John Taylor, NEHTA, Australia", "Richard Townley-O'Neill, NEHTA, Australia (Editor)", "Kylie Young, The Royal Australian College of General Practitioners, Australia", "Ian McNicoll, freshEHR Clinical Informatics Ltd., UK">
 	other_details = <
-		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
 		["revision"] = <"0.0.1-alpha">
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
 		["references"] = <"openEHR Foundation Medication archetypes http://www.openehr.org/knowledge
 NEHTA's Therapeutic Good Use Data Group from the NEHTA Website http://www.nehta.gov.au
 Intermountain Healthcare Medication order model, Personal Communication to Sam Heard by Dr Stan Huff.
 Royal Australian College of General Practitioners. Fact Sheet: Medicines List. 2010.">
-		["build_uid"] = <"22c9cd94-3466-43a8-b2c4-04769d9913bd">
-		["MD5-CAM-1.0.1"] = <"12B45CF421EC99D529C67338D50F30B6">
+		["build_uid"] = <"bd4b7138-b5b8-45e4-9326-fd02ea19e343">
+		["original_namespace"] = <"org.openehr">
+		["original_publisher"] = <"openEHR Foundation">
+		["MD5-CAM-1.0.1"] = <"E468124C0114FC537497074B390D0EED">
+		["custodian_namespace"] = <"org.openehr">
+		["custodian_organisation"] = <"openEHR Foundation">
 	>
 
 definition
 	INSTRUCTION[at0000] matches {	-- Medication order
 		activities cardinality matches {0..*; unordered} matches {
 			ACTIVITY[at0001] occurrences matches {0..*} matches {	-- Order
-				action_archetype_id matches {/openEHR-EHR-ACTION\.medication\.v0/}
 				description matches {
 					ITEM_TREE[at0002] matches {	-- Tree
 						items cardinality matches {1..*; unordered} matches {
@@ -279,9 +283,9 @@ definition
 											DV_COUNT matches {*}
 										}
 									}
-									allow_archetype CLUSTER[at0112] occurrences matches {0..1} matches {	-- Course summary
+									allow_archetype CLUSTER[at0112] occurrences matches {0..*} matches {	-- Course summary
 										include
-											archetype_id/value matches {/.*/}
+											archetype_id/value matches {/openEHR-EHR-CLUSTER\.medication_course_summary(-[a-zA-Z0-9_]+)*\.v0/}
 									}
 								}
 							}
@@ -483,11 +487,12 @@ ontology
 				["at0009"] = <
 					text = <"Dose directions description">
 					description = <"A complete narrative description of how much, when and how to use the medicine, vaccine or other therapeutic good.">
-					comment = <"** Something around matching the computable form">
+					comment = <"Where the medication dose directions are fully carried by the structured, computable dose directions, this element should carry the narrative equivalent, generally auto-generated. Where it is not possible to represent the intended dosage directions fully in computable form, these should only be carried here only in narrative form. ">
 				>
 				["at0011"] = <
 					text = <"Order start criterion">
 					description = <"A condition which, when met, requires the start of administration or use.">
+					comment = <"e.g. 'Start if symptoms recur'.">
 				>
 				["at0012"] = <
 					text = <"Order start date/time">
@@ -500,11 +505,12 @@ ontology
 				["at0016"] = <
 					text = <"Order stop criterion">
 					description = <"A condition which, when met, requires the cessation of administration or use.">
+					comment = <"e.g. 'Stop after symptoms disappear''.">
 				>
 				["at0018"] = <
 					text = <"Clinical indication">
 					description = <"A reason for ordering the medicine, vaccine or other therapeutic good.">
-					comment = <"e.g. 'stop when symptoms have resolved'.">
+					comment = <"e.g. 'Angina'.">
 				>
 				["at0037"] = <
 					text = <"Dose timing">
@@ -518,6 +524,7 @@ ontology
 				["at0044"] = <
 					text = <"Additional instruction">
 					description = <"An additional statement on how to use the medicine, vaccine or other therapeutic good.">
+					comment = <"e.g. 'take with food'">
 				>
 				["at0047"] = <
 					text = <"Parsable dose directions">
@@ -532,7 +539,8 @@ ontology
 				["at0051"] = <
 					text = <"Maximum dose">
 					description = <"Details of maximum dose allowed over a defined period.">
-					comment = <"Multiple maximum doses may be specified for different time periods.">
+					comment = <"e.g. 'up to 1gram per day'.
+Multiple maximum doses may be specified for different time periods.">
 				>
 				["at0053"] = <
 					text = <"Allowed period">
@@ -560,6 +568,7 @@ ontology
 				["at0060"] = <
 					text = <"Administrations already complete">
 					description = <"The number of administrations of the medicine, vaccine or other therapeutic good that have been administered as part of the overall course but prior to this instruction.">
+					comment = <"e.g. To record that the patient had been taking antibiotics three days prior to hospital admission, in the context of a 7-day course.">
 				>
 				["at0062"] = <
 					text = <"Medication safety">
@@ -576,6 +585,7 @@ ontology
 				["at0066"] = <
 					text = <"Direction duration">
 					description = <"The duration for which this direction should be continued.">
+					comment = <"e.g. 'for 7 days','Indefinite'.">
 				>
 				["at0067"] = <
 					text = <"Indefinite">
@@ -626,6 +636,7 @@ ontology
 				["at0102"] = <
 					text = <"Dose administration duration">
 					description = <"The period of time over which a single dose of the medicine  should be administered.">
+					comment = <"e.g. 'Administer over 10 minutes'.">
 				>
 				["at0105"] = <
 					text = <"Patient instruction">
@@ -638,6 +649,7 @@ ontology
 				["at0107"] = <
 					text = <"Monitoring instruction">
 					description = <"An additional instruction which gives advice on appropriate monitoring of the medication e.g. blood testing.">
+					comment = <"e.g. 'Please check renal function in 2 weeks'.">
 				>
 				["at0108"] = <
 					text = <"Administration instruction">
@@ -748,7 +760,7 @@ ontology
 				["at0148"] = <
 					text = <"Therapeutic intent">
 					description = <"The overall theraputic intent of the medication.">
-					comment = <"e.g. 'palliative', 'low-dose propylaxis', 'baseline electrolyte infusion', 'active medication infusion'">
+					comment = <"e.g. 'palliative', 'low-dose propylaxis'.">
 				>
 			>
 		>
