@@ -46,10 +46,10 @@ Not to be used to record ordering of blood products, implants or major devices s
 NEHTA's Therapeutic Good Use Data Group from the NEHTA Website http://www.nehta.gov.au
 Intermountain Healthcare Medication order model, Personal Communication to Sam Heard by Dr Stan Huff.
 Royal Australian College of General Practitioners. Fact Sheet: Medicines List. 2010.">
-		["build_uid"] = <"bd4b7138-b5b8-45e4-9326-fd02ea19e343">
-		["original_namespace"] = <"org.openehr">
+		["build_uid"] = <"c15a073d-3ce5-4fb8-abd5-01570d9fa2a1">
 		["original_publisher"] = <"openEHR Foundation">
-		["MD5-CAM-1.0.1"] = <"E468124C0114FC537497074B390D0EED">
+		["original_namespace"] = <"org.openehr">
+		["MD5-CAM-1.0.1"] = <"55D253F686EDA57E630778E38E316A59">
 		["custodian_namespace"] = <"org.openehr">
 		["custodian_organisation"] = <"openEHR Foundation">
 	>
@@ -198,6 +198,15 @@ definition
 													DV_TEXT matches {*}
 												}
 											}
+											ELEMENT[at0153] occurrences matches {0..1} matches {	-- Maximum product percentage
+												value matches {
+													DV_PROPORTION matches {
+														numerator matches {|0.0..100.0|; 100.0}
+														is_integral matches {False}
+														type matches {2}
+													}
+												}
+											}
 											ELEMENT[at0053] occurrences matches {0..1} matches {	-- Allowed period
 												value matches {
 													DV_DURATION matches {
@@ -218,6 +227,28 @@ definition
 										items cardinality matches {1..*; unordered} matches {
 											use_node ELEMENT occurrences matches {0..1} /activities[at0001]/description[at0002]/items[at0062]/items[at0051]/items[at0130]	-- /activities[Order]/description[Tree]/items[Medication safety]/items[Maximum dose]/items[Maximum amount]
 											use_node ELEMENT occurrences matches {0..1} /activities[at0001]/description[at0002]/items[at0062]/items[at0051]/items[at0146]	-- /activities[Order]/description[Tree]/items[Medication safety]/items[Maximum dose]/items[Maximum amount dose unit]
+										}
+									}
+									CLUSTER[at0150] occurrences matches {0..1} matches {	-- Titration
+										items cardinality matches {1..*; unordered} matches {
+											ELEMENT[at0151] occurrences matches {0..1} matches {	-- Total daily dose amount
+												value matches {
+													C_DV_QUANTITY <
+														property = <[openehr::380]>
+														list = <
+															["1"] = <
+																units = <"1">
+																magnitude = <|>=0.0|>
+															>
+														>
+													>
+												}
+											}
+											ELEMENT[at0152] occurrences matches {0..1} matches {	-- Total daily dose unit
+												value matches {
+													DV_TEXT matches {*}
+												}
+											}
 										}
 									}
 								}
@@ -398,6 +429,11 @@ definition
 													}
 												}
 											}
+											ELEMENT[at0155] occurrences matches {0..1} matches {	-- Earliest dispensing date
+												value matches {
+													DV_DATE_TIME matches {*}
+												}
+											}
 											ELEMENT[at0140] occurrences matches {0..1} matches {	-- Dispensing supply description
 												value matches {
 													DV_TEXT matches {*}
@@ -410,6 +446,11 @@ definition
 											DV_BOOLEAN matches {
 												value matches {True, False}
 											}
+										}
+									}
+									ELEMENT[at0154] occurrences matches {0..1} matches {	-- Substitution reason
+										value matches {
+											DV_TEXT matches {*}
 										}
 									}
 									ELEMENT[at0139] occurrences matches {0..1} matches {	-- Priority
@@ -761,6 +802,33 @@ Multiple maximum doses may be specified for different time periods.">
 					text = <"Therapeutic intent">
 					description = <"The overall theraputic intent of the medication.">
 					comment = <"e.g. 'palliative', 'low-dose propylaxis'.">
+				>
+				["at0150"] = <
+					text = <"Titration">
+					description = <"Details of the amount of medication which will be taken by the patient if the order is followed.">
+					comment = <"This may be used both to titrate drug dosage to wards maximal effectiveness and to prevent daily over-dosage of potentially toxic medicataions such as anti-psychotics.">
+				>
+				["at0151"] = <
+					text = <"Total daily dose amount">
+					description = <"The amount of medication which will be taken each day if the medication is administered as intended.">
+				>
+				["at0152"] = <
+					text = <"Total daily dose unit">
+					description = <"The dose unit associated with the total daily dose amount.">
+					comment = <"The dose units are normally scientific units such as mg, ml rather than e.g. 'tablets'.">
+				>
+				["at0153"] = <
+					text = <"Maximum product percentage">
+					description = <"Where diferent drugs of the same class are used, e.g. anti-pschotics, each drug may be allocated a nominal percentage figure which represents its contribution to a maximal 100% dose (normally daily). In some circumstances the ordering clinician may want tp override the 100% limit to a greater or smaller amount.">
+				>
+				["at0154"] = <
+					text = <"Substitution reason">
+					description = <"The reason for a substitution or non-substitution decision.">
+				>
+				["at0155"] = <
+					text = <"Earliest dispensing date">
+					description = <"The earliest date from which the medication can be dispensed.">
+					comment = <"Often used to prevent early dispensing of medications with potential for abuse e.g. Benzodiazepines or analgesics.">
 				>
 			>
 		>
