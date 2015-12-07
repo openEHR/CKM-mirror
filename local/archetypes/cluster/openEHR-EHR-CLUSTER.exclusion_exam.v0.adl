@@ -18,28 +18,28 @@ description
 			purpose = <"To record a positive statement that the physical examination, or a specified part of the physical examination, was not performed.">
 			use = <"Use to record in a clinical examination that the physical examination, or a specified part of the physical examination, was not performed, with an optional statement about the reason for the non-performance.
 
-This archetype has been designed to be used to allow recording of 'no examination was done' at multiple levels of the examination process. Inserting this archetype into the Examination Detail' SLOT within OBSERVATION.exam allows for recording that no physical examination was performed. It follows that inserting this archeytpe into the Details SLOT of any examination-related CLUSTER archetype allows for recording that no physical examination was performed only for the part of examination specified by that archetype.
+This archetype has been designed to be used to allow recording of 'no examination was done' at multiple levels of the examination process. It will never be used as a stand-alone archetype but always inside an examination archetype that provides the context for the examination being performed. For example, insertion of this archetype into the Examination Detail' SLOT within OBSERVATION.exam allows for recording that no physical examination was performed. Similarly, insertion of this archetype into the Details SLOT of any examination-related CLUSTER archetype, such as CLUSTER.exam_eye_pupil, allows recording that no physical examination was performed only for examination of a specified pupil, perhaps because a facial injury prevented the pupil being visualised.
 
 In particular, this archetype has specifically been designed to avoid the need to use flags or terminology to express negation about a record of physical examination within the health record.
 
 It is reasonable to assume that if the examination was partially performed, then only data about the examination performed will be recorded. If the examination was difficult to perform, for example an uncooperative patient, then this information can be included in the overall 'Confounding Factors' data element in the root OBSERVATION.exam archetype or in the 'Comment' data element in each examination CLUSTER archetype.">
 			keywords = <"exclusion", "exam", "examination", "done", "performed">
-			misuse = <"Not to be used to record positive statements about findings on physical examination.
+			misuse = <"Not to be used to record positive statements about findings observed on physical examination. Use the container archetype OBSERVATION.exam and/or the family of CLUSTER examination archetypes, based on the CLUSTER.exam_XYZ pattern, for this purpose. For example: CLUSTER.exam_tympanic_membrane; CLUSTER.exam-ears; or CLUSTER.exam_heart.
 
 Not to be used to record the exclusion or absence of adverse reactions, family history, medication use, procedures, problems or diagnoses in the subject etc - use specific specialisations of this archetype for this purpose.">
-			copyright = <"© NEHTA, openEHR Foundation">
+			copyright = <"© National E-Health Transition Authority, openEHR Foundation">
 		>
 	>
 	lifecycle_state = <"in_development">
-	other_contributors = <>
+	other_contributors = <"Vebjoern Arntzen, Oslo university hospital, Norway", "Koray Atalag, University of Auckland, New Zealand", "Silje Ljosland Bakke, National ICT Norway, Norway (openEHR Editor)", "Lars Bitsch-Larsen, Haukeland University hospital, Norway", "Heather Grain, Llewelyn Grain Informatics, Australia", "Evelyn Hovenga, EJSH Consulting, Australia", "Lars Karlsen, DIPS ASA, Norway", "Heather Leslie, Ocean Informatics, Australia (openEHR Editor)", "Ian McNicoll, freshEHR Clinical Informatics, United Kingdom (openEHR Editor)", "Bjoern Naess, DIPS ASA, Norway", "Andrej Orel, Marand d.o.o., Slovenia">
 	other_details = <
 		["current_contact"] = <"Heather Leslie, Ocean Informatics, heather.leslie@oceaninformatics.com">
 		["revision"] = <"0.0.1-alpha">
 		["references"] = <"Derived from: Exclusion of examination, Draft Archetype [Internet]. nehta, Australia, nehta Clinical Knowledge Manager [cited: 2015-11-23]. Available from: http://dcm.nehta.org.au/ckm/#showArchetype_1013.1.1383">
-		["build_uid"] = <"f58cee4d-3370-4a7f-9399-bed2d7db6836">
-		["original_namespace"] = <"org.openehr">
+		["build_uid"] = <"ef8543a7-64d7-4e9d-a8fa-2efb4896630d">
 		["original_publisher"] = <"openEHR Foundation">
-		["MD5-CAM-1.0.1"] = <"D1F2AE8BE99B5F12F94BE553869566ED">
+		["original_namespace"] = <"org.openehr">
+		["MD5-CAM-1.0.1"] = <"0AEFD2D69F6934CF40AB77F4B3DD3CD3">
 		["custodian_namespace"] = <"org.openehr">
 		["custodian_organisation"] = <"openEHR Foundation">
 	>
@@ -47,7 +47,7 @@ Not to be used to record the exclusion or absence of adverse reactions, family h
 definition
 	CLUSTER[at0000] matches {	-- Exclusion of examination
 		items cardinality matches {1..*; unordered} matches {
-			ELEMENT[at0001] occurrences matches {0..1} matches {	-- Examination not done
+			ELEMENT[at0001] matches {	-- Examination not done
 				value matches {
 					DV_BOOLEAN matches {
 						value matches {True}
@@ -61,7 +61,6 @@ definition
 			}
 		}
 	}
-
 
 
 ontology
