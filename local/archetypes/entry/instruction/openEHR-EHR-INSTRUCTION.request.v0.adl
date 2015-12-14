@@ -39,10 +39,10 @@ description
 			language = <[ISO_639-1::en]>
 			purpose = <"Generic framework for a request for a health-related service to be supplied by a healthcare provider or agency.">
 			use = <"Use to record a request for a health-related service. This archetype has been designed as a framework that can be used as the basis for:
-- a request from one healthcare provider or agency to another healthcare provider or agency for a health-related service. For example: a request for transfer of care to an emergency department; a referral for a second clinical opinion; or provision of home services from a municipal council; or
-- a follow up service to be scheduled for the same healthcare provider or agency. For example: a review appointment in outpatients in 6 weeks. 
+- a request from one healthcare provider or agency to another healthcare provider or agency for a health-related service - for example, a request for transfer of care to an emergency department, a referral for a second clinical opinion, or provision of home services from a municipal council; or
+- a follow up service to be scheduled for the same healthcare provider or agency - for example, a review appointment in outpatients in 6 weeks. 
 
-In many situations it will be possible to record the steps that occur as part of this request being carried out using the corresponding generic ACTION.request. However, in many situations the ACTION will need to be specific for purpose as the data recording required to capture provision of many health-related  services will need quite unique data elements, data recording patterns or pathway steps. For example: ACTION.screening or ACTION.health_education.">
+In many situations it will be possible to record the steps that occur as part of this request being carried out using the corresponding generic ACTION.request. However, there will be many occasions where the required ACTION archetype will be very specific for purpose, as the data requirements for recording provision of many health-related services will need quite unique data elements, recording patterns or pathway steps. For example: ACTION.screening or ACTION.health_education.">
 			keywords = <"request", "order", "service", "provide", "referral">
 			misuse = <"Not to be used for requests which have a specific specialisation - for example:
 - Laboratory test request - use the INSTRUCTION.request-laboratory_test archetype;
@@ -57,10 +57,10 @@ In many situations it will be possible to record the steps that occur as part of
 		["current_contact"] = <"Heather Leslie, Ocean Informatics<heather.leslie@oceaninformatics.com>">
 		["revision"] = <"0.0.1-alpha">
 		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
-		["build_uid"] = <"5d232df5-3bfa-480e-8a2d-5e0faadd4f37">
+		["build_uid"] = <"3f4d662a-a273-442b-af96-5312246f78e5">
 		["original_publisher"] = <"openEHR Foundation">
 		["original_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"D17A3462FD45B3F04608AACC093BFBFF">
+		["MD5-CAM-1.0.1"] = <"C181B6C9E379899299B8FB6559E37388">
 		["custodian_namespace"] = <"org.openehr">
 		["custodian_organisation"] = <"openEHR Foundation">
 	>
@@ -169,6 +169,10 @@ definition
 		protocol matches {
 			ITEM_TREE[at0008] matches {	-- Tree
 				items cardinality matches {1..*; unordered} matches {
+					allow_archetype CLUSTER[at0112] occurrences matches {0..*} matches {	-- Extension
+						include
+							archetype_id/value matches {/.*/}
+					}
 					ELEMENT[at0010] occurrences matches {0..1} matches {	-- Requestor Identifier
 						value matches {
 							DV_TEXT matches {*}
@@ -195,10 +199,6 @@ definition
 					allow_archetype CLUSTER[at0128] occurrences matches {0..*} matches {	-- Distribution list for response
 						include
 							archetype_id/value matches {/openEHR-EHR-CLUSTER\.distribution\.v1/}
-					}
-					allow_archetype CLUSTER[at0112] occurrences matches {0..*} matches {	-- Extension
-						include
-							archetype_id/value matches {/.*/}
 					}
 				}
 			}
@@ -238,7 +238,7 @@ ontology
 				["at0040"] = <
 					text = <"Service due">
 					description = <"The date/time, or acceptable interval of date/time, for provision of the service.">
-					comment = <"In practice, clinicians will often think in terms of ordering services in inexact terms, for example: review in 3 months, 6 months or 12 months. As clinical systems need more exact parameters to operate on, this '3 month' will be converted to an exact date 3 months from the date of recording and stored using this data element.">
+					comment = <"In practice, clinicians will often think in terms of ordering services as approximate timing, for example: review in 3 months, 6 months or 12 months. As clinical systems need more exact parameters to operate on, this '3 months' will usually be converted to an exact date 3 months from the date of recording and stored using this data element.">
 				>
 				["at0062"] = <
 					text = <"Reason for request">
@@ -247,7 +247,7 @@ ontology
 				>
 				["at0064"] = <
 					text = <"Reason description">
-					description = <"A narrative description about the reason for request.">
+					description = <"Narrative description about the reason for request.">
 				>
 				["at0065"] = <
 					text = <"Intent">
@@ -322,18 +322,18 @@ Status is used to denote whether this is the initial request, or a follow-up req
 				>
 				["at0144"] = <
 					text = <"Service period expiry">
-					description = <"The date/time that marks the conclusion of the valid period for delivery of this service.">
+					description = <"The date/time that marks the conclusion of the valid period of time for delivery of this service.">
 					comment = <"This date/time is the equivalent to the latest possible date for service delivery or to the date of expiry for this request. For example: a service may be required to be completed before another event, such as scheduled surgery.">
 				>
 				["at0145"] = <
 					text = <"Service period start">
-					description = <"The date/time that marks the beginning of the valid period during which this service may be delivered.">
+					description = <"The date/time that marks the beginning of the valid period of time for delivery of this service.">
 					comment = <"This date/time is the equivalent to the earliest possible date for service delivery. For example: sometimes a certain amount of time must pass before a service can be performed, for example some procedures can only be performed once the patient has stopped taking medications for a specific amount of time.">
 				>
 				["at0147"] = <
 					text = <"Indefinite?">
 					description = <"The valid period for this request is open ended and has no date of expiry.">
-					comment = <"Record as TRUE if the timing of the service is critical for clinical safety or wellbeing.">
+					comment = <"Record as TRUE to record explicity that the request has no expiry date.">
 				>
 				["at0148"] = <
 					text = <"Service type">
@@ -376,7 +376,7 @@ Status is used to denote whether this is the initial request, or a follow-up req
 				["at0040"] = <
 					text = <"*Service due(en)">
 					description = <"*The date/time, or acceptable interval of date/time, for provision of the service.(en)">
-					comment = <"*In practice, clinicians will often think in terms of ordering services in inexact terms, for example: review in 3 months, 6 months or 12 months. As clinical systems need more exact parameters to operate on, this '3 month' will be converted to an exact date 3 months from the date of recording and stored using this data element.(en)">
+					comment = <"*In practice, clinicians will often think in terms of ordering services as approximate timing, for example: review in 3 months, 6 months or 12 months. As clinical systems need more exact parameters to operate on, this '3 months' will usually be converted to an exact date 3 months from the date of recording and stored using this data element.(en)">
 				>
 				["at0062"] = <
 					text = <"*Reason for request(en)">
@@ -385,7 +385,7 @@ Status is used to denote whether this is the initial request, or a follow-up req
 				>
 				["at0064"] = <
 					text = <"*Reason description(en)">
-					description = <"*A narrative description about the reason for request.(en)">
+					description = <"*Narrative description about the reason for request.(en)">
 				>
 				["at0065"] = <
 					text = <"*Intent(en)">
@@ -459,18 +459,18 @@ Status is used to denote whether this is the initial request, or a follow-up req
 				>
 				["at0144"] = <
 					text = <"*Service period expiry(en)">
-					description = <"*The date/time that marks the conclusion of the valid period for delivery of this service.(en)">
+					description = <"*The date/time that marks the conclusion of the valid period of time for delivery of this service.(en)">
 					comment = <"*This date/time is the equivalent to the latest possible date for service delivery or to the date of expiry for this request. For example: a service may be required to be completed before another event, such as scheduled surgery.(en)">
 				>
 				["at0145"] = <
 					text = <"*Service period start(en)">
-					description = <"*The date/time that marks the beginning of the valid period during which this service may be delivered.(en)">
+					description = <"*The date/time that marks the beginning of the valid period of time for delivery of this service.(en)">
 					comment = <"*This date/time is the equivalent to the earliest possible date for service delivery. For example: sometimes a certain amount of time must pass before a service can be performed, for example some procedures can only be performed once the patient has stopped taking medications for a specific amount of time.(en)">
 				>
 				["at0147"] = <
 					text = <"*Indefinite?(en)">
 					description = <"*The valid period for this request is open ended and has no date of expiry.(en)">
-					comment = <"*Record as TRUE if the timing of the service is critical for clinical safety or wellbeing.(en)">
+					comment = <"*Record as TRUE to record explicity that the request has no expiry date.(en)">
 				>
 				["at0148"] = <
 					text = <"*Service type(en)">
