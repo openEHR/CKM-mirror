@@ -35,12 +35,14 @@ description
 		>
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"To record clinical context-specific or time-specific status qualifiers for a specified problem or diagnosis.">
-			use = <"Use to record context-specific or time-specific qualifiers that can be used to provide additional detail when recording a problem or diagnosis that are relevant at the time of recording or within the clinical context where it is recorded, but which may not be appropriate to assume as appropriate at another time or in another clinical context.
+			purpose = <"To record one or more clinical context-specific or time-specific status qualifiers for a specified problem or diagnosis.">
+			use = <"Use to record one or more relevant context-specific or time-specific qualifiers that provide additional detail which are relevant at the time of recording a problem or diagnosis, or within the clinical context where it is recorded, but which may not be appropriate at another time or in another clinical context.
 
 This archetype is designed to be included in Status SLOT in the EVALUATION.problem_diagnosis archetype.
 
 These status qualifiers should be used with care as they are variably applied in practice and interoperability cannot be assured unless usage guidelines are clearly defined within the clinical community in which the 'Problem/Diagnosis' and 'Problem status' archetype pair may be shared.
+
+Full DRG coding will require the DRG data elements from this archetype and the equivalent CLUSTER.procedure_status archetype used within the ACTION.procedure archetype, plus attributes about the patient.
 
 The 'Unspecified' data element has been added to support addition of other qualifiers that might only be used locally or where the use case has not been clearly established at the time of this archetype being published. As other qualifiers are identified they can be added to this archetype as a backwardly compatible revision.">
 			keywords = <"problem", "active", "inactive", "status", "episode", "diagnosis">
@@ -49,14 +51,14 @@ The 'Unspecified' data element has been added to support addition of other quali
 		>
 	>
 	lifecycle_state = <"in_development">
-	other_contributors = <"Nadim Anani, Karolinska Institutet, Sweden", "Vebjoern Arntzen, Oslo university hospital, Norway", "Koray Atalag, University of Auckland, New Zealand", "Silje Ljosland Bakke, National ICT Norway, Norway (openEHR Editor)", "Lars Bitsch-Larsen, Haukeland University hospital, Norway", "Aitor Eguzkitza, UPNA (Public University of Navarre) - CHN (Complejo Hospitalario de Navarra), Spain", "Einar Fosse, National Centre for Integrated Care and Telemedicine, Norway", "Heather Grain, Llewelyn Grain Informatics, Australia", "Sam Heard, Ocean Informatics, Australia", "Lars Karlsen, DIPS ASA, Norway", "Shinji Kobayashi, Kyoto University, Japan", "Sabine Leh, Haukeland University Hospital, Department of Pathology, Norway", "Heather Leslie, Ocean Informatics, Australia (openEHR Editor)", "Hugh Leslie, Ocean Informatics, Australia", "Ian McNicoll, freshEHR Clinical Informatics, United Kingdom (openEHR Editor)", "Andrej Orel, Marand d.o.o., Slovenia", "Jussara Rotzsch, UNB, Brazil", "Anoop Shah, University College London, United Kingdom", "Norwegian Review Summary, Nasjonal IKT, Norway", "John Tore Valand, Helse Bergen, Norway (openEHR Editor)">
+	other_contributors = <"Nadim Anani, Karolinska Institutet, Sweden", "Vebjoern Arntzen, Oslo university hospital, Norway", "Koray Atalag, University of Auckland, New Zealand", "Silje Ljosland Bakke, National ICT Norway, Norway (openEHR Editor)", "Lars Bitsch-Larsen, Haukeland University hospital, Norway", "Aitor Eguzkitza, UPNA (Public University of Navarre) - CHN (Complejo Hospitalario de Navarra), Spain", "Einar Fosse, National Centre for Integrated Care and Telemedicine, Norway", "Heather Grain, Llewelyn Grain Informatics, Australia", "Sam Heard, Ocean Informatics, Australia", "Lars Karlsen, DIPS ASA, Norway", "Shinji Kobayashi, Kyoto University, Japan", "Sabine Leh, Haukeland University Hospital, Department of Pathology, Norway", "Heather Leslie, Ocean Informatics, Australia (openEHR Editor)", "Hugh Leslie, Ocean Informatics, Australia", "chunlan ma, Ocean Informatics, Australia", "Ian McNicoll, freshEHR Clinical Informatics, United Kingdom (openEHR Editor)", "Andrej Orel, Marand d.o.o., Slovenia", "Jussara Rotzsch, UNB, Brazil", "Anoop Shah, University College London, United Kingdom", "Norwegian Review Summary, National ICT Norway, Norway", "John Tore Valand, Helse Bergen, Norway (openEHR Editor)">
 	other_details = <
 		["revision"] = <"0.0.1-alpha">
 		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
-		["build_uid"] = <"240d2f6b-ed70-4190-bbb5-65c84e3277e7">
+		["build_uid"] = <"3d38d4e5-79e6-4ff7-9642-3c9c1f85f86a">
 		["original_publisher"] = <"openEHR Foundation">
 		["original_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"345126F09E29C22B4999A539AF0E64D1">
+		["MD5-CAM-1.0.1"] = <"323CB19BAD44C7F7635717943BD3867E">
 		["custodian_namespace"] = <"org.openehr">
 		["custodian_organisation"] = <"openEHR Foundation">
 	>
@@ -64,19 +66,20 @@ The 'Unspecified' data element has been added to support addition of other quali
 definition
 	CLUSTER[at0000] matches {	-- Problem/Diagnosis status
 		items cardinality matches {1..*; unordered} matches {
-			ELEMENT[at0004] occurrences matches {0..1} matches {	-- Phase
+			ELEMENT[at0004] occurrences matches {0..1} matches {	-- Diagnostic status
 				value matches {
 					DV_CODED_TEXT matches {
 						defining_code matches {
 							[local::
 							at0016, 	-- Preliminary
 							at0017, 	-- Working
-							at0018]	-- Established
+							at0018, 	-- Established
+							at0088]	-- Refuted
 						}
 					}
 				}
 			}
-			ELEMENT[at0060] occurrences matches {0..1} matches {	-- Current?
+			ELEMENT[at0060] occurrences matches {0..1} matches {	-- Current/Past?
 				value matches {
 					DV_CODED_TEXT matches {
 						defining_code matches {
@@ -87,13 +90,26 @@ definition
 					}
 				}
 			}
-			ELEMENT[at0003] occurrences matches {0..1} matches {	-- Active?
+			ELEMENT[at0003] occurrences matches {0..1} matches {	-- Active/Inactive?
 				value matches {
 					DV_CODED_TEXT matches {
 						defining_code matches {
 							[local::
 							at0026, 	-- Active
 							at0027]	-- Inactive
+						}
+					}
+				}
+			}
+			ELEMENT[at0083] occurrences matches {0..1} matches {	-- Resolution status
+				value matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {
+							[local::
+							at0084, 	-- Resolved
+							at0085, 	-- Resolving
+							at0086, 	-- Not resolving
+							at0087]	-- Indeterminate
 						}
 					}
 				}
@@ -110,7 +126,7 @@ definition
 					}
 				}
 			}
-			ELEMENT[at0071] occurrences matches {0..1} matches {	-- First ever?
+			ELEMENT[at0071] occurrences matches {0..1} matches {	-- First occurrence?
 				value matches {
 					DV_BOOLEAN matches {
 						value matches {True}
@@ -148,19 +164,6 @@ definition
 					}
 				}
 			}
-			ELEMENT[at0083] occurrences matches {0..1} matches {	-- Resolution
-				value matches {
-					DV_CODED_TEXT matches {
-						defining_code matches {
-							[local::
-							at0084, 	-- Resolved
-							at0085, 	-- Resolving
-							at0086, 	-- Not resolving
-							at0087]	-- Indeterminate
-						}
-					}
-				}
-			}
 			ELEMENT[at0082] occurrences matches {0..*} matches {	-- Unspecified
 				value matches {
 					DV_TEXT matches {*}
@@ -181,7 +184,7 @@ ontology
 			items = <
 				["at0000"] = <
 					text = <"Problem/Diagnosis status">
-					description = <"Context- or time-specific qualifiers for a specified problem or diagnosis.">
+					description = <"Qualifiers for a specified problem or diagnosis.">
 				>
 				["at0001"] = <
 					text = <"Episodicity">
@@ -189,25 +192,25 @@ ontology
 					comment = <"This data element is usually recorded as part of a clinical consultation.">
 				>
 				["at0003"] = <
-					text = <"Active?">
+					text = <"Active/Inactive?">
 					description = <"Category that supports division of problems and diagnoses into Active or Inactive problem lists.">
 				>
 				["at0004"] = <
-					text = <"Phase">
+					text = <"Diagnostic status">
 					description = <"Stage or phase of diagnostic process.">
-					comment = <"The phase is usually determined by a combination of the timing of diagnosis plus availability of supporting test results and clinical advice. It can also imply a level of clinical certainty. Terms aligned with SNOMED CT.">
+					comment = <"The status is usually determined by a combination of the timing of diagnosis plus level of clinical certainty resulting from diagnostic tests and clinical evidence available. Terms are aligned with SNOMED CT.">
 				>
 				["at0016"] = <
 					text = <"Preliminary">
-					description = <"The initial diagnosis made, based on limited available clinical evidence. It may change as test results or advice become available.">
+					description = <"The initial diagnosis made, usually associated with a low level of clinical certainty. It may change as test results or advice become available.">
 				>
 				["at0017"] = <
 					text = <"Working">
-					description = <"Interim diagnosis, based on substantiated clinical evidence but pending further test results or clinical advice. It may still change as test results or advice become available.">
+					description = <"Interim diagnosis, based on a reasonable amount of clinical certainty but pending further test results or clinical advice. It may still change as test results or advice become available.">
 				>
 				["at0018"] = <
 					text = <"Established">
-					description = <"Final substantiated diagnosis, based on all relevant test results and clinical advice. It is not expected to change.">
+					description = <"Final substantiated diagnosis, based on a high level of clinical certainty, which includes clinical evidence from test results. It is not expected to change.">
 				>
 				["at0026"] = <
 					text = <"Active">
@@ -219,14 +222,14 @@ ontology
 				>
 				["at0034"] = <
 					text = <"New episode">
-					description = <"A first occurrence of a new diagnosis or new occurrence of a previous diagnosis. A flag for 'First ever' occurrence can be recorded separately.">
+					description = <"A new occurrence of either a new or existing problem or diagnosis. A flag for 'First occurrence' can be recorded separately to distinguish the first from other occurrences.">
 				>
 				["at0035"] = <
 					text = <"Ongoing episode">
 					description = <"The issue, problem or diagnosis continues, without occurrences of new episodes.">
 				>
 				["at0060"] = <
-					text = <"Current?">
+					text = <"Current/Past?">
 					description = <"Category that supports division of problems and diagnoses into Current or Past problem lists.">
 					comment = <"Aligned with SNOMEDCT.">
 				>
@@ -255,14 +258,14 @@ ontology
 					description = <"It is not possible to determine if this occurrence of the problem or diagnosis is new or ongoing.">
 				>
 				["at0071"] = <
-					text = <"First ever?">
+					text = <"First occurrence?">
 					description = <"Is this the first ever occurrence of this problem or diagnosis?">
-					comment = <"Record as True if this is the first ever occurrence of this problem or diagnosis.">
+					comment = <"Record as True if this is the first ever occurrence of this problem or diagnosis. This data element can be an additional qualifier on the 'New episode' value in the 'Episodicity' value set, that is a condition such as asthma can have recurring new episodes that have periods of resolution in between. However it can be important to identify the first every episode of asthma from all of the other episodes.">
 				>
 				["at0073"] = <
 					text = <"Present on admission?">
 					description = <"Was the problem or diagnosis present at admission?">
-					comment = <"Record as True if the problem or diagnosis was present on admission. Used to support identification of in-admission complications among secondary diagnoses that arise during admission.">
+					comment = <"Record as True if the problem or diagnosis was present on admission. This data element enables identification of complications or secondary diagnoses that commenced during a specified admission for DRG reporting purposes.">
 				>
 				["at0076"] = <
 					text = <"Complication">
@@ -274,7 +277,7 @@ ontology
 				>
 				["at0078"] = <
 					text = <"Relapsing">
-					description = <"A recurring problem or diagnosis, with periods of remission in between.">
+					description = <"A recurring problem or diagnosis, with periods of resolution in between episodes or occurrences.">
 				>
 				["at0079"] = <
 					text = <"Chronic">
@@ -290,8 +293,8 @@ ontology
 					comment = <"For example: The boolean data type could be used to signify that the problem/diagnosis can be included in a patient summary; the text data type could be used to categorise in a similar way to 'Current?' or Active?'; and the count data type could be used to assert a priority key or order to problems and diagnoses in a list. If any uses are identified as frequently required, they could be added explicitly to this archetype as an explicit data element.">
 				>
 				["at0083"] = <
-					text = <"Resolution">
-					description = <"Phase of resolution or healing of an acute problem or diagnosis.">
+					text = <"Resolution status">
+					description = <"Status of resolution or healing of an acute problem or diagnosis.">
 				>
 				["at0084"] = <
 					text = <"Resolved">
@@ -308,6 +311,10 @@ ontology
 				["at0087"] = <
 					text = <"Indeterminate">
 					description = <"It is not possible to determine the resolution or healing status of the problem or diagnosis.">
+				>
+				["at0088"] = <
+					text = <"Refuted">
+					description = <"The diagnosis has been clinically reassessed or has been disproved with a high level of clinical certainty.">
 				>
 			>
 		>
@@ -442,6 +449,10 @@ ontology
 				["at0087"] = <
 					text = <"*Indeterminate(en)">
 					description = <"*It is not possible to determine the resolution or healing status of the problem or diagnosis.(en)">
+				>
+				["at0088"] = <
+					text = <"*Refuted(en)">
+					description = <"*The diagnosis has been clinically reassessed or has been disproved with a high level of clinical certainty.(en)">
 				>
 			>
 		>
