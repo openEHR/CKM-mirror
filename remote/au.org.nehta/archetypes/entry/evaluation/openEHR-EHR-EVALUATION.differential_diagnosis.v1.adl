@@ -1,0 +1,135 @@
+﻿archetype (adl_version=1.4)
+	openEHR-EHR-EVALUATION.differential_diagnosis.v1
+
+concept
+	[at0000]	-- Differential diagnoses
+language
+	original_language = <[ISO_639-1::en]>
+description
+	original_author = <
+		["name"] = <"Sam Heard">
+		["organisation"] = <"Ocean Informatics">
+		["email"] = <"Sam.Heard@OceanInformatics.com">
+		["date"] = <"2004-12-08">
+	>
+	details = <
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To express one or more suspected or probable diagnoses, until a single, working diagnosis is determined.">
+			use = <"Use to record a set of differential diagnoses that are to be used as part of the diagnostic process.">
+			keywords = <"differential", "diagnosis">
+			misuse = <"Not to be used to record information about working problems or diagnoses - use EVALUATION.problem.">
+			copyright = <"copyright (c) openEHR">
+		>
+	>
+	lifecycle_state = <"AuthorDraft">
+	other_contributors = <"Dipak Kalra, UCL", "Heather Leslie, Ocean Informatics, Australia">
+	other_details = <
+		["MD5-CAM-1.0.1"] = <"9B8EFA6C542004A86CFAF1D55DA60997">
+	>
+
+definition
+	EVALUATION[at0000] matches {	-- Differential diagnoses
+		data matches {
+			ITEM_TREE[at0001] matches {	-- Tree
+				items cardinality matches {1..*; ordered} matches {
+					CLUSTER[at0003] occurrences matches {1..*} matches {	-- Differential
+						items cardinality matches {1..2; ordered} matches {
+							ELEMENT[at0007] matches {	-- Diagnosis
+								value matches {
+									DV_TEXT matches {*}
+								}
+							}
+							ELEMENT[at0004] occurrences matches {0..1} matches {	-- Likelihood
+								value matches {
+									DV_CODED_TEXT matches {
+										defining_code matches {
+											[local::
+											at0015, 	-- Suspected
+											at0017]	-- Likely
+										}
+									}
+								}
+							}
+							ELEMENT[at0006] occurrences matches {0..1} matches {	-- Rationale
+								value matches {
+									DV_TEXT matches {*}
+								}
+							}
+						}
+					}
+					ELEMENT[at0005] occurrences matches {0..1} matches {	-- Comment
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+				}
+			}
+		}
+		protocol matches {
+			ITEM_LIST[at0013] matches {	-- List
+				items cardinality matches {0..*; unordered} matches {
+					ELEMENT[at0014] occurrences matches {0..*} matches {	-- Reference
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+				}
+			}
+		}
+	}
+
+
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"Differential diagnoses">
+					description = <"A set of 1 or more diagnoses considered as reasonable but as yet hypothetical causes of the patients signs and symptoms
+Set of one or more interim diagnoses that could account for a patient's history, examination findings, measurements and results. In practice, the intent is that as further evidence is gathered differential diagnoses will be eliminated one by one until one diagnosis becomes most likely.">
+				>
+				["at0001"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0003"] = <
+					text = <"Differential">
+					description = <"A group of diagnoses or explanation and likelihoods being considered.">
+				>
+				["at0004"] = <
+					text = <"Likelihood">
+					description = <"The likelihood of this diagnosis being present.">
+				>
+				["at0005"] = <
+					text = <"Comment">
+					description = <"Comment on the whole set of differential diagnoses.">
+				>
+				["at0006"] = <
+					text = <"Rationale">
+					description = <"Rationale for this diagnosis being included as a differential.">
+				>
+				["at0007"] = <
+					text = <"Diagnosis">
+					description = <"Identification of diagnosis. It is desirable that this should be coded where possible.">
+				>
+				["at0013"] = <
+					text = <"List">
+					description = <"@ internal @">
+				>
+				["at0014"] = <
+					text = <"Reference">
+					description = <"Any literary references supporting the diagnoses.">
+				>
+				["at0015"] = <
+					text = <"Suspected">
+					description = <"Possibly the diagnosis, but without a weight of supportive evidence.">
+				>
+				["at0017"] = <
+					text = <"Likely">
+					description = <"Likely to be the working diagnosis, with good supportive evidence.">
+				>
+			>
+		>
+	>

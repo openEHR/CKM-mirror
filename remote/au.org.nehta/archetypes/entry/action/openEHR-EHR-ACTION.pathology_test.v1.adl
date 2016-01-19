@@ -1,0 +1,305 @@
+﻿archetype (adl_version=1.4)
+	openEHR-EHR-ACTION.pathology_test.v1
+
+concept
+	[at0000]	-- Pathology test
+language
+	original_language = <[ISO_639-1::en]>
+description
+	original_author = <
+		["name"] = <"Heather Leslie">
+		["organisation"] = <"Ocean Informatics">
+		["email"] = <"heather.leslie@oceaninformatics.com">
+		["date"] = <"9/03/2011">
+	>
+	details = <
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To record activity regarding the performance of pathology tests.">
+			use = <"Use to record activity regarding the performance of pathology tests.">
+			misuse = <"">
+			copyright = <"© 2011 NEHTA">
+		>
+	>
+	lifecycle_state = <"CommitteeDraft">
+	other_contributors = <"Sam Heard, Ocean Informatics, Australia", ...>
+	other_details = <
+		["MD5-CAM-1.0.1"] = <"1B03B5EA64876E5D414A6C7E27DF28BE">
+	>
+
+definition
+	ACTION[at0000] matches {	-- Pathology test
+		ism_transition matches {
+			ISM_TRANSITION matches {
+				current_state matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {[openehr::526]}
+					}
+				}
+				careflow_step matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {[local::at0002]}		-- Test planned
+					}
+				}
+			}
+			ISM_TRANSITION matches {
+				current_state matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {[openehr::526]}
+					}
+				}
+				careflow_step matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {[local::at0003]}		-- Test requested
+					}
+				}
+			}
+			ISM_TRANSITION matches {
+				current_state matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {[openehr::527]}
+					}
+				}
+				careflow_step matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {[local::at0009]}		-- Test postponed
+					}
+				}
+			}
+			ISM_TRANSITION matches {
+				current_state matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {[openehr::528]}
+					}
+				}
+				careflow_step matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {[local::at0011]}		-- Test cancelled
+					}
+				}
+			}
+			ISM_TRANSITION matches {
+				current_state matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {[openehr::529]}
+					}
+				}
+				careflow_step matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {[local::at0004]}		-- Appointment scheduled
+					}
+				}
+			}
+			ISM_TRANSITION matches {
+				current_state matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {[openehr::529]}
+					}
+				}
+				careflow_step matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {[local::at0005]}		-- Appointment rescheduled
+					}
+				}
+			}
+			ISM_TRANSITION matches {
+				current_state matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {[openehr::245]}
+					}
+				}
+				careflow_step matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {[local::at0008]}		-- Test performed
+					}
+				}
+			}
+			ISM_TRANSITION matches {
+				current_state matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {[openehr::245]}
+					}
+				}
+				careflow_step matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {[local::at0014]}		-- Failed attempt
+					}
+				}
+			}
+			ISM_TRANSITION matches {
+				current_state matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {[openehr::530]}
+					}
+				}
+				careflow_step matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {[local::at0010]}		-- Test suspended
+					}
+				}
+			}
+			ISM_TRANSITION matches {
+				current_state matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {[openehr::531]}
+					}
+				}
+				careflow_step matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {[local::at0012]}		-- Test aborted
+					}
+				}
+			}
+			ISM_TRANSITION matches {
+				current_state matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {[openehr::532]}
+					}
+				}
+				careflow_step matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {[local::at0007]}		-- Test complete
+					}
+				}
+			}
+		}
+		description matches {
+			ITEM_TREE[at0001] matches {	-- Tree
+				items cardinality matches {0..*; unordered} matches {
+					ELEMENT[at0017] occurrences matches {0..1} matches {	-- Test name
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0018] occurrences matches {0..1} matches {	-- Description
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0019] occurrences matches {0..1} matches {	-- Reason
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					allow_archetype CLUSTER[at0022] occurrences matches {0..*} matches {	-- Specimen detail
+						include
+							archetype_id/value matches {/openEHR-EHR-CLUSTER\.specimen(-[a-zA-Z0-9_]+)*\.v1/}
+					}
+					allow_archetype CLUSTER[at0021] occurrences matches {0..*} matches {	-- Test procedure
+						include
+							archetype_id/value matches {/.*/}
+					}
+					ELEMENT[at0020] occurrences matches {0..1} matches {	-- Comment
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+				}
+			}
+		}
+		protocol matches {
+			ITEM_TREE[at0015] matches {	-- Tree
+				items cardinality matches {0..*; unordered} matches {
+					ELEMENT[at0016] occurrences matches {0..1} matches {	-- Start date/time
+						value matches {
+							DV_DATE_TIME matches {*}
+						}
+					}
+				}
+			}
+		}
+	}
+
+
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"Pathology test">
+					description = <"Clinical activity about performing a pathology test.">
+				>
+				["at0001"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Test planned">
+					description = <"Pathology test is planned.">
+				>
+				["at0003"] = <
+					text = <"Test requested">
+					description = <"Pathology test has been requested.">
+				>
+				["at0004"] = <
+					text = <"Appointment scheduled">
+					description = <"Appoinment for pathology test has been made.">
+				>
+				["at0005"] = <
+					text = <"Appointment rescheduled">
+					description = <"Appointment for pathology test has been rescheduled.">
+				>
+				["at0007"] = <
+					text = <"Test complete">
+					description = <"The pathology test has been performed and all associated activities completed.">
+				>
+				["at0008"] = <
+					text = <"Test performed">
+					description = <"The pathology test has been performed but related activities not completed.">
+				>
+				["at0009"] = <
+					text = <"Test postponed">
+					description = <"The pathology test has been postponed.">
+				>
+				["at0010"] = <
+					text = <"Test suspended">
+					description = <"The pathology test has been suspended.">
+				>
+				["at0011"] = <
+					text = <"Test cancelled">
+					description = <"The planned pathology test has been cancelled prior to commencement.">
+				>
+				["at0012"] = <
+					text = <"Test aborted">
+					description = <"The pathology test has been aborted.">
+				>
+				["at0014"] = <
+					text = <"Failed attempt">
+					description = <"The pathology test was commenced but not completed successfully.">
+				>
+				["at0015"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0016"] = <
+					text = <"Start date/time">
+					description = <"The start date and/or time for the test. This will indicate the scheduled date/time when recorded against the 'Appointment scheduled' care pathway step or the actual Start date/time in the 'Test performed' step.">
+				>
+				["at0017"] = <
+					text = <"Test name">
+					description = <"The name of the pathology test (to be) performed. Coding of the specific test with a terminology is preferred, where possible.">
+				>
+				["at0018"] = <
+					text = <"Description">
+					description = <"Narrative description about the activity or care pathway step for the identified test, for example description about the performance and findings from the test, the failed attempt or the cancellation of the test.">
+				>
+				["at0019"] = <
+					text = <"Reason">
+					description = <"Reason that the activity or care pathway step for the identified test was carried out, for example, the reason for the cancellation or suspension of the test.">
+				>
+				["at0020"] = <
+					text = <"Comment">
+					description = <"Additional narrative about the activity or care pathway step not captured in other fields.">
+				>
+				["at0021"] = <
+					text = <"Test procedure">
+					description = <"Structured information about the test. Use to capture detailed, structured information about method & technique etc.">
+				>
+				["at0022"] = <
+					text = <"Specimen detail">
+					description = <"Structured information about the specimen on which the test was conducted.">
+				>
+			>
+		>
+	>
