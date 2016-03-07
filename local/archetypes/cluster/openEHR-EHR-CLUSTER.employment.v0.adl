@@ -5,6 +5,16 @@ concept
 	[at0000]	-- Employment
 language
 	original_language = <[ISO_639-1::en]>
+	translations = <
+		["nb"] = <
+			language = <[ISO_639-1::nb]>
+			author = <
+				["name"] = <"Kristian Berg">
+				["organisation"] = <"Universitetssykehuset Nord Norge">
+				["email"] = <"kristian.berg@unn.no">
+			>
+		>
+	>
 description
 	original_author = <
 		["name"] = <"Heather Leslie">
@@ -13,93 +23,120 @@ description
 		["date"] = <"2010-12-17">
 	>
 	details = <
+		["nb"] = <
+			language = <[ISO_639-1::nb]>
+			purpose = <"Registrering av individets nåværende og tidligere arbeidsforhold.">
+			use = <"Brukes for å registrere individets nåværende og tidligere arbeidsforhold, inkludert identifisering av eventuell eksponering til arbeidsrelaterte helse- og sikkerhetsrisikoer.">
+			keywords = <"Arbeid", "Arbeidstaker", "Arbeidsgiver", "Arbeidsforhold", "Arbeidshistorikk", "Jobb", "Ansatt", "Yrke", "Helse", "Mljø", "Sikkerhet", "Risiko">
+			misuse = <"">
+			copyright = <"© 2010 NEHTA, openEHR Foundation, Nasjonal IKT HF">
+		>
 		["en"] = <
 			language = <[ISO_639-1::en]>
 			purpose = <"To record a persisting and evolving summary about the employment background of the individual.">
 			use = <"Use to record an employment summary about the individual, including identification of exposure to occupational health and safety risks.">
 			keywords = <"employment", "employer", "job", "occupation", "risk", "safety">
 			misuse = <"">
-			copyright = <"© 2010 NEHTA, openEHR Foundation">
+			copyright = <"© 2010 NEHTA, openEHR Foundation, Nasjonal IKT HF">
 		>
 	>
 	lifecycle_state = <"in_development">
-	other_contributors = <>
+	other_contributors = <"Silje Ljosland Bakke, National ICT Norway, Norway (openEHR Editor)", "Heather Leslie, Ocean Informatics, Australia (openEHR Editor)", "Ian McNicoll, freshEHR Clinical Informatics, United Kingdom (openEHR Editor)">
 	other_details = <
 		["revision"] = <"0.0.1-alpha">
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
 		["references"] = <"Derived from: Employment Summary, Draft Archetype [Internet]. nehta, Australia, nehta Clinical Knowledge Manager [cited: 2016-01-11]. Available from: http://dcm.nehta.org.au/ckm/#showArchetype_1013.1.925">
-		["build_uid"] = <"38daec59-1b29-440c-b14f-2ff5cbe158fd">
-		["original_publisher"] = <"openEHR Foundation">
-		["original_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"DA6887ED977D065B7A8D1C5B95262F77">
+		["build_uid"] = <"c63a1d91-e4af-4d49-a001-3ee72da2ede4">
+		["original_publisher"] = <"NEHTA, Australia">
+		["original_namespace"] = <"au.org.nehta">
+		["MD5-CAM-1.0.1"] = <"D890A39946E25D2584478DE3B64E652D">
 		["custodian_namespace"] = <"org.openehr">
 		["custodian_organisation"] = <"openEHR Foundation">
 	>
 
 definition
-	CLUSTER[at0000] matches {	-- Employment
+	CLUSTER[at0000] matches {	-- Ansettelse
+		items cardinality matches {1..*; unordered} matches {
+			ELEMENT[at0001] occurrences matches {0..1} matches {	-- Ansettelsesstatus
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			CLUSTER[at0002] occurrences matches {0..1} matches {	-- Arbeidsdetaljer
 				items cardinality matches {1..*; unordered} matches {
-					ELEMENT[at0001] occurrences matches {0..1} matches {	-- Employment status
+					ELEMENT[at0003] occurrences matches {0..1} matches {	-- Arbeidsgiver
 						value matches {
 							DV_TEXT matches {*}
 						}
 					}
-					CLUSTER[at0002] occurrences matches {0..1} matches {	-- Employment details
+					allow_archetype CLUSTER[at0004] occurrences matches {0..*} matches {	-- Detaljer om arbeidsgiver
+						include
+							archetype_id/value matches {/.*/}
+					}
+					ELEMENT[at0005] occurrences matches {0..1} matches {	-- Tittel/Rolle
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0013] occurrences matches {0..1} matches {	-- Stillingsandel
+						value matches {
+							C_DV_QUANTITY <
+								property = <[openehr::380]>
+								list = <
+									["1"] = <
+										units = <"%">
+										magnitude = <|0.0..100.0|>
+										precision = <|2|>
+									>
+									["2"] = <
+										units = <"1">
+										magnitude = <|0.0..1.0|>
+										precision = <|1|>
+									>
+								>
+							>
+						}
+					}
+					ELEMENT[at0006] occurrences matches {0..1} matches {	-- Yrkesbeskrivelse
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0007] occurrences matches {0..1} matches {	-- Dato for oppstart
+						value matches {
+							DV_DATE_TIME matches {*}
+						}
+					}
+					ELEMENT[at0008] occurrences matches {0..1} matches {	-- Dato avsluttet
+						value matches {
+							DV_DATE_TIME matches {*}
+						}
+					}
+					ELEMENT[at0009] occurrences matches {0..1} matches {	-- Varighet av ansettelse
+						value matches {
+							DV_DURATION matches {
+								value matches {PYMWD}
+							}
+						}
+					}
+					CLUSTER[at0010] occurrences matches {0..*} matches {	-- Arbeidsrelatert risiko
 						items cardinality matches {1..*; unordered} matches {
-							ELEMENT[at0003] occurrences matches {0..1} matches {	-- Employer name
+							ELEMENT[at0011] matches {	-- Beskrivelse
 								value matches {
 									DV_TEXT matches {*}
 								}
 							}
-							allow_archetype CLUSTER[at0004] occurrences matches {0..*} matches {	-- Employer details
-								include
-									archetype_id/value matches {/.*/}
-							}
-							ELEMENT[at0005] occurrences matches {0..1} matches {	-- Title/Role
+							ELEMENT[at0012] occurrences matches {0..1} matches {	-- Risiko
 								value matches {
 									DV_TEXT matches {*}
-								}
-							}
-							ELEMENT[at0006] occurrences matches {0..1} matches {	-- Occupation type
-								value matches {
-									DV_TEXT matches {*}
-								}
-							}
-							ELEMENT[at0007] occurrences matches {0..1} matches {	-- Date commenced
-								value matches {
-									DV_DATE_TIME matches {*}
-								}
-							}
-							ELEMENT[at0008] occurrences matches {0..1} matches {	-- Date ceased
-								value matches {
-									DV_DATE_TIME matches {*}
-								}
-							}
-							ELEMENT[at0009] occurrences matches {0..1} matches {	-- Duration of employment
-								value matches {
-									DV_DURATION matches {
-										value matches {PYMWD}
-									}
-								}
-							}
-							CLUSTER[at0010] occurrences matches {0..*} matches {	-- Occupational Risk
-								items cardinality matches {1..*; unordered} matches {
-									ELEMENT[at0011] matches {	-- Risk
-										value matches {
-											DV_TEXT matches {*}
-										}
-									}
-									ELEMENT[at0012] occurrences matches {0..1} matches {	-- Description
-										value matches {
-											DV_TEXT matches {*}
-										}
-									}
 								}
 							}
 						}
 					}
+				}
+			}
 		}
 	}
-
 
 
 ontology
@@ -130,6 +167,10 @@ ontology
 					text = <"Title/Role">
 					description = <"Job title or role undertaken with employer.">
 				>
+				["at0006"] = <
+					text = <"Occupation type">
+					description = <"Type of occupation.">
+				>
 				["at0007"] = <
 					text = <"Date commenced">
 					description = <"Date employment commenced with employer.">
@@ -150,13 +191,73 @@ ontology
 					text = <"Description">
 					description = <"Description of risk.">
 				>
-				["at0006"] = <
-					text = <"Occupation type">
-					description = <"Type of occupation.">
-				>
 				["at0012"] = <
 					text = <"Risk">
 					description = <"Identification of occupational health & safety risk exposure.">
+				>
+				["at0013"] = <
+					text = <"Full time equivalent">
+					description = <"Stillingens andel av en fulltidsstilling.">
+				>
+			>
+		>
+		["nb"] = <
+			items = <
+				["at0000"] = <
+					text = <"Ansettelse">
+					description = <"Individets tidligere ansettelsesforhold.">
+				>
+				["at0001"] = <
+					text = <"Ansettelsesstatus">
+					description = <"Nåværende ansettelsesstatus, for eksempel yrkesaktiv, arbeidsledig, student, pensjonert, etc. Koding med en terimonologi er ønskelig der det er mulig.">
+				>
+				["at0002"] = <
+					text = <"Arbeidsdetaljer">
+					description = <"Detaljert informasjon om hver enkelt arbeidssituasjon.">
+				>
+				["at0003"] = <
+					text = <"Arbeidsgiver">
+					description = <"Identifisering av arbeidsgiver - selskap, organisasjon eller individ.">
+				>
+				["at0004"] = <
+					text = <"Detaljer om arbeidsgiver">
+					description = <"Ytterligere detaljer om arbeidsgiver.">
+				>
+				["at0005"] = <
+					text = <"Tittel/Rolle">
+					description = <"Stillingstittel eller rolle hos arbeidsgiver.">
+				>
+				["at0006"] = <
+					text = <"Yrkesbeskrivelse">
+					description = <"Type yrke.">
+				>
+				["at0007"] = <
+					text = <"Dato for oppstart">
+					description = <"Datoen ansettelsesforholdet tredde i kraft.">
+				>
+				["at0008"] = <
+					text = <"Dato avsluttet">
+					description = <"Datoen ansettelsesforholdet opphørte.">
+				>
+				["at0009"] = <
+					text = <"Varighet av ansettelse">
+					description = <"Varigheten av ansettelsen.">
+				>
+				["at0010"] = <
+					text = <"Arbeidsrelatert risiko">
+					description = <"Identifisering av arbeidsrelatert helse- og sikkerhetsrisikoer i dette ansettelsesforholdet.">
+				>
+				["at0011"] = <
+					text = <"Beskrivelse">
+					description = <"Beskrivelse av risiko.">
+				>
+				["at0012"] = <
+					text = <"Risiko">
+					description = <"Identifisering av eksponeringen til arbeidsrelatert helse- og sikkerhetsrisikoer.">
+				>
+				["at0013"] = <
+					text = <"Stillingsandel">
+					description = <"Stillingens andel av en fulltidsstilling.">
 				>
 			>
 		>
