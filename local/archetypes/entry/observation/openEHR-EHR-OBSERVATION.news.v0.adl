@@ -1,0 +1,445 @@
+﻿archetype (adl_version=1.4; uid=4ecbfe09-2463-4c73-ba42-bb44f6233479)
+	openEHR-EHR-OBSERVATION.news.v0
+
+concept
+	[at0000]	-- National Early Warning Score
+language
+	original_language = <[ISO_639-1::en]>
+	translations = <
+		["nb"] = <
+			language = <[ISO_639-1::nb]>
+			author = <
+				["name"] = <"John Tore Valand">
+				["organisation"] = <"Helse Bergen HF">
+			>
+		>
+	>
+description
+	original_author = <
+		["name"] = <"Ian McNicoll">
+		["organisation"] = <"freshEHR Clinical Informatics Ltd.">
+		["email"] = <"ian@freshehr.com">
+		["date"] = <"2013-06-02">
+	>
+	details = <
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To record provide a composite score based on categorising physiological readings and observations, as a simple method to support objective assessment of the degree of illness in an unwell patient over the age of 16 years.">
+			use = <"Use to record a composite score to support assessment of the degree of illness in an unwell patient, over the age of 16 years.">
+			keywords = <"warning", "AVPU", "RR", "HR", "BP", "Temp", "SBP", "triage", "NEWS", "Sats">
+			misuse = <"Not to be used to record each physical measurement or clinical observation. Use specific OBSERVATION archetypes for this purpose - OBSERVATION.blood_pressure, OBSERVATION.pulse, OBSERVATION.respirations, OBSERVATION.body_temperature, OBSERVATION.avpu, CLUSTER.ambient_oxygen og OBSERVATION.indirect_oximetry.
+
+Not to be used for children/teens under the age of 16 years or in pregnancy.">
+			copyright = <"© Clinical Models UK, Nasjonal IKT HF, openEHR Foundation">
+		>
+		["nb"] = <
+			language = <[ISO_639-1::nb]>
+			purpose = <"For å registrere en sammensatt skår basert på kategoriserte fysiologiske målinger og observasjoner som en enkel metode for å støtte en objektiv vurdering av grad av klinisk forverring hos en pasient som er eldre enn 16 år gammel.">
+			use = <"Brukes for å registrere en sammensatt skår for å støtte vurderingen av klinisk forverring hos en pasient eldre enn 16 år gammel.">
+			keywords = <"varsling", "triage", "NEWS", "sats", "MEWS">
+			misuse = <"Anvendes ikke for registrering av hver enkelt fysiologisk parameter eller klinisk observasjon. Bruk spesifikke OBSERVATION-arketyper for dette formål - OBSERVATION.blood_pressure, OBSERVATION.pulse, OBSERVATION.respirations, OBSERVATION.body_temperature, OBSERVATION.avpu, CLUSTER.ambient_oxygen og OBSERVATION.indirect_oximetry.
+
+Benyttes ikke for barn under 16 år, bruk en egen arketype for dette formålet.
+
+Benyttes ordinært ikke for gravide.">
+			copyright = <"© Clinical Models UK, Nasjonal IKT HF, openEHR Foundation">
+		>
+	>
+	lifecycle_state = <"in_development">
+	other_contributors = <"Vebjørn Arntzen, Oslo universitetssykehus HF, Norway (Nasjonal IKT redaktør)", "Silje Ljosland Bakke, Nasjonal IKT HF, Norway (Nasjonal IKT redaktør)", "Heather Leslie, Ocean Informatics, Australia", "Hallvard Lærum, Oslo Universitetssykehus HF, Norway", "John Tore Valand, Haukeland Universitetssjukehus, Norway (Nasjonal IKT redaktør)">
+	other_details = <
+		["current_contact"] = <"Ian McNicoll, freshEHR Clinical Informatics Ltd., ian@freshehr.com">
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
+		["revision"] = <"0.0.1-alpha">
+		["references"] = <"Derived from: National Early Warning Score (RCP UK), Draft Archetype [Internet]. UK Clinical Models, UK Clinical Models Clinical Knowledge Manager [cited: 2016-04-08]. Available from: http://www.clinicalmodels.org.uk/ckm/#showArchetype_1051.32.74
+Williams B, Alberti G, Ball C, Bell D, Binks R, Durham L, et al. National Early Warning Score (NEWS): Standardising the Assessment of Acute-Illness Severity in the NHS. London: The Royal College of Physicians, 2012. https://www.rcplondon.ac.uk/sites/default/files/documents/national-early-warning-score-standardising-assessment-acute-illness-severity-nhs.pdf
+
+Oslo universistetssykehus - eHåndbok - Internettutgave. National Early Warning Score (NEWS). (23.02.16). http://ehandboken.oslo-universitetssykehus.no/Modules/module_136/handbook_view.aspx?documentId=78636
+
+Modified Early Warning Score (NT RMP), draft archetype, NEHTA Clinical Knowledge Manager [Internet]. NEHTA. Authored: 07 Feb 2013. Available at: http://dcm.nehta.org.au/ckm/#showArchetype_1013.1.1172_2 (accessed 01 June 2013).">
+		["build_uid"] = <"f764cb7a-b049-4352-92e7-c87adc41db92">
+		["original_publisher"] = <"openEHR Foundation">
+		["original_namespace"] = <"org.openehr">
+		["MD5-CAM-1.0.1"] = <"B8238A248893A994122EEF1302D02FA6">
+		["custodian_namespace"] = <"org.openehr">
+		["custodian_organisation"] = <"openEHR Foundation">
+	>
+
+definition
+	OBSERVATION[at0000] matches {	-- National Early Warning Score (NEWS)
+		data matches {
+			HISTORY[at0001] matches {	-- Event Series
+				events cardinality matches {1..*; unordered} matches {
+					POINT_EVENT[at0002] occurrences matches {0..1} matches {	-- Tidspunkt
+						data matches {
+							ITEM_TREE[at0003] matches {	-- Tree
+								items cardinality matches {0..*; unordered} matches {
+									ELEMENT[at0006] occurrences matches {0..1} matches {	-- Respirasjonsfrekvens
+										value matches {
+											0|[local::at0018], 	-- 12-20
+											1|[local::at0019], 	-- 9-11
+											2|[local::at0020], 	-- 21-24
+											3|[local::at0021]  	-- ≤8 eller ≥25
+										}
+									}
+									ELEMENT[at0029] occurrences matches {0..1} matches {	-- Oksygensaturasjon
+										value matches {
+											0|[local::at0030], 	-- ≥96
+											1|[local::at0031], 	-- 94-95
+											2|[local::at0032], 	-- 92-93
+											3|[local::at0033]  	-- ≤91
+										}
+									}
+									ELEMENT[at0034] occurrences matches {0..1} matches {	-- Tilførsel av oksygen
+										value matches {
+											0|[local::at0036], 	-- Nei
+											2|[local::at0037]  	-- Ja
+										}
+									}
+									ELEMENT[at0007] occurrences matches {0..1} matches {	-- Temperatur
+										value matches {
+											0|[local::at0022], 	-- 36.1-38.0
+											1|[local::at0023], 	-- 35.1-36.0 or 38.1-39.0
+											2|[local::at0038], 	-- ≥39,1
+											3|[local::at0039]  	-- ≤35
+										}
+									}
+									ELEMENT[at0004] occurrences matches {0..1} matches {	-- Systolisk blodtrykk
+										value matches {
+											0|[local::at0014], 	-- 111-219
+											1|[local::at0015], 	-- 101-110
+											2|[local::at0016], 	-- 91-100
+											3|[local::at0017]  	-- ≤90 eller ≥220
+										}
+									}
+									ELEMENT[at0005] occurrences matches {0..1} matches {	-- Hjertefrekvens/puls
+										value matches {
+											0|[local::at0013], 	-- 51-90
+											1|[local::at0012], 	-- 41-50 eller 91-110
+											2|[local::at0011], 	-- 111-130
+											3|[local::at0010]  	-- ≤40 eller ≥131
+										}
+									}
+									ELEMENT[at0008] occurrences matches {0..1} matches {	-- Bevissthetsgrad
+										value matches {
+											0|[local::at0024], 	-- A
+											3|[local::at0025]  	-- V, P eller U
+										}
+									}
+									ELEMENT[at0028] occurrences matches {0..1} matches {	-- Totalscore
+										value matches {
+											DV_COUNT matches {
+												magnitude matches {|0..20|}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"National Early Warning Score">
+					description = <"A simple score used to provide an objective indication of the degree of illness of a patient. This version follows guidance issued by the UK Royal College of Physicians.">
+				>
+				["at0001"] = <
+					text = <"Event Series">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Point in time">
+					description = <"A specific date and/or time which may be explicitly defined in a template or at run-time.">
+				>
+				["at0003"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0004"] = <
+					text = <"Systolic Blood Pressure">
+					description = <"Range category for the systolic blood pressure (SBP) measurement of a patient.">
+				>
+				["at0005"] = <
+					text = <"Heart Rate">
+					description = <"Range category for the heart rate (HR) measurement of a patient.">
+				>
+				["at0006"] = <
+					text = <"Respiration Rate">
+					description = <"Range category for the respiratory rate (RR) measurement of a patient.">
+				>
+				["at0007"] = <
+					text = <"Temperature">
+					description = <"Range category for the body temperature (Temp) measurement of a patient.">
+				>
+				["at0008"] = <
+					text = <"Level of consciousness">
+					description = <"Observed category for the AVPU scale rating of a patient's conscious state.">
+				>
+				["at0010"] = <
+					text = <"<=40 or >=131">
+					description = <"The heart rate measurement is less than/equal to 40 beats/min or greater than/equal to 131 beats/min; scored as 3 points.">
+				>
+				["at0011"] = <
+					text = <"111-130">
+					description = <"The heart rate measurement is between 111 and 130 beats/min; scored as 2 points.">
+				>
+				["at0012"] = <
+					text = <"41-50 or 91-110">
+					description = <"The heart rate measurement is between 41 and 50 beats/min or between 91 and 110 beats/min; scored as 1 point.">
+				>
+				["at0013"] = <
+					text = <"51-90">
+					description = <"The heart rate measurement is between 51 and 90 beats/min; scored as 0 points.">
+				>
+				["at0014"] = <
+					text = <"111-219">
+					description = <"The systolic blood pressure measurement is between 111 and 219 mmHg; scored as 0 points.">
+				>
+				["at0015"] = <
+					text = <"101-110">
+					description = <"The systolic blood pressure measurement is between 101 and 110 mmHg; scored as 1 point.">
+				>
+				["at0016"] = <
+					text = <"91-100">
+					description = <"The systolic blood pressure measurement is between 91 and 100 mmHg; scored as 2 points.">
+				>
+				["at0017"] = <
+					text = <"<=90 or >= 220">
+					description = <"The systolic blood pressure measurement is less than/equal to 90 mmHg or greater than/equal to 220 mmHg; scored as 3 points.">
+				>
+				["at0018"] = <
+					text = <"12-20">
+					description = <"The respiratory rate measurement is between 12 and 20 breaths/min; scored as 0 points.">
+				>
+				["at0019"] = <
+					text = <"9-11">
+					description = <"The respiratory rate measurement is between 9 and 11 breaths/min; scored as 1 point.">
+				>
+				["at0020"] = <
+					text = <"21-24">
+					description = <"The respiratory rate measurement is between 21 and 24 breaths/min; scored as 2 points.">
+				>
+				["at0021"] = <
+					text = <"<=8 or >=25">
+					description = <"The respiratory rate measurement is less than/equal to 8 breaths/min or greater than/equal to 25 breaths/min; scored as 3 points.">
+				>
+				["at0022"] = <
+					text = <"36.1-38.0">
+					description = <"The body temperature measurement is between 36.1 and 38.0 degrees Celsius; scored as 0 points.">
+				>
+				["at0023"] = <
+					text = <"35.1-36.0 or 38.1-39.0">
+					description = <"The body temperature measurement is between 35.1 and 36.0 degrees Celsius or between 38.1 and 39.0 degrees Celsius; scored as 1 point.">
+				>
+				["at0024"] = <
+					text = <"A">
+					description = <"The patient is alert or awake; scored as 0 points.">
+				>
+				["at0025"] = <
+					text = <"V, P or U">
+					description = <"The patient responds only to verbal, pain or stimulus; scored as 3 points.">
+				>
+				["at0028"] = <
+					text = <"Total Score">
+					description = <"The composite total score of each NEWS parameter category.">
+				>
+				["at0029"] = <
+					text = <"Oxygen Saturation">
+					description = <"Range category for the oxygen saturation measurement of a patient.">
+				>
+				["at0030"] = <
+					text = <">= 96">
+					description = <"The oxygen saturation level is greater than/equal to 96%;scored as 0 points.">
+				>
+				["at0031"] = <
+					text = <"94-95">
+					description = <"The oxygen saturation level is between 94% and 95%; scored as 1 point.">
+				>
+				["at0032"] = <
+					text = <"92-93">
+					description = <"The oxygen saturation level is between 92% and 93%; scored as 2 points.">
+				>
+				["at0033"] = <
+					text = <"<=91">
+					description = <"The oxygen saturation level is less than/equal to 91%; scored as 3 points.">
+				>
+				["at0034"] = <
+					text = <"Supplemental Oxygen">
+					description = <"Range category depending on whether the patient is receiving supplemental oxygen.">
+				>
+				["at0036"] = <
+					text = <"No">
+					description = <"The patient is not receiving supplemental oxygen; scored as 0 points.">
+				>
+				["at0037"] = <
+					text = <"Yes">
+					description = <"The patient is receiving supplemental oxygen; scored as 2 points.">
+				>
+				["at0038"] = <
+					text = <">=39.1">
+					description = <"The body temperature is greater than/equal to 39.1 degrees Celcius; scored as 2 points.">
+				>
+				["at0039"] = <
+					text = <"<=35.0">
+					description = <"The body temperature is less than/equal to 35 degrees Celcius ; scored as 3 points.">
+				>
+			>
+		>
+		["nb"] = <
+			items = <
+				["at0000"] = <
+					text = <"National Early Warning Score (NEWS)">
+					description = <"En enkel skår som brukes for å gi en objektiv indikasjon av grad av sykdom hos en pasient. Denne versjonen følger retningslinjer utgitt av the UK Royal College of Physicians.">
+				>
+				["at0001"] = <
+					text = <"Event Series">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Tidspunkt">
+					description = <"Et spesifikt dato/tidspunkt som kan defineres mer eksplisitt i en template eller i en applikasjon.">
+				>
+				["at0003"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0004"] = <
+					text = <"Systolisk blodtrykk">
+					description = <"Det systoliske blodtrykket til en pasient.">
+				>
+				["at0005"] = <
+					text = <"Hjertefrekvens/puls">
+					description = <"Pasientens hjertefrekvens.">
+				>
+				["at0006"] = <
+					text = <"Respirasjonsfrekvens">
+					description = <"Respirasjonsfrekvensen til en pasient.">
+				>
+				["at0007"] = <
+					text = <"Temperatur">
+					description = <"Kroppstemperaturen til en pasient.">
+				>
+				["at0008"] = <
+					text = <"Bevissthetsgrad">
+					description = <"Observert kategori for APVU scoring av pasientens bevissthetstilstand.">
+				>
+				["at0010"] = <
+					text = <"≤40 eller ≥131">
+					description = <"Hjertefrekvensen målt som mindre enn eller lik 40 pulsslag per min eller større enn eller lik 131 pulsslag per min; scores som 3 poeng.">
+				>
+				["at0011"] = <
+					text = <"111-130">
+					description = <"Hjertefrekvensen målt fra 111 til og med 130 pulsslag per min; scores som 2 poeng.">
+				>
+				["at0012"] = <
+					text = <"41-50 eller 91-110">
+					description = <"Hjertefrekvensen målt fra 41 til og med 50 pulsslag per min eller fra 91 til og med 110 pulsslag per min; scores som 1 poeng.">
+				>
+				["at0013"] = <
+					text = <"51-90">
+					description = <"Hjertefrekvensen målt fra 51 til og med 90 pulsslag per min; scores som 0 poeng.">
+				>
+				["at0014"] = <
+					text = <"111-219">
+					description = <"Det systoliske blodtrykket målt fra 111 til og med 219 mmHg; scores som 0 poeng.">
+				>
+				["at0015"] = <
+					text = <"101-110">
+					description = <"Det systoliske blodtrykket målt fra 101 til og med 110 mmHg; scores som 1 poeng.">
+				>
+				["at0016"] = <
+					text = <"91-100">
+					description = <"Det systoliske blodtrykket målt fra 91 til og med 100 mmHg; scores som 2 poeng.">
+				>
+				["at0017"] = <
+					text = <"≤90 eller ≥220">
+					description = <"Det systoliske blodtrykket målt mindre enn eller lik 90 mmHg eller større enn eller lik 220 mmHg; scores som 3 poeng.">
+				>
+				["at0018"] = <
+					text = <"12-20">
+					description = <"Respirasjonsfrekvensen målt fra 12 til og med 20 pust per min; scores som 0 poeng.">
+				>
+				["at0019"] = <
+					text = <"9-11">
+					description = <"Respirasjonsfrekvensen målt fra 9 til og med 11 pust per min; scores som 1 poeng.">
+				>
+				["at0020"] = <
+					text = <"21-24">
+					description = <"Respirasjonsfrekvensen målt fra 21 til og med 24 pust per min; scores som 2 poeng.">
+				>
+				["at0021"] = <
+					text = <"≤8 eller ≥25">
+					description = <"Respirasjonsfrekvensen målt, mindre enn eller lik 8, eller større enn eller lik 25 pust per min; scores som 3 poeng.">
+				>
+				["at0022"] = <
+					text = <"36.1-38.0">
+					description = <"Kroppstemperatur målt fra 36,1 til og med 38,0 grader Celsius; scores til 0 poeng.">
+				>
+				["at0023"] = <
+					text = <"35.1-36.0 or 38.1-39.0">
+					description = <"Kroppstemperatur målt fra 35,1 til og med 36,0 grader Celsius eller fra 38,1 til og med 39,0 grader Celsius; scores til 1 poeng.">
+				>
+				["at0024"] = <
+					text = <"A">
+					description = <"Pasienten er helt våken; scores som 0 poeng.">
+				>
+				["at0025"] = <
+					text = <"V, P eller U">
+					description = <"V - Reagerer på lyd/ tiltale, P - Reagerer på smerte, U - Reagerer ikke; scores som 3 poeng.">
+				>
+				["at0028"] = <
+					text = <"Totalscore">
+					description = <"Summen av score til hvert enkelt NEWS-parameter. Totalscore vil normalt bergenes automatisk i en applikasjon.">
+				>
+				["at0029"] = <
+					text = <"Oksygensaturasjon">
+					description = <"Oksygensaturasjonen til en pasient.">
+				>
+				["at0030"] = <
+					text = <"≥96">
+					description = <"Oksygensaturasjon målt større enn eller lik 96 prosent; scores som 0 poeng.">
+				>
+				["at0031"] = <
+					text = <"94-95">
+					description = <"Oksygensaturasjon målt fra 94 til og med 95 prosent; scores som 1 poeng.">
+				>
+				["at0032"] = <
+					text = <"92-93">
+					description = <"Oksygensaturasjon målt fra 92 til og med 93 prosent; scores som 2 poeng.">
+				>
+				["at0033"] = <
+					text = <"≤91">
+					description = <"Oksygensaturasjon målt som mindre enn eller lik 91 prosent; scores som 3 poeng.">
+				>
+				["at0034"] = <
+					text = <"Tilførsel av oksygen">
+					description = <"Om pasienten tilføres oksygen for å opprettholde oksygensaturasjonen.">
+				>
+				["at0036"] = <
+					text = <"Nei">
+					description = <"Pasienten tilføres ikke oksygen; scores som 0 poeng.">
+				>
+				["at0037"] = <
+					text = <"Ja">
+					description = <"Pasienten tilføres oksygen; scores som 2 poeng.">
+				>
+				["at0038"] = <
+					text = <"≥39,1">
+					description = <"Kroppstemperatur målt større enn eller lik 39,1 grader Celcius; scores som 2 poeng.">
+				>
+				["at0039"] = <
+					text = <"≤35">
+					description = <"Kroppstemperatur målt mindre enn eller lik 35,0 grader Celcius; scores som 3 poeng.">
+				>
+			>
+		>
+	>
