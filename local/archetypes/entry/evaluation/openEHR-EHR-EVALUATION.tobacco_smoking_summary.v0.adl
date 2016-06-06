@@ -1,0 +1,565 @@
+﻿archetype (adl_version=1.4; uid=f269dd46-7826-4e88-9d84-65a9d4c478e3)
+	openEHR-EHR-EVALUATION.tobacco_smoking_summary.v0
+
+concept
+	[at0000]	-- Tobacco smoking summary
+language
+	original_language = <[ISO_639-1::en]>
+description
+	original_author = <
+		["name"] = <"Heather Leslie">
+		["organisation"] = <"Ocean Informatics">
+		["email"] = <"heather.leslie@oceaninformatics.com">
+		["date"] = <"2009-06-21">
+	>
+	details = <
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To record summary information about the individual's pattern of smoking of tobacco and tobacco-containing products.">
+			use = <"Use to record summary information about the inidividual's pattern of smoking of tobacco and tobacco-containing products.
+
+This archetype is to be used to record information about both current and previous smoking behaviour.
+
+The specific focus of this archetype is on documentation about the use of all types of inhaled tobacco because of the associated health risks from direct inhalation of tobacco and associated chemicals. Amount of nicotine and tar, use of filters and additives has been left outside of scope for the core archetype, but could be added into the Episode SLOT if required.
+
+The 'Per type' cluster of data elements allows for recording of specific details and episodes about each type of tobacco smoked and can be repeated once per type. The list of tobacco types listed in the 'Per type' run-time name constraint identifies the type of tobacco. This name constraint  can be applied during template modelling or at run-time within a software application.
+
+In many situations the individual will only smoke one type of tobacco, such as manufactured cigarettes.  If other types of tobacco are smoked, the details will be recorded in another instance of the 'Per type' cluster.
+
+The history of waxing and waning of use for each type of tobacco over time can be captured using the repeatable 'Per episode' cluster. This cluster of data elements allows for a very detailed pattern of smoking behaviour to be recorded for each type of tobacco smoked such as daily 'roll-your-own' cigarette smoking, alongside weekly cigar smoking every Friday night and occasional Bidi smoking while on holiday in Bali. 
+
+Triggers for closing one episode and commencing a new one will largely reflect local data collection preferences, including if the individual: 
+- quits for a significant period of time (which will likely be locally defined); or
+- significantly changes their amount of use or pattern of their smoking.
+
+If only one type of tobacco is smoked, the value for 'Pack years' will be identical to the 'Overall pack years' data element. If more than one type of tobacco is smoked, the calculation for the value for 'Overall pack years' will required a more complex algorithm such as http://smokingpackyears.com/.">
+			keywords = <"tobacco", "cigarette", "cigar", "pipe", "smoking", "kretek", "beedi", "bidi", "cigarillo", "smoker", "waterpipe", "shisha", "hookah", "narguileh", "hubble-bubble", "rollies", "roll-up">
+			misuse = <"Not to be used to record event-or period-based information about tobacco smoking, such as actual daily use or the average use over a specified period of time - use the OBSERVATION.tobacco_smoking archetype.
+
+Not to be used to record information about smokeless tobacco use - for example: snus; snuff; chewing tobacco; dip; betel quid with tobacco; and gutka. Use a separate archetype for this purpose.
+
+Not to be used to record an assessment about cigarette or nicotine dependence. Use OBSERVATION.fagerstrom for this purpose.">
+			copyright = <"© openEHR Foundation, NEHTA (Australia)">
+		>
+	>
+	lifecycle_state = <"in_development">
+	other_contributors = <"Rita Apelt, Department of Health,NT, Australia", "Stephen Chu, NEHTA, Australia (Editor)", "Sam Heard, Ocean Informatics, Australia", "Heather Leslie, Ocean Informatics, Australia (Editor)", "Ian McNicoll, Ocean Informatics UK, United Kingdom", "Jeremy Oats, NT Health, Australia", "Rosalie Schultz, Anyinginyi Health Aboriginal Corporation, Australia", "John Tore Valand, Helse Bergen HF, Norway", "Silje Ljosland Bakke, Nasjonal IKT, Norway", "Chris Bullen, University of Auckland, New Zealand">
+	other_details = <
+		["current_contact"] = <"Heather Leslie, Ocean Informatics, heather.leslie@oceaninformatics.com">
+		["revision"] = <"0.0.1-alpha">
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
+		["references"] = <"Masters N & Tutt C. Smoking Pack Years [Internet]. United Kingdom: Highfield Surgery; 2007. Available from: http://smokingpackyears.com/.
+
+Tobacco Use Summary, Draft Archetype [Internet]. nehta, Australia, nehta Clinical Knowledge Manager [cited: 2016-06-06]. Available from: http://dcm.nehta.org.au/ckm/#showArchetype_1013.1.1026.
+
+Tobacco Use Summary, Rejected Archetype [Internet]. openEHR Foundation, openEHR Clinical Knowledge Manager [cited: 2016-06-06]. Available from: http://www.openehr.org/ckm/#showArchetype_1013.1.1520.
+
+Wood DM, Mould MG, Ong SB, Baker EH. \"Pack year\" smoking histories: what about patients who use loose tobacco? Tob Control. 2005 Apr;14(2):141-2. PubMed PMID: 15791025; PubMed Central PMCID: PMC1748001.">
+		["build_uid"] = <"469cff54-5c2b-4d29-90e3-9904377db7e2">
+		["original_publisher"] = <"openEHR Foundation">
+		["original_namespace"] = <"org.openehr">
+		["MD5-CAM-1.0.1"] = <"D6646D09D68FFE7CB61B2E1D3BB57D4A">
+		["custodian_namespace"] = <"org.openehr">
+		["custodian_organisation"] = <"openEHR Foundation">
+	>
+
+definition
+	EVALUATION[at0000] matches {	-- Tobacco smoking summary
+		data matches {
+			ITEM_TREE[at0001] matches {	-- Tree
+				items cardinality matches {0..*; unordered} matches {
+					ELEMENT[at0089] occurrences matches {0..1} matches {	-- Overall status
+						value matches {
+							DV_CODED_TEXT matches {
+								defining_code matches {
+									[local::
+									at0006, 	-- Never smoked
+									at0003, 	-- Current smoker
+									at0005]	-- Former smoker
+								}
+							}
+						}
+					}
+					ELEMENT[at0043] occurrences matches {0..1} matches {	-- Overall description
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0015] occurrences matches {0..1} matches {	-- Smoking commenced
+						value matches {
+							DV_DATE matches {*}
+						}
+					}
+					ELEMENT[at0080] occurrences matches {0..1} matches {	-- Daily smoking commenced
+						value matches {
+							DV_DATE matches {*}
+						}
+					}
+					CLUSTER[at0029] occurrences matches {0..*} matches {	-- Per type
+						name matches {
+							DV_CODED_TEXT matches {
+								defining_code matches {
+									[local::
+									at0054, 	-- Cigarettes
+									at0055, 	-- Hand-rolled cigarettes
+									at0056, 	-- Cigars
+									at0066, 	-- Cigarillos
+									at0057, 	-- Pipe
+									at0062, 	-- Waterpipe
+									at0078, 	-- Bidis
+									at0088]	-- Kreteks
+								}
+							}
+						}
+						items cardinality matches {1..*; unordered} matches {
+							ELEMENT[at0052] occurrences matches {0..1} matches {	-- Status
+								value matches {
+									DV_CODED_TEXT matches {
+										defining_code matches {
+											[local::
+											at0061, 	-- Current smoker
+											at0059, 	-- Former smoker
+											at0091]	-- Never smoked
+										}
+									}
+								}
+							}
+							ELEMENT[at0053] occurrences matches {0..1} matches {	-- Description
+								value matches {
+									DV_TEXT matches {*}
+								}
+							}
+							CLUSTER[at0064] occurrences matches {0..*} matches {	-- Per episode
+								items cardinality matches {1; unordered} matches {
+									ELEMENT[at0081] occurrences matches {0..1} matches {	-- Episode label
+										value matches {
+											DV_COUNT matches {
+												magnitude matches {|>=1|}
+											}
+											DV_TEXT matches {*}
+										}
+									}
+									ELEMENT[at0013] occurrences matches {0..1} matches {	-- Episode start date
+										value matches {
+											DV_DATE matches {*}
+										}
+									}
+									ELEMENT[at0082] occurrences matches {0..1} matches {	-- Episode end date
+										value matches {
+											DV_DATE matches {*}
+										}
+									}
+									ELEMENT[at0030] occurrences matches {0..1} matches {	-- Pattern
+										value matches {
+											DV_CODED_TEXT matches {
+												defining_code matches {
+													[local::
+													at0083, 	-- Daily
+													at0084]	-- Non-daily
+												}
+											}
+										}
+									}
+									ELEMENT[at0023] occurrences matches {0..1} matches {	-- Typical use (units)
+										value matches {
+											C_DV_QUANTITY <
+												property = <[openehr::382]>
+												list = <
+													["1"] = <
+														units = <"1/d">
+													>
+													["2"] = <
+														units = <"1/wk">
+													>
+												>
+											>
+										}
+									}
+									ELEMENT[at0065] occurrences matches {0..1} matches {	-- Typical use (mass)
+										value matches {
+											C_DV_QUANTITY <
+												property = <[openehr::347]>
+												list = <
+													["1"] = <
+														units = <"g/d">
+														magnitude = <|>=0.0|>
+														precision = <|0|>
+													>
+													["2"] = <
+														units = <"g/wk">
+														magnitude = <|>=0.0|>
+														precision = <|0|>
+													>
+													["3"] = <
+														units = <"[oz_av]/d">
+													>
+													["4"] = <
+														units = <"[oz_av]/wk">
+													>
+												>
+											>
+										}
+									}
+									ELEMENT[at0025] occurrences matches {0..1} matches {	-- Number of quit attempts
+										value matches {
+											DV_COUNT matches {
+												magnitude matches {|>=0|}
+											}
+										}
+									}
+									allow_archetype CLUSTER[at0026] occurrences matches {0..*} matches {	-- Episode details
+										include
+											archetype_id/value matches {/openEHR-EHR-CLUSTER\.cessation_attempts(-[a-zA-Z0-9_]+)*\.v1/}
+									}
+									ELEMENT[at0087] occurrences matches {0..1} matches {	-- Episode comment
+										value matches {
+											DV_TEXT matches {*}
+										}
+									}
+								}
+							}
+							ELEMENT[at0014] occurrences matches {0..1} matches {	-- Quit date
+								value matches {
+									DV_DATE matches {*}
+								}
+							}
+							allow_archetype CLUSTER[at0077] occurrences matches {0..*} matches {	-- Type details
+								include
+									archetype_id/value matches {/openEHR-EHR-CLUSTER\.change(-[a-zA-Z0-9_]+)*\.v1/}
+							}
+							ELEMENT[at0017] occurrences matches {0..1} matches {	-- Pack years
+								value matches {
+									DV_COUNT matches {
+										magnitude matches {|>=0|}
+									}
+								}
+							}
+							ELEMENT[at0069] occurrences matches {0..1} matches {	-- Comment
+								value matches {
+									DV_TEXT matches {*}
+								}
+							}
+						}
+					}
+					allow_archetype CLUSTER[at0086] occurrences matches {0..*} matches {	-- Overall details
+						include
+							archetype_id/value matches {/openEHR-EHR-CLUSTER\.change(-[a-zA-Z0-9_]+)*\.v1/}
+					}
+					ELEMENT[at0016] occurrences matches {0..1} matches {	-- Overall quit date
+						value matches {
+							DV_DATE matches {*}
+						}
+					}
+					ELEMENT[at0074] occurrences matches {0..1} matches {	-- Overall pack years
+						value matches {
+							DV_COUNT matches {
+								magnitude matches {|>=0|}
+							}
+						}
+					}
+					ELEMENT[at0019] occurrences matches {0..1} matches {	-- Overall comment
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+				}
+			}
+		}
+		protocol matches {
+			ITEM_TREE[at0021] matches {	-- Tree
+				items cardinality matches {0..*; unordered} matches {
+					allow_archetype CLUSTER[at0073] occurrences matches {0..*} matches {	-- Extension
+						include
+							archetype_id/value matches {/.*/}
+					}
+					ELEMENT[at0071] occurrences matches {0..*} matches {	-- Quit date definition
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0085] occurrences matches {0..1} matches {	-- Quit attempt definition
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0075] occurrences matches {0..*} matches {	-- Current smoker definition
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0076] occurrences matches {0..*} matches {	-- Former smoker definition
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0079] occurrences matches {0..*} matches {	-- Never smoked definition
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0072] occurrences matches {0..*} matches {	-- Pack definition
+						value matches {
+							DV_COUNT matches {
+								magnitude matches {|>=0|}
+							}
+							C_DV_QUANTITY <
+								property = <[openehr::124]>
+								list = <
+									["1"] = <
+										units = <"g">
+										magnitude = <|>=0.0|>
+										precision = <|0|>
+									>
+									["2"] = <
+										units = <"[oz_av]">
+										magnitude = <|>=0.0|>
+										precision = <|0|>
+									>
+								>
+							>
+						}
+					}
+					ELEMENT[at0022] occurrences matches {0..1} matches {	-- Last updated
+						value matches {
+							DV_DATE_TIME matches {*}
+						}
+					}
+				}
+			}
+		}
+	}
+
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"Tobacco smoking summary">
+					description = <"Summary or persisting information about tobacco smoking.">
+				>
+				["at0001"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0003"] = <
+					text = <"Current smoker">
+					description = <"Individual is a current smoker of tobacco.">
+				>
+				["at0005"] = <
+					text = <"Former smoker">
+					description = <"Individual has previously smoked tobacco but is not a current smoker.">
+				>
+				["at0006"] = <
+					text = <"Never smoked">
+					description = <"Individual has never smoked any type of tobacco.">
+				>
+				["at0013"] = <
+					text = <"Episode start date">
+					description = <"Date when this episode commenced.">
+					comment = <"Can be a partial date, for example, only a year.">
+				>
+				["at0014"] = <
+					text = <"Quit date">
+					description = <"Date when the individual last smoked the specified type of tobacco.">
+					comment = <"Can be a partial date, for example, only a year. Definitions for a 'Quit date' vary enormously and can be defined using the 'Quit data definition' data element in the Protocol section of this archetype. This date will be identical to the 'Episode end date' for the most recent episode.">
+				>
+				["at0015"] = <
+					text = <"Smoking commenced">
+					description = <"The date or partial date when the individual first started frequent or regular, but non-daily, smoking of tobacco of any type.">
+					comment = <"For example: smoking every Friday night or at parties. Can be a partial date, for example, only a year.">
+				>
+				["at0016"] = <
+					text = <"Overall quit date">
+					description = <"The date when the individual last ceased using tobacco of any type.">
+				>
+				["at0017"] = <
+					text = <"Pack years">
+					description = <"Estimate of the cumulative amount of tobacco smoked using the specified type of tobacco.">
+					comment = <"Commonly used in assessment of cigarette use. It is calculated by multiplying the number of packs of cigarettes smoked per day by the number of years the individual has smoked. One pack year equals 365 packs of cigarettes. Details about how to calculate pack years for other types of tobacco can be found at http://smokingpackyears.com.">
+				>
+				["at0019"] = <
+					text = <"Overall comment">
+					description = <"Additional narrative about the all tobacco smoking that has not captured in other fields.">
+					comment = <"For example: stopped smoking or reduced amount on becoming pregnant.">
+				>
+				["at0021"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0022"] = <
+					text = <"Last updated">
+					description = <"The date this tobacco smoking summary was last updated.">
+				>
+				["at0023"] = <
+					text = <"Typical use (units)">
+					description = <"Estimate of number of units of the specified type of tobacco consumed.">
+					comment = <"For example: the number of 'sticks' or 'full pipes' per day or per week. This data element is redundant if a value is recorded for 'Typical use(mass)'.">
+				>
+				["at0025"] = <
+					text = <"Number of quit attempts">
+					description = <"Number of times the individual has attempted to stop smoking the specified type of tobacco.">
+				>
+				["at0026"] = <
+					text = <"Episode details">
+					description = <"Additional structured details about the specified episode of tobacco smoking.">
+				>
+				["at0029"] = <
+					text = <"Per type">
+					description = <"Details about smoking activity for a specified type of inhaled tobacco.">
+					comment = <"The run-time name constraint on this Cluster enables simple templates for each required type to be designed in templates, or the types to be managed exclusively at run-time. The list of names can be extended at run-time if additional types of tobacco smoking are identified locally.">
+				>
+				["at0030"] = <
+					text = <"Pattern">
+					description = <"The typical pattern of smoking for the specified type of tobacco.">
+					comment = <"The typical pattern of use can be coded with a terminology or a local value set in a template.">
+				>
+				["at0043"] = <
+					text = <"Overall description">
+					description = <"Narrative summary about the individual's overall tobacco smoking pattern and history.">
+				>
+				["at0052"] = <
+					text = <"Status">
+					description = <"Statement about current smoking behaviour for the specified type of tobacco.">
+				>
+				["at0053"] = <
+					text = <"Description">
+					description = <"Narrative summary about smoking behaviour for the specified type of tobacco.">
+				>
+				["at0054"] = <
+					text = <"Cigarettes">
+					description = <"Also known as manufactured cigarettes. Processed tobacco, manufactured into cylinder made of paper or a substance that does not contain tobacco.">
+				>
+				["at0055"] = <
+					text = <"Hand-rolled cigarettes">
+					description = <"Also known as \"rollies\" or \"roll-ups\". Loose tobacco, hand rolled into a cylinder using cigarette papers.">
+				>
+				["at0056"] = <
+					text = <"Cigars">
+					description = <"Also known as \"large cigar\". Roll of tobacco wrapped within a leaf tobacco or in a substance that contains tobacco.">
+				>
+				["at0057"] = <
+					text = <"Pipe">
+					description = <"Loose tobacco placed inside a pipe bowl.">
+				>
+				["at0059"] = <
+					text = <"Former smoker">
+					description = <"Individual has previously smoked the specified type of tobacco but is not a current smoker.">
+				>
+				["at0061"] = <
+					text = <"Current smoker">
+					description = <"Individual is a current smoker of the specified type of tobacco.">
+				>
+				["at0062"] = <
+					text = <"Waterpipe">
+					description = <"Also known as \"hookah\", \"shisha\", \"narguileh\" and \"hubble-bubble\". Tobacco, often flavoured, is burned then cooled through a basin of water and consumed through a hose and mouthpiece.">
+				>
+				["at0064"] = <
+					text = <"Per episode">
+					description = <"Details about a discrete period of smoking activity for the specified type of tobacco.">
+				>
+				["at0065"] = <
+					text = <"Typical use (mass)">
+					description = <"Estimate of the weight of loose leaf tobacco smoked.">
+					comment = <"This data element will typically be used for pipes and hand-rolled cigarettes and is redundant if a value is recorded for 'Typical use (units)'.">
+				>
+				["at0066"] = <
+					text = <"Cigarillos">
+					description = <"Also known as mini cigars. Short and narrow cigar.">
+				>
+				["at0069"] = <
+					text = <"Comment">
+					description = <"Additional narrative about smoking of the specified type of tobacco, not captured in other fields.">
+				>
+				["at0071"] = <
+					text = <"Quit date definition">
+					description = <"The applied definition for the 'Quit date' data elements used in this archetype.">
+				>
+				["at0072"] = <
+					text = <"Pack definition">
+					description = <"The definition of the size of pack used as part of the algorithm for calculating 'Pack years' data elements used in this archetype.">
+					comment = <"Definition may need to be specified per type. For example, the number of units in a pack used for cigarettes may be different to cigars; the mass of loose tobacco in a pack used for hand-rolled cigarettes or pipes.">
+				>
+				["at0073"] = <
+					text = <"Extension">
+					description = <"Additional information required to capture local content or to align with other reference models/formalisms.">
+					comment = <"For example: local information requirements or additional metadata to align with FHIR or CIMI equivalents.">
+				>
+				["at0074"] = <
+					text = <"Overall pack years">
+					description = <"Estimate of the cumulative amount for all types of tobacco smoked.">
+				>
+				["at0075"] = <
+					text = <"Current smoker definition">
+					description = <"The applied definition for the 'Current smoker' value in each of the 'Status' data elements used in this archetype.">
+					comment = <"Definition may need to be specified per type.">
+				>
+				["at0076"] = <
+					text = <"Former smoker definition">
+					description = <"The applied definition for the 'Former smoker' value in each of the 'Status' data elements used in this archetype.">
+					comment = <"Definition may need to be specified per type.">
+				>
+				["at0077"] = <
+					text = <"Type details">
+					description = <"Additional structured details about the specified type of tobacco smoking.">
+				>
+				["at0078"] = <
+					text = <"Bidis">
+					description = <"Also known as Beedis. Thin hand-rolled cigarettes filled with tobacco and wrapped in a leaf, often tied with colorful string at one or both ends. They can be flavoured or unflavoured.">
+					comment = <"Additional details could be recorded using the Fagerstrom ">
+				>
+				["at0079"] = <
+					text = <"Never smoked definition">
+					description = <"The applied definition for the 'Never smoked' value in each of the 'Status' data elements used in this archetype.">
+					comment = <"Definition may need to be specified per type. For example, the definition may not be zero, but less than a specified amount (as units or mass) smoked during a specified time interval.">
+				>
+				["at0080"] = <
+					text = <"Daily smoking commenced">
+					description = <"The date or partial date when the individual first started daily smoking of tobacco of any type.">
+					comment = <"Can be a partial date, for example, only a year.">
+				>
+				["at0081"] = <
+					text = <"Episode label">
+					description = <"Identification of an episode of smoking activity - either as a number in a sequence and/or a named event.">
+					comment = <"For example: '2' as the second episode within a sequence of episodes; or 'Pregnancy with twins' if describing the smoking activity during a health event such as during a specific pregnancy.">
+				>
+				["at0082"] = <
+					text = <"Episode end date">
+					description = <"Date when this episode ceased.">
+					comment = <"Can be a partial date, for example, only a year. This data field will be empty if the episode is current and ongoing.">
+				>
+				["at0083"] = <
+					text = <"Daily">
+					description = <"Smoking the specified type of tobacco at least once every day.">
+				>
+				["at0084"] = <
+					text = <"Non-daily">
+					description = <"Not smoking the specified type of tobacco every day.">
+				>
+				["at0085"] = <
+					text = <"Quit attempt definition">
+					description = <"The applied definition for a Quit attempt used to determine value for the 'Number of quit attempts' data element used in this archetype.">
+				>
+				["at0086"] = <
+					text = <"Overall details">
+					description = <"Additional structured details about the overall tobacco smoking behaviour.">
+				>
+				["at0087"] = <
+					text = <"Episode comment">
+					description = <"Additional narrative about tobacco smoking during the specified episode, not captured in other fields.">
+				>
+				["at0088"] = <
+					text = <"Kreteks">
+					description = <"Also known as clove cigarettes. Cigarettes that contain a mixture of tobacco, cloves and other additives.">
+				>
+				["at0089"] = <
+					text = <"Overall status">
+					description = <"Statement about current smoking behaviour for the all types of tobacco.">
+				>
+				["at0091"] = <
+					text = <"Never smoked">
+					description = <"Individual has never smoked the specified type of tobacco.">
+				>
+			>
+		>
+	>
