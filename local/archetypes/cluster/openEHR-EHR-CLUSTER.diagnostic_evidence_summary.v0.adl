@@ -1,0 +1,134 @@
+﻿archetype (adl_version=1.4; uid=d4937020-164d-433e-92a0-b1200b49a5a7)
+	openEHR-EHR-CLUSTER.diagnostic_evidence_summary.v0
+
+concept
+	[at0000]	-- Evidence
+language
+	original_language = <[ISO_639-1::en]>
+description
+	original_author = <
+		["name"] = <"Heather Leslie">
+		["organisation"] = <"Ocean Informatics">
+		["email"] = <"heather.leslie@oceaninformatics.com">
+		["date"] = <"2015-01-23">
+	>
+	details = <
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To record details of evidence in support of a clinical assertion, either as a summary of data available in other (often OBSERVATION class) archetypes, or when the original observational data is not available to the application.">
+			use = <"Use to record an explicit details about evidence in support of a clinical assertion, such as a problem/diagnosis, adverse reaction risk, health risk assessment, or contraindication.
+
+This archetype has been designed to allow recording details about evidence that support any clinical assertion. It is intended to be nested within a SLOT in the EVALUATION.problem_diagnosis, EVALUATION.adverse_reaction_risk, EVALUATION.health_risk, EVALUATION.contraindication, or similar summary archetypes, where the name of the assertion has already been specified in the EVALUATION, in order to extend its content with this additional and optional dataset. While links within the openEHR Reference Model allow for this linkage to data held elsewhere within the health record, this archetype has been developed to make this functionality explicit, and to enable clinical visibiity and review of this data, where it may be relevant in a template or specification.
+
+The evidence can be entered into the archetype, or the citations can be used to explicitly point to data with the extent of the health record.">
+			keywords = <"diagnosis", "evidence", "condition", "disease", "infectious", "problem">
+			misuse = <"Not to be used to record summary details about an identified problem or diagnosis - use the EVALUATION.problem_diagnosis for this purpose.
+
+Not to be used to record summary details about an identified adverse reaction risk - use the EVALUATION.adverse_reaction_risk for this purpose.
+
+Not to be used to record summary details about an identified health risk - use the EVALUATION.health_risk for this purpose.
+
+Not to be used to record summary details about an identified contraindication - use the EVALUATION.contraindication for this purpose.">
+			copyright = <"© openEHR Foundation, Nasjonal IKT HF">
+		>
+	>
+	lifecycle_state = <"in_development">
+	other_contributors = <"Silje Ljosland Bakke, Nasjonal IKT HF, Norway (openEHR Editor)", "Heather Leslie, Ocean Informatics, Australia (openEHR Editor)", "Ian McNicoll, freshEHR Clinical Informatics, United Kingdom (openEHR Editor)", "John Tore Valand, Helse Bergen, Norway">
+	other_details = <
+		["current_contact"] = <"Heather Leslie, Ocean Informatics, heather.leslie@oceaninformatics.com">
+		["revision"] = <"0.0.1-alpha">
+		["references"] = <"">
+		["build_uid"] = <"9b5b4cc2-77e5-4bdc-b6e2-eca9af098063">
+		["original_publisher"] = <"Nasjonal IKT">
+		["original_namespace"] = <"no.nasjonalikt">
+		["MD5-CAM-1.0.1"] = <"104FC00451E5294A123DEFE27001DA87">
+		["custodian_namespace"] = <"no.nasjonalikt">
+		["custodian_organisation"] = <"Nasjonal IKT">
+	>
+
+definition
+	CLUSTER[at0000] matches {	-- Evidence
+		items cardinality matches {1..*; unordered} matches {
+			ELEMENT[at0003] occurrences matches {0..1} matches {	-- Finding
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			ELEMENT[at0004] occurrences matches {0..1} matches {	-- Finding description
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			ELEMENT[at0005] occurrences matches {0..1} matches {*}
+			ELEMENT[at0006] occurrences matches {0..1} matches {	-- Date
+				value matches {
+					DV_DATE_TIME matches {*}
+				}
+			}
+			allow_archetype CLUSTER[at0007] occurrences matches {0..*} matches {	-- Citation
+				include
+					archetype_id/value matches {/openEHR-EHR-CLUSTER\.citation(-[a-zA-Z0-9_]+)*\.v1/}
+			}
+			allow_archetype CLUSTER[at0018] occurrences matches {0..*} matches {	-- Image
+				include
+					archetype_id/value matches {/openEHR-EHR-CLUSTER\.multimedia(-[a-zA-Z0-9_]+)*\.v1/}
+			}
+			ELEMENT[at0022] occurrences matches {0..1} matches {	-- Method
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			ELEMENT[at0001] occurrences matches {0..1} matches {	-- Method description
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+		}
+	}
+
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"Evidence">
+					description = <"Details about evidence in support of a clinical assertion.">
+				>
+				["at0001"] = <
+					text = <"Method description">
+					description = <"Narrative description of the method used to identify the evidence.">
+				>
+				["at0003"] = <
+					text = <"Finding">
+					description = <"Identification of the finding that supports the diagnosis.">
+				>
+				["at0004"] = <
+					text = <"Finding description">
+					description = <"Narrative description of the physical finding.">
+				>
+				["at0005"] = <
+					text = <"Result">
+					description = <"Measurement or value associated with the finding.">
+					comment = <"For example: Mantoux test result.">
+				>
+				["at0006"] = <
+					text = <"Date">
+					description = <"The date on which the evidence was clinically recognised.">
+				>
+				["at0007"] = <
+					text = <"Citation">
+					description = <"Detailed data available about the evidence held in another part of the health record.">
+				>
+				["at0018"] = <
+					text = <"Image">
+					description = <"Details about an multimedia representation of the evidence.">
+				>
+				["at0022"] = <
+					text = <"Method">
+					description = <"The type of examination or investigation performed.">
+					comment = <"For example: Physical examination, Chest x-ray, Histopathology result, Colonoscopy.">
+				>
+			>
+		>
+	>
