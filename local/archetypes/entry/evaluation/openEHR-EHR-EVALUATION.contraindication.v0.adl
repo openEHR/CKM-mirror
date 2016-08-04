@@ -15,37 +15,37 @@ description
 	details = <
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"To record the identification of a treatment, test or procedure which should not be provided to the subject of care, due to the direct clinical effect on the subject of care or indirect effect on others.">
-			use = <"Use to record the identification of a treatment, test or procedure which should not be provided to the subject of care, due to the direct clinical effect on the subject of care or indirect effect on others.
+			purpose = <"To record a clinical treatment, test or procedure which should not be provided to or performed on the individual.">
+			use = <"Use to record the identification of a treatment, test or procedure which should not be provided to, or performed on, an individual due to the likely or possible direct clinical effect on the individual. Please note: this archetype may also be used in uncommon situations where there is a need to record a contraindication for a treatment, test or procedure that should not be provided to, or performed on, the individual because of likely or possible harmful effects on another individual - for example, live vaccines should not be given to an individual if they have a family member who is immunosuppressed.
 
 This archetype should be regarded as a critical archetype by any clinical decision support system testing for any relevant therapeutic precautions as a clinician commences a new treatment, test or procedure for a subject of care.
-
-In the case of medications or vaccines, this archetype complements the EVALUATION.adverse_reaction_risk archetype by identifying other reasons why a medication or vaccine should not be administered, other than an adverse reaction. In view of this, clinical decision support for prescribing should include reference to this archetype plus the EVALUATION.adverse_reaction_risk as part of a safe prescribing process.
 
 It is possible for a contraindication to be created in the record of the subject of care, even though the undesired clinical effect may be on others and not directly on the subject of care themselves. For example: live vaccines should not be administered to individuals who have family members in an immunosuppressed state or actively taking immunosuppressive therapy as the family member may be at significant risk of contracting the infectious disease.
 
 This contraindication may be identified in a number of ways including, but not limited to: 
 - previous experience of a procedure being performed and subsequent clinical assessment that this should not be repeated; 
 - implantation of a metal device which precludes some imaging examinations
-- genomic testing results that indicate an adverse event may take place if a treatment or medication is administered; or
+- genomic test results that indicate an adverse event may take place if a treatment or medication is administered; or
 - adverse experience by a family member to a similar treatment, medication or procedure.
 
-The 'Absolute?' data element allows refinement of the contraindication as absolute or relative - record as 'Absolute' if the recording clinician regards that there are no reasonable clinical circumstances for the identified contraindication to be administered or performed. Otherwise the contraindication should be regarded as 'Relative' where the recording clinician regards the risk of provision of the clinical treatment, test or procedure may be outweighed by other considerations or mitigated by other measures.">
+In the case of medications or vaccines, this archetype complements the EVALUATION.adverse_reaction_risk archetype by identifying other reasons why a medication or vaccine should not be administered, other than an adverse reaction. In view of this, clinical decision support for prescribing should include reference to this archetype plus the EVALUATION.adverse_reaction_risk as part of a safe prescribing process.">
 			keywords = <"contraindication", "prevent", "avoid", "adverse event">
-			misuse = <"Not to be used to record the occurrence of an adverse reaction to a substance or agent - use EVALUATION.adverse_reaction_risk for this purpose.">
+			misuse = <"Not to be used to record the occurrence of an adverse reaction to a substance or agent - use EVALUATION.adverse_reaction_risk for this purpose.
+
+Not to be used to record personal preferences of the individual. Use specific archetypes for this purpose.">
 			copyright = <"© openEHR Foundation">
 		>
 	>
 	lifecycle_state = <"in_development">
-	other_contributors = <"Vebjoern Arntzen, Oslo university hospital, Norway", "Silje Ljosland Bakke, National ICT Norway, Norway (openEHR Editor)", "Lars Bitsch-Larsen, Haukeland University hospital, Norway", "Heather Grain, Llewelyn Grain Informatics, Australia", "Sam Heard, Ocean Informatics, Australia", "Lars Karlsen, DIPS ASA, Norway", "Heather Leslie, Ocean Informatics, Australia (openEHR Editor)", "Ian McNicoll, freshEHR Clinical Informatics, United Kingdom (openEHR Editor)", "Bjoern Naess, DIPS ASA, Norway", "Andrej Orel, Marand d.o.o., Slovenia">
+	other_contributors = <"Fatima Almeida, Critical SW, Portugal", "Vebjørn Arntzen, Oslo University Hospital, Norway", "Koray Atalag, University of Auckland, New Zealand", "Silje Ljosland Bakke, Nasjonal IKT HF, Norway (openEHR Editor)", "Lars Bitsch-Larsen, Haukeland University hospital, Norway", "Heather Grain, Llewelyn Grain Informatics, Australia", "Sam Heard, Ocean Informatics, Australia", "Evelyn Hovenga, EJSH Consulting, Australia", "Lars Karlsen, DIPS ASA, Norway", "Heather Leslie, Ocean Informatics, Australia (openEHR Editor)", "Ian McNicoll, freshEHR Clinical Informatics, United Kingdom (openEHR Editor)", "Bjørn Næss, DIPS ASA, Norway", "Andrej Orel, Marand d.o.o., Slovenia", "John Tore Valand, Helse Bergen, Norway">
 	other_details = <
 		["current_contact"] = <"Heather Leslie, Ocean Informatics, heather.leslie@oceaninformatics.com">
-		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
 		["revision"] = <"0.0.1-alpha">
-		["build_uid"] = <"0be322da-fd88-4c96-a350-98b6809927cf">
-		["original_namespace"] = <"org.openehr">
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
+		["build_uid"] = <"87219401-6fa1-4156-9359-cb344bb2e74a">
 		["original_publisher"] = <"openEHR Foundation">
-		["MD5-CAM-1.0.1"] = <"CDF8AF81E0938F0E8E24D6AADE400E8A">
+		["original_namespace"] = <"org.openehr">
+		["MD5-CAM-1.0.1"] = <"1E6CC00FB1E828DC4389E5104A741350">
 		["custodian_namespace"] = <"org.openehr">
 		["custodian_organisation"] = <"openEHR Foundation">
 	>
@@ -60,11 +60,36 @@ definition
 							DV_TEXT matches {*}
 						}
 					}
-					ELEMENT[at0007] occurrences matches {0..1} matches {	-- Absolute?
+					ELEMENT[at0014] occurrences matches {0..1} matches {	-- Status
 						value matches {
-							DV_BOOLEAN matches {
-								value matches {True}
+							DV_CODED_TEXT matches {
+								defining_code matches {
+									[local::
+									at0015, 	-- Suspected
+									at0016, 	-- Likely
+									at0017, 	-- Confirmed
+									at0018, 	-- Resolved
+									at0019]	-- Refuted
+								}
 							}
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0007] occurrences matches {0..1} matches {	-- Criticality
+						value matches {
+							DV_CODED_TEXT matches {
+								defining_code matches {
+									[local::
+									at0010, 	-- Low
+									at0011, 	-- High
+									at0012]	-- Indeterminate
+								}
+							}
+						}
+					}
+					ELEMENT[at0013] occurrences matches {0..1} matches {	-- Category
+						value matches {
+							DV_TEXT matches {*}
 						}
 					}
 					ELEMENT[at0003] occurrences matches {0..1} matches {	-- Rationale
@@ -83,6 +108,10 @@ definition
 		protocol matches {
 			ITEM_TREE[at0006] matches {	-- Tree
 				items cardinality matches {0..*; unordered} matches {
+					allow_archetype CLUSTER[at0020] occurrences matches {0..*} matches {	-- Extension
+						include
+							archetype_id/value matches {/.*/}
+					}
 					ELEMENT[at0004] occurrences matches {0..1} matches {	-- Last updated
 						value matches {
 							DV_DATE_TIME matches {*}
@@ -105,7 +134,7 @@ ontology
 			items = <
 				["at0000"] = <
 					text = <"Contraindication">
-					description = <"Identification of a treatment, test or procedure which should not be provided to the subject of care, for clinical reasons.">
+					description = <"A clinical treatment, test or procedure which should not be used as it is likely, or possible, to cause harm to an individual.">
 				>
 				["at0001"] = <
 					text = <"Tree">
@@ -113,25 +142,25 @@ ontology
 				>
 				["at0002"] = <
 					text = <"Contraindication">
-					description = <"Identification of a contraindication to a treatment, test or procedure, including a class of medications or vaccines.">
-					comment = <"Coding of the identified 'Contraindication' with a terminology is desirable, where possible.">
+					description = <"Identification of the contraindicated treatment, test or procedure.">
+					comment = <"Coding of the identified 'Contraindication' with a terminology is desirable, where possible. The category of treatment may include a medication or a vaccine, or a class of either, where the underlying mechanism of effect is not as an adverse reaction - for example, presence of a known gene variation may preclude use of a specified medication.">
 				>
 				["at0003"] = <
 					text = <"Rationale">
-					description = <"Description of evidence or rationale for the contraindication.">
+					description = <"Narrative description of evidence or reasoning for the contraindication.">
 					comment = <"Please note: an optional URI link to evidence within the health record is also permitted using Reference Model attributes. As this URI link may not be accessible from a message or by receiving clinical system it is desirable that a narrative description of the rationale should be explicitly stated. ">
 				>
 				["at0004"] = <
 					text = <"Last updated">
-					description = <"The date this contraindication was last updated.">
+					description = <"Date when the contraindication  information was last updated.">
 				>
 				["at0006"] = <
 					text = <"Tree">
 					description = <"@ internal @">
 				>
 				["at0007"] = <
-					text = <"Absolute?">
-					description = <"Is this an absolute contraindication?">
+					text = <"Criticality">
+					description = <"An indication of the potential for critical system organ damage or life threatening consequence.">
 					comment = <"Record as TRUE if the recording clinician regards that there are no reasonable circumstances for the identified contraindication to be administered or performed.">
 				>
 				["at0008"] = <
@@ -140,8 +169,55 @@ ontology
 				>
 				["at0009"] = <
 					text = <"Review date">
-					description = <"Date when due for review by a clinician.">
+					description = <"Date when next due for review by a clinician.">
 					comment = <"In some circumstances, contraindications are not intended to be indefinite or lifelong, and this contraindication should be reconsidered in the context of changing clinical circumstances. For example: if a family member is no longer taking immunosuppressive therapy, then live vaccines could safely be administered to the subject of care again and the contraindication is effectively obsolete.">
+				>
+				["at0010"] = <
+					text = <"Low">
+					description = <"Exposure to contraindicated treatment, test or procedure unlikely to result in critical system organ damage or life threatening consequences. Future exposure to the identified 'Contraindication' should be considered a relative contraindication in normal clinical circumstances.">
+				>
+				["at0011"] = <
+					text = <"High">
+					description = <"Exposure to treatment, test or procedure may result in critical organ system damage or life threatening consequences. Future exposure to the identified 'Contraindication' should be considered an absolute contraindication in normal clinical circumstances.">
+				>
+				["at0012"] = <
+					text = <"Indeterminate">
+					description = <"Unable to assess with information available.">
+				>
+				["at0013"] = <
+					text = <"Category">
+					description = <"Category of the identified 'Contraindication'.">
+					comment = <"This data element has been included because it is currently being captured in some clinical systems. This information could be derived from the Contraindication where coding systems are used, and is effectively redundant in that situation.">
+				>
+				["at0014"] = <
+					text = <"Status">
+					description = <"Assertion about the certainty or potential future risk, of the identified 'Contraindication'.">
+					comment = <"Decision support would typically raise alerts for 'Suspected', 'Likely', 'Confirmed', and ignore a 'Refuted' reaction. Clinical systems may choose not to display Contraindication entries with a 'Refuted' status in the Contraindication list. However, 'Refuted' may be useful for reconciliation of the Contraindication list or when communicating between systems . Some implementations may choose to make this field mandatory. 'Resolved' may be used variably across systems, depending on clinical use and context. The free text data type will allow for local variation by enabling other value sets to be applied to this data element in a template - in this situation it is recommended that values should be coded using a terminology.">
+				>
+				["at0015"] = <
+					text = <"Suspected">
+					description = <"A low level of clinical certainty that the subject should not be exposed to the 'Contraindication'.">
+				>
+				["at0016"] = <
+					text = <"Likely">
+					description = <"A reasonable level of clinical certainty that the subject should not be exposed to the 'Contraindication'.">
+				>
+				["at0017"] = <
+					text = <"Confirmed">
+					description = <"A high level of clinical certainty that the subject should not be exposed to the 'Contraindication', which may include clinical evidence by testing.">
+				>
+				["at0018"] = <
+					text = <"Resolved">
+					description = <"The previous assertion that the subject should not be exposed to the 'Contraindication' has been clinically reassessed and considered no longer to be an active risk.">
+				>
+				["at0019"] = <
+					text = <"Refuted">
+					description = <"The previous assertion that the subject should not be exposed to the 'Contraindication' has been clinically reassessed or has been disproved with a high level of clinical certainty by testing.">
+				>
+				["at0020"] = <
+					text = <"Extension">
+					description = <"Additional information required to capture local content or to align with other reference models/formalisms.">
+					comment = <"For example: local information requirements or additional metadata to align with FHIR or CIMI equivalents.">
 				>
 			>
 		>
