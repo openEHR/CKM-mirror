@@ -2,7 +2,7 @@
 	openEHR-EHR-CLUSTER.oedema.v0
 
 concept
-	[at0000]	-- Oedema
+	[at0000]	-- Examination of oedema
 language
 	original_language = <[ISO_639-1::en]>
 	translations = <
@@ -31,8 +31,8 @@ description
 	details = <
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"For recording a narrative description and details about oedema on physical examination.">
-			use = <"Use to record a narrative description of the oedema observed during the physical examination.
+			purpose = <"For recording a narrative description and details about a physical examination of oedema.">
+			use = <"Use to record a narrative description of the physical examination of oedema.
 
 This archetype has been designed to be used within the 'Examination findings' SLOT of CLUSTER archetypes for physical examination findings. If used within a CLUSTER.exam_pattern related archetype, the 'Body site' data element and 'Structured body site' SLOT are redundant as the location of oedema will be identified in the Exam CLUSTER. If used within the OBSERVATION.exam archetype or CLUSTERs where the site has not been identified, then 'Body site' and/or 'Structured body site' SLOT will be required.
 
@@ -63,10 +63,10 @@ Use to incorporate the narrative descriptions of clinical findings within existi
 	other_details = <
 		["revision"] = <"0.0.1-alpha">
 		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
-		["build_uid"] = <"69ac4fd2-b0c0-49e8-aafe-c0beca238594">
+		["build_uid"] = <"2da4189b-65ba-4f0f-a871-65c359084677">
 		["original_publisher"] = <"openEHR Foundation">
 		["original_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"6E90916149B444AB6BAF8CDDE86CA1F6">
+		["MD5-CAM-1.0.1"] = <"659D3C48050880444C6182FF7D29DF4D">
 		["custodian_namespace"] = <"org.openehr">
 		["custodian_organisation"] = <"openEHR Foundation">
 	>
@@ -74,30 +74,6 @@ Use to incorporate the narrative descriptions of clinical findings within existi
 definition
 	CLUSTER[at0000] matches {	-- Oedema
 		items cardinality matches {1..*; unordered} matches {
-			ELEMENT[at0001] occurrences matches {0..1} matches {	-- Clinical description
-				value matches {
-					DV_TEXT matches {*}
-				}
-			}
-			ELEMENT[at0011] occurrences matches {0..1} matches {	-- Pitting
-				value matches {
-					DV_BOOLEAN matches {
-						value matches {True, False}
-					}
-				}
-			}
-			ELEMENT[at0006] occurrences matches {0..1} matches {	-- Severity
-				value matches {
-					DV_CODED_TEXT matches {
-						defining_code matches {
-							[local::
-							at0007, 	-- Mild (+)
-							at0008, 	-- Moderate (++)
-							at0009]	-- Severe (+++)
-						}
-					}
-				}
-			}
 			ELEMENT[at0013] occurrences matches {0..*} matches {	-- Body site name
 				value matches {
 					DV_TEXT matches {*}
@@ -107,10 +83,70 @@ definition
 				include
 					archetype_id/value matches {/openEHR-EHR-CLUSTER\.anatomical_location(-[a-zA-Z0-9_]+)*\.v1|openEHR-EHR-CLUSTER\.anatomical_location_relative(-[a-zA-Z0-9_]+)*\.v1/}
 			}
+			ELEMENT[at0016] occurrences matches {0..1} matches {	-- No abnormality detected
+				value matches {
+					DV_BOOLEAN matches {
+						value matches {True}
+					}
+				}
+			}
+			ELEMENT[at0001] occurrences matches {0..1} matches {	-- Clinical description
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			CLUSTER[at0017] occurrences matches {0..*} matches {	-- Specific  findings
+				items cardinality matches {1..*; unordered} matches {
+					ELEMENT[at0018] occurrences matches {0..1} matches {	-- Presence
+						value matches {
+							DV_CODED_TEXT matches {
+								defining_code matches {
+									[local::
+									at0019, 	-- Present
+									at0020, 	-- Absent
+									at0021]	-- Indeterminate
+								}
+							}
+						}
+					}
+					ELEMENT[at0006] occurrences matches {0..1} matches {	-- Severity
+						value matches {
+							DV_CODED_TEXT matches {
+								defining_code matches {
+									[local::
+									at0007, 	-- Mild (+)
+									at0008, 	-- Moderate (++)
+									at0009]	-- Severe (+++)
+								}
+							}
+						}
+					}
+					ELEMENT[at0011] occurrences matches {0..1} matches {	-- Pitting
+						value matches {
+							DV_BOOLEAN matches {
+								value matches {True, False}
+							}
+						}
+					}
+				}
+			}
+			allow_archetype CLUSTER[at0024] occurrences matches {0..*} matches {	-- Multimedia representation
+				include
+					archetype_id/value matches {/openEHR-EHR-CLUSTER\.multimedia(-[a-zA-Z0-9_]+)*\.v1/}
+			}
+			ELEMENT[at0023] occurrences matches {0..1} matches {	-- Clinical interpretation
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
 			ELEMENT[at0012] occurrences matches {0..1} matches {	-- Comment
 				value matches {
 					DV_TEXT matches {*}
 				}
+			}
+			allow_archetype CLUSTER[at0025] occurrences matches {0..*} matches {	-- Examination not done
+				include
+					archetype_id/value matches {/openEHR-EHR-CLUSTER\.exclusion_exam(-[a-zA-Z0-9_]+)*\.v1/}
 			}
 		}
 	}
@@ -121,12 +157,12 @@ ontology
 		["en"] = <
 			items = <
 				["at0000"] = <
-					text = <"Oedema">
-					description = <"Abnormal accumulation of fluid in the skin.">
+					text = <"Examination of oedema">
+					description = <"Findings observed during examination of oedema.">
 				>
 				["at0001"] = <
 					text = <"Clinical description">
-					description = <"Narrative description about the oedema.">
+					description = <"Narrative description about the oedema finding.">
 				>
 				["at0006"] = <
 					text = <"Severity">
@@ -161,6 +197,43 @@ ontology
 					text = <"Structured body site">
 					description = <"Slot to contain detailed and structured anatomical location details.">
 					comment = <"If the body site has previously been identified in another archetype in which this archetype is then nested, this SLOT becomes redundant.">
+				>
+				["at0016"] = <
+					text = <"No abnormality detected">
+					description = <"Statement that no abnormality was detected (NAD) on physical examination.">
+					comment = <"Record as True if no abnormality was detected on examination. Specific statements about the examination can be included in the 'Clinical Interpretation' data element. If 'No abnormality detected' is selected, then recording of other examination data elements becomes redundant, with the exception of only the 'Clinical interpretation' data element, which may be useful if a normal statement is desired for recording, for example 'No oedema present'.">
+				>
+				["at0017"] = <
+					text = <"Specific findings">
+					description = <"Structured details about the oedema.">
+				>
+				["at0018"] = <
+					text = <"Presence">
+					description = <"The presence or absence of oedema on examination.">
+				>
+				["at0019"] = <
+					text = <"Present">
+					description = <"Oedema is observed to be present.">
+				>
+				["at0020"] = <
+					text = <"Absent">
+					description = <"Oedema is not observed to be present.">
+				>
+				["at0021"] = <
+					text = <"Indeterminate">
+					description = <"It is not possible to determine whether oedema is present or not.">
+				>
+				["at0023"] = <
+					text = <"Clinical interpretation">
+					description = <"Single word, phrase or brief description that represents the clinical meaning and significance of the oedema finding.">
+				>
+				["at0024"] = <
+					text = <"Multimedia representation">
+					description = <"Digital image, video or diagram representing the oedema.">
+				>
+				["at0025"] = <
+					text = <"Examination not done">
+					description = <"Details to explicitly record that this examination for oedema was not performed.">
 				>
 			>
 		>
@@ -208,6 +281,42 @@ ontology
 					description = <"*Slot to contain detailed and structured anatomical location details.(en)">
 					comment = <"*If the body site has previously been identified in another archetype in which this archetype is then nested, this SLOT becomes redundant.(en)">
 				>
+				["at0016"] = <
+					text = <"*New element(en)">
+					description = <"**(en)">
+				>
+				["at0017"] = <
+					text = <"*New cluster(en)">
+					description = <"**(en)">
+				>
+				["at0018"] = <
+					text = <"*New element(en)">
+					description = <"**(en)">
+				>
+				["at0019"] = <
+					text = <"*Present(en)">
+					description = <"*Oedema is present.(en)">
+				>
+				["at0020"] = <
+					text = <"*Absent(en)">
+					description = <"*Oedema is not observed to be present.(en)">
+				>
+				["at0021"] = <
+					text = <"*Indeterminate(en)">
+					description = <"*It is not possible to determine whether oedema is present or not.(en)">
+				>
+				["at0023"] = <
+					text = <"*New element(en)">
+					description = <"**(en)">
+				>
+				["at0024"] = <
+					text = <"*Cluster(en)">
+					description = <"**(en)">
+				>
+				["at0025"] = <
+					text = <"*Cluster(en)">
+					description = <"**(en)">
+				>
 			>
 		>
 		["ru"] = <
@@ -253,6 +362,42 @@ ontology
 					text = <"*Structured body site(en)">
 					description = <"*Slot to contain detailed and structured anatomical location details.(en)">
 					comment = <"*If the body site has previously been identified in another archetype in which this archetype is then nested, this SLOT becomes redundant.(en)">
+				>
+				["at0016"] = <
+					text = <"*New element(en)">
+					description = <"**(en)">
+				>
+				["at0017"] = <
+					text = <"*New cluster(en)">
+					description = <"**(en)">
+				>
+				["at0018"] = <
+					text = <"*New element(en)">
+					description = <"**(en)">
+				>
+				["at0019"] = <
+					text = <"*Present(en)">
+					description = <"*Oedema is present.(en)">
+				>
+				["at0020"] = <
+					text = <"*Absent(en)">
+					description = <"*Oedema is not observed to be present.(en)">
+				>
+				["at0021"] = <
+					text = <"*Indeterminate(en)">
+					description = <"*It is not possible to determine whether oedema is present or not.(en)">
+				>
+				["at0023"] = <
+					text = <"*New element(en)">
+					description = <"**(en)">
+				>
+				["at0024"] = <
+					text = <"*Cluster(en)">
+					description = <"**(en)">
+				>
+				["at0025"] = <
+					text = <"*Cluster(en)">
+					description = <"**(en)">
 				>
 			>
 		>
