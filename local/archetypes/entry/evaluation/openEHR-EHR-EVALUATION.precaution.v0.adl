@@ -1,0 +1,202 @@
+﻿archetype (adl_version=1.4; uid=6e932cdd-e69d-4f18-a0df-6ee365168fee)
+	openEHR-EHR-EVALUATION.precaution.v0
+
+concept
+	[at0000]	-- Precaution
+language
+	original_language = <[ISO_639-1::en]>
+description
+	original_author = <
+		["name"] = <"Silje Ljosland Bakke / John Tore Valand">
+		["organisation"] = <"Nasjonal IKT HF / Helse Bergen HF">
+		["email"] = <"silje.ljosland.bakke@nasjonalikt.no/ john.tore.valand@helse-bergen.no">
+		["date"] = <"2016-02-29">
+	>
+	details = <
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To record a condition or state of the individual that are clinically significant and unique or idiosyncratic for this individual, and which are considered vital information when making treatment decisions.">
+			use = <"Use to record a condition or state of the individual that are clinically significant and unique or idiosyncratic for this individual, and which are considered vital information when making treatment decisions.
+
+This archetype should be regarded as a critical archetype by any clinical decision support system testing for any relevant therapeutic precautions as a clinician commences a new clinical intervention for an individual. 
+
+Examples of a precaution include, but are not limited to:
+- Immunosuppressed/on immunosuppressive therapy – linked to medication order for chemo or steroids; or diagnosis of leukaemia;
+- Renal failure – linked to renal function tests and/or a formal diagnosis of renal failure;
+- Waiting for organ transplant;
+- Ongoing investigation or follow up of suspected or verified malignant disease;
+- Participation in pharmacological trials;
+- Using anticoagulant treatment; or
+- Known serious psyciatric disorder.">
+			keywords = <"precaution", "prevent", "avoid", "adverse event">
+			misuse = <"Not to be used to record personal preferences of the individual. Use specific archetypes for this purpose.">
+			copyright = <"© openEHR Foundation">
+		>
+	>
+	lifecycle_state = <"in_development">
+	other_contributors = <"Vebjørn Arntzen, Oslo University Hospital, Norway", "Silje Ljosland Bakke, Nasjonal IKT HF, Norway (openEHR Editor)", "Heather Leslie, Ocean Informatics, Australia (openEHR Editor)", "John Tore Valand, Helse Bergen, Norway">
+	other_details = <
+		["current_contact"] = <"Heather Leslie, Ocean Informatics, heather.leslie@oceaninformatics.com">
+		["revision"] = <"0.0.1-alpha">
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
+		["build_uid"] = <"d1f2ebae-73c3-4ed2-87ff-619ee1e49b56">
+		["original_publisher"] = <"openEHR Foundation">
+		["original_namespace"] = <"org.openehr">
+		["MD5-CAM-1.0.1"] = <"8CC32023E43F7C4CF30E945791CD6168">
+		["custodian_namespace"] = <"org.openehr">
+		["custodian_organisation"] = <"openEHR Foundation">
+	>
+
+definition
+	EVALUATION[at0000] matches {	-- Precaution
+		data matches {
+			ITEM_TREE[at0001] matches {	-- Tree
+				items cardinality matches {1..*; unordered} matches {
+					ELEMENT[at0002] matches {	-- Precaution
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0014] occurrences matches {0..1} matches {	-- Status
+						value matches {
+							DV_CODED_TEXT matches {
+								defining_code matches {
+									[local::
+									at0015, 	-- Suspected
+									at0016, 	-- Likely
+									at0017, 	-- Confirmed
+									at0018, 	-- Resolved
+									at0019]	-- Refuted
+								}
+							}
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0003] occurrences matches {0..1} matches {	-- Rationale
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0013] occurrences matches {0..1} matches {	-- Category
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0008] occurrences matches {0..1} matches {	-- Comment
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+				}
+			}
+		}
+		protocol matches {
+			ITEM_TREE[at0006] matches {	-- Tree
+				items cardinality matches {0..*; unordered} matches {
+					allow_archetype CLUSTER[at0020] occurrences matches {0..*} matches {	-- Extension
+						include
+							archetype_id/value matches {/.*/}
+					}
+					ELEMENT[at0022] occurrences matches {0..1} matches {	-- Valid period start
+						value matches {
+							DV_DATE_TIME matches {*}
+						}
+					}
+					ELEMENT[at0009] occurrences matches {0..1} matches {	-- Review date
+						value matches {
+							DV_DATE_TIME matches {*}
+						}
+					}
+					ELEMENT[at0004] occurrences matches {0..1} matches {	-- Last updated
+						value matches {
+							DV_DATE_TIME matches {*}
+						}
+					}
+				}
+			}
+		}
+	}
+
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"Precaution">
+					description = <"A condition or state of the individual that are clinically significant and unique or idiosyncratic for this individual, and which are considered vital information when making treatment decisions.">
+				>
+				["at0001"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Precaution">
+					description = <"Identification, by name, of a condition or state.">
+					comment = <"Coding of the identified 'Precaution' with a terminology is desirable, where possible.">
+				>
+				["at0003"] = <
+					text = <"Rationale">
+					description = <"Narrative description of evidence or rationale for the 'Precaution'.">
+					comment = <"This data element can be optionally linked to a diagnosis, test result or medication order via a URL (as per the Reference Model) in order to provide the rationale or evidence for the precaution assertion. Please note: as this URI link may not be accessible from a message or by receiving clinical system it is desirable that a narrative description of the rationale should be explicitly recorded.">
+				>
+				["at0004"] = <
+					text = <"Last updated">
+					description = <"Date when the precaution information was last updated.">
+				>
+				["at0006"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0008"] = <
+					text = <"Comment">
+					description = <"Additional narrative about the precaution, not captured in other fields.">
+				>
+				["at0009"] = <
+					text = <"Review date">
+					description = <"Date when next due for review by a clinician.">
+					comment = <"In circumstances where precautions are not indefinite or life-long, use this data element to record when this precaution should be reassessed in the context of the clinical circumstances at the time. For example: XXXX">
+				>
+				["at0013"] = <
+					text = <"Category">
+					description = <"Category of the identified 'Precaution'.">
+					comment = <"This data element has been included because it is currently being captured in some clinical systems. This information could be derived from the Intervention where coding systems are used, and is effectively redundant in that situation.">
+				>
+				["at0014"] = <
+					text = <"Status">
+					description = <"Assertion about the certainty or potential future risk, of the identified 'Precaution'.">
+					comment = <"Decision support would typically raise alerts for 'Suspected', 'Likely', 'Confirmed', and ignore a 'Refuted' reaction. Clinical systems may choose not to display Precaution entries with a 'Refuted' status in the Precaution list. However, 'Refuted' may be useful for reconciliation of the Precaution list or when communicating between systems . Some implementations may choose to make this field mandatory. 'Resolved' may be used variably across systems, depending on clinical use and context. The free text data type will allow for local variation by enabling other value sets to be applied to this data element in a template - in this situation it is recommended that values should be coded using a terminology.">
+				>
+				["at0015"] = <
+					text = <"Suspected">
+					description = <"A low level of clinical certainty that carrying out the 'Precaution' will cause harm to the individual or family member.">
+				>
+				["at0016"] = <
+					text = <"Likely">
+					description = <"A reasonable level of clinical certainty that carrying out the 'Precaution' will cause harm to the individual or family member.">
+				>
+				["at0017"] = <
+					text = <"Confirmed">
+					description = <"A high level of clinical certainty that carrying out the 'Precaution' will cause harm to the individual or family member.">
+				>
+				["at0018"] = <
+					text = <"Resolved">
+					description = <"The previous assertion that the subject should not be exposed to the 'Precaution' has been clinically reassessed and considered no longer to be an active risk.">
+				>
+				["at0019"] = <
+					text = <"Refuted">
+					description = <"The previous assertion that the subject should not be exposed to the 'Precaution' has been clinically reassessed or has been disproved with a high level of clinical certainty by testing.">
+				>
+				["at0020"] = <
+					text = <"Extension">
+					description = <"Additional information required to capture local content or to align with other reference models/formalisms.">
+					comment = <"For example: local information requirements or additional metadata to align with FHIR or CIMI equivalents.">
+				>
+				["at0022"] = <
+					text = <"Valid period start">
+					description = <"Date/time when the 'Precaution' becomes active.">
+					comment = <"This data element is intended for use when a precaution is identified to start at some time in the future. For example: XXXX.">
+				>
+			>
+		>
+	>
