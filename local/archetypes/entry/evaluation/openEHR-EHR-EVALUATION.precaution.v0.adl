@@ -15,34 +15,37 @@ description
 	details = <
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"To record a condition or state of the individual that are clinically significant and unique or idiosyncratic for this individual, and which are considered vital information when making treatment decisions.">
+			purpose = <"To record a condition or state of the individual that is clinically significant and unique or idiosyncratic for this individual, and is considered vital information when making treatment decisions.">
 			use = <"Use to record a condition or state of the individual that are clinically significant and unique or idiosyncratic for this individual, and which are considered vital information when making treatment decisions.
 
 This archetype should be regarded as a critical archetype by any clinical decision support system testing for any relevant therapeutic precautions as a clinician commences a new clinical intervention for an individual. 
 
-Examples of a precaution include, but are not limited to:
+Examples of conditions that warrant creation of a precaution include, but are not limited to:
 - Immunosuppressed/on immunosuppressive therapy – linked to medication order for chemo or steroids; or diagnosis of leukaemia;
 - Renal failure – linked to renal function tests and/or a formal diagnosis of renal failure;
 - Waiting for organ transplant;
+- Transplanted organ in situ;
+- Metal implant in situ:
 - Ongoing investigation or follow up of suspected or verified malignant disease;
-- Participation in pharmacological trials;
-- Using anticoagulant treatment; or
-- Known serious psyciatric disorder.">
-			keywords = <"precaution", "prevent", "avoid", "adverse event">
-			misuse = <"Not to be used to record personal preferences of the individual. Use specific archetypes for this purpose.">
+- Participation in a pharmacological trial; or
+- Using anticoagulant treatment.">
+			keywords = <"precaution", "prevent", "avoid", "adverse event", "prevention">
+			misuse = <"Not to be used to record a clinical intervention (including, but not limited to, use of a treatment or performance of a test or procedure) that should not be carried out due to the likelihood, or possibility, of harm being caused to an individual. Use the EVALUATION.contraindication for this purpose.
+
+Not to be used to record personal preferences of the individual. Use specific archetypes for this purpose.">
 			copyright = <"© openEHR Foundation">
 		>
 	>
 	lifecycle_state = <"in_development">
-	other_contributors = <"Vebjørn Arntzen, Oslo University Hospital, Norway", "Silje Ljosland Bakke, Nasjonal IKT HF, Norway (openEHR Editor)", "Heather Leslie, Ocean Informatics, Australia (openEHR Editor)", "John Tore Valand, Helse Bergen, Norway">
+	other_contributors = <"Tomas Alme, DIPS, Norway", "Vebjørn Arntzen, Oslo University Hospital, Norway", "Silje Ljosland Bakke, Nasjonal IKT HF, Norway (openEHR Editor)", "Hildegard Franke, freshEHR Clinical Informatics Ltd., United Kingdom", "Heather Grain, Llewelyn Grain Informatics, Australia", "Evelyn Hovenga, EJSH Consulting, Australia", "Lars Morgan Karlsen, DIPS ASA, Norway", "Heather Leslie, Ocean Informatics, Australia (openEHR Editor)", "Ian McNicoll, freshEHR Clinical Informatics, United Kingdom (openEHR Editor)", "John Tore Valand, Helse Bergen, Norway">
 	other_details = <
 		["current_contact"] = <"Heather Leslie, Ocean Informatics, heather.leslie@oceaninformatics.com">
 		["revision"] = <"0.0.1-alpha">
 		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
-		["build_uid"] = <"d1f2ebae-73c3-4ed2-87ff-619ee1e49b56">
+		["build_uid"] = <"03254c53-2698-4a21-b8d6-2b5227850989">
 		["original_publisher"] = <"openEHR Foundation">
 		["original_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"8CC32023E43F7C4CF30E945791CD6168">
+		["MD5-CAM-1.0.1"] = <"4350ED668CC92ADBD1A23A062C9F6CF1">
 		["custodian_namespace"] = <"org.openehr">
 		["custodian_organisation"] = <"openEHR Foundation">
 	>
@@ -52,7 +55,7 @@ definition
 		data matches {
 			ITEM_TREE[at0001] matches {	-- Tree
 				items cardinality matches {1..*; unordered} matches {
-					ELEMENT[at0002] matches {	-- Precaution
+					ELEMENT[at0002] matches {	-- Condition
 						value matches {
 							DV_TEXT matches {*}
 						}
@@ -62,9 +65,7 @@ definition
 							DV_CODED_TEXT matches {
 								defining_code matches {
 									[local::
-									at0015, 	-- Suspected
-									at0016, 	-- Likely
-									at0017, 	-- Confirmed
+									at0015, 	-- Active
 									at0018, 	-- Resolved
 									at0019]	-- Refuted
 								}
@@ -72,7 +73,7 @@ definition
 							DV_TEXT matches {*}
 						}
 					}
-					ELEMENT[at0003] occurrences matches {0..1} matches {	-- Rationale
+					ELEMENT[at0003] occurrences matches {0..1} matches {	-- Evidence
 						value matches {
 							DV_TEXT matches {*}
 						}
@@ -102,6 +103,11 @@ definition
 							DV_DATE_TIME matches {*}
 						}
 					}
+					ELEMENT[at0024] occurrences matches {0..1} matches {	-- 
+						value matches {
+							DV_DATE_TIME matches {*}
+						}
+					}
 					ELEMENT[at0009] occurrences matches {0..1} matches {	-- Review date
 						value matches {
 							DV_DATE_TIME matches {*}
@@ -124,21 +130,21 @@ ontology
 			items = <
 				["at0000"] = <
 					text = <"Precaution">
-					description = <"A condition or state of the individual that are clinically significant and unique or idiosyncratic for this individual, and which are considered vital information when making treatment decisions.">
+					description = <"A condition or state of the individual that is clinically significant and unique or idiosyncratic for this individual, and is considered vital information when making treatment decisions.">
 				>
 				["at0001"] = <
 					text = <"Tree">
 					description = <"@ internal @">
 				>
 				["at0002"] = <
-					text = <"Precaution">
+					text = <"Condition">
 					description = <"Identification, by name, of a condition or state.">
 					comment = <"Coding of the identified 'Precaution' with a terminology is desirable, where possible.">
 				>
 				["at0003"] = <
-					text = <"Rationale">
-					description = <"Narrative description of evidence or rationale for the 'Precaution'.">
-					comment = <"This data element can be optionally linked to a diagnosis, test result or medication order via a URL (as per the Reference Model) in order to provide the rationale or evidence for the precaution assertion. Please note: as this URI link may not be accessible from a message or by receiving clinical system it is desirable that a narrative description of the rationale should be explicitly recorded.">
+					text = <"Evidence">
+					description = <"Narrative description about the evidence for the identified condition.">
+					comment = <"This data element can be optionally linked to a diagnosis, test result, medication order etc via a URI (as per the Reference Model) in order to provide the rationale or evidence for the precaution assertion. Please note: as this URI link may not be accessible from a message or by receiving clinical system it is desirable that a narrative description of the evidence should also be explicitly recorded.">
 				>
 				["at0004"] = <
 					text = <"Last updated">
@@ -155,29 +161,21 @@ ontology
 				["at0009"] = <
 					text = <"Review date">
 					description = <"Date when next due for review by a clinician.">
-					comment = <"In circumstances where precautions are not indefinite or life-long, use this data element to record when this precaution should be reassessed in the context of the clinical circumstances at the time. For example: XXXX">
+					comment = <"In circumstances where precautions are not indefinite or life-long, use this data element to record the date/time when this precaution should be reassessed in the context of the clinical circumstances at the time.">
 				>
 				["at0013"] = <
 					text = <"Category">
-					description = <"Category of the identified 'Precaution'.">
-					comment = <"This data element has been included because it is currently being captured in some clinical systems. This information could be derived from the Intervention where coding systems are used, and is effectively redundant in that situation.">
+					description = <"Category of the identified 'Condition'.">
+					comment = <"This data element has been included because it is currently being captured in some clinical systems. This information could be derived when terminology codes are used to represent the condition in clinical systems, and is effectively redundant in that situation.">
 				>
 				["at0014"] = <
 					text = <"Status">
-					description = <"Assertion about the certainty or potential future risk, of the identified 'Precaution'.">
-					comment = <"Decision support would typically raise alerts for 'Suspected', 'Likely', 'Confirmed', and ignore a 'Refuted' reaction. Clinical systems may choose not to display Precaution entries with a 'Refuted' status in the Precaution list. However, 'Refuted' may be useful for reconciliation of the Precaution list or when communicating between systems . Some implementations may choose to make this field mandatory. 'Resolved' may be used variably across systems, depending on clinical use and context. The free text data type will allow for local variation by enabling other value sets to be applied to this data element in a template - in this situation it is recommended that values should be coded using a terminology.">
+					description = <"Assertion about the status of the identified 'Precaution'.">
+					comment = <"Decision support would typically raise alerts for 'Active' and ignore a 'Resolved' or 'Refuted' reaction. Clinical systems may choose not to display Precaution entries with a 'Refuted' status in the Precaution list. However, 'Refuted' may be useful for reconciliation of the Precaution list or when communicating between systems. Some implementations may choose to make this field mandatory. 'Resolved' may be used variably across systems, depending on clinical use and context. The free text data type will allow for local variation by enabling other value sets to be applied to this data element in a template - in this situation it is recommended that values should be coded using a terminology.">
 				>
 				["at0015"] = <
-					text = <"Suspected">
-					description = <"A low level of clinical certainty that carrying out the 'Precaution' will cause harm to the individual or family member.">
-				>
-				["at0016"] = <
-					text = <"Likely">
-					description = <"A reasonable level of clinical certainty that carrying out the 'Precaution' will cause harm to the individual or family member.">
-				>
-				["at0017"] = <
-					text = <"Confirmed">
-					description = <"A high level of clinical certainty that carrying out the 'Precaution' will cause harm to the individual or family member.">
+					text = <"Active">
+					description = <"The 'Precaution' is currently active.">
 				>
 				["at0018"] = <
 					text = <"Resolved">
@@ -194,8 +192,13 @@ ontology
 				>
 				["at0022"] = <
 					text = <"Valid period start">
-					description = <"Date/time when the 'Precaution' becomes active.">
-					comment = <"This data element is intended for use when a precaution is identified to start at some time in the future. For example: XXXX.">
+					description = <"Date/time after which the 'Precaution' is regarded as active.">
+					comment = <"This data element is intended for use when a precaution is identified to start at some time in the future. For example: the commencement date for a pharmaceutical trial.">
+				>
+				["at0024"] = <
+					text = <"">
+					description = <"">
+					comment = <"This data element is intended for use when a precaution is known to have a definitive end date/time in the future. For example: the cessation date for a pharmaceutical trial.">
 				>
 			>
 		>
