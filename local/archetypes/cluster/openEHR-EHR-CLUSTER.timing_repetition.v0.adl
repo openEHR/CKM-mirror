@@ -22,14 +22,14 @@ description
 		>
 	>
 	lifecycle_state = <"in_development">
-	other_contributors = <"Silje Ljosland Bakke, National ICT Norway, Norway (openEHR Editor)", "Heather Leslie, Ocean Informatics, Australia (openEHR Editor)", "Ian McNicoll, freshEHR Clinical Informatics, United Kingdom (openEHR Editor)", "John Tore Valand, Helse Bergen, Norway (openEHR Editor)">
+	other_contributors = <"Silje Ljosland Bakke, Nasjonal IKT HF, Norway (openEHR Editor)", "Heather Leslie, Ocean Informatics, Australia (openEHR Editor)", "Ian McNicoll, freshEHR Clinical Informatics, United Kingdom (openEHR Editor)", "John Tore Valand, Helse Bergen, Norway (openEHR Editor)">
 	other_details = <
 		["revision"] = <"0.0.1-alpha">
 		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
-		["build_uid"] = <"66fa1b3d-9fd2-4079-ab97-aa25705c5446">
+		["build_uid"] = <"61cff0b3-ad8c-4e43-8bee-4f609e6da438">
 		["original_publisher"] = <"openEHR Foundation">
 		["original_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"55B0B08763D142BC502C82C36B0ED959">
+		["MD5-CAM-1.0.1"] = <"A182F8A4EA32F8F75E6C0573A5A3B94C">
 		["custodian_namespace"] = <"org.openehr">
 		["custodian_organisation"] = <"openEHR Foundation">
 	>
@@ -41,6 +41,79 @@ definition
 				value matches {
 					DV_DURATION matches {
 						value matches {PYMWD/|>=P0W|}
+					}
+				}
+			}
+			ELEMENT[at0015] occurrences matches {0..1} matches {	-- Single activity only
+				value matches {
+					DV_BOOLEAN matches {
+						value matches {True}
+					}
+				}
+			}
+			ELEMENT[at0014] occurrences matches {0..1} matches {	-- Frequency
+				value matches {
+					C_DV_QUANTITY <
+						property = <[openehr::382]>
+						list = <
+							["1"] = <
+								units = <"1/wk">
+							>
+							["2"] = <
+								units = <"1/mo">
+							>
+							["3"] = <
+								units = <"1/yr">
+								magnitude = <|>=0.0|>
+								precision = <|0|>
+							>
+						>
+					>
+					DV_INTERVAL<DV_QUANTITY> matches {
+						upper matches {
+							C_DV_QUANTITY <
+								property = <[openehr::382]>
+								list = <
+									["1"] = <
+										units = <"1/wk">
+										magnitude = <|0.0..7.0|>
+										precision = <|0|>
+									>
+									["2"] = <
+										units = <"1/mo">
+										magnitude = <|0.0..31.0|>
+										precision = <|0|>
+									>
+									["3"] = <
+										units = <"1/yr">
+										magnitude = <|0.0..365.0|>
+										precision = <|0|>
+									>
+								>
+							>
+						}
+						lower matches {
+							C_DV_QUANTITY <
+								property = <[openehr::382]>
+								list = <
+									["1"] = <
+										units = <"1/wk">
+										magnitude = <|0.0..7.0|>
+										precision = <|0|>
+									>
+									["2"] = <
+										units = <"1/mo">
+										magnitude = <|0.0..31.0|>
+										precision = <|0|>
+									>
+									["3"] = <
+										units = <"1/yr">
+										magnitude = <|0.0..365.0|>
+										precision = <|0|>
+									>
+								>
+							>
+						}
 					}
 				}
 			}
@@ -165,6 +238,15 @@ ontology
 				["at0013"] = <
 					text = <"Repetitions">
 					description = <"The number of repetitions of the on/off cycle.">
+				>
+				["at0014"] = <
+					text = <"Frequency">
+					description = <"The number of days per time period on which the activity is to take place.">
+					comment = <"e.g. \"3 times per week\", \"2-4 times per month\".">
+				>
+				["at0015"] = <
+					text = <"Single activity only">
+					description = <"The activity should only be performed on a single occasion and is not to be repeated.">
 				>
 			>
 		>
