@@ -1,0 +1,149 @@
+﻿archetype (adl_version=1.4; uid=811f0470-13c8-4d4b-9da5-6f5c50693218)
+	openEHR-EHR-CLUSTER.religion.v0
+
+concept
+	[at0000]	-- Religious affiliation
+language
+	original_language = <[ISO_639-1::en]>
+	translations = <
+		["nb"] = <
+			language = <[ISO_639-1::nb]>
+			author = <
+				["name"] = <"John Tore Valand, Silje Ljosland Bakke, Vebjørn Arntzen">
+				["organisation"] = <"Helse Bergen HF, Nasjonal IKT HF, Oslo universitetssykehus HF">
+			>
+		>
+	>
+description
+	original_author = <
+		["name"] = <"John Tore Valand">
+		["organisation"] = <"Helse Bergen, Norway">
+		["email"] = <"john.tore.valand@helse-bergen.no">
+		["date"] = <"2016-11-17">
+	>
+	details = <
+		["nb"] = <
+			language = <[ISO_639-1::nb]>
+			purpose = <"For å registrere informasjon om et individs religiøse eller ikke-religiøse, åndelige eller ikke-åndelige standpunkt, tro eller praksis.">
+			use = <"Brukes for å registrere informasjon om et individs religiøse eller ikke-religiøse, åndelige eller ikke-åndelige standpunkt, tro eller praksis.
+
+Arketypen er ment brukt i arketypen EVALUATION.social_summary (Sosialanamnese) eller i andre relevante arketyper.">
+			keywords = <"religion", "åndelig", "tro", "religiøs", "ateisme", "ateist", "agnostisisme", "agnostiker", "holdning", "hellig", "profan", "sekulær">
+			misuse = <"">
+			copyright = <"© Australian Digital Health Agency, Nasjonal IKT HF, openEHR Foundation">
+		>
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To record self–identified association of an individual with a religious group, belief system or practices which underpins their approach to life and death and which may be used for purposes related to provision of healthcare or other services.">
+			use = <"Use to record self–identified association of an individual with a religious group, belief system or practices which underpins their approach to life and death.
+
+This archetype has been designed to be used within the EVALUATION.social_summary or other ENTRY archetypes where clinically relevant.">
+			keywords = <"religion", "spiritual", "belief", "religious", "atheism", "agnosticism", "attitude", "sacred", "profane", "secular", "atheist", "agnostic", "faith", "creed", "practice">
+			misuse = <"Not to be used to record end of life preferences - specific archetypes for this purpose may include but are not limited to: details about priorities for care, CPR and resuscitation decisions, refusal of treatment or requirements for rituals such as last rites.
+
+Not to be used to record dietary restrictions - use a specific archetype that describes all dietary constraints.
+
+Not to be used to record treatment refusal or limitations, such as refusal of blood transfusion - use a specific CLUSTER archetype within the EVALUATION.preferences archetype for this purpose.">
+			copyright = <"© Australian Digital Health Agency, Nasjonal IKT HF, openEHR Foundation">
+		>
+	>
+	lifecycle_state = <"in_development">
+	other_contributors = <"Silje Ljosland Bakke, Nasjonal IKT HF, Norway", "Vebjørn Arntzen, Oslo University Hospital, Norway", "Heather Leslie, Ocean Informatics, Australia">
+	other_details = <
+		["current_contact"] = <"John Tore Valand, Helse Bergen, Norway">
+		["revision"] = <"0.0.1-alpha">
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
+		["references"] = <"Religion, Draft Archetype [Internet]. Australian Digital Health Agency, Australian Digital Health Agency Clinical Knowledge Manager [cited: 2016-11-01]. Available from: http://dcm.nehta.org.au/ckm/#showArchetype_1013.1.923">
+		["build_uid"] = <"17d906b0-07b9-43f2-82bd-b23db581fce9">
+		["original_publisher"] = <"openEHR Foundation">
+		["original_namespace"] = <"org.openehr">
+		["MD5-CAM-1.0.1"] = <"30A5ED99C2BEF11046544641BB32AF55">
+		["custodian_namespace"] = <"org.openehr">
+		["custodian_organisation"] = <"openEHR Foundation">
+	>
+
+definition
+	CLUSTER[at0000] matches {	-- Religious affiliation
+		items cardinality matches {1..*; unordered} matches {
+			ELEMENT[at0001] occurrences matches {0..1} matches {	-- Affiliation
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			ELEMENT[at0003] occurrences matches {0..*} matches {	-- Description
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			allow_archetype CLUSTER[at0004] occurrences matches {0..*} matches {	-- Details
+				include
+					archetype_id/value matches {/openEHR-EHR-CLUSTER\.organisation(-[a-zA-Z0-9_]+)*\.v1|openEHR-EHR-CLUSTER\.individual_professional(-[a-zA-Z0-9_]+)*\.v1/}
+			}
+			ELEMENT[at0002] occurrences matches {0..1} matches {	-- Comment
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+		}
+	}
+
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"Religious affiliation">
+					description = <"Self–identified association of an individual with a religious group, belief system or practices which underpins their approach to life and death.">
+					comment = <"For example: Catholicism, Islam, Wiccan, Humanism, Animism, Atheism or Agnosticism.">
+				>
+				["at0001"] = <
+					text = <"Affiliation">
+					description = <"Name of the belief system or practice to which the individual identifies or is affiliated. ">
+					comment = <"For example: Catholicism, Islam, Wiccan, Humanism, Animism, Atheism or Agnosticism. Coding with a terminology is desirable, where possible.">
+				>
+				["at0002"] = <
+					text = <"Comment">
+					description = <"Additional narrative about the  religious affiliation not captured in other fields. ">
+				>
+				["at0003"] = <
+					text = <"Description">
+					description = <"Narrative description about the individual's identified religious affiliation.">
+					comment = <"For example: volunteer leader; or lapsed attendance at church.">
+				>
+				["at0004"] = <
+					text = <"Details">
+					description = <"Additional details about the individual's religious affiliation.">
+					comment = <"For example: religious organisation or contact person.">
+				>
+			>
+		>
+		["nb"] = <
+			items = <
+				["at0000"] = <
+					text = <"*Religious affiliation(en)">
+					description = <"*Self–identified association of an individual with a religious group, belief system or practices which underpins their approach to life and death.(en)">
+					comment = <"*For example: Catholicism, Islam, Wiccan, Humanism, Animism, Atheism or Agnosticism.(en)">
+				>
+				["at0001"] = <
+					text = <"*Affiliation(en)">
+					description = <"*Name of the belief system or practice to which the individual identifies or is affiliated. (en)">
+					comment = <"*For example: Catholicism, Islam, Wiccan, Humanism, Animism, Atheism or Agnosticism. Coding with a terminology is desirable, where possible.(en)">
+				>
+				["at0002"] = <
+					text = <"*Comment(en)">
+					description = <"*Additional narrative about the  religious affiliation not captured in other fields. (en)">
+				>
+				["at0003"] = <
+					text = <"*Description(en)">
+					description = <"*Narrative description about the individual's identified religious affiliation.(en)">
+					comment = <"*For example: volunteer leader; or lapsed attendance at church.(en)">
+				>
+				["at0004"] = <
+					text = <"*Details(en)">
+					description = <"*Additional details about the individual's religious affiliation.(en)">
+					comment = <"*For example: religious organisation or contact person.(en)">
+				>
+			>
+		>
+	>
