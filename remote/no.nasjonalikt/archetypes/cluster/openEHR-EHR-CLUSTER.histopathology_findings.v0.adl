@@ -1,0 +1,159 @@
+﻿archetype (adl_version=1.4; uid=8077bff7-4b7b-4c73-b8b1-e43cf5460313)
+	openEHR-EHR-CLUSTER.histopathology_findings.v0
+
+concept
+	[at0000]	-- Histopathology findings
+language
+	original_language = <[ISO_639-1::en]>
+description
+	original_author = <
+		["name"] = <"Silje Ljosland Bakke">
+		["organisation"] = <"Nasjonal IKT HF">
+		["email"] = <"silje.ljosland.bakke@nasjonalikt.no">
+		["date"] = <"2016-11-23">
+	>
+	details = <
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To record the findings and interpretation of histopathology (anatomic pathology) tests performed on tissues and body fluids.">
+			use = <"Use to record any histopathology test result, including intra-operative, microscopic, macroscopic examinations of tissue.
+
+This archetype is designed specifically to be used in the \"Test findings\" SLOT within the OBSERVATION.laboratory_test archetype, but may also be used withing other ENTRY class archetypes where appropriate.
+
+Detailed structured findings are captured within child cluster archetypes.">
+			misuse = <"Not to be used for reporting on non-histopathology test results e.g. biochemistry or haematology tests.
+
+Not to be used to record an autopsy report, although tests on some specimens that are taken at autopsy may be represented using this archetype.">
+			copyright = <"© openEHR Foundation, Nasjonal IKT HF">
+		>
+	>
+	lifecycle_state = <"in_development">
+	other_contributors = <"Jan-Arne Ludvigsen, DIPS ASA, Norway", "Vebjørn Arntzen, Oslo universitetssykehus, Norway", "Silje Ljosland Bakke, Nasjonal IKT HF, Norway (Nasjonal IKT redaktør)", "Kristin Eik, Kreftregisteret, Norway", "Anca Heyd, DIPS ASA, Norway", "Sabine Leh, Helse-Bergen, Norway", "Heather Leslie, Ocean Informatics, Australia", "Ole Martin Sand, DIPS ASA, Norway", "Ian McNicoll, Ocean Informatics, United Kingdom", "Bjørn Næss, DIPS ASA, Norway", "Sveinung Sørbye, UNN HF, Norway", "John Tore Valand, Helse Bergen HF, Norway">
+	other_details = <
+		["revision"] = <"0.0.1-alpha">
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
+		["references"] = <"Derived from Histopathology test, Draft Archetype [Internet]. openEHR Foundation, openEHR Clinical Knowledge Manager [cited: 2016-11-29]. Available from: http://openehr.org/ckm/#showArchetype_1013.1.2195">
+		["build_uid"] = <"f3ac9479-bc81-4ad9-a20b-6c8fd7d1db25">
+		["original_publisher"] = <"Nasjonal IKT">
+		["original_namespace"] = <"no.nasjonalikt">
+		["MD5-CAM-1.0.1"] = <"C1F8E0D5781164C489A2D5ABA002026C">
+		["custodian_namespace"] = <"no.nasjonalikt">
+		["custodian_organisation"] = <"Nasjonal IKT">
+	>
+
+definition
+	CLUSTER[at0000] occurrences matches {0..*} matches {	-- Histopathology findings
+		items cardinality matches {1..*; unordered} matches {
+			CLUSTER[at0012] occurrences matches {0..1} matches {	-- Histopathology findings
+				name matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {
+							[local::
+							at0001, 	-- Intra-operative findings
+							at0002, 	-- Macroscopic findings
+							at0003, 	-- Microscopic findings
+							at0004]	-- Histopathology  findings
+						}
+					}
+				}
+				items cardinality matches {1..*; unordered} matches {
+					CLUSTER[at0005] occurrences matches {0..*} matches {	-- Histopathology finding
+						items cardinality matches {1..*; unordered} matches {
+							ELEMENT[at0006] occurrences matches {0..1} matches {	-- Tissue available
+								value matches {
+									DV_BOOLEAN matches {
+										value matches {True, False}
+									}
+								}
+							}
+							allow_archetype CLUSTER[at0007] occurrences matches {0..*} matches {	-- Specimen detail
+								include
+									archetype_id/value matches {/openEHR-EHR-CLUSTER\.specimen(-[a-zA-Z0-9_]+)*\.v0/}
+							}
+							ELEMENT[at0008] occurrences matches {0..1} matches {	-- Description
+								value matches {
+									DV_TEXT matches {*}
+								}
+							}
+							allow_archetype CLUSTER[at0009] occurrences matches {0..*} matches {	-- Structured findings
+								include
+									archetype_id/value matches {/.*/}
+							}
+							ELEMENT[at0010] occurrences matches {0..*} matches {	-- Pathological interpretation
+								value matches {
+									DV_TEXT matches {*}
+								}
+							}
+						}
+					}
+					ELEMENT[at0011] occurrences matches {0..1} matches {	-- Description
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+				}
+			}
+		}
+	}
+
+
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"Histopathology findings">
+					description = <"Findings and interpretation of histopathology (anatomic pathology) tests performed on tissues and body fluids.">
+				>
+				["at0001"] = <
+					text = <"Intra-operative findings">
+					description = <"Findings related to tissue examined intra-operatively.">
+				>
+				["at0002"] = <
+					text = <"Macroscopic findings">
+					description = <"Findings recorded on examination of a gross specimen.">
+				>
+				["at0003"] = <
+					text = <"Microscopic findings">
+					description = <"Findings recorded after microsopic examination.">
+				>
+				["at0004"] = <
+					text = <"Histopathology  findings">
+					description = <"General histopathology findings.">
+				>
+				["at0005"] = <
+					text = <"Histopathology finding">
+					description = <"Details of an individual histopathology finding, often related to a specific anatomical location or specimen.">
+				>
+				["at0006"] = <
+					text = <"Tissue available">
+					description = <"True if the tissue is available for examination.">
+				>
+				["at0007"] = <
+					text = <"Specimen detail">
+					description = <"Details of specimen(s) realted to this finding.">
+				>
+				["at0008"] = <
+					text = <"Description">
+					description = <"A narrative description of the histopathology finding.">
+				>
+				["at0009"] = <
+					text = <"Structured findings">
+					description = <"Detailed structured findings.">
+				>
+				["at0010"] = <
+					text = <"Pathological interpretation">
+					description = <"Single word, phrase of brief description representing the interpretation of the histopathology finding. A coded term is preferred.">
+				>
+				["at0011"] = <
+					text = <"Description">
+					description = <"A narrative description of the group of histopathology findings.">
+				>
+				["at0012"] = <
+					text = <"Histopathology findings">
+					description = <"A group of findings within the histopathology examination. The Runtime name constraint allows identification of the type of histopathology examination performed.">
+				>
+			>
+		>
+	>
