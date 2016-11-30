@@ -17,31 +17,12 @@ language
 	>
 description
 	original_author = <
-		["name"] = <"Heather Leslie">
-		["organisation"] = <"Ocean Informatics">
-		["email"] = <"heather.leslie@oceaninformatics.com">
-		["date"] = <"2015-06-22">
+		["name"] = <"Harmony Kosola">
+		["organisation"] = <"Alberta Health Services">
+		["email"] = <"Harmony.Kosola@albertahealthservices.ca">
+		["date"] = <"2016-11-29">
 	>
 	details = <
-		["en"] = <
-			language = <[ISO_639-1::en]>
-			purpose = <"For recording a narrative description and clinical interpretation of the findings observed during the physical examination of the heart.">
-			use = <"Use to record a narrative description of the overall findings observed during the physical examination of the heart. This initial draft archetype consists only of the core examination pattern data elements (as per CLUSTER.exam_pattern) and will likely be expanded further over time as specific clinical requirements are identified.
-
-This archetype has been specifically designed to be used in the 'Examination findings' SLOT within the CLUSTER.exam_chest archetype or the OBSERVATION.exam, but can also be used within any other OBSERVATION or CLUSTER archetypes, where clinically appropriate.
-
-Use to provide a framework in which CLUSTER archetypes can be nested in the 'Examination findings' SLOT to record additional structured physical examination findings - for example, CLUSTER.breath_sounds. 
-
-The CLUSTER.exclusion_exam archetype can be nested within the 'Examination not done' SLOT to optionally record explicit details about the examination not being performed.
-
-Use to incorporate the narrative descriptions of clinical findings within existing or legacy clinical systems into an archetyped format, using the 'Clinical Description' data element.">
-			misuse = <"Not to be used for recording data not related to the physical examination of the heart.
-
-Not to be used for recording the clinical history - use specific OBSERVATION and CLUSTER archetypes. For example OBSERVATION.story and CLUSTER.symptom.
-
-Not to be used to record stand-alone clinical observations or measurements or test results - use specific OBSERVATION archetypes. For example OBSERVATION.blood_pressure or OBSERVATION.imaging_exam.">
-			copyright = <"© openEHR Foundation">
-		>
 		["nb"] = <
 			language = <[ISO_639-1::nb]>
 			purpose = <"Dokumentasjon av samlede funn og klinisk interpretasjon ved klinisk undersøkelse av hjertet.">
@@ -62,16 +43,36 @@ Skal ikke brukes for å dokumentere anamnese - bruk spesifikke Observation og Cl
 Skal ikke brukes for å dokumenter egenstendige kliniske observasjoner, målinger eller testresultaer. For eksempel OBSERVATION.blodtrykk eller OBSERVATION.resultat_av_funn_ved_billeddiagnostiks_undersøkelse
 ">
 		>
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"For recording a narrative description and clinical interpretation of the findings observed during the physical examination of the heart.">
+			use = <"Use to record a narrative description of the overall findings observed during the physical examination of the heart. This initial draft archetype consists only of the core examination pattern data elements (as per CLUSTER.exam_pattern) and will likely be expanded further over time as specific clinical requirements are identified.
+
+This archetype has been specifically designed to be used in the 'Examination findings' SLOT within the CLUSTER.exam_chest archetype or the OBSERVATION.exam archetype, but can also be used within any other OBSERVATION or CLUSTER archetypes, where clinically appropriate.
+
+Use to provide a framework in which CLUSTER archetypes can be nested in the 'Examination findings' SLOT to record additional structured physical examination findings - for example, CLUSTER.exam_heart_sounds. 
+
+The CLUSTER.exclusion_exam archetype can be nested within the 'Examination not done' SLOT to optionally record explicit details about the examination not being performed.
+
+Use to incorporate the narrative descriptions of clinical findings within existing or legacy clinical systems into an archetyped format, using the 'Clinical Description' data element.">
+			misuse = <"Not to be used for recording data not related to the physical examination of the heart.
+
+Not to be used for recording the clinical history - use specific OBSERVATION and CLUSTER archetypes. For example OBSERVATION.story and CLUSTER.symptom.
+
+Not to be used to record stand-alone clinical observations or measurements or test results - use specific OBSERVATION archetypes. For example OBSERVATION.blood_pressure or OBSERVATION.pulse.">
+			copyright = <"© openEHR Foundation">
+		>
 	>
 	lifecycle_state = <"in_development">
-	other_contributors = <"Silje Ljosland Bakke, Bergen Hospital Trust, Norway", "Ian McNicoll, freshEHR Clinical Informatics, United Kingdom", "John Tore Valand, Haukeland Universitetssjukehus, Norway", "Heather Leslie, Ocean Informatics, Australia">
+	other_contributors = <"Silje Ljosland Bakke, Bergen Hospital Trust, Norway", "Ian McNicoll, freshEHR Clinical Informatics, United Kingdom", "John Tore Valand, Haukeland Universitetssjukehus, Norway", "Heather Leslie, Ocean Informatics, Australia", "CKCM team, Alberta Health Services, Canada">
 	other_details = <
+		["current_contact"] = <"Heather Leslie, Ocean Informatics, Australia <heather.leslie@oceaninformatics.com>">
 		["revision"] = <"0.0.1-alpha">
 		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
-		["build_uid"] = <"5387e60e-2fe2-4ea5-ae2b-12645f1749a6">
+		["build_uid"] = <"a2232da8-8b25-4b61-9608-9cdbbc1ed71f">
 		["original_publisher"] = <"openEHR Foundation">
 		["original_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"BAB0B591FF15288375FD6F7887889481">
+		["MD5-CAM-1.0.1"] = <"7FB9656DB79D3F9DB782FF714C919E8A">
 		["custodian_namespace"] = <"org.openehr">
 		["custodian_organisation"] = <"openEHR Foundation">
 	>
@@ -91,9 +92,31 @@ definition
 					DV_TEXT matches {*}
 				}
 			}
+			ELEMENT[at0009] occurrences matches {0..1} matches {	-- Apex beat location
+				value matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {
+							[local::
+							at0013, 	-- Normal
+							at0014]	-- Displaced
+						}
+					}
+				}
+			}
+			ELEMENT[at0010] occurrences matches {0..1} matches {	-- Murmur presence
+				value matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {
+							[local::
+							at0011, 	-- Present
+							at0012]	-- Absent
+						}
+					}
+				}
+			}
 			allow_archetype CLUSTER[at0004] occurrences matches {0..*} matches {	-- Examination findings
 				include
-					archetype_id/value matches {/openEHR-EHR-CLUSTER\.exam_breath_sounds(-[a-zA-Z0-9_]+)*\.v0/}
+					archetype_id/value matches {/.*/}
 			}
 			allow_archetype CLUSTER[at0005] occurrences matches {0..*} matches {	-- Multimedia representation
 				include
@@ -109,7 +132,7 @@ definition
 					DV_TEXT matches {*}
 				}
 			}
-			allow_archetype CLUSTER[at0008] occurrences matches {0..*} matches {	-- Exam not done
+			allow_archetype CLUSTER[at0008] occurrences matches {0..*} matches {	-- Examination not done
 				include
 					archetype_id/value matches {/openEHR-EHR-CLUSTER\.exclusion_exam(-[a-zA-Z0-9_]+)*\.v1/}
 			}
@@ -151,8 +174,33 @@ ontology
 					description = <"Additional narrative about the physical examination findings, not captured in other fields.">
 				>
 				["at0008"] = <
-					text = <"Exam not done">
+					text = <"Examination not done">
 					description = <"Details to explicitly record that this examination was not performed.">
+				>
+				["at0009"] = <
+					text = <"Apex beat location">
+					description = <"Relative location of the point of maximum impulse on palpation of the chest wall.">
+					comment = <"In adults the 'normal' position is usually described as the left 5th intercostal space, at the midclavicular line.">
+				>
+				["at0010"] = <
+					text = <"Murmur presence">
+					description = <"Identification of the presence of a heart murmur.">
+				>
+				["at0011"] = <
+					text = <"Present">
+					description = <"A heart murmur has been heard on auscultation.">
+				>
+				["at0012"] = <
+					text = <"Absent">
+					description = <"A heart murmur has not been heard on auscultation.">
+				>
+				["at0013"] = <
+					text = <"Normal">
+					description = <"The maximal impulse is located at the expected position on the chest wall.">
+				>
+				["at0014"] = <
+					text = <"Displaced">
+					description = <"The maximal impulse is located away from the expected position on the chest wall.">
 				>
 			>
 		>
@@ -190,6 +238,30 @@ ontology
 				["at0008"] = <
 					text = <"Undersøkelse ikke gjennomført">
 					description = <"Detaljer for å dokumentere eksplisitt at undersøkelsen ikke er gjennomført.">
+				>
+				["at0009"] = <
+					text = <"*New element(en)">
+					description = <"**(en)">
+				>
+				["at0010"] = <
+					text = <"*New element(en)">
+					description = <"**(en)">
+				>
+				["at0011"] = <
+					text = <"*Present(en)">
+					description = <"**(en)">
+				>
+				["at0012"] = <
+					text = <"*Absent(en)">
+					description = <"**(en)">
+				>
+				["at0013"] = <
+					text = <"*Normal(en)">
+					description = <"**(en)">
+				>
+				["at0014"] = <
+					text = <"*Displaced(en)">
+					description = <"**(en)">
 				>
 			>
 		>
