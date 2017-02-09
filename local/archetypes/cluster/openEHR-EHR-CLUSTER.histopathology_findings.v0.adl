@@ -49,59 +49,59 @@ Brukes ikke for å registrere en obduksjon, selv om funn ved undersøkelser av s
 		>
 	>
 	lifecycle_state = <"in_development">
-	other_contributors = <"Jan-Arne Ludvigsen, DIPS ASA, Norway", "Vebjørn Arntzen, Oslo universitetssykehus, Norway", "Silje Ljosland Bakke, Nasjonal IKT HF, Norway (Nasjonal IKT redaktør)", "Kristin Eik, Kreftregisteret, Norway", "Anca Heyd, DIPS ASA, Norway", "Sabine Leh, Helse-Bergen, Norway", "Heather Leslie, Ocean Informatics, Australia", "Ole Martin Sand, DIPS ASA, Norway", "Ian McNicoll, Ocean Informatics, United Kingdom", "Bjørn Næss, DIPS ASA, Norway", "Sveinung Sørbye, UNN HF, Norway", "John Tore Valand, Helse Bergen HF, Norway">
+	other_contributors = <"Vebjørn Arntzen, Oslo universitetssykehus, Norway", "Johan Bjerner, Fürst AS, Norway", "Kristin Eik, Kreftregisteret, Norway", "Anca Heyd, DIPS ASA, Norway", "Sabine Leh, Helse-Bergen, Norway (Nasjonal IKT redaktør)", "Heather Leslie, Ocean Informatics, Australia (openEHR Editor)", "Silje Ljosland Bakke, Nasjonal IKT HF, Norway (Nasjonal IKT redaktør)", "Jan-Arne Ludvigsen, DIPS ASA, Norway", "Ole Martin Sand, DIPS ASA, Norway", "Ian McNicoll, freshEHR Clinical Informatics, United Kingdom (openEHR Editor)", "Bjørn Næss, DIPS ASA, Norway", "Sveinung Sørbye, UNN HF, Norway", "John Tore Valand, Helse Bergen HF, Norway", "Torleif Trydal, Fürst AS, Norway">
 	other_details = <
 		["revision"] = <"0.0.1-alpha">
 		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
 		["references"] = <"Derived from Histopathology test, Draft Archetype [Internet]. openEHR Foundation, openEHR Clinical Knowledge Manager [cited: 2016-11-29]. Available from: http://openehr.org/ckm/#showArchetype_1013.1.2195">
-		["build_uid"] = <"c1119fc5-e020-49f0-9d40-08ca43fd8271">
+		["build_uid"] = <"b97d3642-8b41-4463-a3ff-d1c0dbe957d4">
 		["original_publisher"] = <"Nasjonal IKT">
 		["original_namespace"] = <"no.nasjonalikt">
-		["MD5-CAM-1.0.1"] = <"73DECB01DE8778F5D871F78C5D052750">
+		["MD5-CAM-1.0.1"] = <"F5408FC3E4BD84ED2B04A074072F5EA1">
 		["custodian_namespace"] = <"no.nasjonalikt">
 		["custodian_organisation"] = <"Nasjonal IKT">
 	>
 
 definition
-	CLUSTER[at0000] occurrences matches {0..*} matches {	-- Histopathology findings
+	CLUSTER[at0000] occurrences matches {0..*} matches {	-- Patologifunn
 		items cardinality matches {1..*; unordered} matches {
-			CLUSTER[at0012] occurrences matches {0..*} matches {	-- Histopathology findings
+			CLUSTER[at0012] occurrences matches {0..*} matches {	-- Patologiundersøkelse
 				name matches {
 					DV_CODED_TEXT matches {
 						defining_code matches {
 							[local::
-							at0001, 	-- Intra-operative findings
-							at0002, 	-- Macroscopic findings
-							at0003, 	-- Microscopic findings
-							at0004]	-- Histopathology  findings
+							at0001, 	-- Intraoperativ undersøkelse
+							at0002, 	-- Makroskopiske undersøkelse
+							at0003, 	-- Mikroskopiske undersøkelse
+							at0004]	-- Patologisk undersøkelse
 						}
 					}
 				}
 				items cardinality matches {1..*; unordered} matches {
-					CLUSTER[at0005] occurrences matches {0..*} matches {	-- Histopathology finding
+					CLUSTER[at0005] occurrences matches {0..*} matches {	-- Patologifunn
 						items cardinality matches {1..*; unordered} matches {
-							ELEMENT[at0006] occurrences matches {0..1} matches {	-- Tissue available
+							ELEMENT[at0006] occurrences matches {0..1} matches {	-- Vev tilgjengelig
 								value matches {
 									DV_BOOLEAN matches {
 										value matches {True, False}
 									}
 								}
 							}
-							ELEMENT[at0008] occurrences matches {0..1} matches {	-- Description
+							ELEMENT[at0008] occurrences matches {0..1} matches {	-- Beskrivelse
 								value matches {
 									DV_TEXT matches {*}
 								}
 							}
-							allow_archetype CLUSTER[at0009] occurrences matches {0..*} matches {	-- Structured findings
+							allow_archetype CLUSTER[at0009] occurrences matches {0..*} matches {	-- Strukturerte funn
 								include
 									archetype_id/value matches {/.*/}
 							}
-							ELEMENT[at0010] occurrences matches {0..*} matches {	-- Pathological interpretation
+							ELEMENT[at0010] occurrences matches {0..*} matches {	-- Patologisk tolkning
 								value matches {
 									DV_TEXT matches {*}
 								}
 							}
-							ELEMENT[at0014] occurrences matches {0..*} matches {	-- Test representation
+							ELEMENT[at0014] occurrences matches {0..*} matches {	-- Svarrepresentasjon
 								value matches {
 									DV_MULTIMEDIA matches {
 										media_type matches {[openEHR::]}
@@ -110,19 +110,24 @@ definition
 							}
 						}
 					}
-					ELEMENT[at0011] occurrences matches {0..1} matches {	-- Description
+					ELEMENT[at0011] occurrences matches {0..1} matches {	-- Beskrivelse
 						value matches {
 							DV_TEXT matches {*}
 						}
 					}
+					allow_archetype CLUSTER[at0015] occurrences matches {0..*} matches {	-- Prøvedetaljer
+						include
+							archetype_id/value matches {/.*/}
+					}
 				}
 			}
-			allow_archetype CLUSTER[at0007] occurrences matches {0..*} matches {	-- Specimen detail
+			allow_archetype CLUSTER[at0007] occurrences matches {0..*} matches {	-- Prøvedetaljer
 				include
 					archetype_id/value matches {/openEHR-EHR-CLUSTER\.specimen(-[a-zA-Z0-9_]+)*\.v0/}
 			}
 		}
 	}
+
 
 
 ontology
@@ -134,19 +139,19 @@ ontology
 					description = <"Findings and interpretation of histopathology (anatomic pathology) tests performed on tissues and body fluids.">
 				>
 				["at0001"] = <
-					text = <"Intra-operative findings">
+					text = <"Intra-operative examination">
 					description = <"Findings related to tissue examined intra-operatively.">
 				>
 				["at0002"] = <
-					text = <"Macroscopic findings">
+					text = <"Macroscopic examination">
 					description = <"Findings recorded on examination of a gross specimen.">
 				>
 				["at0003"] = <
-					text = <"Microscopic findings">
+					text = <"Microscopic examination">
 					description = <"Findings recorded after microsopic examination.">
 				>
 				["at0004"] = <
-					text = <"Histopathology  findings">
+					text = <"Histopathology examination">
 					description = <"General histopathology findings.">
 				>
 				["at0005"] = <
@@ -159,7 +164,7 @@ ontology
 				>
 				["at0007"] = <
 					text = <"Specimen detail">
-					description = <"Details of specimen(s) related to this finding.">
+					description = <"Details of specimen(s) related to this examination.">
 				>
 				["at0008"] = <
 					text = <"Description">
@@ -178,13 +183,17 @@ ontology
 					description = <"A narrative description of the group of histopathology findings.">
 				>
 				["at0012"] = <
-					text = <"Histopathology findings">
+					text = <"Histopathology examination">
 					description = <"A group of findings within the histopathology examination. The Runtime name constraint allows identification of the type of histopathology examination performed.">
 				>
 				["at0014"] = <
 					text = <"Test representation">
 					description = <"Rich text or other multimedia representation of this particular result as issued by the diagnostic service.">
 					comment = <"Multiple formats are allowed but they must be semantically equivalent.">
+				>
+				["at0015"] = <
+					text = <"Specimen detail">
+					description = <"Details of specimen related to this finding.">
 				>
 			>
 		>
@@ -195,19 +204,19 @@ ontology
 					description = <"Funn og tolkninger ved patologiske undersøkelser utført på vev og kroppsvæsker.">
 				>
 				["at0001"] = <
-					text = <"Intraoperative funn">
+					text = <"Intraoperativ undersøkelse">
 					description = <"Funn relatert til vev som er undersøkt intraoperativt.">
 				>
 				["at0002"] = <
-					text = <"Makroskopiske funn">
+					text = <"Makroskopisk undersøkelse">
 					description = <"Funn ved undersøkelse av makroskopiske egenskaper ved prøven.">
 				>
 				["at0003"] = <
-					text = <"Mikroskopiske funn">
+					text = <"Mikroskopisk undersøkelse">
 					description = <"Funn ved undersøkelse av mikroskopiske egenskaper ved prøven.">
 				>
 				["at0004"] = <
-					text = <"Patologifunn">
+					text = <"Patologisk undersøkelse">
 					description = <"Generiske patologifunn.">
 				>
 				["at0005"] = <
@@ -220,7 +229,7 @@ ontology
 				>
 				["at0007"] = <
 					text = <"Prøvedetaljer">
-					description = <"Detaljer om prøve(r) relatert til funn(ene).">
+					description = <"Detaljer om prøve(r) relatert til undersøkelsen.">
 				>
 				["at0008"] = <
 					text = <"Beskrivelse">
@@ -239,13 +248,17 @@ ontology
 					description = <"Fritekstbeskrivelse av gruppen patologifunn.">
 				>
 				["at0012"] = <
-					text = <"Patologifunn">
+					text = <"Patologiundersøkelse">
 					description = <"En gruppering av funn innenfor patologiundersøkelsen. Dette elementets \"Runtime name constraint\" gjør det mulig å angi hva slags type patologiundersøkelse som er utført.">
 				>
 				["at0014"] = <
 					text = <"Svarrepresentasjon">
 					description = <"Rik tekst eller multimediarepresentasjon av dette spesifikke svaret.">
 					comment = <"Flere formater tillates, men må være semantisk ekvivalente.">
+				>
+				["at0015"] = <
+					text = <"Prøvedetaljer">
+					description = <"Detaljer om prøve relatert til funn.">
 				>
 			>
 		>
