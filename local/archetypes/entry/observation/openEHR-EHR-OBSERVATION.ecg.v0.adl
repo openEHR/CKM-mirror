@@ -1,8 +1,8 @@
-﻿archetype (adl_version=1.4)
-	openEHR-EHR-OBSERVATION.ecg.v1
+﻿archetype (adl_version=1.4; uid=5c8989ff-c15b-4315-8df3-3442bd8c8b40)
+	openEHR-EHR-OBSERVATION.ecg.v0
 
 concept
-	[at0000]	-- ECG recording
+	[at0000]	-- ECG test result
 language
 	original_language = <[ISO_639-1::en]>
 	translations = <
@@ -34,27 +34,34 @@ description
 		["en"] = <
 			language = <[ISO_639-1::en]>
 			purpose = <"To record the electrocardiographic interpretation of the electrical activity of the heart by an ECG device.">
-			use = <"Use to record details of a standard 12 lead ECG including parameters and interpretation. 
+			use = <"Use to record details of a standard 12 or 15 lead ECG including parameters and interpretation. 
 Use to record details of ECGs performed during exercise conditions and stress testing.">
-			keywords = <"electrocardiograph", "ECG", "EKG", "electrocardiogram", "electrocardiography", "12 lead">
+			keywords = <"electrocardiograph", "ECG", "EKG", "electrocardiogram", "electrocardiography">
 			misuse = <"Not to be used for recordings with non-standard ECG leads.
 Not to be used for recording Holter monitor results.">
 			copyright = <"© openEHR Foundation">
 		>
 	>
-	lifecycle_state = <"AuthorDraft">
+	lifecycle_state = <"in_development">
 	other_contributors = <"Koray Atalag, University of Auckland, New Zealand", "Marja Buur, Medisch Centrum Alkmaar/ Code24, Netherlands", "Tamsin Cockayne, Australia", "Marc Cotran, identity vision systems, Canada", "Sam Heard, Ocean Informatics, Australia", "Eugene Igras, IRIS Systems, Inc., Canada", "Heather Leslie, Ocean Informatics, Australia (Editor)", "Ian McNicoll, Ocean Informatics, United Kingdom (Editor)", "Raymond Simkus, Brookswood Family Practice, Canada", "Tim Sturgill, United States">
 	other_details = <
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
+		["revision"] = <"0.0.1-alpha">
 		["references"] = <"Lead descriptions - http://en.wikipedia.org/wiki/Electrocardiography [accessed 22 February, 2010]">
-		["MD5-CAM-1.0.1"] = <"DFCED3C93DE237C3B8DF90FD6F552C6C">
+		["build_uid"] = <"8f740eee-e30f-4adb-b83e-d03c27b464ab">
+		["original_namespace"] = <"org.openehr">
+		["original_publisher"] = <"openEHR Foundation">
+		["MD5-CAM-1.0.1"] = <"85F924AC0BACA757C03F9143C16D83B5">
+		["custodian_namespace"] = <"org.openehr">
+		["custodian_organisation"] = <"openEHR Foundation">
 	>
 
 definition
-	OBSERVATION[at0000] matches {	-- ECG recording
+	OBSERVATION[at0000] matches {	-- ECG test result
 		data matches {
 			HISTORY[at0001] matches {	-- Event Series
 				events cardinality matches {1..*; unordered} matches {
-					EVENT[at0002] occurrences matches {0..1} matches {	-- Any event
+					EVENT[at0002] occurrences matches {0..*} matches {	-- Any event
 						data matches {
 							ITEM_TREE[at0005] matches {	-- Tree
 								items cardinality matches {0..*; unordered} matches {
@@ -80,7 +87,7 @@ definition
 														property = <[openehr::128]>
 														list = <
 															["1"] = <
-																units = <"millisec">
+																units = <"ms">
 																magnitude = <|>=0.0|>
 																precision = <|0|>
 															>
@@ -94,7 +101,7 @@ definition
 														property = <[openehr::128]>
 														list = <
 															["1"] = <
-																units = <"millisec">
+																units = <"ms">
 																magnitude = <|>=0.0|>
 																precision = <|0|>
 															>
@@ -108,7 +115,7 @@ definition
 														property = <[openehr::128]>
 														list = <
 															["1"] = <
-																units = <"millisec">
+																units = <"ms">
 																magnitude = <|>=0.0|>
 																precision = <|0|>
 															>
@@ -122,7 +129,7 @@ definition
 														property = <[openehr::128]>
 														list = <
 															["1"] = <
-																units = <"millisec">
+																units = <"ms">
 																magnitude = <|>=0.0|>
 																precision = <|0|>
 															>
@@ -138,7 +145,7 @@ definition
 																property = <[openehr::497]>
 																list = <
 																	["1"] = <
-																		units = <"°">
+																		units = <"deg">
 																	>
 																>
 															>
@@ -150,7 +157,7 @@ definition
 																property = <[openehr::497]>
 																list = <
 																	["1"] = <
-																		units = <"°">
+																		units = <"deg">
 																	>
 																>
 															>
@@ -162,7 +169,7 @@ definition
 																property = <[openehr::497]>
 																list = <
 																	["1"] = <
-																		units = <"°">
+																		units = <"deg">
 																	>
 																>
 															>
@@ -172,7 +179,7 @@ definition
 											}
 										}
 									}
-									CLUSTER[at0027] occurrences matches {0..12} matches {	-- Per-lead Parameters
+									CLUSTER[at0027] occurrences matches {0..15} matches {	-- Per-lead Parameters
 										name matches {
 											DV_CODED_TEXT matches {
 												defining_code matches {
@@ -187,8 +194,12 @@ definition
 													at0036, 	-- Lead V2
 													at0037, 	-- Lead V3
 													at0038, 	-- Lead V4
+													at0087, 	-- Lead V4R
 													at0039, 	-- Lead V5
-													at0040]	-- Lead V6
+													at0040, 	-- Lead V6
+													at0084, 	-- Lead V7
+													at0085, 	-- Lead V8
+													at0086]	-- Lead V8
 												}
 											}
 										}
@@ -211,7 +222,7 @@ definition
 														property = <[openehr::128]>
 														list = <
 															["1"] = <
-																units = <"millisec">
+																units = <"ms">
 																magnitude = <|>=0.0|>
 																precision = <|0|>
 															>
@@ -225,7 +236,7 @@ definition
 														property = <[openehr::655]>
 														list = <
 															["1"] = <
-																units = <"Ashman units">
+																units = <"{Ashman units}">
 																precision = <|1|>
 															>
 														>
@@ -250,7 +261,7 @@ definition
 														property = <[openehr::128]>
 														list = <
 															["1"] = <
-																units = <"millisec">
+																units = <"ms">
 																magnitude = <|>=0.0|>
 																precision = <|0|>
 															>
@@ -264,7 +275,7 @@ definition
 														property = <[openehr::655]>
 														list = <
 															["1"] = <
-																units = <"Ashman units">
+																units = <"{Ashman units}">
 																precision = <|1|>
 															>
 														>
@@ -289,7 +300,7 @@ definition
 														property = <[openehr::128]>
 														list = <
 															["1"] = <
-																units = <"millisec">
+																units = <"ms">
 																magnitude = <|>=0.0|>
 																precision = <|0|>
 															>
@@ -315,7 +326,7 @@ definition
 														property = <[openehr::128]>
 														list = <
 															["1"] = <
-																units = <"millisec">
+																units = <"ms">
 																magnitude = <|>=0.0|>
 																precision = <|0|>
 															>
@@ -341,7 +352,7 @@ definition
 														property = <[openehr::128]>
 														list = <
 															["1"] = <
-																units = <"millisec">
+																units = <"ms">
 																magnitude = <|>=0.0|>
 																precision = <|0|>
 															>
@@ -367,7 +378,7 @@ definition
 														property = <[openehr::128]>
 														list = <
 															["1"] = <
-																units = <"millisec">
+																units = <"ms">
 																magnitude = <|>=0.0|>
 																precision = <|0|>
 															>
@@ -393,7 +404,7 @@ definition
 														property = <[openehr::128]>
 														list = <
 															["1"] = <
-																units = <"millisec">
+																units = <"ms">
 																magnitude = <|>=0.0|>
 																precision = <|0|>
 															>
@@ -407,7 +418,7 @@ definition
 														property = <[openehr::128]>
 														list = <
 															["1"] = <
-																units = <"millisec">
+																units = <"ms">
 																magnitude = <|>=0.0|>
 																precision = <|0|>
 															>
@@ -435,7 +446,7 @@ definition
 														property = <[openehr::128]>
 														list = <
 															["1"] = <
-																units = <"millisec">
+																units = <"ms">
 																magnitude = <|>=0.0|>
 																precision = <|0|>
 															>
@@ -449,7 +460,7 @@ definition
 														property = <[openehr::655]>
 														list = <
 															["1"] = <
-																units = <"Ashman units">
+																units = <"{Ashman units}">
 																precision = <|1|>
 															>
 														>
@@ -510,7 +521,7 @@ definition
 														property = <[openehr::128]>
 														list = <
 															["1"] = <
-																units = <"millisec">
+																units = <"ms">
 																magnitude = <|>=0.0|>
 																precision = <|0|>
 															>
@@ -524,7 +535,7 @@ definition
 														property = <[openehr::497]>
 														list = <
 															["1"] = <
-																units = <"°">
+																units = <"deg">
 																magnitude = <|-90.0..90.0|>
 																precision = <|0|>
 															>
@@ -563,7 +574,7 @@ definition
 														property = <[openehr::128]>
 														list = <
 															["1"] = <
-																units = <"millisec">
+																units = <"ms">
 																magnitude = <|>=0.0|>
 																precision = <|0|>
 															>
@@ -577,7 +588,7 @@ definition
 														property = <[openehr::655]>
 														list = <
 															["1"] = <
-																units = <"Ashman units">
+																units = <"{Ashman units}">
 																precision = <|1|>
 															>
 														>
@@ -596,12 +607,9 @@ definition
 											DV_TEXT matches {*}
 										}
 									}
-									ELEMENT[at0010] occurrences matches {0..1} matches {	-- ECG Recording
-										value matches {
-											DV_MULTIMEDIA matches {
-												media_type matches {[openEHR::]}
-											}
-										}
+									allow_archetype CLUSTER[at0083] occurrences matches {0..*} matches {	-- Multimedia
+										include
+											archetype_id/value matches {/openEHR-EHR-CLUSTER\.multimedia(-[a-zA-Z0-9_]+)*\.v1/}
 									}
 								}
 							}
@@ -646,6 +654,10 @@ definition
 							DV_TEXT matches {*}
 						}
 					}
+					allow_archetype CLUSTER[at0088] occurrences matches {0..*} matches {	-- Extension
+						include
+							archetype_id/value matches {/.*/}
+					}
 				}
 			}
 		}
@@ -657,7 +669,7 @@ ontology
 		["en"] = <
 			items = <
 				["at0000"] = <
-					text = <"ECG recording">
+					text = <"ECG test result">
 					description = <"An electrocardiograph (ECG) is an interpretation of the electrical activity of the heart over time, recorded non-invasively using external skin electrodes.">
 				>
 				["at0001"] = <
@@ -666,7 +678,7 @@ ontology
 				>
 				["at0002"] = <
 					text = <"Any event">
-					description = <"Any event.">
+					description = <"Default, unspecified point in time or interval event which may be explicitly defined in a template or at run-time.">
 				>
 				["at0003"] = <
 					text = <"Tree">
@@ -691,10 +703,6 @@ ontology
 				["at0009"] = <
 					text = <"Automatic interpretation">
 					description = <"Interpretative comment on this recording originating from the device.">
-				>
-				["at0010"] = <
-					text = <"ECG Recording">
-					description = <"Multimedia representation of the ECG.">
 				>
 				["at0012"] = <
 					text = <"PR interval">
@@ -775,7 +783,7 @@ the ST segment onset (J point).">
 				>
 				["at0038"] = <
 					text = <"Lead V4">
-					description = <"Lead V4 is a precordial lead, placed in the fifth intercostal space (between ribs 5 & 6) in the mid-clavicular line (the imaginary line that extends down from the midpoint of the clavicle (collarbone).">
+					description = <"Lead V4 is a precordial lead, placed in the left fifth intercostal space (between ribs 5 & 6) in the mid-clavicular line (the imaginary line that extends down from the midpoint of the clavicle (collarbone).">
 				>
 				["at0039"] = <
 					text = <"Lead V5">
@@ -941,13 +949,38 @@ the ST segment onset (J point).">
 					text = <"ECG Viewer">
 					description = <"Details of device used to view the ECG output.">
 				>
+				["at0083"] = <
+					text = <"Multimedia">
+					description = <"Digital representation of the ECG results.">
+				>
+				["at0084"] = <
+					text = <"Lead V7">
+					description = <"*">
+				>
+				["at0085"] = <
+					text = <"Lead V8">
+					description = <"*">
+				>
+				["at0086"] = <
+					text = <"Lead V8">
+					description = <"*">
+				>
+				["at0087"] = <
+					text = <"Lead V4R">
+					description = <"Lead V4 is a precordial lead, placed in the right fifth intercostal space (between ribs 5 & 6) in the mid-clavicular line (the imaginary line that extends down from the midpoint of the clavicle (collarbone).">
+				>
+				["at0088"] = <
+					text = <"Extension">
+					description = <"Additional information required to capture local content or to align with other reference models/formalisms.">
+					comment = <"For example: local information requirements or additional metadata to align with FHIR or CIMI equivalents.">
+				>
 			>
 		>
 		["ar-sy"] = <
 			items = <
 				["at0000"] = <
-					text = <"تسجيل تخطيط كهربية القلب">
-					description = <"مخطط كهربية القلب هو تفسير للنشاط الكهربي للقلب عبر الوقت, يتم تسجيله بشكل غير باضع باستخدام مساري/كهارب جلدية خارجية.">
+					text = <"*ECG test result(en)">
+					description = <"*An electrocardiograph (ECG) is an interpretation of the electrical activity of the heart over time, recorded non-invasively using external skin electrodes.(en)">
 				>
 				["at0001"] = <
 					text = <"*Event Series(en)">
@@ -983,10 +1016,6 @@ T">
 				["at0009"] = <
 					text = <"تفسير أوتوماتيكي - تلقائي">
 					description = <"تعليق تفسيري عن هذا التسجيل ينبع من الجهيزة.">
-				>
-				["at0010"] = <
-					text = <"تسجيل تخطيط كهربية القلب">
-					description = <"تمثيل باستخدام الوسائط المتعددة لتخطيط كهربية القلب.">
 				>
 				["at0012"] = <
 					text = <"الفترة الفاصلة بين موجة R و موجة P">
@@ -1288,6 +1317,30 @@ T">
 				["at0082"] = <
 					text = <"عارض مخطط كهربية عضلة القلب">
 					description = <"تفاصيل حول الجهيزة المستخدمة لعرض ناتج تخطيط كهربية عضلة القلب.">
+				>
+				["at0083"] = <
+					text = <"*Multimedia(en)">
+					description = <"*Digital representation of the ECG results.(en)">
+				>
+				["at0084"] = <
+					text = <"*Lead V7(en)">
+					description = <"**(en)">
+				>
+				["at0085"] = <
+					text = <"*Lead V8(en)">
+					description = <"**(en)">
+				>
+				["at0086"] = <
+					text = <"*Lead V8(en)">
+					description = <"**(en)">
+				>
+				["at0087"] = <
+					text = <"*Lead V4R(en)">
+					description = <"**(en)">
+				>
+				["at0088"] = <
+					text = <"*Cluster(en)">
+					description = <"**(en)">
 				>
 			>
 		>
