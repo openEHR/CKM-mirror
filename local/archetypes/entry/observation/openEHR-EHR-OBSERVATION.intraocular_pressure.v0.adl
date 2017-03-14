@@ -2,7 +2,7 @@
 	openEHR-EHR-OBSERVATION.intraocular_pressure.v0
 
 concept
-	[at0000]	-- Intraocular pressure
+	[at0000]	-- Intraocular pressure test result
 language
 	original_language = <[ISO_639-1::en]>
 description
@@ -39,20 +39,20 @@ CfH, UK. Do Once & Share - Glaucoma [Internet]. [cited 2012 Sep 26]. Available f
 DICOM Supplement 30 [Internet]. [cited 2012 Sep 26]. Available from: http://medical.nema.org/
 
 Lamparter, J., & Hoffmann, E. M. (2009). Messung des Augeninnendrucks (Tonometrie) mit unterschiedlichen Verfahren. Der Ophthalmologe, 106(8), 676-682.">
-		["build_uid"] = <"757a9a08-08b7-48f3-b816-aaa568f80ba2">
-		["original_namespace"] = <"org.openehr">
+		["build_uid"] = <"ede25bbc-002d-4a19-8e2e-7f836b815f02">
 		["original_publisher"] = <"openEHR Foundation">
-		["MD5-CAM-1.0.1"] = <"C12D09F82C18E6E9AF5C3C1E3C4B1B77">
+		["original_namespace"] = <"org.openehr">
+		["MD5-CAM-1.0.1"] = <"EB76730D0E9461B2EF9B62ACD3C539E9">
 		["custodian_namespace"] = <"org.openehr">
 		["custodian_organisation"] = <"openEHR Foundation">
 	>
 
 definition
-	OBSERVATION[at0000] matches {	-- Intraocular pressure
+	OBSERVATION[at0000] matches {	-- Intraocular pressure test result
 		data matches {
 			HISTORY[at0001] matches {	-- Event Series
 				events cardinality matches {1..*; unordered} matches {
-					EVENT[at0002] occurrences matches {0..1} matches {	-- Any event
+					EVENT[at0002] occurrences matches {0..*} matches {	-- Any event
 						data matches {
 							ITEM_TREE[at0003] matches {	-- Tree
 								items cardinality matches {0..*; unordered} matches {
@@ -87,7 +87,7 @@ definition
 												property = <[openehr::128]>
 												list = <
 													["1"] = <
-														units = <"millisec">
+														units = <"ms">
 														magnitude = <|>=0.0|>
 														precision = <|0|>
 													>
@@ -95,21 +95,21 @@ definition
 											>
 										}
 									}
-									allow_archetype CLUSTER[at0080] occurrences matches {0..*} matches {	-- Multimedia
-										include
-											archetype_id/value matches {/openEHR-EHR-CLUSTER\.multimedia(-[a-zA-Z0-9_]+)*\.v1/}
-									}
 									ELEMENT[at0061] occurrences matches {0..*} matches {	-- Clinical interpretation
 										value matches {
 											DV_TEXT matches {*}
 										}
+									}
+									allow_archetype CLUSTER[at0080] occurrences matches {0..*} matches {	-- Multimedia
+										include
+											archetype_id/value matches {/openEHR-EHR-CLUSTER\.multimedia(-[a-zA-Z0-9_]+)*\.v1/}
 									}
 									ELEMENT[at0063] occurrences matches {0..1} matches {	-- Comment
 										value matches {
 											DV_TEXT matches {*}
 										}
 									}
-									allow_archetype CLUSTER[at0078] occurrences matches {0..*} matches {	-- Measurement not done
+									allow_archetype CLUSTER[at0078] occurrences matches {0..*} matches {	-- Test not done
 										include
 											archetype_id/value matches {/openEHR-EHR-CLUSTER\.exclusion_exam(-[a-zA-Z0-9_]+)*\.v1/}
 									}
@@ -171,7 +171,7 @@ ontology
 		["en"] = <
 			items = <
 				["at0000"] = <
-					text = <"Intraocular pressure">
+					text = <"Intraocular pressure test result">
 					description = <"The local measurement of intraocular pressure, most commonly using a tonometry device.">
 				>
 				["at0001"] = <
@@ -267,8 +267,8 @@ ontology
 					description = <"Description of any incidental factors related to the state of the subject which may affect clinical interpretation of the measurement.">
 				>
 				["at0078"] = <
-					text = <"Measurement not done">
-					description = <"Details to explicitly record that this measurement was not performed.">
+					text = <"Test not done">
+					description = <"Details to explicitly record that this test was not performed.">
 				>
 				["at0079"] = <
 					text = <"Extension">
