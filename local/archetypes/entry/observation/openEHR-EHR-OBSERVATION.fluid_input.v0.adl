@@ -12,6 +12,15 @@ language
 				["name"] = <"?">
 			>
 		>
+		["nb"] = <
+			language = <[ISO_639-1::nb]>
+			author = <
+				["name"] = <"Vebjørn Arntzen">
+				["organisation"] = <"Oslo University Hospital">
+				["email"] = <"varntzen@ous-hf.no">
+			>
+			accreditation = <"Enterprise architect, RN">
+		>
 	>
 description
 	original_author = <
@@ -21,6 +30,20 @@ description
 		["date"] = <"2009-11-11">
 	>
 	details = <
+		["sl"] = <
+			language = <[ISO_639-1::sl]>
+			purpose = <"*To record details of fluid input, often used as part of fluid balance estimation.(en)">
+			use = <"*Use to record details of fluid input as part of routine nursing care.
+
+Use to record details of individual fluid input activities, in order to allow fluid balance estimations. For example: \"Oral\", \"Cup of Tea\", 220ml; or 1 litre Normal Saline infusion.
+
+May also be used to record descriptive assessments of input.
+
+(en)">
+			keywords = <"*fluid(en)", "*fluid balance(en)", "*input output(en)", "*io(en)", "*input(en)">
+			misuse = <"*Do not use as a primary record of the administration of fluids e.g intravascular, dialyisis. May be used alongside administration recrods ,normally an ACTION.(en)">
+			copyright = <"© National E-Health Transition Authority, openEHR Foundation">
+		>
 		["en"] = <
 			language = <[ISO_639-1::en]>
 			purpose = <"To record details of fluid input, often used as part of fluid balance estimation.">
@@ -39,19 +62,19 @@ Not to be used to record fluid output. Use OBSERVATION.fluid_output for this pur
 Not to be used to record fluid balance calculations. Use OBSERVATION.fluid_balance for this purpose.">
 			copyright = <"© National E-Health Transition Authority, openEHR Foundation">
 		>
-		["sl"] = <
-			language = <[ISO_639-1::sl]>
-			purpose = <"*To record details of fluid input, often used as part of fluid balance estimation.(en)">
-			use = <"*Use to record details of fluid input as part of routine nursing care.
+		["nb"] = <
+			language = <[ISO_639-1::nb]>
+			purpose = <"For å registrere detaljerte opplysninger om væskeinntak, ofte brukt som del av væskebalanse.">
+			use = <"	
+Brukes for å registrere detaljer om et individs væskeinntak. Dette gjøres ofte rutinemessig i forbindelse med et væskeregnskap.
 
-Use to record details of individual fluid input activities, in order to allow fluid balance estimations. For example: \"Oral\", \"Cup of Tea\", 220ml; or 1 litre Normal Saline infusion.
+Brukes for å registrere detaljer om væskeinntaket, for eksempel \"Per os\", \"Kaffe\", \"150 ml\"; eller 1000 ml NaCl 0,9%.
 
-May also be used to record descriptive assessments of input.
+Et væskeregnskap vil trenge data fra denne arketypen, OBSERVATION.fluid_input, i tillegg til arketypene OBSERVATION.fluid_output og OBSERVATION.fluid_balance for å få med seg alle nødvendige komponenter.">
+			keywords = <"væske", "inn/ut", "væskebalanse", "inntak", "væskeinntak">
+			misuse = <"Skal ikke brukes for å registrere væsketap. Bruk OBSERVATION.fluid_output (Væsketap) til dette.
 
-(en)">
-			keywords = <"*fluid(en)", "*fluid balance(en)", "*input output(en)", "*io(en)", "*input(en)">
-			misuse = <"*Do not use as a primary record of the administration of fluids e.g intravascular, dialyisis. May be used alongside administration recrods ,normally an ACTION.(en)">
-			copyright = <"© National E-Health Transition Authority, openEHR Foundation">
+Skal ikke brukes for å registrere væskeregnskap. Bruk OBSERVATION.fluid_balance (Væskeregnskap) til dette.">
 		>
 	>
 	lifecycle_state = <"in_development">
@@ -60,10 +83,10 @@ May also be used to record descriptive assessments of input.
 		["current_contact"] = <"Heather Leslie, Ocean Informatics, heather.leslie@oceaninformatics.com">
 		["revision"] = <"0.0.1-alpha">
 		["references"] = <"Derived from: Fluid Input, Draft Archetype [Internet]. nehta, Australia, nehta Clinical Knowledge Manager [cited: 2015-11-08]. Available from: http://dcm.nehta.org.au/ckm/#showArchetype_1013.1.1205">
-		["build_uid"] = <"548718c1-20f9-49b9-bc79-e2a024106dc7">
-		["original_namespace"] = <"org.openehr">
+		["build_uid"] = <"cba7788c-2bbc-4eec-a311-609e39e2338e">
 		["original_publisher"] = <"openEHR Foundation">
-		["MD5-CAM-1.0.1"] = <"C2E49818D1FC2CE62A4A372A9B42D7BF">
+		["original_namespace"] = <"org.openehr">
+		["MD5-CAM-1.0.1"] = <"D737933A5E3FFF41243F3CBD21F96F8F">
 		["custodian_namespace"] = <"org.openehr">
 		["custodian_organisation"] = <"openEHR Foundation">
 	>
@@ -103,12 +126,7 @@ definition
 														precision = <|2|>
 													>
 													["3"] = <
-														units = <"cc">
-														magnitude = <|>=0.0|>
-														precision = <|1|>
-													>
-													["4"] = <
-														units = <"fl oz">
+														units = <"[foz_us]">
 													>
 												>
 											>
@@ -118,6 +136,10 @@ definition
 										value matches {
 											DV_TEXT matches {*}
 										}
+									}
+									allow_archetype CLUSTER[at0039] occurrences matches {0..*} matches {	-- Fluid details
+										include
+											archetype_id/value matches {/.*/}
 									}
 								}
 							}
@@ -146,9 +168,10 @@ definition
 									[local::
 									at0018, 	-- Estimated
 									at0019, 	-- Measured
-									at0020]	-- Stated
+									at0041]	-- Reported
 								}
 							}
+							DV_TEXT matches {*}
 						}
 					}
 					allow_archetype CLUSTER[at0033] occurrences matches {0..1} matches {	-- Input Device
@@ -163,11 +186,14 @@ definition
 						exclude
 							archetype_id/value matches {/.*/}
 					}
+					allow_archetype CLUSTER[at0040] occurrences matches {0..*} matches {	-- Extension
+						include
+							archetype_id/value matches {/.*/}
+					}
 				}
 			}
 		}
 	}
-
 
 
 ontology
@@ -202,10 +228,6 @@ ontology
 					text = <"Measured">
 					description = <"The fluid volume has been directly measured.">
 				>
-				["at0020"] = <
-					text = <"Stated">
-					description = <"The fluid input has been stated.">
-				>
 				["at0028"] = <
 					text = <"Measurement Device">
 					description = <"Details of device used to measure the fluid input.">
@@ -225,20 +247,35 @@ ontology
 				["at0034"] = <
 					text = <"Route">
 					description = <"The delivery route of the fluid.">
-					comment = <"For example: nasogastric tube; oral; intravenous or intraosseous.">
+					comment = <"For example: nasogastric tube; oral; intravenous or intraosseous. The route can be entered manually or fetched from an application, for example from ACTION.medication; especially for fluids given intraveniously or parenteral. A link can be used for this purpose.">
 				>
 				["at0035"] = <
 					text = <"Volume">
 					description = <"The volume of fluid ingested or administered.">
+					comment = <"The volume can be entered manually or fetched from an application, for example from ACTION.medication; especially for fluids given intraveniously or parenteral. A link can be used for this purpose.">
 				>
 				["at0036"] = <
 					text = <"Fluid">
 					description = <"Identification of the fluid ingested or administered.">
-					comment = <"For example: Normal Saline; cup of tea; or parenteral nutrition.">
+					comment = <"For example: Normal Saline; cup of tea; or parenteral nutrition. The fluid name can be entered manually or fetched from an application, for example from ACTION.medication; especially for fluids given intraveniously or parenteral. A link can be used for this purpose.">
 				>
 				["at0038"] = <
 					text = <"Measurement Interval">
 					description = <"The measurement, or estimation, of the volume of a specified fluid input during a specified interval of time.">
+				>
+				["at0039"] = <
+					text = <"Fluid details">
+					description = <"Details about the fluid input.">
+					comment = <"For example: further details about the fluid, such as nutritional value.">
+				>
+				["at0040"] = <
+					text = <"Extension">
+					description = <"Additional information required to capture local content or to align with other reference models/formalisms.">
+					comment = <"e.g. Local information requirements or additional metadata to align with FHIR or CIMI equivalents.">
+				>
+				["at0041"] = <
+					text = <"Reported">
+					description = <"The fluid volume has been reported by a third party.">
 				>
 			>
 		>
@@ -271,10 +308,6 @@ ontology
 				["at0019"] = <
 					text = <"*Measured(en)">
 					description = <"*The fluid volume has been directly measured.(en)">
-				>
-				["at0020"] = <
-					text = <"*Stated(en)">
-					description = <"*The fluid input has been stated.(en)">
 				>
 				["at0028"] = <
 					text = <"*Measurement Device(en)">
@@ -309,6 +342,99 @@ ontology
 				["at0038"] = <
 					text = <"*Measurement Interval(en)">
 					description = <"*The measurement, or estimation, of the volume of a specified fluid input during a specified interval of time.(en)">
+				>
+				["at0039"] = <
+					text = <"*Cluster(en)">
+					description = <"**(en)">
+				>
+				["at0040"] = <
+					text = <"*Cluster(en)">
+					description = <"**(en)">
+				>
+				["at0041"] = <
+					text = <"*Reported(en)">
+					description = <"*The fluid volume has been reported by a third party.(en)">
+				>
+			>
+		>
+		["nb"] = <
+			items = <
+				["at0000"] = <
+					text = <"Væskeinntak">
+					description = <"Registrering av væske som blir drukket av, eller administrert til, et individ.">
+				>
+				["at0001"] = <
+					text = <"Event Series">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Måletidspunkt">
+					description = <"Målingen eller estimatet av mengden av en spesifisert væske som er drukket eller administrert på et gitt tidspunkt.">
+				>
+				["at0003"] = <
+					text = <"List">
+					description = <"@ internal @">
+				>
+				["at0008"] = <
+					text = <"List">
+					description = <"@ internal @">
+				>
+				["at0018"] = <
+					text = <"Estimert">
+					description = <"Mengden væskeinntak er estimert.">
+				>
+				["at0019"] = <
+					text = <"Målt">
+					description = <"Mengden væskeinntak er direkte observert og målt.">
+				>
+				["at0028"] = <
+					text = <"Måleutstyr">
+					description = <"Detaljer om måleutstyret som er brukt for å måle væskeinntaket.">
+				>
+				["at0031"] = <
+					text = <"Presisjonsnivå på målingen">
+					description = <"Presisjonsnivået til registreringen av væskeinntaket.">
+				>
+				["at0032"] = <
+					text = <"Kommentar">
+					description = <"Ytterligere fritekst om væsketapet som ikke er registrert i andre felt.">
+				>
+				["at0033"] = <
+					text = <"Utstyr">
+					description = <"Typen utstyr som er brukt for å administrere væsken, for eksempel ernæringssonde eller en jejunal sonde.">
+				>
+				["at0034"] = <
+					text = <"Administrasjonsvei">
+					description = <"Administrasjonsveien til væsken.">
+					comment = <"For eksempel ernæringssonde, per os, intravenøst eller intraossøst. Administrasjonsveien kan bli registrert manuelt eller hentet fra en applikasjon, for eksempel via ACTION.medication; spesielt for væsker som er gitt intravenøst eller parenteralt. En lenke kan bruks for dette formålet.">
+				>
+				["at0035"] = <
+					text = <"Mengde">
+					description = <"Mengden væske som er drukket eller administrert.">
+					comment = <"Mengden kan bli registrert manuelt eller hentet fra en applikasjon, for eksempel via ACTION.medication; spesielt for væsker som er gitt intravenøst eller parenteralt. En lenke kan bruks for dette formålet.">
+				>
+				["at0036"] = <
+					text = <"Væske">
+					description = <"Identifisering av væsken som er drukket eller administrert.">
+					comment = <"For eksempel fysiologisk saltvann; en kopp kaffe eller parenteral ernæring. Navnet på væsken kan bli registrert manuelt eller hentet fra en applikasjon, for eksempel via ACTION.medication; spesielt for væsker som er gitt intravenøst eller parenteralt. En lenke kan bruks for dette formålet.">
+				>
+				["at0038"] = <
+					text = <"Målingsintervall">
+					description = <"Målingen eller estimatet av mengden av et spesifikt væskeinntaki løpet av et gitt intervall.">
+				>
+				["at0039"] = <
+					text = <"Detaljer om væsken">
+					description = <"Detaljer om væskeinntaket.">
+					comment = <"For eksempel ytterligere detaljer om væsken, som ernæringsinnhold.">
+				>
+				["at0040"] = <
+					text = <"Tilleggsinformasjon">
+					description = <"Ytterligere informasjon som trengs for å kunne registrere lokalt definert innhold eller for å tilpasse til andre referansemodeller/formalismer.">
+					comment = <"For eksempel lokale informasjonsbehov eller ytterligere metadata for å kunne tilpasse til tilsvarende konsepter i FHIR eller CIMI.">
+				>
+				["at0041"] = <
+					text = <"Rapportert">
+					description = <"Mengden væskeinntak har blitt rapportert av en tredjepart.">
 				>
 			>
 		>
