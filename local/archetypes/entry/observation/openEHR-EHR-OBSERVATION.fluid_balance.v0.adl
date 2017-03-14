@@ -5,6 +5,17 @@ concept
 	[at0000]	-- Fluid Balance
 language
 	original_language = <[ISO_639-1::en]>
+	translations = <
+		["nb"] = <
+			language = <[ISO_639-1::nb]>
+			author = <
+				["name"] = <"Vebjoern Arntzen">
+				["organisation"] = <"Oslo Univeristy Hospital HF, Norway">
+				["email"] = <"varntzen@ous-hf.no">
+			>
+			accreditation = <"Enterprise Architect, RN">
+		>
+	>
 description
 	original_author = <
 		["name"] = <"Heather Leslie">
@@ -13,27 +24,36 @@ description
 		["date"] = <"2013-02-22">
 	>
 	details = <
+		["nb"] = <
+			language = <[ISO_639-1::nb]>
+			purpose = <"For å registrere oppsamlet eller total mengde væskeinntak og væsketap, samt estimat over væskebalansen til et individ i et gitt tidsintervall.">
+			use = <"Brukes for å registrere oppsamlet eller total mengde væskeinntak og væsketap, samt estimat over væskebalanse til et individ i et gitt tidsintervall.
+
+Et væskeregnskap vil vanligvis bestå av en kombinasjon av OBSERVATION.fluid_input (Norsk: Væskeinntak), OBSERVATION.fluid_output (Norsk: Væsketap) og denne arketypen for å fange alle nødvendige komponenter.">
+			keywords = <"væske, balanse, væskeinntak, væsketap, tap, inntak, svette, perspiratio, fordamping", ...>
+			misuse = <"Skal ikke brukes for å registrere enkeltmålinger av væskeinntak eller væsketap. Bruk OBSERVATION.fluid_input (Væskeinntak) eller OBSERVATION.fluid_output (Væsketap) for dette.">
+		>
 		["en"] = <
 			language = <[ISO_639-1::en]>
 			purpose = <"To record the cumulative or total amounts of fluid input and output, plus an estimation of the fluid balance status of a subject over specified intervals of time.">
 			use = <"Use to record cumulative or total amounts of fluid input and output, plus an estimation of the fluid balance status of a subject over specified periods of time.
 
 A fluid balance chart will typically require a combination of OBSERVATION.fluid_input, OBSERVATION.fluid_output and this archetype to capture all the required components.">
-			keywords = <"fluid", "balance", "input", "output", "loss", "sweat", "insensible", "evaporation", "sweat">
+			keywords = <"fluid", "balance", "input", "output", "loss", "sweat", "insensible", "evaporation", "perspiratio">
 			misuse = <"Not to be used to record individual measurements of fluid input or output. Use OBSERVATION.fluid_input or OBSERVATION.fluid_output for these purposes.">
 			copyright = <"© National E-Health Transition Authority, openEHR Foundation">
 		>
 	>
 	lifecycle_state = <"in_development">
-	other_contributors = <"Ian McNicoll, Ocean Informatics, United Kingdom", ...>
+	other_contributors = <"Ian McNicoll, Ocean Informatics, United Kingdom", "Vebjørn Arntzen, Oslo University Hospital HF, Norway">
 	other_details = <
 		["current_contact"] = <"Heather Leslie, Ocean Informatics, heather.leslie@oceaninformatics.com">
 		["revision"] = <"0.0.1-alpha">
 		["references"] = <"Derived from: Fluid Balance, Draft Archetype [Internet]. nehta, Australia, nehta Clinical Knowledge Manager [cited: 2015-11-08]. Available from: http://dcm.nehta.org.au/ckm/#showArchetype_1013.1.1203">
-		["build_uid"] = <"d26f82ae-b87b-4a27-8cb1-7d09bde6dba0">
-		["original_namespace"] = <"org.openehr">
+		["build_uid"] = <"a107465c-7e70-446f-8b3c-bffa74e3ac45">
 		["original_publisher"] = <"openEHR Foundation">
-		["MD5-CAM-1.0.1"] = <"EE76DC9C8E84E9F4C97ACEB5CD805FA1">
+		["original_namespace"] = <"org.openehr">
+		["MD5-CAM-1.0.1"] = <"D7BD35A4ED9B2C996D12F1A71861015C">
 		["custodian_namespace"] = <"org.openehr">
 		["custodian_organisation"] = <"openEHR Foundation">
 	>
@@ -43,7 +63,7 @@ definition
 		data matches {
 			HISTORY[at0001] matches {	-- Event Series
 				events cardinality matches {1..*; unordered} matches {
-					INTERVAL_EVENT[at0002] occurrences matches {0..1} matches {	-- Any Interval Total
+					INTERVAL_EVENT[at0002] occurrences matches {0..*} matches {	-- Any Interval Total
 						math_function matches {
 							DV_CODED_TEXT matches {
 								defining_code matches {[openehr::148]}
@@ -61,13 +81,10 @@ definition
 														units = <"ml">
 													>
 													["2"] = <
-														units = <"cc">
-													>
-													["3"] = <
 														units = <"l">
 													>
-													["4"] = <
-														units = <"fl oz">
+													["3"] = <
+														units = <"[foz_us]">
 													>
 												>
 											>
@@ -82,13 +99,10 @@ definition
 														units = <"ml">
 													>
 													["2"] = <
-														units = <"cc">
-													>
-													["3"] = <
 														units = <"l">
 													>
-													["4"] = <
-														units = <"fl oz">
+													["3"] = <
+														units = <"[foz_us]">
 													>
 												>
 											>
@@ -103,13 +117,10 @@ definition
 														units = <"ml">
 													>
 													["2"] = <
-														units = <"cc">
-													>
-													["3"] = <
 														units = <"l">
 													>
-													["4"] = <
-														units = <"fl oz">
+													["3"] = <
+														units = <"[foz_us]">
 													>
 												>
 											>
@@ -124,13 +135,10 @@ definition
 														units = <"ml">
 													>
 													["2"] = <
-														units = <"cc">
-													>
-													["3"] = <
 														units = <"l">
 													>
-													["4"] = <
-														units = <"fl oz">
+													["3"] = <
+														units = <"[foz_us]">
 													>
 												>
 											>
@@ -158,8 +166,22 @@ definition
 				}
 			}
 		}
+		protocol matches {
+			ITEM_TREE[at0009] matches {	-- Tree
+				items cardinality matches {0..*; unordered} matches {
+					ELEMENT[at0010] occurrences matches {0..1} matches {	-- Insensible Loss Estimation Method
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					allow_archetype CLUSTER[at0011] occurrences matches {0..*} matches {	-- Extension
+						include
+							archetype_id/value matches {/.*/}
+					}
+				}
+			}
+		}
 	}
-
 
 
 ontology
@@ -185,7 +207,7 @@ ontology
 				["at0004"] = <
 					text = <"Insensible Loss">
 					description = <"Estimation of the amount of fluid loss from water lost by evaporation from the skin and respiratory tract.">
-					comment = <"Usually about 800mls per day in an unstressed adult.">
+					comment = <"The insensible loss depends on a range of parameters, among others like body weight, body temperature, time in open surgery and whether the individual is on medical ventilator or not. The estimate should comply with a standardized method.">
 				>
 				["at0005"] = <
 					text = <"Total Input">
@@ -203,6 +225,74 @@ ontology
 				["at0008"] = <
 					text = <"24 Hour Total">
 					description = <"The total amount over a specified 24 hour period.">
+				>
+				["at0009"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0010"] = <
+					text = <"Insensible Loss Estimation Method">
+					description = <"The method for estimation of insensible loss.">
+				>
+				["at0011"] = <
+					text = <"Extension">
+					description = <"Additional information required to capture local content or to align with other reference models/formalisms.">
+					comment = <"e.g. Local information requirements or additional metadata to align with FHIR or CIMI equivalents.">
+				>
+			>
+		>
+		["nb"] = <
+			items = <
+				["at0000"] = <
+					text = <"Væskebalanse">
+					description = <"Estimat over væskebalansestatus til et individ ved å trekke totalt væsketap pluss perspiratio fra totalt væskeinntak.">
+				>
+				["at0001"] = <
+					text = <"Event Series">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Væskebalanse valgfritt intervall">
+					description = <"Væskebalansen over et gitt intervall, eller den totale oppsamlede væskebalansen over en gitt tid.">
+				>
+				["at0003"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0004"] = <
+					text = <"Perspiratio">
+					description = <"Estimat over mengden væsketap ved fordampning fra hud og luftveier.">
+					comment = <"Væsketap ved perspiratio avhenger av blant annet hudoverflate, kroppstemperatur, lengden på åpen kirurgi og eventuell respiratorbehandling. Estimat bør skje i henhold til skjema for beregning av perspiratio.">
+				>
+				["at0005"] = <
+					text = <"Totalt væskeinntak">
+					description = <"Den totale mengden væskeinntak i et gitt tidsintervall.">
+				>
+				["at0006"] = <
+					text = <"Totalt væsketap">
+					description = <"Den totale mengden væsketap i et gitt tidsintervall.">
+				>
+				["at0007"] = <
+					text = <"Væsskebalanse">
+					description = <"Overordnet væskebalanse for en gitt tidsperiode, fremkommet ved å trekke det totale væsketapet pluss perspiratio fra det totale væskeinntaket.">
+					comment = <"Væskebalanse = Totalt væskeinntak - (Totalt væsketap + perspiratio).">
+				>
+				["at0008"] = <
+					text = <"Væskebalanse døgn">
+					description = <"Væskebalansen over en periode på 24 timer.">
+				>
+				["at0009"] = <
+					text = <"*Tree(en)">
+					description = <"*@ internal @(en)">
+				>
+				["at0010"] = <
+					text = <"Metode estimat perspiratio">
+					description = <"Metoden som er brukt for å estimere perspiratio.">
+				>
+				["at0011"] = <
+					text = <"Tilleggsinformasjon">
+					description = <"Ytterligere informasjon som trengs for å kunne registrere lokalt definert innhold eller for å tilpasse til andre referansemodeller/formalismer.">
+					comment = <"For eksempel lokale informasjonsbehov eller ytterligere metadata for å kunne tilpasse til tilsvarende konsepter i FHIR eller CIMI.">
 				>
 			>
 		>
