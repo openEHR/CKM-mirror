@@ -1,8 +1,8 @@
-﻿archetype (adl_version=1.4)
-	openEHR-EHR-OBSERVATION.pulmonary_function.v1
+﻿archetype (adl_version=1.4; uid=b89d17c7-1114-4013-aa11-1e2d1ffdd073)
+	openEHR-EHR-OBSERVATION.pulmonary_function.v0
 
 concept
-	[at0000]	-- Pulmonary Function Testing
+	[at0000]	-- Pulmonary function test
 language
 	original_language = <[ISO_639-1::en]>
 	translations = <
@@ -16,19 +16,11 @@ language
 description
 	original_author = <
 		["name"] = <"Ian McNicoll">
-		["organisation"] = <"Ocean Informatics, UK">
-		["email"] = <"ian.mcnicoll@oceaninformatics.com">
+		["organisation"] = <"freshEHR Informatics, UK">
+		["email"] = <"ian.mcnicoll@freshEHR.com">
 		["date"] = <"2013-03-08">
 	>
 	details = <
-		["en"] = <
-			language = <[ISO_639-1::en]>
-			purpose = <"To record results of pulmonary function tests, including spirometry and lung volume testing.">
-			use = <"Used to record all representations of pulmonary function testing, including spirometry. Multiple events and state information may be used to capture pre and post bronchial challenge or bronchodilation results.">
-			keywords = <"respiratory", "pulmonary", "spirometry", "peak flow", "PFT", "lung", "bronchial">
-			misuse = <"Supporting subject information, often required  to interpret the tests, such as smoking status or oxygenation, should be captured in separate, specific archetypes.">
-			copyright = <"© openEHR Foundation">
-		>
 		["sl"] = <
 			language = <[ISO_639-1::sl]>
 			purpose = <"*To record results of pulmonary function tests, including spirometry and lung volume testing. (en)">
@@ -38,32 +30,51 @@ description
 			misuse = <"*Supporting subject information, often required  to interpret the tests, such as smoking status or oxygenation, should be captured in separate, specific archetypes.(en)">
 			copyright = <"© openEHR Foundation">
 		>
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To record results of pulmonary function tests, including spirometry and lung volume testing.">
+			use = <"Used to record all representations of pulmonary function testing, including spirometry. Multiple events and state information may be used to capture pre and post bronchial challenge or bronchodilation results.">
+			keywords = <"respiratory", "pulmonary", "spirometry", "peak flow", "PFT", "lung", "bronchial">
+			misuse = <"Supporting subject information, often required  to interpret the tests, such as smoking status or oxygenation, should be captured in separate, specific archetypes.">
+			copyright = <"© openEHR Foundation">
+		>
 	>
-	lifecycle_state = <"AuthorDraft">
+	lifecycle_state = <"in_development">
 	other_contributors = <"Valeria Lecca, Sardegna Ricerche, Italia", "Derek Corrigan, Royal College of Surgeons in Ireland, Ireland", "Heather Leslie, Ocean Informatics, Australia">
 	other_details = <
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
+		["revision"] = <"0.0.1-alpha">
 		["references"] = <"Lung volumes [Internet]. [date unknown];[cited 2010 Aug 25 ] Available from: http://en.wikipedia.org/wiki/Lung_volumes
+
 Spirometry [Internet]. [date unknown];[cited 2010 Aug 25 ] Available from: http://en.wikipedia.org/wiki/Spirometry
+
 Johns DP, Pierce R. Pocket guide to spirometry.  McGraw-Hill Medical; 2007.
+
 Pingul EM, de Guia TS, Ayuyao FG. FEV1/FEV6 VS FEV1/FVC IN THE SPIROMETRIC DIAGNOSIS OF AIRWAYS OBSTRUCTION AMONG ASIANS.  In: Chest Meeting Abstracts.  2007 p. 491c.
+
 Tiffeneau R, Pinelli A. Air circulant et air captif dans l'exploration de la fonction ventilatrice pulmonaire. Paris Med 1947;133:624-8.">
-		["MD5-CAM-1.0.1"] = <"387886EC6090ADD9B2D1C7024ECF6956">
+		["build_uid"] = <"ae1d8bc5-b2ac-47bb-8a3c-4f020c70574d">
+		["original_namespace"] = <"org.openehr">
+		["original_publisher"] = <"openEHR Foundation">
+		["MD5-CAM-1.0.1"] = <"D3E5FE4C2A00A45DAB94B1D3CA6251C6">
+		["custodian_namespace"] = <"org.openehr">
+		["custodian_organisation"] = <"openEHR Foundation">
 	>
 
 definition
-	OBSERVATION[at0000] occurrences matches {0..1} matches {	-- Pulmonary Function Testing
+	OBSERVATION[at0000] occurrences matches {0..1} matches {	-- Pulmonary function test
 		data matches {
 			HISTORY[at0001] matches {	-- Event Series
 				events cardinality matches {1..*; unordered} matches {
-					EVENT[at0002] occurrences matches {0..1} matches {	-- Any event
+					EVENT[at0002] occurrences matches {0..*} matches {	-- Any event
 						data matches {
 							ITEM_TREE[at0003] matches {	-- Tree
 								items cardinality matches {0..*; unordered} matches {
-									CLUSTER[at0127] occurrences matches {0..*} matches {	-- Result Details
+									CLUSTER[at0127] occurrences matches {0..*} matches {	-- Result details
 										items cardinality matches {1..*; unordered} matches {
-											CLUSTER[at0052] occurrences matches {0..1} matches {	-- Pulmonary Volume Result
+											CLUSTER[at0052] occurrences matches {0..1} matches {	-- Pulmonary volume result
 												items cardinality matches {1..*; ordered} matches {
-													ELEMENT[at0087] occurrences matches {0..1} matches {	-- Test Result Name
+													ELEMENT[at0087] occurrences matches {0..1} matches {	-- Test result name
 														value matches {
 															DV_CODED_TEXT matches {
 																defining_code matches {
@@ -86,7 +97,7 @@ definition
 															}
 														}
 													}
-													ELEMENT[at0054] occurrences matches {0..1} matches {	-- Predicted Result
+													ELEMENT[at0054] occurrences matches {0..1} matches {	-- Predicted result
 														value matches {
 															C_DV_QUANTITY <
 																property = <[openehr::129]>
@@ -103,7 +114,7 @@ definition
 															>
 														}
 													}
-													ELEMENT[at0053] occurrences matches {0..1} matches {	-- Actual Result
+													ELEMENT[at0053] occurrences matches {0..1} matches {	-- Actual result
 														value matches {
 															C_DV_QUANTITY <
 																property = <[openehr::129]>
@@ -120,7 +131,7 @@ definition
 															>
 														}
 													}
-													ELEMENT[at0044] occurrences matches {0..1} matches {	-- Actual/predicted Ratio
+													ELEMENT[at0044] occurrences matches {0..1} matches {	-- Actual/predicted ratio
 														value matches {
 															DV_PROPORTION matches {
 																numerator matches {|>=0.0|}
@@ -131,9 +142,9 @@ definition
 													}
 												}
 											}
-											CLUSTER[at0057] occurrences matches {0..1} matches {	-- Pulmonary Flow Rate Result
+											CLUSTER[at0057] occurrences matches {0..1} matches {	-- Pulmonary flow rate result
 												items cardinality matches {1..*; ordered} matches {
-													ELEMENT[at0088] occurrences matches {0..1} matches {	-- Test Result Name
+													ELEMENT[at0088] occurrences matches {0..1} matches {	-- Test result name
 														value matches {
 															DV_CODED_TEXT matches {
 																defining_code matches {
@@ -148,7 +159,7 @@ definition
 															}
 														}
 													}
-													ELEMENT[at0008] occurrences matches {0..1} matches {	-- Predicted Result
+													ELEMENT[at0008] occurrences matches {0..1} matches {	-- Predicted result
 														value matches {
 															C_DV_QUANTITY <
 																property = <[openehr::126]>
@@ -172,7 +183,7 @@ definition
 															>
 														}
 													}
-													ELEMENT[at0058] occurrences matches {0..1} matches {	-- Actual Result
+													ELEMENT[at0058] occurrences matches {0..1} matches {	-- Actual result
 														value matches {
 															C_DV_QUANTITY <
 																property = <[openehr::126]>
@@ -196,7 +207,7 @@ definition
 															>
 														}
 													}
-													ELEMENT[at0122] occurrences matches {0..1} matches {	-- Actual/predicted Ratio
+													ELEMENT[at0122] occurrences matches {0..1} matches {	-- Actual/predicted ratio
 														value matches {
 															DV_PROPORTION matches {
 																numerator matches {|0.0..100.0|}
@@ -207,9 +218,9 @@ definition
 													}
 												}
 											}
-											CLUSTER[at0055] occurrences matches {0..1} matches {	-- Pulmonary Ratio Result
+											CLUSTER[at0055] occurrences matches {0..1} matches {	-- Pulmonary ratio result
 												items cardinality matches {1..*; ordered} matches {
-													ELEMENT[at0089] occurrences matches {0..1} matches {	-- Test Result Name
+													ELEMENT[at0089] occurrences matches {0..1} matches {	-- Test result name
 														value matches {
 															DV_CODED_TEXT matches {
 																defining_code matches {
@@ -220,7 +231,7 @@ definition
 															}
 														}
 													}
-													ELEMENT[at0018] occurrences matches {0..1} matches {	-- Predicted Result
+													ELEMENT[at0018] occurrences matches {0..1} matches {	-- Predicted result
 														value matches {
 															DV_PROPORTION matches {
 																numerator matches {|>=0.0|}
@@ -229,7 +240,7 @@ definition
 															}
 														}
 													}
-													ELEMENT[at0056] occurrences matches {0..1} matches {	-- Actual Result
+													ELEMENT[at0056] occurrences matches {0..1} matches {	-- Actual result
 														value matches {
 															DV_PROPORTION matches {
 																numerator matches {|>=0.0|}
@@ -239,16 +250,16 @@ definition
 													}
 												}
 											}
-											CLUSTER[at0128] occurrences matches {0..1} matches {	-- Other Result
+											CLUSTER[at0128] occurrences matches {0..1} matches {	-- Other result
 												items cardinality matches {1..*; unordered} matches {
-													ELEMENT[at0013] occurrences matches {0..1} matches {	-- Forced Expiratory Time (FET)
+													ELEMENT[at0013] occurrences matches {0..1} matches {	-- Forced expiratory time (FET)
 														value matches {
 															DV_DURATION matches {
 																value matches {PTS/|PT0S..PT300S|}
 															}
 														}
 													}
-													ELEMENT[at0037] occurrences matches {0..1} matches {	-- CO Transfer Factor (DLCO test)
+													ELEMENT[at0037] occurrences matches {0..1} matches {	-- CO transfer factor (DLCO test)
 														value matches {
 															C_DV_QUANTITY <
 																property = <[openehr::380]>
@@ -257,46 +268,18 @@ definition
 													}
 												}
 											}
-											CLUSTER[at0033] occurrences matches {0..1} matches {	-- Spirography Imaging
-												items cardinality matches {1..*; ordered} matches {
-													ELEMENT[at0034] occurrences matches {0..1} matches {	-- Volume-time Curve
-														value matches {
-															DV_MULTIMEDIA matches {
-																media_type matches {
-																	[openEHR::
-																	425, 
-																	426, 
-																	427, 
-																	428, 
-																	429]
-																}
-															}
-														}
-													}
-													ELEMENT[at0035] occurrences matches {0..1} matches {	-- Flow-volume Loop
-														value matches {
-															DV_MULTIMEDIA matches {
-																media_type matches {
-																	[openEHR::
-																	425, 
-																	426, 
-																	427, 
-																	428, 
-																	429]
-																}
-															}
-														}
-													}
-												}
+											allow_archetype CLUSTER[at0131] occurrences matches {0..*} matches {	-- Spirography imaging
+												include
+													archetype_id/value matches {/openEHR-EHR-CLUSTER\.multimedia(-[a-zA-Z0-9_]+)*\.v1/}
 											}
-											ELEMENT[at0125] occurrences matches {0..1} matches {	-- No Test Result
+											ELEMENT[at0125] occurrences matches {0..1} matches {	-- No test result
 												value matches {
 													DV_BOOLEAN matches {
 														value matches {True}
 													}
 												}
 											}
-											ELEMENT[at0126] occurrences matches {0..1} matches {	-- Reason for No Test Result
+											ELEMENT[at0126] occurrences matches {0..1} matches {	-- Reason for no test result
 												value matches {
 													DV_TEXT matches {*}
 												}
@@ -308,7 +291,7 @@ definition
 											}
 										}
 									}
-									ELEMENT[at0130] occurrences matches {0..1} matches {	-- Overall Interpretation
+									ELEMENT[at0130] occurrences matches {0..1} matches {	-- Overall interpretation
 										value matches {
 											DV_TEXT matches {*}
 										}
@@ -317,6 +300,10 @@ definition
 										value matches {
 											DV_TEXT matches {*}
 										}
+									}
+									allow_archetype CLUSTER[at0133] occurrences matches {0..*} matches {	-- Test not done
+										include
+											archetype_id/value matches {/openEHR-EHR-CLUSTER\.exclusion_exam(-[a-zA-Z0-9_]+)*\.v1/}
 									}
 								}
 							}
@@ -405,6 +392,10 @@ definition
 						include
 							archetype_id/value matches {/openEHR-EHR-CLUSTER\.device(-[a-zA-Z0-9_]+)*\.v1/}
 					}
+					allow_archetype CLUSTER[at0132] occurrences matches {0..*} matches {	-- Extension
+						include
+							archetype_id/value matches {/.*/}
+					}
 				}
 			}
 		}
@@ -416,8 +407,8 @@ ontology
 		["en"] = <
 			items = <
 				["at0000"] = <
-					text = <"Pulmonary Function Testing">
-					description = <"Pulmonary function testing including spirometry and other lung volume testing.">
+					text = <"Pulmonary function test">
+					description = <"Pulmonary function test result including spirometry and other lung volume testing.">
 				>
 				["at0001"] = <
 					text = <"Event Series">
@@ -425,22 +416,22 @@ ontology
 				>
 				["at0002"] = <
 					text = <"Any event">
-					description = <"Any event.">
+					description = <"Default, unspecified point in time or interval which may be explicitly defined in a template or at run-time.">
 				>
 				["at0003"] = <
 					text = <"Tree">
 					description = <"@ internal @">
 				>
 				["at0008"] = <
-					text = <"Predicted Result">
+					text = <"Predicted result">
 					description = <"Predicted pulmonary flow rate result.">
 				>
 				["at0013"] = <
-					text = <"Forced Expiratory Time (FET)">
+					text = <"Forced expiratory time (FET)">
 					description = <"The time taken to complete  a forced expiration.">
 				>
 				["at0018"] = <
-					text = <"Predicted Result">
+					text = <"Predicted result">
 					description = <"Predicted pulmonary test ratio result.">
 				>
 				["at0029"] = <
@@ -455,20 +446,8 @@ ontology
 					text = <"Tree">
 					description = <"@ internal @">
 				>
-				["at0033"] = <
-					text = <"Spirography Imaging">
-					description = <"Graphs produced by spirometry.">
-				>
-				["at0034"] = <
-					text = <"Volume-time Curve">
-					description = <"Shows volume (liters) along the Y-axis and time (seconds) along the X-axis.">
-				>
-				["at0035"] = <
-					text = <"Flow-volume Loop">
-					description = <"Graphically depicts the rate of airflow on the Y-axis and the total volume inspired or expired on the X-axis.">
-				>
 				["at0037"] = <
-					text = <"CO Transfer Factor (DLCO test)">
+					text = <"CO transfer factor (DLCO test)">
 					description = <"Also called carbon monoxide diffusing capacity test.">
 					comment = <"In North America the unit for D, co is mL CO/min/mm Hg.
 The Systeme Internationale unit is mmol/min/kPa, and in
@@ -477,7 +456,7 @@ equation converts between the 2 units:
 D,   2.986 X T">
 				>
 				["at0044"] = <
-					text = <"Actual/predicted Ratio">
+					text = <"Actual/predicted ratio">
 					description = <"The ratio of actual to predicted test result.">
 				>
 				["at0046"] = <
@@ -501,31 +480,31 @@ D,   2.986 X T">
 					description = <"The bronchodilating agent used in the test.">
 				>
 				["at0052"] = <
-					text = <"Pulmonary Volume Result">
+					text = <"Pulmonary volume result">
 					description = <"Pulmonary function test that returns a measured volume or caclulated capacity.">
 				>
 				["at0053"] = <
-					text = <"Actual Result">
+					text = <"Actual result">
 					description = <"Actual pulmonary volume test result.">
 				>
 				["at0054"] = <
-					text = <"Predicted Result">
+					text = <"Predicted result">
 					description = <"Predicted pulmonary  volume test result.">
 				>
 				["at0055"] = <
-					text = <"Pulmonary Ratio Result">
+					text = <"Pulmonary ratio result">
 					description = <"A pulmonary function test result expressed as a ratio.">
 				>
 				["at0056"] = <
-					text = <"Actual Result">
+					text = <"Actual result">
 					description = <"Actual pulmonary test ratio result.">
 				>
 				["at0057"] = <
-					text = <"Pulmonary Flow Rate Result">
+					text = <"Pulmonary flow rate result">
 					description = <"Pulmonary function test that returns a measured flow rate.">
 				>
 				["at0058"] = <
-					text = <"Actual Result">
+					text = <"Actual result">
 					description = <"Actual pulmonary flow rate result.">
 				>
 				["at0064"] = <
@@ -613,15 +592,15 @@ D,   2.986 X T">
 					description = <"The amount of air left in the lungs after a tidal breath out. Calculated = ERV+RV.">
 				>
 				["at0087"] = <
-					text = <"Test Result Name">
+					text = <"Test result name">
 					description = <"The name of the pulmonary volume test/parameter.">
 				>
 				["at0088"] = <
-					text = <"Test Result Name">
+					text = <"Test result name">
 					description = <"The name of the pulmonary flow rate test.">
 				>
 				["at0089"] = <
-					text = <"Test Result Name">
+					text = <"Test result name">
 					description = <"The nameof the pulmonary ratio test.">
 				>
 				["at0091"] = <
@@ -677,23 +656,23 @@ D,   2.986 X T">
 					description = <"Lying flat at the time of measurement.">
 				>
 				["at0122"] = <
-					text = <"Actual/predicted Ratio">
+					text = <"Actual/predicted ratio">
 					description = <"The ratio of actual to predicted test result.">
 				>
 				["at0125"] = <
-					text = <"No Test Result">
+					text = <"No test result">
 					description = <"The pulmonary function test result is not available.">
 				>
 				["at0126"] = <
-					text = <"Reason for No Test Result">
+					text = <"Reason for no test result">
 					description = <"The reason why the pulmonary function test result is not available.">
 				>
 				["at0127"] = <
-					text = <"Result Details">
+					text = <"Result details">
 					description = <"Details of Pulmonary Function Test Results.">
 				>
 				["at0128"] = <
-					text = <"Other Result">
+					text = <"Other result">
 					description = <"Other pulmonary function tests.">
 				>
 				["at0129"] = <
@@ -701,8 +680,21 @@ D,   2.986 X T">
 					description = <"The volume of the conducting airways.">
 				>
 				["at0130"] = <
-					text = <"Overall Interpretation">
+					text = <"Overall interpretation">
 					description = <"Overall clinical interpretation of the measurements and related findings.">
+				>
+				["at0131"] = <
+					text = <"Spirography imaging">
+					description = <"Graphs produced by spirometry.">
+				>
+				["at0132"] = <
+					text = <"Extension">
+					description = <"Additional information required to capture local content or to align with other reference models/formalisms.">
+					comment = <"For example: local information requirements or additional metadata to align with FHIR or CIMI equivalents.">
+				>
+				["at0133"] = <
+					text = <"Test not done">
+					description = <"Details to explicitly record that this test was not performed.">
 				>
 			>
 		>
@@ -747,18 +739,6 @@ D,   2.986 X T">
 				["at0031"] = <
 					text = <"*Tree(en)">
 					description = <"*@ internal @(en)">
-				>
-				["at0033"] = <
-					text = <"*Spirography Imaging(en)">
-					description = <"*Graphs produced by spirometry.(en)">
-				>
-				["at0034"] = <
-					text = <"*Volume-time Curve(en)">
-					description = <"*Shows volume (liters) along the Y-axis and time (seconds) along the X-axis.(en)">
-				>
-				["at0035"] = <
-					text = <"*Flow-volume Loop(en)">
-					description = <"*Graphically depicts the rate of airflow on the Y-axis and the total volume inspired or expired on the X-axis.(en)">
 				>
 				["at0037"] = <
 					text = <"*CO Transfer Factor (DLCO test)(en)">
@@ -996,6 +976,18 @@ D,   2.986 X T(en)">
 				["at0130"] = <
 					text = <"*Overall Interpretation(en)">
 					description = <"*Overall clinical interpretation of the measurements and related findings.(en)">
+				>
+				["at0131"] = <
+					text = <"*Volume-time curve(en)">
+					description = <"**(en)">
+				>
+				["at0132"] = <
+					text = <"*Cluster(en)">
+					description = <"**(en)">
+				>
+				["at0133"] = <
+					text = <"*Cluster(en)">
+					description = <"**(en)">
 				>
 			>
 		>
