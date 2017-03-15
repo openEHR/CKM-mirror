@@ -1,0 +1,151 @@
+﻿archetype (adl_version=1.4; uid=c99535e5-49ff-4853-b1b0-0adf7c3ea1c1)
+	openEHR-EHR-EVALUATION.exclusion_global.v0
+
+concept
+	[at0000]	-- Exclusion - global
+language
+	original_language = <[ISO_639-1::en]>
+description
+	original_author = <
+		["name"] = <"Silje Ljosland Bakke">
+		["organisation"] = <"Nasjonal IKT HF">
+		["email"] = <"silje.ljosland.bakke@nasjonalikt.no">
+		["date"] = <"2017-02-16">
+	>
+	details = <
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To record an overall statement of exclusion about all Problem/diagnosis, Family history, Medications, Procedures, Adverse reactions or other clinical item that are either not currently present, or have not been present in the past.">
+			use = <"Use to record an overall statement of exclusion about all Problem/diagnosis, Family history, Medications, Procedures, Adverse reactions or other clinical item that are either not currently present, or have not been present in the past.
+
+This archetype has been specifically designed to make a clear and unambiguous statement of an overall exclusion of a type of clinical item from the health record. This approach is used in preference to relying on flags or terminology to express negation.
+
+Each global statement should be recorded in a separate instance - for example a separate instance for a statement about medications and another for adverse reactions.
+
+In order to capture a global exclusion that does not have a runtime name constraint, rename the Global Statement in the template.
+
+The 'Global statement' data element allows for recording of a single Global statement. The different Global statements listed in the \"Global statement' run-time name constraint identifies the the different global exclusions. This name constraint can be applied during template modelling or at run-time within a software application.
+
+Please note that exclusion statements can only be considered to be current and accurate at the point-in-time of recording. It is possible for a record to be able to state that an individual has NO KNOWN history of problem or diagnosis (using an exclusion statement) at the same consultation as recording the evidence of their first experience of the same problem or diagnosis (using the EVALUATION.problem_diagnosis archetype). In future record statements, the individual may have a KNOWN history of the problem or diagnosis recorded in their problem list.">
+			keywords = <"exclusion, negation, rule out, rule-out, r/o", ...>
+			misuse = <"Not to be used to record the exclusion of a specific problem/diagnosis, medication, procedure, family history, adverse reaction or other clinical item - use the EVALUATION.exclusion_specific archetype for this purpose.
+
+Not to be used to record the exclusion of any component of a physical examination - use the CLUSTER.exclusion_exam archetype within an appropriate OBSERVATION or CLUSTER archetype.
+
+Not to be used to record the exclusion of symptoms use the CLUSTER.exclusion_symptom archetype within an appropriate OBSERVATION or CLUSTER archetype.
+
+Not to be used to record the absence of information - use the EVALUATION.absense archetype for this purpose.">
+			copyright = <"© Nasjonal IKT HF">
+		>
+	>
+	lifecycle_state = <"in_development">
+	other_contributors = <"Vebjørn Arntzen, Oslo universitetssykehus HF, Norway (Nasjonal IKT redaktør)", "Silje Ljosland Bakke, Nasjonal IKT HF, Norway (Nasjonal IKT redaktør)", "Kristian Berg, Universitetssykehuset Nord Norge, Norway", "Heather Leslie, Ocean Informatics, Australia", "Ian McNicoll, FreshEHR, United Kingdom", "Bjørn Næss, DIPS ASA, Norway", "Pål Thorberg, DIPS ASA, Norway", "John Tore Valand, Haukeland Universitetssjukehus, Norway (Nasjonal IKT redaktør)">
+	other_details = <
+		["revision"] = <"0.0.1-alpha">
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
+		["references"] = <"Exclusion statement, Published Archetype [Internet]. openEHR Foundation, openEHR Clinical Knowledge Manager [cited: 2017-02-17]. Available from: http://openehr.org/ckm/#showArchetype_1013.1.617">
+		["build_uid"] = <"80a7cf9e-86b1-4342-b2a4-207a904ef718">
+		["original_publisher"] = <"Nasjonal IKT">
+		["original_namespace"] = <"no.nasjonalikt">
+		["MD5-CAM-1.0.1"] = <"07D6685067A2D06278FC4718F5872178">
+		["custodian_namespace"] = <"no.nasjonalikt">
+		["custodian_organisation"] = <"Nasjonal IKT">
+	>
+
+definition
+	EVALUATION[at0000] matches {	-- Global exclusion
+		data matches {
+			ITEM_TREE[at0001] matches {	-- Tree
+				items cardinality matches {0..*; unordered} matches {
+					ELEMENT[at0002] occurrences matches {0..1} matches {	-- Global statement
+						name matches {
+							DV_CODED_TEXT matches {
+								defining_code matches {
+									[local::
+									at0003, 	-- Global exclusion of problems/diagnoses
+									at0004, 	-- Global exclusion of family history
+									at0005, 	-- Global exclusion of medication use
+									at0006, 	-- Global exclusion of procedures
+									at0007]	-- Global exclusion of adverse reactions
+								}
+							}
+						}
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0011] occurrences matches {0..1} matches {	-- Comment
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+				}
+			}
+		}
+		protocol matches {
+			ITEM_TREE[at0008] matches {	-- Tree
+				items cardinality matches {0..*; unordered} matches {
+					allow_archetype CLUSTER[at0010] occurrences matches {0..*} matches {	-- Extension
+						include
+							archetype_id/value matches {/.*/}
+					}
+				}
+			}
+		}
+	}
+
+
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"Exclusion - global">
+					description = <"An overall statement of exclusion about all Problems/diagnoses, Family history, Medications, Procedures, Adverse reactions or other clinical items that are either not currently present, or have not been present in the past.">
+				>
+				["at0001"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Global statement">
+					description = <"An overall statement of exclusion about all Problems/diagnoses, Family history, Medications, Procedures, Adverse reactions or other clinical items.">
+					comment = <"For example: 'No previous diagnoses', 'No known family history', 'No known history of adverse reactions', 'Never taken any medications' or 'No known operations or significant procedures'.">
+				>
+				["at0003"] = <
+					text = <"Global exclusion of problems/diagnoses">
+					description = <"Overall statement of exclusion of all problems or diagnoses at the time of recording.">
+				>
+				["at0004"] = <
+					text = <"Global exclusion of family history">
+					description = <"Overall statement of exclusion of all significant health-related problems in relatives or family members of the individual at the time of recording.">
+				>
+				["at0005"] = <
+					text = <"Global exclusion of medication use">
+					description = <"Overall statement of exclusion about the use of all medications at the time of recording.">
+				>
+				["at0006"] = <
+					text = <"Global exclusion of procedures">
+					description = <"Overall statement of exclusion about all procedures at the time of recording.">
+				>
+				["at0007"] = <
+					text = <"Global exclusion of adverse reactions">
+					description = <"Overall statement of exclusion about all adverse reactions at the time of recording.">
+				>
+				["at0008"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0010"] = <
+					text = <"Extension">
+					description = <"Additional information required to capture local content or to align with other reference models/formalisms.">
+					comment = <"For example: Local information requirements or additional metadata to align with FHIR or CIMI equivalents.">
+				>
+				["at0011"] = <
+					text = <"Comment">
+					description = <"Additional comment not covered in other fields.">
+				>
+			>
+		>
+	>
