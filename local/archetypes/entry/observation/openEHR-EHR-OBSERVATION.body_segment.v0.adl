@@ -6,6 +6,15 @@ concept
 language
 	original_language = <[ISO_639-1::en]>
 	translations = <
+		["nb"] = <
+			language = <[ISO_639-1::nb]>
+			author = <
+				["name"] = <"Micaela Thierley, Gro-Hilde Ulriksen">
+				["organisation"] = <"Helse Bergen seksjon for e-helse, NSE">
+				["email"] = <"micaela.thierley@helse-bergen.no">
+			>
+			accreditation = <"MD, nephrologist">
+		>
 		["pt-br"] = <
 			language = <[ISO_639-1::pt-br]>
 			author = <
@@ -39,6 +48,10 @@ The 'Unspecified Measure' and 'Unspecified Area' data elements have been include
 - the entire height or length of person - use OBSERVATION.height for this purpose.
 - the weight of the whole body - use OBSERVATION.body_weight for this purpose.
 - the circumference of a head - use OBSERVATION.head_circumference for this purpose.
+- the circumference of the waist - use OBSERVATION.waist_circumference for this purpose.
+- the circumference of the hips - use OBSERVATION.hip_circumference for this purpose.
+- the circumference of the chest - use OBSERVATION.chest_circumference for this purpose.
+
 Not to be used to record the weight of a or a part of the body.
 Not to be used to record the dimensions of an internal body organ or a lesion.
 Not to be used to record skinfold measurements - use archetypes specific for this purpose.">
@@ -65,6 +78,29 @@ Não é para ser utilizado para gravar o peso do corpo ou de uma parte do corpo.
 Não é para ser utilizado para gravar as dimensões de um órgão interno ou uma lesão.
 Não é para ser utilizado para gravar medidas de dobras cutâneas - use arquétipos específicos para este propósito.">
 		>
+		["nb"] = <
+			language = <[ISO_639-1::nb]>
+			purpose = <"For å registrere målinger av deler eller områder på menneskekroppen, inkludert hodet, ekstremiteter og torso.">
+			use = <"Brukes for å registrere målinger av deler eller områder på menneskekroppen, inkludert hodet, ekstremiteter og torso. 
+
+Brukes for å gi innsikt om formen og proporsjonene av et individs kropp, vanligvis for kliniske eller antropometriske vurderinger. 
+
+Benevningene \"Lengde\", \"Omkrets\", \"Areal\" og \"Høyde\"har vært brukt for å lage begrensninger (run-time name constraints) på navnet til det spesifikke kroppssegmentet som måles, noe som tillater at et utvalg av navngitte kroppssegment spesifiseres i et templat eller i applikasjonen. Denne arketypen inneholder et ufullstending antall navngitte målevariabler modellert som begrensniger (run-time name constraints) i applikasjoner. Listen med målevariabler er forventet å øke over tid ettersom det identifiseres flere krav til målingene.
+
+Dataelementene for \"Uspesifisert måling\" og \"Uspesifisert areal\" er tatt med for å inkludere representasjon av alle mulige kroppssegmentsmålinger. Dette gjelder spesielt der den nødvendige målingen ikke er inkludert i navnebegrensingene (run-time name constraint) for \"Lengde\", \"Omkrets\", \"Areal\" og \"Høydemålinger\" over. I tillegg vil disse mindre spesifiserte dataelementene tillate ytterligere fleksibilitet ved å gjøre det mulig å endre navn på dataelementene i templater og i applikasjoner, eller gjennom knytninger til eksterne terminologier, der dette er foretrukket.">
+			keywords = <"antropometri", "måling", "estimering", "lengde", "høyde", "område", "omkrets", "omfang">
+			misuse = <"Skal ikke brukes til å registrere allment utbredte kliniske målinger, disse har sine egne spesifikke arketyper: 
+- bruk OBSERVATION.height for for å måle en persons totale høyde eller lengde.
+- bruk OBSERVATION.body_weight for å registrere kroppsvekt.
+- bruk OBSERVATION.head_circumference for å måle hodeomkrets.
+- bruk OBSERVATION.waist_circumference for å måle midjeomkrets.
+- bruk OBSERVATION.hip_circumference for å måle hofteomkrets.
+- bruk OBSERVATION.chest_circumference for å måle brystomkrets.
+
+Skal ikke brukes til å registrere vekten av hele eller en del av kroppen.
+Skal ikke brukes til å registrere dimensjonene på et indre organ eller en lesjon/skade.
+Skal ikke brukes til å registrere målinger av hudfolder - bruk arketyper spesifikke for dette formålet.">
+		>
 	>
 	lifecycle_state = <"in_development">
 	other_contributors = <"Silje Ljosland Bakke, Nasjonal IKT HF, Norway (openEHR Editor)", "Heather Leslie, Ocean Health Systems, Australia (openEHR Editor)", "Ian McNicoll, freshEHR Clinical Informatics, United Kingdom (openEHR Editor)", "Micaela Thierley, Helse Bergen, Norway">
@@ -82,31 +118,31 @@ Man-Systems Integration Standards: Volume 1 - Standards; Section 3 - Anthropomet
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"3627BE8DA4B32EB37EA29244D663406B">
-		["build_uid"] = <"552241dd-61f6-4008-bd33-c2b7338d1286">
+		["MD5-CAM-1.0.1"] = <"279B4F66EB1005AEEBCE740418A60B13">
+		["build_uid"] = <"4fffed48-9ef8-4b5a-98ae-6401ed2f327d">
 		["revision"] = <"0.0.1-alpha">
 	>
 
 definition
-	OBSERVATION[at0000] matches {	-- Measurement of Body Segment
+	OBSERVATION[at0000] matches {	-- Måling av kroppssegment
 		data matches {
 			HISTORY[at0001] matches {	-- Event Series
 				events cardinality matches {1..*; unordered} matches {
-					POINT_EVENT[at0002] occurrences matches {0..1} matches {	-- Any point in time event
+					EVENT[at0002] occurrences matches {0..1} matches {	-- Uspesifisert hendelse
 						data matches {
 							ITEM_TREE[at0003] matches {	-- Tree
 								items cardinality matches {0..*; unordered} matches {
-									ELEMENT[at0004] occurrences matches {0..*} matches {	-- Length
+									ELEMENT[at0004] occurrences matches {0..*} matches {	-- Lengde
 										name matches {
 											DV_CODED_TEXT matches {
 												defining_code matches {
 													[local::
-													at0005, 	-- Left Upper Arm Length
-													at0008, 	-- Right Upper Arm Length
-													at0006, 	-- Left Upper Leg Length
-													at0007, 	-- Right Upper Leg Length
-													at0020, 	-- Left Leg Length
-													at0009]	-- Right Leg Length
+													at0005, 	-- Lengden av venstre overarm
+													at0008, 	-- Lengden av høyre overarm
+													at0006, 	-- Lengden av venstre lår
+													at0007, 	-- Lengden av høyre lår
+													at0020, 	-- Lengden av venstre ben
+													at0009]	-- Lengden av høyre ben
 												}
 											}
 										}
@@ -133,16 +169,13 @@ definition
 											>
 										}
 									}
-									ELEMENT[at0016] occurrences matches {0..*} matches {	-- Circumference
+									ELEMENT[at0016] occurrences matches {0..*} matches {	-- Omkrets
 										name matches {
 											DV_CODED_TEXT matches {
 												defining_code matches {
 													[local::
-													at0017, 	-- Left Upper Arm Circumference (UAC)
-													at0021, 	-- Right Upper Arm Circumference (UAC)
-													at0028, 	-- Chest circumference
-													at0032, 	-- Waist circumference
-													at0031]	-- Hip circumference
+													at0017, 	-- Omkrets av venstre overarm
+													at0021]	-- Omkrets av høyre overarm
 												}
 											}
 										}
@@ -169,13 +202,13 @@ definition
 											>
 										}
 									}
-									ELEMENT[at0012] occurrences matches {0..*} matches {	-- Area
+									ELEMENT[at0012] occurrences matches {0..*} matches {	-- Område
 										name matches {
 											DV_CODED_TEXT matches {
 												defining_code matches {
 													[local::
-													at0018, 	-- Left Mid-Upper Arm Muscle Area (MUAMA)
-													at0019]	-- Right Mid-Upper Arm Muscle Area (MUAMA)
+													at0018, 	-- Venstre midt- overarmmuskelområde
+													at0019]	-- Høyre midt- overarmmuskelområde
 												}
 											}
 										}
@@ -202,13 +235,13 @@ definition
 											>
 										}
 									}
-									ELEMENT[at0013] occurrences matches {0..*} matches {	-- Height
+									ELEMENT[at0013] occurrences matches {0..*} matches {	-- Høyde
 										name matches {
 											DV_CODED_TEXT matches {
 												defining_code matches {
 													[local::
-													at0014, 	-- Sitting Height
-													at0015]	-- Crown-Rump Length
+													at0014, 	-- Sittende høyde
+													at0015]	-- Isse-sete lengde
 												}
 											}
 										}
@@ -235,7 +268,7 @@ definition
 											>
 										}
 									}
-									ELEMENT[at0026] occurrences matches {0..*} matches {	-- Unspecified Measure
+									ELEMENT[at0026] occurrences matches {0..*} matches {	-- Uspesifisert måling
 										value matches {
 											C_DV_QUANTITY <
 												property = <[openehr::122]>
@@ -259,7 +292,7 @@ definition
 											>
 										}
 									}
-									ELEMENT[at0027] occurrences matches {0..*} matches {	-- Unspecified Area
+									ELEMENT[at0027] occurrences matches {0..*} matches {	-- Uspesifisert areal
 										value matches {
 											C_DV_QUANTITY <
 												property = <[openehr::335]>
@@ -283,7 +316,7 @@ definition
 											>
 										}
 									}
-									ELEMENT[at0025] occurrences matches {0..*} matches {	-- Comment
+									ELEMENT[at0025] occurrences matches {0..*} matches {	-- Kommentar
 										value matches {
 											DV_TEXT matches {*}
 										}
@@ -292,44 +325,24 @@ definition
 							}
 						}
 					}
-					INTERVAL_EVENT[at0011] occurrences matches {0..1} matches {	-- Average measurement
+					INTERVAL_EVENT[at0011] occurrences matches {0..1} matches {	-- Gjennomsnittsmåling
 						math_function matches {
 							DV_CODED_TEXT matches {
 								defining_code matches {[openehr::146]}
 							}
 						}
 						data matches {
-							use_node ITEM_TREE /data[at0001]/events[at0002]/data[at0003]	-- /data[Event Series]/events[Any point in time event]/data[Tree]
+							use_node ITEM_TREE /data[at0001]/events[at0002]/data[at0003]	-- /data[Event Series]/events[Uspesifisert hendelse]/data[Tree]
 						}
 					}
-					POINT_EVENT[at0030] occurrences matches {0..1} matches {	-- Full exhalation
-						data matches {
-							use_node ITEM_TREE /data[at0001]/events[at0002]/data[at0003]	-- /data[Event Series]/events[Any point in time event]/data[Tree]
-						}
-					}
-					POINT_EVENT[at0033] occurrences matches {0..1} matches {	-- Full inhalation
-						data matches {
-							use_node ITEM_TREE /data[at0001]/events[at0002]/data[at0003]	-- /data[Event Series]/events[Any point in time event]/data[Tree]
-						}
-					}
-					INTERVAL_EVENT[at0029] occurrences matches {0..1} matches {	-- Chest expansion
-						math_function matches {
-							DV_CODED_TEXT matches {
-								defining_code matches {[openehr::522]}
-							}
-						}
-						data matches {
-							use_node ITEM_TREE /data[at0001]/events[at0002]/data[at0003]	-- /data[Event Series]/events[Any point in time event]/data[Tree]
-						}
-					}
-					INTERVAL_EVENT[at0022] occurrences matches {0..1} matches {	-- Difference
+					INTERVAL_EVENT[at0022] occurrences matches {0..1} matches {	-- Differanse
 						math_function matches {
 							DV_CODED_TEXT matches {
 								defining_code matches {[openehr::147]}
 							}
 						}
 						data matches {
-							use_node ITEM_TREE /data[at0001]/events[at0002]/data[at0003]	-- /data[Event Series]/events[Any point in time event]/data[Tree]
+							use_node ITEM_TREE /data[at0001]/events[at0002]/data[at0003]	-- /data[Event Series]/events[Uspesifisert hendelse]/data[Tree]
 						}
 					}
 				}
@@ -338,9 +351,13 @@ definition
 		protocol matches {
 			ITEM_TREE[at0023] matches {	-- Tree
 				items cardinality matches {0..*; unordered} matches {
-					allow_archetype CLUSTER[at0024] occurrences matches {0..*} matches {	-- Measuring Device
+					allow_archetype CLUSTER[at0024] occurrences matches {0..*} matches {	-- Måleinstrument
 						include
 							archetype_id/value matches {/openEHR-EHR-CLUSTER\.device(-[a-zA-Z0-9_]+)*\.v1/}
+					}
+					allow_archetype CLUSTER[at0028] occurrences matches {0..*} matches {	-- Tilleggsinformasjon
+						include
+							archetype_id/value matches {/.*/}
 					}
 				}
 			}
@@ -362,8 +379,8 @@ ontology
 					description = <"@ internal @">
 				>
 				["at0002"] = <
-					text = <"Any point in time event">
-					description = <"Default, unspecified point in time which may be explicitly defined in a template or at run-time.">
+					text = <"Any event">
+					description = <"Default, unspecified point in time or interval event which may be explicitly defined in a template or at run-time.">
 				>
 				["at0003"] = <
 					text = <"Tree">
@@ -468,28 +485,9 @@ ontology
 					comment = <"This data element can be bound to a terminology to provide the valid names for use in a template or at run-time, or alternatively, names can be constrained in a template.">
 				>
 				["at0028"] = <
-					text = <"Chest circumference">
-					description = <"Measurement of the girth of the chest, usually at the level of the xiphoid notch.">
-				>
-				["at0029"] = <
-					text = <"Chest expansion">
-					description = <"The difference between chest circumference between full exhalation and full inhalation. Always recorded as a positive measurement.">
-				>
-				["at0030"] = <
-					text = <"Full exhalation">
-					description = <"Measurement taken during full exhalation.">
-				>
-				["at0031"] = <
-					text = <"Hip circumference">
-					description = <"Measurement of the girth of the hips, usually taken around the widest portion of the buttocks.">
-				>
-				["at0032"] = <
-					text = <"Waist circumference">
-					description = <"Measurement of the girth of the waist, usually at the approximate midpoint between the lower margin of the last palpable rib and the top of the iliac crest.">
-				>
-				["at0033"] = <
-					text = <"Full inhalation">
-					description = <"Measurement taken during full inhalation.">
+					text = <"Extension">
+					description = <"Additional information required to capture local content or to align with other reference models/formalisms.">
+					comment = <"e.g. Local information requirements or additional metadata to align with FHIR or CIMI equivalents.">
 				>
 			>
 		>
@@ -610,28 +608,132 @@ ontology
 					comment = <"Este elemento de informação pode ser ligado a uma terminologia para fornecer os nomes válidos para uso em um \"template\" ou numa lista restrita, ou alternativamente, os nomes pode ser restringidos no \"template\".">
 				>
 				["at0028"] = <
-					text = <"Circunferência torácica">
-					description = <"Medição do perímetro do tórax, geralmente no nível do processo xifóide.">
+					text = <"*Extension(en)">
+					description = <"*Additional information required to capture local content or to align with other reference models/formalisms.(en)">
+					comment = <"*e.g. Local information requirements or additional metadata to align with FHIR or CIMI equivalents.(en)">
 				>
-				["at0029"] = <
-					text = <"Expansão torácica">
-					description = <"Diferença entre a circunferência torácica com inspiração e expiração completas. Sempre gravada como uma medida positiva.">
+			>
+		>
+		["nb"] = <
+			items = <
+				["at0000"] = <
+					text = <"Måling av kroppssegment">
+					description = <"Bruk av en standard prosedyre for måling av lengden, omkretsen, arealet eller høyden av en definert kroppsdel.">
 				>
-				["at0030"] = <
-					text = <"Expiração completa">
-					description = <"Medição realizada durante expiração completa.">
+				["at0001"] = <
+					text = <"Event Series">
+					description = <"@ internal @">
 				>
-				["at0031"] = <
-					text = <"Circunferência do quadril">
-					description = <"Medição do perímetro do quadril, geralmente medido em volta da porção mais larga dos glúteos.">
+				["at0002"] = <
+					text = <"Uspesifisert hendelse">
+					description = <"Standard, uspesifisert tidspunkt eller tidsintervall som kan defineres mer eksplisitt i en template eller i en applikasjon.">
 				>
-				["at0032"] = <
-					text = <"Circunferência da cintura">
-					description = <"Medição do perímetro da cintura, geralmente no ponto médio aproximado entre a margem inferior da última costela palpável e o cume da crista ilíaca.">
+				["at0003"] = <
+					text = <"Tree">
+					description = <"@ internal @">
 				>
-				["at0033"] = <
-					text = <"Inspiração completa">
-					description = <"Medição realizada durante inspiração completa.">
+				["at0004"] = <
+					text = <"Lengde">
+					description = <"Avstand mellom to spesifiserte anatomiske steder på en definert kroppsdel​​.">
+					comment = <"Begrepet \"lengde\" slik det benyttes i dette dataelementet, inkluderer også bredde og dybde. Navnet på den spesifikke målingen er spesifisert med navnebegrensninger (\"run-time name constraints\").">
+				>
+				["at0005"] = <
+					text = <"Lengden av venstre overarm">
+					description = <"Avstanden mellom venstre akromion (fremspring på skulderblad) til spissen av venstre olecranon (albuespiss), målt på baksiden av overarmen.">
+				>
+				["at0006"] = <
+					text = <"Lengden av venstre lår">
+					description = <"Avstanden fra venstre lyskefold til den proksimale kant av venstre kneskål, måles på forsiden av venstre lår, måling gjøres mens individet sitter.">
+				>
+				["at0007"] = <
+					text = <"Lengden av høyre lår">
+					description = <"Avstanden fra høyre lyskefold til den proksimale kant av høyre kneskål, måles på forsiden av høyre lår, måling gjøres mens individet sitter.">
+				>
+				["at0008"] = <
+					text = <"Lengden av høyre overarm">
+					description = <"Avstanden mellom høyre akromion (fremspring på skulderblad) til spissen av høyre olecranon (albuespiss), målt på baksiden av overarmen.">
+				>
+				["at0009"] = <
+					text = <"Lengden av høyre ben">
+					description = <"Avstanden mellom høyre fremre hoftespiss (spina iliaca anterior superior) og høyre mediale malleol.">
+				>
+				["at0011"] = <
+					text = <"Gjennomsnittsmåling">
+					description = <"Gjennomsnitt av alle registrerte målinger ved uspesifikke hendelser. Som regel gjøres det flere målinger under antropometriske vurderinger og gjennomsnittet registreres.">
+				>
+				["at0012"] = <
+					text = <"Område">
+					description = <"Beregnet areal av et definert område eller kroppssegment.">
+					comment = <"Navnet på området er spesifisert med navnebegrensninger (\"run-time name constraints\").">
+				>
+				["at0013"] = <
+					text = <"Høyde">
+					description = <"Høyde på en kroppsdel målt ​​fra et fast punkt.">
+					comment = <"For eksempel: gulvet eller stolsetet.">
+				>
+				["at0014"] = <
+					text = <"Sittende høyde">
+					description = <"Vertikal avstand mellom sitteflaten og toppen av hodet. Måling av overkroppens lengde mens en person sitter med rak rygg.">
+				>
+				["at0015"] = <
+					text = <"Isse-sete lengde">
+					description = <"Avstanden mellom toppen av hodet til den nederste delen av overkroppen, vanligvis perineum eller laveste del av rumpeballen. Isse-sete lengde måles vanligvis på spedbarn under 2 år, mens de ligger på rygg.">
+				>
+				["at0016"] = <
+					text = <"Omkrets">
+					description = <"Omkrets rundt en bestemt kroppsdel på et spesifikt anatomisk sted.">
+				>
+				["at0017"] = <
+					text = <"Omkrets av venstre overarm">
+					description = <"Måling av omkrets av venstre overarm ved midtpunktet mellom akromion (fremspring på skulderblad) skulderbladet og ned til olecranon (albuespissen). Benevnes også som midt overarmsomkrets (MUAC).">
+				>
+				["at0018"] = <
+					text = <"Venstre midt- overarmmuskelområde">
+					description = <"Estimering av venstre overarmsområde, utledet fra måling av overarmens omkrets.">
+				>
+				["at0019"] = <
+					text = <"Høyre midt- overarmmuskelområde">
+					description = <"Estimering av venstre overarmsområde, utledet fra måling av overarmens omkrets.">
+				>
+				["at0020"] = <
+					text = <"Lengden av venstre ben">
+					description = <"Avstanden mellom venstre fremre hoftespiss (spina iliaca anterior superior) og venstre mediale malleol.">
+				>
+				["at0021"] = <
+					text = <"Omkrets av høyre overarm">
+					description = <"Måling av omkrets av høyre overarm ved midtpunktet mellom akromion (fremspring på skulderblad) og skulderbladet og ned til olecranon (albuespiss). Også referert til som midt overarmsomkrets (MUAC).">
+				>
+				["at0022"] = <
+					text = <"Differanse">
+					description = <"Registrering av differansen mellom to målinger. For eksempel avvik i lengde mellom høyre og venstre fot. Kan være et positivt eller negativt tall.">
+				>
+				["at0023"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0024"] = <
+					text = <"Måleinstrument">
+					description = <"Detaljer om måleinstrumentet som ble brukt.">
+				>
+				["at0025"] = <
+					text = <"Kommentar">
+					description = <"Tilleggsinformasjon om målingene som ikke fanges opp i dataelementene for måling">
+					comment = <"For eksempel registrering på fravær av et lem etter amputasjon eller vansker med å få utført en måling.">
+				>
+				["at0026"] = <
+					text = <"Uspesifisert måling">
+					description = <"Astanden mellom to spesifiserte anatomiske steder (lengde), og anatomisk plassering i forhold til et fast objekt (høyde), eller omkrets av en kroppsdel.">
+					comment = <"Dataelementet kan være knyttet til en terminologi for å gi de riktige navnene for bruk i et templat eller i en applikasjon. Alternativt kan navnet begrenses i et templat.">
+				>
+				["at0027"] = <
+					text = <"Uspesifisert areal">
+					description = <"Beregnet areal på et område av kroppen">
+					comment = <"Dataelement kan knyttes til en terminologi for å gi de aktuelle navnene for bruk i et templat eller i en applikasjon. Alternativt kan navnet begrenses i et templat.">
+				>
+				["at0028"] = <
+					text = <"Tilleggsinformasjon">
+					description = <"Ytterligere informasjon som trengs for å kunne registrere lokalt definert innhold eller for å tilpasse til andre referansemodeller/formalismer.">
+					comment = <"For eksempel lokale informasjonsbehov eller ytterligere metadata for å kunne tilpasse til tilsvarende konsepter i FHIR eller CIMI.">
 				>
 			>
 		>
