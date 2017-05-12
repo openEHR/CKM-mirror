@@ -102,31 +102,31 @@ Skal ikke brukes for å estimere væskebalanse. Bruk OBSERVATION.fluid_balance (
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"D0FED0C9D127A718F3790A740E7C4C1F">
-		["build_uid"] = <"65f02454-29cf-46ba-aa17-7ca85e6cc661">
+		["MD5-CAM-1.0.1"] = <"50AF150CBCAB930A6307C38326395AE3">
+		["build_uid"] = <"2b2d45e4-72d9-4041-ab54-28831eeceaf9">
 		["revision"] = <"0.0.1-alpha">
 	>
 
 definition
-	OBSERVATION[at0000] matches {	-- Fluid input
+	OBSERVATION[at0000] matches {	-- Væskeinntak
 		data matches {
 			HISTORY[at0001] matches {	-- Event Series
 				events cardinality matches {1..*; unordered} matches {
-					EVENT[at0002] occurrences matches {0..*} matches {	-- Any event
+					EVENT[at0002] occurrences matches {0..*} matches {	-- Uspesifisert hendelse
 						data matches {
 							ITEM_TREE[at0003] matches {	-- List
 								items cardinality matches {1..*; unordered} matches {
-									ELEMENT[at0036] occurrences matches {0..1} matches {	-- Fluid name
+									ELEMENT[at0036] occurrences matches {0..1} matches {	-- Navn på væsken
 										value matches {
 											DV_TEXT matches {*}
 										}
 									}
-									ELEMENT[at0034] occurrences matches {0..1} matches {	-- Route
+									ELEMENT[at0034] occurrences matches {0..1} matches {	-- Administrasjonsvei
 										value matches {
 											DV_TEXT matches {*}
 										}
 									}
-									ELEMENT[at0035] occurrences matches {0..1} matches {	-- Volume
+									ELEMENT[at0035] occurrences matches {0..1} matches {	-- Mengde
 										value matches {
 											C_DV_QUANTITY <
 												property = <[openehr::129]>
@@ -143,16 +143,17 @@ definition
 													>
 													["3"] = <
 														units = <"[foz_us]">
+														magnitude = <|>=0.0|>
 													>
 												>
 											>
 										}
 									}
-									allow_archetype CLUSTER[at0039] occurrences matches {0..*} matches {	-- Fluid details
+									allow_archetype CLUSTER[at0039] occurrences matches {0..*} matches {	-- Detaljer om væsken
 										include
 											archetype_id/value matches {/.*/}
 									}
-									ELEMENT[at0032] occurrences matches {0..1} matches {	-- Comment
+									ELEMENT[at0032] occurrences matches {0..1} matches {	-- Kommentar
 										value matches {
 											DV_TEXT matches {*}
 										}
@@ -167,30 +168,30 @@ definition
 		protocol matches {
 			ITEM_TREE[at0008] matches {	-- List
 				items cardinality matches {0..*; unordered} matches {
-					ELEMENT[at0031] occurrences matches {0..1} matches {	-- Method
+					ELEMENT[at0031] occurrences matches {0..1} matches {	-- Målemetode
 						value matches {
 							DV_CODED_TEXT matches {
 								defining_code matches {
 									[local::
-									at0018, 	-- Estimated
-									at0019]	-- Measured
+									at0018, 	-- Estimert
+									at0019]	-- Målt
 								}
 							}
 						}
 					}
-					allow_archetype CLUSTER[at0033] occurrences matches {0..1} matches {	-- Input device
+					allow_archetype CLUSTER[at0033] occurrences matches {0..1} matches {	-- Utstyr
 						include
 							archetype_id/value matches {/openEHR-EHR-CLUSTER\.device(-[a-zA-Z0-9_]+)*\.v1/}
 						exclude
 							archetype_id/value matches {/.*/}
 					}
-					allow_archetype CLUSTER[at0028] occurrences matches {0..1} matches {	-- Measurement device
+					allow_archetype CLUSTER[at0028] occurrences matches {0..1} matches {	-- Måleutstyr
 						include
 							archetype_id/value matches {/openEHR-EHR-CLUSTER\.device(-[a-zA-Z0-9_]+)*\.v1/}
 						exclude
 							archetype_id/value matches {/.*/}
 					}
-					allow_archetype CLUSTER[at0040] occurrences matches {0..*} matches {	-- Extension
+					allow_archetype CLUSTER[at0040] occurrences matches {0..*} matches {	-- Tilleggsinformasjon
 						include
 							archetype_id/value matches {/.*/}
 					}
@@ -198,8 +199,6 @@ definition
 			}
 		}
 	}
-
-
 
 
 ontology
@@ -400,17 +399,17 @@ ontology
 				["at0034"] = <
 					text = <"Administrasjonsvei">
 					description = <"Administrasjonsveien til væsken.">
-					comment = <"For eksempel ernæringssonde, per os, intravenøst eller intraossøst. Administrasjonsveien kan bli registrert manuelt eller hentet fra en applikasjon, for eksempel via ACTION.medication; spesielt for væsker som er gitt intravenøst. En lenke kan brukes for dette formålet.">
+					comment = <"For eksempel ernæringssonde, per os, intravenøst eller intraossøst. Administrasjonsveien kan bli registrert manuelt eller hentet fra en applikasjon.">
 				>
 				["at0035"] = <
 					text = <"Mengde">
 					description = <"Mengden væske som er drukket eller administrert.">
-					comment = <"Mengden kan bli registrert manuelt eller hentet fra en applikasjon, for eksempel via ACTION.medication; spesielt for væsker som er gitt intravenøst. En lenke kan brukes for dette formålet.">
+					comment = <"Mengden kan bli registrert manuelt eller hentet fra en applikasjon.">
 				>
 				["at0036"] = <
 					text = <"Navn på væsken">
 					description = <"Identifisering av væsken som er drukket eller administrert.">
-					comment = <"For eksempel fysiologisk saltvann, kaffe eller parenteral ernæring. Navnet på væsken kan bli registrert manuelt eller hentet fra en applikasjon, for eksempel via ACTION.medication; spesielt for væsker som er gitt intravenøst. En lenke kan brukes for dette formålet.">
+					comment = <"For eksempel fysiologisk saltvann, kaffe eller parenteral ernæring. Navnet på væsken kan bli registrert manuelt eller hentet fra en applikasjon.">
 				>
 				["at0039"] = <
 					text = <"Detaljer om væsken">
