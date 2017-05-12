@@ -9,8 +9,8 @@ language
 		["nb"] = <
 			language = <[ISO_639-1::nb]>
 			author = <
-				["name"] = <"Silje Ljosland Bakke">
-				["organisation"] = <"Nasjonal IKT HF">
+				["name"] = <"Silje Ljosland Bakke and John Tore Valand">
+				["organisation"] = <"Nasjonal IKT HF; Helse Bergen HF">
 			>
 		>
 		["pt-br"] = <
@@ -36,13 +36,13 @@ description
 			purpose = <"To record the circumference of the head of an individual.">
 			use = <"Use to record the circumference of the head of an individual. 
 
-This archetype can also be used for recording an approximation of the head circumference measurement in a clinical scenario where it is not possible to measure an accurate height or length - for example, measuring an uncooperative child. This is not modelled explicitly in the archetype as the openEHR Reference model allows the attribute of Approximation for any Quantity data type. At implementation, for example, an application user interface could allow clinicians to select an appropriately labelled check box adjacent to the Height data field to indicate that the recorded height is an approximation, rather than actual.A statement identifying the physical incompleteness of the head can be recorded in the 'Confounding factors' protocol element, if required.
+This archetype can also be used for recording an approximation of the head circumference measurement in a clinical scenario where it is not possible to measure an accurate head circumference - for example, measuring an uncooperative child. This is not modelled explicitly in the archetype as the openEHR Reference model allows the attribute of Approximation for any Quantity data type. At implementation, for example, an application user interface could allow clinicians to select an appropriately labelled check box adjacent to the Head circumference data field to indicate that the recorded head circumference is an approximation, rather than actual. A statement identifying the physical incompleteness of the head can be recorded in the 'Confounding factors' protocol element, if required.
 
 Use to record growth from repeated measurements. This can currently be modelled by constraining the 'any event' to an interval in a template with associated mathematical function of increase, as appropriate.">
 			keywords = <"anthropometry", "measurement", "estimation", "circumference">
 			misuse = <"Not to be used to record growth velocity.
 
-Not to be used to record the circumference of another body part. Use OBSERVATION.body_segment in these circumstances except where more specific archetypes exist such as OBSERVATION.waist_hip.">
+Not to be used to record the circumference of another body part. Use OBSERVATION.body_segment in these circumstances except where more specific archetypes exist such as OBSERVATION.waist_circumference.">
 			copyright = <"© openEHR Foundation">
 		>
 		["pt-br"] = <
@@ -69,7 +69,7 @@ Brukes til å registrere vekst ved gjentatte målinger. Dette kan modelleres ved
 			keywords = <"antropometri", "måling", "estimering", "omkrets">
 			misuse = <"Brukes ikke til å registrere veksthastighet.
 
-Brukes ikke til å registrere omkretsen av andre kroppsdeler. Bruk OBSERVATION.body_segment i disse tilfellene.">
+Brukes ikke til å registrere omkretsen av andre kroppsdeler. Bruk OBSERVATION.body_segment i disse tilfellene med unntak av hvor det finnes mer spesifikke arketyper som for eksempel OBSERVATION.waist_circumference.">
 		>
 	>
 	lifecycle_state = <"in_development">
@@ -80,8 +80,8 @@ Brukes ikke til å registrere omkretsen av andre kroppsdeler. Bruk OBSERVATION.b
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"36C81927F860E432B043A224D2F90E7F">
-		["build_uid"] = <"8c780166-103c-4066-9ab8-91874872f435">
+		["MD5-CAM-1.0.1"] = <"029D0DC931506AADAD7BB1C45BE548D4">
+		["build_uid"] = <"d01b6f9f-40e3-4e90-947c-7723c6b33860">
 		["revision"] = <"0.0.1-alpha">
 	>
 
@@ -90,7 +90,7 @@ definition
 		data matches {
 			HISTORY[at0001] matches {	-- Event Series
 				events cardinality matches {1..*; unordered} matches {
-					POINT_EVENT[at0010] occurrences matches {0..1} matches {	-- Any point in time event
+					EVENT[at0010] occurrences matches {0..*} matches {	-- Any event
 						data matches {
 							ITEM_TREE[at0003] matches {	-- Tree
 								items cardinality matches {1..*; unordered} matches {
@@ -124,7 +124,7 @@ definition
 						state matches {
 							ITEM_TREE[at0008] matches {	-- Tree
 								items cardinality matches {0..*; unordered} matches {
-									ELEMENT[at0009] occurrences matches {0..1} matches {	-- Confounding factors
+									ELEMENT[at0009] occurrences matches {0..*} matches {	-- Confounding factors
 										value matches {
 											DV_TEXT matches {*}
 										}
@@ -135,18 +135,10 @@ definition
 					}
 					POINT_EVENT[at0011] occurrences matches {0..1} matches {	-- Birth
 						data matches {
-							use_node ITEM_TREE /data[at0001]/events[at0010]/data[at0003]	-- /data[Event Series]/events[Any point in time event]/data[Tree]
+							use_node ITEM_TREE /data[at0001]/events[at0010]/data[at0003]	-- /data[Event Series]/events[Any event]/data[Tree]
 						}
 						state matches {
-							use_node ITEM_TREE /data[at0001]/events[at0010]/state[at0008]	-- /data[Event Series]/events[Any point in time event]/state[Tree]
-						}
-					}
-					INTERVAL_EVENT[at0002] occurrences matches {0..1} matches {	-- Any interval event
-						data matches {
-							use_node ITEM_TREE /data[at0001]/events[at0010]/data[at0003]	-- /data[Event Series]/events[Any point in time event]/data[Tree]
-						}
-						state matches {
-							use_node ITEM_TREE /data[at0001]/events[at0010]/state[at0008]	-- /data[Event Series]/events[Any point in time event]/state[Tree]
+							use_node ITEM_TREE /data[at0001]/events[at0010]/state[at0008]	-- /data[Event Series]/events[Any event]/state[Tree]
 						}
 					}
 				}
@@ -175,17 +167,13 @@ ontology
 			items = <
 				["at0000"] = <
 					text = <"Head circumference">
-					description = <"Head circumference is measured across the frontal bones of the skull, slightly above the eyebrows and
-perpendicular to the long axis of the face; above the ears; and the location over the occipital
-prominence that registers the maximal circumference of the head.">
+					description = <"The measurement of the distance around the head at the largest point.">
+					comment = <"The measurement is usually taken from above the ears and midway between the eyebrows and the hairline to the occipital prominence.
+">
 				>
 				["at0001"] = <
 					text = <"Event Series">
 					description = <"@ internal @">
-				>
-				["at0002"] = <
-					text = <"Any interval event">
-					description = <"Unspecified interval event which may be explicitly defined in a template or at run-time. This event will be used to record mathematical functions about the measurement over intervals of time, for example: increase in head circumference.">
 				>
 				["at0003"] = <
 					text = <"Tree">
@@ -193,7 +181,8 @@ prominence that registers the maximal circumference of the head.">
 				>
 				["at0004"] = <
 					text = <"Head circumference">
-					description = <"Measurement of the circumference of the head.">
+					description = <"The measurement of the distance around the head at the largest point.">
+					comment = <"The measurement is usually taken from above the ears and midway between the eyebrows and the hairline to the occipital prominence.">
 				>
 				["at0005"] = <
 					text = <"Tree">
@@ -201,11 +190,11 @@ prominence that registers the maximal circumference of the head.">
 				>
 				["at0006"] = <
 					text = <"Device">
-					description = <"Details about the medical device used for the measurement.">
+					description = <"Details about the device used for the measurement.">
 				>
 				["at0007"] = <
 					text = <"Comment">
-					description = <"Comment about the measurement of head circumference.">
+					description = <"Additional narrative about the head circumference not captured in other fields.">
 				>
 				["at0008"] = <
 					text = <"Tree">
@@ -213,16 +202,16 @@ prominence that registers the maximal circumference of the head.">
 				>
 				["at0009"] = <
 					text = <"Confounding factors">
-					description = <"Record any issues or factors that may impact on the measurement.">
+					description = <"Narrative descripiton of any issues or factors that may impact on the measurement.">
 					comment = <"For example: uncooperative child.">
 				>
 				["at0010"] = <
-					text = <"Any point in time event">
-					description = <"Default, unspecified point in time which may be explicitly defined in a template or at run-time. This event will be used for recording measurements in clinical encounters.">
+					text = <"Any event">
+					description = <"Default, unspecified point in time or interval event which may be explicitly defined in a template or at run-time.">
 				>
 				["at0011"] = <
 					text = <"Birth">
-					description = <"The first measurement of head circumference that is recorded soon after birth.">
+					description = <"The first measurement of head circumference that is recorded soon after birth. This event should only be used once per record.">
 				>
 				["at0012"] = <
 					text = <"Extension">
@@ -234,50 +223,48 @@ prominence that registers the maximal circumference of the head.">
 		["pt-br"] = <
 			items = <
 				["at0000"] = <
-					text = <"Perímetro cefálico">
-					description = <"O perímetro cefálico é medida através dos ossos frontais do crânio, um pouco acima das sobrancelhas e
-perpendicular ao eixo longo da face; acima das orelhas; e o local acima da proeminência occipital, que registra a circunferência máxima da cabeça.">
+					text = <"*Head circumference(en)">
+					description = <"*The measurement of the distance around the head at the largest point.(en)">
+					comment = <"*The measurement is usually taken from above the ears and midway between the eyebrows and the hairline to the occipital prominence.
+(en)">
 				>
 				["at0001"] = <
 					text = <"Event Series">
 					description = <"@ internal @">
-				>
-				["at0002"] = <
-					text = <"Qualquer intervalo do evento">
-					description = <"Intervalo não especificado no evento, que pode ser explicitamente definido em um modelo ou durante a execução. Este evento será usado para gravar funções matemáticas sobre a medição em intervalos de tempo, por exemplo: aumento da circunferência da cabeça.">
 				>
 				["at0003"] = <
 					text = <"Tree">
 					description = <"@ internal @">
 				>
 				["at0004"] = <
-					text = <"Perímetro cefálico">
-					description = <"A medição da circunferência da cabeça.">
+					text = <"*Head circumference(en)">
+					description = <"*The measurement of the distance around the head at the largest point.(en)">
+					comment = <"*The measurement is usually taken from above the ears and midway between the eyebrows and the hairline to the occipital prominence.(en)">
 				>
 				["at0005"] = <
 					text = <"Tree">
 					description = <"@ internal @">
 				>
 				["at0006"] = <
-					text = <"Dispositivo">
-					description = <"Detalhes sobre o dispositivo médico usado para a medição.">
+					text = <"*Device(en)">
+					description = <"*Details about the device used for the measurement.(en)">
 				>
 				["at0007"] = <
-					text = <"Comentário">
-					description = <"Comentário sobre a medição da circunferência da cabeça.">
+					text = <"*Comment(en)">
+					description = <"*Additional narrative about the head circumference not captured in other fields.(en)">
 				>
 				["at0008"] = <
 					text = <"Tree">
 					description = <"@ internal @">
 				>
 				["at0009"] = <
-					text = <"Fatores de confusão">
-					description = <"Grave qualquer questão ou fatores que podem impactar na medição.">
-					comment = <"Por exemplo: criança não colabora.">
+					text = <"*Confounding factors(en)">
+					description = <"*Narrative descripiton of any issues or factors that may impact on the measurement.(en)">
+					comment = <"*For example: uncooperative child.(en)">
 				>
 				["at0010"] = <
-					text = <"Qualquer ponto de tempo no evento.">
-					description = <"Padrão, ponto não especificado no tempo que pode ser explicitamente definido em um modelo ou em tempo de execução. Este evento será usado para gravar as medições em encontros clínicos.">
+					text = <"*Any event(en)">
+					description = <"*Default, unspecified point in time or interval event which may be explicitly defined in a template or at run-time.(en)">
 				>
 				["at0011"] = <
 					text = <"Nascimento">
@@ -294,15 +281,12 @@ perpendicular ao eixo longo da face; acima das orelhas; e o local acima da proem
 			items = <
 				["at0000"] = <
 					text = <"Hodeomkrets">
-					description = <"Hodeomkrets måles over frontalbeinet, noe over øyenbrynene og vinkelrett på ansiktet, over ørene, og stedet over ytre occipitale protuberans der hodeomkretsen er størst.">
+					description = <"Måling av den lengste distansen rundt hodet.">
+					comment = <"Målingen utføres vanligvis fra over ørene midt mellom øyenbryn og hårfestet til occipitale protuberans.">
 				>
 				["at0001"] = <
 					text = <"Event Series">
 					description = <"@ internal @">
-				>
-				["at0002"] = <
-					text = <"Uspesifisert intervallhendelse">
-					description = <"Standard, uspesifisert tidsintervall som kan defineres mer eksplisitt i en template eller i en applikasjon. Denne hendelsen kan brukes til å registrere matematiske funksjoner om måling over tidsintervaller, for eksempel økning av hodeomkrets.">
 				>
 				["at0003"] = <
 					text = <"Tree">
@@ -310,7 +294,8 @@ perpendicular ao eixo longo da face; acima das orelhas; e o local acima da proem
 				>
 				["at0004"] = <
 					text = <"Hodeomkrets">
-					description = <"Måling av omkretsen av hodet.">
+					description = <"Måling av den lengste distansen rundt hodet.">
+					comment = <"Målingen utføres vanligvis fra over ørene midt mellom øyenbryn og hårfestet til occipitale protuberans.">
 				>
 				["at0005"] = <
 					text = <"Tree">
@@ -322,7 +307,7 @@ perpendicular ao eixo longo da face; acima das orelhas; e o local acima da proem
 				>
 				["at0007"] = <
 					text = <"Kommentar">
-					description = <"Kommentar om målingen av hodeomkrets.">
+					description = <"Ytterligere fritekst om hodeomkretsen som ikke er registrert i andre felt.">
 				>
 				["at0008"] = <
 					text = <"Tree">
@@ -330,16 +315,16 @@ perpendicular ao eixo longo da face; acima das orelhas; e o local acima da proem
 				>
 				["at0009"] = <
 					text = <"Konfunderende faktorer">
-					description = <"Registrering av problemer eller faktorer som kan ha påvirkning på målingen.">
+					description = <"Fritekstbeskrivelse av problemer eller faktorer som kan ha påvirkning på målingene.">
 					comment = <"For eksempel ikke-samarbeidende barn.">
 				>
 				["at0010"] = <
-					text = <"Uspesifisert tidspunkthendelse">
-					description = <"Standard, uspesifisert tidspunkt som kan defineres mer eksplisitt i en template eller i en applikasjon.">
+					text = <"Uspesifisert hendelse">
+					description = <"Standard, uspesifisert tidspunkt eller tidsintervall som kan defineres mer eksplisitt i en template eller i en applikasjon.">
 				>
 				["at0011"] = <
 					text = <"Fødsel">
-					description = <"Den første målingen av hodeomkrets som registreres kort tid etter fødsel.">
+					description = <"Den første målingen av hodeomkrets som registreres kort tid etter fødsel. Denne hendelsen skal kun benyttes én gang per journal.">
 				>
 				["at0012"] = <
 					text = <"Tilleggsinformasjon">
