@@ -2,30 +2,32 @@
 	openEHR-EHR-CLUSTER.exam_pattern.v0
 
 concept
-	[at0000]	-- Examination of a body part
+	[at0000]	-- Examination of XYZ
 language
 	original_language = <[ISO_639-1::en]>
 description
 	original_author = <
-		["name"] = <"Silje Ljosland Bakke">
-		["organisation"] = <"Nasjonal IKT HF, Norway">
-		["email"] = <"silje.ljosland.bakke@nasjonalikt.no">
-		["date"] = <"2017-05-31">
+		["name"] = <"">
+		["date"] = <"2015-06-08">
 	>
 	details = <
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"For recording a description and clinical interpretation of the findings observed during the physical examination of a specified body part.">
-			use = <"Use to record a description of the overall findings observed during the physical examination of a specified body part. This archetype consists only of the core examination pattern data elements, and can be expanded using other CLUSTER archetypes or used as the basis for examination archetypes for specific body parts.
+			purpose = <"For recording a description and clinical interpretation of the findings observed during the physical examination of XYZ.">
+			use = <"Use to record a description of the overall findings observed during the physical examination of XYZ. This initial draft archetype consists only of the core examination pattern data elements (as per CLUSTER.exam_pattern) and will likely be expanded further over time as specific clinical requirements are identified.
 
-This archetype has been specifically designed to be used in the 'Examination detail' SLOT within the OBSERVATION.exam archetype, but can also be used within other OBSERVATION or CLUSTER archetypes, where clinically appropriate.
+This archetype has been specifically designed to be used in the 'Examination detail' SLOT within the OBSERVATION.exam archetype, but can also be used within other OBSERVATION or CLUSTER archetypes, where clinically appropriate - for example, CLUSTER.exam_ABC.
+OR
+This archetype has been specifically designed to be used in the 'Examination findings' SLOT within the CLUSTER.exam_ABC archetype, but can also be used within the OBSERVATION.exam and other OBSERVATION or CLUSTER archetypes, where clinically appropriate - for example, CLUSTER.exam_ABC.
+OR 
+This archetype has been specifically designed to be used in the 'Examination findings' SLOT within the CLUSTER.exam_ABC archetype or the OBSERVATION.exam, but can also be used within any other OBSERVATION or CLUSTER archetypes, where clinically appropriate - for example, CLUSTER.exam_ABC.
 
-Use to provide a framework in which CLUSTER archetypes can be nested in the 'Examination findings' SLOT to record additional structured physical examination findings.
+Use to provide a framework in which CLUSTER archetypes can be nested in the 'Examination findings' SLOT to record additional structured physical examination findings - for example, CLUSTER.exam_ABC. 
 
 The CLUSTER.exclusion_exam archetype can be nested within the 'Examination not done' SLOT to optionally record explicit details about the examination not being performed.
 
 Use to incorporate the narrative descriptions of clinical findings within existing or legacy clinical systems into an archetyped format, using the 'Clinical Description' data element.">
-			misuse = <"Not to be used for recording data not related to the physical examination of a specified body part.
+			misuse = <"Not to be used for recording data not related to the physical examination of XYZ.
 
 Not to be used for recording the clinical history - use specific OBSERVATION and CLUSTER archetypes. For example OBSERVATION.story and CLUSTER.symptom.
 
@@ -41,22 +43,24 @@ Not to be used to record stand-alone clinical observations or measurements or te
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"71B1E46B445D74AE3F14655ED64636E9">
-		["build_uid"] = <"d5489ca5-bb07-412a-a6f0-8ef7c24abd45">
+		["MD5-CAM-1.0.1"] = <"E7FB0C5931D490400BD5BF61B59A83EB">
+		["build_uid"] = <"921ef26d-fa82-4d81-9f1b-0febd427c7b9">
 		["revision"] = <"0.0.1-alpha">
 	>
 
 definition
-	CLUSTER[at0000] matches {	-- Examination of a body part
+	CLUSTER[at0000] matches {	-- Examination of XYZ
 		items cardinality matches {1..*; unordered} matches {
-			ELEMENT[at0001] occurrences matches {0..1} matches {	-- Body site name
+			ELEMENT[at0001] occurrences matches {0..1} matches {	-- XYZ examined
 				value matches {
-					DV_TEXT matches {*}
+					DV_CODED_TEXT matches {
+						defining_code matches {
+							[local::
+							at0009, 	-- Left
+							at0010]	-- Right
+						}
+					}
 				}
-			}
-			allow_archetype CLUSTER[at0011] occurrences matches {0..*} matches {	-- Anatomical location
-				include
-					archetype_id/value matches {/openEHR-EHR-CLUSTER\.anatomical_location(-[a-zA-Z0-9_]+)*\.v1|openEHR-EHR-CLUSTER\.anatomical_location_clock(-[a-zA-Z0-9_]+)*\.v0|openEHR-EHR-CLUSTER\.anatomical_location_relative(-[a-zA-Z0-9_]+)*\.v1/}
 			}
 			ELEMENT[at0002] occurrences matches {0..1} matches {	-- No abnormality detected
 				value matches {
@@ -101,12 +105,12 @@ ontology
 		["en"] = <
 			items = <
 				["at0000"] = <
-					text = <"Examination of a body part">
-					description = <"Findings observed during the physical examination of a specified body part.">
+					text = <"Examination of XYZ">
+					description = <"Findings observed during the physical examination of XYZ.">
 				>
 				["at0001"] = <
-					text = <"Body site name">
-					description = <"Identification of the examined body part.">
+					text = <"XYZ examined">
+					description = <"Identification of the XYZ under examination.">
 				>
 				["at0002"] = <
 					text = <"No abnormality detected">
@@ -137,9 +141,13 @@ ontology
 					text = <"Examination not done">
 					description = <"Details to explicitly record that this examination was not performed.">
 				>
-				["at0011"] = <
-					text = <"Anatomical location">
-					description = <"A structured anatomical location of the examined body part.">
+				["at0009"] = <
+					text = <"Left">
+					description = <"The left XYZ was examined.">
+				>
+				["at0010"] = <
+					text = <"Right">
+					description = <"The right XYZ was examined.">
 				>
 			>
 		>
