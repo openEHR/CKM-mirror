@@ -1,0 +1,248 @@
+﻿archetype (adl_version=1.4; uid=50b84708-9887-4cdb-8561-4dcd7cd54f7b)
+	openEHR-EHR-OBSERVATION.skeletal_age.v0
+
+concept
+	[at0000]	-- Skeletal age
+language
+	original_language = <[ISO_639-1::en]>
+description
+	original_author = <
+		["name"] = <"Silje Ljosland Bakke">
+		["organisation"] = <"Nasjonal IKT HF">
+		["email"] = <"silje.ljosland.bakke@nasjonalikt.no">
+		["date"] = <"2017-06-13">
+	>
+	details = <
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To record an estimate of biological age by assessing the degree of maturation of an individual's bones.">
+			use = <"Use to record an estimate of biological age by assessing the degree of maturation of an individual's bones.
+
+The skeletal age can be determined by several different methods including but not limited to: Hand-wrist radiograph, Cervical vertebrae radiograph, Frontal sinus radiograph, Midpalatine suture.">
+			keywords = <"bone", "skeleton">
+			misuse = <"">
+			copyright = <"© openEHR Foundation">
+		>
+	>
+	lifecycle_state = <"in_development">
+	other_contributors = <"John Tore Valand, Helse Bergen HF, Norway", "Mikkel Johan Gaup Grønmo, Helse Nord RHF, Norway">
+	other_details = <
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
+		["custodian_organisation"] = <"openEHR Foundation">
+		["references"] = <"Manzoor Mughal, A., Hassan, N., & Ahmed, A. (2014). Bone Age Assessment Methods: A Critical Review. Pakistan Journal of Medical Sciences, 30(1), 211–215. http://doi.org/10.12669/pjms.301.4295.">
+		["original_namespace"] = <"org.openehr">
+		["original_publisher"] = <"openEHR Foundation">
+		["custodian_namespace"] = <"org.openehr">
+		["MD5-CAM-1.0.1"] = <"38CF4991E9A56BE052D431719A2BEE7D">
+		["build_uid"] = <"b6d65b3e-6cee-48e8-b210-0c569fcbc00b">
+		["revision"] = <"0.0.1-alpha">
+	>
+
+definition
+	OBSERVATION[at0000] matches {	-- Skeletal age
+		data matches {
+			HISTORY[at0001] matches {	-- Event Series
+				events cardinality matches {1..*; unordered} matches {
+					EVENT[at0002] occurrences matches {0..*} matches {	-- Any event
+						data matches {
+							ITEM_TREE[at0003] matches {	-- Tree
+								items cardinality matches {0..*; unordered} matches {
+									ELEMENT[at0005] occurrences matches {0..1} matches {	-- Skeletal age
+										value matches {
+											DV_DURATION matches {
+												value matches {PYM/|>=P0Y|}
+											}
+										}
+									}
+									ELEMENT[at0006] occurrences matches {0..1} matches {	-- Comment
+										value matches {
+											DV_TEXT matches {*}
+										}
+									}
+								}
+							}
+						}
+						state matches {
+							ITEM_TREE[at0027] matches {	-- Tree
+								items cardinality matches {0..*; unordered} matches {
+									ELEMENT[at0028] occurrences matches {0..1} matches {	-- Confounding factors
+										value matches {
+											DV_TEXT matches {*}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		protocol matches {
+			ITEM_TREE[at0007] matches {	-- Tree
+				items cardinality matches {0..*; unordered} matches {
+					ELEMENT[at0009] occurrences matches {0..1} matches {	-- Modality
+						value matches {
+							DV_CODED_TEXT matches {
+								defining_code matches {
+									[local::
+									at0010, 	-- Radiograph
+									at0011, 	-- MRI
+									at0012, 	-- CT
+									at0022]	-- Ultrasound
+								}
+							}
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0021] occurrences matches {0..1} matches {	-- Assesment method
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0014] occurrences matches {0..1} matches {	-- Body site
+						value matches {
+							DV_TEXT matches {*}
+							DV_CODED_TEXT matches {
+								defining_code matches {
+									[local::
+									at0017, 	-- Hand and wrist
+									at0018, 	-- Cervical vertebrae
+									at0019, 	-- Frontal sinus
+									at0020, 	-- Midpalatal suture
+									at0023, 	-- Teeth
+									at0024, 	-- Clavicle
+									at0025, 	-- Iliac bone
+									at0026]	-- Femoral head
+								}
+							}
+						}
+					}
+					allow_archetype CLUSTER[at0015] occurrences matches {0..*} matches {	-- Structured body site
+						include
+							archetype_id/value matches {/openEHR-EHR-CLUSTER\.anatomical_location(-[a-zA-Z0-9_]+)*\.v1/}
+					}
+					allow_archetype CLUSTER[at0029] occurrences matches {0..*} matches {	-- Extension
+						include
+							archetype_id/value matches {/.*/}
+					}
+				}
+			}
+		}
+	}
+
+
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"Skeletal age">
+					description = <"An estimate of biological age by assessing the degree of maturation of an individual's bones.">
+				>
+				["at0001"] = <
+					text = <"Event Series">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Any event">
+					description = <"Default, unspecified point in time or interval event which may be explicitly defined in a template or at run-time.">
+				>
+				["at0003"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0005"] = <
+					text = <"Skeletal age">
+					description = <"An estimate of biological age by assessing the degree of maturation of an individual's bones.">
+				>
+				["at0006"] = <
+					text = <"Comment">
+					description = <"Additional narrative not covered in other fields.">
+				>
+				["at0007"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0009"] = <
+					text = <"Modality">
+					description = <"The  modality used to estimate the skeletal age.">
+				>
+				["at0010"] = <
+					text = <"Radiograph">
+					description = <"*">
+				>
+				["at0011"] = <
+					text = <"MRI">
+					description = <"*">
+				>
+				["at0012"] = <
+					text = <"CT">
+					description = <"*">
+				>
+				["at0014"] = <
+					text = <"Body site">
+					description = <"Simple bodysite where the assessment was performed.">
+					comment = <"Coding of the 'Body site' with a coding system is desirable, if available.">
+				>
+				["at0015"] = <
+					text = <"Structured body site">
+					description = <"The structured  bodysite where the assessment where performed.">
+				>
+				["at0017"] = <
+					text = <"Hand and wrist">
+					description = <"*">
+				>
+				["at0018"] = <
+					text = <"Cervical vertebrae">
+					description = <"*">
+				>
+				["at0019"] = <
+					text = <"Frontal sinus">
+					description = <"*">
+				>
+				["at0020"] = <
+					text = <"Midpalatal suture">
+					description = <"*">
+				>
+				["at0021"] = <
+					text = <"Assesment method">
+					description = <"The assessment method used to estimate the skeletal age.">
+					comment = <"For example: Greulich & Pyle, Fishman method.">
+				>
+				["at0022"] = <
+					text = <"Ultrasound">
+					description = <"*">
+				>
+				["at0023"] = <
+					text = <"Teeth">
+					description = <"*">
+				>
+				["at0024"] = <
+					text = <"Clavicle">
+					description = <"*">
+				>
+				["at0025"] = <
+					text = <"Iliac bone">
+					description = <"*">
+				>
+				["at0026"] = <
+					text = <"Femoral head">
+					description = <"*">
+				>
+				["at0027"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0028"] = <
+					text = <"Confounding factors">
+					description = <"Narrative descripiton of any issues or factors that may impact on the assessment.">
+				>
+				["at0029"] = <
+					text = <"Extension">
+					description = <"Additional information required to capture local context or to align with other reference models/formalisms.">
+					comment = <"For example: Local hospital departmental infomation or additional metadata to align with FHIR or CIMI equivalents.">
+				>
+			>
+		>
+	>
