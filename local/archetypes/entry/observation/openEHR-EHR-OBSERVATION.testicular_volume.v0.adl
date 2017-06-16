@@ -1,0 +1,198 @@
+﻿archetype (adl_version=1.4; uid=30d81225-96f0-4c66-8d1b-b7e1eab64c54)
+	openEHR-EHR-OBSERVATION.testicular_volume.v0
+
+concept
+	[at0000]	-- Testicular volume
+language
+	original_language = <[ISO_639-1::en]>
+description
+	original_author = <
+		["name"] = <"John Tore Valand">
+		["organisation"] = <"Helse Bergen University Hospital">
+		["email"] = <"john.tore.valand@helse-bergen.no">
+		["date"] = <"2017-04-26">
+	>
+	details = <
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To record the volume of an individual's testicles.">
+			use = <"Use to record the volume of an individual's testicles.
+
+The volume can be determined by comparing the testicles with the beads of an orchidometer, by measuring the length and with with a ruler or with sliding calipers, comparative palpation with ellipsoid models of known volume, or by ultrasound.">
+			keywords = <"testis", ...>
+			misuse = <"">
+			copyright = <"© Nasjonal IKT HF, openEHR Foundation">
+		>
+	>
+	lifecycle_state = <"in_development">
+	other_contributors = <>
+	other_details = <
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
+		["custodian_organisation"] = <"openEHR Foundation">
+		["references"] = <"Sotos, J. F., & Tokar, N. J. (2012). Testicular volumes revisited: A proposal for a simple clinical method that can closely match the volumes obtained by ultrasound and its clinical application. International journal of pediatric endocrinology, 2012(1), 17.
+
+Lin, C. C., Huang, W. J., & Chen, K. K. (2009). Measurement of testicular volume in smaller testes: how accurate is the conventional orchidometer?. Journal of andrology, 30(6), 685-689.">
+		["original_namespace"] = <"org.openehr">
+		["original_publisher"] = <"openEHR Foundation">
+		["custodian_namespace"] = <"org.openehr">
+		["MD5-CAM-1.0.1"] = <"72A2E945E3EAD9F27DC6F460DC1EB866">
+		["build_uid"] = <"10dd3efd-a6e6-42d8-af9c-2039b592f585">
+		["revision"] = <"0.0.1-alpha">
+	>
+
+definition
+	OBSERVATION[at0000] matches {	-- Testicular volume
+		data matches {
+			HISTORY[at0001] matches {	-- Event Series
+				events cardinality matches {1..*; unordered} matches {
+					EVENT[at0002] occurrences matches {0..*} matches {	-- Any event
+						data matches {
+							ITEM_TREE[at0003] matches {	-- Tree
+								items cardinality matches {0..*; unordered} matches {
+									ELEMENT[at0010] occurrences matches {0..1} matches {	-- Testicular volume
+										value matches {
+											C_DV_QUANTITY <
+												property = <[openehr::129]>
+												list = <
+													["1"] = <
+														units = <"ml">
+														magnitude = <|>=0.0|>
+														precision = <|2|>
+													>
+													["2"] = <
+														units = <"cm3">
+														magnitude = <|>=0.0|>
+														precision = <|2|>
+													>
+												>
+											>
+										}
+									}
+									ELEMENT[at0016] occurrences matches {0..1} matches {	-- Body site
+										value matches {
+											DV_CODED_TEXT matches {
+												defining_code matches {
+													[local::
+													at0017, 	-- Left testicle
+													at0018]	-- Right testicle
+												}
+											}
+											DV_TEXT matches {*}
+										}
+									}
+									ELEMENT[at0005] occurrences matches {0..1} matches {	-- Comment
+										value matches {
+											DV_TEXT matches {*}
+										}
+									}
+								}
+							}
+						}
+						state matches {
+							ITEM_TREE[at0011] matches {	-- Tree
+								items cardinality matches {0..*; unordered} matches {
+									ELEMENT[at0012] occurrences matches {0..1} matches {	-- Confounding factors
+										value matches {
+											DV_TEXT matches {*}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		protocol matches {
+			ITEM_TREE[at0006] matches {	-- Tree
+				items cardinality matches {0..*; unordered} matches {
+					allow_archetype CLUSTER[at0007] occurrences matches {0..*} matches {	-- Device details
+						include
+							archetype_id/value matches {/.*/}
+					}
+					ELEMENT[at0008] occurrences matches {0..1} matches {	-- Formula
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0013] occurrences matches {0..1} matches {	-- Method
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+				}
+			}
+		}
+	}
+
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"Testicular volume">
+					description = <"The volume of the testicles measured or calculated.">
+				>
+				["at0001"] = <
+					text = <"Event Series">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Any event">
+					description = <"Default, unspecified point in time or interval event which may be explicitly defined in a template or at run-time.">
+				>
+				["at0003"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0005"] = <
+					text = <"Comment">
+					description = <"Additional narrative not covered in other fields.">
+				>
+				["at0006"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0007"] = <
+					text = <"Device details">
+					description = <"Structured details about the device used to measure the testicles.">
+					comment = <"For example: Orchidometer or ultrasound device.">
+				>
+				["at0008"] = <
+					text = <"Formula">
+					description = <"The formula used to calculate the testicular volume.">
+				>
+				["at0010"] = <
+					text = <"Testicular volume">
+					description = <"Measured or calculated volume of the testicles.">
+				>
+				["at0011"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0012"] = <
+					text = <"Confounding factors">
+					description = <"Issues or factors that may impact on the measurement.">
+				>
+				["at0013"] = <
+					text = <"Method">
+					description = <"Method used to measure the testicles.">
+					comment = <"For example: Orchidometer, calipers or ultrasound.">
+				>
+				["at0016"] = <
+					text = <"Body site">
+					description = <"Identification of the testicle that was measured.">
+					comment = <"For example: Left or right testicle.">
+				>
+				["at0017"] = <
+					text = <"Left testicle">
+					description = <"*">
+				>
+				["at0018"] = <
+					text = <"Right testicle">
+					description = <"*">
+				>
+			>
+		>
+	>
