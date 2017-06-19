@@ -5,6 +5,15 @@ concept
 	[at0000]	-- Testicular volume
 language
 	original_language = <[ISO_639-1::en]>
+	translations = <
+		["nb"] = <
+			language = <[ISO_639-1::nb]>
+			author = <
+				["name"] = <"John Tore Valand">
+				["organisation"] = <"Helse Bergen HF, Norway">
+			>
+		>
+	>
 description
 	original_author = <
 		["name"] = <"John Tore Valand">
@@ -13,14 +22,21 @@ description
 		["date"] = <"2017-04-26">
 	>
 	details = <
+		["nb"] = <
+			language = <[ISO_639-1::nb]>
+			purpose = <"For å registrere testikkelvolumet til et individ.">
+			use = <"Brukes for å registrere testikkelvolumet til et individ.
+
+Måling av testikkelvolum kan være en komponent i en overordnet undersøkelse av genitalia, arketypen er allikevel utviklet som en frittstående OBSERVATION-arketype for å støtte monitorering av testikkelvolum i vekstkurver.">
+			keywords = <"testikler", "testikkel", "orchidometer">
+			misuse = <"">
+		>
 		["en"] = <
 			language = <[ISO_639-1::en]>
 			purpose = <"To record the volume of an individual's testicles.">
 			use = <"Use to record the volume of an individual's testicles.
 
-While the measurement of testicular volume may be one component of a full genital examination, this archetype for recording testicular volume has been developed as a standalone OBSERVATION to support the common monitoring of testicular volume by use of growth charts in childhood and puberty. 
-
-The volume can be determined by comparing the testicles with the beads of an orchidometer, by measuring the length and with with a ruler or with sliding calipers, comparative palpation with ellipsoid models of known volume, or by ultrasound.">
+While the measurement of testicular volume may be one component of a full genital examination, this archetype for recording testicular volume has been developed as a standalone OBSERVATION to support the common monitoring of testicular volume by use of growth charts in childhood and puberty.">
 			keywords = <"testis", ...>
 			misuse = <"">
 			copyright = <"© Nasjonal IKT HF, openEHR Foundation">
@@ -37,21 +53,21 @@ Lin, C. C., Huang, W. J., & Chen, K. K. (2009). Measurement of testicular volume
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"E75198BC3C5927F02397A901B727C1FA">
-		["build_uid"] = <"96d368fa-a450-4e5f-9f62-09604528a843">
+		["MD5-CAM-1.0.1"] = <"1010D120E4581D70CD12CD9385BFB2EA">
+		["build_uid"] = <"60615360-d49b-4ed8-9378-b39c3907f3f3">
 		["revision"] = <"0.0.1-alpha">
 	>
 
 definition
-	OBSERVATION[at0000] matches {	-- Testicular volume
+	OBSERVATION[at0000] matches {	-- Testikkelvolum
 		data matches {
 			HISTORY[at0001] matches {	-- Event Series
 				events cardinality matches {1..*; unordered} matches {
-					EVENT[at0002] occurrences matches {0..*} matches {	-- Any event
+					EVENT[at0002] occurrences matches {0..*} matches {	-- Uspesifisert hendelse
 						data matches {
 							ITEM_TREE[at0003] matches {	-- Tree
 								items cardinality matches {0..*; unordered} matches {
-									ELEMENT[at0010] occurrences matches {0..1} matches {	-- Testicular volume
+									ELEMENT[at0010] occurrences matches {0..1} matches {	-- Testikkelvolum
 										value matches {
 											C_DV_QUANTITY <
 												property = <[openehr::129]>
@@ -70,19 +86,19 @@ definition
 											>
 										}
 									}
-									ELEMENT[at0016] occurrences matches {0..1} matches {	-- Body site
+									ELEMENT[at0016] occurrences matches {0..1} matches {	-- Kroppssted
 										value matches {
 											DV_CODED_TEXT matches {
 												defining_code matches {
 													[local::
-													at0017, 	-- Left testicle
-													at0018]	-- Right testicle
+													at0017, 	-- Venstre testikkel
+													at0018]	-- Høyre testikkel
 												}
 											}
 											DV_TEXT matches {*}
 										}
 									}
-									ELEMENT[at0005] occurrences matches {0..1} matches {	-- Comment
+									ELEMENT[at0005] occurrences matches {0..1} matches {	-- Kommentar
 										value matches {
 											DV_TEXT matches {*}
 										}
@@ -93,7 +109,7 @@ definition
 						state matches {
 							ITEM_TREE[at0011] matches {	-- Tree
 								items cardinality matches {0..*; unordered} matches {
-									ELEMENT[at0012] occurrences matches {0..1} matches {	-- Confounding factors
+									ELEMENT[at0012] occurrences matches {0..1} matches {	-- Konfunderende faktorer
 										value matches {
 											DV_TEXT matches {*}
 										}
@@ -108,16 +124,16 @@ definition
 		protocol matches {
 			ITEM_TREE[at0006] matches {	-- Tree
 				items cardinality matches {0..*; unordered} matches {
-					allow_archetype CLUSTER[at0007] occurrences matches {0..*} matches {	-- Device details
-						include
-							archetype_id/value matches {/.*/}
-					}
-					ELEMENT[at0008] occurrences matches {0..1} matches {	-- Formula
+					ELEMENT[at0013] occurrences matches {0..1} matches {	-- Metode
 						value matches {
 							DV_TEXT matches {*}
 						}
 					}
-					ELEMENT[at0013] occurrences matches {0..1} matches {	-- Method
+					allow_archetype CLUSTER[at0007] occurrences matches {0..*} matches {	-- Detaljer om utstyr
+						include
+							archetype_id/value matches {/.*/}
+					}
+					ELEMENT[at0008] occurrences matches {0..1} matches {	-- Formel
 						value matches {
 							DV_TEXT matches {*}
 						}
@@ -126,7 +142,6 @@ definition
 			}
 		}
 	}
-
 
 
 ontology
@@ -177,6 +192,7 @@ ontology
 				["at0012"] = <
 					text = <"Confounding factors">
 					description = <"Issues or factors that may impact on the measurement.">
+					comment = <"For example: Uncooperative child.">
 				>
 				["at0013"] = <
 					text = <"Method">
@@ -195,6 +211,74 @@ ontology
 				["at0018"] = <
 					text = <"Right testicle">
 					description = <"Measurement of the right testicle.">
+				>
+			>
+		>
+		["nb"] = <
+			items = <
+				["at0000"] = <
+					text = <"Testikkelvolum">
+					description = <"Testiklenens volum enten målt eller utregnet.">
+				>
+				["at0001"] = <
+					text = <"Event Series">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Uspesifisert hendelse">
+					description = <"Standard, uspesifisert tidspunkt eller tidsintervall som kan defineres mer eksplisitt i en template eller i en applikasjon.">
+				>
+				["at0003"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0005"] = <
+					text = <"Kommentar">
+					description = <"Ytterligere fritekst om målingen som ikke er dekket av andre felt.">
+				>
+				["at0006"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0007"] = <
+					text = <"Detaljer om utstyr">
+					description = <"Strukturerte detaljer om utstyret som ble benyttet for å måle testikkelvolum.">
+					comment = <"For eksempel: Orkidometer eller ultralyd apparat.">
+				>
+				["at0008"] = <
+					text = <"Formel">
+					description = <"Formelen som ble brukt for å regne ut testikkelvolum.">
+				>
+				["at0010"] = <
+					text = <"Testikkelvolum">
+					description = <"Målt eller utregnet testikkelvolum.">
+				>
+				["at0011"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0012"] = <
+					text = <"Konfunderende faktorer">
+					description = <"Problemer eller faktorer som kan ha innvirkning på målingen.">
+					comment = <"For eksempel: Ikke samarbeidsvillig barn.">
+				>
+				["at0013"] = <
+					text = <"Metode">
+					description = <"Metoden som ble benyttet for å måle testiklene.">
+					comment = <"For eksempel: Orchidometer, skyvelær eller ultralyd.">
+				>
+				["at0016"] = <
+					text = <"Kroppssted">
+					description = <"Testikkelen som ble målt.">
+					comment = <"For eksempel høyre eller venstre testikkel.">
+				>
+				["at0017"] = <
+					text = <"Venstre testikkel">
+					description = <"Måling av venstre testikkel.">
+				>
+				["at0018"] = <
+					text = <"Høyre testikkel">
+					description = <"Måling av høyre testikkel.">
 				>
 			>
 		>
