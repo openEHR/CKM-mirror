@@ -1,4 +1,4 @@
-﻿archetype (adl_version=1.4)
+﻿archetype (adl_version=1.4; uid=f27fac48-3acb-4061-9619-c783fd8346ab)
 	openEHR-EHR-OBSERVATION.apgar.v1
 
 concept
@@ -13,19 +13,11 @@ language
 				["organisation"] = <"University of Heidelberg, Central Queensland University, Ocean Informatics">
 			>
 		>
-		["zh-cn"] = <
-			language = <[ISO_639-1::zh-cn]>
+		["ru"] = <
+			language = <[ISO_639-1::ru]>
 			author = <
-				["name"] = <"Lin Zhang">
-				["organisation"] = <"BIPH">
-				["email"] = <"linforest@163.com">
-			>
-			accreditation = <"What goes here?">
-		>
-		["es-cl"] = <
-			language = <[ISO_639-1::es-cl]>
-			author = <
-				["name"] = <"Sergio Carmona">
+				["name"] = <"Igor Lizunov">
+				["email"] = <"i.lizunov@infinnity.ru">
 			>
 		>
 		["nb"] = <
@@ -35,6 +27,14 @@ language
 				["organisation"] = <"Haukeland University Hospital, Bergen, Norway">
 			>
 			accreditation = <"MD, DEAA, specialist in anestesia and intensive care, Tropical medicin & MBA">
+		>
+		["pt-br"] = <
+			language = <[ISO_639-1::pt-br]>
+			author = <
+				["name"] = <"Jussara Rötzsch">
+				["organisation"] = <"OpenEHR Foundation">
+			>
+			accreditation = <"Medical Doctor,  Psychiatrist, Clinical Modeler, OpenEHR Director, Coordinator of  WG ehealth infostructure of brazilian e-health program">
 		>
 		["ar-sy"] = <
 			language = <[ISO_639-1::ar-sy]>
@@ -50,12 +50,20 @@ language
 				["email"] = <"Shahla.foozonkhah@oceanInformatics.com">
 			>
 		>
-		["ru"] = <
-			language = <[ISO_639-1::ru]>
+		["es-cl"] = <
+			language = <[ISO_639-1::es-cl]>
 			author = <
-				["name"] = <"Igor Lizunov">
-				["email"] = <"i.lizunov@infinnity.ru">
+				["name"] = <"Sergio Carmona">
 			>
+		>
+		["zh-cn"] = <
+			language = <[ISO_639-1::zh-cn]>
+			author = <
+				["name"] = <"Lin Zhang">
+				["organisation"] = <"BIPH">
+				["email"] = <"linforest@163.com">
+			>
+			accreditation = <"What goes here?">
 		>
 		["nl"] = <
 			language = <[ISO_639-1::nl]>
@@ -65,14 +73,6 @@ language
 				["email"] = <"m.buur-krom@mca.nl">
 			>
 			accreditation = <"Erna Vreeke">
-		>
-		["pt-br"] = <
-			language = <[ISO_639-1::pt-br]>
-			author = <
-				["name"] = <"Jussara Rötzsch">
-				["organisation"] = <"OpenEHR Foundation">
-			>
-			accreditation = <"Medical Doctor,  Psychiatrist, Clinical Modeler, OpenEHR Director, Coordinator of  WG ehealth infostructure of brazilian e-health program">
 		>
 	>
 description
@@ -222,9 +222,11 @@ Den engelske mnemotekniske regel for å huske alle parametre er: A for Appearanc
 			copyright = <"© openEHR Foundation">
 		>
 	>
-	lifecycle_state = <"AuthorDraft">
+	lifecycle_state = <"in_development">
 	other_contributors = <"Paul Donaldson, Nursing Informatics Australia, Australia", "Sebastian Garde, Ocean Informatics, Germany (Editor)", "Anneke Goossen, Results 4 Care, Netherlands", "Anne Harbison, CPCER, Australia", "Sam Heard, Ocean Informatics, Australia", "Omer Hotomaroglu, Turkey", "Pieter Hummel, Medisch Centrum Alkmaar, Netherlands", "Andrew James, University of Toronto, Canada", "Heather Leslie, Ocean Informatics, Australia (Editor)", "Ian McNicoll, Ocean Informatics, United Kingdom (Editor)">
 	other_details = <
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
+		["custodian_organisation"] = <"openEHR Foundation">
 		["references"] = <"Apgar V.  A proposal of a New Method of Evaluation of the Newborn Infant. Curr Res Anesth Analg.  1953 Jul-Aug;32(4):260-7.
 
 Apgar V, Holaday DA, James LS, Weisbrod IM, and Berrien C.  Evaluation of the newborn infant; second report.  J Am Med Assoc.  1958 Dec 13;168(15):1985-8.
@@ -234,7 +236,12 @@ Apgar V.  The newborn (Apgar) scoring system.  Pediatr Clin North Am. 1966 Aug;1
 Whaley LF, Wong DL (1979).  Nursing Care of Infants and Children.  St. Louis, Toronto, London, The C.V. Mosby Company.
 
 http://en.wikipedia.org/wiki/Apgar_score">
-		["MD5-CAM-1.0.1"] = <"64776EEFF6F38F5C3799A0DA31545453">
+		["original_namespace"] = <"org.openehr">
+		["original_publisher"] = <"openEHR Foundation">
+		["custodian_namespace"] = <"org.openehr">
+		["MD5-CAM-1.0.1"] = <"592654180C6F720E6288B073D4889C6E">
+		["build_uid"] = <"a22387fd-5862-4d60-a3a9-520a74e52f12">
+		["revision"] = <"1.0.1-alpha">
 	>
 
 definition
@@ -346,12 +353,16 @@ definition
 			}
 		}
 		protocol matches {
-			ITEM_LIST[at0029] matches {	-- List
+			ITEM_TREE[at0029] matches {	-- Tree
 				items cardinality matches {0..*; unordered} matches {
 					ELEMENT[at0030] occurrences matches {0..1} matches {	-- Notes on measurement
 						value matches {
 							DV_TEXT matches {*}
 						}
+					}
+					allow_archetype CLUSTER[at0040] occurrences matches {0..*} matches {	-- Extension
+						include
+							archetype_id/value matches {/.*/}
 					}
 				}
 			}
@@ -477,7 +488,7 @@ ontology
 					description = <"Apgar score 5 minutes after birth.">
 				>
 				["at0029"] = <
-					text = <"List">
+					text = <"Tree">
 					description = <"@ internal @">
 				>
 				["at0030"] = <
@@ -491,6 +502,11 @@ ontology
 				["at0037"] = <
 					text = <"Any event">
 					description = <"Apgar score at any additional time, as required.">
+				>
+				["at0040"] = <
+					text = <"Extension">
+					description = <"Additional information required to capture local content or to align with other reference models/formalisms.">
+					comment = <"e.g. Local information requirements or additional metadata to align with FHIR or CIMI equivalents.">
 				>
 			>
 		>
@@ -609,8 +625,8 @@ ontology
 					description = <"*Apgar score 5 minutes after birth(en)">
 				>
 				["at0029"] = <
-					text = <"Lista">
-					description = <"*@ internal @">
+					text = <"*Tree(en)">
+					description = <"*@ internal @(en)">
 				>
 				["at0030"] = <
 					text = <"Notas de medición ">
@@ -623,6 +639,11 @@ ontology
 				["at0037"] = <
 					text = <"*Any event(en)">
 					description = <"*Apgar score at any additional time, as required.(en)">
+				>
+				["at0040"] = <
+					text = <"*Extension(en)">
+					description = <"*Additional information required to capture local content or to align with other reference models/formalisms.(en)">
+					comment = <"*e.g. Local information requirements or additional metadata to align with FHIR or CIMI equivalents.(en)">
 				>
 			>
 		>
@@ -741,8 +762,8 @@ ontology
 					description = <"Apgar-Score 5 Minuten nach der Geburt.">
 				>
 				["at0029"] = <
-					text = <"List">
-					description = <"@ internal @">
+					text = <"*Tree(en)">
+					description = <"*@ internal @(en)">
 				>
 				["at0030"] = <
 					text = <"Anmerkungen zur Messung">
@@ -755,6 +776,11 @@ ontology
 				["at0037"] = <
 					text = <"Beliebiges Ereignis">
 					description = <"Apgar-Score zu beliebigen Zeitpunkten, je nach Bedarf.">
+				>
+				["at0040"] = <
+					text = <"*Extension(en)">
+					description = <"*Additional information required to capture local content or to align with other reference models/formalisms.(en)">
+					comment = <"*e.g. Local information requirements or additional metadata to align with FHIR or CIMI equivalents.(en)">
 				>
 			>
 		>
@@ -873,7 +899,7 @@ ontology
 					description = <"نمره آپگار پنج دقیقه بعد از تولد">
 				>
 				["at0029"] = <
-					text = <"*List(en)">
+					text = <"*Tree(en)">
 					description = <"*@ internal @(en)">
 				>
 				["at0030"] = <
@@ -887,6 +913,11 @@ ontology
 				["at0037"] = <
 					text = <"هر رویداد">
 					description = <"نمره آپگار در هر زمان ممکن و در صورت نیاز">
+				>
+				["at0040"] = <
+					text = <"*Extension(en)">
+					description = <"*Additional information required to capture local content or to align with other reference models/formalisms.(en)">
+					comment = <"*e.g. Local information requirements or additional metadata to align with FHIR or CIMI equivalents.(en)">
 				>
 			>
 		>
@@ -1005,7 +1036,7 @@ ontology
 					description = <"حرز أبغار بعد 5 دقائق من الولادة/الوضع">
 				>
 				["at0029"] = <
-					text = <"*List(en)">
+					text = <"*Tree(en)">
 					description = <"*@ internal @(en)">
 				>
 				["at0030"] = <
@@ -1019,6 +1050,11 @@ ontology
 				["at0037"] = <
 					text = <"إحدى الوقائع">
 					description = <"حرز أبغار عند أي وقت إضافي, حسب الحاجة">
+				>
+				["at0040"] = <
+					text = <"*Extension(en)">
+					description = <"*Additional information required to capture local content or to align with other reference models/formalisms.(en)">
+					comment = <"*e.g. Local information requirements or additional metadata to align with FHIR or CIMI equivalents.(en)">
 				>
 			>
 		>
@@ -1137,7 +1173,7 @@ ontology
 					description = <"Оценка по Апгар на 5 минуту после рождения.">
 				>
 				["at0029"] = <
-					text = <"*List(en)">
+					text = <"*Tree(en)">
 					description = <"*@ internal @(en)">
 				>
 				["at0030"] = <
@@ -1151,6 +1187,11 @@ ontology
 				["at0037"] = <
 					text = <"Любое время">
 					description = <"Оценка по Апгар в дополнительное время, если требуется.">
+				>
+				["at0040"] = <
+					text = <"*Extension(en)">
+					description = <"*Additional information required to capture local content or to align with other reference models/formalisms.(en)">
+					comment = <"*e.g. Local information requirements or additional metadata to align with FHIR or CIMI equivalents.(en)">
 				>
 			>
 		>
@@ -1269,7 +1310,7 @@ ontology
 					description = <"Apgar score 5 minuten na de geboorte.">
 				>
 				["at0029"] = <
-					text = <"*List(en)">
+					text = <"*Tree(en)">
 					description = <"*@ internal @(en)">
 				>
 				["at0030"] = <
@@ -1283,6 +1324,11 @@ ontology
 				["at0037"] = <
 					text = <"Any event">
 					description = <"Apgar score op elk toe te voegen tijdstip, indien nodig">
+				>
+				["at0040"] = <
+					text = <"*Extension(en)">
+					description = <"*Additional information required to capture local content or to align with other reference models/formalisms.(en)">
+					comment = <"*e.g. Local information requirements or additional metadata to align with FHIR or CIMI equivalents.(en)">
 				>
 			>
 		>
@@ -1401,7 +1447,7 @@ ontology
 					description = <"Escore Apgar 5 minutos após o nascimento.">
 				>
 				["at0029"] = <
-					text = <"*List(en)">
+					text = <"*Tree(en)">
 					description = <"*@ internal @(en)">
 				>
 				["at0030"] = <
@@ -1415,6 +1461,11 @@ ontology
 				["at0037"] = <
 					text = <"Qualquer evento">
 					description = <"Escore Apgar em qualquer tempo adicional, se requerido.">
+				>
+				["at0040"] = <
+					text = <"*Extension(en)">
+					description = <"*Additional information required to capture local content or to align with other reference models/formalisms.(en)">
+					comment = <"*e.g. Local information requirements or additional metadata to align with FHIR or CIMI equivalents.(en)">
 				>
 			>
 		>
@@ -1533,7 +1584,7 @@ ontology
 					description = <"出生5分钟之后的Apgar评分">
 				>
 				["at0029"] = <
-					text = <"*List(en)">
+					text = <"*Tree(en)">
 					description = <"*@ internal @(en)">
 				>
 				["at0030"] = <
@@ -1547,6 +1598,11 @@ ontology
 				["at0037"] = <
 					text = <"任何事件">
 					description = <"所需要的任何额外时候的Apgar评分。">
+				>
+				["at0040"] = <
+					text = <"*Extension(en)">
+					description = <"*Additional information required to capture local content or to align with other reference models/formalisms.(en)">
+					comment = <"*e.g. Local information requirements or additional metadata to align with FHIR or CIMI equivalents.(en)">
 				>
 			>
 		>
@@ -1665,8 +1721,8 @@ ontology
 					description = <"Apgar score etter 5 minutt eller fødselen.">
 				>
 				["at0029"] = <
-					text = <"List">
-					description = <"@ internal @">
+					text = <"*Tree(en)">
+					description = <"*@ internal @(en)">
 				>
 				["at0030"] = <
 					text = <"Merknade til vurderingen">
@@ -1679,6 +1735,11 @@ ontology
 				["at0037"] = <
 					text = <"Enhver hendelse">
 					description = <"Apgar score kan tilføyes når som helst etter behov.">
+				>
+				["at0040"] = <
+					text = <"*Extension(en)">
+					description = <"*Additional information required to capture local content or to align with other reference models/formalisms.(en)">
+					comment = <"*e.g. Local information requirements or additional metadata to align with FHIR or CIMI equivalents.(en)">
 				>
 			>
 		>
