@@ -1,0 +1,244 @@
+﻿archetype (adl_version=1.4; uid=1bee5cff-c5f5-4ee1-a8cf-8667a20dc2ca)
+	openEHR-EHR-CLUSTER.laboratory_test_analyte.v0
+
+concept
+	[at0000]	-- Laboratory test analyte
+language
+	original_language = <[ISO_639-1::en]>
+	translations = <
+		["nb"] = <
+			language = <[ISO_639-1::nb]>
+			author = <
+				["name"] = <"Silje Ljosland Bakke">
+				["organisation"] = <"Nasjonal IKT HF">
+			>
+		>
+	>
+description
+	original_author = <
+		["name"] = <"Ian McNicoll">
+		["organisation"] = <"freshEHR Clinical Informatics, UK">
+		["email"] = <"ian@freshehr.com">
+		["date"] = <"2015-07-20">
+	>
+	details = <
+		["nb"] = <
+			language = <[ISO_639-1::nb]>
+			purpose = <"For å registrere laboratorieanalyser som en enkeltverdi eller i en analysepakke.">
+			use = <"For å registrere laboratorieanalyser som en enkeltverdi eller i en analysepakke. Brukes normalt i arketypen OBSERVATION.laboratory_test.
+
+Navnene på elementene Laboratoriesvar/Svarverdi vil ordinært erstattes i en templat elller applikasjon med navnet på den spesifikke analysen. f.eks. \"Hemoglobin\", og ofte kodet med en terminologi som NLK, SNOMED CT eller LOINC.
+
+Der det kreves mer komplekse svarmønstre kan det være nødvendig å spesialisere denne arketypen, eller erstatte den med en annen.">
+			keywords = <"laboratorie", "panel", "batteri", "analytt", "analyse", "svar", "resultat", "pakke">
+			misuse = <"Skal ikke brukes til å registrere funn ved patologiundersøkelser.">
+			copyright = <"© openEHR Foundation">
+		>
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To record individual, single value laboratory test analyte results  as are common to clinical pathology testing such as biochemistry, haematology and immunology.">
+			use = <"To record individual, single value laboratory test analyte results  as are common to clinical pathology testing such as biochemistry, haematology and immunology. Normally used in conjunction with a parent Laboratory test result (Observation) archetype andd in many circumstances will be carried within a Laboratory Test Result Panel Cluster archetype, along with other analytes which are normally tested and/or reported as part of a battery or test panel.
+
+The name attribute of the analyte result element is normally replaced in a specialisation, template or at run-time to carry the name of the specific analyte e.g. 'Haemoglobin', often coded with a reference terminology such as LOINC, SNOMED CT or NPU.
+
+This archetype may be used within the setting of more complex laboratory/pathology reporting such as Histopathlogy/ Anatomical synoptic reports where quantitative results such as cytometric flow studies or genetic testing are often reported alongside conventional macrscopic and microscopic reporting.
+
+">
+			keywords = <"laboratory", "pathology", "analyte">
+			misuse = <"Should not be used to record detailed Anatomical pathology macroscopic/microscopic findings, other then for additional testing such as  cytometric flow studies or genetic testing.">
+			copyright = <"© openEHR Foundation">
+		>
+	>
+	lifecycle_state = <"in_development">
+	other_contributors = <"Heather Leslie, Ocean Informatics, Australia", "Nasjonal IKT, Norway">
+	other_details = <
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
+		["custodian_organisation"] = <"openEHR Foundation">
+		["references"] = <"Based on NEHTA 'Pathology Test' archetype. Available from: http://dcm.nehta.org.au/ckm/OKM.html#showarchetype_1013.1.839_8
+
+Pathology (Data Specifications) Version 1.0 [Internet]. Sydney, Australia: National E-Health Transition Authority; 2007 May 29 [cited 2011 Jul 11]; Available at http://www.nehta.gov.au/component/docman/doc_download/962-pathology-v10.
+
+Laboratory Technical Framework, Volume 3: Content, Revision 3.0 [Internet]. USA: IHE International; 2011 May 19; [cited 2011 Jul 11]. Available from: http://www.ihe.net/Technical_Framework/index.cfm#laboratory
+
+Hl7 FHIR Observation resource: HL7 FHIR; Available from http://www.hl7.org/implement/standards/fhir/observation.html">
+		["original_namespace"] = <"org.openehr">
+		["original_publisher"] = <"openEHR Foundation">
+		["custodian_namespace"] = <"org.openehr">
+		["MD5-CAM-1.0.1"] = <"37CD0035EC7E0B97A88CD79737BDA242">
+		["build_uid"] = <"fb71ec03-c739-42aa-8918-107ae86e1d09">
+		["revision"] = <"0.0.1-alpha">
+	>
+
+definition
+	CLUSTER[at0000] matches {	-- Laboratory test analyte
+		items cardinality matches {1..*; unordered} matches {
+			ELEMENT[at0001] occurrences matches {0..1} matches {*}
+			ELEMENT[at0003] occurrences matches {0..*} matches {	-- Comment
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			ELEMENT[at0004] occurrences matches {0..1} matches {	-- Reference range guidance
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			ELEMENT[at0005] occurrences matches {0..1} matches {	-- Analyte result status
+				value matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {
+							[local::
+							at0007, 	-- Registered
+							at0008, 	-- Interim
+							at0009, 	-- Final
+							at0010, 	-- Amended
+							at0011, 	-- Cancelled/Aborted
+							at0012]	-- Not requested
+						}
+					}
+				}
+			}
+			ELEMENT[at0006] occurrences matches {0..1} matches {	-- Analyte result status timestamp
+				value matches {
+					DV_DATE_TIME matches {*}
+				}
+			}
+			allow_archetype CLUSTER[at0014] occurrences matches {0..*} matches {	-- Analyte result detail
+				include
+					archetype_id/value matches {/.*/}
+			}
+		}
+	}
+
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"Laboratory test analyte">
+					description = <"The result of a laboratory test for a single laboratory test analyte. ">
+					comment = <"For example: 'Sodium', 'White cell count', 'T3'. Commonly coded with an external terminology,">
+				>
+				["at0001"] = <
+					text = <"Analyte result">
+					description = <"Actual value of the analyte result. The name of this element is normally replaced in a specialisation, in a template or at run-time to relfect the actual analyte e.g. Serum sodium and will often be coded.">
+					hl7v2_mapping = <"OBX.2,OBX.5,OBX.6; OBX-3-observation identifier">
+					fhir_mapping = <"Observation.result; Observation.name">
+				>
+				["at0003"] = <
+					text = <"Comment">
+					description = <"Comment about the Result.">
+					hl7v2_mapping = <"NTE.3">
+					fhir_mapping = <"Observation.comments">
+				>
+				["at0004"] = <
+					text = <"Reference range guidance">
+					description = <"Additional advice on the applicability of the reference range to this result or may carry text or coded textual guidance as to whether the result is within the normal range.">
+				>
+				["at0005"] = <
+					text = <"Analyte result status">
+					description = <"The status of the result value.">
+					hl7v2_mapping = <"OBX-11-observation result status">
+					fhir_mapping = <"status">
+				>
+				["at0006"] = <
+					text = <"Analyte result status timestamp">
+					description = <"The date and/or time that the entire result was issued for the recorded ‘Result status’.">
+					hl7v2_mapping = <"OBX-22 and/or OBX-19">
+					fhir_mapping = <"Observation.issued">
+				>
+				["at0007"] = <
+					text = <"Registered">
+					description = <"No result yet available.">
+				>
+				["at0008"] = <
+					text = <"Interim">
+					description = <"This is an initial or interim result: data may be missing or verification not been performed.">
+				>
+				["at0009"] = <
+					text = <"Final">
+					description = <"The result is complete and verified by the responsible pathologist.">
+				>
+				["at0010"] = <
+					text = <"Amended">
+					description = <"The result has been modified subsequent to being Final, and is complete and verified by the responsible pathologist.">
+				>
+				["at0011"] = <
+					text = <"Cancelled/Aborted">
+					description = <"The result is unavailable because the test was not started or not completed.">
+				>
+				["at0012"] = <
+					text = <"Not requested">
+					description = <"The result is not available as the test was not requested.">
+				>
+				["at0014"] = <
+					text = <"Analyte result detail">
+					description = <"Further detail regarding an individual result.">
+				>
+			>
+		>
+		["nb"] = <
+			items = <
+				["at0000"] = <
+					text = <"*Laboratory test analyte(en)">
+					description = <"*The result of a laboratory test for a single laboratory test analyte. (en)">
+					comment = <"*For example: 'Sodium', 'White cell count', 'T3'. Commonly coded with an external terminology,(en)">
+				>
+				["at0001"] = <
+					text = <"*Analyte result(en)">
+					description = <"*Actual value of the analyte result. The name of this element is normally replaced in a specialisation, in a template or at run-time to relfect the actual analyte e.g. Serum sodium and will often be coded.(en)">
+					hl7v2_mapping = <"*OBX.2,OBX.5,OBX.6; OBX-3-observation identifier(en)">
+					fhir_mapping = <"*Observation.result; Observation.name(en)">
+				>
+				["at0003"] = <
+					text = <"Kommentar">
+					description = <"Kommentar om svaret.">
+				>
+				["at0004"] = <
+					text = <"*Reference range guidance(en)">
+					description = <"*Additional advice on the applicability of the reference range to this result or may carry text or coded textual guidance as to whether the result is within the normal range.(en)">
+				>
+				["at0005"] = <
+					text = <"*Analyte result status(en)">
+					description = <"*The status of the result value.(en)">
+					hl7v2_mapping = <"*OBX-11-observation result status(en)">
+					fhir_mapping = <"*status(en)">
+				>
+				["at0006"] = <
+					text = <"*Analyte result status timestamp(en)">
+					description = <"*The date and/or time that the entire result was issued for the recorded ‘Result status’.(en)">
+					hl7v2_mapping = <"*OBX-22 and/or OBX-19(en)">
+					fhir_mapping = <"*Observation.issued(en)">
+				>
+				["at0007"] = <
+					text = <"Registrert">
+					description = <"Svar ikke tjengengelig enda.">
+				>
+				["at0008"] = <
+					text = <"Foreløpig">
+					description = <"Dette er et midlertidig eller foreløpig svar. Data kan mangle, eller være uverifisert.">
+				>
+				["at0009"] = <
+					text = <"Endelig">
+					description = <"Svaret er komplett og verifisert av ansvarlig laboratorielege.">
+				>
+				["at0010"] = <
+					text = <"Endret">
+					description = <"Svaret er endret etter å ha hatt status Endelig, og er komplett og verifisert av ansvarlig laboratorielege.">
+				>
+				["at0011"] = <
+					text = <"Kansellert">
+					description = <"Svaret er ikke tilgjengelig fordi analysen ikke ble påbegynt eller ferdigstilt.">
+				>
+				["at0012"] = <
+					text = <"Ikke bestilt">
+					description = <"Svaret er ikke tilgjengelig siden analysen ikke ble bestilt.">
+				>
+				["at0014"] = <
+					text = <"*Analyte result detail(en)">
+					description = <"*Further detail regarding an individual result.(en)">
+				>
+			>
+		>
+	>
