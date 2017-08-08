@@ -22,6 +22,24 @@ description
 		["date"] = <"2015-06-23">
 	>
 	details = <
+		["nb"] = <
+			language = <[ISO_639-1::nb]>
+			purpose = <"For å registrere en fritekstbeskrivelse og klinisk tolkning av observerte funn ved fysisk undersøkelse av et organsystem eller anatomisk struktur, identifisert som del av arketypen.">
+			use = <"Brukes til å registrere en fritekstbeskrivelse og klinisk tolkning av observerte funn ved fysisk undersøkelse av et spesifisert organsystem eller anatomisk struktur. Denne arketypen består kun av kjerneelementene av mønsteret for undersøkelser, og kan utvides ved hjelp av andre CLUSTER-arketyper eller brukes som grunnlag for undersøkelsesarketyper for spesifikke kroppssystemer eller anatomiske strukturer.
+
+Arketypen er laget spesifikt for å brukes i \"Undersøkelsesdetaljer\"-SLOTet i arketypen OBSERVATION.exam, men kan også brukes innen andre OBSERVATION- og CLUSTER-arketyper der det er klinisk passende.
+
+Brukes for å nøste CLUSTER-arketyper i SLOTet \"Undersøkelsesdetaljer\" for å registrere ytterligere strukturerte funn ved fysiske undersøkelser.
+
+Arketypen CLUSTER.exclusion_exam kan nøstes i SLOTet \"Undersøkelse ikke utført\" der en har behov for å registrere informasjon om at en undersøkelse ikke ble utført.
+
+Brukes for å videreføre fritekstbeskrivelser av kliniske funn fra tidligere systemer inn i et arketypeformat, ved å bruke elementet \"Klinisk beskrivelse\".">
+			misuse = <"Skal ikke brukes for å registrere data som ikke er direkte relatert til fysisk undersøkelse av et spesifikt organsystem eller kroppsstruktur.
+
+Må ikke brukes til å ta opp anamnese- bruk da spesifikke OBSERVATION og CLUSTER arketyper. For eksempel OBSERVATION.story og CLUSTER.symptom_sign.
+
+Skal ikke brukes til å ta opp frittstående klinisk observasjoner eller målinger eller testresultater - bruke bestemte OBSERVATION arketyper. For eksempel OBSERVATION.blood_pressure.">
+		>
 		["en"] = <
 			language = <[ISO_639-1::en]>
 			purpose = <"For recording a narrative description and clinical interpretation of the findings observed during the physical examination of a body system or anatomical structure, identified as part of this archetype.">
@@ -41,24 +59,6 @@ Not to be used for recording the clinical history - use specific OBSERVATION and
 Not to be used to record stand-alone clinical observations or measurements or test results - use specific OBSERVATION archetypes. For example OBSERVATION.blood_pressure or OBSERVATION.imaging_exam.">
 			copyright = <"© openEHR Foundation">
 		>
-		["nb"] = <
-			language = <[ISO_639-1::nb]>
-			purpose = <"For å registrere en fritekstbeskrivelse og klinisk tolkning av observerte funn ved fysisk undersøkelse av et organsystem eller anatomisk struktur, identifisert som del av arketypen.">
-			use = <"Brukes til å registrere en fritekstbeskrivelse og klinisk tolkning av observerte funn ved fysisk undersøkelse av et spesifisert organsystem eller anatomisk struktur. Denne arketypen består kun av kjerneelementene av mønsteret for undersøkelser, og kan utvides ved hjelp av andre CLUSTER-arketyper eller brukes som grunnlag for undersøkelsesarketyper for spesifikke kroppssystemer eller anatomiske strukturer.
-
-Arketypen er laget spesifikt for å brukes i \"Undersøkelsesdetaljer\"-SLOTet i arketypen OBSERVATION.exam, men kan også brukes innen andre OBSERVATION- og CLUSTER-arketyper der det er klinisk passende.
-
-Brukes for å nøste CLUSTER-arketyper i SLOTet \"Undersøkelsesdetaljer\" for å registrere ytterligere strukturerte funn ved fysiske undersøkelser.
-
-Arketypen CLUSTER.exclusion_exam kan nøstes i SLOTet \"Undersøkelse ikke utført\" der en har behov for å registrere informasjon om at en undersøkelse ikke ble utført.
-
-Brukes for å videreføre fritekstbeskrivelser av kliniske funn fra tidligere systemer inn i et arketypeformat, ved å bruke elementet \"Klinisk beskrivelse\".">
-			misuse = <"Skal ikke brukes for å registrere data som ikke er direkte relatert til fysisk undersøkelse av et spesifikt organsystem eller kroppsstruktur.
-
-Må ikke brukes til å ta opp anamnese- bruk da spesifikke OBSERVATION og CLUSTER arketyper. For eksempel OBSERVATION.anamnese og CLUSTER.symptom/sykdomstegn.
-
-Skal ikke brukes til å ta opp frittstående klinisk observasjoner eller målinger eller testresultater - bruke bestemte OBSERVATION arketyper. For eksempel OBSERVATION.blodtrykk.">
-		>
 	>
 	lifecycle_state = <"in_development">
 	other_contributors = <"Silje Ljosland Bakke, Nasjonal IKT HF, Norway", "Ian McNicoll, freshEHR Clinical Informatics, United Kingdom", "John Tore Valand, Haukeland Universitetssjukehus, Norway", "Heather Leslie, Ocean Informatics, Australia">
@@ -69,15 +69,15 @@ Skal ikke brukes til å ta opp frittstående klinisk observasjoner eller måling
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"546FAB0780674FB7AB2D98FB4E5619CA">
-		["build_uid"] = <"960c4751-b84a-4214-83f9-0c094e38784a">
+		["MD5-CAM-1.0.1"] = <"AAD4072551B083A4CF8C9670A4AF63F2">
+		["build_uid"] = <"aef90331-9209-4b21-b968-4c7f2737747d">
 		["revision"] = <"0.0.1-alpha">
 	>
 
 definition
 	CLUSTER[at0000] matches {	-- Undersøkelsesfunn
 		items cardinality matches {1..*; unordered} matches {
-			ELEMENT[at0001] occurrences matches {0..1} matches {	-- Undersøkt system eller struktur
+			ELEMENT[at0001] occurrences matches {0..1} matches {	-- *System or structure examined(en)
 				value matches {
 					DV_TEXT matches {*}
 				}
@@ -104,7 +104,7 @@ definition
 			}
 			allow_archetype CLUSTER[at0005] occurrences matches {0..*} matches {	-- Multimediarepresentasjon
 				include
-					archetype_id/value matches {/openEHR-EHR-CLUSTER\.multimedia(-[a-zA-Z0-9_]+)*\.v1/}
+					archetype_id/value matches {/openEHR-EHR-CLUSTER\.multimedia(-[a-zA-Z0-9_]+)*\.v1|openEHR-EHR-CLUSTER\.multimedia(-[a-zA-Z0-9_]+)*\.v0/}
 			}
 			ELEMENT[at0006] occurrences matches {0..*} matches {	-- Klinisk fortolkning
 				value matches {
@@ -118,7 +118,7 @@ definition
 			}
 			allow_archetype CLUSTER[at0008] occurrences matches {0..*} matches {	-- Undersøkelse ikke utført
 				include
-					archetype_id/value matches {/openEHR-EHR-CLUSTER\.exclusion_exam(-[a-zA-Z0-9_]+)*\.v1/}
+					archetype_id/value matches {/openEHR-EHR-CLUSTER\.exclusion_exam(-[a-zA-Z0-9_]+)*\.v1|openEHR-EHR-CLUSTER\.exclusion_exam(-[a-zA-Z0-9_]+)*\.v0/}
 			}
 		}
 	}
@@ -135,6 +135,7 @@ ontology
 				["at0001"] = <
 					text = <"System or structure examined">
 					description = <"Identification of the examined body system or anatomical structure.">
+					comment = <"Coding of the system or structure examined with a terminology is preferred, where possible.">
 				>
 				["at0002"] = <
 					text = <"No abnormality detected">
@@ -180,6 +181,7 @@ ontology
 				["at0001"] = <
 					text = <"Undersøkt system eller struktur">
 					description = <"Navngiving av det undersøkte systemet eller strukturen.">
+					comment = <"Det er anbefalt å kode det undersøkte systemet eller strukturen med en terminologi, der det er mulig.">
 				>
 				["at0002"] = <
 					text = <"Uten anmerkning">
