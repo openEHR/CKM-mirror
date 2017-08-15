@@ -78,21 +78,21 @@ Brukes ikke til å registrere omkretsen av andre kroppsdeler. Bruk OBSERVATION.b
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"F91E59E09DBA6671344C8E0375D0D405">
-		["build_uid"] = <"99998ec6-fca2-4782-9129-bf0375d7ce31">
+		["MD5-CAM-1.0.1"] = <"66B84DB7670297F64366B675EC72A959">
+		["build_uid"] = <"078fcd01-9d50-4704-a4e5-a47b933cfa37">
 		["revision"] = <"0.0.1-alpha">
 	>
 
 definition
-	OBSERVATION[at0000] matches {	-- Waist circumference
+	OBSERVATION[at0000] matches {	-- Midjeomkrets
 		data matches {
 			HISTORY[at0001] matches {	-- Event Series
 				events cardinality matches {1..*; unordered} matches {
-					EVENT[at0010] occurrences matches {0..*} matches {	-- Any event
+					EVENT[at0010] occurrences matches {0..*} matches {	-- Uspesifisert hendelse
 						data matches {
 							ITEM_TREE[at0003] matches {	-- Tree
 								items cardinality matches {1..*; unordered} matches {
-									ELEMENT[at0004] matches {	-- Waist circumference
+									ELEMENT[at0004] occurrences matches {0..1} matches {	-- Midjeomkrets
 										value matches {
 											C_DV_QUANTITY <
 												property = <[openehr::122]>
@@ -111,7 +111,7 @@ definition
 											>
 										}
 									}
-									ELEMENT[at0007] occurrences matches {0..1} matches {	-- Comment
+									ELEMENT[at0007] occurrences matches {0..1} matches {	-- Kommentar
 										value matches {
 											DV_TEXT matches {*}
 										}
@@ -122,7 +122,7 @@ definition
 						state matches {
 							ITEM_TREE[at0008] matches {	-- Tree
 								items cardinality matches {0..*; unordered} matches {
-									ELEMENT[at0009] occurrences matches {0..*} matches {	-- Confounding factors
+									ELEMENT[at0009] occurrences matches {0..*} matches {	-- Konfunderende faktorer
 										value matches {
 											DV_TEXT matches {*}
 										}
@@ -137,11 +137,11 @@ definition
 		protocol matches {
 			ITEM_TREE[at0005] matches {	-- Tree
 				items cardinality matches {0..*; unordered} matches {
-					allow_archetype CLUSTER[at0006] occurrences matches {0..1} matches {	-- Device
+					allow_archetype CLUSTER[at0006] occurrences matches {0..1} matches {	-- Måleutstyr
 						include
 							archetype_id/value matches {/openEHR-EHR-CLUSTER\.device(-[a-zA-Z0-9_]+)*\.v1/}
 					}
-					allow_archetype CLUSTER[at0012] occurrences matches {0..*} matches {	-- Extension
+					allow_archetype CLUSTER[at0012] occurrences matches {0..*} matches {	-- Tilleggsinformasjon
 						include
 							archetype_id/value matches {/.*/}
 					}
