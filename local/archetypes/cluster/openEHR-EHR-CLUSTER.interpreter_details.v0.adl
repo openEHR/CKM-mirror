@@ -1,0 +1,278 @@
+﻿archetype (adl_version=1.4; uid=bc9ca28f-4d6e-4556-99b6-2b1c6940dc1f)
+	openEHR-EHR-CLUSTER.interpreter_details.v0
+
+concept
+	[at0000]	-- Interpreter details
+language
+	original_language = <[ISO_639-1::en]>
+	translations = <
+		["nb"] = <
+			language = <[ISO_639-1::nb]>
+			author = <
+				["name"] = <"John Tore Valand">
+				["organisation"] = <"Helse Bergen HF, Norway">
+			>
+		>
+	>
+description
+	original_author = <
+		["name"] = <"Heather Leslie">
+		["organisation"] = <"Ocean Informatics">
+		["email"] = <"heather.leslie@oceaninformatics.com">
+		["date"] = <"2015-05-04">
+	>
+	details = <
+		["nb"] = <
+			language = <[ISO_639-1::nb]>
+			purpose = <"For å registrere detaljer om individets tolkebehov i kommunikasjon.">
+			use = <"Brukes for å registrere detaljer om individets tolkebehov i kommunikasjon.
+
+Denne arketypen er utviklet for bruk i en hvilken som helst ENTRY- eller CLUSTER-arketype for å gi kontekst enten til en forespørsel om tolk, en tolkning som er gjennomført eller for å gi en varig oversikt over individets behov for tolk.
+
+Brukes for å registrere en strukturert forespørsel etter tolk som en del av en henvisning, for eksempel ved å benytte SLOT'et \"Pasientens behov\" i arketypen INSTRUCTION.request (Helsetjenesterekvirering).
+
+Brukes for å gi en varig oversikt over individets behov for tolk ved benytte SLOTet \"Detaljer\" i arketypen EVALUATION.social_summary (Sosialanamnese).">
+			keywords = <"tolk", "språk">
+			misuse = <"">
+		>
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To record details about an individual's identified needs to have an interpreter involved in communication.">
+			use = <"Used to record details about an individual's identified needs to have an interpreter involved in communication.
+
+This archetype is specifically designed to be used within the context of any appropriate ENTRY or CLUSTER archetypes which supply the context of either the request for interpretation, an interpretation that is performed or the persistent overview of the individual's interpretation needs.
+
+Use to record a structured request for an interpreter as a part of an order for example in the SLOT 'Patient requirements' in the INSTRUCTION.request archetype.
+
+Use to provide persistent information about the individual's needs for an interpreter using the 'Details' SLOT in the EVALUATION.social_summary.">
+			keywords = <"interpreter", "language">
+			misuse = <"">
+			copyright = <"© openEHR Foundation, Nasjonal IKT HF">
+		>
+	>
+	lifecycle_state = <"in_development">
+	other_contributors = <"John Tore Valand, Helse Bergen HF, Norway", ...>
+	other_details = <
+		["custodian_organisation"] = <"Nasjonal IKT">
+		["references"] = <"Avgrenet fra: Interpreter Details, Draft Archetype [Internet]. openEHR Foundation, openEHR Clinical Knowledge Manager [cited: 2017-02-10]. Available from: http://openehr.org/ckm/#showArchetype_1013.1.1972">
+		["current_contact"] = <"Heather Leslie, Ocean Informatics<heather.leslie@oceaninformatics.com>">
+		["original_namespace"] = <"no.nasjonalikt">
+		["original_publisher"] = <"Nasjonal IKT">
+		["custodian_namespace"] = <"no.nasjonalikt">
+		["MD5-CAM-1.0.1"] = <"7C3A355E0BE343F8E06C4932A11AE227">
+		["build_uid"] = <"7d2c49cd-e549-409e-8aab-a8605ea6277a">
+		["revision"] = <"0.0.1-alpha">
+	>
+
+definition
+	CLUSTER[at0000] matches {	-- Interpreter details
+		items cardinality matches {1..*; unordered} matches {
+			ELEMENT[at0001] occurrences matches {0..1} matches {	-- Type of interpretation
+				value matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {
+							[local::
+							at0005, 	-- Sign language
+							at0006, 	-- Spoken language
+							at0025]	-- Tactile signing
+						}
+					}
+					DV_TEXT matches {*}
+				}
+			}
+			allow_archetype CLUSTER[at0031] occurrences matches {0..*} matches {	-- Primary language
+				include
+					archetype_id/value matches {/openEHR-EHR-CLUSTER\.language(-[a-zA-Z0-9_]+)*\.v0/}
+			}
+			allow_archetype CLUSTER[at0032] occurrences matches {0..*} matches {	-- Additional language
+				include
+					archetype_id/value matches {/openEHR-EHR-CLUSTER\.language(-[a-zA-Z0-9_]+)*\.v0/}
+			}
+			ELEMENT[at0009] occurrences matches {0..1} matches {	-- Modality
+				value matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {
+							[local::
+							at0010, 	-- On-site
+							at0011, 	-- Video
+							at0012, 	-- Telephone
+							at0013]	-- No preferences
+						}
+					}
+					DV_TEXT matches {*}
+				}
+			}
+			ELEMENT[at0027] occurrences matches {0..1} matches {	-- Gender
+				value matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {
+							[local::
+							at0028, 	-- Male
+							at0029]	-- Female
+						}
+					}
+				}
+			}
+			allow_archetype CLUSTER[at0004] occurrences matches {0..*} matches {	-- Interpreter
+				include
+					archetype_id/value matches {/openEHR-EHR-CLUSTER\.organisation(-[a-zA-Z0-9_]+)*\.v0|openEHR-EHR-CLUSTER\.person_name(-[a-zA-Z0-9_]+)*\.v0|openEHR-EHR-CLUSTER\.individual_professional(-[a-zA-Z0-9_]+)*\.v0/}
+			}
+			ELEMENT[at0003] occurrences matches {0..1} matches {	-- Comment
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+		}
+	}
+
+
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"Interpreter details">
+					description = <"Details about an individual's identified needs to have an interpreter involved in communication.">
+				>
+				["at0001"] = <
+					text = <"Type of interpretation">
+					description = <"Identification of the type of interpretation needed.">
+				>
+				["at0003"] = <
+					text = <"Comment">
+					description = <"Additional narrative description about the interpreter or the interpretation.">
+					comment = <"For example, the interaction with the interpreter was unsatisfactory and the individual may not have understood the content of the discussion with a clinician.">
+				>
+				["at0004"] = <
+					text = <"Interpreter">
+					description = <"Identification of the interpreter that either performed or is requested for the interpretation, including qualifications.">
+				>
+				["at0005"] = <
+					text = <"Sign language">
+					description = <"Sign language interpreter.">
+				>
+				["at0006"] = <
+					text = <"Spoken language">
+					description = <"Spoken language interpreter.">
+				>
+				["at0009"] = <
+					text = <"Modality">
+					description = <"The preferred way of interpretation or the way the interpretation was carried out.">
+				>
+				["at0010"] = <
+					text = <"On-site">
+					description = <"Physical attendence of the interpreter.">
+				>
+				["at0011"] = <
+					text = <"Video">
+					description = <"Video interpretation.">
+				>
+				["at0012"] = <
+					text = <"Telephone">
+					description = <"Telephone interpretation.">
+				>
+				["at0013"] = <
+					text = <"No preferences">
+					description = <"The individual has no preferences for the modality of the interpretation.">
+				>
+				["at0025"] = <
+					text = <"Tactile signing">
+					description = <"Tactile signing interpreter.">
+				>
+				["at0027"] = <
+					text = <"Gender">
+					description = <"The individual's preferred gender of the interpreter or the gender of the interpreter that was involved in the interpretation.">
+				>
+				["at0028"] = <
+					text = <"Male">
+					description = <"The individual preferres a male interpretor or the interpretation was performed by a male interpretor.">
+				>
+				["at0029"] = <
+					text = <"Female">
+					description = <"The individual preferres a female interpretor or the interpretation was performed by a female interpretor.">
+				>
+				["at0031"] = <
+					text = <"Primary language">
+					description = <"The individual's primary language, dialect and abilities to communicate in the specified language or dialect. Used for specifying preferences for interpretation or the way interpretation was carried out.">
+				>
+				["at0032"] = <
+					text = <"Additional language">
+					description = <"The individual's additional languages, dialects and abilities to communicate in the specified language or dialect. Used for specifying preferences for interpretation or the way interpretation was carried out.">
+				>
+			>
+		>
+		["nb"] = <
+			items = <
+				["at0000"] = <
+					text = <"Tolk">
+					description = <"Detaljer om individets behov for å ha en tolk involvert i kommunikasjon.">
+				>
+				["at0001"] = <
+					text = <"Type tolkning">
+					description = <"Identifisering av hvilken type tolkning det er behov for.">
+				>
+				["at0003"] = <
+					text = <"Kommentar">
+					description = <"Ytterligere fritekstbeskrivelse om tolken eller tolkningen.">
+					comment = <"For eksempel: Interaksjonen med tolken var utilfredsstillende og individet har muligens ikke forstått inneholdet i samtalen med klinikeren.">
+				>
+				["at0004"] = <
+					text = <"Detaljer">
+					description = <"Detaljer om tolken som enten utførte eller er forespurt om tolkning. Også kvalifikasjoner.">
+				>
+				["at0005"] = <
+					text = <"Tegnspråk">
+					description = <"Tegnspråktolk">
+				>
+				["at0006"] = <
+					text = <"Språk">
+					description = <"Språktolk">
+				>
+				["at0009"] = <
+					text = <"Modalitet">
+					description = <"Foretrukket modalitet for tolkning eller modalitet som ble benyttet under tolkningen.">
+				>
+				["at0010"] = <
+					text = <"Oppmøte">
+					description = <"Fysisk tilstedeværelse av tolken.">
+				>
+				["at0011"] = <
+					text = <"Video">
+					description = <"Tolkning via skjerm.">
+				>
+				["at0012"] = <
+					text = <"Telefon">
+					description = <"Telefontolking">
+				>
+				["at0013"] = <
+					text = <"Ingen preferanser">
+					description = <"Individet har ingen preferanser tolkingens modalitet.">
+				>
+				["at0025"] = <
+					text = <"Taktilt tegnspråk">
+					description = <"Taktilt tegnspråk tolk">
+				>
+				["at0027"] = <
+					text = <"Kjønn">
+					description = <"Individets ønske om tolk med et spesifikt kjønn eller kjønn på tolken som utførte tolkningen.">
+				>
+				["at0028"] = <
+					text = <"Mann">
+					description = <"Individet foretrekker en mannlig tolk eller tolkningen ble utført av en mannlig tolk.">
+				>
+				["at0029"] = <
+					text = <"Kvinne">
+					description = <"Individet foretrekker en kvinnelig tolk eller tolkningen ble utført av en kvinnelig tolk.">
+				>
+				["at0031"] = <
+					text = <"Primærspråk">
+					description = <"Individets primærspråk, dialekt og evner til å kommunisere i det oppgitte språket eller dialekten. Kan brukes blant annet for å spesifisere preferanser for tolking, eller hvordan tolkingen ble utført.">
+				>
+				["at0032"] = <
+					text = <"Andre språk">
+					description = <"Individets andre språl, dialekter og evner til å kommunisere i det oppgitte språk eller dialekt. Kan brukes blant annet for å spesifisere preferanser for tolking, eller hvordan tolkingen ble utført.">
+				>
+			>
+		>
+	>
