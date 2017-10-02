@@ -38,17 +38,21 @@ description
 		["en"] = <
 			language = <[ISO_639-1::en]>
 			purpose = <"To provide structured information on time schedules within a single day that is suitable for computation and display for human interpretation.">
-			use = <"For use with medication orders and other instructions where timing is complex and needs to be computable.">
+			use = <"For use with medication orders and other instructions where timing is complex and needs to be computable.
+
+This archetype is designed to be used within the 'Timing' SLOT within the CLUSTER.dosage archetype, but can also be used in other CLUSTER and ENTRY class archetypes where clinically appropriate.">
 			keywords = <"timing", "administration", "dosing", "frequency">
-			misuse = <"">
+			misuse = <"Not to be used for recording timing details over periods longer than a single day. Use the CLUSTER.timing_repetition archetype for this purpose.">
 			copyright = <"© openEHR Foundation">
 		>
 		["nb"] = <
 			language = <[ISO_639-1::nb]>
 			purpose = <"For å registrere strukturert informasjon som kan behandles av datamaskiner og vises for menneskelig tolkning, om timing for ett legemiddel innenfor én dag.">
-			use = <"Brukes i forbindelse med legemiddelordinering eller andre instruksjoner der det er behov for kompleks og maskinlesbar timing.">
+			use = <"Brukes i forbindelse med legemiddelordinering eller andre instruksjoner der det er behov for kompleks og maskinlesbar timing.
+
+Arketypen er laget for å brukes i SLOTet \"Administreringstidspunkt\" i arketypen CLUSTER.dosage (Dosering), men kan også brukes i andre CLUSTER- og ENTRY-arketyper der det er klinisk passende.">
 			keywords = <"timing", "administrering", "dosering", "frekvens">
-			misuse = <"">
+			misuse = <"Skal ikke brukes til å registrere detaljer om timing over lengre tidsperioder enn én dag. Bruk arketypen CLUSTER.timing_repetition for dette formålet.">
 		>
 	>
 	lifecycle_state = <"in_development">
@@ -59,8 +63,8 @@ description
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"515D4D9E46EB5A33DF2F878189033581">
-		["build_uid"] = <"861c981b-2d86-497c-bd3e-f4e39cc80525">
+		["MD5-CAM-1.0.1"] = <"176357EA6533C6E6E33C82ADA0282D41">
+		["build_uid"] = <"211dbe02-0d36-4d9c-af1c-33d83fc0bbb0">
 		["revision"] = <"0.0.1-alpha">
 	>
 
@@ -74,7 +78,7 @@ definition
 						list = <
 							["1"] = <
 								units = <"1/d">
-								magnitude = <|0.0..1.0|>
+								magnitude = <|>=0.0|>
 								precision = <|0|>
 							>
 							["2"] = <
@@ -98,7 +102,7 @@ definition
 								list = <
 									["1"] = <
 										units = <"1/d">
-										magnitude = <|<=1.0|>
+										magnitude = <|>=0.0|>
 										precision = <|0|>
 									>
 									["2"] = <
@@ -111,7 +115,7 @@ definition
 									>
 									["4"] = <
 										units = <"1/h">
-										magnitude = <|0.0..24.0|>
+										magnitude = <|>=0.0|>
 										precision = <|0|>
 									>
 								>
@@ -124,6 +128,7 @@ definition
 									["1"] = <
 										units = <"1/d">
 										magnitude = <|>=0.0|>
+										precision = <|0|>
 									>
 									["2"] = <
 										units = <"1/min">
@@ -136,6 +141,7 @@ definition
 									["4"] = <
 										units = <"1/h">
 										magnitude = <|>=0.0|>
+										precision = <|0|>
 									>
 								>
 							>
@@ -146,7 +152,7 @@ definition
 			ELEMENT[at0014] occurrences matches {0..1} matches {	-- Interval
 				value matches {
 					DV_DURATION matches {
-						value matches {PTHMS/|PT0H..PT24H|}
+						value matches {PTHMS/|PT0M..PT24M|}
 					}
 				}
 			}
@@ -166,15 +172,6 @@ definition
 			ELEMENT[at0026] occurrences matches {0..*} matches {	-- Named time event
 				value matches {
 					DV_TEXT matches {*}
-					DV_CODED_TEXT matches {
-						defining_code matches {
-							[local::
-							at0031, 	-- immediately (stat)
-							at0032, 	-- in the morning
-							at0033, 	-- at night
-							at0034]	-- in the morning and at night
-						}
-					}
 				}
 			}
 			ELEMENT[at0023] occurrences matches {0..1} matches {	-- Exact timing critical
@@ -187,7 +184,7 @@ definition
 			ELEMENT[at0024] occurrences matches {0..1} matches {	-- As required
 				value matches {
 					DV_BOOLEAN matches {
-						value matches {True, False}
+						value matches {True}
 					}
 				}
 			}
@@ -243,22 +240,6 @@ ontology
 					comment = <"e.g. before each meal, at bedtime, in the morning.
 It is understood that these terms may not equate to the same exact times in different cultures.">
 				>
-				["at0031"] = <
-					text = <"immediately (stat)">
-					description = <"Perform the activity immediately.">
-				>
-				["at0032"] = <
-					text = <"in the morning">
-					description = <"Perform the activity in the morning.">
-				>
-				["at0033"] = <
-					text = <"at night">
-					description = <"Perform the activity at night.">
-				>
-				["at0034"] = <
-					text = <"in the morning and at night">
-					description = <"Perform the activity in the morning and at night.">
-				>
 			>
 		>
 		["sl"] = <
@@ -302,22 +283,6 @@ It is understood that these terms may not equate to the same exact times in diff
 					comment = <"*e.g. before each meal, at bedtime, in the morning.
 It is understood that these terms may not equate to the same exact times in different cultures.(en)">
 				>
-				["at0031"] = <
-					text = <"*immediately (stat)(en)">
-					description = <"*Perform the activity immediately.(en)">
-				>
-				["at0032"] = <
-					text = <"*in the morning(en)">
-					description = <"*Perform the activity in the morning.(en)">
-				>
-				["at0033"] = <
-					text = <"*at night(en)">
-					description = <"*Perform the activity at night.(en)">
-				>
-				["at0034"] = <
-					text = <"*in the morning and at night(en)">
-					description = <"*Perform the activity in the morning and at night.(en)">
-				>
 			>
 		>
 		["nb"] = <
@@ -360,22 +325,6 @@ It is understood that these terms may not equate to the same exact times in diff
 					description = <"En spesifikk, navngitt tidshendelse innenfor én dag, når aktiviteten skal inntreffe.">
 					comment = <"For eksempel: Før hvert måltid, ved leggetid, om morgenen.
 Det er underforstått at disse termene ikke nødvendigvis ikke tilsvarer de samme tidspunktene i forskjellige kulturer.">
-				>
-				["at0031"] = <
-					text = <"Øyeblikkelig">
-					description = <"Utfør aktiviteten øyeblikkelig.">
-				>
-				["at0032"] = <
-					text = <"Om morgenen">
-					description = <"Utfør aktiviteten om morgenen.">
-				>
-				["at0033"] = <
-					text = <"Om kvelden">
-					description = <"Utfør aktiviteten om kvelden.">
-				>
-				["at0034"] = <
-					text = <"Om morgenen og om kvelden">
-					description = <"Utfør aktiviteten om morgenen og om kvelden.">
 				>
 			>
 		>
