@@ -27,9 +27,9 @@ description
 			purpose = <"To describe progression of pubertal changes in genitals, breasts and pubic hair.">
 			use = <"Normally used to describe progression of pubertal changes in children, but can also be used to adults, for example evaluate gynaecomasty in adult men.
 
-Boys and girls are rated on a 5 point scale. Boys are rated for genital development and
+Boys and girls are rated on a scale from 1 to 5. Boys are rated for genital development and
 pubic hair growth, and girls are rated for breast development and pubic hair growth.">
-			keywords = <"pubertal", "puberty", "genitals", "breasts", "breast", "pubical", "pubic hair">
+			keywords = <"pubertal", "puberty", "genitals", "breasts", "breast", "pubical", "pubic hair", "sexual", "maturity">
 			misuse = <"">
 			copyright = <"© Nasjonal IKT HF, openEHR Foundation">
 		>
@@ -38,18 +38,19 @@ pubic hair growth, and girls are rated for breast development and pubic hair gro
 			purpose = <"For å skåre utvikling av genitalia, bryst og pubesbehåring.">
 			use = <"Brukes vanligvis for å beskrive et barns pubertetsutvikling, men kan også brukes hos voksne for eksempel for å vurdere grad av gynekomasti hos voksne menn.
 
-Gutter og jenter vurderes ut fra en 5 poengs skala. Gutter vurderes ut fra utvikling av genitalia og pubesbehåring, jenter vurderes ut fra utvikling av bryst og pubesbehåring.">
-			keywords = <"pubertet", "genitalia", "bryst", "bryster", "behåring", "pubes", "kjønnsmodning">
+Gutter og jenter vurderes ut fra en skala fra 1 til 5. Gutter vurderes ut fra utvikling av genitalia og pubesbehåring, jenter vurderes ut fra utvikling av bryst og pubesbehåring.">
+			keywords = <"pubertet", "genitalia", "bryst", "bryster", "behåring", "pubes", "kjønnsmodning", "testikkel">
 			misuse = <"">
 			copyright = <"© Nasjonal IKT HF, openEHR Foundation">
 		>
 	>
 	lifecycle_state = <"in_development">
-	other_contributors = <>
+	other_contributors = <"Tomas Alme, DIPS ASA, Norway", "Vebjørn Arntzen, Oslo universitetssykehus HF, Norway (Nasjonal IKT redaktør)", "Kristian Berg, Vestvågøy kommune - Fagutviklingsavdelingen, Norway", "Malin Berg, DIPS ASA, Norway", "SB Bhattacharyya, Sudisa Consultancy Services, India", "Hildegard Franke, freshEHR Clinical Informatics Ltd., United Kingdom", "Mikkel Gaup Grønmo, FSE, Helse Nord, Norway", "Annette Hole Sjøborg, DIPS ASA, Norway", "Hilde Hollås, DIPS ASA, Norway", "Nils Kolstrup, Skansen Legekontor og Nasjonalt Senter for samhandling og telemedisin, Norway", "Heather Leslie, Ocean Health Systems, Australia", "Silje Ljosland Bakke, Nasjonal IKT HF, Norway (Nasjonal IKT redaktør)", "Priscila Maranhão, MEDCIDS-FMUP, Portugal", "Ian McNicoll, freshEHR Clinical Informatics, United Kingdom", "Lars Morgan Karlsen, DIPS ASA, Norway", "Andrej Orel, Marand d.o.o., Slovenia", "Line Silsand, Universitetssykehuset i Nord-Norge, Norway", "Norwegian Review Summary, Nasjonal IKT HF, Norway", "Nyree Taylor, Ocean Informatics, Australia", "Gro-Hilde Ulriksen, Norwegian center for ehealthresearch, Norway", "John Tore Valand, Helse Bergen, Norway (openEHR Editor)">
 	other_details = <
 		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
 		["custodian_organisation"] = <"openEHR Foundation">
 		["references"] = <"Derived from: Tanner stadier, Draft archetype [Internet]. Nasjonal IKT, Nasjonal IKT Clinical Knowledge Manager [cited: 2017-05-05]. Available from: http://arketyper.no/ckm/#showArchetype_1078.36.1823
+
 Marshall WA, Tanner JM. Variations in the Pattern of Pubertal Changes in Boys. Archives of Disease in Childhood. 1970 [cited 2017 Mar 17]; 45(239): 13-23. Available from https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2020414/
 
 Marshall WA, Tanner JM. Variations in pattern of pubertal changes in girls. Archives of Disease in Childhood. 1969 [cited 2017 Mar 17]; 44(235): 291-303. Available from https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2020314/
@@ -62,17 +63,17 @@ Available at: https://legehandboka.no/handboken/kliniske-kapitler/pediatri/pasie
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"1D7FAF885D5BBC3943DFB1B60617693D">
-		["build_uid"] = <"6173b9cf-12a3-4ca9-96bf-db7a3ed76567">
+		["MD5-CAM-1.0.1"] = <"940C38F9BF170472EA8C68ABDFA0BD2E">
+		["build_uid"] = <"6dc7e747-b205-4d36-8f19-98442e124d0a">
 		["revision"] = <"0.0.1-alpha">
 	>
 
 definition
-	OBSERVATION[at0000] matches {	-- Tanner stadier
+	OBSERVATION[at0000] matches {	-- Tanner-stadier
 		data matches {
 			HISTORY[at0001] matches {	-- Event Series
 				events cardinality matches {1..*; unordered} matches {
-					EVENT[at0002] occurrences matches {0..1} matches {	-- Uspesifisert hendelse
+					POINT_EVENT[at0002] occurrences matches {0..*} matches {	-- Uspesifisert tidspunkt hendelse
 						data matches {
 							ITEM_TREE[at0003] matches {	-- Tree
 								items cardinality matches {0..*; unordered} matches {
@@ -81,11 +82,11 @@ definition
 											DV_CODED_TEXT matches {
 												defining_code matches {
 													[local::
-													at0007, 	-- Tanner I
-													at0008, 	-- Tanner II
-													at0009, 	-- Tanner III
-													at0010, 	-- Tanner IV
-													at0011]	-- Tanner V
+													at0007, 	-- Stadie 1
+													at0008, 	-- Stadie 2
+													at0009, 	-- Stadie 3
+													at0010, 	-- Stadie 4
+													at0011]	-- Stadie 5
 												}
 											}
 										}
@@ -95,11 +96,11 @@ definition
 											DV_CODED_TEXT matches {
 												defining_code matches {
 													[local::
-													at0012, 	-- Tanner I
-													at0013, 	-- Tanner II
-													at0014, 	-- Tanner III
-													at0015, 	-- Tanner IV
-													at0016]	-- Tanner V
+													at0012, 	-- Stadie 1
+													at0013, 	-- Stadie 2
+													at0014, 	-- Stadie 3
+													at0015, 	-- Stadie 4
+													at0016]	-- Stadie 5
 												}
 											}
 										}
@@ -109,11 +110,11 @@ definition
 											DV_CODED_TEXT matches {
 												defining_code matches {
 													[local::
-													at0017, 	-- Tanner I
-													at0018, 	-- Tanner II
-													at0019, 	-- Tanner III
-													at0020, 	-- Tanner IV
-													at0021]	-- Tanner V
+													at0017, 	-- Stadie 1
+													at0018, 	-- Stadie 2
+													at0019, 	-- Stadie 3
+													at0020, 	-- Stadie 4
+													at0021]	-- Stadie 5
 												}
 											}
 										}
@@ -143,22 +144,21 @@ definition
 	}
 
 
-
 ontology
 	term_definitions = <
 		["nb"] = <
 			items = <
 				["at0000"] = <
-					text = <"Tanner stadier">
-					description = <"En skala for å beskrive et barns pubertetsutvikling.">
+					text = <"Tanner-stadier">
+					description = <"En skala for å beskrive pubertetsstart og pubertetsutvikling.">
 				>
 				["at0001"] = <
 					text = <"Event Series">
 					description = <"@ internal @">
 				>
 				["at0002"] = <
-					text = <"Uspesifisert hendelse">
-					description = <"Standard, uspesifisert tidspunkt eller tidsintervall som kan defineres mer eksplisitt i en template eller i en applikasjon.">
+					text = <"Uspesifisert tidspunkt">
+					description = <"Standard, uspesifisert tidspunkt som kan defineres mer eksplisitt i en templat eller i en applikasjon.">
 				>
 				["at0003"] = <
 					text = <"Tree">
@@ -166,74 +166,74 @@ ontology
 				>
 				["at0004"] = <
 					text = <"Genitalia">
-					description = <"Stadier for utvikling av mannlige genitalia.">
+					description = <"Stadier for utvikling av genitalia hos menn.">
 				>
 				["at0005"] = <
 					text = <"Bryst">
-					description = <"Stadier for utvikling av bryst hos unge kvinner.">
+					description = <"Stadier for utvikling av bryst hos kvinner.">
 				>
 				["at0006"] = <
 					text = <"Pubesbehåring">
 					description = <"Stadier for utvikling av pubesbehåring hos kvinner og menn.">
 				>
 				["at0007"] = <
-					text = <"G1">
+					text = <"Stadie 1">
 					description = <"Testikler, skrotum og penis slik som i tidlig barndom.">
 				>
 				["at0008"] = <
-					text = <"G2">
+					text = <"Stadie 2">
 					description = <"Skrotum og testikler har vokst og teksturen av skrotumhud er grovere.">
 				>
 				["at0009"] = <
-					text = <"G3">
+					text = <"Stadie 3">
 					description = <"Penis har vokst, mest i lengden. Skrotum og testikler har vokst ytterligere.">
 				>
 				["at0010"] = <
-					text = <"G4">
+					text = <"Stadie 4">
 					description = <"Penis har vokst i lengde og tykkelse. Begynnende utvikling av glans. Testes og skrotum vokser videre og skrotal hud er mørkere.">
 				>
 				["at0011"] = <
-					text = <"G5">
+					text = <"Stadie 5">
 					description = <"Voksent utseende på genitalia.">
 				>
 				["at0012"] = <
-					text = <"B1">
+					text = <"Stadie 1">
 					description = <"Ingen synlig brystutvikling.">
 				>
 				["at0013"] = <
-					text = <"B2">
+					text = <"Stadie 2">
 					description = <"Begynnende brystutvikling, bryst og papille lett forhøyet, areolas diameter lett økt.">
 				>
 				["at0014"] = <
-					text = <"B3">
-					description = <"Videre vekst av brystet men fortsatt jevn kontur.">
+					text = <"Stadie 3">
+					description = <"Videre vekst av brystet, men fortsatt jevn kontur.">
 				>
 				["at0015"] = <
-					text = <"B4">
+					text = <"Stadie 4">
 					description = <"Areola og papille skilles ut som en egen kontur på brystet (hevet fra resten av brystkonturen).">
 				>
 				["at0016"] = <
-					text = <"B5">
-					description = <"Voksen. Kun papillen er hevet ut fra resten av bryskonturen.">
+					text = <"Stadie 5">
+					description = <"Voksen. Kun papillen er hevet ut fra resten av brystkonturen.">
 				>
 				["at0017"] = <
-					text = <"P1">
+					text = <"Stadie 1">
 					description = <"Ingen pubesbehåring (på samme nivå som eventuell behåring på abdomen).">
 				>
 				["at0018"] = <
-					text = <"P2">
+					text = <"Stadie 2">
 					description = <"Kvinner: Begynnende vekst av lyse, tynne, rette hår langs labia. Kan være lett å overse. Menn: Sparsom vekst av lett pigmentert, rett, dunaktig hår. Hovedsakelig ved basis av penis. Kan være lett å overse.">
 				>
 				["at0019"] = <
-					text = <"P3">
+					text = <"Stadie 3">
 					description = <"Mørkere, tykkere og mer krøllete behåring. Sparsom utbredelse opp mot abdomen.">
 				>
 				["at0020"] = <
-					text = <"P4">
+					text = <"Stadie 4">
 					description = <"Voksen type behåring, men ubredelse er mindre. Brer seg ikke over til mediale del av låret.">
 				>
 				["at0021"] = <
-					text = <"P5">
+					text = <"Stadie 5">
 					description = <"Voksen mengde og utbredelse i form av invertert triangel og behåringen kan bre seg over til mediale del av låret.">
 				>
 				["at0022"] = <
@@ -255,15 +255,15 @@ ontology
 			items = <
 				["at0000"] = <
 					text = <"Tanner stages">
-					description = <"A scale to describe the onset an progression of pubertal changes.">
+					description = <"A scale to describe the onset and progression of pubertal changes.">
 				>
 				["at0001"] = <
 					text = <"*Event Series(nb)">
 					description = <"@ internal @">
 				>
 				["at0002"] = <
-					text = <"Any event">
-					description = <"Default, unspecified point in time or interval event which may be explicitly defined in a template or at run-time.">
+					text = <"Any point in time event">
+					description = <"Default, unspecified point in time event which may be explicitly defined in a template or at run-time.">
 				>
 				["at0003"] = <
 					text = <"*Tree(nb)">
@@ -282,63 +282,63 @@ ontology
 					description = <"The stages for pubic hair development in females and males.">
 				>
 				["at0007"] = <
-					text = <"G1">
+					text = <"Stage 1">
 					description = <"Prepubertal.">
 				>
 				["at0008"] = <
-					text = <"G2">
+					text = <"Stage 2">
 					description = <"Enlargement of scrotum and testes; scrotal skin reddens and changes in texture.">
 				>
 				["at0009"] = <
-					text = <"G3">
+					text = <"Stage 3">
 					description = <"Enlargement of penis (length at first); further growth of testes.">
 				>
 				["at0010"] = <
-					text = <"G4">
+					text = <"Stage 4">
 					description = <"Increased size of penis with growth in breadth and development of glans; testes and scrotum larger, scrotal skin darker.">
 				>
 				["at0011"] = <
-					text = <"G5">
+					text = <"Stage 5">
 					description = <"Adult genitalia.">
 				>
 				["at0012"] = <
-					text = <"B1">
+					text = <"Stage 1">
 					description = <"Prepubertal.">
 				>
 				["at0013"] = <
-					text = <"B2">
+					text = <"Stage 2">
 					description = <"Breast bud stage with elevation of breast and papilla; enlargement of areola.">
 				>
 				["at0014"] = <
-					text = <"B3">
+					text = <"Stage 3">
 					description = <"Further enlargement of breast and areola; no separation of their contour.">
 				>
 				["at0015"] = <
-					text = <"B4">
+					text = <"Stage 4">
 					description = <"Areola and papilla form a secondary mound above level of breast.">
 				>
 				["at0016"] = <
-					text = <"B5">
+					text = <"Stage 5">
 					description = <"Mature stage: projection of papilla only, related to recession of areola.">
 				>
 				["at0017"] = <
-					text = <"P1">
+					text = <"Stage 1">
 					description = <"Prepubertal (the pubic area may have vellus hair, similar to that of forearms).">
 				>
 				["at0018"] = <
-					text = <"P2">
+					text = <"Stage 2">
 					description = <"Sparse growth of long, slightly pigmented hair, straight or curled, at base of penis or along labia.">
 				>
 				["at0019"] = <
-					text = <"P3">
+					text = <"Stage 3">
 					description = <"Darker, coarser and more curled hair, spreading sparsely over junction of pubes.">
 				>
 				["at0020"] = <
-					text = <"P4">
+					text = <"Stage 4">
 					description = <"Hair adult in type, but covering smaller area than in adult; no spread to medial surface of thighs.">
 				>
 				["at0021"] = <
-					text = <"P5">
+					text = <"Stage 5">
 					description = <"Adult in type and quantity, with horizontal upper border.">
 				>
 				["at0022"] = <
@@ -352,7 +352,7 @@ ontology
 				>
 				["at0027"] = <
 					text = <"Comment">
-					description = <"Additional narrative about the Tanner stages not captured in other fields.">
+					description = <"Additional narrative about the pubertal examination findings not captured in other fields.">
 				>
 			>
 		>
