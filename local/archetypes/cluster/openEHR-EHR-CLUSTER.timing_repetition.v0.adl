@@ -6,6 +6,13 @@ concept
 language
 	original_language = <[ISO_639-1::en]>
 	translations = <
+		["nb"] = <
+			language = <[ISO_639-1::nb]>
+			author = <
+				["name"] = <"Silje Ljosland Bakke">
+				["organisation"] = <"Nasjonal IKT HF">
+			>
+		>
 		["pt-br"] = <
 			language = <[ISO_639-1::pt-br]>
 			author = <
@@ -41,6 +48,15 @@ This archetype is designed to be used within the 'Direction repetition' SLOT wit
 			misuse = <"Not to be used for recording timing details within a single 24 hour time period. Use the CLUSTER.timing_daily archetype for this purpose.">
 			copyright = <"© openEHR Foundation">
 		>
+		["nb"] = <
+			language = <[ISO_639-1::nb]>
+			purpose = <"For å registrere strukturert informasjon om planlagt timing av en aktivitet over lengre tidsintervaller enn et døgn.">
+			use = <"Brukes for å registrere strukturert informasjon om planlagt timing av en aktivitet over lengre tidsintervaller enn et døgn.
+
+Arketypen er laget for å brukes i SLOTet \"Anvisningsrepetisjon\" i arketypen CLUSTER.therapeutic_direction (Terapeutisk anvisning), men kan også brukes i andre CLUSTER- og ENTRY-arketyper der det er klinisk passende.">
+			keywords = <"timing, administrering, administrasjon, dosering, frekvens, intervall, ordinering, forskriving, foreskriving, anbefaling, plan", ...>
+			misuse = <"Skal ikke brukes til å registrere detaljer om timing innenfor et døgn. Bruk arketypen CLUSTER.timing_daily for dette formålet.">
+		>
 	>
 	lifecycle_state = <"in_development">
 	other_contributors = <"Silje Ljosland Bakke, Nasjonal IKT HF, Norway (openEHR Editor)", "Heather Leslie, Ocean Informatics, Australia (openEHR Editor)", "Ian McNicoll, freshEHR Clinical Informatics, United Kingdom (openEHR Editor)", "John Tore Valand, Helse Bergen, Norway (openEHR Editor)">
@@ -50,8 +66,8 @@ This archetype is designed to be used within the 'Direction repetition' SLOT wit
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"559E63934A30691B6A491A447E8205B9">
-		["build_uid"] = <"f0aafde4-79ce-4aca-b8ab-09b60b4f4aa1">
+		["MD5-CAM-1.0.1"] = <"88E98E1C34B5B94453057CB1A9A625BD">
+		["build_uid"] = <"0409144c-bea5-4c5f-a14a-d65cd03bca44">
 		["revision"] = <"0.0.1-alpha">
 	>
 
@@ -64,12 +80,12 @@ definition
                         value matches {PYMWD/|>P0D|}
                     }
                     DV_INTERVAL<DV_DURATION> matches {
-                        lower matches {
+                        lower existence matches {0..1} matches {
                             DV_DURATION matches {
                                 value matches {PYMWD/|>P0D|}
                             }
                         }
-                        upper matches {
+                        upper existence matches {0..1} matches {
                             DV_DURATION matches {
                                 value matches {PYMWD/|>P0D|}
                             }
@@ -157,20 +173,25 @@ definition
             ELEMENT[at0001] occurrences matches {0..*} matches {
                 value existence matches {0..1} matches {
                     DV_DATE matches {*}
-                    DV_INTERVAL<DV_DATE> matches {
-                        lower matches {
-                            DV_DATE matches {*}
-                        }
-                        upper matches {
-                            DV_DATE matches {*}
-                        }
-                    }
+                    DV_INTERVAL<DV_DATE> matches {*}
                 }
             }
             ELEMENT[at0003] occurrences matches {0..*} matches {
                 value existence matches {0..1} matches {
                     DV_COUNT matches {
-                        magnitude matches {|0..6|}
+                        magnitude existence matches {0..1} matches {|0..6|}
+                    }
+                    DV_INTERVAL<DV_COUNT> matches {
+                        lower existence matches {0..1} matches {
+                            DV_COUNT matches {
+                                magnitude existence matches {0..1} matches {|0..6|}
+                            }
+                        }
+                        upper existence matches {0..1} matches {
+                            DV_COUNT matches {
+                                magnitude existence matches {0..1} matches {|0..6|}
+                            }
+                        }
                     }
                     DV_CODED_TEXT matches {
                         defining_code matches {
@@ -184,44 +205,32 @@ definition
                             at0020]
                         }
                     }
-                    DV_INTERVAL<DV_COUNT> matches {
-                        lower matches {
-                            DV_COUNT matches {
-                                magnitude matches {|0..6|}
-                            }
-                        }
-                        upper matches {
-                            DV_COUNT matches {
-                                magnitude matches {|0..6|}
-                            }
-                        }
-                    }
                 }
             }
             ELEMENT[at0004] occurrences matches {0..*} matches {
                 value existence matches {0..1} matches {
                     DV_COUNT matches {
-                        magnitude matches {|1..31|}
+                        magnitude existence matches {0..1} matches {|1..31|}
                     }
                     DV_INTERVAL<DV_COUNT> matches {
-                        lower matches {
+                        lower existence matches {0..1} matches {
                             DV_COUNT matches {
-                                magnitude matches {|1..31|}
+                                magnitude existence matches {0..1} matches {|1..31|}
                             }
                         }
-                        upper matches {
+                        upper existence matches {0..1} matches {
                             DV_COUNT matches {
-                                magnitude matches {|1..31|}
+                                magnitude existence matches {0..1} matches {|1..31|}
                             }
                         }
                     }
                 }
             }
-			ELEMENT[at0021] occurrences matches {0..1} matches {	-- Timing description
-				value matches {
-					DV_TEXT matches {*}
-				}
-			}
+            ELEMENT[at0021] occurrences matches {0..1} matches {
+                value existence matches {0..1} matches {
+                    DV_TEXT matches {*}
+                }
+            }
             CLUSTER[at0006] occurrences matches {0..*} matches {
                 items cardinality matches {1..*; unordered} matches {
                     ELEMENT[at0005] occurrences matches {0..1} matches {
@@ -232,7 +241,7 @@ definition
                     ELEMENT[at0009] occurrences matches {0..1} matches {
                         value existence matches {0..1} matches {
                             DV_DURATION matches {
-                                value matches {PYMWD/|>=P0D|}
+                                value matches {PYMWD}
                             }
                         }
                     }
@@ -243,14 +252,14 @@ definition
                     ELEMENT[at0011] occurrences matches {0..1} matches {
                         value existence matches {0..1} matches {
                             DV_DURATION matches {
-                                value matches {PYMWD/|>=P0D|}
+                                value matches {PYMWD/|>P0D|}
                             }
                         }
                     }
                     ELEMENT[at0012] occurrences matches {0..1} matches {
                         value existence matches {0..1} matches {
                             DV_DURATION matches {
-                                value matches {PYMWD/|>=P0D|}
+                                value matches {PYMWD/|>P0D|}
                             }
                         }
                     }
@@ -278,23 +287,23 @@ ontology
 				>
 				["at0001"] = <
 					text = <"Specific date">
-					description = <"The activity should take place on a specific date.">
-					comment = <"e.g. 'on 12 Jan 2017'">
+					description = <"The activity should take place on a specific date or a specific range of dates.">
+					comment = <"For example: 'on 12 Jan 2017' or 'on 30 Oct 2017 to 6 Nov 2017'.">
 				>
 				["at0002"] = <
 					text = <"Repetition interval">
 					description = <"The interval between repetitions of the activity.">
-					comment = <"e.g. 'Every 3 weeks'">
+					comment = <"For example: 'Every 3 weeks' or 'Every 2-3 days'.">
 				>
 				["at0003"] = <
 					text = <"Specific day of week">
-					description = <"The activity should take place on a specific day of the week, with 0 representing Sunday.">
-					comment = <"e.g. 'On Mondays, Wednesdays and Fridays'.">
+					description = <"The activity should take place on a specific day or interval of days of the week.">
+					comment = <"For example: 'On Mondays, Wednesdays and Fridays' or 'On Mondays through Thursdays'. If the data type \"Count\" is used, 0 represents Sunday, 1 Monday, etc.">
 				>
 				["at0004"] = <
 					text = <"Specific day of month">
-					description = <"The activity should take place on a specific day of the month.">
-					comment = <"e.g. 'on the 3rd, 13th and 23rd of each month'.">
+					description = <"The activity should take place on a specific day or interval of days of the month.">
+					comment = <"For example: 'on the 3rd, 13th and 23rd of each month' or 'on the 1st to the 10th of each month'.">
 				>
 				["at0005"] = <
 					text = <"Event name">
@@ -304,15 +313,23 @@ ontology
 					text = <"Specific event">
 					description = <"The activity should take place in relation to a specific named event.">
 				>
+				["at0007"] = <
+					text = <"Mondays">
+					description = <"The activity should take place on Mondays.">
+				>
+				["at0008"] = <
+					text = <"Tuesdays">
+					description = <"The activity should take place on Tuesdays.">
+				>
 				["at0009"] = <
 					text = <"Start interval">
-					description = <"The period of time before or after the named event when the activity should take place. Negative durations can be used to signifify that the activity should be taken before a known event.">
-					comment = <"e.g. '3 days after onset of menstruation = menstrual onset + 3 days', '2 weeks prior to admission= admission -2 weeks'.">
+					description = <"The period of time before or after the named event when the activity should take place. Negative durations can be used to signify that the activity should be taken before a known event.">
+					comment = <"For example: '3 days after onset of menstruation = menstrual onset + 3 days', '2 weeks prior to admission= admission -2 weeks'.">
 				>
 				["at0010"] = <
 					text = <"On /off cycle">
 					description = <"A cycle of activity where an on-off pattern is required.">
-					comment = <"e.g. 'take 3 tablets daily for 1 week, omit a week, then take 3 tablets daily for 1 week, repeat 4 times'">
+					comment = <"For example: 'take for 1 week, omit 2 weeks, repeat 4 times'">
 				>
 				["at0011"] = <
 					text = <"On">
@@ -329,44 +346,36 @@ ontology
 				["at0014"] = <
 					text = <"Frequency">
 					description = <"The number of days per time period on which the activity is to take place.">
-					comment = <"e.g. \"3 times per week\", \"2-4 times per month\".">
+					comment = <"For example: '3 times per week', '2-4 times per month'.">
 				>
 				["at0015"] = <
 					text = <"Single activity only">
 					description = <"The activity should only be performed on a single occasion and is not to be repeated.">
 				>
-				["at0007"] = <
-					text = <"Monday">
-					description = <"The activity should take place on Monday.">
-				>
-				["at0008"] = <
-					text = <"Tuesday">
-					description = <"The activity should take place on Monday.">
-				>
 				["at0016"] = <
-					text = <"Wednesday">
-					description = <"The activity should take place on Wednesday.">
+					text = <"Wednesdays">
+					description = <"The activity should take place on Wednesdays.">
 				>
 				["at0017"] = <
-					text = <"Thursday">
-					description = <"The activity should take place on Thursday.">
+					text = <"Thursdays">
+					description = <"The activity should take place on Thursdays.">
 				>
 				["at0018"] = <
-					text = <"Friday">
-					description = <"The activity should take place on Friday.">
+					text = <"Fridays">
+					description = <"The activity should take place on Fridays.">
 				>
 				["at0019"] = <
-					text = <"Saturday">
-					description = <"The activity should take place on Saturday.">
+					text = <"Saturdays">
+					description = <"The activity should take place on Saturdays.">
 				>
 				["at0020"] = <
-					text = <"Sunday">
-					description = <"The activity should take place on Sunday.">
+					text = <"Sundays">
+					description = <"The activity should take place on Sundays.">
 				>
 				["at0021"] = <
 					text = <"Timing description">
-					description = <"Text description of the timing repetition. This element is intended to allow implementers to use the structures for different timings without necessarily specifying the timings in a structured way.">
-					comment = <"For example: \"Use for one week, then stop for two weeks, then repeat\".">
+					description = <"Text description of the timing repetition.">
+					comment = <"For example: 'Use for one week, then stop for two weeks, then repeat'. This element is intended to allow implementers to use the structures for different timings without necessarily specifying the timings in a structured way.">
 				>
 			>
 		>
@@ -467,6 +476,106 @@ ontology
 					text = <"*Timing description(en)">
 					description = <"*Text description of the timing repetition. This element is intended to allow implementers to use the structures for different timings without necessarily specifying the timings in a structured way.(en)">
 					comment = <"*For example: \"Use for one week, then stop for two weeks, then repeat\".(en)">
+				>
+			>
+		>
+		["nb"] = <
+			items = <
+				["at0000"] = <
+					text = <"Timing - repetering">
+					description = <"Strukturert informasjon om planlagt timing av en terapeutisk aktivitet over lengre tidsintervaller enn et døgn.">
+				>
+				["at0001"] = <
+					text = <"Spesifikk dato">
+					description = <"Aktiviteten skal utføres på en spesifikk dato eller et spesifikt datointervall.">
+					comment = <"For eksempel \"12. jan 2017\" eller \"30 okt 2017 til 6 nov 2017\".">
+				>
+				["at0002"] = <
+					text = <"Repetisjonsintervall">
+					description = <"Intervallene mellom repetisjoner av aktiviteten.">
+					comment = <"For eksempel \"hver 3. uke\" eller \"hver 2.-3. dag\".">
+				>
+				["at0003"] = <
+					text = <"Spesifikk ukedag">
+					description = <"Aktiviteten skal utføres på en spesifikk dag eller et spesifikt intervall av dager.">
+					comment = <"For eksempel \"på mandager, onsdager og fredager\" eller \"på mandager til torsdager\". Dersom datatypen \"Antall\" benyttes representerer 0 søndag, 1 mandag, og så videre.">
+				>
+				["at0004"] = <
+					text = <"Spesifikk dag av måneden">
+					description = <"Aktiviteten skal utføres på en spesifikk dag eller et intervall av dager av måneden.">
+					comment = <"For eksempel \"på 3., 13. og 23. hver måned\" eller \"på 1.-10. av hver måned\".">
+				>
+				["at0005"] = <
+					text = <"Hendelsesnavn">
+					description = <"Navnet på hendelsen aktiviteten skal uføres i sammenheng med.">
+				>
+				["at0006"] = <
+					text = <"Spesifikk hendelse">
+					description = <"Aktiviteten skal utføres i sammenheng med en spesifikk navngitt hendelse.">
+				>
+				["at0007"] = <
+					text = <"Mandager">
+					description = <"Aktiviteten skal utføres på mandager.">
+				>
+				["at0008"] = <
+					text = <"Tirsdager">
+					description = <"Aktiviteten skal utføres på tirsdager.">
+				>
+				["at0009"] = <
+					text = <"Startintervall">
+					description = <"Tidsintervallet før eller etter hendelsen når aktiviteten skal utføres. Negative intervaller kan benyttes for å spesifisere at aktiviteten skal utføres før den navngitte hendelsen.">
+					comment = <"For eksempel \"3 dager etter første menstruasjonsdag = første menstruasjonsdag + 3 dager\", \"2 uker før innleggelse = innleggelse - 2 uker\".">
+				>
+				["at0010"] = <
+					text = <"På / av-syklus">
+					description = <"En aktivitetssyklus som krever et på/av-mønster.">
+					comment = <"For eksempel \"ta i 1 uke, hopp over 2 uker, gjenta 4 ganger\".">
+				>
+				["at0011"] = <
+					text = <"På">
+					description = <"Tidsperioden da aktiviteten skal utføres.">
+				>
+				["at0012"] = <
+					text = <"Av">
+					description = <"Tidsperioden da aktiviteten IKKE skal utføres.">
+				>
+				["at0013"] = <
+					text = <"Repetisjoner">
+					description = <"Antall ganger på/av-syklusen skal repeteres.">
+				>
+				["at0014"] = <
+					text = <"Frekvens">
+					description = <"Antall dager per tidsintervall aktiviteten skal utføres.">
+					comment = <"For eksempel \"3 ganger per uke\" eller \"2-4 ganger per måned\".">
+				>
+				["at0015"] = <
+					text = <"Engangsaktivitet">
+					description = <"Aktiviteten skal kun utføres én gang, og skal ikke gjentas.">
+				>
+				["at0016"] = <
+					text = <"Onsdager">
+					description = <"Aktiviteten skal utføres på onsdager.">
+				>
+				["at0017"] = <
+					text = <"Torsdager">
+					description = <"Aktiviteten skal utføres på torsdager.">
+				>
+				["at0018"] = <
+					text = <"Fredager">
+					description = <"Aktiviteten skal utføres på fredager.">
+				>
+				["at0019"] = <
+					text = <"Lørdager">
+					description = <"Aktiviteten skal utføres på lørdager.">
+				>
+				["at0020"] = <
+					text = <"Søndager">
+					description = <"Aktiviteten skal utføres på søndager.">
+				>
+				["at0021"] = <
+					text = <"Timingbeskrivelse">
+					description = <"Tekstbeskrivelse av timingen.">
+					comment = <"For eksempel \"bruk i en uke, stopp i to uker, gjenta\". Dette elementet er ment for å tillate implementerere å bruke strukturene for varierende timing, uten å nødvendigvis spesifisere timingen på en strukturert måte.">
 				>
 			>
 		>
