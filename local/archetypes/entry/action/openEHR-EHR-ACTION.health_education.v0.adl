@@ -1,8 +1,8 @@
-﻿archetype (adl_version=1.4)
-	openEHR-EHR-ACTION.health_education.v1
+﻿archetype (adl_version=1.4; uid=db987815-2602-4144-9b58-1708551eb707)
+	openEHR-EHR-ACTION.health_education.v0
 
 concept
-	[at0000]	-- Health Education
+	[at0000]	-- Health education
 language
 	original_language = <[ISO_639-1::en]>
 description
@@ -19,19 +19,25 @@ description
 			use = <"Use to record details about health education intervention, such as advice or physical material, provided to the subject, including links to the information itself. For example, a record of fact sheets provided to the patient about the risks of a vasectomy.">
 			keywords = <"information", "education">
 			misuse = <"Not to be used to record consent - for example consent to a vasectomy after provision of a fact sheet about vasectomy.">
-			copyright = <"© openEHR Foundation">
+			copyright = <"© National E-Health Transition Authority, openEHR Foundation">
 		>
 	>
-	lifecycle_state = <"AuthorDraft">
+	lifecycle_state = <"in_development">
 	other_contributors = <"Rita Apelt, Department of Health,NT, Australia", "Stephen Chu, NEHTA, Australia (Editor)", "Tim Garden, NTG Department of Health, Australia", "Tanya Gardner, CAAC, Australia", "Sam Heard, Ocean Informatics, Australia", "Heather Leslie, Ocean Informatics, Australia (Editor)", "Chunlan Ma, Ocean Informatics, Australia", "Ian McNicoll, Ocean Informatics UK, United Kingdom", "Jeremy Oats, NT Health, Australia", "Rosalie Schultz, Anyinginyi Health Aboriginal Corporation, Australia", "Jo Wright, NT Dept of Health, Australia">
 	other_details = <
-		["references"] = <"Health Education (ACTION), draft archetype, NEHTA Clinical Knowledge Manager [Internet]. Sydney: National eHealth Transition Authority. Authored: 24May 2011. Available at: http://dcm.nehta.org.au/ckm/OKM.html#showarchetype_1013.1.1005_2 (accessed 26 Feb 2013).">
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
+		["custodian_organisation"] = <"openEHR Foundation">
 		["current_contact"] = <"Heather Leslie, Ocean Informatics, heather.leslie@oceaninformatics.com">
-		["MD5-CAM-1.0.1"] = <"41FABA666F88DB81EBB0D143689C1D98">
+		["original_namespace"] = <"org.openehr">
+		["original_publisher"] = <"openEHR Foundation">
+		["custodian_namespace"] = <"org.openehr">
+		["MD5-CAM-1.0.1"] = <"139DE60C15748A84E1E0D31B2C9EA0FE">
+		["build_uid"] = <"de2a10d0-b74c-4e21-9528-66f4951ee9e7">
+		["revision"] = <"0.0.1-alpha">
 	>
 
 definition
-	ACTION[at0000] matches {	-- Health Education
+	ACTION[at0000] matches {	-- Health education
 		ism_transition matches {
 			ISM_TRANSITION[at0006] matches {	-- Education planned
 				current_state matches {
@@ -188,6 +194,23 @@ definition
 				}
 			}
 		}
+		protocol matches {
+			ITEM_TREE[at0021] matches {	-- Tree
+				items cardinality matches {0..*; unordered} matches {
+					ELEMENT[at0022] occurrences matches {0..1} matches {	-- Interpreter Present
+						value matches {
+							DV_BOOLEAN matches {
+								value matches {True}
+							}
+						}
+					}
+					allow_archetype CLUSTER[at0023] occurrences matches {0..*} matches {	-- Extension
+						include
+							archetype_id/value matches {/.*/}
+					}
+				}
+			}
+		}
 	}
 
 
@@ -196,7 +219,7 @@ ontology
 		["en"] = <
 			items = <
 				["at0000"] = <
-					text = <"Health Education">
+					text = <"Health education">
 					description = <"Health education information provided or imparted to the subject.">
 				>
 				["at0001"] = <
@@ -273,6 +296,20 @@ ontology
 				["at0020"] = <
 					text = <"Session Number">
 					description = <"Number of the education session in an multi-session course.">
+				>
+				["at0021"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0022"] = <
+					text = <"Interpreter Present">
+					description = <"Was an interpreter present?">
+					comment = <"Record as True if an Interpreter was present during the health education session.">
+				>
+				["at0023"] = <
+					text = <"Extension">
+					description = <"Additional information required to capture local context or to align with other reference models/formalisms.">
+					comment = <"For example: Local hospital departmental infomation or additional metadata to align with FHIR or CIMI equivalents.">
 				>
 			>
 		>
