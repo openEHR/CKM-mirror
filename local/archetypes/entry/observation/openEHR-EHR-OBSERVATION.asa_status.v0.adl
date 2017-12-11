@@ -6,13 +6,6 @@ concept
 language
 	original_language = <[ISO_639-1::en]>
 	translations = <
-		["nb"] = <
-			language = <[ISO_639-1::nb]>
-			author = <
-				["name"] = <"Lars Bitsch-Larsen; Einar Fosse">
-				["organisation"] = <"Helse Vest; Helse Nord">
-			>
-		>
 		["es-ar"] = <
 			language = <[ISO_639-1::es-ar]>
 			author = <
@@ -21,6 +14,13 @@ language
 				["email"] = <"alandmarch@gmail.com">
 			>
 			accreditation = <"MD">
+		>
+		["nb"] = <
+			language = <[ISO_639-1::nb]>
+			author = <
+				["name"] = <"Lars Bitsch-Larsen; Einar Fosse">
+				["organisation"] = <"Helse Vest; Helse Nord">
+			>
 		>
 		["pt-br"] = <
 			language = <[ISO_639-1::pt-br]>
@@ -48,6 +48,13 @@ description
 			misuse = <"Ikke beregnet for bruk som eneste mål for å forutsi operasjonsrisiko.">
 			copyright = <"© openEHR Foundation, Nasjonal IKT HF, openEHR Foundation">
 		>
+		["es-ar"] = <
+			language = <[ISO_639-1::es-ar]>
+			purpose = <"Para registrar el grado de 'enfermedad' o 'estado físico' previo a la selección del anestésico o a la realización de una cirugía.">
+			use = <"Utilizado para el manteimiento de registros, para la comunicación entre colegas o para la creación de un sistema uniforme para el análisis estadístico.">
+			keywords = <"ASA", "prequirúrgico", "preoperatorio", "cirugía">
+			misuse = <"No diseñado para su uso aislado como única medida de predicción de riesgo operatorio.">
+		>
 		["pt-br"] = <
 			language = <[ISO_639-1::pt-br]>
 			purpose = <"Para registrar o grau da 'doença' ou do 'estado físico' antes de escolher o anestésico ou antes de realizar a cirurgia.">
@@ -64,13 +71,6 @@ description
 			misuse = <"Not intended for use by itself as the only measure to predict operative risk.">
 			copyright = <"© openEHR Foundation, Nasjonal IKT HF, openEHR Foundation">
 		>
-		["es-ar"] = <
-			language = <[ISO_639-1::es-ar]>
-			purpose = <"Para registrar el grado de 'enfermedad' o 'estado físico' previo a la selección del anestésico o a la realización de una cirugía.">
-			use = <"Utilizado para el manteimiento de registros, para la comunicación entre colegas o para la creación de un sistema uniforme para el análisis estadístico.">
-			keywords = <"ASA", "prequirúrgico", "preoperatorio", "cirugía">
-			misuse = <"No diseñado para su uso aislado como única medida de predicción de riesgo operatorio.">
-		>
 	>
 	lifecycle_state = <"in_development">
 	other_contributors = <"Vebjørn Arntzen, Oslo universitetssykehus HF, Norway (Nasjonal IKT redaktør)", "Silje Ljosland Bakke, Nasjonal IKT HF, Norway (Nasjonal IKT redaktør)", "Lars Bitsch-Larsen, Haukeland University Hospital, Bergen, Norway", "Lisbeth Dahlhaug, Helse Midt - Norge IT, Norway", "Torsten Eken, Oslo universitetssykehus HF, Ullevål, Norway", "Kristian Heldal, Telemark Hospital Trust, Norway", "Lars Morgan Karlsen, DIPS ASA, Norway", "Heather Leslie, Ocean Informatics, Australia (openEHR Editor)", "Ian McNicoll, freshEHR Clinical Informatics, United Kingdom (openEHR Editor)", "Terje Meling, Stavanger University Hospital, Norway", "Mette Monsen, Helse Bergen HF, Norway", "Bjørn Næss, DIPS ASA, Norway", "John Tore Valand, Haukeland Universitetssjukehus, Norway (Nasjonal IKT redaktør)", "Ørjan Vermeer, Haukeland Universitetssjukehus, Kvinneklinikken, Norway", "Nils Widnes, Helse-Bergen, Norway">
@@ -84,67 +84,69 @@ Norwegian Association of Anaesthesiologists: ASA-klassifikasjonen. http://nafweb
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"2D84CA4EBBD134EC45E31AC3A010D562">
-		["build_uid"] = <"2ced1b3e-95b0-4b19-8ed5-0052b05db95f">
+		["MD5-CAM-1.0.1"] = <"4FCC96F25AF28DC2DC10ED98EF314074">
+		["build_uid"] = <"d5a09dc2-f267-44a7-b756-c1b35baf2d6b">
 		["revision"] = <"0.0.1-alpha">
 	>
 
 definition
-	OBSERVATION[at0000] matches {	-- ASA Physical Status Classification
-		data matches {
-			HISTORY[at0015] matches {	-- Event Series
-				events cardinality matches {1..*; unordered} matches {
-					POINT_EVENT[at0016] occurrences matches {0..1} matches {	-- Any point in time event
-						data matches {
-							ITEM_TREE[at0017] matches {	-- Tree
-								items cardinality matches {1..*; unordered} matches {
-									ELEMENT[at0001] occurrences matches {0..1} matches {	-- ASA patient status
-										value matches {
-											DV_CODED_TEXT matches {
-												defining_code matches {
-													[local::
-													at0003, 	-- 1 - A normal healthy patient
-													at0004, 	-- 2 - A patient with mild systemic disease
-													at0005, 	-- 3 - A patient with severe systemic disease
-													at0006, 	-- 4 - A patient with severe systemic disease that is a constant threat to life
-													at0007, 	-- 5 - A moribund patient who is not expected to survive without the operation
-													at0008, 	-- 6 - A declared brain-dead patient whose organs are being removed for donor purposes
-													at0009, 	-- 1E - A normal healthy patient (Emergency)
-													at0010, 	-- 2E - A patient with mild systemic disease (Emergency)
-													at0011, 	-- 3E - A patient with severe systemic disease (Emergency)
-													at0012, 	-- 4E - A patient with severe systemic disease that is a constant threat to life (Emergency)
-													at0013]	-- 5E - A moribund patient who is not expected to survive without the operation (Emergency)
-												}
-											}
-										}
-									}
-									ELEMENT[at0014] occurrences matches {0..1} matches {	-- Comment
-										value matches {
-											DV_TEXT matches {*}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-		protocol matches {
-			ITEM_TREE[at0018] matches {	-- ItemTree
-				items cardinality matches {0..*; unordered} matches {
-					allow_archetype CLUSTER[at0019] occurrences matches {0..1} matches {	-- Extension
-						include
-							archetype_id/value matches {/.*/}
-					}
-				}
-			}
-		}
-	}
+    OBSERVATION[at0000] matches {
+        data matches {
+            HISTORY[at0015] matches {
+                events cardinality matches {1..*; unordered} matches {
+                    POINT_EVENT[at0016] occurrences matches {0..*} matches {
+                        data matches {
+                            ITEM_TREE[at0017] matches {
+                                items cardinality matches {1..*; unordered} matches {
+                                    ELEMENT[at0001] occurrences matches {0..1} matches {
+                                        value matches {
+                                            DV_CODED_TEXT matches {
+                                                defining_code matches {
+                                                    [local::
+                                                    at0003,
+                                                    at0004,
+                                                    at0005,
+                                                    at0006,
+                                                    at0007,
+                                                    at0008,
+                                                    at0009,
+                                                    at0010,
+                                                    at0011,
+                                                    at0012,
+                                                    at0013]
+                                                }
+                                            }
+                                        }
+                                    }
+                                    ELEMENT[at0014] occurrences matches {0..1} matches {
+                                        value matches {
+                                            DV_TEXT matches {*}
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        state matches {
+                            ITEM_TREE[at0002] occurrences matches {0..1} matches {*}
+                        }
+                    }
+                }
+            }
+        }
+        protocol matches {
+            ITEM_TREE[at0018] matches {
+                items cardinality matches {0..*; unordered} matches {
+                    allow_archetype CLUSTER[at0019] occurrences matches {0..*} matches {
+                    }
+                }
+            }
+        }
+    }
+
 
 
 ontology
-	terminologies_available = <"en", "pt-br", "nb">
+	terminologies_available = <"en", "pt-br", "nb", "es-ar">
 	term_definitions = <
 		["en"] = <
 			items = <
@@ -155,6 +157,10 @@ ontology
 				["at0001"] = <
 					text = <"ASA patient status">
 					description = <"Assessed pre-operative status of a patient.">
+				>
+				["at0002"] = <
+					text = <"Tree">
+					description = <"@ internal @">
 				>
 				["at0003"] = <
 					text = <"1 - A normal healthy patient">
@@ -306,6 +312,10 @@ ontology
 					description = <"*Additional information required to capture local context or to align with other reference models/formalisms.(en)">
 					comment = <"*For example: Local hospital departmental infomation or additional metadata to align with FHIR or CIMI equivalents.(en)">
 				>
+				["at0002"] = <
+					text = <"ItemTree">
+					description = <"@ internal @">
+				>
 			>
 		>
 		["nb"] = <
@@ -387,6 +397,10 @@ ontology
 					description = <"Ytterligere informasjon som trengs for å kunne registrere lokalt definert innhold eller for å tilpasse til andre referansemodeller/formalismer.">
 					comment = <"For eksempel lokale informasjonsbehov eller ytterligere metadata for å kunne tilpasse til tilsvarende konsepter i FHIR eller CIMI.">
 				>
+				["at0002"] = <
+					text = <"ItemTree">
+					description = <"@ internal @">
+				>
 			>
 		>
 		["es-ar"] = <
@@ -467,6 +481,10 @@ ontology
 					text = <"Extensión">
 					description = <"Información adicional requerida para contemplar contenidos locales o para alinear con otros modelos o formalismos de referencia">
 					comment = <"ejemplo: requerimientos locales de información o metadatos adicionales necesarios para el alineamiento con FHIR o equivalentes de CIMI.">
+				>
+				["at0002"] = <
+					text = <"ItemTree">
+					description = <"@ internal @">
 				>
 			>
 		>
