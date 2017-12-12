@@ -30,6 +30,15 @@ description
 		["date"] = <"2015-09-11">
 	>
 	details = <
+		["nb"] = <
+			language = <[ISO_639-1::nb]>
+			purpose = <"For å registrere strukturert informasjon om planlagt timing av en aktivitet over lengre tidsintervaller enn et døgn.">
+			use = <"Brukes for å registrere strukturert informasjon om planlagt timing av en aktivitet over lengre tidsintervaller enn et døgn.
+
+Arketypen er laget for å brukes i SLOTet \"Anvisningsrepetisjon\" i arketypen CLUSTER.therapeutic_direction (Terapeutisk anvisning), men kan også brukes i andre CLUSTER- og ENTRY-arketyper der det er klinisk passende.">
+			keywords = <"timing, administrering, administrasjon, dosering, frekvens, intervall, ordinering, forskriving, foreskriving, anbefaling, plan", ...>
+			misuse = <"Skal ikke brukes til å registrere detaljer om timing innenfor et døgn. Bruk arketypen CLUSTER.timing_daily for dette formålet.">
+		>
 		["pt-br"] = <
 			language = <[ISO_639-1::pt-br]>
 			purpose = <"*To record structured information about the intended timing of a therapeutic activity over a time period longer than 24 hours.(en)">
@@ -48,15 +57,6 @@ This archetype is designed to be used within the 'Direction repetition' SLOT wit
 			misuse = <"Not to be used for recording timing details within a single 24 hour time period. Use the CLUSTER.timing_daily archetype for this purpose.">
 			copyright = <"© openEHR Foundation">
 		>
-		["nb"] = <
-			language = <[ISO_639-1::nb]>
-			purpose = <"For å registrere strukturert informasjon om planlagt timing av en aktivitet over lengre tidsintervaller enn et døgn.">
-			use = <"Brukes for å registrere strukturert informasjon om planlagt timing av en aktivitet over lengre tidsintervaller enn et døgn.
-
-Arketypen er laget for å brukes i SLOTet \"Anvisningsrepetisjon\" i arketypen CLUSTER.therapeutic_direction (Terapeutisk anvisning), men kan også brukes i andre CLUSTER- og ENTRY-arketyper der det er klinisk passende.">
-			keywords = <"timing, administrering, administrasjon, dosering, frekvens, intervall, ordinering, forskriving, foreskriving, anbefaling, plan", ...>
-			misuse = <"Skal ikke brukes til å registrere detaljer om timing innenfor et døgn. Bruk arketypen CLUSTER.timing_daily for dette formålet.">
-		>
 	>
 	lifecycle_state = <"in_development">
 	other_contributors = <"Silje Ljosland Bakke, Nasjonal IKT HF, Norway (openEHR Editor)", "Heather Leslie, Ocean Informatics, Australia (openEHR Editor)", "Ian McNicoll, freshEHR Clinical Informatics, United Kingdom (openEHR Editor)", "John Tore Valand, Helse Bergen, Norway (openEHR Editor)">
@@ -66,8 +66,8 @@ Arketypen er laget for å brukes i SLOTet \"Anvisningsrepetisjon\" i arketypen C
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"88E98E1C34B5B94453057CB1A9A625BD">
-		["build_uid"] = <"0409144c-bea5-4c5f-a14a-d65cd03bca44">
+		["MD5-CAM-1.0.1"] = <"2B924C88D6152B733C6FC99FF3A638D1">
+		["build_uid"] = <"37c129e5-7cca-41c3-9374-093b2e0d1b38">
 		["revision"] = <"0.0.1-alpha">
 	>
 
@@ -75,33 +75,21 @@ definition
     CLUSTER[at0000] matches {
         items cardinality matches {1..*; unordered} matches {
             ELEMENT[at0002] occurrences matches {0..1} matches {
-                value existence matches {0..1} matches {
+                value matches {
                     DV_DURATION matches {
                         value matches {PYMWD/|>P0D|}
-                    }
-                    DV_INTERVAL<DV_DURATION> matches {
-                        lower existence matches {0..1} matches {
-                            DV_DURATION matches {
-                                value matches {PYMWD/|>P0D|}
-                            }
-                        }
-                        upper existence matches {0..1} matches {
-                            DV_DURATION matches {
-                                value matches {PYMWD/|>P0D|}
-                            }
-                        }
                     }
                 }
             }
             ELEMENT[at0015] occurrences matches {0..1} matches {
-                value existence matches {0..1} matches {
+                value matches {
                     DV_BOOLEAN matches {
                         value matches {true}
                     }
                 }
             }
             ELEMENT[at0014] occurrences matches {0..1} matches {
-                value existence matches {0..1} matches {
+                value matches {
                     C_DV_QUANTITY <
                         property = <[openehr::382]>
                         list = <
@@ -123,7 +111,7 @@ definition
                         >
                     >
                     DV_INTERVAL<DV_QUANTITY> matches {
-                        upper existence matches {0..1} matches {
+                        upper matches {
                             C_DV_QUANTITY <
                                 property = <[openehr::382]>
                                 list = <
@@ -145,7 +133,7 @@ definition
                                 >
                             >
                         }
-                        lower existence matches {0..1} matches {
+                        lower matches {
                             C_DV_QUANTITY <
                                 property = <[openehr::382]>
                                 list = <
@@ -171,28 +159,20 @@ definition
                 }
             }
             ELEMENT[at0001] occurrences matches {0..*} matches {
-                value existence matches {0..1} matches {
+                value matches {
                     DV_DATE matches {*}
-                    DV_INTERVAL<DV_DATE> matches {*}
+                    DV_INTERVAL<DV_DATE> matches {
+                        lower matches {
+                            DV_DATE matches {*}
+                        }
+                        upper matches {
+                            DV_DATE matches {*}
+                        }
+                    }
                 }
             }
             ELEMENT[at0003] occurrences matches {0..*} matches {
-                value existence matches {0..1} matches {
-                    DV_COUNT matches {
-                        magnitude existence matches {0..1} matches {|0..6|}
-                    }
-                    DV_INTERVAL<DV_COUNT> matches {
-                        lower existence matches {0..1} matches {
-                            DV_COUNT matches {
-                                magnitude existence matches {0..1} matches {|0..6|}
-                            }
-                        }
-                        upper existence matches {0..1} matches {
-                            DV_COUNT matches {
-                                magnitude existence matches {0..1} matches {|0..6|}
-                            }
-                        }
-                    }
+                value matches {
                     DV_CODED_TEXT matches {
                         defining_code matches {
                             [local::
@@ -208,40 +188,40 @@ definition
                 }
             }
             ELEMENT[at0004] occurrences matches {0..*} matches {
-                value existence matches {0..1} matches {
+                value matches {
                     DV_COUNT matches {
-                        magnitude existence matches {0..1} matches {|1..31|}
+                        magnitude matches {|1..31|}
                     }
                     DV_INTERVAL<DV_COUNT> matches {
-                        lower existence matches {0..1} matches {
+                        upper matches {
                             DV_COUNT matches {
-                                magnitude existence matches {0..1} matches {|1..31|}
+                                magnitude matches {|1..31|}
                             }
                         }
-                        upper existence matches {0..1} matches {
+                        lower matches {
                             DV_COUNT matches {
-                                magnitude existence matches {0..1} matches {|1..31|}
+                                magnitude matches {|1..31|}
                             }
                         }
                     }
                 }
             }
             ELEMENT[at0021] occurrences matches {0..1} matches {
-                value existence matches {0..1} matches {
+                value matches {
                     DV_TEXT matches {*}
                 }
             }
             CLUSTER[at0006] occurrences matches {0..*} matches {
                 items cardinality matches {1..*; unordered} matches {
                     ELEMENT[at0005] occurrences matches {0..1} matches {
-                        value existence matches {0..1} matches {
+                        value matches {
                             DV_TEXT matches {*}
                         }
                     }
                     ELEMENT[at0009] occurrences matches {0..1} matches {
-                        value existence matches {0..1} matches {
+                        value matches {
                             DV_DURATION matches {
-                                value matches {PYMWD}
+                                value matches {PYMWD/|>=P0D|}
                             }
                         }
                     }
@@ -250,23 +230,23 @@ definition
             CLUSTER[at0010] occurrences matches {0..*} matches {
                 items cardinality matches {1..*; unordered} matches {
                     ELEMENT[at0011] occurrences matches {0..1} matches {
-                        value existence matches {0..1} matches {
+                        value matches {
                             DV_DURATION matches {
                                 value matches {PYMWD/|>P0D|}
                             }
                         }
                     }
                     ELEMENT[at0012] occurrences matches {0..1} matches {
-                        value existence matches {0..1} matches {
+                        value matches {
                             DV_DURATION matches {
                                 value matches {PYMWD/|>P0D|}
                             }
                         }
                     }
                     ELEMENT[at0013] occurrences matches {0..1} matches {
-                        value existence matches {0..1} matches {
+                        value matches {
                             DV_COUNT matches {
-                                magnitude existence matches {0..1} matches {|>=0|}
+                                magnitude matches {|>=0|}
                             }
                         }
                     }
@@ -277,7 +257,7 @@ definition
 
 
 ontology
-	terminologies_available = <"en", "pt-br">
+	terminologies_available = <"en", "pt-br", "nb">
 	term_definitions = <
 		["en"] = <
 			items = <
@@ -297,8 +277,8 @@ ontology
 				>
 				["at0003"] = <
 					text = <"Specific day of week">
-					description = <"The activity should take place on a specific day or interval of days of the week.">
-					comment = <"For example: 'On Mondays, Wednesdays and Fridays' or 'On Mondays through Thursdays'. If the data type \"Count\" is used, 0 represents Sunday, 1 Monday, etc.">
+					description = <"The activity should take place on a specific day of the week.">
+					comment = <"For example: 'On Monday, Wednesday and Friday'.">
 				>
 				["at0004"] = <
 					text = <"Specific day of month">
@@ -314,15 +294,15 @@ ontology
 					description = <"The activity should take place in relation to a specific named event.">
 				>
 				["at0007"] = <
-					text = <"Mondays">
-					description = <"The activity should take place on Mondays.">
+					text = <"Monday">
+					description = <"The activity should take place on Monday.">
 				>
 				["at0008"] = <
-					text = <"Tuesdays">
-					description = <"The activity should take place on Tuesdays.">
+					text = <"Tuesday">
+					description = <"The activity should take place on Tuesday.">
 				>
 				["at0009"] = <
-					text = <"Start interval">
+					text = <"Time offset">
 					description = <"The period of time before or after the named event when the activity should take place. Negative durations can be used to signify that the activity should be taken before a known event.">
 					comment = <"For example: '3 days after onset of menstruation = menstrual onset + 3 days', '2 weeks prior to admission= admission -2 weeks'.">
 				>
@@ -353,24 +333,24 @@ ontology
 					description = <"The activity should only be performed on a single occasion and is not to be repeated.">
 				>
 				["at0016"] = <
-					text = <"Wednesdays">
-					description = <"The activity should take place on Wednesdays.">
+					text = <"Wednesday">
+					description = <"The activity should take place on Wednesday.">
 				>
 				["at0017"] = <
-					text = <"Thursdays">
-					description = <"The activity should take place on Thursdays.">
+					text = <"Thursday">
+					description = <"The activity should take place on Thursday.">
 				>
 				["at0018"] = <
-					text = <"Fridays">
-					description = <"The activity should take place on Fridays.">
+					text = <"Friday">
+					description = <"The activity should take place on Friday.">
 				>
 				["at0019"] = <
-					text = <"Saturdays">
-					description = <"The activity should take place on Saturdays.">
+					text = <"Saturday">
+					description = <"The activity should take place on Saturday.">
 				>
 				["at0020"] = <
-					text = <"Sundays">
-					description = <"The activity should take place on Sundays.">
+					text = <"Sunday">
+					description = <"The activity should take place on Sunday.">
 				>
 				["at0021"] = <
 					text = <"Timing description">
@@ -396,9 +376,9 @@ ontology
 					comment = <"por exemplo: \"Cada 3 semanas\"">
 				>
 				["at0003"] = <
-					text = <"Dia da semana específico">
-					description = <"A atividade deve ocorrer em um dia específico da semana, com o 0 representando o domingo.">
-					comment = <"Por exemplo: \"Segundas, quartas e sextas feiras\"">
+					text = <"*Specific day of week(en)">
+					description = <"*The activity should take place on a specific day of the week.(en)">
+					comment = <"*For example: 'On Monday, Wednesday and Friday'.(en)">
 				>
 				["at0004"] = <
 					text = <"Dia do mês específico">
@@ -412,6 +392,14 @@ ontology
 				["at0006"] = <
 					text = <"Evento específico">
 					description = <"A atividade deve ocorrer em relação a um determinado evento de chamada.">
+				>
+				["at0007"] = <
+					text = <"*Monday(en)">
+					description = <"*The activity should take place on Monday.(en)">
+				>
+				["at0008"] = <
+					text = <"*Tuesday(en)">
+					description = <"*The activity should take place on Tuesday.(en)">
 				>
 				["at0009"] = <
 					text = <"Início do intervalo">
@@ -444,33 +432,25 @@ ontology
 					text = <"Atividade única">
 					description = <"A atividade deve ser realizada apenas uma vez e não deve ser repetida.">
 				>
-				["at0007"] = <
-					text = <"*Monday (en)">
-					description = <"The activity should take place on Monday.">
-				>
-				["at0008"] = <
-					text = <"*Tuesday (en)">
-					description = <"*The activity should take place on Monday. (en)">
-				>
 				["at0016"] = <
-					text = <"*Wednesday (en)">
-					description = <"*The activity should take place on Wednesday. (en)">
+					text = <"*Wednesday(en)">
+					description = <"*The activity should take place on Wednesday.(en)">
 				>
 				["at0017"] = <
-					text = <"*Thursday (en)">
-					description = <"*The activity should take place on Thursday. (en)">
+					text = <"*Thursday(en)">
+					description = <"*The activity should take place on Thursday.(en)">
 				>
 				["at0018"] = <
-					text = <"*Friday (en)">
-					description = <"*The activity should take place on Friday. (en)">
+					text = <"*Friday(en)">
+					description = <"*The activity should take place on Friday.(en)">
 				>
 				["at0019"] = <
-					text = <"*Saturday (en)">
-					description = <"*The activity should take place on Saturday. (en)">
+					text = <"*Saturday(en)">
+					description = <"*The activity should take place on Saturday.(en)">
 				>
 				["at0020"] = <
-					text = <"*Sunday (en)">
-					description = <"*The activity should take place on Sunday. (en)">
+					text = <"*Sunday(en)">
+					description = <"*The activity should take place on Sunday.(en)">
 				>
 				["at0021"] = <
 					text = <"*Timing description(en)">
@@ -497,8 +477,8 @@ ontology
 				>
 				["at0003"] = <
 					text = <"Spesifikk ukedag">
-					description = <"Aktiviteten skal utføres på en spesifikk dag eller et spesifikt intervall av dager.">
-					comment = <"For eksempel \"på mandager, onsdager og fredager\" eller \"på mandager til torsdager\". Dersom datatypen \"Antall\" benyttes representerer 0 søndag, 1 mandag, og så videre.">
+					description = <"Aktiviteten skal utføres på en spesifikk ukedag.">
+					comment = <"For eksempel \"på mandag, onsdag og fredag\".">
 				>
 				["at0004"] = <
 					text = <"Spesifikk dag av måneden">
@@ -514,15 +494,15 @@ ontology
 					description = <"Aktiviteten skal utføres i sammenheng med en spesifikk navngitt hendelse.">
 				>
 				["at0007"] = <
-					text = <"Mandager">
-					description = <"Aktiviteten skal utføres på mandager.">
+					text = <"Mandag">
+					description = <"Aktiviteten skal utføres på mandag.">
 				>
 				["at0008"] = <
-					text = <"Tirsdager">
-					description = <"Aktiviteten skal utføres på tirsdager.">
+					text = <"Tirsdag">
+					description = <"Aktiviteten skal utføres på tirsdag.">
 				>
 				["at0009"] = <
-					text = <"Startintervall">
+					text = <"Tidsforskyvelse">
 					description = <"Tidsintervallet før eller etter hendelsen når aktiviteten skal utføres. Negative intervaller kan benyttes for å spesifisere at aktiviteten skal utføres før den navngitte hendelsen.">
 					comment = <"For eksempel \"3 dager etter første menstruasjonsdag = første menstruasjonsdag + 3 dager\", \"2 uker før innleggelse = innleggelse - 2 uker\".">
 				>
@@ -553,24 +533,24 @@ ontology
 					description = <"Aktiviteten skal kun utføres én gang, og skal ikke gjentas.">
 				>
 				["at0016"] = <
-					text = <"Onsdager">
-					description = <"Aktiviteten skal utføres på onsdager.">
+					text = <"Onsdag">
+					description = <"Aktiviteten skal utføres på onsdag.">
 				>
 				["at0017"] = <
-					text = <"Torsdager">
-					description = <"Aktiviteten skal utføres på torsdager.">
+					text = <"Torsdag">
+					description = <"Aktiviteten skal utføres på torsdag.">
 				>
 				["at0018"] = <
-					text = <"Fredager">
-					description = <"Aktiviteten skal utføres på fredager.">
+					text = <"Fredag">
+					description = <"Aktiviteten skal utføres på fredag.">
 				>
 				["at0019"] = <
-					text = <"Lørdager">
-					description = <"Aktiviteten skal utføres på lørdager.">
+					text = <"Lørdag">
+					description = <"Aktiviteten skal utføres på lørdag.">
 				>
 				["at0020"] = <
-					text = <"Søndager">
-					description = <"Aktiviteten skal utføres på søndager.">
+					text = <"Søndag">
+					description = <"Aktiviteten skal utføres på søndag.">
 				>
 				["at0021"] = <
 					text = <"Timingbeskrivelse">
