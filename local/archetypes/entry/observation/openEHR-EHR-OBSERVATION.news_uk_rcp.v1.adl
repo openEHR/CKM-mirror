@@ -6,11 +6,12 @@ concept
 language
 	original_language = <[ISO_639-1::en]>
 	translations = <
-		["nb"] = <
-			language = <[ISO_639-1::nb]>
+		["sv"] = <
+			language = <[ISO_639-1::sv]>
 			author = <
-				["name"] = <"John Tore Valand">
-				["organisation"] = <"Helse Bergen HF">
+				["name"] = <"Kirsi Poikela">
+				["organisation"] = <"Tieto Sweden Healthcare & Welfare AB">
+				["email"] = <"ext.kirsi.poikela@tieto.com">
 			>
 		>
 		["es-ar"] = <
@@ -19,6 +20,13 @@ language
 				["name"] = <"Alan March">
 				["organisation"] = <"Hospital Universitario Austral, Pilar, Buenos Aires, Argentina">
 				["email"] = <"alandmarch@gmail.com">
+			>
+		>
+		["nb"] = <
+			language = <[ISO_639-1::nb]>
+			author = <
+				["name"] = <"John Tore Valand">
+				["organisation"] = <"Helse Bergen HF">
 			>
 		>
 		["pt-br"] = <
@@ -77,6 +85,17 @@ No debe utilizarse para niños y adolescentes menores de 16 años ni durante el 
 
 Não deve ser utilizado para crianças/adolescentes com idade inferior a 16 anos ou durante a gravidez.">
 		>
+		["sv"] = <
+			language = <[ISO_639-1::sv]>
+			purpose = <"Att registrera sammansatta poäng baserat på kategorisering av fysiologiska mätvärden och observationer, som en enkel metod för att stödja en objektiv bedömning av graden av klinisk försämring hos en sjuk patient över 16 år.">
+			use = <"Används för att registrera sammansatta poäng för att stödja bedömningen av graden av klinisk försämring hos en sjuk patient över 16 år.">
+			keywords = <"varning", "AVPU-skala", "RR", "HR", "BP", "Temp", "SBP", "triage", "NEWS", "Sat", "MEWS", "EWS", "syre", "mättnad", "sjukdom", "grad", "poäng">
+			misuse = <"Används inte för att registrera enskilda fysiska mätningar eller klinisk observationer. Använd specifika OBSERVATION-arketyper för detta ändamål -
+OBSERVATION.bloodpressure, 
+OBSERVATION.pulse, OBSERVATION.respirations, OBSERVATION.bodytemperature, OBSERVATION.avpu, CLUSTER.ambient_oxygen eller OBSERVATION.indirect_oximetry.
+
+Används inte för barn/tonåringar under 16 år eller under graviditet.">
+		>
 	>
 	lifecycle_state = <"published">
 	other_contributors = <"Vebjørn Arntzen, Oslo universitetssykehus HF, Norway (Nasjonal IKT redaktør)", "Koray Atalag, University of Auckland, New Zealand", "Silje Ljosland Bakke, Nasjonal IKT HF, Norway (Nasjonal IKT redaktør)", "Marcus Baw, openGPSoC / BawMedical Ltd, United Kingdom", "Kristian Berg, Universitetssykehuset Nord Norge, Norway", "Mauricio Botero, Universidad de Caldas, Colombia", "Bjørn Christensen, HUS, Norway", "Rui Coutinho, Centro Hospitalar do Porto, Portugal", "Hildegard Franke, freshEHR Clinical Informatics Ltd., United Kingdom", "Heather Grain, Llewelyn Grain Informatics, Australia", "Cecilie Graver, Oslo universitetssykehus HF, Norway", "Kristian Heldal, Telemark Hospital Trust, Norway", "Evelyn Hovenga, EJSH Consulting, Australia", "Karl Trygve Kalleberg, Oslo Universitetssykehus, Norway", "Lars Karlsen, DIPS ASA, Norway", "Lars Morgan Karlsen, DIPS ASA, Norway", "Heather Leslie, Ocean Informatics, Australia (openEHR Editor)", "Siv Marie Lien, DIPS ASA, Norway", "Hallvard Lærum, Oslo Universitetssykehus HF, Norway", "Vincent McCauley, Medical Software Industry Association, Australia", "James McClay, University of Nebraska Medical Center, United States", "Ian McNicoll, freshEHR Clinical Informatics, United Kingdom (openEHR Editor)", "Bjoern Naess, DIPS ASA, Norway", "Andrej Orel, Marand d.o.o., Slovenia", "Martin Paulson, Sykehuset i Vestfold, Norway", "Rune Pedersen, Universitetssykehuset i Nord Norge, Norway", "Vladimir Pizzo, Hospital Sírio Libanês, Brazil", "Navin Ramachandran, NHS, United Kingdom", "Norwegian Review Summary, National ICT Norway, Norway", "Anoop Shah, University College London, United Kingdom", "Line Silsand, Universitetssykehuset i Nord-Norge, Norway", "Lisbeth Sommervoll, Akershus Universitetssykehus, Norway", "Iztok Stotl, UKCLJ, Slovenia", "Rowan Thomas, St. Vincent's Hospital Melbourne, Australia", "John Tore Valand, Haukeland Universitetssjukehus, Norway (Nasjonal IKT redaktør)">
@@ -94,80 +113,80 @@ Modified Early Warning Score (NT RMP), draft archetype, NEHTA Clinical Knowledge
 		["original_namespace"] = <"no.nasjonalikt">
 		["original_publisher"] = <"Nasjonal IKT">
 		["custodian_namespace"] = <"no.nasjonalikt">
-		["MD5-CAM-1.0.1"] = <"D566732A051526FD9FFD0728E055AAEC">
-		["build_uid"] = <"0e344500-c4a8-4e2e-b3df-df3694cc22fe">
-		["revision"] = <"1.0.2">
+		["MD5-CAM-1.0.1"] = <"4E4F9CF7E6E5CD2A39F6AB032A34393D">
+		["build_uid"] = <"6af8ae81-df3f-49c0-9396-2a680a7faad3">
+		["revision"] = <"1.1.0">
 	>
 
 definition
-	OBSERVATION[at0000] matches {	-- NEWS
+	OBSERVATION[at0000] matches {	-- NEWS (UK RCP)
 		data matches {
 			HISTORY[at0001] matches {	-- Event Series
 				events cardinality matches {1..*; unordered} matches {
-					POINT_EVENT[at0002] occurrences matches {0..1} matches {	-- Tidspunkt
+					POINT_EVENT[at0002] occurrences matches {0..*} matches {	-- Point in time
 						data matches {
 							ITEM_TREE[at0003] matches {	-- Tree
 								items cardinality matches {0..*; unordered} matches {
-									ELEMENT[at0006] occurrences matches {0..1} matches {	-- Respirasjonsfrekvens
+									ELEMENT[at0006] occurrences matches {0..1} matches {	-- Respiration rate
 										value matches {
 											0|[local::at0018], 	-- 12-20
 											1|[local::at0019], 	-- 9-11
 											2|[local::at0020], 	-- 21-24
-											3|[local::at0021]  	-- ≤8 eller ≥25
+											3|[local::at0021]  	-- <=8 or >=25
 										}
 									}
-									ELEMENT[at0029] occurrences matches {0..1} matches {	-- Oksygenmetning
+									ELEMENT[at0029] occurrences matches {0..1} matches {	-- Oxygen saturation
 										value matches {
-											0|[local::at0030], 	-- ≥96
+											0|[local::at0030], 	-- >= 96
 											1|[local::at0031], 	-- 94-95
 											2|[local::at0032], 	-- 92-93
-											3|[local::at0033]  	-- ≤91
+											3|[local::at0033]  	-- <=91
 										}
 									}
-									ELEMENT[at0034] occurrences matches {0..1} matches {	-- Tilførsel av oksygen
+									ELEMENT[at0034] occurrences matches {0..1} matches {	-- Supplemental oxygen
 										value matches {
-											0|[local::at0036], 	-- Nei
-											2|[local::at0037]  	-- Ja
+											0|[local::at0036], 	-- No
+											2|[local::at0037]  	-- Yes
 										}
 									}
-									ELEMENT[at0007] occurrences matches {0..1} matches {	-- Kroppstemperatur
+									ELEMENT[at0007] occurrences matches {0..1} matches {	-- Body temperature
 										value matches {
 											0|[local::at0022], 	-- 36.1-38.0
-											1|[local::at0023], 	-- 35.1-36.0 eller 38.1-39.0
-											2|[local::at0038], 	-- ≥39,1
-											3|[local::at0039]  	-- ≤35
+											1|[local::at0023], 	-- 35.1-36.0 or 38.1-39.0
+											2|[local::at0038], 	-- >=39.1
+											3|[local::at0039]  	-- <=35.0
 										}
 									}
-									ELEMENT[at0004] occurrences matches {0..1} matches {	-- Systolisk blodtrykk
+									ELEMENT[at0004] occurrences matches {0..1} matches {	-- Systolic blood pressure
 										value matches {
 											0|[local::at0014], 	-- 111-219
 											1|[local::at0015], 	-- 101-110
 											2|[local::at0016], 	-- 91-100
-											3|[local::at0017]  	-- ≤90 eller ≥220
+											3|[local::at0017]  	-- <=90 or >= 220
 										}
 									}
-									ELEMENT[at0005] occurrences matches {0..1} matches {	-- Hjertefrekvens/puls
+									ELEMENT[at0005] occurrences matches {0..1} matches {	-- Heart rate
 										value matches {
 											0|[local::at0013], 	-- 51-90
-											1|[local::at0012], 	-- 41-50 eller 91-110
+											1|[local::at0012], 	-- 41-50 or 91-110
 											2|[local::at0011], 	-- 111-130
-											3|[local::at0010]  	-- ≤40 eller ≥131
+											3|[local::at0010]  	-- <=40 or >=131
 										}
 									}
-									ELEMENT[at0008] occurrences matches {0..1} matches {	-- Bevissthetsgrad
+									ELEMENT[at0008] occurrences matches {0..1} matches {	-- Level of consciousness
 										value matches {
 											0|[local::at0024], 	-- A
-											3|[local::at0025]  	-- V, P eller U
+											3|[local::at0025]  	-- V, P or U
 										}
 									}
-									ELEMENT[at0028] occurrences matches {0..1} matches {	-- Totalskår
+									ELEMENT[at0028] occurrences matches {0..1} matches {	-- Total score
 										value matches {
 											DV_COUNT matches {
 												magnitude matches {|0..20|}
 											}
 										}
 									}
-									ELEMENT[at0044] occurrences matches {0..1} matches {	-- Kommentar
+									ELEMENT[at0044] occurrences matches {0..1} matches {	-- Comment
 										value matches {
 											DV_TEXT matches {*}
 										}
@@ -178,7 +197,7 @@ definition
 						state matches {
 							ITEM_TREE[at0041] matches {	-- Tree
 								items cardinality matches {0..*; unordered} matches {
-									ELEMENT[at0043] occurrences matches {0..1} matches {	-- Konfunderende faktorer
+									ELEMENT[at0043] occurrences matches {0..1} matches {	-- Confounding factors
 										value matches {
 											DV_TEXT matches {*}
 										}
@@ -193,7 +212,7 @@ definition
 		protocol matches {
 			ITEM_TREE[at0045] matches {	-- Tree
 				items cardinality matches {0..*; unordered} matches {
-					allow_archetype CLUSTER[at0046] occurrences matches {0..*} matches {	-- Tilleggsinformasjon
+					allow_archetype CLUSTER[at0046] occurrences matches {0..*} matches {	-- Extension
 						include
 							archetype_id/value matches {/.*/}
 					}
@@ -201,7 +220,6 @@ definition
 			}
 		}
 	}
-
 
 
 ontology
@@ -887,6 +905,177 @@ ontology
 					text = <"Extensão">
 					description = <"Informações adicionais necessárias para capturar conteúdo local ou alinhar com outros modelos/formalismos de referência.">
 					comment = <"ex.: Requisitos de informação local ou metadados adicionais para alinhar com equivalentes FHIR ou CIMI.">
+				>
+			>
+		>
+		["sv"] = <
+			items = <
+				["at0000"] = <
+					text = <"NEWS">
+					description = <"NEWS (National Early Warning Score) är en enkel poängskala som används för att ge en objektiv indikation på patientens grad av klinisk försämring. Denna version följer vägledning utfärdat av UK Royal College of Physicians.">
+				>
+				["at0001"] = <
+					text = <"Händelseförlopp">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Tidpunkt">
+					description = <"Ett specifikt datum och/eller tid som tydligt kan definieras i en mall eller vid körning av program.">
+				>
+				["at0003"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0004"] = <
+					text = <"Systoliskt blodtryck">
+					description = <"Mätområde för mätning av en patients systoliska blodtryck (SBP).">
+				>
+				["at0005"] = <
+					text = <"Hjärtfrekvens">
+					description = <"Mätområde för mätning av en patients hjärtfrekvens (HR).">
+				>
+				["at0006"] = <
+					text = <"Andningsfrekvens">
+					description = <"Mätområde för mätning av en patients andningsfrekvens (RR).">
+				>
+				["at0007"] = <
+					text = <"Kroppstemperatur">
+					description = <"Mätområde för mätning av en patients kroppstemperatur (Temp).">
+				>
+				["at0008"] = <
+					text = <"Medvetandenivå">
+					description = <"Observationskategori för mätning av en patients medvetandenivå med hjälp av AVPU-skalan.">
+				>
+				["at0010"] = <
+					text = <"<=40 eller >=131">
+					description = <"Mätningen av hjärtfrekvensen är lägre än/lika med 40 slag/min eller högre än/lika med 131 slag/min; poängsatt som 3 poäng.">
+				>
+				["at0011"] = <
+					text = <"111-130">
+					description = <"Mätningen av hjärtfrekvensen är mellan 111 och 130 slag/min; poängsatt som 2 poäng.">
+				>
+				["at0012"] = <
+					text = <"41-50 eller 91-110">
+					description = <"Mätningen av hjärtfrekvensen är mellan 41 och 50 slag/min eller mellan 91 och 110 slag/min; poängsatt som 1 poäng.">
+				>
+				["at0013"] = <
+					text = <"51-90">
+					description = <"Mätningen av hjärtfrekvensen är mellan 51 och 90 slag/min; poängsatt som 0 poäng.">
+				>
+				["at0014"] = <
+					text = <"111-219">
+					description = <"Mätningen av det systoliska blodtrycket är mellan 111 och 219 mmHg; poängsatt som 0 poäng.">
+				>
+				["at0015"] = <
+					text = <"101-110">
+					description = <"Mätningen av det systoliska blodtrycket är mellan 101 and 110 mmHg; poängsatt som 1 poäng.">
+				>
+				["at0016"] = <
+					text = <"91-100">
+					description = <"Mätningen av det systoliska blodtrycket är mellan 91 och 100 mmHg; poängsatt som 2 poäng.">
+				>
+				["at0017"] = <
+					text = <"<=90 eller >= 220">
+					description = <"Mätningen av det systoliska blodtrycket är lägre än/lika med 90 mmHg eller högre än/lika med 220 mmHg; poängsatt som 3 poäng.">
+				>
+				["at0018"] = <
+					text = <"12-20">
+					description = <"Mätningen av andningsfrekvensen är mellan 12 och 20 andetag/min; poängsatt som 0 poäng.">
+				>
+				["at0019"] = <
+					text = <"9-11">
+					description = <"Mätningen av andningsfrekvensen är mellan 9 och 11 andetag/min; poängsatt som 1 poäng.">
+				>
+				["at0020"] = <
+					text = <"21-24">
+					description = <"Mätningen av andningsfrekvensen är mellan 21 och 24 andetag/min; poängsatt som 2 poäng.">
+				>
+				["at0021"] = <
+					text = <"<=8 eller >=25">
+					description = <"Mätningen av andningsfrekvensen är mindre än/lika med 8 andetag/min eller större än/lika med 25 andetag/min; poängsatt som 3 poäng.">
+				>
+				["at0022"] = <
+					text = <"36.1-38.0">
+					description = <"Mätningen av kroppstemperaturen är mellan 36.1 och 38.0 grader Celsius; poängsatt som 0 poäng.">
+				>
+				["at0023"] = <
+					text = <"35.1-36.0 eller 38.1-39.0">
+					description = <"Mätningen av kroppstemperaturen är mellan 35.1 and 36.0 grader Celsius eller mellan 38.1 and 39.0 grader Celsius; poängsatt som 1 poäng.">
+				>
+				["at0024"] = <
+					text = <"A">
+					description = <"Patienten är klar eller vaken; poängsatt som 0 poäng.">
+				>
+				["at0025"] = <
+					text = <"V, P eller U">
+					description = <"Patienten svarar bara till verbal- eller smärtstimulation; poängsatt som 3 poäng.">
+				>
+				["at0028"] = <
+					text = <"Totalpoäng (NEWS)">
+					description = <"Summan av alla NEWS-parametervärden.">
+					comment = <"Totalpoängen kan genereras vid körning av program.">
+				>
+				["at0029"] = <
+					text = <"Syremättnad">
+					description = <"Mätområde för mätning av en patients syremättnad.">
+				>
+				["at0030"] = <
+					text = <">= 96">
+					description = <"Syremättnadsnivån är större än/lika med 96%, poängsatt som 0 poäng.">
+				>
+				["at0031"] = <
+					text = <"94-95">
+					description = <"Syremättnadsnivån är mellan 94% and 95%; poängsatt som 1 poäng.">
+				>
+				["at0032"] = <
+					text = <"92-93">
+					description = <"Syremättnadsnivån är mellan 92% and 93%; poängsatt som 2 poäng.">
+				>
+				["at0033"] = <
+					text = <"<=91">
+					description = <"Syremättnadsnivån är mindre än/lika med 91%; poängsatt som 3 poäng.">
+				>
+				["at0034"] = <
+					text = <"Syrgastillförsel">
+					description = <"Mätområde beroende på om en patient ges syrgas eller inte.">
+				>
+				["at0036"] = <
+					text = <"Nej">
+					description = <"Patienten får ingen syrgas; poängsatt som 0 poäng.">
+				>
+				["at0037"] = <
+					text = <"Ja">
+					description = <"Patienten får syrgas; poängsatt som 2 poäng.">
+				>
+				["at0038"] = <
+					text = <">=39.1">
+					description = <"Kroppstemperaturen är högre än/lika med 39.1 grader Celcius; poängsatt som 2 poäng.">
+				>
+				["at0039"] = <
+					text = <"<=35.0">
+					description = <"Kroppstemperaturen är lägre än/lika med 35 grader Celcius; poängsatt som 3 poäng.">
+				>
+				["at0041"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0043"] = <
+					text = <"Påverkande faktorer">
+					description = <"Beskrivning av eventuella tillfälliga faktorer som kan ha bidragit till poängen.">
+					comment = <"Exempelvis om patienten har KOL.">
+				>
+				["at0044"] = <
+					text = <"Kommentarer">
+					description = <"Ytterligare beskrivning av den totala NEWS-poängen som inte beskrivits i andra fält.">
+				>
+				["at0045"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0046"] = <
+					text = <"Övrig information">
+					description = <"Ytterligare information krävs för att fånga lokalt innehåll eller att anpassa sig till andra referensmodeller/formalismer.">
+					comment = <"T.ex. lokala informationskrav eller ytterligare metadata för att anpassa sig till FHIR- eller CIMI-ekvivalenter.">
 				>
 			>
 		>
