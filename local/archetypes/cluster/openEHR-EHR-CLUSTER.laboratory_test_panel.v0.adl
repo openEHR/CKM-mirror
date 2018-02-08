@@ -22,18 +22,6 @@ description
 		["date"] = <"2015-07-20">
 	>
 	details = <
-		["en"] = <
-			language = <[ISO_639-1::en]>
-			purpose = <"To record laboratory test results as a single value or in a panel/battery format common to clinical pathology testing such as biochemistry, haematology and immunology.">
-			use = <"To record laboratory test results as a single value or in a panel/battery format common to clinical pathology testing such as biochemistry, haematology and immunology. Normally used in conjunction with a parent Laboratory test result (Observation) archetype.
-
-The name attribute of the Laboratory test panel/Result value element is normally replaced in a template or at run-time to carry the name of the specific analyte e.g. 'Haemoglobin', often coded with a reference terminology such as LOINC, SNOMED CT or NPU.
-
-Where other more complex result patterns are required it may be helpful to specialise this archetype or substitute another.">
-			keywords = <"laboratory", "pathology", "panel", "battery", "analyte">
-			misuse = <"Should not be used to record Anatomical pathology macroscopic/microscopic findings.">
-			copyright = <"© openEHR Foundation">
-		>
 		["nb"] = <
 			language = <[ISO_639-1::nb]>
 			purpose = <"For å registrere laboratorieanalyser som en enkeltverdi eller i en analysepakke.">
@@ -45,72 +33,44 @@ Der det kreves mer komplekse svarmønstre kan det være nødvendig å spesialise
 			keywords = <"laboratorie", "panel", "batteri", "analytt", "analyse", "svar", "resultat", "pakke">
 			misuse = <"Skal ikke brukes til å registrere funn ved patologiundersøkelser.">
 		>
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To record laboratory test results in a panel/battery/profile structure common to clinical pathology testing for example biochemistry, haematology and immunology.">
+			use = <"To record laboratory test results in a panel/battery structure common to clinical pathology testing  biochemistry, haematology and immunology. Normally used in conjunction with a parent 
+OBSERVATION.laboratory_test_result.
+
+Where other more complex result patterns are required it may be helpful to specialise this archetype or substitute another.">
+			keywords = <"laboratory", "pathology", "panel", "battery", "profile">
+			misuse = <"Not to be used to record Anatomical pathology macroscopic/microscopic findings.">
+			copyright = <"© openEHR Foundation">
+		>
 	>
 	lifecycle_state = <"in_development">
 	other_contributors = <"Heather Leslie, Ocean Informatics, Australia", "Nasjonal IKT, Norway">
 	other_details = <
-		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
 		["custodian_organisation"] = <"openEHR Foundation">
-		["references"] = <"Based on NEHTA 'Pathology Test' archetype. Available from: http://dcm.nehta.org.au/ckm/OKM.html#showarchetype_1013.1.839_8
+		["references"] = <"Pathology Test Result, Draft Archetype [Internet]. Australian Digital Health Agency, Australian Digital Health Agency Clinical Knowledge Manager [cited: 2017-06-27]. Available from: http://dcm.nehta.org.au/ckm/#showArchetype_1013.1.839 
 
-Pathology (Data Specifications) Version 1.0 [Internet]. Sydney, Australia: National E-Health Transition Authority; 2007 May 29 [cited 2011 Jul 11]; Available at http://www.nehta.gov.au/component/docman/doc_download/962-pathology-v10.
+Pathology (Data Specifications) Version 1.0 [Internet]. Sydney, Australia: National E-Health Transition Authority; 2007 May 29 [cited 2011 Jul 11]; Available at http://www.nehta.gov.au/component/docman/doc_download/962-pathology-v10
 
 Laboratory Technical Framework, Volume 3: Content, Revision 3.0 [Internet]. USA: IHE International; 2011 May 19; [cited 2011 Jul 11]. Available from: http://www.ihe.net/Technical_Framework/index.cfm#laboratory
 
-Hl7 FHIR Observation resource: HL7 FHIR; Available from http://www.hl7.org/implement/standards/fhir/observation.html">
+Hl7 FHIR Observation resource: HL7 [Internet]; [cited 2017 Jun 27]. Available from http://www.hl7.org/implement/standards/fhir/observation.html">
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"CEB460F240FB987B15C7C50655BC132D">
-		["build_uid"] = <"759a5eea-3ac3-4239-beed-03af01c434de">
+		["MD5-CAM-1.0.1"] = <"482A9A46BAB3629A4242D4BD8D5B915B">
+		["build_uid"] = <"98ef618c-2d72-4f5f-9189-458b9985fbf4">
 		["revision"] = <"0.0.1-alpha">
 	>
 
 definition
 	CLUSTER[at0000] matches {	-- Laboratory test panel
 		items cardinality matches {1..*; unordered} matches {
-			CLUSTER[at0002] occurrences matches {0..*} matches {	-- Laboratory result
-				items cardinality matches {1..*; unordered} matches {
-					ELEMENT[at0001] occurrences matches {0..1} matches {*}
-					ELEMENT[at0003] occurrences matches {0..*} matches {	-- Comment
-						value matches {
-							DV_TEXT matches {*}
-						}
-					}
-					ELEMENT[at0004] occurrences matches {0..1} matches {	-- Reference range guidance
-						value matches {
-							DV_TEXT matches {*}
-						}
-					}
-					ELEMENT[at0005] occurrences matches {0..1} matches {	-- Result status
-						value matches {
-							DV_CODED_TEXT matches {
-								defining_code matches {
-									[local::
-									at0007, 	-- Registered
-									at0008, 	-- Interim
-									at0009, 	-- Final
-									at0010, 	-- Amended
-									at0011, 	-- Cancelled/Aborted
-									at0012]	-- Not requested
-								}
-							}
-						}
-					}
-					ELEMENT[at0006] occurrences matches {0..1} matches {	-- Result status timestamp
-						value matches {
-							DV_DATE_TIME matches {*}
-						}
-					}
-					allow_archetype CLUSTER[at0014] occurrences matches {0..*} matches {	-- Result detail
-						include
-							archetype_id/value matches {/.*/}
-					}
-				}
-			}
-			allow_archetype CLUSTER[at0013] occurrences matches {0..*} matches {	-- Other detail
+			allow_archetype CLUSTER[at0013] occurrences matches {0..*} matches {	-- Panel detail
 				include
-					archetype_id/value matches {/.*/}
+					archetype_id/value matches {/openEHR-EHR-CLUSTER\.laboratory_test_panel(-[a-zA-Z0-9_]+)*\.v0|openEHR-EHR-CLUSTER\.laboratory_test_analyte(-[a-zA-Z0-9_]+)*\.v0|openEHR-EHR-CLUSTER\.specimen(-[a-zA-Z0-9_]+)*\.v0/}
 			}
 		}
 	}
@@ -122,135 +82,23 @@ ontology
 			items = <
 				["at0000"] = <
 					text = <"Laboratory test panel">
-					description = <"Laboratory test result as a single value or in a panel/battery format common to clinical pathology testing.">
-				>
-				["at0001"] = <
-					text = <"Result value">
-					description = <"Actual value of the result. The name of this element is normally replaced in a template or at run-time to relfect the actual analyte e.g. Serum sodium and will often be coded.">
-					hl7v2_mapping = <"OBX.2,OBX.5,OBX.6; OBX-3-observation identifier">
-					fhir_mapping = <"Observation.result; Observation.name">
-				>
-				["at0002"] = <
-					text = <"Laboratory result">
-					description = <"Specific detailed result, including both the value of the result item, and additional information that may be useful for clinical interpretation.">
-				>
-				["at0003"] = <
-					text = <"Comment">
-					description = <"Comment about the Result.">
-					hl7v2_mapping = <"NTE.3">
-					fhir_mapping = <"Observation.comments">
-				>
-				["at0004"] = <
-					text = <"Reference range guidance">
-					description = <"Additional advice on the applicability of the reference range.">
-				>
-				["at0005"] = <
-					text = <"Result status">
-					description = <"The status of the result value.">
-					hl7v2_mapping = <"OBX-11-observation result status">
-					fhir_mapping = <"status">
-				>
-				["at0006"] = <
-					text = <"Result status timestamp">
-					description = <"The date and/or time that the entire result was issued for the recorded ‘Result status’.">
-					hl7v2_mapping = <"OBX-22 and/or OBX-19">
-					fhir_mapping = <"Observation.issued">
-				>
-				["at0007"] = <
-					text = <"Registered">
-					description = <"No result yet available.">
-				>
-				["at0008"] = <
-					text = <"Interim">
-					description = <"This is an initial or interim result: data may be missing or verification not been performed.">
-				>
-				["at0009"] = <
-					text = <"Final">
-					description = <"The result is complete and verified by the responsible pathologist.">
-				>
-				["at0010"] = <
-					text = <"Amended">
-					description = <"The result has been modified subsequent to being Final, and is complete and verified by the responsible pathologist.">
-				>
-				["at0011"] = <
-					text = <"Cancelled/Aborted">
-					description = <"The result is unavailable because the test was not started or not completed.">
-				>
-				["at0012"] = <
-					text = <"Not requested">
-					description = <"The result is not available as the test was not requested.">
+					description = <"Laboratory test result as a panel/battery/profile structure common to clinical pathology testing.">
 				>
 				["at0013"] = <
-					text = <"Other detail">
-					description = <"Further details including the specimen for the panel or a further nested panel.">
-				>
-				["at0014"] = <
-					text = <"Result detail">
-					description = <"Further detail regarding an individual result.">
+					text = <"Panel detail">
+					description = <"Further details including the individual analytes, specimen for the panel or a further nested panel.">
 				>
 			>
 		>
 		["nb"] = <
 			items = <
 				["at0000"] = <
-					text = <"Laboratoriesvargruppe">
-					description = <"Laboratoriesvar som en enkeltverdi eller i et panel/pakkeformat.">
-				>
-				["at0001"] = <
-					text = <"Svarverdi">
-					description = <"Svarets verdi. Navnet på dette elementet vil ordinært erstattes i en templat eller applikasjon med navnet og/eller koden på analysen, f.eks. Serum natrium.">
-				>
-				["at0002"] = <
-					text = <"Laboratoriesvar">
-					description = <"Spesifikt detaljert svar, inkludert både verdien av svaret og annen informasjon som kan være nyttig i klinisk tolkning.">
-				>
-				["at0003"] = <
-					text = <"Kommentar">
-					description = <"Kommentar om svaret.">
-				>
-				["at0004"] = <
-					text = <"Veiledning til referanseområdet">
-					description = <"Ytterligere veiledning om anvendeligheten av referanseområdet.">
-				>
-				["at0005"] = <
-					text = <"Svarstatus">
-					description = <"Statusen til svarverdien.">
-				>
-				["at0006"] = <
-					text = <"Tidspunkt for svarstatus">
-					description = <"Dato og/eller tidspunkt hele svaret ble utstedt for den registrerte Svarstatus.">
-				>
-				["at0007"] = <
-					text = <"Registrert">
-					description = <"Svar ikke tjengengelig enda.">
-				>
-				["at0008"] = <
-					text = <"Foreløpig">
-					description = <"Dette er et midlertidig eller foreløpig svar. Data kan mangle, eller være uverifisert.">
-				>
-				["at0009"] = <
-					text = <"Endelig">
-					description = <"Svaret er komplett og verifisert av ansvarlig laboratorielege.">
-				>
-				["at0010"] = <
-					text = <"Endret">
-					description = <"Svaret er endret etter å ha hatt status Endelig, og er komplett og verifisert av ansvarlig laboratorielege.">
-				>
-				["at0011"] = <
-					text = <"Kansellert">
-					description = <"Svaret er ikke tilgjengelig fordi analysen ikke ble påbegynt eller ferdigstilt.">
-				>
-				["at0012"] = <
-					text = <"Ikke bestilt">
-					description = <"Svaret er ikke tilgjengelig siden analysen ikke ble bestilt.">
+					text = <"*Laboratory test panel(en)">
+					description = <"*Laboratory test result as a panel/battery format common to clinical pathology testing.(en)">
 				>
 				["at0013"] = <
-					text = <"Andre detaljer">
-					description = <"Ytterligere detaljer, inkludert informasjon om prøveeksemplaret, eller en undergruppe av svar.">
-				>
-				["at0014"] = <
-					text = <"Svardetaljer">
-					description = <"Ytterligere detaljer om et spesifikt svar.">
+					text = <"*Panel detail(en)">
+					description = <"*Further details including the individual analytes, specimen for the panel or a further nested panel.(en)">
 				>
 			>
 		>
