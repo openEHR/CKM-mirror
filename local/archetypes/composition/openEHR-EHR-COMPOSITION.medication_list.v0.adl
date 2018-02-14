@@ -15,6 +15,12 @@ language
 			>
 			accreditation = <"Medical Doctor">
 		>
+		["ar-sy"] = <
+			language = <[ISO_639-1::ar-sy]>
+			author = <
+				["name"] = <"Mona Saleh">
+			>
+		>
 	>
 description
 	original_author = <
@@ -50,7 +56,7 @@ No debe ser utilizado para registrar vacunaciones administradas.">
 		>
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"To record a persistent and managed list of medicines that are reasonably assumed to be taken by the individual or, alternatively, positive statements about known exclusions or actual absence of any information about medications; all of which may influence clinical decision-making and care provision. ">
+			purpose = <"To record a persistent and managed list of medicines that are reasonably assumed to be taken by the individual or, alternatively, positive statements about known exclusions or actual absence of any information about medications; all of which may influence clinical decision-making and care provision.">
 			use = <"Use to record a persistent and managed list of all medicines, both prescribed and 'over the counter', that are reasonably assumed to be taken by the individual or, alternatively, positive statements about known exclusions or actual absence of any information about medications;
 
 This list can be utilised as a source of medicines data as a current medication list, for exchange or as the basis for decision support. 
@@ -73,6 +79,13 @@ This archetype is intended to be represented and managed as a persistent list, h
 Not to be used to record vaccinations administered - use COMPOSITION.vaccination_list for this purpose.">
 			copyright = <"© openEHR Foundation">
 		>
+		["ar-sy"] = <
+			language = <[ISO_639-1::ar-sy]>
+			purpose = <"للمحافظة على قائمة مُحكَمة للأدوية الحالية الموصوفة للشخص.">
+			use = <"للأدوية الحالية">
+			keywords = <"قائمة الدواء", "الأدوية الحالية">
+			misuse = <"لا يستخدم للأدوية الحاضرة">
+		>
 	>
 	lifecycle_state = <"in_development">
 	other_contributors = <"Ian McNicoll, Ocean Informatics, United Kingdom", "Sam Heard, Ocean Informatics, Australia", "Sistine Barretto-Daniels, Ocean Informatics, Australia", "Heather Leslie, Ocean Informatics, Australia">
@@ -83,8 +96,8 @@ Not to be used to record vaccinations administered - use COMPOSITION.vaccination
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"82113B1F557D3E559CFED52371BDA7D0">
-		["build_uid"] = <"682422cb-1743-4315-a5ac-799d4b62f390">
+		["MD5-CAM-1.0.1"] = <"80E3D1CF64FE92C51E373442DE4EB9C4">
+		["build_uid"] = <"c25d7894-5dca-43ea-a6c5-71ac66ce1ebf">
 		["revision"] = <"0.0.1-alpha">
 	>
 
@@ -98,7 +111,14 @@ definition
 		context matches {
 			EVENT_CONTEXT matches {
 				other_context matches {
-					ITEM_TREE[at0005] matches {*}
+					ITEM_TREE[at0005] matches {	-- Tree
+						items cardinality matches {0..*; unordered} matches {
+							allow_archetype CLUSTER[at0006] occurrences matches {0..*} matches {	-- Extension
+								include
+									archetype_id/value matches {/.*/}
+							}
+						}
+					}
 				}
 			}
 		}
@@ -117,6 +137,11 @@ ontology
 					text = <"Tree">
 					description = <"@ internal @">
 				>
+				["at0006"] = <
+					text = <"Extension">
+					description = <"Additional information required to capture local context or to align with other reference models/formalisms.">
+					comment = <"e.g. Local hospital departmental infomation or additional metadata to align with FHIR or CIMI equivalents.">
+				>
 			>
 		>
 		["es-ar"] = <
@@ -128,6 +153,28 @@ ontology
 				["at0005"] = <
 					text = <"*Tree(en)">
 					description = <"*@ internal @(en)">
+				>
+				["at0006"] = <
+					text = <"*Extension(en)">
+					description = <"*Additional information required to capture local context or to align with other reference models/formalisms.(en)">
+					comment = <"*e.g. Local hospital departmental infomation or additional metadata to align with FHIR or CIMI equivalents.(en)">
+				>
+			>
+		>
+		["ar-sy"] = <
+			items = <
+				["at0000"] = <
+					text = <"قائمة الأدوية">
+					description = <"قائمة من الأدوية الحالية الموصوفة لهذا الشخص.">
+				>
+				["at0005"] = <
+					text = <"*Tree(en)">
+					description = <"*@ internal @(en)">
+				>
+				["at0006"] = <
+					text = <"*Extension(en)">
+					description = <"*Additional information required to capture local context or to align with other reference models/formalisms.(en)">
+					comment = <"*e.g. Local hospital departmental infomation or additional metadata to align with FHIR or CIMI equivalents.(en)">
 				>
 			>
 		>
