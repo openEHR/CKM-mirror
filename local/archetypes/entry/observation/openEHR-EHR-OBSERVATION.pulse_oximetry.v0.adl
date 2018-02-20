@@ -176,7 +176,7 @@ plesmythography
 			use = <"Use to record blood oxygen and related measurements, measured by pulse oximetry or pulse CO-oximetry.
 
 Waveforms should be recorded here when used to document quality of the blood gas measurement.">
-			keywords = <"oxygen", "oxygenation", "saturation", "SpO2", "spMet", "spCO", "spOC", "carboxyhaemoglobin", "methaemoglobin", "pulse", "oximeter", "oximetry", "concentration", "partial", "pressure", "non-invasive", "vital", "O2", "SaO₂", "SaO2", "sat", "sats">
+			keywords = <"oxygen", "oxygenation", "saturation", "SpO2", "spMet", "spCO", "spOC", "carboxyhaemoglobin", "methaemoglobin", "pulse", "oximeter", "oximetry", "concentration", "partial", "pressure", "non-invasive", "vital", "O2", "SaO₂", "SaO2", "sat", "sats", "hypoxaemia">
 			misuse = <"Not used for other non-invasive blood gas measurements such as transcutaneous CO₂, lateral end-tidal CO₂ or non-invasive cerebral oximetry.
 
 Not to be used for recording plethysmography. Use another appropriate archetype for this purpose.
@@ -220,8 +220,6 @@ OBSERVATION.heart_rate-pulse
 
 AARC (American Association for Respiratory Care) clinical practice guideline. Pulse oximetry. Respir Care. Respir Care 1992;37(8):891–897. Available from: http://www.rcjournal.com/cpgs/pulsecpg.html (accessed 2013 Feb 26). 
 
-Baldwin KM. Transcutaneous oximetry and skin surface temperature as objective measures of pressure ulcer risk. Adv Skin Wound Care. 2001 Jan-Feb;14(1):26-31. PubMed PMID: 11905453. Available from: http://journals.lww.com/aswcjournal/Fulltext/2001/01000/Transcutaneous_Oximetry_and_Skin_Surface.14.aspx (accessed 2013 Feb 26).
-
 Barker SJ, Badal JJ. The measurement of dyshemoglobins and total hemoglobin by pulse oximetry. Curr Opin Anaesthesiol. 2008 Dec;21(6):805-10. doi: 10.1097/ACO.0b013e328316bb6f. Review. PubMed PMID: 18997533. Available from: http://journals.lww.com/co-anesthesiology/Abstract/2008/12000/The_measurement_of_dyshemoglobins_and_total.20.aspx (accessed 2013 Feb 26).
 
 Hanning CD, Alexander-Williams JM. Pulse oximetry: a practical review. BMJ. 1995 Aug 5;311(7001):367-70. Review. PubMed PMID: 7640545; PubMed Central PMCID: PMC2550433. Available from: http://www.bmj.com/cgi/content/abstract/311/7001/367 (accessed 2013 Feb 26).
@@ -231,8 +229,8 @@ Jubran A. Pulse oximetry. Crit Care. 1999;3(2):R11-R17. PubMed PMID: 11094477; P
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"BE0728B4680062FF7931063FDFC1C6D9">
-		["build_uid"] = <"486026cb-7a5e-45c4-b4fd-51b6d709fb04">
+		["MD5-CAM-1.0.1"] = <"791AFACFB894BDC6BC02A07B62746E62">
+		["build_uid"] = <"076da4e8-2ffe-4490-a99f-fb8ef15001a0">
 		["revision"] = <"0.0.1-alpha">
 	>
 
@@ -334,28 +332,20 @@ definition
 							DV_TEXT matches {*}
 						}
 					}
-					ELEMENT[at0061] occurrences matches {0..1} matches {	-- Pre/postductal
+					ELEMENT[at0061] occurrences matches {0..1} matches {	-- Pre/post-ductal
 						value matches {
 							DV_CODED_TEXT matches {
 								defining_code matches {
 									[local::
 									at0062, 	-- Pre-ductal
-									at0063]	-- Post-ductal
+									at0063, 	-- Post-ductal
+									at0064]	-- Indeterminate
 								}
 							}
 						}
 					}
 					ELEMENT[at0020] occurrences matches {0..1} matches {	-- Sensor type
 						value matches {
-							DV_CODED_TEXT matches {
-								defining_code matches {
-									[local::
-									at0048, 	-- Transmittal
-									at0049, 	-- Reflective
-									at0050, 	-- Clamp
-									at0051]	-- Strip
-								}
-							}
 							DV_TEXT matches {*}
 						}
 					}
@@ -398,18 +388,17 @@ ontology
 				>
 				["at0006"] = <
 					text = <"*SpO₂(en)">
-					description = <"*The saturation of oxygen in the peripheral blood, measured via pulse oximetry. (en)">
-					comment = <"*SpO₂ is defined as the ratio of oxyhaemoglobin (HbO₂) to the total concentration of haemoglobin (HbO₂ + deoxyhaemoglobin) in peripheral blood.(en)">
+					description = <"*The saturation of oxygen in the peripheral blood, measured via pulse oximetry.(en)">
+					comment = <"*SpO₂ is defined as the percentage of oxyhaemoglobin (HbO₂) to the total concentration of haemoglobin (HbO₂ + deoxyhaemoglobin) in peripheral blood.(en)">
 				>
 				["at0007"] = <
 					text = <"*List(en)">
 					description = <"*@ internal @(en)">
 				>
 				["at0009"] = <
-					text = <"  مكان المجس – الحاسة">
-					description = <" 
-مكان مجس (حاسة) القياس.
-">
+					text = <"*Sensor site(en)">
+					description = <"*The site of the measurement sensor.(en)">
+					comment = <"*For example: Right index finger, left earlobe. Coding with a terminology is preferred, if possible.(en)">
 				>
 				["at0014"] = <
 					text = <"*Tree(en)">
@@ -421,10 +410,9 @@ ontology
 					comment = <"*Assumed values of 21% oxygen concentration, Fi02 of 0.21 and oxygen flow rate of 0 l/min or 0 ml/min.(en)">
 				>
 				["at0016"] = <
-					text = <"  العوامل المربكة">
-					description = <" 
-تعليق حول و تسجيل للعوامل الأخرى التي قد تطرأ و تؤثر على تفسير الملاحظة. مثل الحركة, الألم, ضعف الإرواء, و إرضاع الطفل.
-">
+					text = <"*Confounding factors(en)">
+					description = <"*Comment on and record other incidental factors that may be affect interpretation of the observation.(en)">
+					comment = <"*For example, motion, pain, poor perfusion, infant feeding, peripheral hypothermia, sedation.(en)">
 				>
 				["at0018"] = <
 					text = <"الجهيزة">
@@ -433,11 +421,9 @@ ontology
 ">
 				>
 				["at0020"] = <
-					text = <"  نوع المجس – الحاسة">
-					description = <" 
-نوع مجس (حاسة) القياس الذي يتم استخدامه, مثل الامتراق, الانعكاس, الملقاط, الشريط أو المَسْرى - الكهربي.
-">
-					comment = <"*For example: transmittal electrode; reflective electrode; clamp electrode; or strip electrode.(en)">
+					text = <"*Sensor type(en)">
+					description = <"*The type of measurement sensor used.(en)">
+					comment = <"*For example: transmittal, reflective. Coding with a terminology is preferred, if possible.(en)">
 				>
 				["at0034"] = <
 					text = <"المجهود">
@@ -461,30 +447,6 @@ ontology
 					text = <"*SpMet(en)">
 					description = <"*The saturation of metaemoglobin in the peripheral blood, measured via pulse CO-oximetry.(en)">
 				>
-				["at0048"] = <
-					text = <"  الامتراق">
-					description = <" 
-تم استخدام مجس لقياس التأكسج عند النبض يعمل بالامتراق.
-">
-				>
-				["at0049"] = <
-					text = <"الانعكاس">
-					description = <" 
-تم استخدام مجس لقياس التأكسج عند النبض يعمل بالانعكاس.
-">
-				>
-				["at0050"] = <
-					text = <"الملقاط">
-					description = <" 
-تم استخدام مجس لقياس التأكسج عند النبض يعمل كملقاط.
-">
-				>
-				["at0051"] = <
-					text = <"شريط">
-					description = <" 
-تم استخدام مجس لقياس التأكسج عند النبض على هيئة شريط.
-">
-				>
 				["at0054"] = <
 					text = <"التموج">
 					description = <" 
@@ -506,8 +468,8 @@ ontology
 					description = <"*Details of a series of oximetry readings, other than waveforms, expressed as a multimedia image or series of images. Waveforms should be recorded using the Waveform slot and associated cluster archetype.(en)">
 				>
 				["at0061"] = <
-					text = <"*Pre/postductal(en)">
-					description = <"*Sensor site relative to the ductus arteriosus in infants.(en)">
+					text = <"*Pre/post-ductal(en)">
+					description = <"*Sensor site relative to the ductus arteriosus in neonates, to determine whether the blood supply to limb of the sensor site is pre- or post-ductal in cases of patent ductus arteriosa.(en)">
 				>
 				["at0062"] = <
 					text = <"*Pre-ductal(en)">
@@ -516,6 +478,10 @@ ontology
 				["at0063"] = <
 					text = <"*Post-ductal(en)">
 					description = <"*The sensor site is post-ductal.(en)">
+				>
+				["at0064"] = <
+					text = <"*Indeterminate(en)">
+					description = <"*Unable to assess whether the sensor site is pre- or post-ductal.(en)">
 				>
 			>
 		>
@@ -539,16 +505,17 @@ ontology
 				>
 				["at0006"] = <
 					text = <"*SpO₂(en)">
-					description = <"*The saturation of oxygen in the peripheral blood, measured via pulse oximetry. (en)">
-					comment = <"*SpO₂ is defined as the ratio of oxyhaemoglobin (HbO₂) to the total concentration of haemoglobin (HbO₂ + deoxyhaemoglobin) in peripheral blood.(en)">
+					description = <"*The saturation of oxygen in the peripheral blood, measured via pulse oximetry.(en)">
+					comment = <"*SpO₂ is defined as the percentage of oxyhaemoglobin (HbO₂) to the total concentration of haemoglobin (HbO₂ + deoxyhaemoglobin) in peripheral blood.(en)">
 				>
 				["at0007"] = <
 					text = <"*List(en)">
 					description = <"*@ internal @(en)">
 				>
 				["at0009"] = <
-					text = <"Sitio del sensor">
-					description = <"El sitio del sensor de medición.">
+					text = <"*Sensor site(en)">
+					description = <"*The site of the measurement sensor.(en)">
+					comment = <"*For example: Right index finger, left earlobe. Coding with a terminology is preferred, if possible.(en)">
 				>
 				["at0014"] = <
 					text = <"*Tree(en)">
@@ -560,17 +527,18 @@ ontology
 					comment = <"*Assumed values of 21% oxygen concentration, Fi02 of 0.21 and oxygen flow rate of 0 l/min or 0 ml/min.(en)">
 				>
 				["at0016"] = <
-					text = <"Factores de confusión">
-					description = <"Comentario y registro sobre factores incidentales que pueden afectar la interpretación de la observación. Ej. movimiento, dolor, mala perfusión distal, alimentación del lactante, etc.">
+					text = <"*Confounding factors(en)">
+					description = <"*Comment on and record other incidental factors that may be affect interpretation of the observation.(en)">
+					comment = <"*For example, motion, pain, poor perfusion, infant feeding, peripheral hypothermia, sedation.(en)">
 				>
 				["at0018"] = <
 					text = <"Dispositivo">
 					description = <"Detalles del dispositivo de oximetría no invasiva utilizado.">
 				>
 				["at0020"] = <
-					text = <"Tipo de sensor">
-					description = <"El tipo de sensor de medición usado. Ej. transmisión, reflectivo, pinza o banda, electrodos, etc.">
-					comment = <"*For example: transmittal electrode; reflective electrode; clamp electrode; or strip electrode.(en)">
+					text = <"*Sensor type(en)">
+					description = <"*The type of measurement sensor used.(en)">
+					comment = <"*For example: transmittal, reflective. Coding with a terminology is preferred, if possible.(en)">
 				>
 				["at0034"] = <
 					text = <"Esfuerzo">
@@ -592,22 +560,6 @@ ontology
 					text = <"*SpMet(en)">
 					description = <"*The saturation of metaemoglobin in the peripheral blood, measured via pulse CO-oximetry.(en)">
 				>
-				["at0048"] = <
-					text = <"Transmisión">
-					description = <"Se utilizó un sensor transmisor, de oximetría de pulso.">
-				>
-				["at0049"] = <
-					text = <"Reflectivo">
-					description = <"Se utilizó un sensor reflectivo, de oximetría de pulso.">
-				>
-				["at0050"] = <
-					text = <"Pinza">
-					description = <"Se utilizó un sensor tipo abrazadera, de oximetría de pulso.">
-				>
-				["at0051"] = <
-					text = <"Tira">
-					description = <"Se utilizó un sensor tipo tira o banda, de oximetría de pulso.">
-				>
 				["at0054"] = <
 					text = <"Forma de onda de pulso">
 					description = <"La lectura o el registro de la forma de onda con la medición de oximetría.">
@@ -627,8 +579,8 @@ ontology
 					description = <"*Details of a series of oximetry readings, other than waveforms, expressed as a multimedia image or series of images. Waveforms should be recorded using the Waveform slot and associated cluster archetype.(en)">
 				>
 				["at0061"] = <
-					text = <"*Pre/postductal(en)">
-					description = <"*Sensor site relative to the ductus arteriosus in infants.(en)">
+					text = <"*Pre/post-ductal(en)">
+					description = <"*Sensor site relative to the ductus arteriosus in neonates, to determine whether the blood supply to limb of the sensor site is pre- or post-ductal in cases of patent ductus arteriosa.(en)">
 				>
 				["at0062"] = <
 					text = <"*Pre-ductal(en)">
@@ -637,6 +589,10 @@ ontology
 				["at0063"] = <
 					text = <"*Post-ductal(en)">
 					description = <"*The sensor site is post-ductal.(en)">
+				>
+				["at0064"] = <
+					text = <"*Indeterminate(en)">
+					description = <"*Unable to assess whether the sensor site is pre- or post-ductal.(en)">
 				>
 			>
 		>
@@ -660,16 +616,17 @@ ontology
 				>
 				["at0006"] = <
 					text = <"*SpO₂(en)">
-					description = <"*The saturation of oxygen in the peripheral blood, measured via pulse oximetry. (en)">
-					comment = <"*SpO₂ is defined as the ratio of oxyhaemoglobin (HbO₂) to the total concentration of haemoglobin (HbO₂ + deoxyhaemoglobin) in peripheral blood.(en)">
+					description = <"*The saturation of oxygen in the peripheral blood, measured via pulse oximetry.(en)">
+					comment = <"*SpO₂ is defined as the percentage of oxyhaemoglobin (HbO₂) to the total concentration of haemoglobin (HbO₂ + deoxyhaemoglobin) in peripheral blood.(en)">
 				>
 				["at0007"] = <
 					text = <"Liste">
 					description = <"@ internal @">
 				>
 				["at0009"] = <
-					text = <"*Sensor Site(en)">
+					text = <"*Sensor site(en)">
 					description = <"*The site of the measurement sensor.(en)">
+					comment = <"*For example: Right index finger, left earlobe. Coding with a terminology is preferred, if possible.(en)">
 				>
 				["at0014"] = <
 					text = <"*Tree(en)">
@@ -682,16 +639,17 @@ ontology
 				>
 				["at0016"] = <
 					text = <"*Confounding factors(en)">
-					description = <"*Comment on and record other incidental factors that may be affect interpretation of the observation. For example, motion, pain, feeding in infants, tracheostomy.(en)">
+					description = <"*Comment on and record other incidental factors that may be affect interpretation of the observation.(en)">
+					comment = <"*For example, motion, pain, poor perfusion, infant feeding, peripheral hypothermia, sedation.(en)">
 				>
 				["at0018"] = <
 					text = <"*Device(en)">
 					description = <"*Details of the non-invasive oximetry device used.(en)">
 				>
 				["at0020"] = <
-					text = <"*Sensor Type(en)">
+					text = <"*Sensor type(en)">
 					description = <"*The type of measurement sensor used.(en)">
-					comment = <"*For example: transmittal electrode; reflective electrode; clamp electrode; or strip electrode.(en)">
+					comment = <"*For example: transmittal, reflective. Coding with a terminology is preferred, if possible.(en)">
 				>
 				["at0034"] = <
 					text = <"*Exertion(en)">
@@ -713,22 +671,6 @@ ontology
 					text = <"*SpMet(en)">
 					description = <"*The saturation of metaemoglobin in the peripheral blood, measured via pulse CO-oximetry.(en)">
 				>
-				["at0048"] = <
-					text = <"*Transmittal(en)">
-					description = <"*A pulse oximetry transmittal sensor was applied.(en)">
-				>
-				["at0049"] = <
-					text = <"*Reflective(en)">
-					description = <"*A pulse oximetry reflective sensor was applied.(en)">
-				>
-				["at0050"] = <
-					text = <"*Clamp(en)">
-					description = <"*A pulse oximetry clamp sensor was applied.(en)">
-				>
-				["at0051"] = <
-					text = <"*Strip(en)">
-					description = <"*A pulse oximetry strip sensor was applied.(en)">
-				>
 				["at0054"] = <
 					text = <"*Waveform(en)">
 					description = <"*A waveform reading associated with the oximetry measurement.(en)">
@@ -747,8 +689,8 @@ ontology
 					description = <"*Details of a series of oximetry readings, other than waveforms, expressed as a multimedia image or series of images. Waveforms should be recorded using the Waveform slot and associated cluster archetype.(en)">
 				>
 				["at0061"] = <
-					text = <"*Pre/postductal(en)">
-					description = <"*Sensor site relative to the ductus arteriosus in infants.(en)">
+					text = <"*Pre/post-ductal(en)">
+					description = <"*Sensor site relative to the ductus arteriosus in neonates, to determine whether the blood supply to limb of the sensor site is pre- or post-ductal in cases of patent ductus arteriosa.(en)">
 				>
 				["at0062"] = <
 					text = <"*Pre-ductal(en)">
@@ -757,6 +699,10 @@ ontology
 				["at0063"] = <
 					text = <"*Post-ductal(en)">
 					description = <"*The sensor site is post-ductal.(en)">
+				>
+				["at0064"] = <
+					text = <"*Indeterminate(en)">
+					description = <"*Unable to assess whether the sensor site is pre- or post-ductal.(en)">
 				>
 			>
 		>
@@ -781,7 +727,7 @@ ontology
 				["at0006"] = <
 					text = <"SpO₂">
 					description = <"The saturation of oxygen in the peripheral blood, measured via pulse oximetry.">
-					comment = <"SpO₂ is defined as the ratio of oxyhaemoglobin (HbO₂) to the total concentration of haemoglobin (HbO₂ + deoxyhaemoglobin) in peripheral blood.">
+					comment = <"SpO₂ is defined as the percentage of oxyhaemoglobin (HbO₂) to the total concentration of haemoglobin (HbO₂ + deoxyhaemoglobin) in peripheral blood.">
 				>
 				["at0007"] = <
 					text = <"List">
@@ -790,6 +736,7 @@ ontology
 				["at0009"] = <
 					text = <"Sensor site">
 					description = <"The site of the measurement sensor.">
+					comment = <"For example: Right index finger, left earlobe. Coding with a terminology is preferred, if possible.">
 				>
 				["at0014"] = <
 					text = <"Tree">
@@ -802,7 +749,8 @@ ontology
 				>
 				["at0016"] = <
 					text = <"Confounding factors">
-					description = <"Comment on and record other incidental factors that may be affect interpretation of the observation. For example, motion, pain, poor perfusion, infant feeding.">
+					description = <"Comment on and record other incidental factors that may be affect interpretation of the observation.">
+					comment = <"For example, motion, pain, poor perfusion, infant feeding, peripheral hypothermia, sedation.">
 				>
 				["at0018"] = <
 					text = <"Oximetry device">
@@ -811,7 +759,7 @@ ontology
 				["at0020"] = <
 					text = <"Sensor type">
 					description = <"The type of measurement sensor used.">
-					comment = <"For example: transmittal electrode; reflective electrode; clamp electrode; or strip electrode.">
+					comment = <"For example: transmittal, reflective. Coding with a terminology is preferred, if possible.">
 				>
 				["at0034"] = <
 					text = <"Exertion">
@@ -833,22 +781,6 @@ ontology
 					text = <"SpMet">
 					description = <"The saturation of methaemoglobin in the peripheral blood, measured via pulse CO-oximetry.">
 				>
-				["at0048"] = <
-					text = <"Transmittal">
-					description = <"A pulse oximetry transmittal sensor was applied.">
-				>
-				["at0049"] = <
-					text = <"Reflective">
-					description = <"A pulse oximetry reflective sensor was applied.">
-				>
-				["at0050"] = <
-					text = <"Clamp">
-					description = <"A pulse oximetry clamp sensor was applied.">
-				>
-				["at0051"] = <
-					text = <"Strip">
-					description = <"A pulse oximetry strip sensor was applied.">
-				>
 				["at0054"] = <
 					text = <"Waveform">
 					description = <"A waveform reading associated with the oximetry measurement.">
@@ -869,7 +801,7 @@ ontology
 				>
 				["at0061"] = <
 					text = <"Pre/post-ductal">
-					description = <"Sensor site relative to the ductus arteriosus in neonates.">
+					description = <"Sensor site relative to the ductus arteriosus in neonates, to determine whether the blood supply to limb of the sensor site is pre- or post-ductal in cases of patent ductus arteriosus.">
 				>
 				["at0062"] = <
 					text = <"Pre-ductal">
@@ -878,6 +810,10 @@ ontology
 				["at0063"] = <
 					text = <"Post-ductal">
 					description = <"The sensor site is post-ductal.">
+				>
+				["at0064"] = <
+					text = <"Indeterminate">
+					description = <"Unable to assess whether the sensor site is pre- or post-ductal.">
 				>
 			>
 		>
@@ -901,16 +837,17 @@ ontology
 				>
 				["at0006"] = <
 					text = <"*SpO₂(en)">
-					description = <"*The saturation of oxygen in the peripheral blood, measured via pulse oximetry. (en)">
-					comment = <"*SpO₂ is defined as the ratio of oxyhaemoglobin (HbO₂) to the total concentration of haemoglobin (HbO₂ + deoxyhaemoglobin) in peripheral blood.(en)">
+					description = <"*The saturation of oxygen in the peripheral blood, measured via pulse oximetry.(en)">
+					comment = <"*SpO₂ is defined as the percentage of oxyhaemoglobin (HbO₂) to the total concentration of haemoglobin (HbO₂ + deoxyhaemoglobin) in peripheral blood.(en)">
 				>
 				["at0007"] = <
 					text = <"*List(en)">
 					description = <"*@ internal @(en)">
 				>
 				["at0009"] = <
-					text = <"نوع سنسور">
-					description = <"محل قرار دهی سنسور اندازه گیری">
+					text = <"*Sensor site(en)">
+					description = <"*The site of the measurement sensor.(en)">
+					comment = <"*For example: Right index finger, left earlobe. Coding with a terminology is preferred, if possible.(en)">
 				>
 				["at0014"] = <
 					text = <"*Tree(en)">
@@ -922,17 +859,18 @@ ontology
 					comment = <"*Assumed values of 21% oxygen concentration, Fi02 of 0.21 and oxygen flow rate of 0 l/min or 0 ml/min.(en)">
 				>
 				["at0016"] = <
-					text = <"عوامل جانبی">
-					description = <"نظر و ثبت سایر عوامل اتفاقی که ممکن استبر تفسیر مشاهدات تاثیر بگذارد برای مثال حرکت ، درد، تزریق ضعیف ، تغذیه شیرخوار  ">
+					text = <"*Confounding factors(en)">
+					description = <"*Comment on and record other incidental factors that may be affect interpretation of the observation.(en)">
+					comment = <"*For example, motion, pain, poor perfusion, infant feeding, peripheral hypothermia, sedation.(en)">
 				>
 				["at0018"] = <
 					text = <"تجهیز">
 					description = <"جزییاتی در مورد تجهیزات غیر تهاجمی استفاده شده">
 				>
 				["at0020"] = <
-					text = <"نوع سنسور">
-					description = <"نوع سنسور اندازه گیری استفاده شده به عنوان مثال انتقالی ، بازتابی ، گیره ای یا نواری ، الکترود ">
-					comment = <"*For example: transmittal electrode; reflective electrode; clamp electrode; or strip electrode.(en)">
+					text = <"*Sensor type(en)">
+					description = <"*The type of measurement sensor used.(en)">
+					comment = <"*For example: transmittal, reflective. Coding with a terminology is preferred, if possible.(en)">
 				>
 				["at0034"] = <
 					text = <"تقلا">
@@ -954,22 +892,6 @@ ontology
 					text = <"*SpMet(en)">
 					description = <"*The saturation of metaemoglobin in the peripheral blood, measured via pulse CO-oximetry.(en)">
 				>
-				["at0048"] = <
-					text = <"انتقالی">
-					description = <"سنسور انتقالی اندازه گیری اکسیژن نبضی بکار برده شد">
-				>
-				["at0049"] = <
-					text = <"بازتابنده">
-					description = <"سنسور بازتابنده اندازه گیری اکسیژن نبضی بکار برده شد">
-				>
-				["at0050"] = <
-					text = <"گیره ای">
-					description = <"سنسور گیره ای اندازه گیری اکسیژن نبضی بکار برده شد">
-				>
-				["at0051"] = <
-					text = <"نوار">
-					description = <"سنسور نواری اندازه گیری اکسیژن نبضی بکار برده شد">
-				>
 				["at0054"] = <
 					text = <"شکل موجی">
 					description = <"شکل موجی خوانده شده در ارتباط با اندازه گیری میزان اکسیژن">
@@ -989,8 +911,8 @@ ontology
 					description = <"*Details of a series of oximetry readings, other than waveforms, expressed as a multimedia image or series of images. Waveforms should be recorded using the Waveform slot and associated cluster archetype.(en)">
 				>
 				["at0061"] = <
-					text = <"*Pre/postductal(en)">
-					description = <"*Sensor site relative to the ductus arteriosus in infants.(en)">
+					text = <"*Pre/post-ductal(en)">
+					description = <"*Sensor site relative to the ductus arteriosus in neonates, to determine whether the blood supply to limb of the sensor site is pre- or post-ductal in cases of patent ductus arteriosa.(en)">
 				>
 				["at0062"] = <
 					text = <"*Pre-ductal(en)">
@@ -999,6 +921,10 @@ ontology
 				["at0063"] = <
 					text = <"*Post-ductal(en)">
 					description = <"*The sensor site is post-ductal.(en)">
+				>
+				["at0064"] = <
+					text = <"*Indeterminate(en)">
+					description = <"*Unable to assess whether the sensor site is pre- or post-ductal.(en)">
 				>
 			>
 		>
@@ -1022,16 +948,17 @@ ontology
 				>
 				["at0006"] = <
 					text = <"*SpO₂(en)">
-					description = <"*The saturation of oxygen in the peripheral blood, measured via pulse oximetry. (en)">
-					comment = <"*SpO₂ is defined as the ratio of oxyhaemoglobin (HbO₂) to the total concentration of haemoglobin (HbO₂ + deoxyhaemoglobin) in peripheral blood.(en)">
+					description = <"*The saturation of oxygen in the peripheral blood, measured via pulse oximetry.(en)">
+					comment = <"*SpO₂ is defined as the percentage of oxyhaemoglobin (HbO₂) to the total concentration of haemoglobin (HbO₂ + deoxyhaemoglobin) in peripheral blood.(en)">
 				>
 				["at0007"] = <
 					text = <"Дерево">
 					description = <"@ внутренний @">
 				>
 				["at0009"] = <
-					text = <"Положение датчика">
-					description = <"Месторасположение измерительного датчика.">
+					text = <"*Sensor site(en)">
+					description = <"*The site of the measurement sensor.(en)">
+					comment = <"*For example: Right index finger, left earlobe. Coding with a terminology is preferred, if possible.(en)">
 				>
 				["at0014"] = <
 					text = <"Дерево">
@@ -1043,17 +970,18 @@ ontology
 					comment = <"*Assumed values of 21% oxygen concentration, Fi02 of 0.21 and oxygen flow rate of 0 l/min or 0 ml/min.(en)">
 				>
 				["at0016"] = <
-					text = <"Искажающие факторы">
-					description = <"Комментирование и запись других случайных факторов, которые могут влиять на интерпретацию наблюдений. Например, движение, боль, плохая перфузия, грудное вскармливание.">
+					text = <"*Confounding factors(en)">
+					description = <"*Comment on and record other incidental factors that may be affect interpretation of the observation.(en)">
+					comment = <"*For example, motion, pain, poor perfusion, infant feeding, peripheral hypothermia, sedation.(en)">
 				>
 				["at0018"] = <
 					text = <"Устройство">
 					description = <"Информация об используемом неинвазивном оксиметрическом устройстве.">
 				>
 				["at0020"] = <
-					text = <"Тип датчика">
-					description = <"Тип используемого измерительного датчика, например, передающий, отражающий, зажим или полоса, электрод.">
-					comment = <"*For example: transmittal electrode; reflective electrode; clamp electrode; or strip electrode.(en)">
+					text = <"*Sensor type(en)">
+					description = <"*The type of measurement sensor used.(en)">
+					comment = <"*For example: transmittal, reflective. Coding with a terminology is preferred, if possible.(en)">
 				>
 				["at0034"] = <
 					text = <"Нагрузка">
@@ -1075,22 +1003,6 @@ ontology
 					text = <"*SpMet(en)">
 					description = <"*The saturation of metaemoglobin in the peripheral blood, measured via pulse CO-oximetry.(en)">
 				>
-				["at0048"] = <
-					text = <"Передающий">
-					description = <"Применён передающий датчик пульсовой оксиметрии.">
-				>
-				["at0049"] = <
-					text = <"Отражающий">
-					description = <"Применён отражающий датчик пульсовой оксиметрии.">
-				>
-				["at0050"] = <
-					text = <"Зажим">
-					description = <"Применён датчик пульсовой оксиметрии в форме зажима.">
-				>
-				["at0051"] = <
-					text = <"Полоска">
-					description = <"Применён датчик пульсовой оксиметрии в форме полоски.">
-				>
 				["at0054"] = <
 					text = <"Осциллограмма">
 					description = <"Графическое изображение волны, связанное с оксиметрическим измерением.">
@@ -1110,8 +1022,8 @@ ontology
 					description = <"*Details of a series of oximetry readings, other than waveforms, expressed as a multimedia image or series of images. Waveforms should be recorded using the Waveform slot and associated cluster archetype.(en)">
 				>
 				["at0061"] = <
-					text = <"*Pre/postductal(en)">
-					description = <"*Sensor site relative to the ductus arteriosus in infants.(en)">
+					text = <"*Pre/post-ductal(en)">
+					description = <"*Sensor site relative to the ductus arteriosus in neonates, to determine whether the blood supply to limb of the sensor site is pre- or post-ductal in cases of patent ductus arteriosa.(en)">
 				>
 				["at0062"] = <
 					text = <"*Pre-ductal(en)">
@@ -1120,6 +1032,10 @@ ontology
 				["at0063"] = <
 					text = <"*Post-ductal(en)">
 					description = <"*The sensor site is post-ductal.(en)">
+				>
+				["at0064"] = <
+					text = <"*Indeterminate(en)">
+					description = <"*Unable to assess whether the sensor site is pre- or post-ductal.(en)">
 				>
 			>
 		>
@@ -1151,8 +1067,9 @@ ontology
 					description = <"*@ internal @(en)">
 				>
 				["at0009"] = <
-					text = <"Sensor-målested">
+					text = <"Målested">
 					description = <"Stedet for målingen.">
+					comment = <"For eksempel: Høyre pekefinger, venstre øreflipp. Koding med en terminologi foretrekkes, der det er mulig.">
 				>
 				["at0014"] = <
 					text = <"*Tree(en)">
@@ -1165,7 +1082,8 @@ ontology
 				>
 				["at0016"] = <
 					text = <"Konfunderende faktorer">
-					description = <"Fritekstbeskrivelse av problemer eller faktorer som kan ha påvirkning på målingene. For eksempel bevegelse, smerte, dårlig perfusjon, amming.">
+					description = <"Fritekstbeskrivelse av problemer eller faktorer som kan ha påvirkning på målingene.">
+					comment = <"For eksempel bevegelse, smerte, dårlig perfusjon, amming, perifer hypotermi, sedasjon.">
 				>
 				["at0018"] = <
 					text = <"Måleutstyr">
@@ -1174,7 +1092,7 @@ ontology
 				["at0020"] = <
 					text = <"Sensortype">
 					description = <"Sensortypen som ble brukt.">
-					comment = <"For eksempel: transmisjons- eller utstrålingselektrode; en reflekterende elektrode; en klemmeelektrode, eller båndelektrode.">
+					comment = <"For eksempel gjennomlysende eller reflekterende. Koding med en terminologi foretrekkes, der det er mulig.">
 				>
 				["at0034"] = <
 					text = <"Belastning">
@@ -1196,22 +1114,6 @@ ontology
 					text = <"SpMet">
 					description = <"Metning av methemoglobin i perifert blod, målt via puls-CO-oksimetri.">
 				>
-				["at0048"] = <
-					text = <"Transmisjons- eller utstrålingselektrode">
-					description = <"En transmisjons- eller utstrålingselektrode ble brukt.">
-				>
-				["at0049"] = <
-					text = <"Reflektive">
-					description = <"En puls reflektiv oksymetrielektrode ble brukt.">
-				>
-				["at0050"] = <
-					text = <"Klemme">
-					description = <"En pulsoksymetriklemme ble brukt.">
-				>
-				["at0051"] = <
-					text = <"Bånd">
-					description = <"En båndelektrode ble brukt.">
-				>
 				["at0054"] = <
 					text = <"Kurveform">
 					description = <"En avlesning av en kurveform i forbindelse med indirekte blodgassmålinger.">
@@ -1232,7 +1134,7 @@ ontology
 				>
 				["at0061"] = <
 					text = <"Pre/postduktal">
-					description = <"Sensor-målested i forhold til ductus arteriosus hos nyfødte.">
+					description = <"Sensor-målested i forhold til ductus arteriosus hos nyfødte, for å fastsette om blodtilførselen til ekstremiteten der sensoren er festet er pre- eller postduktalt i tilfeller med persisterende ductus arteriosus.">
 				>
 				["at0062"] = <
 					text = <"Preduktalt">
@@ -1241,6 +1143,10 @@ ontology
 				["at0063"] = <
 					text = <"Postduktalt">
 					description = <"Sensor-målestedet er postduktalt.">
+				>
+				["at0064"] = <
+					text = <"Ubestemmelig">
+					description = <"Det er ikke mulig å vurdere hvorvidt målestedet er pre- eller postduktalt.">
 				>
 			>
 		>
@@ -1263,18 +1169,18 @@ ontology
 					description = <"@ internal @">
 				>
 				["at0006"] = <
-					text = <"SpO2">
-					description = <"Syremättnaden i det perifera blodet, mätt genom pulsoximetri.">
-					comment = <"SpO2 definieras som förhållandet mellan oxihemoglobin (HbO2) och den totala koncentrationen av hemoglobin (HbO2 + deoxihemoglobin) i perifert blod.
-">
+					text = <"*SpO₂(en)">
+					description = <"*The saturation of oxygen in the peripheral blood, measured via pulse oximetry.(en)">
+					comment = <"*SpO₂ is defined as the percentage of oxyhaemoglobin (HbO₂) to the total concentration of haemoglobin (HbO₂ + deoxyhaemoglobin) in peripheral blood.(en)">
 				>
 				["at0007"] = <
 					text = <"List">
 					description = <"@ internal @">
 				>
 				["at0009"] = <
-					text = <"Sensorplats">
-					description = <"Mätningssensorns plats på kroppen.">
+					text = <"*Sensor site(en)">
+					description = <"*The site of the measurement sensor.(en)">
+					comment = <"*For example: Right index finger, left earlobe. Coding with a terminology is preferred, if possible.(en)">
 				>
 				["at0014"] = <
 					text = <"Tree">
@@ -1287,17 +1193,18 @@ ontology
 					comment = <"Antagna värden på 21% syrekoncentration, Fi02 av 0,21 och syrgasflödeshastighet av 0 l/min eller 0 ml/ min.">
 				>
 				["at0016"] = <
-					text = <"Påverkande faktorer">
-					description = <"Kommentera och registrera andra tillfälliga faktorer som kan påverka tolkningen av observationen, t.ex. rörelse, smärta, dålig perfusion, spädbarnsmatning.">
+					text = <"*Confounding factors(en)">
+					description = <"*Comment on and record other incidental factors that may be affect interpretation of the observation.(en)">
+					comment = <"*For example, motion, pain, poor perfusion, infant feeding, peripheral hypothermia, sedation.(en)">
 				>
 				["at0018"] = <
 					text = <"Oximetriutrustning">
 					description = <"Detaljer om den använda icke-invasiva oximeteranordningen.">
 				>
 				["at0020"] = <
-					text = <"Sensortyp">
-					description = <"Typ av mätningssensor som används.">
-					comment = <"Exempelvis: transmissionselektrod; reflekterande elektrod; klämelektrod eller elektrodremsa.">
+					text = <"*Sensor type(en)">
+					description = <"*The type of measurement sensor used.(en)">
+					comment = <"*For example: transmittal, reflective. Coding with a terminology is preferred, if possible.(en)">
 				>
 				["at0034"] = <
 					text = <"Ansträngning">
@@ -1319,22 +1226,6 @@ ontology
 					text = <"*SpMet(en)">
 					description = <"*The saturation of metaemoglobin in the peripheral blood, measured via pulse CO-oximetry.(en)">
 				>
-				["at0048"] = <
-					text = <"Överföring">
-					description = <"En pulsoximeter med transmittalsensor applicerades.">
-				>
-				["at0049"] = <
-					text = <"Reflexiv">
-					description = <"En pulsoximeter med reflexiv sensor applicerades.">
-				>
-				["at0050"] = <
-					text = <"Klämma">
-					description = <"En pulsoximeter med klämsensor applicerades.">
-				>
-				["at0051"] = <
-					text = <"Remsa">
-					description = <"En pulsoximeter med sensorremsa applicerades.">
-				>
 				["at0054"] = <
 					text = <"Vågform">
 					description = <"Ett mätvärde av en vågform kopplad till oximetrimätningen.">
@@ -1354,8 +1245,8 @@ ontology
 					description = <"*Details of a series of oximetry readings, other than waveforms, expressed as a multimedia image or series of images. Waveforms should be recorded using the Waveform slot and associated cluster archetype.(en)">
 				>
 				["at0061"] = <
-					text = <"*Pre/postductal(en)">
-					description = <"*Sensor site relative to the ductus arteriosus in infants.(en)">
+					text = <"*Pre/post-ductal(en)">
+					description = <"*Sensor site relative to the ductus arteriosus in neonates, to determine whether the blood supply to limb of the sensor site is pre- or post-ductal in cases of patent ductus arteriosa.(en)">
 				>
 				["at0062"] = <
 					text = <"*Pre-ductal(en)">
@@ -1364,6 +1255,10 @@ ontology
 				["at0063"] = <
 					text = <"*Post-ductal(en)">
 					description = <"*The sensor site is post-ductal.(en)">
+				>
+				["at0064"] = <
+					text = <"*Indeterminate(en)">
+					description = <"*Unable to assess whether the sensor site is pre- or post-ductal.(en)">
 				>
 			>
 		>
