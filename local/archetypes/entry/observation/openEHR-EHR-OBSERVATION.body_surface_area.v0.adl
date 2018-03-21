@@ -2,7 +2,7 @@
 	openEHR-EHR-OBSERVATION.body_surface_area.v0
 
 concept
-	[at0000]	-- Body Surface Area
+	[at0000]	-- Body surface area
 language
 	original_language = <[ISO_639-1::en]>
 description
@@ -15,15 +15,22 @@ description
 	details = <
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"Body surface area (BSA) is the measured or calculated surface area of a human body. It is used in many measurements in medicine, including the calculation of drug dosages and the amount of fluids to be administered intravenously.">
-			use = <"Use to measure or calculate the surface area of the human body. BSA can be used to support clinical decision-making, for example determining dosages of chemotherapy, glucocorticoids and other drugs with a narrow therapeutic index, calculating the cardiac index and in wider secondary uses such as policy-making and clinical research.">
-			keywords = <"body", "surface", "area", "BSA", "surface area", "skin">
-			misuse = <"Do not use to record the percentage of body surface area involvement in burns or other skin damage etc. This information would be carried in separate specific archetypes.">
+			purpose = <"To record the measured or calculated surface area of a human body.">
+			use = <"Use to record the measured or calculated surface area of a human body. 
+
+BSA can be used to support clinical decision-making, including but not limited to:
+- determine the dosage of chemotherapy and other drugs with a narrow therapeutic index; 
+- calculation of the cardiac index; and
+- calculation of intravenous fluid requirements.">
+			keywords = <"body", "surface", "area", "BSA", "surface area">
+			misuse = <"Not to be used to record the percentage of body surface area involvement in burns or other skin damage etc. This information should be carried in separate specific archetypes related to burns assessment.
+
+Not to be used to record the adjusted Body surface area eg a calculation of the BSA of a person with limb amputation, based on other body part measurements and an algorithm - use OBSERVATION.body_surface_area-adjusted.">
 			copyright = <"© openEHR Foundation">
 		>
 	>
 	lifecycle_state = <"in_development">
-	other_contributors = <"Vebjoern Arntzen, Oslo university hospital, Norway", "Koray Atalag, University of Auckland, New Zealand", "Gustavo Bacelar-Silva, Healthcare Designs, Brazil (openEHR Editor)", "Silje Ljosland Bakke, National ICT Norway, Norway (openEHR Editor)", "Lars Bitsch-Larsen, Haukeland University hospital, Norway", "Rong Chen, Cambio Healthcare Systems, Sweden", "Einar Fosse, National Centre for Integrated Care and Telemedicine, Norway", "Sebastian Garde, Ocean Informatics, Germany", "Christian Ghan, Lifehouse, Australia", "Heather Grain, Llewelyn Grain Informatics, Australia", "Sam Heard, Ocean Informatics, Australia", "Lars Karlsen, DIPS ASA, Norway", "Heather Leslie, Ocean Informatics, Australia (openEHR Editor)", "Ian McNicoll, freshEHR Clinical Informatics, United Kingdom (openEHR Editor)", "Bjoern Naess, DIPS ASA, Norway", "Andrej Orel, Marand d.o.o., Slovenia", "Jussara Rotzsch, UNB, Brazil", "Dennis Valk, Code24 BV, Netherlands">
+	other_contributors = <"Vebjørn Arntzen, Oslo University Hospital, Norway", "Koray Atalag, University of Auckland, New Zealand", "Gustavo Bacelar-Silva, Healthcare Designs, Brazil (openEHR Editor)", "Silje Ljosland Bakke, Nasjonal IKT HF, Norway (openEHR Editor)", "Lars Bitsch-Larsen, Haukeland University hospital, Norway", "Margaret Campbell, Queensland Health, Australia", "Rong Chen, Cambio Healthcare Systems, Sweden", "Einar Fosse, National Centre for Integrated Care and Telemedicine, Norway", "Sebastian Garde, Ocean Informatics, Germany", "Christian Ghan, Lifehouse, Australia", "Heather Grain, Llewelyn Grain Informatics, Australia", "Sam Heard, Ocean Informatics, Australia", "Evelyn Hovenga, EJSH Consulting, Australia", "Lars Karlsen, DIPS ASA, Norway", "Lars Morgan Karlsen, DIPS ASA, Norway", "Shinji Kobayashi, Kyoto University, Japan", "Heather Leslie, Atomica Informatics, Australia (openEHR Editor)", "Ian McNicoll, freshEHR Clinical Informatics, United Kingdom (openEHR Editor)", "Bjoern Naess, DIPS ASA, Norway", "Andrej Orel, Marand d.o.o., Slovenia", "Jussara Rotzsch, UNB, Brazil", "Richard Townley-O'Neill, Australian Digital Health Agency, Australia", "Dennis Valk, Code24 BV, Netherlands">
 	other_details = <
 		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
 		["custodian_organisation"] = <"openEHR Foundation">
@@ -42,17 +49,17 @@ Wang Y, Moss J, Thisted R. Predictors of body surface area. J Clin Anesth. 1992;
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"AAFFA3B5EB38864BFDD22FF78A3A17FD">
-		["build_uid"] = <"d73ebe79-cf2f-4710-bd82-134922657499">
+		["MD5-CAM-1.0.1"] = <"22FCD7E72F45368CFD0213C87C961F01">
+		["build_uid"] = <"e5cc554f-0346-4cff-9c59-b657eee1ca31">
 		["revision"] = <"0.0.1-alpha">
 	>
 
 definition
-	OBSERVATION[at0000] matches {	-- Body Surface Area
+	OBSERVATION[at0000] matches {	-- Body surface area
 		data matches {
 			HISTORY[at0001] matches {	-- Event Series
 				events cardinality matches {1..*; unordered} matches {
-					POINT_EVENT[at0002] occurrences matches {0..1} matches {	-- Point in time
+					EVENT[at0002] occurrences matches {0..1} matches {	-- Any event
 						data matches {
 							ITEM_TREE[at0003] matches {	-- Tree
 								items cardinality matches {1..*; unordered} matches {
@@ -63,6 +70,7 @@ definition
 												list = <
 													["1"] = <
 														units = <"m2">
+														magnitude = <|>=0.0|>
 														precision = <|2|>
 													>
 												>
@@ -89,8 +97,8 @@ definition
 							DV_CODED_TEXT matches {
 								defining_code matches {
 									[local::
-									at0010, 	-- Automatic entry
-									at0011]	-- Direct entry
+									at0010, 	-- System entry
+									at0011]	-- Manual entry
 								}
 							}
 						}
@@ -131,16 +139,16 @@ ontology
 		["en"] = <
 			items = <
 				["at0000"] = <
-					text = <"Body Surface Area">
-					description = <"Body surface area (BSA) is the measured or calculated surface area of a human body.">
+					text = <"Body surface area">
+					description = <"The measured or calculated surface area of a human body. Also known as BSA.">
 				>
 				["at0001"] = <
 					text = <"Event Series">
 					description = <"@ internal @">
 				>
 				["at0002"] = <
-					text = <"Point in time">
-					description = <"Specified point in time at which the BSA was recorded, and  which may be explicitly defined in a template or at run-time.">
+					text = <"Any event">
+					description = <"Default, unspecified point in time or interval event which may be explicitly defined in a template or at run-time.">
 				>
 				["at0003"] = <
 					text = <"Tree">
@@ -174,12 +182,12 @@ ontology
 					description = <"The method by which the body surface area was estimated.">
 				>
 				["at0010"] = <
-					text = <"Automatic entry">
-					description = <"The body surface area was calculated and entered automatically without user intervention.">
+					text = <"System entry">
+					description = <"The measurement was calculated and entered automatically by the clinical system and without manual intervention of the clinician.">
 				>
 				["at0011"] = <
-					text = <"Direct entry">
-					description = <"The body surface area was calculated and entered directly by the user.">
+					text = <"Manual entry">
+					description = <"The measurement was entered manually by the clinician.">
 				>
 				["at0012"] = <
 					text = <"Dubois and Dubois">
@@ -187,31 +195,31 @@ ontology
 				>
 				["at0013"] = <
 					text = <"Mosteller">
-					description = <"The Mosteller formula was used to estimate body surface area.">
+					description = <"The Mosteller formula was used to calculate the body surface area.">
 				>
 				["at0014"] = <
 					text = <"Haycock">
-					description = <"The Haycock formula was used to estimate body surface area.">
+					description = <"The Haycock formula was used to calculate the body surface area.">
 				>
 				["at0015"] = <
 					text = <"Gehan and George">
-					description = <"The Gehan and George formula was used to estimate body surface area.">
+					description = <"The Gehan and George formula was used to calculate the body surface area.">
 				>
 				["at0016"] = <
 					text = <"Boyd">
-					description = <"The Boyd formula was used to estimate body surface area.">
+					description = <"The Boyd formula was used to calculate the body surface area.">
 				>
 				["at0017"] = <
 					text = <"Fujimoto">
-					description = <"The Fujimoto formula to estimate body surface area.">
+					description = <"The Fujimoto formula to calculate the body surface area.">
 				>
 				["at0018"] = <
 					text = <"Takihara">
-					description = <"The Takihara formula was used to estimate body surface area.">
+					description = <"The Takihara formula was used to calculate the body surface area.">
 				>
 				["at0019"] = <
 					text = <"Comment">
-					description = <"Any additional comment about the body surface area estimation.">
+					description = <"Additional narrative about the measurement, not captured in other fields.">
 				>
 			>
 		>
