@@ -1,0 +1,108 @@
+﻿archetype (adl_version=1.4; uid=65278673-1c39-48fb-b6d7-b70af842a463)
+	openEHR-EHR-COMPOSITION.care_plan.v0
+
+concept
+	[at0000]	-- Care Plan
+language
+	original_language = <[ISO_639-1::en]>
+description
+	original_author = <
+		["name"] = <"Sistine Barretto-Daniels">
+		["organisation"] = <"Ocean Informatics">
+		["date"] = <"2010-04-30">
+	>
+	details = <
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To provide a framework to support the recording of all aspects of a Care Plan. 
+
+This includes:
+- the INSTRUCTION for the Care Plan (as a collection of one or more activities), and the corresponding ACTION which records the status of the Care Plan as a whole;
+- the INSTRUCTIONs for each of the proposed activities; and
+- the corresponding ACTIONs for the activities which allow for the recording of the status of each INSTRUCTION.">
+			use = <"Use to provide a framework to support the recording of all aspects of a Care Plan to be carried out over a period of time. 
+
+This archetype may contain combinations of planned activities, activies that are in progress or have been carried out, goals/objectives, targets, and recommendations.">
+			keywords = <"care plan", "plan", "care management plan", "management plan">
+			misuse = <"">
+			copyright = <"© Australian Digital Health Agency, openEHR Foundation">
+		>
+	>
+	lifecycle_state = <"in_development">
+	other_contributors = <"Heather Leslie, Ocean Informatics, Australia", ...>
+	other_details = <
+		["custodian_organisation"] = <"openEHR Foundation">
+		["references"] = <"Derived from: Encounter, Draft archetype [Internet]. Australian Digital Health Agency (NEHTA), ADHA Clinical Knowledge Manager. Authored: 2010 Apr 30. Available at: http://dcm.nehta.org.au/ckm#showArchetype_1013.1.1219 (discontinued)">
+		["current_contact"] = <"Heather Leslie, Ocean Informatics, heather.leslie@oceaninformatics.com">
+		["original_namespace"] = <"org.openehr">
+		["original_publisher"] = <"openEHR Foundation">
+		["custodian_namespace"] = <"org.openehr">
+		["MD5-CAM-1.0.1"] = <"2E58026FB3CD286ACB855761BA27A9CC">
+		["build_uid"] = <"f182f4d0-b620-44a1-b9d5-ea8c8eaf96f5">
+		["revision"] = <"0.0.1-alpha">
+	>
+
+definition
+	COMPOSITION[at0000] matches {	-- Care Plan
+		category matches {
+			DV_CODED_TEXT matches {
+				defining_code matches {[openehr::431]}
+			}
+		}
+		content cardinality matches {0..*; unordered} matches {
+			allow_archetype ENTRY[at0014] occurrences matches {0..*} matches {	-- Care Plan
+				include
+					archetype_id/value matches {/.*/}
+			}
+			allow_archetype EVALUATION[at0017] occurrences matches {0..*} matches {	-- Goals
+				include
+					archetype_id/value matches {/openEHR-EHR-EVALUATION\.goal(-[a-zA-Z0-9_]+)*\.v1/}
+			}
+			allow_archetype INSTRUCTION[at0001] occurrences matches {0..*} matches {	-- Proposed Activities
+				include
+					archetype_id/value matches {/.*/}
+			}
+			allow_archetype ACTION[at0004] occurrences matches {0..*} matches {	-- Activity Actions
+				include
+					archetype_id/value matches {/.*/}
+			}
+			allow_archetype ENTRY[at0016] occurrences matches {0..*} matches {	-- Other
+				include
+					archetype_id/value matches {/openEHR-EHR-EVALUATION\.goal(-[a-zA-Z0-9_]+)*\.v1/}
+			}
+		}
+	}
+
+
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"Care Plan">
+					description = <"A framework to support the recording of all aspects of a Care Plan.">
+				>
+				["at0001"] = <
+					text = <"Proposed Activities">
+					description = <"SLOT to contain all of the INSTRUCTION archetypes required to carry out each proposed activity within the care plan.">
+				>
+				["at0004"] = <
+					text = <"Activity Actions">
+					description = <"SLOT to contain all of the ACTION archetypes required to record the status of each activity INSTRUCTION within the care plan.">
+				>
+				["at0014"] = <
+					text = <"Care Plan">
+					description = <"SLOT to capture the INSTRUCTION and ACTION for the overall care plan.">
+				>
+				["at0016"] = <
+					text = <"Other">
+					description = <"SLOT to contain other optional and unspecified archetypes that may be required for a specific clinical scenario.">
+				>
+				["at0017"] = <
+					text = <"Goals">
+					description = <"SLOT to contain all of the EVALUATION archetypes required to record the goals for the Care Plan.">
+				>
+			>
+		>
+	>
