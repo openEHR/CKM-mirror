@@ -1,0 +1,223 @@
+﻿archetype (adl_version=1.4; uid=030bccb3-d9e5-4d42-901e-c7abf94b76ef)
+	openEHR-EHR-EVALUATION.education_training_summary.v0
+
+concept
+	[at0000]	-- Education and training summary
+language
+	original_language = <[ISO_639-1::en]>
+description
+	original_author = <
+		["name"] = <"Heather Leslie">
+		["organisation"] = <"Atomica Informatics, Australia">
+		["email"] = <"heather.leslie@atomicainformatics.com">
+		["date"] = <"2010-12-21">
+	>
+	details = <
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To record an education and training summary about the individual, including current activity if still undergoing education and/or past achievements.">
+			use = <"Use to record the current education status of the individual. This includes current activity if still undergoing education (such as school attendance status) and educational/training achievements to date. As the education status of the subject changes data can be updated or achievements added to create an evolving education summary held within a persistent COMPOSITION record.">
+			keywords = <"education", "school", "university", "secondary", "tertiary", "college", "apprenticeship", "training", "needs", "primary">
+			misuse = <"">
+			copyright = <"© Australian Digital Health Agency, openEHR Foundation">
+		>
+	>
+	lifecycle_state = <"in_development">
+	other_contributors = <"John Bennett, NEHTA, Australia", "Stephen Chu, NEHTA, Australia", "Matthew Cordell, NEHTA, Australia", "David Evans, Queensland Health, Australia", "Andrew Goodchild, NEHTA, Australia", "Mary Kelaher, NEHTA, Australia", "Robert L'egan, NEHTA, Australia", "Heather Leslie, Ocean Informatics, Australia (Editor)", "Ian McNicoll, Ocean Informatics UK, United Kingdom", "Stewart Morrison, NEHTA, Australia", "Jodie Pycroft, Adelaide Northern Division of General Practice Ltd, Australia", "John Taylor, NEHTA, Australia", "Gordon Tomes, National Disability Insurance Scheme Agency, Australia", "Richard Townley-O'Neill, NEHTA, Australia">
+	other_details = <
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
+		["custodian_organisation"] = <"openEHR Foundation">
+		["references"] = <"Derived from: Education and Training, Draft archetype [Internet]. Australian Digital Health Agency (NEHTA), ADHA Clinical Knowledge Manager. Authored: 2010 Dec 21. Available at: http://dcm.nehta.org.au/ckm#showArchetype_1013.1.924_5 (discontinued).
+
+METeOR (Metadata Online Registry) [Internet]. Australia: Australian Institute of Health and Welfare. Person—school enrolment and attendance status. Available from: http://meteor.aihw.gov.au/content/index.phtml/itemId/401809 (accessed 2013 Mar 01).">
+		["current_contact"] = <"Heather Leslie, Atomica Informatics, Australia<heather.leslie@atomicainformatics.com>">
+		["original_namespace"] = <"org.openehr">
+		["original_publisher"] = <"openEHR Foundation">
+		["custodian_namespace"] = <"org.openehr">
+		["MD5-CAM-1.0.1"] = <"371A154AD86EA761996A478EC1A0EDAC">
+		["build_uid"] = <"ad3833d3-7eec-421d-80a2-ca21e4923c9b">
+		["revision"] = <"0.0.1-alpha">
+	>
+
+definition
+	EVALUATION[at0000] matches {	-- Education and training summary
+		data matches {
+			ITEM_TREE[at0001] matches {	-- Tree
+				items cardinality matches {0..*; unordered} matches {
+					ELEMENT[at0018] occurrences matches {0..1} matches {	-- Description
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0003] occurrences matches {0..1} matches {	-- Age Commenced Formal Education
+						value matches {
+							DV_DURATION matches {
+								value matches {PYM}
+							}
+						}
+					}
+					ELEMENT[at0020] occurrences matches {0..1} matches {	-- Category
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0011] occurrences matches {0..1} matches {	-- Attendance
+						value matches {
+							DV_CODED_TEXT matches {
+								defining_code matches {
+									[local::
+									at0012, 	-- Enrolled; Attending
+									at0013, 	-- Enrolled; Not Always Attending
+									at0014, 	-- Enrolled; Not Attending
+									at0015, 	-- Enrolled; Waiting to Commence
+									at0016, 	-- Home Education
+									at0017]	-- Not Enrolled; Not Home Education
+								}
+							}
+						}
+					}
+					ELEMENT[at0002] occurrences matches {0..1} matches {	-- Highest Achieved
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					CLUSTER[at0005] occurrences matches {0..*} matches {	-- Milestone Achieved
+						items cardinality matches {1..*; unordered} matches {
+							ELEMENT[at0004] occurrences matches {0..1} matches {	-- Milestone
+								value matches {
+									DV_TEXT matches {*}
+								}
+							}
+							ELEMENT[at0019] occurrences matches {0..1} matches {	-- Place
+								value matches {
+									DV_TEXT matches {*}
+								}
+							}
+							ELEMENT[at0006] occurrences matches {0..1} matches {	-- Date Achieved
+								value matches {
+									DV_DATE_TIME matches {*}
+								}
+							}
+						}
+					}
+					ELEMENT[at0007] occurrences matches {0..1} matches {	-- Comment
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+				}
+			}
+		}
+		protocol matches {
+			ITEM_TREE[at0026] matches {	-- Tree
+				items cardinality matches {0..*; unordered} matches {
+					ELEMENT[at0028] occurrences matches {0..1} matches {	-- Last updated
+						value matches {
+							DV_DATE_TIME matches {*}
+						}
+					}
+					allow_archetype CLUSTER[at0027] occurrences matches {0..*} matches {	-- Extension
+						include
+							archetype_id/value matches {/.*/}
+					}
+				}
+			}
+		}
+	}
+
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"Education and training summary">
+					description = <"Overview of the educational and training background of the individual.">
+				>
+				["at0001"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Highest Achieved">
+					description = <"Description of highest level of education or training achieved to date.">
+					comment = <"Coding with a terminology is desirable, where possible. For example: completed secondary school; completed postgraduate degree; completed apprenticeship; or never attended school. ">
+				>
+				["at0003"] = <
+					text = <"Age Commenced Formal Education">
+					description = <"Age when the individual commenced formal education.">
+				>
+				["at0004"] = <
+					text = <"Milestone">
+					description = <"Name of the education or training milestone or academic qualification achieved.">
+				>
+				["at0005"] = <
+					text = <"Milestone Achieved">
+					description = <"Identification of educational or training milestones acheived.">
+				>
+				["at0006"] = <
+					text = <"Date Achieved">
+					description = <"Date that education milestone was achieved.">
+				>
+				["at0007"] = <
+					text = <"Comment">
+					description = <"Additional narrative about the individual's education, not captured in other fields.">
+				>
+				["at0011"] = <
+					text = <"Attendance">
+					description = <"Description of attendance at educational facility/location.">
+					comment = <"Only applicable for primary and secondary age children. Reference: METeOR - http://meteor.aihw.gov.au/content/index.phtml/itemId/401809">
+				>
+				["at0012"] = <
+					text = <"Enrolled; Attending">
+					description = <"The subject is currently enrolled and attending school regularly.">
+				>
+				["at0013"] = <
+					text = <"Enrolled; Not Always Attending">
+					description = <"The subject is currently enrolled and is not attending school regularly.">
+				>
+				["at0014"] = <
+					text = <"Enrolled; Not Attending">
+					description = <"The subject is currently enrolled and is not attending school at all.">
+				>
+				["at0015"] = <
+					text = <"Enrolled; Waiting to Commence">
+					description = <"The subject is currently enrolled but is waiting to commence.">
+				>
+				["at0016"] = <
+					text = <"Home Education">
+					description = <"The subject is currently educated at home.">
+				>
+				["at0017"] = <
+					text = <"Not Enrolled; Not Home Education">
+					description = <"The subject is currently not enrolled and is not educated at home.">
+				>
+				["at0018"] = <
+					text = <"Description">
+					description = <"Narrative description of education and training, including current activity and/or past experience.">
+				>
+				["at0019"] = <
+					text = <"Place">
+					description = <"Facility or institution at which milestone was achieved.">
+				>
+				["at0020"] = <
+					text = <"Category">
+					description = <"Category of education institution that is appropriate for the individual  to attend, based on age and ability.">
+				>
+				["at0026"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0027"] = <
+					text = <"Extension">
+					description = <"Additional information required to capture local content or to align with other reference models/formalisms.">
+					comment = <"For example: local information requirements or additional metadata to align with FHIR or CIMI equivalents.">
+				>
+				["at0028"] = <
+					text = <"Last updated">
+					description = <"The date that this information was last updated.">
+					comment = <"This data element may be thought redundant if the data is recorded and stored using COMPOSITIONs within a closed clinical system. However if this information is extracted from its original COMPOSITION context, for example, to be included in another document or message then the temporal context is effectively removed. This 'Last updated' data element has been explicitly added to allow the critical temporal data to be kept alongside the clinical data in all circumstances. It is assumed that the clinical system can copy the date from the COMPOSITION to reduce the need for duplication of data entry by the clinician.">
+				>
+			>
+		>
+	>
