@@ -16,16 +16,16 @@ description
 		["en"] = <
 			language = <[ISO_639-1::en]>
 			purpose = <"To record the measurement of intraocular pressure in a single eye.">
-			use = <"Use to record the measurement of intraocular pressure in a single eye.  
+			use = <"Use to record the measurement of intraocular pressure in a single eye. Record the details of each eye using a separate data instance from this archetype.
 
 The CLUSTER.exclusion_exam archetype can be nested within the 'Measurement not done' SLOT to optionally record explicit details about the measurement not being performed.">
 			keywords = <"IOP", "toniometry", "glaucoma", "eye">
-			misuse = <"Where details of methodology carried under protocol change between the examination of each eye, a new Entry must be created at run-time.">
+			misuse = <"">
 			copyright = <"© openEHR Foundation">
 		>
 	>
 	lifecycle_state = <"in_development">
-	other_contributors = <"Ian McNicoll, freshEHR Informatics, UK ", "Heather Leslie, Ocean Informatics, Australia">
+	other_contributors = <"Ian McNicoll, freshEHR Informatics, UK ", "Heather Leslie, Atomica Informatics, Australia", "Aitor Eguzkitza, UPNA (Public University of Navarre) - CHN (Complejo Hospitalario de Navarra), Spain">
 	other_details = <
 		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
 		["custodian_organisation"] = <"openEHR Foundation">
@@ -42,8 +42,8 @@ Lamparter, J., & Hoffmann, E. M. (2009). Messung des Augeninnendrucks (Tonometri
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"EB76730D0E9461B2EF9B62ACD3C539E9">
-		["build_uid"] = <"ede25bbc-002d-4a19-8e2e-7f836b815f02">
+		["MD5-CAM-1.0.1"] = <"81545BD8ABC02DEB2F6EC4C6FC79ACAF">
+		["build_uid"] = <"2210dd7f-6e5e-439d-b510-a757d1d46d5c">
 		["revision"] = <"0.0.1-alpha">
 	>
 
@@ -61,8 +61,8 @@ definition
 											DV_CODED_TEXT matches {
 												defining_code matches {
 													[local::
-													at0058, 	-- Left
-													at0059]	-- Right
+													at0058, 	-- Left eye
+													at0059]	-- Right eye
 												}
 											}
 										}
@@ -79,6 +79,17 @@ definition
 													>
 												>
 											>
+										}
+									}
+									ELEMENT[at0081] occurrences matches {0..1} matches {	-- Corrected pressure
+										value matches {
+											C_DV_QUANTITY <
+											>
+										}
+									}
+									ELEMENT[at0082] occurrences matches {0..1} matches {	-- Correction description
+										value matches {
+											DV_TEXT matches {*}
 										}
 									}
 									ELEMENT[at0065] occurrences matches {0..1} matches {	-- Applanation time
@@ -134,7 +145,7 @@ definition
 		protocol matches {
 			ITEM_TREE[at0068] matches {	-- Tree
 				items cardinality matches {0..*; unordered} matches {
-					ELEMENT[at0046] occurrences matches {0..1} matches {	-- Tonometry Method
+					ELEMENT[at0046] occurrences matches {0..1} matches {	-- Tonometry method
 						value matches {
 							DV_CODED_TEXT matches {
 								defining_code matches {
@@ -195,8 +206,8 @@ ontology
 					description = <"Measured intraocular pressure.">
 				>
 				["at0046"] = <
-					text = <"Tonometry Method">
-					description = <"Type of tonometery used to measure intracoular pressure.">
+					text = <"Tonometry method">
+					description = <"Type of tonometery used to measure intraocular pressure.">
 				>
 				["at0047"] = <
 					text = <"Goldmann">
@@ -235,11 +246,11 @@ ontology
 					description = <"Identification of the eye under examination.">
 				>
 				["at0058"] = <
-					text = <"Left">
+					text = <"Left eye">
 					description = <"The left eye was examined.">
 				>
 				["at0059"] = <
-					text = <"Right">
+					text = <"Right eye">
 					description = <"The right eye was examined.">
 				>
 				["at0061"] = <
@@ -278,6 +289,14 @@ ontology
 				["at0080"] = <
 					text = <"Multimedia">
 					description = <"Digital image, video or diagram representing the measurement of intraocular pressure.">
+				>
+				["at0081"] = <
+					text = <"Corrected pressure">
+					description = <"Corrected value for intraocular pressure.">
+				>
+				["at0082"] = <
+					text = <"Correction description">
+					description = <"Narrative description about the method used to correct the original intraocular pressure measurement.">
 				>
 			>
 		>
