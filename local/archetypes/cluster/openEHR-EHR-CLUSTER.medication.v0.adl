@@ -34,10 +34,12 @@ description
 		["nb"] = <
 			language = <[ISO_639-1::nb]>
 			purpose = <"For å registrere detaljer om et legemiddel eller en komponent av et legemiddel, inkludert detaljer om spesifikke bestanddeler.">
-			use = <"For å registrere detaljer om et legemiddel eller en komponent av et legemiddel, inkludert detaljer om spesifikke bestanddeler.
+			use = <"Brukes for å registrere detaljer om et legemiddel eller en komponent av et legemiddel, inkludert detaljer om spesifikke bestanddeler.
+
 Brukes for å registrere detaljer tilberedningen av et legemiddel/preparat en legemiddelordinering (INSTRUCTION.medication) som inneholder forskriverens hensikt med ordineringen, eller i en legemiddelhandling (ACTION.medication) som dokumenterer hvilket preparatet som faktisk ble administrert, utdelt eller ekspedert.
+
 De fleste ordineringer trenger ikke denne arketypen. For generiske ordineringer vil det spesifikke produktet bestemmes av de lokale legemiddelavtalene eller varene apoteket har tilgjengelig. Der det ordineres et produkt, vil legemiddelnavnet inneholde detaljer om form og styrke av produktet.">
-			keywords = <"legemiddel", "tilbereding", "ordinering", "forskrive", "terapi", "substans", "medikament", "terapeutisk", "medikamenter solgt over disk", "vare", "ad-hoc", "magistrell", "ex tempore", "improvisert">
+			keywords = <"legemiddel", "tilbereding", "ordinering", "forskrive", "terapi", "substans", "medikament", "terapeutisk", "medikamenter solgt over disk", "vare", "ad-hoc", "magistrell", "ex tempore", "blanding", "virkestoff", "hjelpestoff", "OTC", "utblanding">
 			misuse = <"Brukes ikke for å få oversikt over varelageret på et apotek.">
 		>
 		["pt"] = <
@@ -50,7 +52,7 @@ De fleste ordineringer trenger ikke denne arketypen. For generiske ordineringer 
 		["en"] = <
 			language = <[ISO_639-1::en]>
 			purpose = <"To record details of a medication or component of a medication, including details of any specific constituents.">
-			use = <"For recording details of a medication or component of a medication, including details of any specific constituents.
+			use = <"Use for recording details of a medication or component of a medication, including details of any specific constituents.
 
 This archetype is intended to be used within the context of the original medication order INSTRUCTION and carrying the prescriber's intent, or in the context of a medication ACTION where it serves as a record of the preparation actually supplied or administered.
 
@@ -75,8 +77,8 @@ Medication - FHIR v3.0.1. (2017). Retrieved 12 April 2018, from https://www.hl7.
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"AB892D732764E2A31ACC71E122DA105E">
-		["build_uid"] = <"f51aa294-58fc-4597-a137-488c8ef1f0ac">
+		["MD5-CAM-1.0.1"] = <"D26CDB4CE019EDBA19EE880F5554DCA0">
+		["build_uid"] = <"fbadb920-dc0f-4260-b697-c9f88d2f91d3">
 		["revision"] = <"0.0.1-alpha">
 	>
 
@@ -214,6 +216,11 @@ ontology
 					text = <"Combination pack">
 					description = <"The component consists of a number of separate products which are pre-packaged by the manufacturer, for example Canesten Combi.">
 				>
+				["at0002"] = <
+					text = <"Strength unit">
+					description = <"The unit which is associated with the Strength value.">
+					comment = <"For example: 'mg/ml', '%', 'mg/tablet', 'µg/inhalation'. Coding of the dose unit with a terminology is preferred, where possible.">
+				>
 				["at0003"] = <
 					text = <"Expiry">
 					description = <"The expiry date and/or time of the medication normally as documented by the manufacturer but may be set by the individual preparing an ad hoc mixture.">
@@ -316,19 +323,14 @@ ontology
 					comment = <"Some medications are manufactured or prepared as packs of for example solutions or creams, where the entire pack is intended to be used as a single dose. The strength of such medications is often given as the amount of active ingredient in the amount of the entire pack. For example: \"2 mg/0.5 ml\", \"5 mg/10 g\" or \"10 ml/500 ml\".">
 				>
 				["at0153"] = <
-					text = <"Substance amount">
-					description = <"The amount of substance per amount of diluent.">
-					comment = <"The substance amount is usually given using mass, volume or arbitrary units. For example: \"5 mg\", \"100 ml\", \"20 IU\". Where a preparation strength is described as \"5 mg/10 g\", \"5 mg\" is the substance amount.">
+					text = <"Active substance amount">
+					description = <"The amount of active substance in the total amount of mixture.">
+					comment = <"The active substance amount is usually given using mass, volume or arbitrary units. For example: \"5 mg\", \"100 ml\", \"20 IU\". Where a preparation strength is described as \"5 mg/10 g\", \"5 mg\" is the active substance amount.">
 				>
 				["at0157"] = <
-					text = <"Diluent amount">
-					description = <"The amount of diluent the substance is diluted in.">
-					comment = <"The diluent amount is usually given using mass or volume units. For example: \"5 g\", \"100 ml\". Where a preparation strength is described as \"5 mg/10 g\", \"10 g\" is the diluent amount.">
-				>
-				["at0002"] = <
-					text = <"Strength unit">
-					description = <"The unit which is associated with the Strength value.">
-					comment = <"For example: 'mg/ml', '%', 'mg/tablet', 'µg/inhalation'. Coding of the dose unit with a terminology is preferred, where possible.">
+					text = <"Total mixture amount">
+					description = <"The total amount of mixture, including both active substance and helper substances such as diluents.">
+					comment = <"The mixture amount is usually given using mass or volume units. For example: \"5 g\", \"100 ml\". Where a preparation strength is described as \"5 mg/10 g\", \"10 g\" is the total mixture amount.">
 				>
 			>
 		>
@@ -349,8 +351,8 @@ ontology
 				>
 				["at0003"] = <
 					text = <"Utløpsdato">
-					description = <"Utløpsdatoen/tidspunktet for legemiddelet. Dette oppgis vanligvis av produsenten, men kan også settes av individet som klargjør en blanding.">
-					comment = <"For eksempel \"2017-05-23\". Dette er ment for datoen som oppgitt av produsenten eller individet som klargjør blandingen. Andre former for utløpsdatoer som må dokumenteres, som for eksempel tid fra produksjonstidspunktet eller avhengighet av lagringsomgivelser, kan legges til som en spesifikk CLUSTER-arketype eller som en kommentar.">
+					description = <"Tidspunktet for når legemiddelet ikke lenger skal benyttes. Dette oppgis vanligvis av produsenten, men kan også settes av den som klargjør en blanding.">
+					comment = <"For eksempel \"2017-05-23\". Dette er ment for datoen som oppgitt av produsenten eller den som klargjør blandingen. Andre former for utløpsdatoer som må dokumenteres, som for eksempel tid fra produksjonstidspunktet eller avhengighet av lagringsforhold, kan legges til som en spesifikk CLUSTER-arketype eller som en kommentar.">
 				>
 				["at0071"] = <
 					text = <"Form">
@@ -409,12 +411,12 @@ ontology
 				>
 				["at0142"] = <
 					text = <"Kategori">
-					description = <"Legemiddelkomponentens kategori med tanke på tilvirkning og antall ingredienser.">
+					description = <"Legemiddelkomponentens kategori med tanke på tilvirkning og antall ingredienser.Håper">
 					comment = <"For eksempel er Paralgin Forte et kombinasjonsprodukt, mens \"Morfin 60 mg + Haloperidol 2 mg + Midazolam 5 mg\" er en magistrellforskrevet blanding, som er fullt spesifisert i ordineringen.">
 				>
 				["at0143"] = <
 					text = <"Magistrellforskrevet blanding">
-					description = <"Legemiddelet er en sammensatt blanding av ingredienser som er spesifisert i en ordinering Disse tillages typisk av apotek- eller sengepostpersonell for individuelle pasienter.">
+					description = <"Legemiddelet er en sammensatt blanding av ingredienser som er spesifisert i en ordinering. Disse tillages typisk av apotek- eller sengepostpersonell for individuelle pasienter.">
 				>
 				["at0144"] = <
 					text = <"Kombinasjonsprodukt">
@@ -430,8 +432,8 @@ ontology
 				>
 				["at0148"] = <
 					text = <"Alternativ ingrediensmengde">
-					description = <"En alternativ men tilsvarende representasjon av mengden ingrediens.">
-					comment = <"For eksempel \"5 mg\" der ingrediensmengden er \"1 ml\", som en alternativ mengdeangivelse av en ingrediens som har styrke \"5 mg/ml\".">
+					description = <"En alternativ men tilsvarende angivelse av mengden ingrediens.">
+					comment = <"For eksempel dersom en ingrediens har styrke 5 mg/ml, kan \"Mengde ingrediens\" oppgis som \"1 ml\", og \"Alternativ ingrediensmengde\" som \"5 mg\".">
 				>
 				["at0150"] = <
 					text = <"Batch-ID">
@@ -443,19 +445,19 @@ ontology
 					comment = <"For eksempel \"Abbott\".">
 				>
 				["at0152"] = <
-					text = <"Strukturert styrke">
-					description = <"Strukturert, kompleks styrke av komponenten.">
+					text = <"Styrke for blandinger">
+					description = <"Styrken av en blanding, for eksempel en oppløsning eller en krem.">
 					comment = <"Noen legemidler produseres eller tillages som pakninger av for eksempel oppløsninger eller kremer, der hele pakken er tiltenkt brukt som en enkelt dose. Styrken av slike legemidler oppgis ofte som mengden aktiv ingrediens per mengden produkt i hele pakningen. For eksempel \"2 mg/0,5 ml\", \"5 mg/10 g\" eller \"10 ml/500 ml\".">
 				>
 				["at0153"] = <
-					text = <"Mengde substans">
-					description = <"Mengden substans per mengde fortynningsmiddel.">
-					comment = <"Substansmengden oppgis som regel ved hjelp av enheter for masse, volum eller arbitrære enheter. For eksempel \"5 mg\", \"100 ml\" eller \"20 IE\". Der en styrke er oppgitt som \"5 mg/10 g\", er \"5 mg\" mengden substans.">
+					text = <"Mengde virkestoff">
+					description = <"Mengden virkestoff i den totale mengden blanding.">
+					comment = <"Mengden virkestoff oppgis som regel ved hjelp av enheter for masse, volum eller arbitrære enheter. For eksempel \"5 mg\", \"100 ml\" eller \"20 IE\". Der en styrke er oppgitt som \"5 mg/10 g\", er \"5 mg\" mengden virkestoff.">
 				>
 				["at0157"] = <
-					text = <"Mengde fortynningsmiddel">
-					description = <"Mengden fortynningsmiddel substansen er fortynnet i.">
-					comment = <"Mengden fortynningsmoddel oppgis som regel i enheter for masse eller volum. For eksempel \"5 g\" eller \"100 ml\". Der styrke er oppgitt som \"5 mg/10 g\", er \"10 g\" mengden fortynningsmiddel.">
+					text = <"Total mengde blanding">
+					description = <"Den totale mengden blanding, inkludert både virkestoff og hjelpestoff.">
+					comment = <"Mengden blanding oppgis som regel i enheter for masse eller volum. For eksempel \"5 g\" eller \"100 ml\". Der styrke er oppgitt som \"5 mg/10 g\", er \"10 g\" den totale mengden blanding.">
 				>
 			>
 		>
