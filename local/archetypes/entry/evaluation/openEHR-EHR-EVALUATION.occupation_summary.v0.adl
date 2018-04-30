@@ -1,5 +1,5 @@
-﻿archetype (adl_version=1.4; uid=b17bfb37-bc63-4b20-8e6f-fcedb48dc71a)
-	openEHR-EHR-CLUSTER.occupation_summary.v0
+﻿archetype (adl_version=1.4; uid=ef47aaa2-9e4c-4fb1-973a-6df579793dda)
+	openEHR-EHR-EVALUATION.occupation_summary.v0
 
 concept
 	[at0000]	-- Occupation summary
@@ -34,6 +34,7 @@ Arketypen er laget for å benyttes i SLOTet \"Detaljer\" i arketypenEVALUATION.s
 Brukes ikke for å beskrive helserisikoer eller eksponering for farlige substanser i arbeidssituasjonen. Til dette brukes henholdsvis arketypene EVALUATION.health_risk eller EVALUATION.exposure.
 
 Brukes ikke for å registrere informasjon om individets inntektskilder eller detaljer om inntekt.">
+			copyright = <"© openEHR Foundation">
 		>
 		["en"] = <
 			language = <[ISO_639-1::en]>
@@ -41,7 +42,7 @@ Brukes ikke for å registrere informasjon om individets inntektskilder eller det
 			use = <"Use to record an overview of the activities or services carried out by an individual over their lifetime that document their role in, and contribution to, society. 
 
 There are three main categories of occupation:
-- Employment - formal work or a job which can be characterised by many parameters: paid or unpaid; full-or part-time; regular or irregular;
+- Employment (formal work or a job) which can be characterised by many parameters: paid or unpaid; full-or part-time; regular or irregular;
 - Actively seeking employment; or 
 - Not seeking employment - for example: children; students; retirees; and those unable to work.
 
@@ -62,40 +63,44 @@ Not to be used to record information about sources of income or income details f
 	other_details = <
 		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
 		["custodian_organisation"] = <"openEHR Foundation">
-		["references"] = <"Derived from: Employment Summary, Draft Archetype [Internet]. nehta, Australia, nehta Clinical Knowledge Manager [cited: 2016-01-11]. No longer available.">
+		["references"] = <"Derived from: Employment Summary, Draft Archetype [Internet].  Australian Digital Health Agency (NEHTA), ADHA Clinical Knowledge Manager. Authored: 2010 Dec 17 (discontinued).">
 		["current_contact"] = <"Heather Leslie, Atomica Informatics<heather.leslie@atomicainformatics.com>">
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"DAEFFD2F46819B25C12F93BCDFF8C3CC">
-		["build_uid"] = <"3d1910eb-b7dc-4204-8837-4520206842f5">
+		["MD5-CAM-1.0.1"] = <"7E529D63CEABB9BEC9790E4638B728B8">
+		["build_uid"] = <"be03092e-e59b-4e31-9538-e53bbbd372fb">
 		["revision"] = <"0.0.1-alpha">
 	>
 
 definition
-	CLUSTER[at0000] matches {	-- Occupation summary
-		items cardinality matches {1..*; unordered} matches {
-			ELEMENT[at0003] occurrences matches {0..*} matches {	-- Main occupation
-				value matches {
-					DV_TEXT matches {*}
-				}
-			}
-			ELEMENT[at0001] occurrences matches {0..1} matches {	-- Description
-				value matches {
-					DV_TEXT matches {*}
-				}
-			}
-			allow_archetype CLUSTER[at0002] occurrences matches {0..*} matches {	-- Occupation record
-				include
-					archetype_id/value matches {/openEHR-EHR-CLUSTER\.occupation_episode(-[a-zA-Z0-9_]+)*\.v0/}
-			}
-			allow_archetype CLUSTER[at0004] occurrences matches {0..*} matches {	-- Additional details
-				include
-					archetype_id/value matches {/.*/}
-			}
-			ELEMENT[at0005] occurrences matches {0..1} matches {	-- Comment
-				value matches {
-					DV_TEXT matches {*}
+	EVALUATION[at0000] matches {	-- Occupation summary
+		data matches {
+			ITEM_TREE[at0001] matches {	-- **Tree(en)(en)
+				items cardinality matches {0..*; unordered} matches {
+					ELEMENT[at0004] occurrences matches {0..*} matches {	-- Main occupation
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0002] occurrences matches {0..1} matches {	-- Description
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					allow_archetype CLUSTER[at0003] occurrences matches {0..*} matches {	-- Occupation record
+						include
+							archetype_id/value matches {/openEHR-EHR-CLUSTER\.occupation_episode(-[a-zA-Z0-9_]+)*\.v0/}
+					}
+					allow_archetype CLUSTER[at0005] occurrences matches {0..*} matches {	-- Additional details
+						include
+							archetype_id/value matches {/.*/}
+					}
+					ELEMENT[at0006] occurrences matches {0..1} matches {	-- Comment
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
 				}
 			}
 		}
@@ -111,26 +116,30 @@ ontology
 					description = <"Overview of the activities or services carried out by an individual over their lifetime that document their role in, and contribution to, society.">
 				>
 				["at0001"] = <
+					text = <"**Tree(en)(en)">
+					description = <"**@ internal @(en)(en)">
+				>
+				["at0002"] = <
 					text = <"Description">
 					description = <"Narrative description of the occupation history of the individual.">
 				>
-				["at0002"] = <
+				["at0003"] = <
 					text = <"Occupation record">
 					description = <"Detail about specific episodes of occupation.">
 					comment = <"An individual may have concurrent active episodes of occupation if they have a variety of activities. For example: carer for 2 days per week and employed in a retail job for 3 days a week; employed part-time to support studies.">
 				>
-				["at0003"] = <
+				["at0004"] = <
 					text = <"Main occupation">
 					description = <"The individual's main role in or contribution to society.">
 					comment = <"Main occupation is usually defined by the way the individual identifies or spends most of their time (usually related to activity during business hours, or equivalent). This data element allows for multiple occurrences to cater for some situations where an individual may spend equal amounts of time in different roles. For example: employed, seeking employment, student, retiree, etc. Coding with a terminology is desirable, where possible. If an individual has multiple occupations, the intent for this data element is to identify the primary occupation. Detail about each occupation can be recorded within the CLUSTER.occupation_episode archetype.">
 				>
-				["at0004"] = <
+				["at0005"] = <
 					text = <"Additional details">
 					description = <"Additional details about the occupational situation of an individual.">
 				>
-				["at0005"] = <
+				["at0006"] = <
 					text = <"Comment">
-					description = <"Additional narrative about the  occupation background  not captured in other fields.">
+					description = <"Additional narrative about the occupation background not captured in other fields.">
 				>
 			>
 		>
@@ -141,24 +150,28 @@ ontology
 					description = <"*Overview of the activities or services carried out by an individual over their lifetime that document their role in, and contribution to, society.(en)">
 				>
 				["at0001"] = <
+					text = <"Tree(en)">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
 					text = <"Beskrivelse">
 					description = <"Fritekstbeskrivelse av individets sysselsettingshistorikk.">
 				>
-				["at0002"] = <
+				["at0003"] = <
 					text = <"*Occupation record(en)">
 					description = <"*Detail about specific episodes of occupation.(en)">
 					comment = <"*An individual may have concurrent active episodes of occupation if they have a variety of activities. For example: carer for 2 days per week and employed in a retail job for 3 days a week; employed part-time to support studies.(en)">
 				>
-				["at0003"] = <
+				["at0004"] = <
 					text = <"*Main occupation(en)">
 					description = <"*The individual's main role in or contribution to society.(en)">
 					comment = <"*Main occupation is usually defined by the way the individual identifies or spends most of their time (usually related to activity during business hours, or equivalent). This data element allows for multiple occurrences to cater for some situations where an individual may spend equal amounts of time in different roles. For example: employed, seeking employment, student, retiree, etc. Coding with a terminology is desirable, where possible. If an individual has multiple occupations, the intent for this data element is to identify the primary occupation. Detail about each occupation can be recorded within the CLUSTER.occupation_episode archetype.(en)">
 				>
-				["at0004"] = <
+				["at0005"] = <
 					text = <"Ytterligere detaljer">
 					description = <"Ytterligere detaljer om individets sysselsettingssituasjon.">
 				>
-				["at0005"] = <
+				["at0006"] = <
 					text = <"Kommentar">
 					description = <"Ytterligere kommentar til sysselsettingsbakgrunnen som ikke er fanget i andre felt.">
 				>
