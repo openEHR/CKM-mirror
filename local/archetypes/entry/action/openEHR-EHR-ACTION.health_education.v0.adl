@@ -33,8 +33,14 @@ Skal ikke brukes for å registrere informasjon kommunisert av en kliniker om et 
 		>
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"To record details about health education material provided to an individual.">
-			use = <"Use to record details about health education intervention, such as advice or physical material, provided to an individual, including links to the information itself. For example, a record of fact sheets provided to an individual about the risks of a vasectomy.">
+			purpose = <"To record details about knowledge and skills taught to the individual to support their healthcare-related decisions and activities.">
+			use = <"Use to record details about knowledge and skills taught to the individual to support their healthcare-related decisions and activities.
+
+The knowledge may include, but is not limited to, advice or physical material, including links to the information itself. For example, a record of fact sheets provided to an individual about the risks of a vasectomy.
+
+The practical skills may include, but are not limited to, medication administration, self-injection, and post-op self-care.
+
+If the education provided is a course or series of activities then details about each activity or visit will be recorded against the 'Education provided' pathway step and when the entire course is completed then the data will be recorded against the 'Education completed' pathway step. If the education provided is a single activity or visit, then data will be recorded simultaneously for 'Education provided' and 'Education completed'.">
 			keywords = <"information", "education", "fact sheet">
 			misuse = <"Not to be used to record consent - for example consent to a vasectomy after provision of a fact sheet about vasectomy.
 
@@ -51,8 +57,8 @@ Not to be used to record the communication  of personalised health information b
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"9301D77EDFB9255BCC7F8D8CAD02F7AE">
-		["build_uid"] = <"0a2c8619-2b6a-4c7c-9084-be08bd6deea5">
+		["MD5-CAM-1.0.1"] = <"0F45F54C67E83DDC8E25CC9A470CB7F8">
+		["build_uid"] = <"943d5f90-5bea-493b-8f5b-07cb91c4daec">
 		["revision"] = <"0.0.1-alpha">
 	>
 
@@ -171,7 +177,7 @@ definition
 		description matches {
 			ITEM_TREE[at0001] matches {	-- Tree
 				items cardinality matches {1..*; unordered} matches {
-					ELEMENT[at0002] matches {	-- Topic
+					ELEMENT[at0002] matches {	-- Subject
 						value matches {
 							DV_TEXT matches {*}
 						}
@@ -181,7 +187,7 @@ definition
 							DV_TEXT matches {*}
 						}
 					}
-					ELEMENT[at0004] occurrences matches {0..1} matches {	-- Method
+					ELEMENT[at0004] occurrences matches {0..*} matches {	-- Method
 						value matches {
 							DV_TEXT matches {*}
 						}
@@ -189,6 +195,10 @@ definition
 					allow_archetype CLUSTER[at0025] occurrences matches {0..*} matches {	-- Material details
 						include
 							archetype_id/value matches {/openEHR-EHR-CLUSTER\.multimedia(-[a-zA-Z0-9_]+)*\.v1|openEHR-EHR-CLUSTER\.multimedia(-[a-zA-Z0-9_]+)*\.v0/}
+					}
+					allow_archetype CLUSTER[at0033] occurrences matches {0..*} matches {	-- Additional details
+						include
+							archetype_id/value matches {/.*/}
 					}
 					ELEMENT[at0020] occurrences matches {0..1} matches {	-- Session Number
 						value matches {
@@ -221,13 +231,6 @@ definition
 		protocol matches {
 			ITEM_TREE[at0021] matches {	-- Tree
 				items cardinality matches {0..*; unordered} matches {
-					ELEMENT[at0022] occurrences matches {0..1} matches {	-- Interpreter Present
-						value matches {
-							DV_BOOLEAN matches {
-								value matches {True}
-							}
-						}
-					}
 					ELEMENT[at0030] occurrences matches {0..1} matches {	-- Requestor order identifier
 						value matches {
 							DV_TEXT matches {*}
@@ -252,6 +255,10 @@ definition
 						include
 							archetype_id/value matches {/.*/}
 					}
+					allow_archetype CLUSTER[at0034] occurrences matches {0..*} matches {	-- Interpreter details
+						include
+							archetype_id/value matches {/openEHR-EHR-CLUSTER\.interpreter_details(-[a-zA-Z0-9_]+)*\.v0/}
+					}
 					allow_archetype CLUSTER[at0023] occurrences matches {0..*} matches {	-- Extension
 						include
 							archetype_id/value matches {/.*/}
@@ -268,15 +275,16 @@ ontology
 			items = <
 				["at0000"] = <
 					text = <"Health education">
-					description = <"Health education information provided or imparted to an individual.">
+					description = <"Knowledge and skills to support healthcare-related decisions and activities.">
 				>
 				["at0001"] = <
 					text = <"Tree">
 					description = <"@ internal @">
 				>
 				["at0002"] = <
-					text = <"Topic">
-					description = <"Topic of health education information provided.">
+					text = <"Subject">
+					description = <"Identification of the health education activity, by name.">
+					comment = <"The subject could identify a single knowledge topic or skill, or may be the name of a program or training course that may be delivered over multiple sessions or visits.">
 				>
 				["at0003"] = <
 					text = <"Description">
@@ -289,7 +297,7 @@ ontology
 				>
 				["at0006"] = <
 					text = <"Education planned">
-					description = <"Exchange of information planned.">
+					description = <"Education has been planned but no steps have been taken to initiate education.">
 				>
 				["at0007"] = <
 					text = <"Education scheduled">
@@ -310,11 +318,11 @@ ontology
 				>
 				["at0014"] = <
 					text = <"Education postponed">
-					description = <"Planned education postponed prior to commencement.">
+					description = <"Education has been postponed prior to commencement.">
 				>
 				["at0015"] = <
 					text = <"Education cancelled">
-					description = <"Planned education was cancelled prior to commencement.">
+					description = <"Education has been cancelled prior to commencement.">
 				>
 				["at0016"] = <
 					text = <"Education not completed">
@@ -326,7 +334,7 @@ ontology
 				>
 				["at0018"] = <
 					text = <"Education recommended">
-					description = <"Education session has been recommended.">
+					description = <"Education has been recommended but no steps have been taken to initiate education.">
 				>
 				["at0019"] = <
 					text = <"Outcome">
@@ -340,11 +348,6 @@ ontology
 				["at0021"] = <
 					text = <"Tree">
 					description = <"@ internal @">
-				>
-				["at0022"] = <
-					text = <"Interpreter Present">
-					description = <"Was an interpreter present?">
-					comment = <"Record as True if an interpreter was present during the health education session.">
 				>
 				["at0023"] = <
 					text = <"Extension">
@@ -387,21 +390,31 @@ ontology
 					description = <"Recipient of the health education.">
 					comment = <"Relevant if the recipient is being educated on behalf of the subject of care. For example: carer; child; or parent.">
 				>
+				["at0033"] = <
+					text = <"Additional details">
+					description = <"Additional structured details about the health education.">
+				>
+				["at0034"] = <
+					text = <"Interpreter details">
+					description = <"Details about the interpretation.">
+					comment = <"Including language, method and identification of the interpreter.">
+				>
 			>
 		>
 		["nb"] = <
 			items = <
 				["at0000"] = <
-					text = <"Helseinformasjon">
-					description = <"Helserelatert informasjon som er gitt eller kommunisert til et individ.">
+					text = <"*Health education(en)">
+					description = <"*Knowledge and skills to support healthcare-related decisions and activities.(en)">
 				>
 				["at0001"] = <
 					text = <"Tree">
 					description = <"@ internal @">
 				>
 				["at0002"] = <
-					text = <"Emne">
-					description = <"Tema for helserelatert informasjon som ble gitt.">
+					text = <"*Subject(en)">
+					description = <"*Identification of the health education activity, by name.(en)">
+					comment = <"*The subject could identify a single knowledge topic or skill, or may be the name of a program or training course that may be delivered over multiple sessions or visits.(en)">
 				>
 				["at0003"] = <
 					text = <"Beskrivelse">
@@ -413,8 +426,8 @@ ontology
 					comment = <"For eksempel muntlig eller skriftlig. Dette er ikke det samme som deltakelse. Materiell og informasjon kan bli utvekslet mellom avsender og mottaker på mange måter, for eksempel ansikt til ansikt eller via telefon. I noen spesielle tilfeller kan det være viktig å dokumentere at et faktaark har vært overlevert til et individ, for eksempel med informasjon om risikoer ved vasektomi.">
 				>
 				["at0006"] = <
-					text = <"Informasjonsøkt planlagt">
-					description = <"Utveksling av informasjon planlagt.">
+					text = <"*Education planned(en)">
+					description = <"*Education has been planned but no steps have been taken to initiate education.(en)">
 				>
 				["at0007"] = <
 					text = <"Informasjonsøkt tidsfestet">
@@ -434,12 +447,12 @@ ontology
 					description = <"Alle planlagte aktiviteter for helserelatert informasjon har blitt gjennomført.">
 				>
 				["at0014"] = <
-					text = <"Informasjonsøkt utsatt">
-					description = <"Planlagt informasjonsøkt er utsatt før den er igangsatt.">
+					text = <"*Education postponed(en)">
+					description = <"*Education has been postponed prior to commencement.(en)">
 				>
 				["at0015"] = <
-					text = <"Informasjonsøkt avlyst">
-					description = <"Planlagt informasjonsøkt er avlyst før den er igangsatt.">
+					text = <"*Education cancelled(en)">
+					description = <"*Education has been cancelled prior to commencement.(en)">
 				>
 				["at0016"] = <
 					text = <"Informasjonsøkt ikke fullført">
@@ -450,8 +463,8 @@ ontology
 					description = <"Planlagt informasjonsøkt/-er ble midlertidig stanset etter at den/de ble påbegynt.">
 				>
 				["at0018"] = <
-					text = <"Informasjonsøkt anbefalt">
-					description = <"Informasjonsøkt er anbefalt.">
+					text = <"*Education recommended(en)">
+					description = <"*Education has been recommended but no steps have been taken to initiate education.(en)">
 				>
 				["at0019"] = <
 					text = <"Resultat">
@@ -465,11 +478,6 @@ ontology
 				["at0021"] = <
 					text = <"Tree">
 					description = <"@ internal @">
-				>
-				["at0022"] = <
-					text = <"Tolk tilstede">
-					description = <"Om en tolk var til stede under helseinformasjonsøkten.">
-					comment = <"Registreres som Sann dersom en tolk var til stede under helseinformasjonsøkten.">
 				>
 				["at0023"] = <
 					text = <"Tilleggsinformasjon">
@@ -511,6 +519,15 @@ ontology
 					text = <"*Recipient(en)">
 					description = <"*Recipient of the health education.(en)">
 					comment = <"*Relevant if the recipient is being educated on behalf of the subject of care. For example: carer; child; or parent.(en)">
+				>
+				["at0033"] = <
+					text = <"*Additional details(en)">
+					description = <"*Additional structured details about the health education.(en)">
+				>
+				["at0034"] = <
+					text = <"*Interpreter details(en)">
+					description = <"*Details about the interpretation.(en)">
+					comment = <"*Including language, method and identification of the interpreter.(en)">
 				>
 			>
 		>
