@@ -9,9 +9,9 @@ language
 		["nb"] = <
 			language = <[ISO_639-1::nb]>
 			author = <
-				["name"] = <"Silje Ljosland Bakke">
+				["name"] = <"Silje Ljosland Bakke and Vebjørn Arntzen">
 				["organisation"] = <"Nasjonal IKT HF">
-				["email"] = <"silje.ljosland.bakke@nasjonalikt.no">
+				["email"] = <"silje.ljosland.bakke@nasjonalikt.no / varntzen@ous-hf.no">
 			>
 		>
 	>
@@ -25,16 +25,26 @@ description
 	details = <
 		["nb"] = <
 			language = <[ISO_639-1::nb]>
-			purpose = <"For å registrere informasjon om en sysselsettingsepisode for et individ.">
-			use = <"Brukes for å registrere informasjon om en sysselsettingsepisode for et individ.
+			purpose = <"For å registrere detaljert informasjon om en aktivitet, yrke eller jobb for et individ i en spesifisert periode.">
+			use = <"Brukes for å registrere detaljert informasjon om en aktivitet, yrke eller jobb for et individ i en spesifisert periode.
 
-Arketypen er laget for å benyttes i SLOTet \"Sysselsetingsepisoder\" i arketypen CLUSTER.occupation_summary (Sysselsettingssammendrag), men kan også brukes innen EVALUATION.social_summary (Sosialanamnese) eller andre ENTRY- eller CLUSTER-arketyper der det er klinisk relevant.
+En aktiv eller nåværende sysselsetting kan bli utledet fra \"Dato for oppstart\" hvis det ikke er registrert noe i \"Dato opphør\".
 
-Det kan være tilsynelatende eller reell overlapp mellom dataelementene i denne arketypen og opplysninger om sysselsetting/arbeidsforhold i demografisk informasjon i kliniske systemer. Dataelementene i denne arketypen er laget spesifikt for å støtte kliniske bruksområder som for eksempel legeerklæringer.">
-			keywords = <"arbeid", "arbeidstaker", "arbeidsgiver", "arbeidsforhold", "arbeidshistorikk", "jobb", "ansatt", "yrke", "arbeidsløs", "studerer", "student", "elev", "trygdet", "ufør", "arbeidssituasjon", "erverv", "yrkestilknytning", "pensjon", "pensjonist", "attføring", "bransje", "arbeidsledig", "hjemmeværende", "stilling", "profesjon">
-			misuse = <"Brukes ikke for å beskrive helserisikoer eller eksponering for farlige substanser i arbeidssituasjonen. Til dette brukes henholdsvis arketypene EVALUATION.health_risk eller EVALUATION.exposure.
+Et individ kan ha mange samtidige sysselsettinger, og de kan hver for seg være betalt eller ubetalt. Hver slik sysselsetting registreres i egne instanser av denne arketypen.
 
-Brukes ikke for å registrere informasjon om individets inntektskilder eller detaljer om inntekt. Bruk arketypen CLUSTER.income for dette formålet.">
+Hvis detaljer om en sysselsetting endrer seg vesentlig, som en forandring av tittel eller stillingsprosent, registreres dette i egne instanser av denne arketypen.
+
+Arketypen er laget for å benyttes i SLOTet \"Sysselsetingsperioder\" i arketypen EVALUATION.occupation_summary (Sysselsettingssammendrag), men kan også brukes innen andre ENTRY- eller CLUSTER-arketyper der det er klinisk relevant.
+
+Det kan være tilsynelatende eller reell overlapp mellom dataelementene i denne arketypen og opplysninger om sysselsetting/arbeidsforhold i demografisk informasjon i kliniske systemer. Dataelementene i denne arketypen er laget spesifikt for å støtte kliniske bruksområder som for eksempel sykemeldinger eller legeerklæringer.">
+			keywords = <"arbeid", "arbeidstaker", "arbeidsgiver", "arbeidsforhold", "arbeidshistorikk", "jobb", "ansatt", "yrke", "arbeidsløs", "studerer", "student", "elev", "trygdet", "ufør", "arbeidssituasjon", "erverv", "yrkestilknytning", "pensjon", "pensjonist", "attføring", "bransje", "arbeidsledig", "hjemmeværende", "stilling", "profesjon", "frivillig", "vernepliktig", "sektor", "næring">
+			misuse = <"Brukes ikke for å registrere midlertidige endringer eller episoder innen en enkelt sysselsettingsperiode, som i permisjon, sykemeldt, permittert eller overført til annen organisasjon. Dette er ikke innenfor anvendelsesområdet for denne arketypen, og skal registreres i et personal- eller HR-system.
+
+Brukes ikke for å beskrive helserisikoer eller eksponering for farlige substanser i arbeidssituasjonen. Til dette brukes henholdsvis arketypene EVALUATION.health_risk eller EVALUATION.exposure.
+
+Brukes ikke for å registrere informasjon om individets inntektskilder eller detaljer om inntekt. Bruk arketypen EVALUATION.income_summary for dette formålet.
+
+Brukes ikke for å registrere informasjon om sysselsetting for et individ på en bestemt dato (for eksempel 16. juni 2014) eller i løpet av en relativ tidsperiode, som for eksempel \"siste 30 dager\". Dette kan utledes fra \"Dato for oppstart\" hvis det ikke er registrert noe i \"Dato opphør\", og må registreres i en egen OBSERVATION-arketype for dette formålet.">
 			copyright = <"© 2010 NEHTA, openEHR Foundation, Nasjonal IKT HF">
 		>
 		["en"] = <
@@ -74,47 +84,47 @@ Not to be used to record periods of leave or sick leave in lieu of a Human Resou
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"C9824827C3AD76D08C5B8C2EC732DA05">
-		["build_uid"] = <"d463373a-4263-4bd3-9fed-6d9bd68372a1">
+		["MD5-CAM-1.0.1"] = <"9EB12EBC665B3ACD84FF4C168F1F4631">
+		["build_uid"] = <"9ca02cab-9acc-477c-84d8-7e12e4133ba9">
 		["revision"] = <"0.0.1-alpha">
 	>
 
 definition
-	CLUSTER[at0000] matches {	-- Occupation record
+	CLUSTER[at0000] matches {	-- Sysselsettingsperiode
 		items cardinality matches {1..*; unordered} matches {
-			ELEMENT[at0001] occurrences matches {0..1} matches {	-- Occupation category
+			ELEMENT[at0001] occurrences matches {0..1} matches {	-- Sysselsettingskategori
 				value matches {
 					DV_TEXT matches {*}
 				}
 			}
-			ELEMENT[at0016] occurrences matches {0..1} matches {	-- Description
+			ELEMENT[at0016] occurrences matches {0..1} matches {	-- Beskrivelse
 				value matches {
 					DV_TEXT matches {*}
 				}
 			}
-			ELEMENT[at0007] occurrences matches {0..1} matches {	-- Date commenced
+			ELEMENT[at0007] occurrences matches {0..1} matches {	-- Dato for oppstart
 				value matches {
 					DV_DATE_TIME matches {*}
 				}
 			}
-			ELEMENT[at0005] occurrences matches {0..*} matches {	-- Title/role
+			ELEMENT[at0005] occurrences matches {0..*} matches {	-- Tittel/rolle
 				value matches {
 					DV_TEXT matches {*}
 				}
 			}
-			ELEMENT[at0015] occurrences matches {0..1} matches {	-- Activity category
+			ELEMENT[at0015] occurrences matches {0..1} matches {	-- Sysselsettingsandel
 				value matches {
 					DV_CODED_TEXT matches {
 						defining_code matches {
 							[local::
-							at0020, 	-- Full-time
-							at0021]	-- Part-time
+							at0020, 	-- Heltid
+							at0021]	-- Deltid
 						}
 					}
 					DV_TEXT matches {*}
 				}
 			}
-			ELEMENT[at0013] occurrences matches {0..1} matches {	-- Full time equivalent
+			ELEMENT[at0013] occurrences matches {0..1} matches {	-- Heltidsekvivalent
 				value matches {
 					DV_PROPORTION matches {
 						numerator matches {|>=0.0|}
@@ -122,7 +132,7 @@ definition
 					}
 				}
 			}
-			ELEMENT[at0019] occurrences matches {0..1} matches {	-- Time
+			ELEMENT[at0019] occurrences matches {0..1} matches {	-- Tid
 				value matches {
 					C_DV_QUANTITY <
 						property = <[openehr::709]>
@@ -171,30 +181,30 @@ definition
 					>
 				}
 			}
-			allow_archetype CLUSTER[at0004] occurrences matches {0..*} matches {	-- Organisation details
+			allow_archetype CLUSTER[at0004] occurrences matches {0..*} matches {	-- Organisasjonsdetaljer
 				include
 					archetype_id/value matches {/openEHR-EHR-CLUSTER\.organisation(-[a-zA-Z0-9_]+)*\.v0|openEHR-EHR-CLUSTER\.organisation(-[a-zA-Z0-9_]+)*\.v1/}
 			}
-			ELEMENT[at0002] occurrences matches {0..1} matches {	-- Industry
+			ELEMENT[at0002] occurrences matches {0..1} matches {	-- Bransje
 				value matches {
 					DV_TEXT matches {*}
 				}
 			}
-			ELEMENT[at0006] occurrences matches {0..1} matches {	-- Occupation classification
+			ELEMENT[at0006] occurrences matches {0..1} matches {	-- Yrke
 				value matches {
 					DV_TEXT matches {*}
 				}
 			}
-			allow_archetype CLUSTER[at0018] occurrences matches {0..*} matches {	-- Additional details
+			allow_archetype CLUSTER[at0018] occurrences matches {0..*} matches {	-- Ytterligere detaljer
 				include
 					archetype_id/value matches {/.*/}
 			}
-			ELEMENT[at0008] occurrences matches {0..1} matches {	-- Date ceased
+			ELEMENT[at0008] occurrences matches {0..1} matches {	-- Dato opphør
 				value matches {
 					DV_DATE_TIME matches {*}
 				}
 			}
-			ELEMENT[at0014] occurrences matches {0..1} matches {	-- Comment
+			ELEMENT[at0014] occurrences matches {0..1} matches {	-- Kommentar
 				value matches {
 					DV_TEXT matches {*}
 				}
@@ -283,73 +293,75 @@ ontology
 		["nb"] = <
 			items = <
 				["at0000"] = <
-					text = <"*Occupation record(en)">
-					description = <"*A single activity, service trade or craft carried out by an individual during a specified period of time.(en)">
-					comment = <"*The occupation may be paid or unpaid, full-time or part time.(en)">
+					text = <"Sysselsettingsperiode">
+					description = <"En enkelt aktivitet, yrke eller jobb for et individ i en spesifisert periode.">
+					comment = <"Sysselsettingen kan være betalt eller ubetalt, deltid eller fulltid.">
 				>
 				["at0001"] = <
-					text = <"*Category(en)">
-					description = <"*The category of the occupation episode.(en)">
-					comment = <"*For example: employed, seeking employment, student and retiree. Coding with a terminology is desirable, where possible.(en)">
+					text = <"Sysselsettingskategori">
+					description = <"Kategorien for denne sysselsettingsperioden.">
+					comment = <"For eksempel i arbeid, arbeidsløs, student, pensjonert, etc. Koding med en terminologi er ønskelig, der det er mulig.">
 				>
 				["at0002"] = <
-					text = <"*DV_TEXT (en)">
-					description = <"*">
+					text = <"Bransje">
+					description = <"Klassifisering av bransje eller sektor der individet har sin sysselsetting.">
+					comment = <"For eksempel: \"Jordbruk, skogbruk og fiske\", \"Varehandel\", \"Bygg- og anleggsvirksomhet\".">
 				>
 				["at0004"] = <
 					text = <"Organisasjonsdetaljer">
-					description = <"Ytterligere detaljer om arbeidsgiver eller utdanningsinstitusjon.">
+					description = <"Detaljer om arbeidsgiver eller utdanningsinstitusjon.">
 				>
 				["at0005"] = <
 					text = <"Tittel/rolle">
-					description = <"Stillingstittel eller rolle for sysselsettingsepisoden.">
+					description = <"Stillingstittel eller rolle for sysselsettingsperioden.">
 				>
 				["at0006"] = <
-					text = <"Profesjon">
-					description = <"Klassifisering av typen profesjon individet har.">
-					comment = <"For eksempel kategorisering i henhold til STYRK-08 (https://www.ssb.no/arbeid-og-lonn/artikler-og-publikasjoner/standard-for-yrkesklassifisering-styrk-08) \"yrkesfelt\", \"yrkesområder\", \"yrkesgrupper\" og \"yrker\".">
+					text = <"Yrke">
+					description = <"Klassifisering av yrket individet har.">
+					comment = <"Koding med en terminologi er ønskelig om mulig. For eksempel kategorisering i henhold til STYRK-08 (https://www.ssb.no/arbeid-og-lonn/artikler-og-publikasjoner/standard-for-yrkesklassifisering-styrk-08).">
 				>
 				["at0007"] = <
 					text = <"Dato for oppstart">
-					description = <"Datoen sysselsettingsepisoden startet.">
+					description = <"Datoen sysselsettingsperioden startet.">
 				>
 				["at0008"] = <
-					text = <"Dato opphør">
-					description = <"Datoen sysselsettingsepisoden opphørte.">
+					text = <"Dato for opphør">
+					description = <"Datoen sysselsettingsperioden opphørte.">
 				>
 				["at0013"] = <
-					text = <"Stillingsandel">
-					description = <"Stillingens andel av en fulltidsstilling.">
+					text = <"Heltidsekvivalent">
+					description = <"Stillingens andel eller prosent av en heltidsstilling.">
+					comment = <"Definisjonen av \"heltid\" kan variere mellom ulike yrker. I noen situasjoner kan det være passende å registrere faktisk antall arbeidstimer i elementet \"Tid\".">
 				>
 				["at0014"] = <
 					text = <"Kommentar">
-					description = <"Ytterligere kommentar til sysselsettingsepisoden som ikke er fanget i andre felt.">
+					description = <"Ytterligere fritekst til sysselsettingsperioden som ikke passer i andre felt.">
 				>
 				["at0015"] = <
-					text = <"*Activity category(en)">
-					description = <"*Category for the amount of time spent carrying out the occupation.(en)">
-					comment = <"*Coding with a terminology is desirable, where possible.(en)">
+					text = <"Sysselsettingskategori">
+					description = <"Kategori for andel tid brukt til sysselsettingen.">
+					comment = <"Koding med en terminologi er ønskelig, der det er mulig.">
 				>
 				["at0016"] = <
 					text = <"Beskrivelse">
-					description = <"Fritekstbeskrivelse av sysselsettingsepisoden.">
+					description = <"Fritekstbeskrivelse om sysselsettingperioden.">
 				>
 				["at0018"] = <
-					text = <"*Additional details(en)">
-					description = <"*Further detail about the occupation episode.(en)">
-					comment = <"*For example: workplace location and conditions;  or combat zone experience.(en)">
+					text = <"Ytterligere detaljer">
+					description = <"Ytterligere detaljer om sysselsettingsperioden.">
+					comment = <"For eksempel: Forhold på arbeidsplassen eller erfaring fra krigssoner.">
 				>
 				["at0019"] = <
-					text = <"*Time(en)">
-					description = <"*The amount of time spent per specified time period carrying out the occupation.(en)">
+					text = <"Tid">
+					description = <"Mengde tid sysselsettingen omfatter i den spesifiserte perioden.">
 				>
 				["at0020"] = <
-					text = <"*Full-time(en)">
-					description = <"*The individual carries out this occupation for equal to or more than the amount of time that is officially regarded as 'full-time' for the occupation.(en)">
+					text = <"Heltid">
+					description = <"Individet bruker lik eller lengre tid på sysselsettingen enn hva full stilling er definert i enten lov- eller avtaleverk (tariffavtale).">
 				>
 				["at0021"] = <
-					text = <"*Part-time(en)">
-					description = <"*The individual carries out this occupation for less than the amount of time that is officially regarded as 'full-time' for the occupation.(en)">
+					text = <"Deltid">
+					description = <"Individet bruker kortere tid på sysselsettingen enn hva full stilling er definert i enten lov- eller avtaleverk (tariffavtale).">
 				>
 			>
 		>
