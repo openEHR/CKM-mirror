@@ -62,14 +62,15 @@ description
 		["custodian_organisation"] = <"openEHR Foundation">
 		["references"] = <"Hill-Rodriguez D, Messmer PR, Wood ML (2007). Humpty Dumpty sat on a wall—developing a pediatric falls prevention program and scale. Paper presented at the 17th Annual
 Society of Pediatric Nurses 17th Annual Convention Milwaukee, WI.
+
 Hill-Rodriguez D, Williams PD, Zeller RA, Williams AR, Wood M, Henry M (2009). The Humpty Dumpty Falls Scale: a case-control study. J Spec Pediatr Nurs 2009 Jan;14(1):22-32.
 Pauley BJ, Houston LS, Cheng D, Johnston DM (2014). Clinical relevance of the Humpty Dumpty Falls Scale in a pediatric specialty hospital. Pediatr Nurs 2014 May-Jun;40(3):137-42.">
 		["current_contact"] = <"Alan D. March <alandmarch@gmail.com>">
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"4850589A9A169CC4CCAA664A2FBE1CCE">
-		["build_uid"] = <"67643584-ca6f-4e54-94ec-bd335aa7559e">
+		["MD5-CAM-1.0.1"] = <"5A074FA124B4E1F5829777CF7DF80BB7">
+		["build_uid"] = <"bc6c71d9-5765-452c-b4a9-75888e028f83">
 		["revision"] = <"0.0.1-alpha">
 	>
 
@@ -78,7 +79,7 @@ definition
 		data matches {
 			HISTORY[at0001] matches {	-- Event Series
 				events cardinality matches {1..*; unordered} matches {
-					EVENT[at0002] occurrences matches {0..1} matches {	-- Any event
+					EVENT[at0002] occurrences matches {0..*} matches {	-- Any event
 						data matches {
 							ITEM_TREE[at0003] matches {	-- Tree
 								items cardinality matches {0..*; unordered} matches {
@@ -148,17 +149,27 @@ definition
 								}
 							}
 						}
+						state matches {
+							ITEM_TREE[at0038] matches {	-- Tree
+								items cardinality matches {0..*; unordered} matches {
+									ELEMENT[at0037] occurrences matches {0..*} matches {	-- Confounding factors
+										value matches {
+											DV_TEXT matches {*}
+										}
+									}
+								}
+							}
+						}
 					}
 				}
 			}
 		}
 		protocol matches {
-			ITEM_TREE[at0036] matches {	-- Tree
+			ITEM_TREE[at0040] matches {	-- Tree
 				items cardinality matches {0..*; unordered} matches {
-					ELEMENT[at0037] occurrences matches {0..*} matches {	-- Confounding factor
-						value matches {
-							DV_TEXT matches {*}
-						}
+					allow_archetype CLUSTER[at0041] occurrences matches {0..*} matches {	-- Extension
+						include
+							archetype_id/value matches {/.*/}
 					}
 				}
 			}
@@ -180,7 +191,7 @@ ontology
 				>
 				["at0002"] = <
 					text = <"Any event">
-					description = <"*">
+					description = <"Default, unspecified point in time or interval event which may be explicitly defined in a template or at run-time.">
 				>
 				["at0003"] = <
 					text = <"Tree">
@@ -208,7 +219,7 @@ ontology
 				>
 				["at0009"] = <
 					text = <"Gender">
-					description = <"Gender">
+					description = <"Gender.">
 				>
 				["at0010"] = <
 					text = <"Female">
@@ -220,11 +231,11 @@ ontology
 				>
 				["at0012"] = <
 					text = <"Diagnosis">
-					description = <"Diagnosis">
+					description = <"Diagnosis.">
 				>
 				["at0013"] = <
 					text = <"Other diagnosis">
-					description = <"Patient has ">
+					description = <"Patient has.">
 				>
 				["at0014"] = <
 					text = <"Psychological/behavioural diagnosis">
@@ -256,7 +267,7 @@ ontology
 				>
 				["at0021"] = <
 					text = <"Environmental factors">
-					description = <"Environmental factors">
+					description = <"Environmental factors.">
 				>
 				["at0022"] = <
 					text = <"Outpatient area">
@@ -314,13 +325,22 @@ ontology
 					text = <"Comment">
 					description = <"Comments.">
 				>
-				["at0036"] = <
+				["at0037"] = <
+					text = <"Confounding factors">
+					description = <"Any incidental factors related to the state of the subject which may affect clinical interpretation of the measurement.">
+				>
+				["at0038"] = <
 					text = <"Tree">
 					description = <"@ internal @">
 				>
-				["at0037"] = <
-					text = <"Confounding factor">
-					description = <"Any incidental factors related to the state of the subject which may affect clinical interpretation of the measurement.">
+				["at0040"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0041"] = <
+					text = <"Extension">
+					description = <"Additional information required to capture local context or to align with other reference models/formalisms.">
+					comment = <"For example: Local hospital departmental infomation or additional metadata to align with FHIR or CIMI equivalents.">
 				>
 			>
 		>
@@ -335,8 +355,8 @@ ontology
 					description = <"@ internal @">
 				>
 				["at0002"] = <
-					text = <"Any event">
-					description = <"*">
+					text = <"*Any event(en)">
+					description = <"*Default, unspecified point in time or interval event which may be explicitly defined in a template or at run-time.(en)">
 				>
 				["at0003"] = <
 					text = <"Tree">
@@ -363,8 +383,8 @@ ontology
 					description = <"El paciente tiene 13 años o más.">
 				>
 				["at0009"] = <
-					text = <"Género">
-					description = <"Género del paciente">
+					text = <"*Gender(en)">
+					description = <"*Gender.(en)">
 				>
 				["at0010"] = <
 					text = <"Femenino">
@@ -375,12 +395,12 @@ ontology
 					description = <"Paciente masculino.">
 				>
 				["at0012"] = <
-					text = <"Diagnóstico">
-					description = <"Diagnóstico del paciente.">
+					text = <"*Diagnosis(en)">
+					description = <"*Diagnosis.(en)">
 				>
 				["at0013"] = <
-					text = <"Otros diagnósticos">
-					description = <"El paciente presenta otros diagnósticos.">
+					text = <"*Other diagnosis(en)">
+					description = <"*Patient has.(en)">
 				>
 				["at0014"] = <
 					text = <"Diagnósticos psicologicos o conductuales">
@@ -411,8 +431,8 @@ ontology
 					description = <"Paciente no consciente de sus limitaciones.">
 				>
 				["at0021"] = <
-					text = <"Factores ambientales">
-					description = <"Factores ambientales">
+					text = <"*Environmental factors(en)">
+					description = <"*Environmental factors.(en)">
 				>
 				["at0022"] = <
 					text = <"Área ambulatoria">
@@ -470,13 +490,22 @@ ontology
 					text = <"Comentario">
 					description = <"Comentario">
 				>
-				["at0036"] = <
-					text = <"Tree">
-					description = <"@ internal @">
-				>
 				["at0037"] = <
-					text = <"Factor de confusión">
-					description = <"Todo factor incidental relacionado con el estado del sujeto y que pueda afectar la interpetación clínica del parametro medido.">
+					text = <"*Confounding factors(en)">
+					description = <"*Any incidental factors related to the state of the subject which may affect clinical interpretation of the measurement.(en)">
+				>
+				["at0038"] = <
+					text = <"*Tree(en)">
+					description = <"*@ internal @(en)">
+				>
+				["at0040"] = <
+					text = <"*Tree(en)">
+					description = <"*@ internal @(en)">
+				>
+				["at0041"] = <
+					text = <"*Extension(en)">
+					description = <"*Additional information required to capture local context or to align with other reference models/formalisms.(en)">
+					comment = <"*For example: Local hospital departmental infomation or additional metadata to align with FHIR or CIMI equivalents.(en)">
 				>
 			>
 		>
@@ -491,8 +520,8 @@ ontology
 					description = <"@ internal @">
 				>
 				["at0002"] = <
-					text = <"Qualquer evento">
-					description = <"*">
+					text = <"*Any event(en)">
+					description = <"*Default, unspecified point in time or interval event which may be explicitly defined in a template or at run-time.(en)">
 				>
 				["at0003"] = <
 					text = <"Tree">
@@ -519,8 +548,8 @@ ontology
 					description = <"Paciente com 13 anos ou mais.">
 				>
 				["at0009"] = <
-					text = <"Sexo">
-					description = <"Gênero">
+					text = <"*Gender(en)">
+					description = <"*Gender.(en)">
 				>
 				["at0010"] = <
 					text = <"Feminino">
@@ -531,12 +560,12 @@ ontology
 					description = <"Paciente é masculino.">
 				>
 				["at0012"] = <
-					text = <"Diagnóstico">
-					description = <"Diagnóstico">
+					text = <"*Diagnosis(en)">
+					description = <"*Diagnosis.(en)">
 				>
 				["at0013"] = <
-					text = <"Outros diagnósticos">
-					description = <"Diagnóstico que o paciente apresenta.">
+					text = <"*Other diagnosis(en)">
+					description = <"*Patient has.(en)">
 				>
 				["at0014"] = <
 					text = <"Diganóstico comportamental /psicológico">
@@ -567,8 +596,8 @@ ontology
 					description = <"Paciente não é consciente das suas limitações.">
 				>
 				["at0021"] = <
-					text = <"Fatores ambientais">
-					description = <"Fatores ambientais.">
+					text = <"*Environmental factors(en)">
+					description = <"*Environmental factors.(en)">
 				>
 				["at0022"] = <
 					text = <"Ambulatorial">
@@ -626,13 +655,22 @@ ontology
 					text = <"Comentários">
 					description = <"Comentários.">
 				>
-				["at0036"] = <
-					text = <"Tree">
-					description = <"@ internal @">
-				>
 				["at0037"] = <
-					text = <"Fatores de confusão">
-					description = <"Qualquer fator incidental relacionado ao estado do sujeito que pode afetar a interpretação clínica da mensuração.">
+					text = <"*Confounding factors(en)">
+					description = <"*Any incidental factors related to the state of the subject which may affect clinical interpretation of the measurement.(en)">
+				>
+				["at0038"] = <
+					text = <"*Tree(en)">
+					description = <"*@ internal @(en)">
+				>
+				["at0040"] = <
+					text = <"*Tree(en)">
+					description = <"*@ internal @(en)">
+				>
+				["at0041"] = <
+					text = <"*Extension(en)">
+					description = <"*Additional information required to capture local context or to align with other reference models/formalisms.(en)">
+					comment = <"*For example: Local hospital departmental infomation or additional metadata to align with FHIR or CIMI equivalents.(en)">
 				>
 			>
 		>
