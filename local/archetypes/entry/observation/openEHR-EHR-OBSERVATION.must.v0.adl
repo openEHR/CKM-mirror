@@ -35,7 +35,7 @@ Paso 5.- Utilizar las guías de manejo y/o las políticas locales para desarroll
 Este arquetipo permite registrar los datos para el cálculo del riesgo total de malnutrición.">
 			keywords = <"MUST", "desnutrición", "subnutrición", "obesidad", "nutrición", "alimentación">
 			misuse = <"No debe ser utilizado en niños.">
-			copyright = <"© *© openEHR Foundation(en), openEHR Foundation">
+			copyright = <"© openEHR Foundation">
 		>
 		["en"] = <
 			language = <[ISO_639-1::en]>
@@ -49,6 +49,7 @@ Step 5.- Use management guidelines and/or local policy to develop care plan.
 This archetype registers data for calculation of the overall risk of malnutrition score.">
 			keywords = <"MUST", "malnutrition", "undernutrition", "obesity", "nutrition", "nourishment">
 			misuse = <"Not to be used for children.">
+			copyright = <"© openEHR Foundation">
 		>
 	>
 	lifecycle_state = <"in_development">
@@ -65,8 +66,9 @@ Todorovic, Vera, Russell, Christine, Elia, Marinos (2011): The ‘MUST’explana
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"D73278673FD95CDAE757E0D73BD2E1EB">
-		["build_uid"] = <"24b11c72-4a9c-4752-b73d-831abe74e70c">
+		["MD5-CAM-1.0.1"] = <"FF37872118D906244EC8BCEAB503FC3E">
+		["build_uid"] = <"f478ac45-d50e-4a27-bc39-6002a63fe76b">
+		["ip_acknowledgements"] = <"This artefact includes content from SNOMED Clinical Terms® (SNOMED CT®) which is copyrighted material of the International Health Terminology Standards Development Organisation (IHTSDO). Where an implementation of this artefact makes use of SNOMED CT content, the implementer must have the appropriate SNOMED CT Affiliate license - for more information contact http://www.snomed.org/snomed-ct/get-snomedct or info@snomed.org.">
 		["revision"] = <"0.0.1-alpha">
 	>
 
@@ -81,7 +83,7 @@ definition
 								items cardinality matches {5..*; unordered} matches {
 									ELEMENT[at0004] matches {	-- Body mass index score
 										value matches {
-											0|[local::at0005], 	-- >20 (>30 Obese) 
+											0|[local::at0005], 	-- >20 (>30 Obese)
 											1|[local::at0006], 	-- 18.5 -20
 											2|[local::at0007]  	-- <18.5
 										}
@@ -102,11 +104,11 @@ definition
 									ELEMENT[at0015] matches {	-- Total score
 										value matches {
 											DV_COUNT matches {
-												magnitude matches {|>=0|}
+												magnitude matches {|0..6|}
 											}
 										}
 									}
-									ELEMENT[at0016] matches {	-- Overall risk of malnutrition
+									ELEMENT[at0016] matches {	-- Risk category
 										value matches {
 											DV_CODED_TEXT matches {
 												defining_code matches {
@@ -118,7 +120,7 @@ definition
 											}
 										}
 									}
-									ELEMENT[at0039] occurrences matches {0..1} matches {	-- Comments
+									ELEMENT[at0039] occurrences matches {0..1} matches {	-- Comment
 										value matches {
 											DV_TEXT matches {*}
 										}
@@ -210,7 +212,7 @@ ontology
 			items = <
 				["at0000"] = <
 					text = <"Malnutrition Universal Screening Tool (MUST)">
-					description = <" Screening tool for malnourishment, undernutrition or obesity.">
+					description = <"Screening tool for malnourishment, undernutrition or obesity.">
 				>
 				["at0001"] = <
 					text = <"Event Series">
@@ -218,7 +220,7 @@ ontology
 				>
 				["at0002"] = <
 					text = <"Any event">
-					description = <"Default, unspecified point in time event which may be explicitly defined in a template or at run-time.\"">
+					description = <"Default, unspecified point in time event which may be explicitly defined in a template or at run-time.">
 				>
 				["at0003"] = <
 					text = <"Tree">
@@ -226,10 +228,10 @@ ontology
 				>
 				["at0004"] = <
 					text = <"Body mass index score">
-					description = <"Derived from the subject’s height and weight. ">
+					description = <"Derived from the subject’s body mass index.">
 				>
 				["at0005"] = <
-					text = <">20 (>30 Obese) ">
+					text = <">20 (>30 Obese)">
 					description = <"*">
 				>
 				["at0006"] = <
@@ -242,7 +244,8 @@ ontology
 				>
 				["at0008"] = <
 					text = <"Weight loss score">
-					description = <"To establish the subject’s weight loss score, ask if there has been any weight loss in the last 3 – 6 months, and if so how much (or look in their medical records). Deduct current weight from previous weight to calculate amount of weight lost and calculate percentage. If the subject has not lost weight (or has gained weight) score 0.">
+					description = <"To establish the subject’s weight loss score, ask if there has been any weight loss in the last 3 – 6 months, and if so how much (or look in their medical records).">
+					comment = <"Deduct current weight from previous weight to calculate amount of weight lost and calculate percentage. If the subject has not lost weight (or has gained weight) score 0.">
 				>
 				["at0009"] = <
 					text = <"<5 %">
@@ -258,35 +261,36 @@ ontology
 				>
 				["at0012"] = <
 					text = <"Acute disease effect score">
-					description = <"If the subject is currently affected by an acute patho-physiological or psychological condition, and there has been no nutritional intake or likelihood of no intake for more than 5 days, they are likely to be at nutritional risk. Such patients include those who are critically ill, those who have swallowing difficulties (e.g. after stroke), or head injuries or are undergoing gastrointestinal surgery">
+					description = <"If the subject is currently affected by an acute patho-physiological or psychological condition, and there has been no nutritional intake or likelihood of no intake for more than 5 days, they are likely to be at nutritional risk.">
+					comment = <"Such patients include those who are critically ill, those who have swallowing difficulties (e.g. after stroke), or head injuries or are undergoing gastrointestinal surgery.">
 				>
 				["at0013"] = <
 					text = <"Not acutely ill and sufficient nutritional intake for >5 days">
-					description = <"If patient is not acutely ill and there has not been or is not likely to be no nutritional intake for >5 days ">
+					description = <"If patient is not acutely ill and there has not been or is not likely to be no nutritional intake for >5 days.">
 				>
 				["at0014"] = <
 					text = <"Acutely ill and there has been or is likely to be no nutritional intake for >5 days">
-					description = <"If patient is acutely ill and there has been or is likely to be no nutritional intake for >5 days ">
+					description = <"If patient is acutely ill and there has been or is likely to be no nutritional intake for >5 days.">
 				>
 				["at0015"] = <
 					text = <"Total score">
-					description = <"The sum of scores for body mass index, weight loss and acure disease effect.">
+					description = <"The sum of scores for body mass index, weight loss and acute disease effect.">
 				>
 				["at0016"] = <
-					text = <"Overall risk of malnutrition">
+					text = <"Risk category">
 					description = <"The overall risk of malnutrition as derived from the total score.">
 				>
 				["at0017"] = <
 					text = <"Low risk">
-					description = <"Total score equal to 0">
+					description = <"Total score equal to 0.">
 				>
 				["at0018"] = <
 					text = <"Medium risk">
-					description = <"Total score equal to 1">
+					description = <"Total score equal to 1.">
 				>
 				["at0019"] = <
 					text = <"High risk">
-					description = <"Total score equal or greater than 2">
+					description = <"Total score equal or greater than 2.">
 				>
 				["at0020"] = <
 					text = <"Tree">
@@ -294,7 +298,7 @@ ontology
 				>
 				["at0021"] = <
 					text = <"Height determination method for body mass index">
-					description = <"Method used for determining height as a part of body mass index calculation. ">
+					description = <"Method used for determining height as a part of body mass index calculation.">
 				>
 				["at0022"] = <
 					text = <"Weight determination method for body mass index">
@@ -362,11 +366,12 @@ ontology
 				>
 				["at0038"] = <
 					text = <"Confounding factors">
-					description = <"Some variables used in the calculation of the MUST score may be influenced by confunding factors, specially in the case of weight and BMI determination. Examples of confunding factors are fluid disturbances, lactation, pregnancy, critical illness and amputations. These and other situations deemed as confunding should be regitered here.">
+					description = <"Some variables used in the calculation of the MUST score may be influenced by confunding factors, specially in the case of weight and BMI determination.">
+					comment = <"Examples of confunding factors are fluid disturbances, lactation, pregnancy, critical illness and amputations. These and other situations deemed as confunding should be registered here.">
 				>
 				["at0039"] = <
-					text = <"Comments">
-					description = <"*">
+					text = <"Comment">
+					description = <"Additional narrative about the screening, not captured in other fields.">
 				>
 				["at0040"] = <
 					text = <"Tree">
@@ -383,7 +388,7 @@ ontology
 			items = <
 				["at0000"] = <
 					text = <"*Malnutrition Universal Screening Tool (MUST)(en)">
-					description = <"* Screening tool for malnourishment, undernutrition or obesity.(en)">
+					description = <"*Screening tool for malnourishment, undernutrition or obesity.(en)">
 				>
 				["at0001"] = <
 					text = <"Event Series">
@@ -391,19 +396,19 @@ ontology
 				>
 				["at0002"] = <
 					text = <"*Any event(en)">
-					description = <"*Default, unspecified point in time event which may be explicitly defined in a template or at run-time.\"(en)">
+					description = <"*Default, unspecified point in time event which may be explicitly defined in a template or at run-time.(en)">
 				>
 				["at0003"] = <
 					text = <"Tree">
 					description = <"@ internal @">
 				>
 				["at0004"] = <
-					text = <"Puntaje para el índice de masa corporal">
-					description = <"Puntaje para el índice de masa corporal">
+					text = <"*Body mass index score(en)">
+					description = <"*Derived from the subject’s body mass index.(en)">
 				>
 				["at0005"] = <
-					text = <">20 (>30 Obeso)">
-					description = <">20 (>30 Obeso)">
+					text = <"*>20 (>30 Obese)(en)">
+					description = <"**(en)">
 				>
 				["at0006"] = <
 					text = <"18.5 -20">
@@ -414,8 +419,9 @@ ontology
 					description = <"<18.5">
 				>
 				["at0008"] = <
-					text = <"Puntaje para la pérdida de peso">
-					description = <"Para detectar una posible pérdida de peso,  interrogar si ha habido alguna pérdida de peso en los últimos 3 a 6 meses y, en caso afirmativo, la cantidad (o buscar en la historia clínica). Restar el peso actual del peso previo para calcular el peso perdido y calcular el porcentaje. Si el sujeto no ha perdido peso (o lo ha aumentado) el puntaje será de 0.">
+					text = <"*Weight loss score(en)">
+					description = <"*To establish the subject’s weight loss score, ask if there has been any weight loss in the last 3 – 6 months, and if so how much (or look in their medical records).(en)">
+					comment = <"*Deduct current weight from previous weight to calculate amount of weight lost and calculate percentage. If the subject has not lost weight (or has gained weight) score 0.(en)">
 				>
 				["at0009"] = <
 					text = <"<5 %">
@@ -430,44 +436,45 @@ ontology
 					description = <">10 %">
 				>
 				["at0012"] = <
-					text = <"Puntaje para el  efecto de enfermedades agudas">
-					description = <"Si el sujeto es encuentra actualmente afectado por una estado fisiopatológico o psicológico agudo, y no ha habido, o se estima que no habrá, un aporte nutricional por mas de 5 días, es probable que se encuentre en riesgo nutricional. Tales pacientes incluyen aquellos que se encuentran críticamente enfermos, o que presentan trastornos de la deglución (por ejemplo, despues de un accidente cerebrovascular), o que han sufrido traumatismo craneano o en el curso de un tratamiento de cirugia gastrointenstinal.">
+					text = <"*Acute disease effect score(en)">
+					description = <"*If the subject is currently affected by an acute patho-physiological or psychological condition, and there has been no nutritional intake or likelihood of no intake for more than 5 days, they are likely to be at nutritional risk.(en)">
+					comment = <"*Such patients include those who are critically ill, those who have swallowing difficulties (e.g. after stroke), or head injuries or are undergoing gastrointestinal surgery.(en)">
 				>
 				["at0013"] = <
-					text = <"No agudamente enfermo y con aporte nutricional suficiente por más de 5 días">
-					description = <"Si el paciente no cursa una efermedad aguda y no ha habido ni se estima que habrá una falta de aporte nutricional por mas de 5 días">
+					text = <"*Not acutely ill and sufficient nutritional intake for >5 days(en)">
+					description = <"*If patient is not acutely ill and there has not been or is not likely to be no nutritional intake for >5 days.(en)">
 				>
 				["at0014"] = <
-					text = <"Enfermo agudo y sin aporte nutricional o con falta de aporte nutricional estimado por más de 5 días">
-					description = <"Si el paciente cursa una efermedad aguda y no ha habido o se estima que no habrá una falta de aporte nutricional por mas de 5 días">
+					text = <"*Acutely ill and there has been or is likely to be no nutritional intake for >5 days(en)">
+					description = <"*If patient is acutely ill and there has been or is likely to be no nutritional intake for >5 days.(en)">
 				>
 				["at0015"] = <
-					text = <"Puntaje total">
-					description = <"La suma de los puntajes para el índice de masa corporal, pérdida de peso y efecto de enfermedad aguda.">
+					text = <"*Total score(en)">
+					description = <"*The sum of scores for body mass index, weight loss and acute disease effect.(en)">
 				>
 				["at0016"] = <
-					text = <"Riesgo total de malnutrición">
-					description = <"El riesgo total de malnutrición según se deriva del puntaje total.">
+					text = <"*Risk category(en)">
+					description = <"*The overall risk of malnutrition as derived from the total score.(en)">
 				>
 				["at0017"] = <
-					text = <"Riesgo bajo">
-					description = <"Puntaje total equivalente a 0">
+					text = <"*Low risk(en)">
+					description = <"*Total score equal to 0.(en)">
 				>
 				["at0018"] = <
-					text = <"Riesgo medio">
-					description = <"Puntaje total equivalente a 1">
+					text = <"*Medium risk(en)">
+					description = <"*Total score equal to 1.(en)">
 				>
 				["at0019"] = <
-					text = <"Riesgo alto">
-					description = <"Puntaje total equivalente o mayor a 2">
+					text = <"*High risk(en)">
+					description = <"*Total score equal or greater than 2.(en)">
 				>
 				["at0020"] = <
 					text = <"*Tree(en)">
 					description = <"*@ internal @(en)">
 				>
 				["at0021"] = <
-					text = <"Método de determinación de la altura para el cálculo del índice de masa corporal">
-					description = <"Método utilizado para la determinación de la altura para el cálculo del índice de masa corporal.">
+					text = <"*Height determination method for body mass index(en)">
+					description = <"*Method used for determining height as a part of body mass index calculation.(en)">
 				>
 				["at0022"] = <
 					text = <"Método de determinación del peso para el cálculo del índice de masa corporal">
@@ -534,12 +541,13 @@ ontology
 					description = <"*">
 				>
 				["at0038"] = <
-					text = <"Factores de confusión">
-					description = <"Algunas de las variables utilizadas en el cálculo del puntaje de MUST pueden ser afectadas por factores de confusión, especialmente en el caso del peso y de la determinación del índice de masa corporal. Son ejemplos de factores de confusión los desequilibrios de los líquidos, la lactancia, el embarazo, las enfermedades críticas y las amputaciones. Estas y otras situaciones consideradas como factores de confusión deben ser registradas aquí. ">
+					text = <"*Confounding factors(en)">
+					description = <"*Some variables used in the calculation of the MUST score may be influenced by confunding factors, specially in the case of weight and BMI determination.(en)">
+					comment = <"*Examples of confunding factors are fluid disturbances, lactation, pregnancy, critical illness and amputations. These and other situations deemed as confunding should be registered here.(en)">
 				>
 				["at0039"] = <
-					text = <"Comentarios">
-					description = <"*">
+					text = <"*Comment(en)">
+					description = <"*Additional narrative about the screening, not captured in other fields.(en)">
 				>
 				["at0040"] = <
 					text = <"*Tree(en)">
