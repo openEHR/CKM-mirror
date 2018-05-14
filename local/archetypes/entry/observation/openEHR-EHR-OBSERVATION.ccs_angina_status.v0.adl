@@ -1,8 +1,8 @@
-﻿archetype (adl_version=1.4)
-	openEHR-EHR-OBSERVATION.ccs_angina_status.v1
+﻿archetype (adl_version=1.4; uid=ba41dbb3-a182-4401-8c5f-d265e836c754)
+	openEHR-EHR-OBSERVATION.ccs_angina_status.v0
 
 concept
-	[at0000]	-- Angina symptom Classification (CCS)
+	[at0000]	-- Angina symptom classification (CCS)
 language
 	original_language = <[ISO_639-1::en]>
 description
@@ -22,23 +22,31 @@ description
 			copyright = <"© openEHR Foundation">
 		>
 	>
-	lifecycle_state = <"AuthorDraft">
+	lifecycle_state = <"in_development">
 	other_contributors = <>
 	other_details = <
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
+		["custodian_organisation"] = <"openEHR Foundation">
 		["references"] = <"Canadian Cardiovascular Society grading of angina pectoris
 Available from: http://www.ccs.ca/download/position_statements/Grading%20of%20Angina.pdf
 
 CANADIAN CARDIOVASCULAR SOCIETY ANGINA GRADE 0 – A CLINICALLY USEFUL ADDITION
 Available from: http://www.pulsus.com/ccc2003/abs/a853.htm">
-		["MD5-CAM-1.0.1"] = <"14E7DD51D9D86C6E70246884717DB767">
+		["original_namespace"] = <"org.openehr">
+		["original_publisher"] = <"openEHR Foundation">
+		["custodian_namespace"] = <"org.openehr">
+		["MD5-CAM-1.0.1"] = <"585BCF3F8440B08F5A229074810C5164">
+		["build_uid"] = <"620a78d2-ce7d-462d-9c80-1491442fc34a">
+		["ip_acknowledgements"] = <"This artefact includes content from SNOMED Clinical Terms® (SNOMED CT®) which is copyrighted material of the International Health Terminology Standards Development Organisation (IHTSDO). Where an implementation of this artefact makes use of SNOMED CT content, the implementer must have the appropriate SNOMED CT Affiliate license - for more information contact http://www.snomed.org/snomed-ct/get-snomedct or info@snomed.org.">
+		["revision"] = <"0.0.1-alpha">
 	>
 
 definition
-	OBSERVATION[at0000] matches {	-- Angina symptom Classification (CCS)
+	OBSERVATION[at0000] matches {	-- Angina symptom classification (CCS)
 		data matches {
 			HISTORY[at0001] matches {	-- Event Series
 				events cardinality matches {1..*; unordered} matches {
-					EVENT[at0002] occurrences matches {0..1} matches {	-- Any event
+					EVENT[at0002] occurrences matches {0..*} matches {	-- Any event
 						data matches {
 							ITEM_TREE[at0003] matches {	-- Tree
 								items cardinality matches {0..*; unordered} matches {
@@ -58,6 +66,16 @@ definition
 				}
 			}
 		}
+		protocol matches {
+			ITEM_TREE[at0010] matches {	-- Tree
+				items cardinality matches {0..*; unordered} matches {
+					allow_archetype CLUSTER[at0011] occurrences matches {0..*} matches {	-- Extension
+						include
+							archetype_id/value matches {/.*/}
+					}
+				}
+			}
+		}
 	}
 
 
@@ -67,7 +85,7 @@ ontology
 		["en"] = <
 			items = <
 				["at0000"] = <
-					text = <"Angina symptom Classification (CCS)">
+					text = <"Angina symptom classification (CCS)">
 					description = <"Angina symptom score based on Canadian Cardiovascular Society (CCS) Angina Status score.">
 				>
 				["at0001"] = <
@@ -76,7 +94,7 @@ ontology
 				>
 				["at0002"] = <
 					text = <"Any event">
-					description = <"Any event.">
+					description = <"Default, unspecified point in time or interval event which may be explicitly defined in a template or at run-time.">
 				>
 				["at0003"] = <
 					text = <"Tree">
@@ -105,6 +123,15 @@ ontology
 				["at0009"] = <
 					text = <"Class IV">
 					description = <"Inability to perform any physical activity without discomfort.">
+				>
+				["at0010"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0011"] = <
+					text = <"Extension">
+					description = <"Additional information required to capture local context or to align with other reference models/formalisms.">
+					comment = <"For example: Local hospital departmental infomation or additional metadata to align with FHIR or CIMI equivalents.">
 				>
 			>
 		>
