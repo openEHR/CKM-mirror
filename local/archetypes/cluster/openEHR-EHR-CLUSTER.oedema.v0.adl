@@ -6,12 +6,6 @@ concept
 language
 	original_language = <[ISO_639-1::en]>
 	translations = <
-		["ar-sy"] = <
-			language = <[ISO_639-1::ar-sy]>
-			author = <
-				["name"] = <"Mona Saleh">
-			>
-		>
 		["ru"] = <
 			language = <[ISO_639-1::ru]>
 			author = <
@@ -20,19 +14,33 @@ language
 			>
 			accreditation = <"Russian State University">
 		>
+		["ar-sy"] = <
+			language = <[ISO_639-1::ar-sy]>
+			author = <
+				["name"] = <"Mona Saleh">
+			>
+		>
 	>
 description
 	original_author = <
 		["name"] = <"Heather Leslie">
-		["organisation"] = <"Ocean Informatics">
-		["email"] = <"heather.leslie@oceaninformatics.com">
+		["organisation"] = <"Atomica Informatics">
+		["email"] = <"heather.leslie@atomicainformatics.com">
 		["date"] = <"2007-04-09">
 	>
 	details = <
+		["ru"] = <
+			language = <[ISO_639-1::ru]>
+			purpose = <"Для описания отека">
+			use = <"Следует включать в архетип описывающий объект обследования">
+			keywords = <"Отек", "Отечность", "Водянка", "Асцит">
+			misuse = <"">
+			copyright = <"© openEHR Foundation">
+		>
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"For recording a description and clinical interpretation of the findings observed during the physical examination of oedema.">
-			use = <"Use to record a description of the overall findings observed during the physical examination of oedema.
+			purpose = <"For recording a description and clinical interpretation of the findings observed during the physical examination of oedema at an identified body site.">
+			use = <"Use to record a description of the overall findings observed during the physical examination of oedema at an identified body site.
 
 This archetype has been designed to be used within the 'Examination findings' SLOT of CLUSTER archetypes for physical examination findings. If used within a CLUSTER.exam_pattern related archetype, the 'Body site' data element and 'Structured body site' SLOT are redundant as the location of oedema will be identified in the Exam CLUSTER. If used within the OBSERVATION.exam archetype or CLUSTERs where the site has not been identified, then 'Body site' and/or 'Structured body site' SLOT will be required.
 
@@ -40,7 +48,7 @@ The CLUSTER.exclusion_exam archetype can be nested within the 'Examination not d
 
 Use to incorporate the narrative descriptions of clinical findings within existing or legacy clinical systems into an archetyped format, using the 'Clinical Description' data element.">
 			keywords = <"oedema", "swelling">
-			misuse = <"Not to be used for recording the clinical history - use specific OBSERVATION and CLUSTER archetypes. For example OBSERVATION.story and CLUSTER.symptom.">
+			misuse = <"">
 			copyright = <"© openEHR Foundation">
 		>
 		["ar-sy"] = <
@@ -51,42 +59,24 @@ Use to incorporate the narrative descriptions of clinical findings within existi
 			misuse = <"">
 			copyright = <"© openEHR Foundation">
 		>
-		["ru"] = <
-			language = <[ISO_639-1::ru]>
-			purpose = <"Для описания отека">
-			use = <"Следует включать в архетип описывающий объект обследования">
-			keywords = <"Отек", "Отечность", "Водянка", "Асцит">
-			misuse = <"">
-			copyright = <"© openEHR Foundation">
-		>
 	>
 	lifecycle_state = <"in_development">
-	other_contributors = <"Heather Leslie, Ocean Informatics, Australia (Editor)", "Ian McNicoll, freshEHR Clinical Informatics Ltd, United Kingdom (Editor)", "Hildegard Franke, freshEHR Clinical Informatics Ltd., United Kingdom (Editor)">
+	other_contributors = <"Heather Leslie, Atomica Informatics, Australia (Editor)", "Ian McNicoll, freshEHR Clinical Informatics Ltd, United Kingdom (Editor)", "Hildegard McNicoll, freshEHR Clinical Informatics Ltd., United Kingdom (Editor)">
 	other_details = <
 		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
 		["custodian_organisation"] = <"openEHR Foundation">
+		["current_contact"] = <"Heather Leslie, Atomica Informatics<heather.leslie@atomicainformatics.com>">
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"96507CB14934505B3A1E607DEA3E2516">
-		["build_uid"] = <"fec87d6e-3fb0-4adc-9d6f-ea64e9fd32b5">
+		["MD5-CAM-1.0.1"] = <"7CA9FE1FBE6CF341ED66F94D40BA921A">
+		["build_uid"] = <"6a864435-8cd6-4a6a-a206-883adbbe55c7">
 		["revision"] = <"0.0.1-alpha">
 	>
 
 definition
 	CLUSTER[at0000] matches {	-- Examination of oedema
 		items cardinality matches {1..*; unordered} matches {
-			ELEMENT[at0018] occurrences matches {0..1} matches {	-- Present
-				value matches {
-					DV_CODED_TEXT matches {
-						defining_code matches {
-							[local::
-							at0019, 	-- Present
-							at0020]	-- Absent
-						}
-					}
-				}
-			}
 			ELEMENT[at0013] occurrences matches {0..*} matches {	-- Body site name
 				value matches {
 					DV_TEXT matches {*}
@@ -126,7 +116,7 @@ definition
 			}
 			allow_archetype CLUSTER[at0028] occurrences matches {0..*} matches {	-- Additional details
 				include
-					archetype_id/value matches {/openEHR-EHR-CLUSTER\.exam(-[a-zA-Z0-9_]+)*\.v0/}
+					archetype_id/value matches {/openEHR-EHR-CLUSTER\.exam(-[a-zA-Z0-9_]+)*\.v1/}
 			}
 			allow_archetype CLUSTER[at0024] occurrences matches {0..*} matches {	-- Multimedia representation
 				include
@@ -195,18 +185,6 @@ ontology
 					text = <"Structured body site">
 					description = <"Slot to contain detailed and structured anatomical location details.">
 					comment = <"If the body site has previously been identified in another archetype in which this archetype is then nested, this SLOT becomes redundant.">
-				>
-				["at0018"] = <
-					text = <"Present">
-					description = <"Is oedema present?">
-				>
-				["at0019"] = <
-					text = <"Present">
-					description = <"Oedema is observed to be present.">
-				>
-				["at0020"] = <
-					text = <"Absent">
-					description = <"Oedema is not observed to be present.">
 				>
 				["at0023"] = <
 					text = <"Clinical interpretation">
@@ -278,18 +256,6 @@ ontology
 					description = <"*Slot to contain detailed and structured anatomical location details.(en)">
 					comment = <"*If the body site has previously been identified in another archetype in which this archetype is then nested, this SLOT becomes redundant.(en)">
 				>
-				["at0018"] = <
-					text = <"*New element(en)">
-					description = <"**(en)">
-				>
-				["at0019"] = <
-					text = <"*Present(en)">
-					description = <"*Oedema is present.(en)">
-				>
-				["at0020"] = <
-					text = <"*Absent(en)">
-					description = <"*Oedema is not observed to be present.(en)">
-				>
 				["at0023"] = <
 					text = <"*New element(en)">
 					description = <"**(en)">
@@ -359,18 +325,6 @@ ontology
 					text = <"*Structured body site(en)">
 					description = <"*Slot to contain detailed and structured anatomical location details.(en)">
 					comment = <"*If the body site has previously been identified in another archetype in which this archetype is then nested, this SLOT becomes redundant.(en)">
-				>
-				["at0018"] = <
-					text = <"*New element(en)">
-					description = <"**(en)">
-				>
-				["at0019"] = <
-					text = <"*Present(en)">
-					description = <"*Oedema is present.(en)">
-				>
-				["at0020"] = <
-					text = <"*Absent(en)">
-					description = <"*Oedema is not observed to be present.(en)">
 				>
 				["at0023"] = <
 					text = <"*New element(en)">
