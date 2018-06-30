@@ -1,0 +1,269 @@
+﻿archetype (adl_version=1.4; uid=d62f3c72-982d-4bba-81db-bc92e5c36935)
+	openEHR-EHR-OBSERVATION.holter_monitor.v0
+
+concept
+	[at0000]	-- Holter monitor
+language
+	original_language = <[ISO_639-1::en]>
+description
+	original_author = <
+		["name"] = <"Hildegard Franke">
+		["organisation"] = <"freshEHR Clinical Informatics Ltd.">
+		["email"] = <"hildi@freshehr.com">
+		["date"] = <"2017-01-11">
+	>
+	details = <
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"For the recording and reporting of the results of the Holter monitor test.">
+			use = <"">
+			misuse = <"">
+			copyright = <"© Clinical Models UK">
+		>
+	>
+	lifecycle_state = <"in_development">
+	other_contributors = <>
+	other_details = <
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
+		["custodian_organisation"] = <"UK Clinical Models">
+		["current_contact"] = <"Hildegard Franke, freshEHR Clinical Informatics Ltd.<hildi@freshehr.com>">
+		["original_namespace"] = <"uk.org.clinicalmodels">
+		["original_publisher"] = <"UK Clinical Models">
+		["custodian_namespace"] = <"uk.org.clinicalmodels">
+		["MD5-CAM-1.0.1"] = <"B1A888F61C750A00D1601A3649D52098">
+		["build_uid"] = <"c7d518f0-4584-49f6-9f24-dc35285ee0f9">
+		["revision"] = <"0.0.1-alpha">
+	>
+
+definition
+	OBSERVATION[at0000] matches {	-- Holter monitor
+		data matches {
+			HISTORY[at0001] matches {	-- Event Series
+				events cardinality matches {1..*; unordered} matches {
+					POINT_EVENT[at0002] occurrences matches {0..1} matches {	-- Point in time
+						data matches {
+							ITEM_TREE[at0003] matches {	-- Tree
+								items cardinality matches {0..*; unordered} matches {
+									ELEMENT[at0009] occurrences matches {0..1} matches {	-- VPB burden per 24 hours
+										value matches {
+											DV_COUNT matches {
+												magnitude matches {|>=0|}
+											}
+										}
+									}
+									ELEMENT[at0010] occurrences matches {0..1} matches {	-- Dynamic type 1 ECG pattern
+										value matches {
+											DV_CODED_TEXT matches {
+												defining_code matches {
+													[local::
+													at0011, 	-- Yes
+													at0012, 	-- No
+													at0013]	-- Unknown
+												}
+											}
+										}
+									}
+									ELEMENT[at0014] occurrences matches {0..1} matches {	-- QT abnormalities detected
+										value matches {
+											DV_CODED_TEXT matches {
+												defining_code matches {
+													[local::
+													at0015, 	-- Yes
+													at0016, 	-- No
+													at0017]	-- Unknown
+												}
+											}
+										}
+									}
+									ELEMENT[at0018] occurrences matches {0..1} matches {	-- QT abnormality description
+										value matches {
+											DV_TEXT matches {*}
+										}
+									}
+									ELEMENT[at0019] occurrences matches {0..1} matches {	-- Holter monitor abnormalities
+										value matches {
+											DV_CODED_TEXT matches {
+												defining_code matches {
+													[local::
+													at0020, 	-- Atrial fibrillation
+													at0021, 	-- Non-sustained VT
+													at0022, 	-- Nil
+													at0023]	-- Unknown
+												}
+											}
+										}
+									}
+									ELEMENT[at0024] occurrences matches {0..1} matches {	-- Assessment
+										value matches {
+											DV_CODED_TEXT matches {
+												defining_code matches {
+													[local::
+													at0025, 	-- Normal
+													at0026, 	-- Unknown
+													at0027, 	-- Abnormal relevant
+													at0028]	-- Abnormal unknown relevance
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+						state matches {
+							ITEM_TREE[at0007] matches {	-- Tree
+								items cardinality matches {0..*; unordered} matches {
+									ELEMENT[at0008] occurrences matches {0..*} matches {	-- Confounding factors
+										value matches {
+											DV_TEXT matches {*}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		protocol matches {
+			ITEM_TREE[at0004] matches {	-- Tree
+				items cardinality matches {0..*; unordered} matches {
+					ELEMENT[at0005] occurrences matches {0..1} matches {	-- Technique or protocol
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					allow_archetype CLUSTER[at0006] occurrences matches {0..*} matches {	-- Extension
+						include
+							archetype_id/value matches {/.*/}
+					}
+				}
+			}
+		}
+	}
+
+
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"Holter monitor">
+					description = <"Holter monitor test.">
+				>
+				["at0001"] = <
+					text = <"Event Series">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Point in time">
+					description = <"A specific date and/or time which may be explicitly defined in a template or at run-time.">
+				>
+				["at0003"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0004"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0005"] = <
+					text = <"Technique or protocol">
+					description = <"The non-imaging diagnostic technique or protocol used for the test.">
+				>
+				["at0006"] = <
+					text = <"Extension">
+					description = <"Additional information required to capture local context or to align with other reference models/formalisms.">
+					comment = <"e.g. Local hospital departmental infomation or additional metadata to align with HL7 or CDISC equivalents.">
+				>
+				["at0007"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0008"] = <
+					text = <"Confounding factors">
+					description = <"Record any issues or factors that may impact on the test or result.">
+				>
+				["at0009"] = <
+					text = <"VPB burden per 24 hours">
+					description = <"The observed number of ventricular premature beats per 24 hours.">
+				>
+				["at0010"] = <
+					text = <"Dynamic type 1 ECG pattern">
+					description = <"Statement whether dynamic type 1 ECG pattern was observed.">
+				>
+				["at0011"] = <
+					text = <"Yes">
+					description = <"Dynamic type 1 ECG pattern was observed.">
+				>
+				["at0012"] = <
+					text = <"No">
+					description = <"Dynamic type 1 ECG pattern was not observed.">
+				>
+				["at0013"] = <
+					text = <"Unknown">
+					description = <"It is not known whether dynamic type 1 ECG pattern was observed.">
+				>
+				["at0014"] = <
+					text = <"QT abnormalities detected">
+					description = <"Statement whether QT abnormalities were detectd.">
+				>
+				["at0015"] = <
+					text = <"Yes">
+					description = <"QT abnormalities were detected.">
+				>
+				["at0016"] = <
+					text = <"No">
+					description = <"QT abnormalities were not detected.">
+				>
+				["at0017"] = <
+					text = <"Unknown">
+					description = <"It is not known whether QT abnormalities were detected.">
+				>
+				["at0018"] = <
+					text = <"QT abnormality description">
+					description = <"Narrative description of any detected QT abnormalities.">
+				>
+				["at0019"] = <
+					text = <"Holter monitor abnormalities">
+					description = <"Statement about Holter monitor abnormalities.">
+				>
+				["at0020"] = <
+					text = <"Atrial fibrillation">
+					description = <"The Holter monitor showed atrial fibrillation.">
+				>
+				["at0021"] = <
+					text = <"Non-sustained VT">
+					description = <"The Holter monitor showed non-sustained ventricular tachycardia.">
+				>
+				["at0022"] = <
+					text = <"Nil">
+					description = <"The Holter monitor showed nil abnormalities.">
+				>
+				["at0023"] = <
+					text = <"Unknown">
+					description = <"It is not known whether the Holter monitor showed any abnormalities.">
+				>
+				["at0024"] = <
+					text = <"Assessment">
+					description = <"Assessment of findings and clinical significance.">
+				>
+				["at0025"] = <
+					text = <"Normal">
+					description = <"The assessment of findings and clinical significance is normal.">
+				>
+				["at0026"] = <
+					text = <"Unknown">
+					description = <"The assessment of findings and clinical significance is unknown or no results are available.">
+				>
+				["at0027"] = <
+					text = <"Abnormal relevant">
+					description = <"The assessment of findings and clinical significance indicates an abnormality relevant to the patient's condition.">
+				>
+				["at0028"] = <
+					text = <"Abnormal unknown relevance">
+					description = <"The assessment of findings and clinical significance indicates an abnormality of unknown relevance to the patient's condition.">
+				>
+			>
+		>
+	>
