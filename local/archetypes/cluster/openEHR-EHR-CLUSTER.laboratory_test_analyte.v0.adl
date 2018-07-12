@@ -43,18 +43,6 @@ Denne arketypen kan brukes innenfor mer komplekse laboratorie/patologirapporter 
 			misuse = <"Skal ikke brukes til å registrere detaljerte funn ved patologiundersøkelser, annet enn for tilleggsundersøkelser som flowcytometri eller gentester.">
 			copyright = <"© openEHR Foundation">
 		>
-		["en"] = <
-			language = <[ISO_639-1::en]>
-			purpose = <"To record individual, single value laboratory test analyte results, as are common to clinical pathology testing for example biochemistry, haematology and immunology.">
-			use = <"To record individual, single value laboratory test analyte results, as are common to clinical pathology testing, for example biochemistry, haematology and immunology. Normally used in conjunction with a parent OBSERVATION.laboratory_test_result archetype and in some circumstances will be carried within a CLUSTER.laboratory_test_panel archetype, along with other analytes which are normally tested and/or reported as part of a battery,panel or profile, though this is not necessary i.e multiple analytes may be carried directly within the OBERVATION.laboratory_test.
-
-The name attribute of the 'Analyte result' element is normally replaced in a specialisation, template or at run-time to carry the name of the specific analyte e.g. 'Haemoglobin', often coded with a reference terminology such as LOINC, SNOMED CT or NPU.
-
-This archetype may be used within the setting of more complex laboratory/pathology reporting such as Histopathlogy/ Anatomical synoptic reports where quantitative results such as cytometric flow studies or genetic testing are often reported alongside conventional macroscopic and microscopic reporting.">
-			keywords = <"laboratory", "pathology", "analyte", "constituent", "result">
-			misuse = <"Should not be used to record detailed Anatomical pathology macroscopic/microscopic findings, other then for additional testing such as cytometric flow studies or genetic testing.">
-			copyright = <"© openEHR Foundation">
-		>
 		["pt-br"] = <
 			language = <[ISO_639-1::pt-br]>
 			purpose = <"Para gravar valores únicos e individuais de resultados laboratoriais de analitos comuns a testes patológicos clínicos como bioquímica, hematologia e imunologia.
@@ -66,6 +54,18 @@ O atributo do nome do elemento \"Resultado do analito\" é normalmente substitu�
 Este arquétipo pode ser usado dentro do contexto de relatórios laboratoriais/de patologia mais complexos como em relatórios de histopatologia/anatomia onde resultados quantitativos como de estudos de citometria de fluxo e testes genéticos são frequentemente reportados junto com relatórios macroscópicos e microscópicos convencionais.">
 			keywords = <"laboratório", "patologia", "analito", "componente", "resultado">
 			misuse = <"Não deve ser usado para gravar achados detalhados de anatomia patológica macroscópica/microscópica, exceto para testes adicionais de estudos de citometria de fluxo ou testes genéticos.">
+		>
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To record individual, single value laboratory test analyte results, as are common to clinical pathology testing for example biochemistry, haematology and immunology.">
+			use = <"To record individual, single value laboratory test analyte results, as are common to clinical pathology testing, for example biochemistry, haematology and immunology. Normally used in conjunction with a parent OBSERVATION.laboratory_test_result archetype and in some circumstances will be carried within a CLUSTER.laboratory_test_panel archetype, along with other analytes which are normally tested and/or reported as part of a battery,panel or profile, though this is not necessary i.e multiple analytes may be carried directly within the OBERVATION.laboratory_test.
+
+The 'Analyte name' element is normally replaced in a specialisation, template or at run-time to carry the name of the specific analyte e.g. 'Haemoglobin', often coded with a reference terminology such as LOINC, SNOMED CT or NPU.
+
+This archetype may be used within the setting of more complex laboratory/pathology reporting such as Histopathlogy/ Anatomical synoptic reports where quantitative results such as cytometric flow studies or genetic testing are often reported alongside conventional macroscopic and microscopic reporting.">
+			keywords = <"laboratory", "pathology", "analyte", "constituent", "result">
+			misuse = <"Should not be used to record detailed Anatomical pathology macroscopic/microscopic findings, other then for additional testing such as cytometric flow studies or genetic testing.">
+			copyright = <"© openEHR Foundation">
 		>
 	>
 	lifecycle_state = <"in_development">
@@ -83,14 +83,19 @@ Hl7 FHIR Observation resource: HL7 [Internet]; [cited 2017 Jun 27]. Available fr
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"15015A5970361A8C4C9409257A6B2A1B">
-		["build_uid"] = <"498b707b-40cb-4b78-9393-c98fb7b81780">
+		["MD5-CAM-1.0.1"] = <"E62A7A610752BE3F09CEB48321E7567E">
+		["build_uid"] = <"54ad6ef4-438e-481b-9774-5ac2b1bb0027">
 		["revision"] = <"0.0.1-alpha">
 	>
 
 definition
 	CLUSTER[at0000] matches {	-- Laboratory test analyte
 		items cardinality matches {1..*; unordered} matches {
+			ELEMENT[at0024] occurrences matches {0..1} matches {	-- Analyte name
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
 			ELEMENT[at0001] occurrences matches {0..1} matches {*}
 			ELEMENT[at0003] occurrences matches {0..*} matches {	-- Comment
 				value matches {
@@ -111,8 +116,8 @@ definition
 							at0016, 	-- Partial
 							at0017, 	-- Preliminary
 							at0018, 	-- Final
-							at0019, 	-- Corrected
 							at0020, 	-- Amended
+							at0019, 	-- Corrected
 							at0021, 	-- Appended
 							at0022, 	-- Entered in error
 							at0023]	-- Cancelled
@@ -145,8 +150,9 @@ ontology
 				>
 				["at0001"] = <
 					text = <"Analyte result">
-					description = <"Actual value of the analyte result. The name of this element is normally replaced in a specialisation, in a template or at run-time to reflect the actual analyte e.g. Serum sodium and will often be coded.">
-					hl7v2_mapping = <"OBX.2,OBX.5,OBX.6; OBX-3-observation identifier">
+					description = <"The value of the analyte result.">
+					comment = <"For example '7.3 mmols/l', 'Raised'.">
+					hl7v2_mapping = <"OBX.2,OBX.5,OBX.6">
 					fhir_mapping = <"Observation.result; Observation.name">
 				>
 				["at0003"] = <
@@ -158,6 +164,7 @@ ontology
 				["at0004"] = <
 					text = <"Reference range guidance">
 					description = <"Additional advice on the applicability of the reference range to this result or may carry text or coded textual guidance as to whether the result is within the normal range.">
+					comment = <"For example, 'within normal limits for age and sex'.">
 				>
 				["at0005"] = <
 					text = <"Analyte result status">
@@ -193,15 +200,15 @@ ontology
 				>
 				["at0019"] = <
 					text = <"Corrected">
-					description = <"The result has been modified subsequent to being Final, and is complete and verified by the responsible pathologist.">
+					description = <"The result has been modified subsequent to being Final, and is complete and verified by the responsible pathologist. This is a sub-category of 'Amended'.">
 				>
 				["at0020"] = <
 					text = <"Amended">
-					description = <"The result has been modified subsequent to being Final, and is complete and verified by the responsible pathologist, and result data has been changed. This is a sub-category of 'Corrected'.">
+					description = <"The result has been modified subsequent to being Final, and is complete and verified by the responsible pathologist, and result data has been changed.">
 				>
 				["at0021"] = <
 					text = <"Appended">
-					description = <"Subsequent to being final, the report has been modified by adding new content. The existing content is unchanged. This is a sub-category of 'Corrected'.">
+					description = <"Subsequent to being final, the report has been modified by adding new content. The existing content is unchanged. This is a sub-category of 'Amended'.">
 				>
 				["at0022"] = <
 					text = <"Entered in error">
@@ -210,6 +217,13 @@ ontology
 				["at0023"] = <
 					text = <"Cancelled">
 					description = <"The result is unavailable because the test was not started or not completed (also sometimes called 'aborted').">
+				>
+				["at0024"] = <
+					text = <"Analyte name">
+					description = <"Actual value of the analyte result. The value of this element is normally supplied in a specialisation, in a template or at run-time to reflect the actual analyte.">
+					comment = <"e.g. 'Serum sodium', 'Haemoglobin'. Normally coded terminologies will be used for example, LOINC, NPU or SNOMED CT, or local lab terminologies.">
+					hl7v2_mapping = <"OBX-3.1;3.2">
+					fhir_mapping = <"observation.code">
 				>
 			>
 		>
@@ -221,17 +235,20 @@ ontology
 					comment = <"For eksempel: 'Natrium', 'Telling av hvite blodlegemer', 'T3'. Kodes vanligvis ved hjelp av en ekstern terminologi.">
 				>
 				["at0001"] = <
-					text = <"Analysesvar">
-					description = <"Faktisk verdi av analyseresultatet. Navnet på dette elementet erstattes i en templat elller applikasjon med navnet/koden på den spesifikke analysen, for eksempel \"S-Natrium\".
-">
+					text = <"*Analyte result(en)">
+					description = <"*The value of the analyte result.(en)">
+					comment = <"*For example '7.3 mmols/l', 'Raised'.(en)">
+					hl7v2_mapping = <"*OBX.2,OBX.5,OBX.6(en)">
+					fhir_mapping = <"*Observation.result; Observation.name(en)">
 				>
 				["at0003"] = <
 					text = <"Kommentar">
 					description = <"Kommentar knyttet til et analyseresultat.">
 				>
 				["at0004"] = <
-					text = <"Veileder for referanseområde">
-					description = <"Veileder for å finne ut om referanseverdien er relevant for dette resultatet, kan inneholde tekst eller kodet tekstlig råd for om resultatet ligger innenfor normalområdet.">
+					text = <"*Reference range guidance(en)">
+					description = <"*Additional advice on the applicability of the reference range to this result or may carry text or coded textual guidance as to whether the result is within the normal range.(en)">
+					comment = <"*For example, 'within normal limits for age and sex'.(en)">
 				>
 				["at0005"] = <
 					text = <"Analysesvarstatus">
@@ -262,16 +279,16 @@ ontology
 					description = <"Svaret er komplett og er bekreftet av ansvarlig person.">
 				>
 				["at0019"] = <
-					text = <"Korrigert">
-					description = <"Svaret har blitt modifisert etter å ha vært i status \"Endelig\", og er komplett og verifisert av ansvarlig laboratorielege.">
+					text = <"*Corrected(en)">
+					description = <"*The result has been modified subsequent to being Final, and is complete and verified by the responsible pathologist. This is a sub-category of 'Amended'.(en)">
 				>
 				["at0020"] = <
-					text = <"Revidert">
-					description = <"Svaret har blitt modifisert etter å ha vært i status \"Endelig\", og er komplett og verifisert av ansvarlig laboratorielege, og svardata er endret. Dette er en underkategori av \"Korrigert\".">
+					text = <"*Amended(en)">
+					description = <"*The result has been modified subsequent to being Final, and is complete and verified by the responsible pathologist, and result data has been changed.(en)">
 				>
 				["at0021"] = <
-					text = <"Tillegg">
-					description = <"Etter å ha vært satt som status \"Endelig\", har det blitt lagt nytt innhold til rapporten. Det eksisterende innholdet er uendret. Dette er en underkategori av \"Korrigert\".">
+					text = <"*Appended(en)">
+					description = <"*Subsequent to being final, the report has been modified by adding new content. The existing content is unchanged. This is a sub-category of 'Amended'.(en)">
 				>
 				["at0022"] = <
 					text = <"Feilregistrert">
@@ -280,6 +297,13 @@ ontology
 				["at0023"] = <
 					text = <"Kansellert">
 					description = <"Svaret er utilgjengelig fordi analysen ikke ble påbegynt eller ferdigstilt (også kalt \"avbrutt\").">
+				>
+				["at0024"] = <
+					text = <"*Analyte name(en)">
+					description = <"*Actual value of the analyte result. The value of this element is normally supplied in a specialisation, in a template or at run-time to reflect the actual analyte.(en)">
+					comment = <"*e.g. 'Serum sodium', 'Haemoglobin'. Normally coded terminologies will be used for example, LOINC, NPU or SNOMED CT, or local lab terminologies.(en)">
+					hl7v2_mapping = <"*OBX-3.1;3.2(en)">
+					fhir_mapping = <"*observation.code(en)">
 				>
 			>
 		>
@@ -291,16 +315,20 @@ ontology
 					comment = <"Por exemplo: \"sódio\", \"contagem de células brancas\", \"T3\". Comumente codificado com uma terminologia externa.">
 				>
 				["at0001"] = <
-					text = <"Resultado do analito">
-					description = <"Valor real do resultado do analito. O nome deste elemento é normalmente substituído em uma especialização, template ou em tempo de execução para refletir o analito, p.e., sódio sérico e será frequentemente codificado.">
+					text = <"*Analyte result(en)">
+					description = <"*The value of the analyte result.(en)">
+					comment = <"*For example '7.3 mmols/l', 'Raised'.(en)">
+					hl7v2_mapping = <"*OBX.2,OBX.5,OBX.6(en)">
+					fhir_mapping = <"*Observation.result; Observation.name(en)">
 				>
 				["at0003"] = <
 					text = <"Comentário">
 					description = <"Comentário sobre o resultado do analito.">
 				>
 				["at0004"] = <
-					text = <"Orientações sobre faixa de referência">
-					description = <"Orientações adicionais sobre a aplicabilidade da faixa de referência para este resultado ou pode conter texto ou texto codificado para guiar se o resultado está dentro da faixa normal.">
+					text = <"*Reference range guidance(en)">
+					description = <"*Additional advice on the applicability of the reference range to this result or may carry text or coded textual guidance as to whether the result is within the normal range.(en)">
+					comment = <"*For example, 'within normal limits for age and sex'.(en)">
 				>
 				["at0005"] = <
 					text = <"Estado do resultado do analito">
@@ -331,16 +359,16 @@ ontology
 					description = <"O resultado final está completo e verificado por uma pessoa autorizada.">
 				>
 				["at0019"] = <
-					text = <"Corrigido">
-					description = <"O resultado foi modificado após ser finalizado, e está completo e verificado por um patologista responsável.">
+					text = <"*Corrected(en)">
+					description = <"*The result has been modified subsequent to being Final, and is complete and verified by the responsible pathologist. This is a sub-category of 'Amended'.(en)">
 				>
 				["at0020"] = <
-					text = <"Modificado">
-					description = <"O resultado foi modificado após ser finalizado, e está completo e verificado por um patologista responsável e o dado do resultado foi alterado. Esta é uma sub-categoria de \"Corrigido\".">
+					text = <"*Amended(en)">
+					description = <"*The result has been modified subsequent to being Final, and is complete and verified by the responsible pathologist, and result data has been changed.(en)">
 				>
 				["at0021"] = <
-					text = <"Anexado">
-					description = <"Após ser finalizado, o relatório foi modificado com pela adição de novo conteúdo. O conteúdo existente está inalterado. Esta é uma sub-categoria de \"Corrigido\".">
+					text = <"*Appended(en)">
+					description = <"*Subsequent to being final, the report has been modified by adding new content. The existing content is unchanged. This is a sub-category of 'Amended'.(en)">
 				>
 				["at0022"] = <
 					text = <"Entrada com erro">
@@ -349,6 +377,13 @@ ontology
 				["at0023"] = <
 					text = <"Cancelado">
 					description = <"O resultado está indisponível porque o teste não foi iniciado ou não foi completado (algumas vezes chamado de \"abortado\").">
+				>
+				["at0024"] = <
+					text = <"*Analyte name(en)">
+					description = <"*Actual value of the analyte result. The value of this element is normally supplied in a specialisation, in a template or at run-time to reflect the actual analyte.(en)">
+					comment = <"*e.g. 'Serum sodium', 'Haemoglobin'. Normally coded terminologies will be used for example, LOINC, NPU or SNOMED CT, or local lab terminologies.(en)">
+					hl7v2_mapping = <"*OBX-3.1;3.2(en)">
+					fhir_mapping = <"*observation.code(en)">
 				>
 			>
 		>
