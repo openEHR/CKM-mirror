@@ -9,8 +9,8 @@ language
 		["nb"] = <
 			language = <[ISO_639-1::nb]>
 			author = <
-				["name"] = <"Vebjoern Arntzen">
-				["organisation"] = <"Oslo universitetssykehus HF">
+				["name"] = <"Vebjoern Arntzen, John Tore Valand">
+				["organisation"] = <"Oslo universitetssykehus HF, Helse Bergen HF">
 			>
 		>
 	>
@@ -22,15 +22,6 @@ description
 		["date"] = <"2017-07-06">
 	>
 	details = <
-		["en"] = <
-			language = <[ISO_639-1::en]>
-			purpose = <"For recording details about a spoken, written or symbolic system of communication.">
-			use = <"Use to record details about a spoken, written or symbolic system of communication.
-
-Use for example to record the requested or actual language for interpretation in the CLUSTER.interpreter_details archetype.">
-			keywords = <"signing", "sign language", "speake", "tongue">
-			misuse = <"">
-		>
 		["nb"] = <
 			language = <[ISO_639-1::nb]>
 			purpose = <"For å registrere detaljer om et muntlig, skrevet eller tegnbasert system for kommunikasjon.">
@@ -41,17 +32,39 @@ Brukes for eksempel for å registrere hvilket språk som er ønsket eller hvilke
 			misuse = <"">
 			copyright = <"© Nasjonal IKT HF">
 		>
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To record details about a spoken, written or symbolic system of communication.">
+			use = <"Use to record details about a spoken, written or symbolic system of communication. The context of the language details is provided by the parent archetypes within which this archetype is nested. For example:
+- to record a patient's primary or preferred language, use this archetype within the context of CLUSTER.communication;
+- to record the preferred or required language as part of a request for an interpreter, use CLUSTER.interpreter_requirements;
+- to record the language used by an interpreter within the context of a clinical consultation, use this archetype within ACTION.interpretation.
+
+If information about proficiency is required, record this using 'Comment'.
+
+Use a separate instance of this archetype to record each language in the situation where multiple languages need to be recorded, for example Norwegian and Swahili.
+
+Use one instance of this archetype to record each mode within a single language if multiple modes need to be recorded, for example spoken and signing.">
+			keywords = <"signing", "sign language", "tongue", "sign", "speaker", "spoken", "written", "proficiency", "speech">
+			misuse = <"Not to be used to record capability and means for exchanging information with an individual - use CLUSTER.communication for this purpose.
+
+Not to be used to record details about a request for interpreter services - use CLUSTER.Interpreter_requirements with a suitable INSTRUCTION archetype, for example INSTRUCTION.service_request.
+
+Not to be used to record details about an interpretation that was performed - use the proposed ACTION.interpretation.">
+			copyright = <"© Nasjonal IKT HF, openEHR Foundation">
+		>
 	>
 	lifecycle_state = <"in_development">
-	other_contributors = <"Silje Ljosland Bakke, Nasjonal IKT HF, Norway", "Heather Leslie, Ocean Health Systems, Australia", "John Tore Valand, Helse Bergen HF, Norway">
+	other_contributors = <"Vebjørn Arntzen, Oslo University Hospital, Norway (openEHR Editor)", "Silje Ljosland Bakke, Nasjonal IKT HF, Norway (openEHR Editor)", "Heather Grain, Llewelyn Grain Informatics, Australia", "Heather Leslie, Atomica Informatics, Australia (openEHR Editor)", "Hildegard McNicoll, freshEHR Clinical Informatics Ltd., United Kingdom", "Ian McNicoll, freshEHR Clinical Informatics, United Kingdom", "Andrej Orel, Marand d.o.o., Slovenia", "Norwegian Review Summary, Nasjonal IKT HF, Norway", "Nyree Taylor, Ocean Informatics, Australia", "John Tore Valand, Helse Bergen, Norway (openEHR Editor)">
 	other_details = <
 		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
-		["custodian_organisation"] = <"Nasjonal IKT">
+		["custodian_organisation"] = <"openEHR Foundation">
+		["current_contact"] = <"Heather Leslie, Atomica Informatics<heather.leslie@atomicainformatics.com>">
 		["original_namespace"] = <"no.nasjonalikt">
 		["original_publisher"] = <"Nasjonal IKT">
-		["custodian_namespace"] = <"no.nasjonalikt">
-		["MD5-CAM-1.0.1"] = <"5E10897327D9590987FEC03C74491D10">
-		["build_uid"] = <"c27b5254-f7f5-4649-a35c-1df529aed48a">
+		["custodian_namespace"] = <"org.openehr">
+		["MD5-CAM-1.0.1"] = <"2EF7E384DADC3AB93B409D80A77F1377">
+		["build_uid"] = <"86a5da7b-cfc1-4ca5-a283-40ac96385195">
 		["revision"] = <"0.0.1-alpha">
 	>
 
@@ -68,23 +81,32 @@ definition
 					DV_TEXT matches {*}
 				}
 			}
-			ELEMENT[at0003] occurrences matches {0..1} matches {	-- Proficiency
+			ELEMENT[at0006] occurrences matches {0..1} matches {	-- Mode
 				value matches {
-					DV_TEXT matches {*}
+					DV_CODED_TEXT matches {
+						defining_code matches {
+							[local::
+							at0007, 	-- Speaking
+							at0008, 	-- Signing
+							at0009, 	-- Reading
+							at0010, 	-- Writing
+							at0011, 	-- Lip reading
+							at0012]	-- Tactile reading
+						}
+					}
 				}
+			}
+			allow_archetype CLUSTER[at0005] occurrences matches {0..*} matches {	-- Additional details
+				include
+					archetype_id/value matches {/.*/}
 			}
 			ELEMENT[at0004] occurrences matches {0..*} matches {	-- Comment
 				value matches {
 					DV_TEXT matches {*}
 				}
 			}
-			allow_archetype CLUSTER[at0005] occurrences matches {0..*} matches {	-- Details
-				include
-					archetype_id/value matches {/.*/}
-			}
 		}
 	}
-
 
 
 ontology
@@ -93,30 +115,53 @@ ontology
 			items = <
 				["at0000"] = <
 					text = <"Språk">
-					description = <"Detaljer om et muntlig, skrevet eller tegnbasert system for kommunikasjon.">
+					description = <"En samling av ord med tilhørende grammatikk, som er forstått av en spesifikk folkegruppe eller et fellesskap og brukt som en form for kommunikasjon.">
 				>
 				["at0001"] = <
 					text = <"Navn på språk">
 					description = <"Navnet på språket.">
-					comment = <"For eksempel norsk, mandarin, swahili, maori eller navajo. Koding av \"Språk\" med en terminologi er ønskelig om mulig.">
+					comment = <"*For example: Norwegian, Mandarin, Swahili, or French braille. Coding of 'Language' with a terminology is preferred, where possible. The value set for codes that are appropriate may depend on the mode. For spoken or written languages, consider ISO 639.(en)">
 				>
 				["at0002"] = <
 					text = <"Dialekt">
 					description = <"Navnet på dialekten.">
 				>
-				["at0003"] = <
-					text = <"Ferdighet">
-					description = <"Individets evne til å kommunisere språket eller dialekten.">
-					comment = <"Koding av \"Ferdighet\" med en terminologi er ønskelig om mulig.">
-				>
 				["at0004"] = <
 					text = <"Kommentar">
-					description = <"Ytterligere fritekstbeskrivelse om språket.">
+					description = <"Ytterligere fritekstbeskrivelse om språket som ikke er registrert i andre felt.">
 				>
 				["at0005"] = <
-					text = <"Detaljer">
-					description = <"Ytterligere detaljer om individets språk eller evne til å kommunisere språket eller dialekten.">
-					comment = <"For eksempel: Ulike skalaer for språkferdigheter eller andre strukturerte detaljer om språket eller dialekten.">
+					text = <"*Additional details(en)">
+					description = <"*Additional structured details about the language.(en)">
+					comment = <"*For example: Grading scales for language proficiency.(en)">
+				>
+				["at0006"] = <
+					text = <"*Mode(en)">
+					description = <"*The method of communication for the language.(en)">
+				>
+				["at0007"] = <
+					text = <"Tale">
+					description = <"Språket som benyttes ved tale.">
+				>
+				["at0008"] = <
+					text = <"Tegn">
+					description = <"Språket som benyttes ved tegn.">
+				>
+				["at0009"] = <
+					text = <"Lesing">
+					description = <"Språket som benyttes ved lesing.">
+				>
+				["at0010"] = <
+					text = <"Skriving">
+					description = <"Språket som benyttes ved skriving.">
+				>
+				["at0011"] = <
+					text = <"Munnavlesing">
+					description = <"Språket som benyttes ved munnavlesing.">
+				>
+				["at0012"] = <
+					text = <"Taktil lesing">
+					description = <"Språket som benyttes ved taktil lesing.">
 				>
 			>
 		>
@@ -124,30 +169,53 @@ ontology
 			items = <
 				["at0000"] = <
 					text = <"Language">
-					description = <"Details about a spoken, written or symbolic system of communication.">
+					description = <"A collection of words, and associated grammar for combining them, understood by a specific community and used as a form of communication.">
 				>
 				["at0001"] = <
 					text = <"Language name">
 					description = <"The name of the language.">
-					comment = <"For example: Norwegian, Mandarin, Swahili, Maori or Navajo. Coding of 'Language' with a terminology is preferred, where possible.">
+					comment = <"For example: Norwegian, Mandarin, Swahili, or French braille. Coding of 'Language' with a terminology is preferred, where possible. The value set for codes that are appropriate may depend on the mode. For spoken or written languages, consider ISO 639.">
 				>
 				["at0002"] = <
 					text = <"Dialect">
 					description = <"The name of the dialect.">
 				>
-				["at0003"] = <
-					text = <"Proficiency">
-					description = <"The individual's ability to communicate in the language or dialect.">
-					comment = <"Coding of proficiency with a terminology is preferred where possible.">
-				>
 				["at0004"] = <
 					text = <"Comment">
-					description = <"Additional narrative description about the language.">
+					description = <"Additional narrative about the language not captured in other fields.">
 				>
 				["at0005"] = <
-					text = <"Details">
-					description = <"Additional details about the individual's language or the ability to communicate in the language or dialect.">
-					comment = <"For example: Grading scales for language profiency or other structured details about the language or dialect.">
+					text = <"Additional details">
+					description = <"Additional structured details about the language.">
+					comment = <"For example: Grading scales for language proficiency.">
+				>
+				["at0006"] = <
+					text = <"Mode">
+					description = <"The method of communication for the language.">
+				>
+				["at0007"] = <
+					text = <"Speaking">
+					description = <"The language that is used to speak.">
+				>
+				["at0008"] = <
+					text = <"Signing">
+					description = <"The language that is used to sign.">
+				>
+				["at0009"] = <
+					text = <"Reading">
+					description = <"The language that is used to read.">
+				>
+				["at0010"] = <
+					text = <"Writing">
+					description = <"The language that is used to write.">
+				>
+				["at0011"] = <
+					text = <"Lip reading">
+					description = <"The language that is used to lip read.">
+				>
+				["at0012"] = <
+					text = <"Tactile reading">
+					description = <"The language that is used for reading by touch.">
 				>
 			>
 		>
