@@ -2,21 +2,21 @@
 	openEHR-EHR-INSTRUCTION.health_education.v0
 
 concept
-	[at0000]	-- Health education
+	[at0000]	-- Health education request
 language
 	original_language = <[ISO_639-1::en]>
 description
 	original_author = <
 		["name"] = <"Heather Leslie">
-		["organisation"] = <"Ocean Health Systems">
-		["email"] = <"heather.leslie@oceanhealthsystems.com">
+		["organisation"] = <"Atomica Informatics">
+		["email"] = <"heather.leslie@atomicainformatics.com">
 		["date"] = <"2013-02-25">
 	>
 	details = <
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"To record an order for Information that needs to be shared with the individual or carer about their health.">
-			use = <"Use to record an order for Information that needs to be shared with the individual or carer about their health.">
+			purpose = <"To record an order for communication to improve health literacy and life skills.">
+			use = <"Use to record an order for communication to improve health literacy and life skills.">
 			keywords = <"education", "information">
 			misuse = <"">
 			copyright = <"© openEHR Foundation">
@@ -25,18 +25,19 @@ description
 	lifecycle_state = <"in_development">
 	other_contributors = <>
 	other_details = <
-		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
 		["custodian_organisation"] = <"openEHR Foundation">
+		["current_contact"] = <"Heather Leslie, Atomica Informatics<heather.leslie@atomicainformatics.com>">
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"6DAE5BFF4F74BBCEF65F12C0640B66C3">
-		["build_uid"] = <"c4fe8a18-f607-4f4a-a52d-3844eff8ca0f">
+		["MD5-CAM-1.0.1"] = <"867FA7EAE4CBF8D9A3A84321D29AC630">
+		["build_uid"] = <"b250599e-3a43-4c8d-bd55-de6137c1b1ba">
 		["revision"] = <"0.0.1-alpha">
 	>
 
 definition
-	INSTRUCTION[at0000] matches {	-- Health education
+	INSTRUCTION[at0000] matches {	-- Health education request
 		activities cardinality matches {0..*; unordered} matches {
 			ACTIVITY[at0001] occurrences matches {0..1} matches {	-- Current Activity
 				description matches {
@@ -55,16 +56,31 @@ definition
 							ELEMENT[at0005] occurrences matches {0..1} matches {	-- Number of sessions
 								value matches {
 									DV_COUNT matches {
-										magnitude matches {|>0|; 1}
+										magnitude matches {|>1|}
 									}
 								}
 							}
-							ELEMENT[at0006] occurrences matches {0..1} matches {	-- Indication
+							ELEMENT[at0006] occurrences matches {0..1} matches {	-- Reason
+								value matches {
+									DV_TEXT matches {*}
+								}
+							}
+							ELEMENT[at0007] occurrences matches {0..1} matches {	-- Proposed outcome
 								value matches {
 									DV_TEXT matches {*}
 								}
 							}
 						}
+					}
+				}
+			}
+		}
+		protocol matches {
+			ITEM_TREE[at0008] matches {	-- Tree
+				items cardinality matches {0..*; unordered} matches {
+					allow_archetype CLUSTER[at0009] occurrences matches {0..*} matches {	-- Extension
+						include
+							archetype_id/value matches {/.*/}
 					}
 				}
 			}
@@ -77,12 +93,12 @@ ontology
 		["en"] = <
 			items = <
 				["at0000"] = <
-					text = <"Health education">
-					description = <"Information shared with the individual or carer about their health.">
+					text = <"Health education request">
+					description = <"Communication to improve health literacy and life skills.">
 				>
 				["at0001"] = <
 					text = <"Current Activity">
-					description = <"Current Activity">
+					description = <"Current Activity.">
 				>
 				["at0002"] = <
 					text = <"Tree">
@@ -94,15 +110,28 @@ ontology
 				>
 				["at0004"] = <
 					text = <"Details">
-					description = <"Detailed areas to be covered as part of the education.">
+					description = <"Narrative description about the proposed education.">
 				>
 				["at0005"] = <
 					text = <"Number of sessions">
 					description = <"The number of educational sessions to be undertaken.">
 				>
 				["at0006"] = <
-					text = <"Indication">
+					text = <"Reason">
 					description = <"The reason for undertaking this education process.">
+				>
+				["at0007"] = <
+					text = <"Proposed outcome">
+					description = <"Narrative description about the goals or proposed outcome of the education.">
+				>
+				["at0008"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0009"] = <
+					text = <"Extension">
+					description = <"Additional information required to capture local content or to align with other reference models/formalisms.">
+					comment = <"For example: local information requirements or additional metadata to align with FHIR or CIMI equivalents.">
 				>
 			>
 		>
