@@ -2,7 +2,7 @@
 	openEHR-EHR-INSTRUCTION.care_plan.v0
 
 concept
-	[at0000]	-- Care Plan
+	[at0000]	-- Care plan request
 language
 	original_language = <[ISO_639-1::en]>
 	translations = <
@@ -42,28 +42,29 @@ description
 		>
 	>
 	lifecycle_state = <"in_development">
-	other_contributors = <"Heather Leslie, Ocean Informatics, Australia", ...>
+	other_contributors = <"Heather Leslie, Atomica Informatics, Australia", ...>
 	other_details = <
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
 		["custodian_organisation"] = <"openEHR Foundation">
-		["references"] = <"Derived from: Care Plan, Draft Archetype [Internet]. Australian Digital Health Agency, Australian Digital Health Agency Clinical Knowledge Manager [cited: 2016-08-22]. Available from: http://dcm.nehta.org.au/ckm/#showArchetype_1013.1.1221">
-		["current_contact"] = <"Heather Leslie, Ocean Informatics, heather.leslie@oceaninformatics.com">
+		["references"] = <"Derived from: Care plan, Draft Archetype [Internet]. Australian Digital Health Agency, Australian Digital Health Agency Clinical Knowledge Manager [cited: 2016-08-22]. No longer available.">
+		["current_contact"] = <"Heather Leslie, Atomica Informatics<heather.leslie@atomicainformatics.com>">
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"F5279A39D2C0B38DBF81FA58A68E1571">
-		["build_uid"] = <"f5a07624-c11b-4df7-bd29-d91d0d7dff69">
+		["MD5-CAM-1.0.1"] = <"B0F820A991920716310A9CFC6B7DBC67">
+		["build_uid"] = <"bbbc45ed-d0d4-472f-a526-c3311c4f9ed9">
 		["revision"] = <"0.0.1-alpha">
 	>
 
 definition
-	INSTRUCTION[at0000] matches {	-- Care Plan
+	INSTRUCTION[at0000] matches {	-- Care plan request
 		activities cardinality matches {0..*; unordered} matches {
 			ACTIVITY[at0001] occurrences matches {0..1} matches {	-- Activity
 				action_archetype_id matches {/openEHR-EHR-ACTION\.care_plan\.v1/}
 				description matches {
 					ITEM_TREE[at0004] matches {	-- Tree
 						items cardinality matches {0..*; unordered} matches {
-							ELEMENT[at0017] occurrences matches {0..1} matches {	-- Care Plan Name
+							ELEMENT[at0017] occurrences matches {0..1} matches {	-- Plan name
 								value matches {
 									DV_TEXT matches {*}
 								}
@@ -78,7 +79,7 @@ definition
 									DV_TEXT matches {*}
 								}
 							}
-							ELEMENT[at0018] occurrences matches {0..1} matches {	-- Date of Onset
+							ELEMENT[at0018] occurrences matches {0..1} matches {	-- Date of onset
 								value matches {
 									DV_DATE_TIME matches {*}
 								}
@@ -93,8 +94,17 @@ definition
 				}
 			}
 		}
+		protocol matches {
+			ITEM_TREE[at0020] matches {	-- Tree
+				items cardinality matches {0..*; unordered} matches {
+					allow_archetype CLUSTER[at0021] occurrences matches {0..*} matches {	-- Extension
+						include
+							archetype_id/value matches {/.*/}
+					}
+				}
+			}
+		}
 	}
-
 
 
 ontology
@@ -102,7 +112,7 @@ ontology
 		["en"] = <
 			items = <
 				["at0000"] = <
-					text = <"Care Plan">
+					text = <"Care plan request">
 					description = <"Order or instruction for the creation and sequence of activities to achieve a specified management goal or treatment outcome, carried out by health professionals and/or the subject.">
 				>
 				["at0001"] = <
@@ -123,16 +133,25 @@ ontology
 					comment = <"For example: a known diagnosis; or a specific goal.">
 				>
 				["at0017"] = <
-					text = <"Care Plan Name">
+					text = <"Plan name">
 					description = <"Identification of the care plan.">
 				>
 				["at0018"] = <
-					text = <"Date of Onset">
+					text = <"Date of onset">
 					description = <"Date of onset for the care plan.">
 				>
 				["at0019"] = <
 					text = <"Comment">
-					description = <"Additional narrative about the care plan order not captured in other fields.">
+					description = <"Additional narrative about the care plan request, not captured in other fields.">
+				>
+				["at0020"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0021"] = <
+					text = <"Extension">
+					description = <"Additional information required to capture local content or to align with other reference models/formalisms.">
+					comment = <"For example: local information requirements or additional metadata to align with FHIR or CIMI equivalents.">
 				>
 			>
 		>
@@ -170,6 +189,14 @@ ontology
 				["at0019"] = <
 					text = <"Comentário">
 					description = <"Narrativa adicional sobre a ordem de plano de cuidados não capturados em outros campos.">
+				>
+				["at0020"] = <
+					text = <"*Tree(en)">
+					description = <"*@ internal @(en)">
+				>
+				["at0021"] = <
+					text = <"*Cluster(en)">
+					description = <"**(en)">
 				>
 			>
 		>
