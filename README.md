@@ -59,9 +59,9 @@ Local/regional setup?
 ----------------------
 If there is interest, then the chain can be: openEHR --> "modellbibliotek" (maybe later run by SKL or EHM?) --> Your local region (e.g. Region Östergötland) 
 
-If you want a stable local (regional?) repository where you can control when updates should hapepn, then make a fork of this repository and use that fork in your tools instead of using this shared swedish fork in your tools. 
+If you want a stable local (regional?) repository where you can control when updates should happen, then make a fork of this repository and use that fork in your tools instead of using this shared Swedish repository in your tools. 
 
-Using or forking this repository will give you access to both international assets and a copy of some Swedish local/regional/project-directories, including work in progress.
+Using or forking this repository will give you access to both international assets and a copy of some Swedish local/regional/project-directories, possibly including work in progress (because you want to see what others are working on...).
 
 --------------
 
