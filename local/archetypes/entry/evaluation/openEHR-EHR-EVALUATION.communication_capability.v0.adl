@@ -65,47 +65,49 @@ Not to be used to record details about an interpretation that was performed - us
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"8E6D10CE9F2321A56A6225554B4D1526">
-		["build_uid"] = <"b902b345-f68f-494d-937f-875197092138">
+		["MD5-CAM-1.0.1"] = <"A66106AD8FE4501184498FFCCC74F075">
+		["build_uid"] = <"631fbfbe-30d4-4b3c-8e12-136035bd05ac">
 		["revision"] = <"0.0.1-alpha">
 	>
 
 definition
-	EVALUATION[at0000] matches {    -- Communication capability
+	EVALUATION[at0000] matches {	-- Communication capability
 		data matches {
-			ITEM_TREE[at0001] matches {    -- ItemTree
+			ITEM_TREE[at0001] matches {	-- ItemTree
 				items cardinality matches {0..*; unordered} matches {
-					ELEMENT[at0002] occurrences matches {0..1} matches {    -- Description
+					ELEMENT[at0002] occurrences matches {0..1} matches {	-- Description
 						value matches {
 							DV_TEXT matches {*}
 						}
 					}
-					allow_archetype CLUSTER[at0003] occurrences matches {0..*} matches {    -- Preferred communication
+					allow_archetype CLUSTER[at0003] occurrences matches {0..*} matches {	-- Preferred communication
 						include
 							archetype_id/value matches {/openEHR-EHR-CLUSTER\.language(-[a-zA-Z0-9_]+)*\.v0/}
 					}
-					allow_archetype CLUSTER[at0004] occurrences matches {0..*} matches {    -- Other communication
+					allow_archetype CLUSTER[at0004] occurrences matches {0..*} matches {	-- Other communication
 						include
 							archetype_id/value matches {/openEHR-EHR-CLUSTER\.language(-[a-zA-Z0-9_]+)*\.v0/}
 					}
-					allow_archetype CLUSTER[at0005] occurrences matches {0..1} matches {    -- Additional details
+					allow_archetype CLUSTER[at0005] occurrences matches {0..1} matches {	-- Additional details
 						include
 							archetype_id/value matches {/openEHR-EHR-CLUSTER\.device\.v1/}
 					}
-					CLUSTER[at0006] occurrences matches {0..*} matches {    -- Per language
+					CLUSTER[at0006] occurrences matches {0..*} matches {	-- Per language
 						items cardinality matches {2..*; unordered} matches {
-							allow_archetype CLUSTER[at0007] occurrences matches {0..1} matches {    -- Language details
+							allow_archetype CLUSTER[at0007] occurrences matches {0..1} matches {	-- Language details
 								include
 									archetype_id/value matches {/openEHR-EHR-CLUSTER\.language\.v0/}
 							}
-							ELEMENT[at0008] matches {    -- Translator required
+							ELEMENT[at0008] matches {	-- Translator required
 								value matches {
-									DV_BOOLEAN matches {*}
+									DV_BOOLEAN matches {
+										value matches {True, False}
+									}
 								}
 							}
 						}
 					}
-					ELEMENT[at0009] occurrences matches {0..1} matches {    -- Comment
+					ELEMENT[at0009] occurrences matches {0..1} matches {	-- Comment
 						value matches {
 							DV_TEXT matches {*}
 						}
@@ -114,11 +116,13 @@ definition
 			}
 		}
 		protocol matches {
-			ITEM_TREE[at0011] matches {    -- ItemTree
+			ITEM_TREE[at0011] matches {	-- ItemTree
 				items cardinality matches {0..*; unordered} matches {
-					allow_archetype CLUSTER[at0012] occurrences matches {0..1} matches {    -- Extension
+					allow_archetype CLUSTER[at0012] occurrences matches {0..1} matches {	-- Extension
+						include
+							archetype_id/value matches {/.*/}
 					}
-					ELEMENT[at0013] occurrences matches {0..1} matches {    -- Last updated
+					ELEMENT[at0013] occurrences matches {0..1} matches {	-- Last updated
 						value matches {
 							DV_DATE_TIME matches {*}
 						}
@@ -137,18 +141,13 @@ ontology
 					text = <"Communication capability">
 					description = <"The practical ability of the individual to communicate.">
 				>
+				["at0001"] = <
+					text = <"ItemTree">
+					description = <"@ internal @">
+				>
 				["at0002"] = <
 					text = <"Description">
 					description = <"Narrative description about the overall capability of the individual to communicate, including impairments and need for communication aids.">
-				>
-				["at0006"] = <
-					text = <"Per language">
-					description = <"Details about the capabilities of the individual for a specific language.">
-					comment = <"In clinical systems it is common to record whether a interpreter is required as a simple, stand-alone boolean data point - the language for translation required is implied, rather than specified. However if this single boolean is exchanged to a location where the assumed language is different, the recorded boolean may be incorrect. In order for this data to be correctly exchanged, both the language and requirement for translation needs to be exchanged as a pair. For each language that is proposed for a clinical communication it will be necessary to do a separate assessment about whether a translator is required for the individual. For example, an English speaker in Quebec will not require an English interpreter but may require one if the consultation is being conducted in French. ">
-				>
-				["at0008"] = <
-					text = <"Translator required">
-					description = <"Indicator that the services of a translator are required for the identified language.">
 				>
 				["at0003"] = <
 					text = <"Preferred communication">
@@ -159,23 +158,29 @@ ontology
 					text = <"Other communication">
 					description = <"Other languages, and/or methods of communication for an individual.">
 				>
-				["at0009"] = <
-					text = <"Comment">
-					description = <"Additional narrative about the communication capability of an individual not captured in other fields.">
+				["at0005"] = <
+					text = <"Additional details">
+					description = <"Additional structured details about the individual's communication capability.">
+					comment = <"For example: a hearing aid or tactile reading device.">
+				>
+				["at0006"] = <
+					text = <"Per language">
+					description = <"Details about the capabilities of the individual for a specific language.">
+					comment = <"In clinical systems it is common to record whether a interpreter is required as a simple, stand-alone boolean data point - the language for translation required is implied, rather than specified. However if this single boolean is exchanged to a location where the assumed language is different, the recorded boolean may be incorrect. In order for this data to be correctly exchanged, both the language and requirement for translation needs to be exchanged as a pair. For each language that is proposed for a clinical communication it will be necessary to do a separate assessment about whether a translator is required for the individual. For example, an English speaker in Quebec will not require an English interpreter but may require one if the consultation is being conducted in French. ">
 				>
 				["at0007"] = <
 					text = <"Language details">
 					description = <"Details about a language.">
 				>
-				["at0005"] = <
-					text = <"Additional details">
-					description = <"Additional structured details about the individual's communication capability.">
+				["at0008"] = <
+					text = <"Translator required">
+					description = <"Indicator that the services of a translator are required for the identified language.">
+				>
+				["at0009"] = <
+					text = <"Comment">
+					description = <"Additional narrative about the communication capability of an individual not captured in other fields.">
 				>
 				["at0011"] = <
-					text = <"ItemTree">
-					description = <"@ internal @">
-				>
-				["at0001"] = <
 					text = <"ItemTree">
 					description = <"@ internal @">
 				>
@@ -195,18 +200,13 @@ ontology
 					text = <"Kommunikasjon">
 					description = <"Metoder for informasjonsutveksling med et individ.">
 				>
+				["at0001"] = <
+					text = <"ItemTree">
+					description = <"@ internal @">
+				>
 				["at0002"] = <
 					text = <"Beskrivelse">
 					description = <"En fritekstbeskrivelse om individets overordnede evne til kommunikasjon.">
-				>
-				["at0006"] = <
-					text = <"Tolkebehov">
-					description = <"Detaljer om tolking er nødvendig, eller ikke for språket som foreslås for kommunikasjonen.">
-					comment = <"I kliniske system er det vanlig å registrere om det er behov for tolk med en registrering i et enkelt boolsk dataelement. Oversettelsesspråket er underforstått og spesifiseres ikke. Utveksles denne verdien til en lokalisering hvor oversettelsesspråket er et annet kan den registrerte boolske verdien være feil. For å sikre en riktig utveksling av dette dataelementet, må både språket og behov for tolk utveksles sammen. Hvert språk som individet snakker vil trenge en en egen vurdering av om det er et tolkebehov. For eksempel vil ikke en engelsktalende i Quebec trenge engelsk tolk, men det kan være behov for tolk om konsultasjonen utføres på fransk.">
-				>
-				["at0008"] = <
-					text = <"Trenger tolk">
-					description = <"Indikererer at det er et tolkebehov på det spesifiserte språket.">
 				>
 				["at0003"] = <
 					text = <"Foretrukket kommunikasjon">
@@ -217,23 +217,29 @@ ontology
 					text = <"Annen kommunikasjon">
 					description = <"Individets andre språk og kommunikasjonsmetoder.">
 				>
-				["at0009"] = <
-					text = <"Kommentar">
-					description = <"Ytterligere fritekstbeskrivelse om individets evne til kommunikasjon som ikke er registrert i andre felt.">
+				["at0005"] = <
+					text = <"*Additional details(en)">
+					description = <"*Additional structured details about the individual's communication capability.(en)">
+					comment = <"*For example: a hearing aid or tactile reading device.(en)">
+				>
+				["at0006"] = <
+					text = <"Tolkebehov">
+					description = <"Detaljer om tolking er nødvendig, eller ikke for språket som foreslås for kommunikasjonen.">
+					comment = <"I kliniske system er det vanlig å registrere om det er behov for tolk med en registrering i et enkelt boolsk dataelement. Oversettelsesspråket er underforstått og spesifiseres ikke. Utveksles denne verdien til en lokalisering hvor oversettelsesspråket er et annet kan den registrerte boolske verdien være feil. For å sikre en riktig utveksling av dette dataelementet, må både språket og behov for tolk utveksles sammen. Hvert språk som individet snakker vil trenge en en egen vurdering av om det er et tolkebehov. For eksempel vil ikke en engelsktalende i Quebec trenge engelsk tolk, men det kan være behov for tolk om konsultasjonen utføres på fransk.">
 				>
 				["at0007"] = <
 					text = <"*Language details (en)">
 					description = <"*Details about a language. (en)">
 				>
-				["at0005"] = <
-					text = <"*Additional details (en)">
-					description = <"*Additional structured details about the individual's communication capability. (en)">
+				["at0008"] = <
+					text = <"Trenger tolk">
+					description = <"Indikererer at det er et tolkebehov på det spesifiserte språket.">
+				>
+				["at0009"] = <
+					text = <"Kommentar">
+					description = <"Ytterligere fritekstbeskrivelse om individets evne til kommunikasjon som ikke er registrert i andre felt.">
 				>
 				["at0011"] = <
-					text = <"ItemTree">
-					description = <"@ internal @">
-				>
-				["at0001"] = <
 					text = <"ItemTree">
 					description = <"@ internal @">
 				>
