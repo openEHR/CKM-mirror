@@ -53,7 +53,7 @@ Howto-instructions for repository admins to update this repository to get the la
 * With command-line tools https://help.github.com/articles/syncing-a-fork/ or
 * Using the web: https://www.sitepoint.com/quick-tip-sync-your-fork-with-the-original-without-the-cli/
 
-Howto-instructions for admins regarding how to move a file uding GitHub's web tools: https://help.github.com/articles/moving-a-file-to-a-new-location/
+Howto-instructions for admins regarding how to move a file using GitHub's web tools: https://help.github.com/articles/moving-a-file-to-a-new-location/
 
 Local/regional setup?
 ----------------------
@@ -79,5 +79,3 @@ All of these assets are licenced under a Creative Commons Attribution-ShareAlike
 This mirror auto-updates whenever the CKM TRUNK changes.
 
 If you would like to contribute to development or review of the models, please register at www.openehr.org/ckm
-
-
