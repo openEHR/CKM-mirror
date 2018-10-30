@@ -1,8 +1,8 @@
-﻿archetype (adl_version=1.4; uid=1d358227-2032-4cdd-83d7-2965308bb549)
-	openEHR-EHR-CLUSTER.exam_lips.v0
+﻿archetype (adl_version=1.4; uid=3447ee80-171e-4797-9679-01f2bc3642e9)
+	openEHR-EHR-CLUSTER.exam_muscle.v0
 
 concept
-	[at0000]	-- Examination of both lips
+	[at0000]	-- Examination of a muscle or muscle group
 language
 	original_language = <[ISO_639-1::en]>
 description
@@ -10,31 +10,27 @@ description
 		["name"] = <"Heather Leslie">
 		["organisation"] = <"Atomica Informatics">
 		["email"] = <"heather.leslie@atomicainformatics.com">
-		["date"] = <"2015-07-17">
+		["date"] = <"2018-09-13">
 	>
 	details = <
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"For recording a narrative description and clinical interpretation of the findings observed during the physical examination of the lips.">
-			use = <"Use to record a narrative description of the overall findings observed during the physical examination of the lips. This initial draft archetype consists only of the core examination pattern data elements (as per CLUSTER.exam_pattern) and will likely be expanded further over time as specific clinical requirements are identified.
+			purpose = <"For recording a description and clinical interpretation of the findings observed during the physical examination of a specified muscle or muscle group.">
+			use = <"Use to record a description of the overall findings observed during the physical examination of a specified muscle or muscle group. This initial draft archetype consists only of the core examination pattern data elements (as per CLUSTER.exam_pattern) and will likely be expanded further over time as specific clinical requirements are identified.
 
-This archetype has been specifically designed to be used in the 'Examination findings' SLOT within the CLUSTER.exam_mouth archetype, but can also be used within the OBSERVATION.exam and other OBSERVATION or CLUSTER archetypes, where clinically appropriate.
-
-Use to provide a framework in which other CLUSTER archetypes can be nested in the 'Examination findings' SLOT to record additional structured physical examination findings - for example, CLUSTER.exam_lip. 
+This archetype has been specifically designed to be used in the 'Examination findings' SLOT within the CLUSTER.exam_cranial nerves, but can also be used within the OBSERVATION.exam and other OBSERVATION or CLUSTER archetypes, where clinically appropriate - for example, CLUSTER archetypes for examination of limbs or parts of limbs.
 
 The CLUSTER.exclusion_exam archetype can be nested within the 'Examination not done' SLOT to optionally record explicit details about the examination not being performed.
 
 Use to incorporate the narrative descriptions of clinical findings within existing or legacy clinical systems into an archetyped format, using the 'Clinical Description' data element.">
-			misuse = <"Not to be used for recording data not related to the physical examination of lips.
+			misuse = <"Not to be used for recording the clinical history related to muscles - use specific OBSERVATION and CLUSTER archetypes. For example OBSERVATION.story and CLUSTER.symptom.
 
-Not to be used for recording the clinical history - use specific OBSERVATION and CLUSTER archetypes. For example OBSERVATION.story and CLUSTER.symptom.
-
-Not to be used to record stand-alone clinical observations or measurements or test results - use specific OBSERVATION archetypes. For example OBSERVATION.blood_pressure or OBSERVATION.imaging_exam.">
+Not to be used to record the relative estimation of muscle strength during a neurological examination.">
 			copyright = <"© openEHR Foundation">
 		>
 	>
 	lifecycle_state = <"in_development">
-	other_contributors = <"Silje Ljosland Bakke, Bergen Hospital Trust, Norway", "Ian McNicoll, freshEHR Clinical Informatics, United Kingdom", "John Tore Valand, Haukeland Universitetssjukehus, Norway">
+	other_contributors = <"Silje Ljosland Bakke, Nasjonal IKT HF, Norway", "Ian McNicoll, freshEHR Clinical Informatics, United Kingdom", "John Tore Valand, Haukeland Universitetssjukehus, Norway">
 	other_details = <
 		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
 		["custodian_organisation"] = <"openEHR Foundation">
@@ -42,14 +38,23 @@ Not to be used to record stand-alone clinical observations or measurements or te
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"3B0BFC27954289E9A704A86849E99FEF">
-		["build_uid"] = <"301cd70a-1aec-46c8-b5b5-dbaffd686d0a">
-		["revision"] = <"0.0.1-alpha">
+		["MD5-CAM-1.0.1"] = <"AD5EFB1A2FD6F2C2A8CDD7AEE63B6B35">
+		["build_uid"] = <"47ecff81-eed0-4ef6-b146-2fb6ec0f63bd">
+		["revision"] = <"0.0.2-alpha">
 	>
 
 definition
-	CLUSTER[at0000] matches {	-- Examination of both lips
+	CLUSTER[at0000] matches {	-- Examination of a muscle or muscle group
 		items cardinality matches {1..*; unordered} matches {
+			ELEMENT[at0001] occurrences matches {0..1} matches {	-- Muscle name
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			allow_archetype CLUSTER[at0011] occurrences matches {0..*} matches {	-- Anatomical location
+				include
+					archetype_id/value matches {/openEHR-EHR-CLUSTER\.anatomical_location(-[a-zA-Z0-9_]+)*\.v1|openEHR-EHR-CLUSTER\.anatomical_location_clock(-[a-zA-Z0-9_]+)*\.v0|openEHR-EHR-CLUSTER\.anatomical_location_relative(-[a-zA-Z0-9_]+)*\.v1/}
+			}
 			ELEMENT[at0002] occurrences matches {0..1} matches {	-- No abnormality detected
 				value matches {
 					DV_BOOLEAN matches {
@@ -62,14 +67,9 @@ definition
 					DV_TEXT matches {*}
 				}
 			}
-			ELEMENT[at0009] occurrences matches {0..1} matches {	-- Symmetry?
-				value matches {
-					DV_TEXT matches {*}
-				}
-			}
 			allow_archetype CLUSTER[at0004] occurrences matches {0..*} matches {	-- Examination findings
 				include
-					archetype_id/value matches {/openEHR-EHR-CLUSTER\.exam_lip(-[a-zA-Z0-9_]+)*\.v0/}
+					archetype_id/value matches {/.*/}
 			}
 			allow_archetype CLUSTER[at0005] occurrences matches {0..*} matches {	-- Multimedia representation
 				include
@@ -98,8 +98,12 @@ ontology
 		["en"] = <
 			items = <
 				["at0000"] = <
-					text = <"Examination of both lips">
-					description = <"Findings observed during the physical examination of both lips.">
+					text = <"Examination of a muscle or muscle group">
+					description = <"Findings observed during the physical examination of a specified muscle or muscle group.">
+				>
+				["at0001"] = <
+					text = <"Muscle name">
+					description = <"Name of the examined muscle or muscle group.">
 				>
 				["at0002"] = <
 					text = <"No abnormality detected">
@@ -130,9 +134,9 @@ ontology
 					text = <"Examination not done">
 					description = <"Details to explicitly record that this examination was not performed.">
 				>
-				["at0009"] = <
-					text = <"Symmetry?">
-					description = <"Description of the appearance of symmetry of the lips in comparison to the other side.">
+				["at0011"] = <
+					text = <"Anatomical location">
+					description = <"A structured anatomical location of the examined body site.">
 				>
 			>
 		>

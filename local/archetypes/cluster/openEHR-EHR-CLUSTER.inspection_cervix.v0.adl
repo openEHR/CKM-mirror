@@ -2,12 +2,14 @@
 	openEHR-EHR-CLUSTER.inspection_cervix.v0
 
 concept
-	[at0000]	-- Inspection of the cervix
+	[at0000]	-- Inspection of cervix
 language
 	original_language = <[ISO_639-1::en]>
 description
 	original_author = <
-		["name"] = <"">
+		["name"] = <"Silje Ljosland Bakke">
+		["organisation"] = <"Nasjonal IKT, Norway">
+		["email"] = <"silje.ljosland.bakke@nasjonalikt.no">
 		["date"] = <"2015-06-08">
 	>
 	details = <
@@ -23,29 +25,28 @@ Use to provide a framework in which CLUSTER archetypes can be nested in the 'Exa
 The CLUSTER.exclusion_exam archetype can be nested within the 'Examination not done' SLOT to optionally record explicit details about the examination not being performed.
 
 Use to incorporate the narrative descriptions of clinical findings within existing or legacy clinical systems into an archetyped format, using the 'Clinical Description' data element.">
-			misuse = <"Not to be used for recording data not related to the physical examination of XYZ.
-
-Not to be used for recording the clinical history - use specific OBSERVATION and CLUSTER archetypes. For example OBSERVATION.story and CLUSTER.symptom.
+			misuse = <"Not to be used for recording the clinical history - use specific OBSERVATION and CLUSTER archetypes. For example OBSERVATION.story and CLUSTER.symptom.
 
 Not to be used to record stand-alone clinical observations or measurements or test results - use specific OBSERVATION archetypes. For example OBSERVATION.blood_pressure or OBSERVATION.imaging_exam.">
 			copyright = <"© openEHR Foundation">
 		>
 	>
 	lifecycle_state = <"in_development">
-	other_contributors = <"Silje Ljosland Bakke, Bergen Hospital Trust, Norway", "Ian McNicoll, freshEHR Clinical Informatics, United Kingdom", "John Tore Valand, Haukeland Universitetssjukehus, Norway", "Heather Leslie, Ocean Informatics, Australia">
+	other_contributors = <"Ian McNicoll, freshEHR Clinical Informatics, United Kingdom", "John Tore Valand, Haukeland Universitetssjukehus, Norway", "Heather Leslie, Atomica Informatics, Australia">
 	other_details = <
 		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
 		["custodian_organisation"] = <"openEHR Foundation">
+		["current_contact"] = <"Heather Leslie, Atomica Informatics<heather.leslie@atomicainformatics.com>">
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"64B90BFF09314A9E82BDEDF0595E8612">
-		["build_uid"] = <"2fb6f665-3d4e-41c0-8f55-6d1afadfe08f">
+		["MD5-CAM-1.0.1"] = <"BEF09C151F030592ED74D24B7556230A">
+		["build_uid"] = <"04322c18-1416-4e59-92be-382981144e36">
 		["revision"] = <"0.0.1-alpha">
 	>
 
 definition
-	CLUSTER[at0000] matches {	-- Inspection of the cervix
+	CLUSTER[at0000] matches {	-- Inspection of cervix
 		items cardinality matches {1..*; unordered} matches {
 			ELEMENT[at0002] occurrences matches {0..1} matches {	-- No abnormality detected
 				value matches {
@@ -59,77 +60,61 @@ definition
 					DV_TEXT matches {*}
 				}
 			}
-			allow_archetype CLUSTER[at0004] occurrences matches {0..*} matches {	-- Examination findings
-				include
-					archetype_id/value matches {/.*/}
+			ELEMENT[at0013] occurrences matches {0..1} matches {	-- Discharge category
+				value matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {
+							[local::
+							at0015, 	-- Clear
+							at0016, 	-- Mucopurulent
+							at0017, 	-- Brick-coloured
+							at0018]	-- Fresh bleeding
+						}
+					}
+				}
 			}
-			allow_archetype CLUSTER[at0005] occurrences matches {0..*} matches {	-- Multimedia representation
-				include
-					archetype_id/value matches {/openEHR-EHR-CLUSTER\.multimedia(-[a-zA-Z0-9_]+)*\.v1/}
+			ELEMENT[at0014] occurrences matches {0..1} matches {	-- Discharge present
+				value matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {
+							[local::
+							at0033, 	-- Present
+							at0034, 	-- Absent
+							at0035]	-- Indeterminate
+						}
+					}
+				}
 			}
-			ELEMENT[at0006] occurrences matches {0..*} matches {	-- Clinical interpretation
+			ELEMENT[at0036] occurrences matches {0..1} matches {	-- Discharge description
 				value matches {
 					DV_TEXT matches {*}
 				}
 			}
-			ELEMENT[at0007] occurrences matches {0..1} matches {	-- Comment
+			ELEMENT[at0020] occurrences matches {0..1} matches {	-- Ectropion present
+				value matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {
+							[local::
+							at0037, 	-- Present
+							at0038, 	-- Absent
+							at0039]	-- Indeterminate
+						}
+					}
+				}
+			}
+			ELEMENT[at0021] occurrences matches {0..1} matches {	-- Ectropion description
 				value matches {
 					DV_TEXT matches {*}
 				}
 			}
-			allow_archetype CLUSTER[at0008] occurrences matches {0..*} matches {	-- Examination not done
-				include
-					archetype_id/value matches {/openEHR-EHR-CLUSTER\.exclusion_exam(-[a-zA-Z0-9_]+)*\.v1/}
-			}
-			CLUSTER[at0011] occurrences matches {0..1} matches {	-- Discharge
+			CLUSTER[at0022] occurrences matches {0..*} matches {	-- Lesions
 				items cardinality matches {1..*; unordered} matches {
-					ELEMENT[at0014] occurrences matches {0..1} matches {	-- Presence
-						value matches {
-							DV_BOOLEAN matches {
-								value matches {True, False}
-							}
-						}
-					}
-					ELEMENT[at0013] occurrences matches {0..1} matches {	-- Appearance
-						value matches {
-							DV_CODED_TEXT matches {
-								defining_code matches {
-									[local::
-									at0015, 	-- Clear
-									at0016, 	-- Mucopurulent
-									at0017, 	-- Brick-coloured
-									at0018]	-- Fresh bleeding
-								}
-							}
-						}
-					}
-				}
-			}
-			CLUSTER[at0019] occurrences matches {0..1} matches {	-- Ectopia
-				items cardinality matches {1..*; unordered} matches {
-					ELEMENT[at0020] occurrences matches {0..1} matches {	-- Presence
-						value matches {
-							DV_BOOLEAN matches {
-								value matches {True, False}
-							}
-						}
-					}
-					ELEMENT[at0021] occurrences matches {0..1} matches {	-- Description
-						value matches {
-							DV_TEXT matches {*}
-						}
-					}
-				}
-			}
-			CLUSTER[at0022] occurrences matches {0..*} matches {	-- Findings
-				items cardinality matches {1..*; unordered} matches {
-					ELEMENT[at0023] occurrences matches {0..1} matches {	-- Finding
+					ELEMENT[at0023] occurrences matches {0..1} matches {	-- Lesion name
 						value matches {
 							DV_CODED_TEXT matches {
 								defining_code matches {
 									[local::
 									at0024, 	-- Warts
-									at0025, 	-- Friable
 									at0026, 	-- Tumour
 									at0027]	-- Nabothian cyst
 								}
@@ -138,8 +123,13 @@ definition
 					}
 					ELEMENT[at0028] occurrences matches {0..1} matches {	-- Presence
 						value matches {
-							DV_BOOLEAN matches {
-								value matches {True, False}
+							DV_CODED_TEXT matches {
+								defining_code matches {
+									[local::
+									at0040, 	-- Present
+									at0041, 	-- Absent
+									at0042]	-- Indeterminate
+								}
 							}
 						}
 					}
@@ -164,6 +154,28 @@ definition
 					}
 				}
 			}
+			allow_archetype CLUSTER[at0004] occurrences matches {0..*} matches {	-- Examination findings
+				include
+					archetype_id/value matches {/.*/}
+			}
+			allow_archetype CLUSTER[at0005] occurrences matches {0..*} matches {	-- Multimedia representation
+				include
+					archetype_id/value matches {/openEHR-EHR-CLUSTER\.multimedia(-[a-zA-Z0-9_]+)*\.v1/}
+			}
+			ELEMENT[at0006] occurrences matches {0..*} matches {	-- Clinical interpretation
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			ELEMENT[at0007] occurrences matches {0..1} matches {	-- Comment
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			allow_archetype CLUSTER[at0008] occurrences matches {0..*} matches {	-- Examination not done
+				include
+					archetype_id/value matches {/openEHR-EHR-CLUSTER\.exclusion_exam(-[a-zA-Z0-9_]+)*\.v1/}
+			}
 		}
 	}
 
@@ -173,7 +185,7 @@ ontology
 		["en"] = <
 			items = <
 				["at0000"] = <
-					text = <"Inspection of the cervix">
+					text = <"Inspection of cervix">
 					description = <"Findings observed during the inspection of the cervix.">
 				>
 				["at0002"] = <
@@ -205,17 +217,13 @@ ontology
 					text = <"Examination not done">
 					description = <"Details to explicitly record that this examination was not performed.">
 				>
-				["at0011"] = <
-					text = <"Discharge">
-					description = <"Structured elements relating to cervical discharge.">
-				>
 				["at0013"] = <
-					text = <"Appearance">
-					description = <"Appearance of the cervical discharge.">
+					text = <"Discharge category">
+					description = <"Type of cervical discharge.">
 				>
 				["at0014"] = <
-					text = <"Presence">
-					description = <"The presence or absence of cervical discharge.">
+					text = <"Discharge present">
+					description = <"The presence of cervical discharge.">
 				>
 				["at0015"] = <
 					text = <"Clear">
@@ -233,41 +241,33 @@ ontology
 					text = <"Fresh bleeding">
 					description = <"The cervical discharge is fresh blood.">
 				>
-				["at0019"] = <
-					text = <"Ectopia">
-					description = <"Structured elements relating to cervical ectopia.">
-				>
 				["at0020"] = <
-					text = <"Presence">
+					text = <"Ectropion present">
 					description = <"The presence or absence of cervical ectopia.">
 				>
 				["at0021"] = <
-					text = <"Description">
-					description = <"Narrative description about the cervical ectopia.">
+					text = <"Ectropion description">
+					description = <"Narrative description about the cervical ectropion.">
 				>
 				["at0022"] = <
-					text = <"Findings">
+					text = <"Lesions">
 					description = <"Structured elements relating to other specific findings.">
 				>
 				["at0023"] = <
-					text = <"Finding">
-					description = <"Identification of the finding.">
+					text = <"Lesion name">
+					description = <"Identification of the lesion.">
 				>
 				["at0024"] = <
 					text = <"Warts">
-					description = <"*">
-				>
-				["at0025"] = <
-					text = <"Friable">
-					description = <"*">
+					description = <"A genital wart.">
 				>
 				["at0026"] = <
 					text = <"Tumour">
-					description = <"*">
+					description = <"A lump or tumour.">
 				>
 				["at0027"] = <
 					text = <"Nabothian cyst">
-					description = <"*">
+					description = <"A Nabothian cyst.">
 				>
 				["at0028"] = <
 					text = <"Presence">
@@ -288,6 +288,46 @@ ontology
 				["at0032"] = <
 					text = <"Structured anatomical location">
 					description = <"A structured anatomical location of the finding.">
+				>
+				["at0033"] = <
+					text = <"Present">
+					description = <"A cervical discharge was present.">
+				>
+				["at0034"] = <
+					text = <"Absent">
+					description = <"A cervical discharge was not present.">
+				>
+				["at0035"] = <
+					text = <"Indeterminate">
+					description = <"It was not possible to determine if a cervical discharge was present or absent.">
+				>
+				["at0036"] = <
+					text = <"Discharge description">
+					description = <"Narrative description about the cervical discharge.">
+				>
+				["at0037"] = <
+					text = <"Present">
+					description = <"An ectropion was present.">
+				>
+				["at0038"] = <
+					text = <"Absent">
+					description = <"An ectropion was not present.">
+				>
+				["at0039"] = <
+					text = <"Indeterminate">
+					description = <"It was not possible to determine if an ectropion was present or absent.">
+				>
+				["at0040"] = <
+					text = <"Present">
+					description = <"The lesion/s were present.">
+				>
+				["at0041"] = <
+					text = <"Absent">
+					description = <"The lesion/s were not present.">
+				>
+				["at0042"] = <
+					text = <"Indeterminate">
+					description = <"It was not possible to determine if the lesions were present or absent.">
 				>
 			>
 		>

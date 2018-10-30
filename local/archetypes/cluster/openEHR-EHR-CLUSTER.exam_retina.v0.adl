@@ -1,31 +1,32 @@
-﻿archetype (adl_version=1.4; uid=1d358227-2032-4cdd-83d7-2965308bb549)
-	openEHR-EHR-CLUSTER.exam_lips.v0
+﻿archetype (adl_version=1.4; uid=a7eff47d-7b52-4040-9602-5fc1fd5b0ae4)
+	openEHR-EHR-CLUSTER.exam_retina.v0
 
 concept
-	[at0000]	-- Examination of both lips
+	[at0000]	-- Examination of retina
 language
 	original_language = <[ISO_639-1::en]>
 description
 	original_author = <
-		["name"] = <"Heather Leslie">
-		["organisation"] = <"Atomica Informatics">
-		["email"] = <"heather.leslie@atomicainformatics.com">
-		["date"] = <"2015-07-17">
+		["name"] = <"">
+		["date"] = <"2015-06-08">
 	>
 	details = <
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"For recording a narrative description and clinical interpretation of the findings observed during the physical examination of the lips.">
-			use = <"Use to record a narrative description of the overall findings observed during the physical examination of the lips. This initial draft archetype consists only of the core examination pattern data elements (as per CLUSTER.exam_pattern) and will likely be expanded further over time as specific clinical requirements are identified.
+			purpose = <"For recording a narrative description and clinical interpretation of the findings observed during the physical examination of the retina of an eye.">
+			use = <"Use to record a narrative description of the overall findings observed during the physical examination of the retina of an eye. This initial draft archetype consists only of the core examination pattern data elements (as per CLUSTER.exam_pattern) and will likely be expanded further over time as specific clinical requirements are identified.
 
-This archetype has been specifically designed to be used in the 'Examination findings' SLOT within the CLUSTER.exam_mouth archetype, but can also be used within the OBSERVATION.exam and other OBSERVATION or CLUSTER archetypes, where clinically appropriate.
+This archetype has been specifically designed to be used in the 'Examination findings' SLOT within the CLUSTER.exam_eye archetype, but can also be used within the OBSERVATION.exam and other OBSERVATION or CLUSTER archetypes, where clinically appropriate.
 
-Use to provide a framework in which other CLUSTER archetypes can be nested in the 'Examination findings' SLOT to record additional structured physical examination findings - for example, CLUSTER.exam_lip. 
+Use to provide a framework in which CLUSTER archetypes can be nested in the 'Examination findings' SLOT to record additional structured physical examination findings. 
+
+Identification of the device used to carry out the examination can be recorded in the Protocol of the OBSERVATION.exam archetype.
 
 The CLUSTER.exclusion_exam archetype can be nested within the 'Examination not done' SLOT to optionally record explicit details about the examination not being performed.
 
 Use to incorporate the narrative descriptions of clinical findings within existing or legacy clinical systems into an archetyped format, using the 'Clinical Description' data element.">
-			misuse = <"Not to be used for recording data not related to the physical examination of lips.
+			keywords = <"eye", "exam", "retina">
+			misuse = <"Not to be used to record findings of the physical examination of other parts of the eye - use specific purpose-built CLUSTER archetypes for this purpose. For example, CLUSTER.exam_eye_lens.
 
 Not to be used for recording the clinical history - use specific OBSERVATION and CLUSTER archetypes. For example OBSERVATION.story and CLUSTER.symptom.
 
@@ -34,22 +35,32 @@ Not to be used to record stand-alone clinical observations or measurements or te
 		>
 	>
 	lifecycle_state = <"in_development">
-	other_contributors = <"Silje Ljosland Bakke, Bergen Hospital Trust, Norway", "Ian McNicoll, freshEHR Clinical Informatics, United Kingdom", "John Tore Valand, Haukeland Universitetssjukehus, Norway">
+	other_contributors = <"Silje Ljosland Bakke, Bergen Hospital Trust, Norway", "Ian McNicoll, freshEHR Clinical Informatics, United Kingdom", "John Tore Valand, Haukeland Universitetssjukehus, Norway", "Heather Leslie, Ocean Informatics, Australia">
 	other_details = <
 		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
 		["custodian_organisation"] = <"openEHR Foundation">
-		["current_contact"] = <"Heather Leslie, Atomica Informatics<heather.leslie@atomicainformatics.com>">
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"3B0BFC27954289E9A704A86849E99FEF">
-		["build_uid"] = <"301cd70a-1aec-46c8-b5b5-dbaffd686d0a">
+		["MD5-CAM-1.0.1"] = <"579C03E8755EB6CC62AB5EDF31BE3122">
+		["build_uid"] = <"625e6208-a911-4b8a-880a-49384688c8c9">
 		["revision"] = <"0.0.1-alpha">
 	>
 
 definition
-	CLUSTER[at0000] matches {	-- Examination of both lips
+	CLUSTER[at0000] matches {	-- Examination of retina
 		items cardinality matches {1..*; unordered} matches {
+			ELEMENT[at0001] occurrences matches {0..1} matches {	-- Eye examined
+				value matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {
+							[local::
+							at0009, 	-- Left
+							at0010]	-- Right
+						}
+					}
+				}
+			}
 			ELEMENT[at0002] occurrences matches {0..1} matches {	-- No abnormality detected
 				value matches {
 					DV_BOOLEAN matches {
@@ -62,14 +73,9 @@ definition
 					DV_TEXT matches {*}
 				}
 			}
-			ELEMENT[at0009] occurrences matches {0..1} matches {	-- Symmetry?
-				value matches {
-					DV_TEXT matches {*}
-				}
-			}
 			allow_archetype CLUSTER[at0004] occurrences matches {0..*} matches {	-- Examination findings
 				include
-					archetype_id/value matches {/openEHR-EHR-CLUSTER\.exam_lip(-[a-zA-Z0-9_]+)*\.v0/}
+					archetype_id/value matches {/.*/}
 			}
 			allow_archetype CLUSTER[at0005] occurrences matches {0..*} matches {	-- Multimedia representation
 				include
@@ -98,8 +104,12 @@ ontology
 		["en"] = <
 			items = <
 				["at0000"] = <
-					text = <"Examination of both lips">
-					description = <"Findings observed during the physical examination of both lips.">
+					text = <"Examination of retina">
+					description = <"Findings observed during the physical examination of the retina of an eye.">
+				>
+				["at0001"] = <
+					text = <"Eye examined">
+					description = <"Identification of the eye under examination.">
 				>
 				["at0002"] = <
 					text = <"No abnormality detected">
@@ -131,8 +141,12 @@ ontology
 					description = <"Details to explicitly record that this examination was not performed.">
 				>
 				["at0009"] = <
-					text = <"Symmetry?">
-					description = <"Description of the appearance of symmetry of the lips in comparison to the other side.">
+					text = <"Left">
+					description = <"The left eye was examined.">
+				>
+				["at0010"] = <
+					text = <"Right">
+					description = <"The right XYZ was examined.">
 				>
 			>
 		>

@@ -36,7 +36,7 @@ description
 			purpose = <"For å registrere individuelle laboratorieanalyser som enkeltverdier, som regel innenfor klinisk biokjemi, hematologi eller immunologi.">
 			use = <"Brukes for å registrere individuelle laboratorieanalyser som enkeltverdier, som regel innenfor klinisk biokjemi, hematologi eller immunologi. Brukes normalt i arketypen OBSERVATION.laboratory_test. I noen tilfeller kan den brukes innenfor arketypen CLUSTER.laboratory_test_panel sammen med andre analyser som vanligvis rapporteres som del av et panel eller analysegruppe, men det kan også rapporteres flere analyser innenfor samme OBSERVATION.laboratory_test.
 
-Navnet på elementet Analyseresultat vil ordinært erstattes i en templat elller applikasjon med navnet på den spesifikke analysen. f.eks. \"Hemoglobin\", og ofte kodet med en terminologi som NLK, SNOMED CT eller LOINC.
+Elementet Analyseresultat vil ordinært erstattes i en templat elller applikasjon med navnet på den spesifikke analysen. f.eks. \"Hemoglobin\", og ofte kodet med en terminologi som NLK, SNOMED CT eller LOINC.
 
 Denne arketypen kan brukes innenfor mer komplekse laboratorie/patologirapporter der kvantitative svar som for eksempel flowcytometri eller gentester rapporteres sammen med konvensjonelle makroskopiske og mikroskopiske undersøkelser.">
 			keywords = <"laboratorie", "analytt", "analyse", "svar", "resultat">
@@ -83,55 +83,70 @@ Hl7 FHIR Observation resource: HL7 [Internet]; [cited 2017 Jun 27]. Available fr
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"E62A7A610752BE3F09CEB48321E7567E">
-		["build_uid"] = <"54ad6ef4-438e-481b-9774-5ac2b1bb0027">
+		["MD5-CAM-1.0.1"] = <"1CEA00B4539466BD7037018A5AE58772">
+		["build_uid"] = <"7454d704-5e76-466c-9d43-de2ae6ada670">
 		["revision"] = <"0.0.1-alpha">
 	>
 
 definition
-	CLUSTER[at0000] matches {	-- Laboratory test analyte
+	CLUSTER[at0000] matches {    -- Laboratory test analyte
 		items cardinality matches {1..*; unordered} matches {
-			ELEMENT[at0024] occurrences matches {0..1} matches {	-- Analyte name
+			ELEMENT[at0027] occurrences matches {0..1} matches {    -- Analyte result sequence
+				value matches {
+					DV_COUNT matches {*}
+				}
+			}
+			ELEMENT[at0024] occurrences matches {0..1} matches {    -- Analyte name
 				value matches {
 					DV_TEXT matches {*}
 				}
 			}
-			ELEMENT[at0001] occurrences matches {0..1} matches {*}
-			ELEMENT[at0003] occurrences matches {0..*} matches {	-- Comment
+			ELEMENT[at0001] occurrences matches {0..*} matches {*}    -- Analyte result
+			ELEMENT[at0003] occurrences matches {0..*} matches {    -- Comment
 				value matches {
 					DV_TEXT matches {*}
 				}
 			}
-			ELEMENT[at0004] occurrences matches {0..1} matches {	-- Reference range guidance
+			ELEMENT[at0004] occurrences matches {0..1} matches {    -- Reference range guidance
 				value matches {
 					DV_TEXT matches {*}
 				}
 			}
-			ELEMENT[at0005] occurrences matches {0..1} matches {	-- Analyte result status
+			ELEMENT[at0005] occurrences matches {0..1} matches {    -- Analyte result status
 				value matches {
 					DV_CODED_TEXT matches {
 						defining_code matches {
 							[local::
-							at0015, 	-- Registered
-							at0016, 	-- Partial
-							at0017, 	-- Preliminary
-							at0018, 	-- Final
-							at0020, 	-- Amended
-							at0019, 	-- Corrected
-							at0021, 	-- Appended
-							at0022, 	-- Entered in error
-							at0023]	-- Cancelled
+							at0015,    -- Registered
+							at0016,    -- Partial
+							at0017,    -- Preliminary
+							at0018,    -- Final
+							at0020,    -- Amended
+							at0019,    -- Corrected
+							at0021,    -- Appended
+							at0022,    -- Entered in error
+							at0023]    -- Cancelled
 						}
 					}
 					DV_TEXT matches {*}
 				}
 			}
-			ELEMENT[at0006] occurrences matches {0..1} matches {	-- Analyte result status timestamp
+			ELEMENT[at0006] occurrences matches {0..1} matches {    -- Analyte result status timestamp
 				value matches {
 					DV_DATE_TIME matches {*}
 				}
 			}
-			allow_archetype CLUSTER[at0014] occurrences matches {0..*} matches {	-- Analyte result detail
+			ELEMENT[at0025] occurrences matches {0..1} matches {    -- Medical validation timestamp
+				value matches {
+					DV_DATE_TIME matches {*}
+				}
+			}
+			ELEMENT[at0026] occurrences matches {0..1} matches {    -- Specimen identifier
+				value matches {
+					DV_IDENTIFIER matches {*}
+				}
+			}
+			allow_archetype CLUSTER[at0014] occurrences matches {0..*} matches {    -- Analyte result detail
 				include
 					archetype_id/value matches {/.*/}
 			}
@@ -174,7 +189,7 @@ ontology
 				>
 				["at0006"] = <
 					text = <"Analyte result status timestamp">
-					description = <"The date and/or time that the entire result was issued for the recorded ‘Analyte result status’.">
+					description = <"The date and/or time that the analyte result was issued for the recorded ‘Analyte result status’.">
 					hl7v2_mapping = <"OBX-22 and/or OBX-19">
 					fhir_mapping = <"Observation.issued">
 				>
@@ -225,6 +240,19 @@ ontology
 					hl7v2_mapping = <"OBX-3.1;3.2">
 					fhir_mapping = <"observation.code">
 				>
+				["at0025"] = <
+					text = <"Medical validation timestamp">
+					description = <"The date and/or time that the analyte result was medically validated.">
+				>
+				["at0026"] = <
+					text = <"Specimen identifier">
+					description = <"Identifier for the specimen used for the analyte result.">
+				>
+				["at0027"] = <
+					text = <"Analyte result sequence">
+					description = <"The intended position of this analyte result within the overall sequence of analyte results.">
+					comment = <"For example: ''1' '2', '3'. Where multiple analyte results are reported, the 'Analyte result sequence' makes the order in which they were reported explicit.">
+				>
 			>
 		>
 		["nb"] = <
@@ -235,20 +263,22 @@ ontology
 					comment = <"For eksempel: 'Natrium', 'Telling av hvite blodlegemer', 'T3'. Kodes vanligvis ved hjelp av en ekstern terminologi.">
 				>
 				["at0001"] = <
-					text = <"*Analyte result(en)">
-					description = <"*The value of the analyte result.(en)">
-					comment = <"*For example '7.3 mmols/l', 'Raised'.(en)">
-					hl7v2_mapping = <"*OBX.2,OBX.5,OBX.6(en)">
-					fhir_mapping = <"*Observation.result; Observation.name(en)">
+					text = <"Analyttsvar">
+					description = <"Verdien av analyttsvaret.">
+					comment = <"For ekesempel \"7,3 mmol/L\" eller \"Forhøyet\".">
+					hl7v2_mapping = <"OBX.2,OBX.5,OBX.6(">
+					fhir_mapping = <"Observation.result; Observation.name">
 				>
 				["at0003"] = <
 					text = <"Kommentar">
 					description = <"Kommentar knyttet til et analyseresultat.">
+					hl7v2_mapping = <"NTE.3">
+					fhir_mapping = <"Observation.comments">
 				>
 				["at0004"] = <
-					text = <"*Reference range guidance(en)">
-					description = <"*Additional advice on the applicability of the reference range to this result or may carry text or coded textual guidance as to whether the result is within the normal range.(en)">
-					comment = <"*For example, 'within normal limits for age and sex'.(en)">
+					text = <"Veileder for referanseområde">
+					description = <"Veileder for å finne ut om referanseverdien er relevant for dette resultatet. Kan inneholde tekst eller kodet tekstlig råd for om resultatet ligger innenfor normalområdet.">
+					comment = <"For eksempel \"innenfor normale grenseverdier i forhold til alder og kjønn\".">
 				>
 				["at0005"] = <
 					text = <"Analysesvarstatus">
@@ -256,7 +286,9 @@ ontology
 				>
 				["at0006"] = <
 					text = <"Tidsangivelse analysesvarstatus">
-					description = <"Dato og/eller tidspunktet da hele svaret ble utstedt for den aktuelle \"Analysesvarstatus\".">
+					description = <"Dato og/eller tidspunktet da analyttsvaret ble utstedt for den aktuelle \"Analysesvarstatus\".">
+					hl7v2_mapping = <"OBX-22 and/or OBX-19">
+					fhir_mapping = <"Observation.issued">
 				>
 				["at0014"] = <
 					text = <"Detaljer om analysesvar">
@@ -279,16 +311,16 @@ ontology
 					description = <"Svaret er komplett og er bekreftet av ansvarlig person.">
 				>
 				["at0019"] = <
-					text = <"*Corrected(en)">
-					description = <"*The result has been modified subsequent to being Final, and is complete and verified by the responsible pathologist. This is a sub-category of 'Amended'.(en)">
+					text = <"Korrigert">
+					description = <"Svaret har blitt modifisert etter å ha vært i status \"Endelig\", og er komplett og verifisert av ansvarlig laboratorielege. Dette er en underkategori av \"Revidert\".">
 				>
 				["at0020"] = <
-					text = <"*Amended(en)">
-					description = <"*The result has been modified subsequent to being Final, and is complete and verified by the responsible pathologist, and result data has been changed.(en)">
+					text = <"Revidert">
+					description = <"Svaret har blitt modifisert etter å ha vært i status \"Endelig\", og er komplett og verifisert av ansvarlig laboratorielege, og svardata er endret.">
 				>
 				["at0021"] = <
-					text = <"*Appended(en)">
-					description = <"*Subsequent to being final, the report has been modified by adding new content. The existing content is unchanged. This is a sub-category of 'Amended'.(en)">
+					text = <"Tillegg">
+					description = <"Etter å ha vært satt som status \"Endelig\", har det blitt lagt nytt innhold til rapporten. Det eksisterende innholdet er uendret. Dette er en underkategori av \"Revidert\".">
 				>
 				["at0022"] = <
 					text = <"Feilregistrert">
@@ -299,11 +331,24 @@ ontology
 					description = <"Svaret er utilgjengelig fordi analysen ikke ble påbegynt eller ferdigstilt (også kalt \"avbrutt\").">
 				>
 				["at0024"] = <
-					text = <"*Analyte name(en)">
-					description = <"*Actual value of the analyte result. The value of this element is normally supplied in a specialisation, in a template or at run-time to reflect the actual analyte.(en)">
-					comment = <"*e.g. 'Serum sodium', 'Haemoglobin'. Normally coded terminologies will be used for example, LOINC, NPU or SNOMED CT, or local lab terminologies.(en)">
-					hl7v2_mapping = <"*OBX-3.1;3.2(en)">
-					fhir_mapping = <"*observation.code(en)">
+					text = <"Analyttnavn">
+					description = <"Navnet på analyttsvaret. Verdien for dette elementet blir vanligvis lagt inn i en spesialisering, en templat, eller i applikasjonen.">
+					comment = <"For eksempel \"serum natrium\" eller \"hemoglobin\". Det vil vanligvis brukes koder fra terminologier, for eksempel laboratoriekodeverket, NPU, LOINC, SNOMED CT eller lokale kodesett.">
+					hl7v2_mapping = <"OBX-3.1;3.2">
+					fhir_mapping = <"observation.code">
+				>
+				["at0025"] = <
+					text = <"Tidsangivelse medisinsk validering">
+					description = <"Dato og/eller tidspunktet da analyttsvaret ble medisinsk validert.">
+				>
+				["at0026"] = <
+					text = <"ID for prøvemateriale">
+					description = <"Unik identifikator for prøvematerialet som ble brukt i analysen.">
+				>
+				["at0027"] = <
+					text = <"Analyttrekkefølge">
+					description = <"Den tiltenkte posisjonen av dette analyttsvaret innenfor den overordede rekkefølgen av analyttsvar.">
+					comment = <"For eksempel \"1\", \"2\", \"3\". Dersom det er flere analyttsvar i en rapport gjør \"Analyttrekkefølge\" rekkefølgen i svarrapporten eksplisitt.">
 				>
 			>
 		>
@@ -384,6 +429,18 @@ ontology
 					comment = <"*e.g. 'Serum sodium', 'Haemoglobin'. Normally coded terminologies will be used for example, LOINC, NPU or SNOMED CT, or local lab terminologies.(en)">
 					hl7v2_mapping = <"*OBX-3.1;3.2(en)">
 					fhir_mapping = <"*observation.code(en)">
+				>
+				["at0025"] = <
+					text = <"*Medical validation timestamp(en)">
+					description = <"*">
+				>
+				["at0026"] = <
+					text = <"*Specimen identifier(en)">
+					description = <"*">
+				>
+				["at0027"] = <
+					text = <"*Analyte result sequence(en)">
+					description = <"*">
 				>
 			>
 		>
