@@ -2,7 +2,7 @@
 	openEHR-EHR-OBSERVATION.medication_use.v0
 
 concept
-	[at0000]	-- Aggregated medication use
+	[at0000]	-- Medication use
 language
 	original_language = <[ISO_639-1::en]>
 description
@@ -22,10 +22,10 @@ description
 		>
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"For recording aggregated information about the administration or consumption of a specified medication or type/class of medication at or during an event such as a specific point in time or duration of time.">
-			use = <"Use for recording aggregated information about the administration or consumption of a specified medication or type/class of medication at or during an event such as a specific point in time or duration of time.
+			purpose = <"For recording information about the administration or consumption of a specified medication or type/class of medication at or during an event such as a specific point in time or duration of time.">
+			use = <"Use for recording information about the administration or consumption of a specified medication or type/class of medication at or during an event such as a specific point in time or duration of time.
 
-This archetype is specifically designed to be used for aggregated information such as one may find in reporting data sets. For clinical use, it's advised to use queries of orders and/or administrations to represent the same information.">
+This archetype is specifically designed to be used for aggregated information such as one may find in medication diaries and reporting data sets.">
 			misuse = <"Not to be used for recordning an order for a medication to be administered or consumed - use INSTRUCTION.medication_order for this purpose.
 
 Not to be used for documenting the administration or consumption of a medication - use ACTION.medication for this purpose.
@@ -42,17 +42,17 @@ Not to be used for documenting a summary of administration or consumption of a m
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"B429466405E87AF5727FA59838C39711">
-		["build_uid"] = <"8659eb8a-461a-426c-b90a-ff07b639a671">
+		["MD5-CAM-1.0.1"] = <"73795A546D192928148C821BDEB9DEC6">
+		["build_uid"] = <"d2a6e8d5-b780-4139-9159-f55cc57e601e">
 		["revision"] = <"0.0.1-alpha">
 	>
 
 definition
-	OBSERVATION[at0000] matches {    -- Aggregated medication use
+	OBSERVATION[at0000] matches {    -- Medication use
 		data matches {
 			HISTORY[at0022] matches {    -- HISTORY
 				events cardinality matches {0..*; unordered} matches {
-					EVENT[at0023] occurrences matches {0..*} matches {    -- Any event
+					EVENT[at0023] occurrences matches {0..*} matches {    -- Defined event
 						data matches {
 							ITEM_TREE[at0001] matches {    -- Tree
 								items cardinality matches {0..*; unordered} matches {
@@ -66,14 +66,14 @@ definition
 											DV_BOOLEAN matches {*}
 										}
 									}
-									ELEMENT[at0007] occurrences matches {0..1} matches {    -- Clinical description
+									ELEMENT[at0007] occurrences matches {0..1} matches {    -- Description
 										value matches {
 											DV_TEXT matches {*}
 										}
 									}
-									CLUSTER[at0008] occurrences matches {0..*} matches {    -- Specific medication
+									CLUSTER[at0008] occurrences matches {0..*} matches {    -- Specific/subclass medication
 										items cardinality matches {1..*; unordered} matches {
-											ELEMENT[at0021] occurrences matches {0..1} matches {    -- Specific medication
+											ELEMENT[at0021] occurrences matches {0..1} matches {    -- Medication name
 												value matches {
 													DV_TEXT matches {*}
 												}
@@ -88,18 +88,11 @@ definition
 													DV_TEXT matches {*}
 												}
 											}
-											ELEMENT[at0016] occurrences matches {0..1} matches {    -- Event dose
-												value matches {
-													C_DV_QUANTITY <
-																											>
-												}
-											}
 										}
 									}
-									ELEMENT[at0015] occurrences matches {0..1} matches {    -- Cumulative dose in event
+									ELEMENT[at0025] occurrences matches {0..1} matches {    -- Comment
 										value matches {
-											C_DV_QUANTITY <
-																							>
+											DV_TEXT matches {*}
 										}
 									}
 								}
@@ -127,7 +120,7 @@ ontology
 		["en"] = <
 			items = <
 				["at0000"] = <
-					text = <"Aggregated medication use">
+					text = <"Medication use">
 					description = <"Aggregated information about the administration or consumption of a specified medication or type/class of medication at or during an event such as a specific point in time or duration of time.">
 				>
 				["at0001"] = <
@@ -136,35 +129,29 @@ ontology
 				>
 				["at0002"] = <
 					text = <"Medication name">
-					description = <"Name of medication or type/class of medication.">
+					description = <"Name of medication, class or type of medication.">
+					comment = <"For example: Oxycodone; opioid; or analgesic.">
 				>
 				["at0003"] = <
 					text = <"Used in event?">
-					description = <"Is the individual using the medication or type/class of medication at or during the event?">
+					description = <"Is the individual using the medication, class or type of medication at or during the identified event?">
 				>
 				["at0005"] = <
 					text = <"Tree">
 					description = <"@ internal @">
 				>
 				["at0007"] = <
-					text = <"Clinical description">
-					description = <"Narrative description about the medication use.">
+					text = <"Description">
+					description = <"Narrative description about the use of the medication, class or type of medication at, or during, the identified event.">
 				>
 				["at0008"] = <
-					text = <"Specific medication">
+					text = <"Specific/subclass medication">
 					description = <"Details about a specific medication or subclass of medication, if a medication type or class is specified in the 'Medication name'.">
+					comment = <"This cluster is redundant if the specific medication name is identified using the top level 'Medication name' data element.">
 				>
 				["at0014"] = <
 					text = <"Description">
-					description = <"Description of use at or during the event.">
-				>
-				["at0015"] = <
-					text = <"Cumulative dose in event">
-					description = <"Total amount for the event for the medication or type/class of medication.">
-				>
-				["at0016"] = <
-					text = <"Event dose">
-					description = <"Total amound for the event for the specific medication or sublass of medication.">
+					description = <"Narrative description about the use of the medication or subclass of medication at, or during, the identified event.">
 				>
 				["at0019"] = <
 					text = <"Extension">
@@ -172,21 +159,25 @@ ontology
 					comment = <"For example: local information requirements or additional metadata to align with FHIR or CIMI equivalents.">
 				>
 				["at0021"] = <
-					text = <"Specific medication">
-					description = <"Name of the specific medication or subclass of medication.">
-					comment = <"Use to identify the specific medication used if a class is identified in 'Medication name'. Redundant if the name is identified using the 'Medication name' data element.">
+					text = <"Medication name">
+					description = <"Name of medication or subclass of medication.">
+					comment = <"For example: Oxycode; or opioid if analgesic is identified as the class in the top level 'Medication name'.">
 				>
 				["at0022"] = <
-					text = <"HISTORY">
-					description = <"*">
+					text = <"Event Series">
+					description = <"@ internal @">
 				>
 				["at0023"] = <
-					text = <"Any event">
-					description = <"Default, unspecified point in time or interval event which may be explicitly defined in a template or at run-time.">
+					text = <"Defined event">
+					description = <"This event attribute of the reference model needs to be explicitly defined and constrained as a specific point-in-time or interval of time in a template or at run-time.">
 				>
 				["at0024"] = <
 					text = <"Used in event?">
-					description = <"Is the individual using the specific medication or sublass of medication at or during the event?">
+					description = <"Is the individual using the medication or subclass of medication at or during the identified event?">
+				>
+				["at0025"] = <
+					text = <"Comment">
+					description = <"Additional narrative about the medication use during an identified event, not captured in other fields.">
 				>
 			>
 		>
@@ -224,14 +215,6 @@ ontology
 					text = <"*Description (en)">
 					description = <"*Description of use at or during the event. (en)">
 				>
-				["at0015"] = <
-					text = <"*Cumulative dose in event (en)">
-					description = <"*Total amount for the event. (en)">
-				>
-				["at0016"] = <
-					text = <"*Event dose (en)">
-					description = <"*Total dose for the event. (en)">
-				>
 				["at0019"] = <
 					text = <"*Extension (en)">
 					description = <"*Additional information required to capture local content or to align with other reference models/formalisms. (en)">
@@ -253,6 +236,10 @@ ontology
 				["at0024"] = <
 					text = <"*Used in event? (en)">
 					description = <"*Is the individual using the medication or class of medication at or during the event? (en)">
+				>
+				["at0025"] = <
+					text = <"*DV_TEXT (en)">
+					description = <"*">
 				>
 			>
 		>
