@@ -2,22 +2,51 @@
 	openEHR-EHR-ADMIN_ENTRY.administrative_language.v0
 
 concept
-	[at0000]	-- Administrative language capability
+	[at0000]	-- Translation requirements
 language
-	original_language = <[ISO_639-1::nb]>
+	original_language = <[ISO_639-1::en]>
+	translations = <
+		["nb"] = <
+			language = <[ISO_639-1::nb]>
+			author = <
+				["name"] = <"John Tore Valand">
+				["organisation"] = <"Helse Bergen HF">
+				["email"] = <"john.tore.valand@helse-bergen.no">
+			>
+		>
+	>
 description
 	original_author = <
-		["name"] = <"">
+		["name"] = <"John Tore Valand">
+		["organisation"] = <"Helse Bergen HF">
+		["email"] = <"john.tore.valand@helse-bergen.no">
+		["date"] = <"2018-11-06">
 	>
 	details = <
 		["nb"] = <
 			language = <[ISO_639-1::nb]>
-			purpose = <"To record the individual's capabilities for the administrative language of the healthcare provider.">
-			use = <"Use to record the individual's capabilities for the administrative language of the healthcare provider.
+			purpose = <"For å registrere evnen en helsetjenesteyter eller et klinisk system har til å kommunisere med individet.">
+			use = <"Brukes for å registrere evnen en helsetjenesteyter eller et klinisk system har til å kommunisere med individet.
+
+I kliniske system er det vanlig å registrere om det er behov for tolk med en registrering i et enkelt boolsk dataelement. Oversettelsesspråket er underforstått og spesifiseres ikke. Utveksles denne verdien til en lokalisering hvor oversettelsesspråket er et annet, kan den registrerte boolske verdien være feil. For å sikre en riktig utveksling av dette dataelementet, må både språket og behov for tolk utveksles sammen. 
+
+Hvert språk som individet snakker vil trenge en en egen vurdering av om det er et tolkebehov. For eksempel vil ikke en engelsktalende i Quebec trenge engelsk tolk, men det kan være behov for tolk om konsultasjonen utføres på fransk.">
+			misuse = <"Brukes ikke for å registrere individets praktiske evne til å kommunisere, inkludert funksjonsnedsettelser og behov for kommunikasjonshjelpemidler, bruk arketypen EVALUATION.communication_capability (Evne til kommunikasjon) for dette formålet.
+
+Brukes ikke for å registrere detaljer om et språk, bruk arketypen CLUSTER.language (Språk) for dette formålet.
+
+Brukes ikke for å registrere detaljer om en forespørsel om tolketjenester. Bruk arketypen CLUSTER.interpreter_requirements (Tolkebehov) i en egnet INSTRUCTION-arketype, for eksempel INSTRUCTION.service_request (Helsetjenesteforespørsel).
+
+Brukes ikke for å registrere detaljer om tolking som er gjennomført. Bruk arketypen ACTION.interpretation for dette formålet.">
+		>
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To record details about the ability of the healthcare provider or clinical system to communicate with the individual.">
+			use = <"Use to record details about the ability of the healthcare provider or clinical system to communicate with the individual.
 
 In clinical systems it is common to record whether a interpreter is required as a simple, stand-alone boolean data point - the language for translation required is implied, rather than specified. However if this single boolean is exchanged to a location where the assumed language is different, the recorded boolean may be incorrect. In order for this data to be correctly exchanged, both the language and requirement for translation needs to be exchanged as a pair.
 
-For each language that is proposed for a clinical communication it will be necessary to do a separate assessment about whether a translator is required for the individual. For example, an English speaker in Quebec will not require an English interpreter but may require one if the consultation is being conducted in French. ">
+For each language that is proposed for a clinical communication it will be necessary to do a separate assessment about whether a translator is required for the individual. For example, an English speaker in Quebec will not require an English interpreter but may require one if the consultation is being conducted in French.">
 			misuse = <"Not to be used to record details about the practical ability of the individual to communicate, including impairments and need for communication aids - use EVALUATION.communication_capability for this purpose.
 
 Not to be used to record details about a language - use CLUSTER.language for this purpose.
@@ -25,28 +54,22 @@ Not to be used to record details about a language - use CLUSTER.language for thi
 Not to be used to record details about a request for interpreter services - use CLUSTER.Interpreter_requirements with a suitable INSTRUCTION archetype, for example INSTRUCTION.service_request.
 
 Not to be used to record details about an interpretation that was performed - use the proposed ACTION.interpretation.">
-			copyright = <"© openEHR Foundation">
 		>
 	>
 	lifecycle_state = <"in_development">
-	other_contributors = <>
+	other_contributors = <"Vebjørn Arntzen, Oslo universitetssykehus HF, Norway", "Silje Ljosland Bakke, Nasjonal IKT HF, Norway (openEHR Editor)", "Heather Leslie, Atomica Informatics, Australia (openEHR Editor)">
 	other_details = <
-		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
-		["custodian_organisation"] = <"openEHR Foundation">
-		["original_namespace"] = <"org.openehr">
-		["original_publisher"] = <"openEHR Foundation">
-		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"686AB7B44860FE34C084ED5390073E6D">
-		["build_uid"] = <"290153ee-19f8-4690-a08a-5c9327fd2e58">
+		["MD5-CAM-1.0.1"] = <"16D9537D5A4AC0558032E3F0FDAEB184">
+		["build_uid"] = <"a9a9ec64-eba9-4524-b020-ff1824bd7308">
 		["revision"] = <"0.0.1-alpha">
 	>
 
 definition
-	ADMIN_ENTRY[at0000] matches {	-- Administrative language capability
+	ADMIN_ENTRY[at0000] matches {	-- Translation requirements
 		data matches {
 			ITEM_TREE[at0001] matches {	-- Tree
-				items cardinality matches {0..*; unordered} matches {
-					allow_archetype CLUSTER[at0002] occurrences matches {0..1} matches {	-- Language details
+				items cardinality matches {1..*; unordered} matches {
+					allow_archetype CLUSTER[at0002] matches {	-- Language details
 						include
 							archetype_id/value matches {/.*/}
 					}
@@ -68,13 +91,14 @@ definition
 	}
 
 
+
 ontology
 	term_definitions = <
-		["nb"] = <
+		["en"] = <
 			items = <
 				["at0000"] = <
-					text = <"Administrative language capability">
-					description = <"The individual's capabilities for the administrative language of the healthcare provider.">
+					text = <"Translation requirements">
+					description = <"The ability of the healthcare provider or clinical system to communicate with the individual.">
 				>
 				["at0001"] = <
 					text = <"Tree">
@@ -82,17 +106,43 @@ ontology
 				>
 				["at0002"] = <
 					text = <"Language details">
-					description = <"The administrative language of the healthcare provider.">
+					description = <"The  language of the healthcare provider or clinical system.">
 					comment = <"For example, an English speaker in Quebec will not require an English interpreter but may require one if the consultation is being conducted in French. ">
 				>
 				["at0003"] = <
 					text = <"Translator required">
-					description = <"Indicator that the services of a translator are required for the identified language.">
+					description = <"Indicator that the individual requires the services of a translator for the identified language.">
 					comment = <"For each language that is proposed for a clinical communication it will be necessary to do a separate assessment about whether a translator is required for the individual.">
 				>
 				["at0004"] = <
 					text = <"Comment">
 					description = <"Additional narrative about the administrative language capability of an individual not captured in other fields.">
+				>
+			>
+		>
+		["nb"] = <
+			items = <
+				["at0000"] = <
+					text = <"Tolkebehov">
+					description = <"Evnen en helsetjenesteyter eller et klinisk system har til å kommunisere med individet.">
+				>
+				["at0001"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Språkdetaljer">
+					description = <"Språket som benyttes av helsetjenesteyteren eller av det kliniske systemet.">
+					comment = <"For eksempel vil ikke en engelsktalende i Quebec trenge engelsk tolk, men det kan være behov for tolk om konsultasjonen utføres på fransk.">
+				>
+				["at0003"] = <
+					text = <"Behov for tolk">
+					description = <"Indikerer at det er et tolkebehov for det spesifiserte språket.">
+					comment = <"Hvert språk som foreslås for kommunikasjon vil trenge en en egen vurdering av om det er et tolkebehov.">
+				>
+				["at0004"] = <
+					text = <"Kommentar">
+					description = <"Ytterligere fritekstbeskrivelse om språket som benyttes av helsetjenesteyteren eller av det kliniske systemet som ikke er registrert i andre felt.">
 				>
 			>
 		>
