@@ -2,7 +2,7 @@
 	openEHR-EHR-CLUSTER.laboratory_test_analyte.v0
 
 concept
-	[at0000]	-- Laboratory test analyte
+	[at0000]	-- Laboratory analyte result
 language
 	original_language = <[ISO_639-1::en]>
 	translations = <
@@ -33,8 +33,8 @@ description
 	details = <
 		["nb"] = <
 			language = <[ISO_639-1::nb]>
-			purpose = <"For å registrere individuelle laboratorieanalyser som enkeltverdier, som regel innenfor klinisk biokjemi, hematologi eller immunologi.">
-			use = <"Brukes for å registrere individuelle laboratorieanalyser som enkeltverdier, som regel innenfor klinisk biokjemi, hematologi eller immunologi. Brukes normalt i arketypen OBSERVATION.laboratory_test. I noen tilfeller kan den brukes innenfor arketypen CLUSTER.laboratory_test_panel sammen med andre analyser som vanligvis rapporteres som del av et panel eller analysegruppe, men det kan også rapporteres flere analyser innenfor samme OBSERVATION.laboratory_test.
+			purpose = <"For å registrere individuelle laboratorieresultater som enkeltverdier, som regel innenfor klinisk biokjemi, hematologi eller immunologi.">
+			use = <"Brukes for å registrere individuelle laboratorieresultater som enkeltverdier, som regel innenfor klinisk biokjemi, hematologi eller immunologi. Brukes normalt i arketypen OBSERVATION.laboratory_test. I noen tilfeller kan den brukes innenfor arketypen CLUSTER.laboratory_test_panel sammen med andre analyser som vanligvis rapporteres som del av et panel eller analysegruppe, men det kan også rapporteres flere analyser innenfor samme OBSERVATION.laboratory_test.
 
 Elementet Analyseresultat vil ordinært erstattes i en templat elller applikasjon med navnet på den spesifikke analysen. f.eks. \"Hemoglobin\", og ofte kodet med en terminologi som NLK, SNOMED CT eller LOINC.
 
@@ -83,13 +83,13 @@ Hl7 FHIR Observation resource: HL7 [Internet]; [cited 2017 Jun 27]. Available fr
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"1CEA00B4539466BD7037018A5AE58772">
-		["build_uid"] = <"7454d704-5e76-466c-9d43-de2ae6ada670">
+		["MD5-CAM-1.0.1"] = <"2C0F5CDC6CEC602EF4BD6BE4590DBA02">
+		["build_uid"] = <"58271967-5e4c-42f3-b2cd-509491e1fc1a">
 		["revision"] = <"0.0.1-alpha">
 	>
 
 definition
-	CLUSTER[at0000] matches {    -- Laboratory test analyte
+	CLUSTER[at0000] matches {    -- Laboratory analyte result
 		items cardinality matches {1..*; unordered} matches {
 			ELEMENT[at0027] occurrences matches {0..1} matches {    -- Analyte result sequence
 				value matches {
@@ -112,7 +112,7 @@ definition
 					DV_TEXT matches {*}
 				}
 			}
-			ELEMENT[at0005] occurrences matches {0..1} matches {    -- Analyte result status
+			ELEMENT[at0005] occurrences matches {0..*} matches {    -- Analyte result status
 				value matches {
 					DV_CODED_TEXT matches {
 						defining_code matches {
@@ -159,7 +159,7 @@ ontology
 		["en"] = <
 			items = <
 				["at0000"] = <
-					text = <"Laboratory test analyte">
+					text = <"Laboratory analyte result">
 					description = <"The result of a laboratory test for a single analyte value.">
 					comment = <"For example: 'Sodium', 'White cell count', 'T3'. Commonly coded with an external terminology,">
 				>
@@ -184,6 +184,7 @@ ontology
 				["at0005"] = <
 					text = <"Analyte result status">
 					description = <"The status of the result value.">
+					comment = <"The values have been specifically chosen to match those in the HL7 FHIR Diagnostic report, historically derived from HL7v2 practice. Other local codes/terms can be used via the Text 'choice'. This element is multiple occurrence to cater for the use cases where statuses for different aspects of the result have been split into several elements.">
 					hl7v2_mapping = <"OBX-11-observation result status">
 					fhir_mapping = <"status">
 				>
@@ -258,13 +259,13 @@ ontology
 		["nb"] = <
 			items = <
 				["at0000"] = <
-					text = <"Laboratorieanalytt">
-					description = <"Resultatet av en individuell laboratorieanalyse som en enkeltverdi.">
+					text = <"Laboratorieanalyseresultat">
+					description = <"Resultatet av et individuelt laboratorieanalyseresultat som en enkeltverdi.">
 					comment = <"For eksempel: 'Natrium', 'Telling av hvite blodlegemer', 'T3'. Kodes vanligvis ved hjelp av en ekstern terminologi.">
 				>
 				["at0001"] = <
-					text = <"Analyttsvar">
-					description = <"Verdien av analyttsvaret.">
+					text = <"Analyseresultat">
+					description = <"Verdien av analyseresultatet.">
 					comment = <"For ekesempel \"7,3 mmol/L\" eller \"Forhøyet\".">
 					hl7v2_mapping = <"OBX.2,OBX.5,OBX.6(">
 					fhir_mapping = <"Observation.result; Observation.name">
@@ -281,42 +282,43 @@ ontology
 					comment = <"For eksempel \"innenfor normale grenseverdier i forhold til alder og kjønn\".">
 				>
 				["at0005"] = <
-					text = <"Analysesvarstatus">
-					description = <"Status for analysesvaret.">
+					text = <"Analyseresultatstatus">
+					description = <"Status for analyseresultatet.">
+					comment = <"Verdiene er valgt spesifikt for å samsvare med verdiene i HL7 FHIR-ressursen \"Diagnostic report\", som historisk sett kommer fra praksis i HL7 v2. Andre lokale koder eller termer kan brukes ved å bruke datatypen \"Fri eller kodet tekst. Dette elementet kan repeteres for å understøtte bruksområdene der statuser for forskjellige aspekter av resultatet er delt opp i flere elementer. Et eksempel på dette er de norske standard labsvarmeldingene i HIS 1.4-standarden, der status for svaret og status for laboratorieprosessen håndteres separat.">
 				>
 				["at0006"] = <
-					text = <"Tidsangivelse analysesvarstatus">
-					description = <"Dato og/eller tidspunktet da analyttsvaret ble utstedt for den aktuelle \"Analysesvarstatus\".">
+					text = <"Tidsangivelse analyseresultatstatus">
+					description = <"Dato og/eller tidspunktet da analyseresultatet ble utstedt for den aktuelle \"Analyseresultatstatus\".">
 					hl7v2_mapping = <"OBX-22 and/or OBX-19">
 					fhir_mapping = <"Observation.issued">
 				>
 				["at0014"] = <
-					text = <"Detaljer om analysesvar">
+					text = <"Detaljer om analyseresultat">
 					description = <"Ytterligere detaljer knyttet til et enkelt analyseresultat.">
 				>
 				["at0015"] = <
 					text = <"Registrert">
-					description = <"Analysen er registrert i laboratoriesystemet, men svaret er ikke tilgjengelig per nå.">
+					description = <"Analysen er registrert i laboratoriesystemet, men resultatet er ikke tilgjengelig per nå.">
 				>
 				["at0016"] = <
 					text = <"Ufullstendig">
-					description = <"Dette er et delvis (dvs initalt, foreløpig eller preliminært) svar: Data i svaret kan være ukomplett eller ubekreftet.">
+					description = <"Dette er et delvis (dvs initalt, foreløpig eller preliminært) svar: Data i resultatet kan være ukomplett eller ubekreftet.">
 				>
 				["at0017"] = <
 					text = <"Foreløpig">
-					description = <"Verifiserte tidlige svar er tilgjengelige, men ikke alle svar er endelige. Dette er en underkategori av \"Delvis\".">
+					description = <"Verifiserte tidlige resultater er tilgjengelige, men ikke alle resultater er endelige. Dette er en underkategori av \"Delvis\".">
 				>
 				["at0018"] = <
 					text = <"Endelig">
-					description = <"Svaret er komplett og er bekreftet av ansvarlig person.">
+					description = <"Resultatet er komplett og er bekreftet av ansvarlig person.">
 				>
 				["at0019"] = <
 					text = <"Korrigert">
-					description = <"Svaret har blitt modifisert etter å ha vært i status \"Endelig\", og er komplett og verifisert av ansvarlig laboratorielege. Dette er en underkategori av \"Revidert\".">
+					description = <"Resultatet har blitt modifisert etter å ha vært i status \"Endelig\", og er komplett og verifisert av ansvarlig laboratorielege. Dette er en underkategori av \"Revidert\".">
 				>
 				["at0020"] = <
 					text = <"Revidert">
-					description = <"Svaret har blitt modifisert etter å ha vært i status \"Endelig\", og er komplett og verifisert av ansvarlig laboratorielege, og svardata er endret.">
+					description = <"Resultatet har blitt modifisert etter å ha vært i status \"Endelig\", og er komplett og verifisert av ansvarlig laboratorielege, og resultatdata er endret.">
 				>
 				["at0021"] = <
 					text = <"Tillegg">
@@ -324,31 +326,31 @@ ontology
 				>
 				["at0022"] = <
 					text = <"Feilregistrert">
-					description = <"Analysesvaret har blitt trukket tilbake etter å ha vært i status Endelig.">
+					description = <"Analyseresultatet har blitt trukket tilbake etter å ha vært i status Endelig.">
 				>
 				["at0023"] = <
 					text = <"Kansellert">
-					description = <"Svaret er utilgjengelig fordi analysen ikke ble påbegynt eller ferdigstilt (også kalt \"avbrutt\").">
+					description = <"Resultatet er utilgjengelig fordi analysen ikke ble påbegynt eller ferdigstilt (også kalt \"avbrutt\").">
 				>
 				["at0024"] = <
-					text = <"Analyttnavn">
-					description = <"Navnet på analyttsvaret. Verdien for dette elementet blir vanligvis lagt inn i en spesialisering, en templat, eller i applikasjonen.">
+					text = <"Analysenavn">
+					description = <"Navnet på analysen som et utført. Verdien for dette elementet blir vanligvis lagt inn i en spesialisering, en templat, eller i applikasjonen.">
 					comment = <"For eksempel \"serum natrium\" eller \"hemoglobin\". Det vil vanligvis brukes koder fra terminologier, for eksempel laboratoriekodeverket, NPU, LOINC, SNOMED CT eller lokale kodesett.">
 					hl7v2_mapping = <"OBX-3.1;3.2">
 					fhir_mapping = <"observation.code">
 				>
 				["at0025"] = <
 					text = <"Tidsangivelse medisinsk validering">
-					description = <"Dato og/eller tidspunktet da analyttsvaret ble medisinsk validert.">
+					description = <"Dato og/eller tidspunktet da analyseresultatet ble medisinsk validert.">
 				>
 				["at0026"] = <
 					text = <"ID for prøvemateriale">
 					description = <"Unik identifikator for prøvematerialet som ble brukt i analysen.">
 				>
 				["at0027"] = <
-					text = <"Analyttrekkefølge">
-					description = <"Den tiltenkte posisjonen av dette analyttsvaret innenfor den overordede rekkefølgen av analyttsvar.">
-					comment = <"For eksempel \"1\", \"2\", \"3\". Dersom det er flere analyttsvar i en rapport gjør \"Analyttrekkefølge\" rekkefølgen i svarrapporten eksplisitt.">
+					text = <"Resultatrekkefølge">
+					description = <"Den tiltenkte posisjonen av dette analyseresultatet innenfor den overordnede rekkefølgen av resultater.">
+					comment = <"For eksempel \"1\", \"2\", \"3\". Dersom det er flere analyseresultater i en rapport gjør \"Resultatrekkefølge\" rekkefølgen i svarrapporten eksplisitt.">
 				>
 			>
 		>
@@ -378,6 +380,7 @@ ontology
 				["at0005"] = <
 					text = <"Estado do resultado do analito">
 					description = <"O estado do valor do resultado.">
+					comment = <"*The values have been specifically chosen to match those in the HL7 FHIR Diagnostic report, historically derived from HL7v2 practice. Other local codes/terms can be used via the Text 'choice'. This element is multiple occurrence to cater for the use cases where statuses for different aspects of the result have been split into several elements. (en)">
 				>
 				["at0006"] = <
 					text = <"Marcação temporal do estado do resultado do analito">

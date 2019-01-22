@@ -44,18 +44,19 @@ description
 
 Denne arketypen er laget for å være et rammeverk som vanligvis utvides med CLUSTER-arketyper for å få en hensiktsmessig registrering/rapportering av en gruppe analyseresultat/undersøkelsesresultat som naturlig hører sammen, og som ofte sammenstilles for å komme til en konklusjon. Dette kan for eksempel omfatte både grupper av analyser innenfor kjemi (medisinsk biokjemi, hematologi, immunologi, med mer), mikrobiologi og patologi. 
 
-Hvis ikke analyseresultatet tilhører i en gruppe av analyser (evt. analyseresultat), vil hvert resultat normalt representeres ved en separat instans av denne arketypen. Imidlertid er det stor variasjon på hvordan svarrapportering/meldingsformidling skjer, og denne arketypen (og de andre som hører til \"laboratorie-familien\") er designet for å ivareta disse variasjonene.
+Hvis ikke analyseresultatet tilhører i en navngitt gruppe av analyser (evt. analyseresultat), vil hvert resultat normalt representeres ved en separat instans av denne arketypen. Imidlertid er det stor variasjon på hvordan svarrapportering/meldingsformidling skjer, og denne arketypen (og de andre som hører til \"laboratorie-familien\") er designet for å ivareta disse variasjonene.
 
 Denne arketypen støtter flere tilnærminger til å registrere informasjon om prøvematerialet, noe som reflekterer de store variasjonene innenfor dagens praksis. Laboratoriesvar-arketypen har i høy grad samsvar med HL7 FHIR-ressursen \"Diagnostic Report\".
 
 Det forventes at en eller flere instanser av denne arketypen, eller arketypefamilen vil bli sendt tilbake til rekvirenten i en laboratoriesvarrapport, for eksempel i arketypen COMPOSITION.report_result eller tilsvarende, og sammen med relevante ENTRY-arketyper.
 
+Registrering av konfunderende faktorer gjøres i praksis ikke på en konsistent måte, og avhenger av avsenderlaboratoriet. I \"State\"-delen av arketypen er det et valgfritt og repeterbart element for \"Konfunderende faktorer\" som kan brukes til å registrere enkle faktorer som fordi de kan påvirke tolkningen av resultatet må registreres eksplisitt. Dersom de konfunderende faktorene er mer komplekse kan det være hensiktsmessig å lage en CLUSTER-arketype som kan brukes i SLOTet \"Strukturerte konfunderende faktorer\".
+NB 1: Kjente eller nødvendige forutsetninger, som for eksempel \"fastende\" eller \"dag 1 av menstruasjonssyklusen\" bør registreres i elementet \"Prøvetakingsforhold\" i arketypen CLUSTER.specimen.
+NB 2: Kjente problemer med prøvetaking eller prøvehåndtering, som for eksempel \"hemolyse\" eller \"forlenget stase\" bør registreres innenfor \"Prøvekvalitet\" i arketypen CLUSTER.specimen.
+
 Der laboratoriet endrer analyser eller legger til analyser som oppfølging, kan disse håndteres etter veilledning fra HL7 FHIR (https://www.hl7.org/fhir/2015may/uslabreport-guide.html), eller etter lokale prosedyrer. For eksempel en av følgende:
-
 1. Registrer de endrede analysene/tilleggsanalysene innenfor samme instans av denne arketypen.
-
 2. Registrer de endrede analysene/tilleggsanalysene i en ny instans av denne arketypen, men referer til den opprinnelige rekvisisjonen ved hjelp av \"Rekvisisjonsdetaljer\".
-
 3. Registrer de endrede analysene/tilleggsanalysene i en ny instans av denne arketypen, men referer til en ny rekvisisjon i tillegg til den opprinnelige rekvisisjonen, ved hjelp av \"Rekvisisjonsdetaljer\".">
 			keywords = <"medisinsk biokjemi", "medisinsk mikrobiologi", "medisinsk genetikk", "klinisk farmakologi", "patologi", "immunologi og transfusjonsmedisin", "laboratorie", "lab", "anatomisk", "prøve", "rettsmedisinsk", "laboratoriemedisin", "generell kjemi", "materiale", "prøvemateriale", "lokalisasjon", "undersøkelse", "analyse", "metode (analysemetode)", "laboratoriespesialitet", "blodprøve", "serum", "plasma", "fullblod", "analytt", "kapillærprøver", "venøse prøver", "arterielle prøver", "prøvetaking", "immunopatologi", "cytologi", "histopatologi", "biopsi", "preparat", "histopatologi", "immunhistokjemi", "immuncytokjemi", "molekylærgenetiske analyser", "histologi", "cytologi", "cervixcytologi", "obduksjon", "flowcytometri", "molekylær patologi", "elektronmikroskopi", "neuropatologi", "frysesnitt", "punksjonscytologi", "makrobeskjæring", "makroskopisk undersøkelse", "mikrobiologi", "bakteriologi", "virologi", "serologi", "molekylærdiagnostikk", "parasittologi", "mykologi", "protozologi", "immunologi", "medisinsk immunologi", "transfusjonsmedisin", "immunhematologi", "transplantasjonsimmunologi", "cellulær immunologi", "ex vivo cellelaboratorium", "hormonanalyser", "endokrinologi", "blodbank", "blodkomponenter", "hematologi", "kjemisk", "klinisk", "kjemi", "klinisk kjemi", "klinisk biokjemi", "metabolsk molekylærbiologi", "homeostase og trombose", "koagulasjon", "klinisk farmakologi", "farmakologi", "doping analyser", "klinisk fysiologi", "toksikologi", "rusmiddelanalyse", "misbruksdiagnostikk", "genetisk", "genetikk", "HTS-diagnostikk", "genpaneler", "farmakogenetikk", "cancer cytogenetikk", "biopsi", "preparat", "rettsmedisinsk">
 			misuse = <"Skal ikke brukes for å lagre en sammenstilling etter obduksjon eller rettsmedisinsk undersøkelse, selv om prøver av noen prøvematerialer som blir tatt i en obduksjon kan bli representert i denne arketypen. For å lage selve obduksjons- eller den rettsmedisinske rapporten må man bruke spesialiserte arketyper.
@@ -69,20 +70,19 @@ Denne arketypen er passende for å representere generelle laboratoriesvar, men e
 
 This archetype has been designed to be a framework that will usually be extended with CLUSTER archetypes to enable appropriate recording of specific laboratory test result patterns, including but not limited to: test panels for biochemistry and haematology plus specific patterns for the unique requirements for microbiology and histopathology.
 
-If the ordered tests or investigations do not commonly belong together in a group or panel, each test result would normally be represented using separate instances of this archetype. There is, however, considerable variation in actual reporting/messaging practice and this archetype/related archetypes are designed to handle such variation.
+If the ordered tests or investigations do not commonly belong together in a named group or panel, each test result would normally be represented using separate instances of this archetype. There is, however, considerable variation in actual reporting/messaging practice and this archetype/related archetypes are designed to handle such variation.
 
 This archetype supports multiple approaches to recording of specimen, reflecting current practice which varies enormously. A Laboratory test result has a high degree of alignment to an HL7 FHIR Diagnostic Report resource.
 
 It is anticipated that one or more instances of this archetype, or archetype family, will be sent back to a requesting clinician within a laboratory report document comprising COMPOSITION.report_result archetype, or similar, and other relevant ENTRY archetypes.
 
-Where 'reflex tests' are performed by the laboratory, these may be handled as per US/FHIR guidance (see https://www.hl7.org/fhir/2015may/uslabreport-guide.html) or other local policy.
+The recording of confounding factors is reported inconsistently in practice, depending on the source laboratory. In the State section of the archetype there is a simple 'Confounding factors' data element that is optional and can be repeated as one way to record a variety of simple factors that need to be made explicit as they may influence interpretation of the results. If the confounding factors are more complex, it may be appropriate to create a local/shared CLUSTER archetype that can be nested in the 'Confounding factors details' SLOT. 
+Note 1: Known or required pre-conditions, such as 'fasting' or 'Day 1 of menstrual cycle', should be reported in the 'Sampling conditions' data element in the CLUSTER.specimen archetype, nested within this OBSERVATION archetype.
+Note 2: Known issues with specimen collection or handling, such as 'sample haemolysed' or 'prolonged use of tourniquet' should be reported within 'Specimen quality' in the CLUSTER.specimen archetype, nested within this OBSERVATION archetype.
 
-For example, one of the following ...
-
+Where 'reflex tests' are performed by the laboratory, these may be handled as per US/FHIR guidance (see https://www.hl7.org/fhir/2015may/uslabreport-guide.html) or other local policy. For example, one of the following ...
 1. Record the reflex test results additional 'Test findings' within the same 'openEHR-EHR-OBSERVATION.laboratory_test_result'
-
 2. Record the reflex test results as 'Test findings' within a new 'openEHR-EHR-OBSERVATION.laboratory_test_result' but refer to the original lab test request via 'Test request details'.
-
 3. Record the reflex test results as 'Test findings' within a new 'openEHR-EHR-OBSERVATION.laboratory_test_result' but reference a new lab test request as well as the original lab test request via 'Test request details'.">
 			keywords = <"lab", "pathology", "biochemistry", "haematology", "microbiology", "immunology", "laboratory", "anatomical", "chemical", "clinical", "immunopathology", "cytology", "histopathology", "test", "biopsy", "specimen", "forensic", "genetic", "laboratory medicine", "results", "analysis">
 			misuse = <"Not to be used to record an Autopsy or a Forensic report, although tests on some specimens that are taken in such situations may be represented using this archetype. For these, additional or specialised archetypes will be required to represent the data
@@ -126,7 +126,7 @@ This archetype is suitable for representation of general laboratory test results
 		>
 	>
 	lifecycle_state = <"in_development">
-	other_contributors = <"Vebjørn Arntzen, Oslo University Hospital, Norway (openEHR Editor)", "Koray Atalag, University of Auckland, New Zealand", "Silje Ljosland Bakke, Nasjonal IKT HF, Norway (openEHR Editor)", "Ryan Julius Banez, AC Health, Philippines", "SB Bhattacharyya, Sudisa Consultancy Services, India", "Sharmila Biswas, Dr Sharmila Biswas GP, Australia", "Johan Bjerner, Fürst AS, Norway", "Doug Chesher, PaLMS, Australia", "Stephen Chu, NEHTA, Australia (Editor)", "Matthew Cordell, NEHTA, Australia", "Andre de Wolf, NeHTA, Australia", "Gail Easterbrook, Flinders Medical Centre, Australia", "David Evans, Queensland Health, Australia", "David Fallas, Sysmex NZ Ltd, New Zealand", "Shahla Foozonkhah, Iran ministry of health and education, Iran", "Hildegard Franke, freshEHR Clinical Informatics Ltd., United Kingdom", "Heath Frankel, Ocean Informatics, Australia", "Rosane Gotardo, Systema Ltda., Brazil", "Heather Grain, Llewelyn Grain Informatics, Australia", "Grahame Grieve, Health Intersections Pyty Ltd, Australia (Editor)", "Sam Heard, Ocean Informatics, Australia", "Anca Heyd, DIPS AS, Norway", "Evelyn Hovenga, EJSH Consulting, Australia", "Lars Morgan Karlsen, DIPS ASA, Norway", "Mary Kelaher, NEHTA, Australia", "Michael Legg, Michael Legg & associates, Australia", "Sabine Leh, Haukeland University Hospital, Department of Pathology, Norway", "Heather Leslie, Atomica Informatics, Australia (openEHR Editor)", "Zijian Li, China", "Jan-Arne Ludvigsen, DIPS AS, Norway", "Ole Martin Sand, DIPS AS, Norway", "Mike Martyn, The Hobart Anaesthetic Group, Australia", "James McClay, University of Nebraska Medical Center, United States", "Andrew McIntyre, Medical-Objects, Australia", "David McKillop, NEHTA, Australia", "Hildegard McNicoll, freshEHR Clinical Informatics Ltd., United Kingdom", "Ian McNicoll, freshEHR Clinical Informatics, United Kingdom (openEHR Editor)", "Chris Mitchell, RACGP, Australia", "Stewart Morrison, NEHTA, Australia", "Bjørn Næss, DIPS AS, Norway", "Masafumi Okada, University of Tokyo, Japan", "Andrej Orel, Marand d.o.o., Slovenia", "Michael Osborne, Mater Health Services, Australia", "Vaclav Papez, University of West Bohemia, Czech Republic", "Vladimir Pizzo, Hospital Sírio Libanês, Brazil", "Navin Ramachandran, NHS, United Kingdom", "Jussara Rotzsch, UNB, Brazil", "David Rowed, VAMC Clinic, Australia (Editor)", "Mona Saleh (Translator)", "Anoop Shah, University College London, United Kingdom", "Kyle Shore, Charm Health, Australia", "Iztok Stotl, UKCLJ, Slovenia", "Norwegian Review Summary, Nasjonal IKT HF, Norway", "Sveinung Sørbye, UNN HF, Norway", "Nyree Taylor, Ocean Informatics, Australia", "Tesfay Teame, Folkehelseinstittutet, Norway", "Rowan Thomas, St. Vincent's Hospital Melbourne, Australia", "Michael Thompson, Queensland Health, Australia", "Gordon Tomes, Australian Institute of Health and Welfare, Australia", "Richard Townley-O'Neill, NEHTA, Australia", "Torleif Trydal, Fürst AS, Norway", "John Tore Valand, Helse Bergen, Norway (openEHR Editor)", "Wouter Zanen, Eurotranplant, Netherlands", "Lin Zhang, BIPH, China">
+	other_contributors = <"Tomas Alme, DIPS ASA, Norway", "Vebjørn Arntzen, Oslo University Hospital, Norway (openEHR Editor)", "Koray Atalag, University of Auckland, New Zealand", "Silje Ljosland Bakke, Nasjonal IKT HF, Norway (openEHR Editor)", "Ryan Julius Banez, AC Health, Philippines", "Kristian Berg, Vestvågøy kommune - Fagutviklingsavdelingen, Norway", "SB Bhattacharyya, Sudisa Consultancy Services, India", "Sharmila Biswas, Dr Sharmila Biswas GP, Australia", "Johan Bjerner, Fürst, Norway", "Doug Chesher, PaLMS, Australia", "Bjørn Christensen, Helse Bergen HF, Norway", "Stephen Chu, NEHTA, Australia (Editor)", "Matthew Cordell, NEHTA, Australia", "Lisbeth Dahlhaug, Helse Midt - Norge IT, Norway", "Andre de Wolf, NeHTA, Australia", "Gail Easterbrook, Flinders Medical Centre, Australia", "Stig Erik Hegrestad, Helse Førde, Norway", "David Evans, Queensland Health, Australia", "David Fallas, Sysmex NZ Ltd, New Zealand", "Shahla Foozonkhah, Iran ministry of health and education, Iran", "Hildegard Franke, freshEHR Clinical Informatics Ltd., United Kingdom", "Heath Frankel, Ocean Informatics, Australia", "Frode Gilberg, PRIDOK AS, Norway", "Rosane Gotardo, Systema Ltda., Brazil", "Heather Grain, Llewelyn Grain Informatics, Australia", "Grahame Grieve, Health Intersections Pyty Ltd, Australia (Editor)", "Åshild Halvorsen, Helse Nord RHF, Norway", "Sam Heard, Ocean Informatics, Australia", "Anca Heyd, DIPS AS, Norway", "Geir Hoff, Sykehuset Telemark HF, Norway", "Evelyn Hovenga, EJSH Consulting, Australia", "Silje Kaada, Helse-Bergen, Avdeling for immunologi og transfusjonsmedisin, Norway", "Lars Morgan Karlsen, DIPS ASA, Norway", "Mary Kelaher, NEHTA, Australia", "Anne Kristin Strand, Sykehuspartner HF, Norway", "Liv Laugen, Oslo universitetssykehus, Norway", "Michael Legg, Michael Legg & associates, Australia", "Sabine Leh, Haukeland University Hospital, Department of Pathology, Norway", "Heather Leslie, Atomica Informatics, Australia (openEHR Editor)", "Zijian Li, China", "Jan-Arne Ludvigsen, DIPS AS, Norway", "Hallvard Lærum, Direktoratet for e-helse, Norway", "Siv Marie Lien, DIPS ASA, Norway", "Ole Martin Sand, DIPS ASA, Norway", "Mike Martyn, The Hobart Anaesthetic Group, Australia", "James McClay, University of Nebraska Medical Center, United States", "Andrew McIntyre, Medical-Objects, Australia", "David McKillop, NEHTA, Australia", "Hildegard McNicoll, freshEHR Clinical Informatics Ltd., United Kingdom", "Ian McNicoll, freshEHR Clinical Informatics, United Kingdom (openEHR Editor)", "Chris Mitchell, RACGP, Australia", "Stewart Morrison, NEHTA, Australia", "Bjørn Næss, DIPS AS, Norway", "Masafumi Okada, University of Tokyo, Japan", "Andrej Orel, Marand d.o.o., Slovenia", "Michael Osborne, Mater Health Services, Australia", "Vaclav Papez, University of West Bohemia, Czech Republic", "Anne Pauline Anderssen, Helse Nord RHF, Norway", "Vladimir Pizzo, Hospital Sírio Libanês, Brazil", "Navin Ramachandran, NHS, United Kingdom", "Lars Retterstøl, OUS, Norway", "Jussara Rotzsch, Hospital Alemão Oswaldo Cruz, Brazil", "David Rowed, VAMC Clinic, Australia (Editor)", "Mona Saleh (Translator)", "Anoop Shah, University College London, United Kingdom", "Kyle Shore, Charm Health, Australia", "Hildegunn Siv Aase, Helse Bergen, Norway", "Iztok Stotl, UKCLJ, Slovenia", "Line Sæle, Nasjonal IKT HF, Norway", "Sveinung Sørbye, UNN HF, Norway", "Nyree Taylor, Ocean Informatics, Australia", "Tesfay Teame, Folkehelseinstittutet, Norway", "Rowan Thomas, St. Vincent's Hospital Melbourne, Australia", "Michael Thompson, Queensland Health, Australia", "Gordon Tomes, Australian Institute of Health and Welfare, Australia", "Richard Townley-O'Neill, NEHTA, Australia", "Torleif Trydal, Fürst AS, Norway", "Gro-Hilde Ulriksen, Norwegian center for ehealthresearch, Norway", "John Tore Valand, Helse Bergen, Norway (openEHR Editor)", "Wouter Zanen, Eurotranplant, Netherlands", "Lin Zhang, Taikang Insurance Group, China">
 	other_details = <
 		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
 		["custodian_organisation"] = <"openEHR Foundation">
@@ -140,8 +140,8 @@ Hl7 FHIR Diagnostic Report resource: HL7 fhir; Available from http://www.hl7.org
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"B22BCB9AB6F5236CA89473CF396BF40D">
-		["build_uid"] = <"474f9977-5978-43fd-8458-0e386773d6fb">
+		["MD5-CAM-1.0.1"] = <"1DB34ACF3B067B0BD8B738B4E61BDA10">
+		["build_uid"] = <"cc82621e-830a-47da-8767-a3fc44e9c240">
 		["revision"] = <"0.0.1-alpha">
 	>
 
@@ -163,7 +163,7 @@ definition
 										include
 											archetype_id/value matches {/openEHR-EHR-CLUSTER\.specimen(-[a-zA-Z0-9_]+)*\.v0/}
 									}
-									ELEMENT[at0073] occurrences matches {0..1} matches {    -- Overall test status
+									ELEMENT[at0073] occurrences matches {0..*} matches {    -- Overall test status
 										value matches {
 											DV_CODED_TEXT matches {
 												defining_code matches {
@@ -231,7 +231,7 @@ definition
 											DV_TEXT matches {*}
 										}
 									}
-									allow_archetype CLUSTER[at0114] occurrences matches {0..*} matches {    -- Confounding factors details
+									allow_archetype CLUSTER[at0114] occurrences matches {0..*} matches {    -- Structured confounding factors
 										include
 											archetype_id/value matches {/.*/}
 									}
@@ -382,6 +382,9 @@ ontology
 				["at0073"] = <
 					text = <"*Overall test status(en)">
 					description = <"*The status of the laboratory test result as a whole.(en)">
+					comment = <"*The values have been specifically chosen to match those in the HL7 FHIR Diagnostic report, historically derived from HL7v2 practice. Other local codes/terms can be used via the Text 'choice'.
+
+This element is multiple occurrence to cater for the use cases where statuses for different aspects of the result have been split into several elements. (en)">
 				>
 				["at0074"] = <
 					text = <"*Cancelled(en)">
@@ -457,7 +460,7 @@ ontology
 - Known issues with specimen collection or handling should be carried in Cluster Specimen archetype 'Specimen quality' elements. For example 'prolonged use of tourniqet', 'sample haemolysed'.(en)">
 				>
 				["at0114"] = <
-					text = <"*Patient state details(en)">
+					text = <"*Structured confounding factors (en)">
 					description = <"*Details of patient state that may alter interpretation of the laboratory test.(en)">
 				>
 				["at0115"] = <
@@ -518,7 +521,9 @@ ontology
 				["at0017"] = <
 					text = <"Receiving laboratory">
 					description = <"Details of the laboratory which received the request and has overall responsibility to manage reporting of the test, even if other labs perform specific aspects.">
-					comment = <"The receiving laboratory may either perform the test or refer it to another laboratory. Where a different laboratory is responsible for performing the testing on specific analytes, we would expect those details to be carried in the laboratory analyte cluster via a slot. This slot is intended to carry details of the laboratory which received the request and has overall responsibility to manage reporting of the test, even if other labs perform specific aspects. For example CLUSTER.organization.">
+					comment = <"The receiving laboratory may either perform the test or refer it to another laboratory. Where a different laboratory is responsible for performing the testing on specific analytes, we would expect those details to be carried in the laboratory analyte cluster via a slot.
+
+This slot is intended to carry details of the laboratory which received the request and has overall responsibility to manage reporting of the test, even if other labs perform specific aspects.">
 				>
 				["at0035"] = <
 					text = <"Distribution list">
@@ -565,6 +570,9 @@ ontology
 				["at0073"] = <
 					text = <"Overall test status">
 					description = <"The status of the laboratory test result as a whole.">
+					comment = <"The values have been specifically chosen to match those in the HL7 FHIR Diagnostic report, historically derived from HL7v2 practice. Other local codes/terms can be used via the Text 'choice'.
+
+This element is multiple occurrence to cater for the use cases where statuses for different aspects of the result have been split into several elements.">
 				>
 				["at0074"] = <
 					text = <"Cancelled">
@@ -586,17 +594,19 @@ ontology
 				["at0094"] = <
 					text = <"Test request details">
 					description = <"Details about the test request.">
-					comment = <"In most situations there is one test request and a single corresponding test result, however this repeating cluster allows for the situation where there may be multiple test requests reported using a single test result. As an example: 'a clinician asks for blood glucose in one request and Urea/electrolytes in a second request, but the lab analyser does both and the lab wishes to report these together'.">
+					comment = <"In most situations there is one test request and a single corresponding test result, however this repeating cluster allows for the situation where there may be multiple test requests reported using a single test result.
+
+As an example: 'a clinician asks for blood glucose in one request and Urea/electrolytes in a second request, but the lab analyser does both and the lab wishes to report these together'.">
 				>
 				["at0097"] = <
 					text = <"Test results">
-					description = <"Results of the tests performed on the specimen.">
-					comment = <"This slot may carry an individual analyte, a group, panel or battery of multiple results, or a more complex and specific structure.">
+					description = <"Results of the tests performed on the specimen(s).">
+					comment = <"This SLOT may carry an individual analyte, a group, panel or battery of multiple results, or a more complex and specific structure.">
 				>
 				["at0098"] = <
 					text = <"Test diagnosis">
 					description = <"Single word, phrase or brief description that represents the clinical meaning and significance of the laboratory test results.">
-					comment = <"For example: 'Severe hepatic impairment', 'Salmonella contamination'. Coding of the diagnosis with a terminology is preferred, where possible.This diagnosis should be aligned with the narrative in the 'Conclusion'.">
+					comment = <"For example: 'Severe hepatic impairment', 'Salmonella contamination'. Coding of the diagnosis with a terminology is preferred, where possible. This diagnosis should be aligned with the narrative in the 'Conclusion'.">
 				>
 				["at0100"] = <
 					text = <"Clinical information provided">
@@ -634,13 +644,14 @@ ontology
 					description = <"Issues or circumstances that impact on the accurate interpretation of the measurement or test result.">
 					comment = <"'Confounding factors' should be reserved for uncontrolled/unplanned issues of patient state/physiology that might affect interpretation for example 'recent exercise', 'day 1 of menstrual cycle'.
 
-- Known or required pre-conditions, such as 'fasting' or 'day n of menstrual cycle' should be carried in the Cluster Specimen archetype 'Sampling conditions' element. In some cases pre-conditions are captured as part of the test name, for example 'Fasting blood glucose'.
+- Known or required pre-conditions, such as 'fasting' or 'day n of menstrual cycle' should be carried in the CLUSTER.specimen archetype 'Sampling conditions' element. In some cases pre-conditions are captured as part of the test name, for example 'Fasting blood glucose'.
 
-- Known issues with specimen collection or handling should be carried in Cluster Specimen archetype 'Specimen quality' elements. For example 'prolonged use of tourniqet', 'sample haemolysed'.">
+- Known issues with specimen collection or handling should be carried in CLUSTER.specimen archetype 'Specimen quality' elements. For example 'prolonged use of tourniqet', 'sample haemolysed'.">
 				>
 				["at0114"] = <
-					text = <"Confounding factors details">
-					description = <"Details of issues or circumstances that impact on the accurate interpretation of the measurement or test result. For example Last Normal Menstrual Period (LNMP).">
+					text = <"Structured confounding factors">
+					description = <"Details of issues or circumstances that impact on the accurate interpretation of the measurement or test result.">
+					comment = <"For example Last Normal Menstrual Period (LNMP).">
 				>
 				["at0115"] = <
 					text = <"Corrected">
@@ -673,7 +684,7 @@ ontology
 		["nb"] = <
 			items = <
 				["at0000"] = <
-					text = <"Laboratorieprøveresultat">
+					text = <"Laboratorieresultat">
 					description = <"Resultatet, inkludert funn og tolkning, av en laboratorieanalyse utført på prøvemateriale fra et individ eller materiale relatert til individet.">
 				>
 				["at0001"] = <
@@ -694,7 +705,7 @@ ontology
 				>
 				["at0005"] = <
 					text = <"Analysenavn">
-					description = <"Navn på den utførte analysen på prøvematerialet.">
+					description = <"Navn på analysen som er utført på prøvematerialet.">
 					comment = <"Et analyseresulat kan gjelde for en enkelt analyse eller en gruppe av analyser.
 
 Analysen kan kodes med medisinsk kodeverk som for eksempel NLK (Norsk laboratoriekodeverk), LOINC, SNOMED CT eller lokale laboratoriekodeverk.
@@ -704,10 +715,12 @@ Eksempler kan være \"Glukose\", \"Elektrolytter\", \"Blodgass\", \"Diffrensialt
 				["at0017"] = <
 					text = <"Ansvarlig laboratorium">
 					description = <"Detaljer om laboratoriet som mottok den opprinnelige rekvisisjonen og har det overordnede ansvaret for prøven, selv om det er andre laboratorier som utfører de enkelte analysene.">
-					comment = <"Det ansvarlige laboratoriet kan enten utføre analysene selv, eller videresende til andre laboratorier for analyse. Hvis et annet laboratorium har utført analysene bør informasjon om dette bli beskrevet i et SLOT i arketypen \"Laboratorieanalytt\". ***">
+					comment = <"Det ansvarlige laboratoriet kan enten utføre analysene selv, eller videresende til andre laboratorier for analyse. Hvis et annet laboratorium har utført spesifikke analyser bør informasjon om dette bli beskrevet i et SLOT i arketypen \"Laboratorieanalytt\".
+
+Dette SLOTet er ment for detaljer om laboratoriet som mottok rekvisisjonen og har det overordnede ansvaret for å sende en svarrapport, selv om andre laboratorier utfører spesifikke deler av den.">
 				>
 				["at0035"] = <
-					text = <"Distribusjonsliste">
+					text = <"Kopimottakere">
 					description = <"Detaljert informasjon knyttet til kliniker eller organisatorisk enhet som skal motta en kopi av laboratoriesvaret.">
 					comment = <"Personene eller organisasjonene på distribusjonslisten mottar svaret kun til informasjon, og det er hovedmottakeren av rapporten som forventes å agere på den.">
 				>
@@ -730,13 +743,15 @@ Eksempler kan være \"Glukose\", \"Elektrolytter\", \"Blodgass\", \"Diffrensialt
 				>
 				["at0062"] = <
 					text = <"Rekvirentens rekvisisjonsID">
-					description = <"Rekvisisjonens lokale ID tildelt av rekvirenten.">
+					description = <"Rekvirentens/bestillers lokale ID for rekvisisjonen.">
 					comment = <"Tilsvarende HL7 \"Placer Order Identifier\".">
 				>
 				["at0063"] = <
 					text = <"Rekvisisjonsmottakers rekvisisjonsID">
-					description = <"Rekvisisjonens lokale ID tildelt av rekvisisjonsmottakeren, vanligvis av laboratoriesystemet.">
-					comment = <"En ID tilordnet rekvisisjonen av laboratorieinformasjonssystemet (LIS) åpner for sporing av fremdrift og til å koble svar til rekvisisjoner. Det gir også en referanse for forespørsler, og tilsvarer som regel HL7 \"Filler Order Identifier\".">
+					description = <"Bestillingens/rekvisisjonens lokale ID/referansenummer tildelt av tjenesteyter/mottaker.">
+					comment = <"En ID av rekvisjonen/bestillingen gitt av tjenesteyter/mottaker av bestillingen. Denne ID åpner for sporing av fremdriften/prosessforløpet på bestillingen av undersøkelsen/rekvisisjonen og for å koble analyseresulet/undersøkelsesresultatet til rekvisisjonen/bestillingen. 
+F.eks. rekvisisjonsnummer, remissenummer. 
+(Denne IDen er ofte tildelt av LIMS (laboratoriedatasystemet) eller fra kommer fra pretrykte rekvisisjoner). Som regel tilsvarer dette HL7 \"Filler Order Identifier\".">
 				>
 				["at0065"] = <
 					text = <"Prøvedetaljer">
@@ -749,15 +764,18 @@ Eksempler kan være \"Glukose\", \"Elektrolytter\", \"Blodgass\", \"Diffrensialt
 					comment = <"Dette er en type sporings-ID. Som oftest benyttes rekvisisjonsnummeret, eventuelt et sekundærnummer.">
 				>
 				["at0073"] = <
-					text = <"Overordnet status på laboratorieresultat">
-					description = <"Den overordnede statusen på hele laboratorieresultatet/prøven.">
+					text = <"Overordnet resultatstatus">
+					description = <"Den overordnede statusen for hele laboratorieresultatet/prøven.">
+					comment = <"Verdiene er valgt spesifikt for å samsvare med verdiene i HL7 FHIR-ressursen \"Diagnostic report\", som historisk sett kommer fra praksis i HL7 v2. Andre lokale koder eller termer kan brukes ved å bruke datatypen \"Fri eller kodet tekst.
+
+Dette elementet kan repeteres for å understøtte bruksområdene der statuser for forskjellige aspekter av resultatet er delt opp i flere elementer. Et eksempel på dette er de norske standard labsvarmeldingene i HIS 1.4-standarden, der status for svaret og status for laboratorieprosessen håndteres separat.">
 				>
 				["at0074"] = <
 					text = <"Kansellert">
 					description = <"Svaret er utilgjengelig fordi analysen ikke ble påbegynt eller ferdigstilt (også kalt \"avbrutt\").">
 				>
 				["at0075"] = <
-					text = <"Tidsangivelse til laboratorieresultatstatus">
+					text = <"Tidsangivelse for overordnet resultatstatus">
 					description = <"Tidspunktet for utstedelsen av den overordnede statusen på hele laboratorieresultatet/prøven.">
 				>
 				["at0077"] = <
@@ -768,21 +786,23 @@ Dette hjelper klinikere med å filtrere mellom resultatkategorier i henhold til 
 				>
 				["at0090"] = <
 					text = <"Rekvirent">
-					description = <"Detaljert informasjon knyttet til kliniker eller organisatorisk enhet som rekvirerer analysen.">
+					description = <"Detaljert informasjon knyttet til kliniker eller organisatorisk enhet som har rekvirert/bestilt analysen.">
 				>
 				["at0094"] = <
 					text = <"Rekvisisjonsdetaljer">
 					description = <"Detaljer knyttet til rekvisisjonen.">
-					comment = <"I de fleste situasjoner finnes det én rekvisisjon og ett korresponderende svar, men i noen omstendigheter kan flere rekvisisjoner representeres ved hjelp av en enkelt laboratoriesvar-arketype. For eksempel kan en kliniker bestille blodglukose i en rekvisisjon og urea og elektrolytter i en ytterligere rekvisisjon, mens laboratoriet utfører begge analysene og sender en samlet rapport.">
+					comment = <"I de fleste situasjoner finnes det én rekvisisjon og ett korresponderende svar, men i noen omstendigheter kan flere rekvisisjoner representeres ved hjelp av en enkelt laboratoriesvar-arketype.
+
+For eksempel kan en kliniker bestille blodglukose i en rekvisisjon og urea og elektrolytter i en ytterligere rekvisisjon, mens laboratoriet utfører begge analysene og sender en samlet rapport.">
 				>
 				["at0097"] = <
-					text = <"Analyseresultat">
-					description = <"Resultat av analysen(e) som er gjennomført på prøven.">
+					text = <"Analyseresultater">
+					description = <"Resultat av analysen(e) som er gjennomført på prøven(e).">
 					comment = <"Dette SLOTet kan inneholde resultat for en enkelt analyse, for en gruppe analyser, eller for en mer kompleks og spesifikk struktur.">
 				>
 				["at0098"] = <
 					text = <"Diagnose">
-					description = <"Enkeltord, frase eller kort beskrivelse som er basert på tolkningen av laboratorieresultatene.">
+					description = <"Enkeltord, frase eller kort beskrivelse av den kliniske tilstanden og/eller navn på sykdommen basert på tolkningen av laboratorieresultatene.">
 					comment = <"For eksempel \"Betydelig nedsatt leverfunksjon\", \"Salmonella\", \"Cøliaki\". Koding med en terminologi foretrekkes, der det er mulig. Diagnosen bør være i tråd med teksten i \"Konklusjon\".">
 				>
 				["at0100"] = <
@@ -792,7 +812,7 @@ Dette hjelper klinikere med å filtrere mellom resultatkategorier i henhold til 
 				>
 				["at0101"] = <
 					text = <"Kommentar">
-					description = <"Tekstlig tilleggsinformasjon om anaøyseresultat, som ikke er registrert i andre felt.">
+					description = <"Tekstlig tilleggsinformasjon om analyseresultatet, som ikke er registrert i andre felt.">
 				>
 				["at0106"] = <
 					text = <"Navn på opprinnelig rekvirert analyse">
@@ -808,9 +828,9 @@ Dette hjelper klinikere med å filtrere mellom resultatkategorier i henhold til 
 					comment = <"For eksempel \"detaljer om ELISA/nefelometri\".">
 				>
 				["at0111"] = <
-					text = <"Pasientnært analyseutstyr">
-					description = <"Dette elementet indikerer hvorvidt analysen ble utført med pasientnært utstyr i stedet for en mer formell laboratorietjeneste.">
-					comment = <"Sann dersom analysen ble utført med pasientnært utstyr.">
+					text = <"Pasientnær analysering">
+					description = <"Dette indikerer hvorvidt analysen ble utført gjennom pasientnær analysering (PNA) i stedet for en mer formell laboratorietjeneste.">
+					comment = <"Sann dersom analysen ble utført ved pasientnær analysering (PNA).">
 				>
 				["at0112"] = <
 					text = <"*Tree(en)">
@@ -826,8 +846,9 @@ Dette hjelper klinikere med å filtrere mellom resultatkategorier i henhold til 
 - Kjente forhold knyttet til prøvetaking eller håndtering av prøven (preanalyttiske forhold) bør dokumenteres i elementet \"Prøvekvalitet\" i arketypen CLUSTER.specimen. For eksempel \"Langvarig stase\" eller \"Hemolyse\".">
 				>
 				["at0114"] = <
-					text = <"Detaljer om konfunderende faktorer">
+					text = <"Strukturerte konfunderende faktorer">
 					description = <"Ytterligere detaljer om forhold i tilstand eller omstendigheter som kan påvirke tolkningen av laboratorieresultatet.">
+					comment = <"For eksempel siste normale menstruasjon.">
 				>
 				["at0115"] = <
 					text = <"Korrigert">
@@ -853,7 +874,7 @@ Dette hjelper klinikere med å filtrere mellom resultatkategorier i henhold til 
 				>
 				["at0120"] = <
 					text = <"Foreløpig">
-					description = <"Verifiserte tidlige svar er tilgjengelige, men ikke alle svar er endelige. Dette er en underkategori av \"Delvis\".">
+					description = <"Verifiserte tidlige svar er tilgjengelige, men ikke alle svar er endelige. Dette er en underkategori av \"Ufullstendig\".">
 				>
 			>
 		>
@@ -934,6 +955,9 @@ Dette hjelper klinikere med å filtrere mellom resultatkategorier i henhold til 
 				["at0073"] = <
 					text = <"*Overall test status(en)">
 					description = <"*The status of the laboratory test result as a whole.(en)">
+					comment = <"*The values have been specifically chosen to match those in the HL7 FHIR Diagnostic report, historically derived from HL7v2 practice. Other local codes/terms can be used via the Text 'choice'.
+
+This element is multiple occurrence to cater for the use cases where statuses for different aspects of the result have been split into several elements. (en)">
 				>
 				["at0074"] = <
 					text = <"已撤销">
@@ -1009,7 +1033,7 @@ Dette hjelper klinikere med å filtrere mellom resultatkategorier i henhold til 
 - Known issues with specimen collection or handling should be carried in Cluster Specimen archetype 'Specimen quality' elements. For example 'prolonged use of tourniqet', 'sample haemolysed'.(en)">
 				>
 				["at0114"] = <
-					text = <"患者状态详情">
+					text = <"*Structured confounding factors (en)">
 					description = <"可能会改变对于当前实验室检验项目的解释的，关于当前患者状态的详情。">
 				>
 				["at0115"] = <
