@@ -1,0 +1,263 @@
+﻿archetype (adl_version=1.4; uid=677fb076-99b3-448f-ab11-982ddd7e08f5)
+	openEHR-EHR-OBSERVATION.body_segment_length.v0
+
+concept
+	[at0000]	-- Body segment length
+language
+	original_language = <[ISO_639-1::en]>
+description
+	original_author = <
+		["name"] = <"Heather Leslie">
+		["organisation"] = <"Atomica Informatics, Australia">
+		["email"] = <"heather.leslie@atomicainformatics.com">
+		["date"] = <"2019-03-07">
+	>
+	details = <
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To record the measurement of the length, height, depth or circumference of an identified body part.">
+			use = <"Use to record the measurement of the length, height, depth or circumference of an identified body part. 
+
+This measurement may be recorded and tracked over time, for example tracking child growth parameters, or used to provide insight into the shape and proportions of an individual's body for purposes of clinical or anthropometric assessment.
+
+Common measured parameters that are recorded using units of length will be added to the DV_CODED_TEXT data type in the 'Body segment' data element. As further parameters are identified, these can be added to this list over time.">
+			keywords = <"anthropometry, measurement, length, height, circumference, girth, depth", ...>
+			misuse = <"Not to be used to record ubiquitous body segments that have been modelled as separate archetypes - see OBSERVATION.height, OBSERVATION.head_circumference, OBSERVATION.hip_circumference, OBSERVATION.waist_circumference and OBSERVATION.chest_circumference.">
+			copyright = <"© openEHR Foundation">
+		>
+	>
+	lifecycle_state = <"in_development">
+	other_contributors = <"Silje Ljosland Bakke, Nasjonal IKT HF, Norway (openEHR Editor)", "Heather Leslie, Atomica Informatics, Australia (openEHR Editor)", "Ian McNicoll, freshEHR Clinical Informatics, United Kingdom (openEHR Editor)", "Micaela Thierley, Helse Bergen, Norway", "Vebjørn Arntzen, Oslo University Hospital, Norway", "John Tore Valand, Helse Bergen, Norway">
+	other_details = <
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
+		["custodian_organisation"] = <"openEHR Foundation">
+		["original_namespace"] = <"org.openehr">
+		["custodian_namespace"] = <"org.openehr">
+		["original_publisher"] = <"openEHR Foundation">
+		["MD5-CAM-1.0.1"] = <"294194C87DE58428631B4F8A535FADB2">
+		["build_uid"] = <"a8c81e60-7ac9-47da-b823-5388ed19652d">
+		["revision"] = <"0.0.1-alpha">
+	>
+
+definition
+	OBSERVATION[at0000] matches {	-- Body segment length
+		data matches {
+			HISTORY[at0001] matches {	-- Event Series
+				events cardinality matches {1..*; unordered} matches {
+					EVENT[at0002] occurrences matches {0..*} matches {	-- Any event
+						data matches {
+							ITEM_TREE[at0003] matches {	-- ItemTree
+								items cardinality matches {2..*; unordered} matches {
+									ELEMENT[at0004] matches {	-- Body segment
+										value matches {
+											DV_TEXT matches {*}
+											DV_CODED_TEXT matches {
+												defining_code matches {
+													[local::
+													at0017, 	-- Upper arm length
+													at0018, 	-- Upper leg length
+													at0019, 	-- Leg length
+													at0020, 	-- Sitting Height
+													at0021, 	-- Crown-Rump Length
+													at0022]	-- Upper Arm Circumference (UAC)
+												}
+											}
+										}
+									}
+									ELEMENT[at0005] occurrences matches {0..1} matches {	-- Laterality
+										value matches {
+											DV_CODED_TEXT matches {
+												defining_code matches {
+													[local::
+													at0006, 	-- Left
+													at0007]	-- Right
+												}
+											}
+										}
+									}
+									ELEMENT[at0008] matches {	-- Measurement
+										value matches {
+											C_DV_QUANTITY <
+												property = <[openehr::122]>
+												list = <
+													["1"] = <
+														units = <"cm">
+													>
+													["2"] = <
+														units = <"[in_i]">
+														magnitude = <|>=0.0|>
+													>
+													["3"] = <
+														units = <"mm">
+														magnitude = <|>=0.0|>
+													>
+												>
+											>
+										}
+									}
+									ELEMENT[at0009] occurrences matches {0..1} matches {	-- Comment
+										value matches {
+											DV_TEXT matches {*}
+										}
+									}
+								}
+							}
+						}
+						state matches {
+							ITEM_TREE[at0010] matches {	-- ItemTree
+								items cardinality matches {0..*; unordered} matches {
+									ELEMENT[at0011] occurrences matches {0..1} matches {	-- Confounding factors
+										value matches {
+											DV_TEXT matches {*}
+										}
+									}
+								}
+							}
+						}
+					}
+					INTERVAL_EVENT[at0012] occurrences matches {0..1} matches {	-- Average measurement
+						math_function matches {
+							DV_CODED_TEXT matches {
+								defining_code matches {[openehr::146]}
+							}
+						}
+						data matches {
+							use_node ITEM_TREE /data[at0001]/events[at0002]/data[at0003]	-- /data[Event Series]/events[Any event]/data[ItemTree]
+						}
+						state matches {
+							use_node ITEM_TREE /data[at0001]/events[at0002]/state[at0010]	-- /data[Event Series]/events[Any event]/state[ItemTree]
+						}
+					}
+					INTERVAL_EVENT[at0013] occurrences matches {0..1} matches {	-- Difference
+						math_function matches {
+							DV_CODED_TEXT matches {
+								defining_code matches {[openehr::147]}
+							}
+						}
+						data matches {
+							use_node ITEM_TREE /data[at0001]/events[at0002]/data[at0003]	-- /data[Event Series]/events[Any event]/data[ItemTree]
+						}
+						state matches {
+							use_node ITEM_TREE /data[at0001]/events[at0002]/state[at0010]	-- /data[Event Series]/events[Any event]/state[ItemTree]
+						}
+					}
+				}
+			}
+		}
+		protocol matches {
+			ITEM_TREE[at0014] matches {	-- ItemTree
+				items cardinality matches {0..*; unordered} matches {
+					allow_archetype CLUSTER[at0015] occurrences matches {0..*} matches {	-- Measuring device
+						include
+							archetype_id/value matches {/openEHR-EHR-CLUSTER\.device(-[a-zA-Z0-9_]+)*\.v1/}
+					}
+					allow_archetype CLUSTER[at0016] occurrences matches {0..*} matches {	-- Extension
+						include
+							archetype_id/value matches {/.*/}
+					}
+				}
+			}
+		}
+	}
+
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"Body segment length">
+					description = <"Measurement of the length, height, depth or circumference of an identified body part.">
+				>
+				["at0001"] = <
+					text = <"Event Series">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Any event">
+					description = <"Default, unspecified point in time or interval event which may be explicitly defined in a template or at run-time.">
+				>
+				["at0003"] = <
+					text = <"ItemTree">
+					description = <"@ internal @">
+				>
+				["at0004"] = <
+					text = <"Body segment">
+					description = <"Name of the body segment measured.">
+				>
+				["at0005"] = <
+					text = <"Laterality">
+					description = <"Side of the body segment.">
+				>
+				["at0006"] = <
+					text = <"Left">
+					description = <"Left side of the body.">
+				>
+				["at0007"] = <
+					text = <"Right">
+					description = <"Right side of the body.">
+				>
+				["at0008"] = <
+					text = <"Measurement">
+					description = <"Measured value of the body segment.">
+				>
+				["at0009"] = <
+					text = <"Comment">
+					description = <"Additional narrative about the measurement of a body segment, not captured in other fields.">
+				>
+				["at0010"] = <
+					text = <"ItemTree">
+					description = <"@ internal @">
+				>
+				["at0011"] = <
+					text = <"Confounding factors">
+					description = <"Record any issues or factors that may impact on the measurement of the body segment.">
+				>
+				["at0012"] = <
+					text = <"Average measurement">
+					description = <"An average of multiple measurements of the body segment.">
+				>
+				["at0013"] = <
+					text = <"Difference">
+					description = <"The difference between two body segment measurements over a specified period of time.">
+				>
+				["at0014"] = <
+					text = <"ItemTree">
+					description = <"@ internal @">
+				>
+				["at0015"] = <
+					text = <"Measuring device">
+					description = <"Details of the device used for measuring the body part.">
+				>
+				["at0016"] = <
+					text = <"Extension">
+					description = <"Additional information required to capture local content or to align with other reference models/formalisms.">
+					comment = <"For example: local information requirements or additional metadata to align with FHIR or CIMI equivalents.">
+				>
+				["at0017"] = <
+					text = <"Upper arm length">
+					description = <"Distance between the acromion process of the scapula to the tip of the olecranon, over the posterior surface of the upper arm.">
+				>
+				["at0018"] = <
+					text = <"Upper leg length">
+					description = <"Distance between the inguinal crease to the proximal border of the patella, over the anterior surface of the thigh, performed with the individual sitting.">
+				>
+				["at0019"] = <
+					text = <"Leg length">
+					description = <"Distance between the anterior superior iliac spine (ASIS) and the medial malleolus.">
+				>
+				["at0020"] = <
+					text = <"Sitting Height">
+					description = <"Vertical distance between the sitting surface and the vertex of the head. A measure of trunk length, performed with the individual sitting erect.">
+				>
+				["at0021"] = <
+					text = <"Crown-Rump Length">
+					description = <"Distance between vertex of head to the lowest part of the trunk, usually the perineum or lowest surface of the buttock. A measure of trunk length, usually conducted on infants under 2 years of age, performed with the individual lying supine.">
+				>
+				["at0022"] = <
+					text = <"Upper Arm Circumference (UAC)">
+					description = <"Measurement of the girth of the upper arm at the mid point between the acromion process of the scapula and the olecranon process of the ulna. Also referred to as Mid-Upper Arm Circumference (MUAC).">
+				>
+			>
+		>
+	>
