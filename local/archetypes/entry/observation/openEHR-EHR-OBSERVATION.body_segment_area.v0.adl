@@ -1,0 +1,236 @@
+﻿archetype (adl_version=1.4; uid=067130ac-8327-49b2-a86e-941351724f5b)
+	openEHR-EHR-OBSERVATION.body_segment_area.v0
+
+concept
+	[at0000]	-- Body segment area
+language
+	original_language = <[ISO_639-1::en]>
+description
+	original_author = <
+		["name"] = <"Heather Leslie">
+		["organisation"] = <"Atomica Informatics, Australia">
+		["email"] = <"heather.leslie@atomicainformatics.com">
+		["date"] = <"2019-03-07">
+	>
+	details = <
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To record the measurement of the area of an identified body part.">
+			use = <"Use to record the measurement of the area of an identified body part. 
+
+This measurement may be recorded and tracked over time, or used to provide insight into the shape and proportions of an individual's body for purposes of clinical or anthropometric assessment.
+
+Common measured parameters that are recorded using units of area will be added to the DV_CODED_TEXT data type in the 'Body segment' data element. As further parameters are identified, these can be added to this list over time.">
+			keywords = <"anthropometry, measurement, area", ...>
+			misuse = <"">
+			copyright = <"© openEHR Foundation">
+		>
+	>
+	lifecycle_state = <"in_development">
+	other_contributors = <"Silje Ljosland Bakke, Nasjonal IKT HF, Norway (openEHR Editor)", "Heather Leslie, Atomica Informatics, Australia (openEHR Editor)", "Ian McNicoll, freshEHR Clinical Informatics, United Kingdom (openEHR Editor)", "Micaela Thierley, Helse Bergen, Norway", "Vebjørn Arntzen, Oslo University Hospital, Norway", "John Tore Valand, Helse Bergen, Norway">
+	other_details = <
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
+		["custodian_organisation"] = <"openEHR Foundation">
+		["original_namespace"] = <"org.openehr">
+		["custodian_namespace"] = <"org.openehr">
+		["original_publisher"] = <"openEHR Foundation">
+		["MD5-CAM-1.0.1"] = <"6F12CBC754D2A344BB663B0A4440ED3B">
+		["build_uid"] = <"1360f579-d864-44c3-9e9a-502c55c0e8e5">
+		["revision"] = <"0.0.1-alpha">
+	>
+
+definition
+	OBSERVATION[at0000] matches {	-- Body segment area
+		data matches {
+			HISTORY[at0001] matches {	-- History
+				events cardinality matches {1..*; unordered} matches {
+					EVENT[at0002] occurrences matches {0..*} matches {	-- Any event
+						data matches {
+							ITEM_TREE[at0003] matches {	-- ItemTree
+								items cardinality matches {2..*; unordered} matches {
+									ELEMENT[at0004] matches {	-- Body segment
+										value matches {
+											DV_TEXT matches {*}
+											DV_CODED_TEXT matches {
+												defining_code matches {[local::at0017]}		-- Mid-Upper Arm Muscle Area (MUAMA)
+											}
+										}
+									}
+									ELEMENT[at0005] occurrences matches {0..1} matches {	-- Laterality
+										value matches {
+											DV_CODED_TEXT matches {
+												defining_code matches {
+													[local::
+													at0006, 	-- Left
+													at0007]	-- Right
+												}
+											}
+										}
+									}
+									ELEMENT[at0008] matches {	-- Measurement
+										value matches {
+											C_DV_QUANTITY <
+												property = <[openehr::335]>
+												list = <
+													["1"] = <
+														units = <"cm2">
+														magnitude = <|>=0.0|>
+													>
+													["2"] = <
+														units = <"[sin_i]">
+														magnitude = <|>=0.0|>
+													>
+													["3"] = <
+														units = <"mm2">
+														magnitude = <|>=0.0|>
+													>
+												>
+											>
+										}
+									}
+									ELEMENT[at0009] occurrences matches {0..1} matches {	-- Comment
+										value matches {
+											DV_TEXT matches {*}
+										}
+									}
+								}
+							}
+						}
+						state matches {
+							ITEM_TREE[at0010] matches {	-- ItemTree
+								items cardinality matches {0..*; unordered} matches {
+									ELEMENT[at0011] occurrences matches {0..1} matches {	-- Confounding factors
+										value matches {
+											DV_TEXT matches {*}
+										}
+									}
+								}
+							}
+						}
+					}
+					INTERVAL_EVENT[at0012] occurrences matches {0..1} matches {	-- Average measurement
+						math_function matches {
+							DV_CODED_TEXT matches {
+								defining_code matches {[openehr::146]}
+							}
+						}
+						data matches {
+							use_node ITEM_TREE /data[at0001]/events[at0002]/data[at0003]	-- /data[History]/events[Any event]/data[ItemTree]
+						}
+						state matches {
+							use_node ITEM_TREE /data[at0001]/events[at0002]/state[at0010]	-- /data[History]/events[Any event]/state[ItemTree]
+						}
+					}
+					INTERVAL_EVENT[at0013] occurrences matches {0..1} matches {	-- Difference
+						math_function matches {
+							DV_CODED_TEXT matches {
+								defining_code matches {[openehr::147]}
+							}
+						}
+						data matches {
+							use_node ITEM_TREE /data[at0001]/events[at0002]/data[at0003]	-- /data[History]/events[Any event]/data[ItemTree]
+						}
+						state matches {
+							use_node ITEM_TREE /data[at0001]/events[at0002]/state[at0010]	-- /data[History]/events[Any event]/state[ItemTree]
+						}
+					}
+				}
+			}
+		}
+		protocol matches {
+			ITEM_TREE[at0014] matches {	-- ItemTree
+				items cardinality matches {0..*; unordered} matches {
+					allow_archetype CLUSTER[at0015] occurrences matches {0..*} matches {	-- Measuring device
+						include
+							archetype_id/value matches {/openEHR-EHR-CLUSTER\.device(-[a-zA-Z0-9_]+)*\.v1/}
+					}
+					allow_archetype CLUSTER[at0016] occurrences matches {0..*} matches {	-- Extension
+						include
+							archetype_id/value matches {/.*/}
+					}
+				}
+			}
+		}
+	}
+
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"Body segment area">
+					description = <"Measurement of the area of an identified body part.">
+				>
+				["at0001"] = <
+					text = <"History">
+					description = <"Event Series.">
+				>
+				["at0002"] = <
+					text = <"Any event">
+					description = <"Default, unspecified point in time or interval event which may be explicitly defined in a template or at run-time.">
+				>
+				["at0003"] = <
+					text = <"ItemTree">
+					description = <"@ internal @">
+				>
+				["at0004"] = <
+					text = <"Body segment">
+					description = <"Name of the body segment measured.">
+				>
+				["at0005"] = <
+					text = <"Laterality">
+					description = <"Side of the body segment.">
+				>
+				["at0006"] = <
+					text = <"Left">
+					description = <"Left side of the body.">
+				>
+				["at0007"] = <
+					text = <"Right">
+					description = <"Right side of the body.">
+				>
+				["at0008"] = <
+					text = <"Measurement">
+					description = <"Measured value of the body segment.">
+				>
+				["at0009"] = <
+					text = <"Comment">
+					description = <"Additional narrative about the measurement of a body segment, not captured in other fields.">
+				>
+				["at0010"] = <
+					text = <"ItemTree">
+					description = <"@ internal @">
+				>
+				["at0011"] = <
+					text = <"Confounding factors">
+					description = <"Record any issues or factors that may impact on the measurement of the body segment.">
+				>
+				["at0012"] = <
+					text = <"Average measurement">
+					description = <"An average of multiple measurements of the body segment.">
+				>
+				["at0013"] = <
+					text = <"Difference">
+					description = <"The difference between two body segment measurements over a specified period of time.">
+				>
+				["at0014"] = <
+					text = <"ItemTree">
+					description = <"@ internal @">
+				>
+				["at0015"] = <
+					text = <"Measuring device">
+					description = <"Details of the device used for measuring the body part.">
+				>
+				["at0016"] = <
+					text = <"Extension">
+					description = <"Additional information required to capture local content or to align with other reference models/formalisms.">
+					comment = <"For example: local information requirements or additional metadata to align with FHIR or CIMI equivalents.">
+				>
+				["at0017"] = <
+					text = <"Mid-Upper Arm Muscle Area (MUAMA)">
+					description = <"Estimation of the area of the upper arm, derived from the measurement of the upper arm circumference.">
+				>
+			>
+		>
+	>
