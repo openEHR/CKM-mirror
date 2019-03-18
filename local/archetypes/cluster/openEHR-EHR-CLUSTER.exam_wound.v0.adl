@@ -8,79 +8,331 @@ language
 description
 	original_author = <
 		["name"] = <"Heather Leslie">
-		["organisation"] = <"Ocean Informatics">
-		["email"] = <"heather.leslie@oceaninformatics.com">
-		["date"] = <"2015-06-25">
+		["organisation"] = <"Atomica Informatics">
+		["email"] = <"heather.leslie@atomicainformatics.com">
+		["date"] = <"2019-03-18">
 	>
 	details = <
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"For recording a narrative description and clinical interpretation of the findings observed during the physical examination of an identified wound.">
-			use = <"Use to record a narrative description of the overall findings observed during the physical examination of an identified wound. This initial draft archetype consists only of the core examination pattern data elements (as per CLUSTER.exam_pattern) and will likely be expanded further over time as specific clinical requirements are identified.
+			purpose = <"For recording a narrative description and clinical interpretation of the findings observed during the physical examination of a wound.">
+			use = <"Use to record a narrative description and clinical interpretation of the findings observed during the physical examination of a wound.
 
-This archetype has been specifically designed to be used in the 'Examination findings' SLOT within many of the CLUSTER archetypes for examination of various regions or anatomical structures - for example, CLUSTER.exam_abdomen or CLUSTER.exam_breast - but can also be used within the OBSERVATION.exam.
+This archetype has been specifically designed to be used in the 'Examination detail' SLOT within the OBSERVATION.exam or ACTION.procedure archetype, but can also be used within other ENTRY or CLUSTER archetypes, where clinically appropriate.
 
-Use to provide a framework in which CLUSTER archetypes can be nested in the 'Examination findings' SLOT to record additional structured physical examination findings. 
+Use to provide a framework in which CLUSTER archetypes can be nested in the 'Examination findings' SLOT to record additional structured physical examination findings.
 
 The CLUSTER.exclusion_exam archetype can be nested within the 'Examination not done' SLOT to optionally record explicit details about the examination not being performed.
 
 Use to incorporate the narrative descriptions of clinical findings within existing or legacy clinical systems into an archetyped format, using the 'Clinical Description' data element.">
-			misuse = <"Not to be used for recording data not related to the physical examination of an identified wound.
+			misuse = <"Not to be used to record stand-alone clinical measurements or test results - use specific OBSERVATION archetypes. For example OBSERVATION.head_circumference or OBSERVATION.glasgow_coma_scale.
 
-Not to be used for recording the clinical history - use specific OBSERVATION and CLUSTER archetypes. For example OBSERVATION.story and CLUSTER.symptom.
-
-Not to be used to record stand-alone clinical observations or measurements or test results - use specific OBSERVATION archetypes. For example OBSERVATION.blood_pressure or OBSERVATION.imaging_exam.">
+Not to be used for recording the clinical history - use specific OBSERVATION and CLUSTER archetypes. For example OBSERVATION.story and CLUSTER.symptom_sign.">
 			copyright = <"© openEHR Foundation">
 		>
 	>
 	lifecycle_state = <"in_development">
-	other_contributors = <"Silje Ljosland Bakke, Bergen Hospital Trust, Norway", "Ian McNicoll, freshEHR Clinical Informatics, United Kingdom", "John Tore Valand, Haukeland Universitetssjukehus, Norway", "Heather Leslie, Ocean Informatics, Australia">
+	other_contributors = <>
 	other_details = <
-		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
 		["custodian_organisation"] = <"openEHR Foundation">
-		["current_contact"] = <"Heather Leslie, Ocean Informatics<heather.leslie@oceaninformatics.com>">
+		["references"] = <"HL7 FHIR Profile: Skin and Wound Assessment, Release 1 [cited 2019 03 18]. Available at: https://cimi.hl7.org/submissions/september_2018/skinwoundig/fullcimi/site/index.html.">
+		["current_contact"] = <"Heather Leslie, Atomica Informatics<heather.leslie@atomicainformatics.com>">
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"490B3D1B92F202F907479349C9B2EE2E">
-		["build_uid"] = <"4982a91c-4c6f-4139-baa0-45cd841fdd22">
+		["MD5-CAM-1.0.1"] = <"325AA6E763E1E2A9ED167B90047ED5A4">
+		["build_uid"] = <"2cc7ae2c-243c-4f04-bc07-d3d76ede7106">
 		["revision"] = <"0.0.1-alpha">
 	>
 
 definition
 	CLUSTER[at0000] matches {	-- Examination of a wound
 		items cardinality matches {1..*; unordered} matches {
-			ELEMENT[at0002] occurrences matches {0..1} matches {	-- Wound type
+			ELEMENT[at0016] occurrences matches {0..1} matches {	-- Wound label
 				value matches {
 					DV_TEXT matches {*}
 				}
 			}
-			ELEMENT[at0012] occurrences matches {0..1} matches {	-- Alias
+			ELEMENT[at0001] occurrences matches {0..1} matches {	-- System or structure examined
 				value matches {
 					DV_TEXT matches {*}
 				}
 			}
-			ELEMENT[at0003] occurrences matches {0..1} matches {	-- Clinical description
-				value matches {
-					DV_TEXT matches {*}
-				}
-			}
-			ELEMENT[at0001] occurrences matches {0..1} matches {	-- Body site
+			ELEMENT[at0012] occurrences matches {0..1} matches {	-- Body site
 				value matches {
 					DV_TEXT matches {*}
 				}
 			}
 			allow_archetype CLUSTER[at0011] occurrences matches {0..*} matches {	-- Structured body site
 				include
-					archetype_id/value matches {/openEHR-EHR-CLUSTER\.anatomical_location(-[a-zA-Z0-9_]+)*\.v1|openEHR-EHR-CLUSTER\.anatomical_location_relative(-[a-zA-Z0-9_]+)*\.v1|openEHR-EHR-CLUSTER\.anatomical_location_clock(-[a-zA-Z0-9_]+)*\.v0/}
+					archetype_id/value matches {/openEHR-EHR-CLUSTER\.anatomical_location(-[a-zA-Z0-9_]+)*\.v1|openEHR-EHR-CLUSTER\.anatomical_location_circle(-[a-zA-Z0-9_]+)*\.v1|openEHR-EHR-CLUSTER\.anatomical_location_relative(-[a-zA-Z0-9_]+)*\.v1/}
+			}
+			ELEMENT[at0003] occurrences matches {0..1} matches {	-- Clinical description
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			ELEMENT[at0036] occurrences matches {0..1} matches {	-- Length
+				value matches {
+					C_DV_QUANTITY <
+						property = <[openehr::122]>
+						list = <
+							["1"] = <
+								units = <"cm">
+								magnitude = <|>=0.0|>
+							>
+							["2"] = <
+								units = <"[in_i]">
+								magnitude = <|>=0.0|>
+							>
+							["3"] = <
+								units = <"mm">
+								magnitude = <|>=0.0|>
+							>
+						>
+					>
+				}
+			}
+			ELEMENT[at0037] occurrences matches {0..1} matches {	-- Width
+				value matches {
+					C_DV_QUANTITY <
+						property = <[openehr::122]>
+						list = <
+							["1"] = <
+								units = <"cm">
+								magnitude = <|>=0.0|>
+							>
+							["2"] = <
+								units = <"mm">
+								magnitude = <|>=0.0|>
+							>
+							["3"] = <
+								units = <"[in_i]">
+								magnitude = <|>=0.0|>
+							>
+						>
+					>
+				}
+			}
+			ELEMENT[at0038] occurrences matches {0..1} matches {	-- Depth
+				value matches {
+					C_DV_QUANTITY <
+						property = <[openehr::122]>
+						list = <
+							["1"] = <
+								units = <"cm">
+								magnitude = <|>=0.0|>
+							>
+							["2"] = <
+								units = <"mm">
+								magnitude = <|>=0.0|>
+							>
+							["3"] = <
+								units = <"[in_i]">
+								magnitude = <|>=0.0|>
+							>
+						>
+					>
+				}
+			}
+			ELEMENT[at0039] occurrences matches {0..1} matches {	-- Area
+				value matches {
+					C_DV_QUANTITY <
+					>
+				}
+			}
+			ELEMENT[at0048] occurrences matches {0..1} matches {	-- Edge description
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			ELEMENT[at0049] occurrences matches {0..1} matches {	-- Edge color
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			ELEMENT[at0057] occurrences matches {0..*} matches {	-- Periwound description
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			CLUSTER[at0060] occurrences matches {0..*} matches {	-- Association
+				items cardinality matches {2..*; unordered} matches {
+					ELEMENT[at0061] matches {	-- Factor
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0062] matches {	-- Present or absent?
+						value matches {
+							DV_CODED_TEXT matches {
+								defining_code matches {
+									[local::
+									at0063, 	-- Present
+									at0064, 	-- Absent
+									at0065]	-- Indeterminate
+								}
+							}
+						}
+					}
+				}
+			}
+			CLUSTER[at0054] occurrences matches {0..*} matches {	-- Wound bed colour
+				items cardinality matches {1..*; unordered} matches {
+					ELEMENT[at0055] matches {	-- Colour
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0056] occurrences matches {0..1} matches {	-- Proportion
+						value matches {
+							DV_PROPORTION matches {*}
+						}
+					}
+				}
+			}
+			CLUSTER[at0051] occurrences matches {0..*} matches {	-- Wound bed appearance
+				items cardinality matches {1..*; unordered} matches {
+					ELEMENT[at0052] matches {	-- Appearance
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0053] occurrences matches {0..1} matches {	-- Proportion
+						value matches {
+							DV_PROPORTION matches {
+								type matches {2}
+							}
+						}
+					}
+				}
+			}
+			CLUSTER[at0014] occurrences matches {0..*} matches {	-- Internal object or structure
+				items cardinality matches {1..*; unordered} matches {
+					ELEMENT[at0015] occurrences matches {1..*} matches {	-- Object/structure
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0020] occurrences matches {0..1} matches {	-- Present or absent?
+						value matches {
+							DV_CODED_TEXT matches {
+								defining_code matches {
+									[local::
+									at0021, 	-- Present
+									at0022, 	-- Absent
+									at0023]	-- Indeterminate
+								}
+							}
+						}
+					}
+					ELEMENT[at0024] occurrences matches {0..1} matches {	-- Description
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0025] occurrences matches {0..1} matches {	-- Comment
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+				}
+			}
+			ELEMENT[at0017] occurrences matches {0..1} matches {	-- Tunnelling present?
+				value matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {
+							[local::
+							at0029, 	-- Present
+							at0030, 	-- Absent
+							at0031]	-- Indeterminate
+						}
+					}
+				}
+			}
+			CLUSTER[at0045] occurrences matches {0..*} matches {	-- Tunnelling details
+				items cardinality matches {1..*; unordered} matches {
+					ELEMENT[at0046] occurrences matches {0..1} matches {	-- Tunnel length
+						value matches {
+							C_DV_QUANTITY <
+							>
+						}
+					}
+					ELEMENT[at0047] matches {	-- Direction of tunnel
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0058] occurrences matches {0..1} matches {*}
+				}
+			}
+			ELEMENT[at0013] occurrences matches {0..*} matches {	-- Undermining present?
+				value matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {
+							[local::
+							at0026, 	-- Present
+							at0027, 	-- Absent
+							at0028]	-- Indeterminate
+						}
+					}
+				}
+			}
+			ELEMENT[at0059] occurrences matches {0..1} matches {	-- Undermining description
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			CLUSTER[at0041] occurrences matches {0..*} matches {	-- Undermining details
+				items cardinality matches {1..*; unordered} matches {
+					ELEMENT[at0042] occurrences matches {0..1} matches {	-- Amount of undermining
+						value matches {
+							C_DV_QUANTITY <
+								property = <[openehr::122]>
+								list = <
+									["1"] = <
+										units = <"cm">
+										magnitude = <|>=0.0|>
+									>
+									["2"] = <
+										units = <"mm">
+										magnitude = <|>=0.0|>
+									>
+									["3"] = <
+										units = <"[in_i]">
+										magnitude = <|>=0.0|>
+									>
+								>
+							>
+						}
+					}
+					ELEMENT[at0044] occurrences matches {0..1} matches {	-- Direction of undermining
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+				}
+			}
+			ELEMENT[at0032] occurrences matches {0..1} matches {	-- Exudate present?
+				value matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {
+							[local::
+							at0033, 	-- Present
+							at0034, 	-- Absent
+							at0035]	-- Indeterminate
+						}
+					}
+				}
 			}
 			allow_archetype CLUSTER[at0004] occurrences matches {0..*} matches {	-- Examination findings
 				include
-					archetype_id/value matches {/openEHR-EHR-CLUSTER\.dimensions(-[a-zA-Z0-9_]+)*\.v1/}
+					archetype_id/value matches {/.*/}
 			}
 			allow_archetype CLUSTER[at0005] occurrences matches {0..*} matches {	-- Multimedia representation
 				include
-					archetype_id/value matches {/openEHR-EHR-CLUSTER\.multimedia(-[a-zA-Z0-9_]+)*\.v1/}
+					archetype_id/value matches {/openEHR-EHR-CLUSTER\.multimedia(-[a-zA-Z0-9_]+)*\.v1|openEHR-EHR-CLUSTER\.multimedia(-[a-zA-Z0-9_]+)*\.v0/}
 			}
 			ELEMENT[at0006] occurrences matches {0..*} matches {	-- Clinical interpretation
 				value matches {
@@ -96,31 +348,31 @@ definition
 				include
 					archetype_id/value matches {/openEHR-EHR-CLUSTER\.exclusion_exam(-[a-zA-Z0-9_]+)*\.v1/}
 			}
+			allow_archetype CLUSTER[at0040] occurrences matches {0..*} matches {	-- Exudate details
+				include
+					archetype_id/value matches {/openEHR-EHR-CLUSTER\.exam_body_fluid\.v0/}
+			}
 		}
 	}
 
 
 ontology
+	terminologies_available = <"LOINC", ...>
 	term_definitions = <
 		["en"] = <
 			items = <
 				["at0000"] = <
 					text = <"Examination of a wound">
-					description = <"Findings observed during the physical examination of an identified wound.">
+					description = <"Findings observed during the physical examination of a wound.">
 				>
 				["at0001"] = <
-					text = <"Body site">
-					description = <"Identification of the body site under examination.">
-					comment = <"The body site could be on an area of skin or a mucous membrane, for example the right knee, palate or duodenum. If the body site has previously been identified in another archetype in which this archetype is nested, this data element becomes redundant.">
-				>
-				["at0002"] = <
-					text = <"Wound type">
-					description = <"Identification of the type of wound found on physical examination.">
-					comment = <"For example, abrasion, laceration, or ulcer. ">
+					text = <"System or structure examined">
+					description = <"Identification of the examined body system or anatomical structure.">
+					comment = <"For example: the very generic term \"skin\", which will likely require additional qualification using one of the 'Body site' data elements, or the complete phrase \"skin of right knee\". Coding of the system or structure examined with a terminology is preferred, where possible.">
 				>
 				["at0003"] = <
 					text = <"Clinical description">
-					description = <"Narrative description of the overall findings observed during the physical examination.">
+					description = <"Narrative description of the overall findings observed during the examination of a wound.">
 				>
 				["at0004"] = <
 					text = <"Examination findings">
@@ -133,6 +385,7 @@ ontology
 				["at0006"] = <
 					text = <"Clinical interpretation">
 					description = <"Single word, phrase or brief description that represents the clinical meaning and significance of the physical examination findings.">
+					comment = <"Coding of the 'Clinical interpretation' with a terminology is preferred, where possible.">
 				>
 				["at0007"] = <
 					text = <"Comment">
@@ -141,18 +394,253 @@ ontology
 				["at0008"] = <
 					text = <"Examination not done">
 					description = <"Details to explicitly record that this examination was not performed.">
-					comment = <"'Wound' should be coded with a terminology, where possible.">
 				>
 				["at0011"] = <
 					text = <"Structured body site">
-					description = <"A structured anatomical location of the finding.">
-					comment = <"If the body site has previously been identified in another archetype in which this archetype is then nested, this SLOT becomes redundant.">
+					description = <"A structured description of the area of the body under examination.">
+					comment = <"If the body site has been fully identified in the 'System or structure examined' or the 'Body site' data element, this SLOT becomes redundant.">
 				>
 				["at0012"] = <
-					text = <"Alias">
-					description = <"Identification, by using a alias name, of the wound to distinguish one wound from similar wounds at the same body site.">
-					comment = <"For example, 'Abrasion #1' as marked on a diagram of the body site.">
+					text = <"Body site">
+					description = <"Identification of the area of the body under examination.">
+					comment = <"For example: \"entire body\", \"face\" or \"right cheek\". If the body site has been fully identified in the 'System or structure examined' data element, this data element becomes redundant.">
 				>
+				["at0013"] = <
+					text = <"Undermining present?">
+					description = <"Is undermining present in the wound?">
+					comment = <"For example: color; induration; warmth; or oedema.">
+				>
+				["at0014"] = <
+					text = <"Internal object or structure">
+					description = <"Details about the observation of any exposed body structures, devices, and/or foreign bodies visible by the naked eye in a wound.">
+				>
+				["at0015"] = <
+					text = <"Object/structure">
+					description = <"Idnetification of an exposed body structure, device, and/or foreign body visible by the naked eye within the wound.">
+					comment = <"Coding of the visible internal structure if preferred, if possible.">
+				>
+				["at0016"] = <
+					text = <"Wound label">
+					description = <"A name or alias for the wound, so that it can be distinguished from other wounds.">
+				>
+				["at0017"] = <
+					text = <"Tunnelling present?">
+					description = <"Is tunnelling present in the wound?">
+				>
+				["at0020"] = <
+					text = <"Present or absent?">
+					description = <"Is the object/structure present?">
+				>
+				["at0021"] = <
+					text = <"Present">
+					description = <"The identified object or structure is observed in the wound.">
+				>
+				["at0022"] = <
+					text = <"Absent">
+					description = <"The identified object or structure is not observed in the wound.">
+				>
+				["at0023"] = <
+					text = <"Indeterminate">
+					description = <"It is not possible to tell if the  identified object or structure is present or absent in the wound.">
+				>
+				["at0024"] = <
+					text = <"Description">
+					description = <"Narrative description about the associated factor.">
+				>
+				["at0025"] = <
+					text = <"Comment">
+					description = <"Additional narrative about the associated factor, not captured in other fields.">
+				>
+				["at0026"] = <
+					text = <"Present">
+					description = <"Undermining is observed in the wound.">
+				>
+				["at0027"] = <
+					text = <"Absent">
+					description = <"Undermining is not observed in the wound.">
+				>
+				["at0028"] = <
+					text = <"Indeterminate">
+					description = <"It is not possible to tell if undermining is present or absent.">
+				>
+				["at0029"] = <
+					text = <"Present">
+					description = <"Tunnelling is observed in the wound.">
+				>
+				["at0030"] = <
+					text = <"Absent">
+					description = <"Tunnelling is not observed in the wound.">
+				>
+				["at0031"] = <
+					text = <"Indeterminate">
+					description = <"It is not possible to tell if a tunnel is present or absent.">
+				>
+				["at0032"] = <
+					text = <"Exudate present?">
+					description = <"Is an exudate present in the wound?">
+				>
+				["at0033"] = <
+					text = <"Present">
+					description = <"An exudate is observed in the wound.">
+				>
+				["at0034"] = <
+					text = <"Absent">
+					description = <"An exudate is not observed in the wound.">
+				>
+				["at0035"] = <
+					text = <"Indeterminate">
+					description = <"It is not possible to tell if an exudate is present or absent.">
+				>
+				["at0036"] = <
+					text = <"Length">
+					description = <"Length of the wound (longest dimension).">
+				>
+				["at0037"] = <
+					text = <"Width">
+					description = <"Width of the wound (perpendicular to longest dimension).">
+				>
+				["at0038"] = <
+					text = <"Depth">
+					description = <"Depth of the wound.">
+				>
+				["at0039"] = <
+					text = <"Area">
+					description = <"Area of the wound.">
+				>
+				["at0040"] = <
+					text = <"Exudate details">
+					description = <"Details about any exudate issuing from the wound.">
+				>
+				["at0041"] = <
+					text = <"Undermining details">
+					description = <"Details about undermining of the wound.">
+					comment = <"Multiple occurrences of this cluster will allow recording of the undermining occurring in different parts of the wound.">
+				>
+				["at0042"] = <
+					text = <"Amount of undermining">
+					description = <"Amount of tissue destruction that extends under the intact wound edge.">
+				>
+				["at0044"] = <
+					text = <"Direction of undermining">
+					description = <"Direction of the undermining outward from the centre of the wound, as described by a clock-face.">
+					comment = <"For example: one o'clock.">
+				>
+				["at0045"] = <
+					text = <"Tunnelling details">
+					description = <"Details about tunnelling into other tissues.">
+					comment = <"Multiple occurrences of this cluster will allow recording about each tunnel that leads from the wound.">
+				>
+				["at0046"] = <
+					text = <"Tunnel length">
+					description = <"Length of an identified tunnel radiating out from the centre of the wound.">
+				>
+				["at0047"] = <
+					text = <"Direction of tunnel">
+					description = <"Direction of the tunnel radiating outward from the centre of the wound, as described by a clock-face.">
+					comment = <"For example: one o'clock.">
+				>
+				["at0048"] = <
+					text = <"Edge description">
+					description = <"Description about the edge of the wound.">
+				>
+				["at0049"] = <
+					text = <"Edge color">
+					description = <"Colour of the wound edge.">
+				>
+				["at0051"] = <
+					text = <"Wound bed appearance">
+					description = <"Details about the appearance of the base of the wound.">
+					comment = <"Multiple occurrences of this Cluster allow for recordings of multiple discrete areas of different appearances..">
+				>
+				["at0052"] = <
+					text = <"Appearance">
+					description = <"Description of the appearance of the wound base.">
+					comment = <"For example: necrotic; sloughing; fibrinous; eschar; or granulation tissue.">
+				>
+				["at0053"] = <
+					text = <"Proportion">
+					description = <"The proportion of the wound that has the identified appearance.">
+					comment = <"This is the the area of the base of the wound that has a specific appearance, compared to the total area of the wound bed and represented as a percentage.">
+				>
+				["at0054"] = <
+					text = <"Wound bed colour">
+					description = <"Details about the colour of the base of the wound.">
+					comment = <"Multiple occurrences of this Cluster allow for recordings of more than one colour.">
+				>
+				["at0055"] = <
+					text = <"Colour">
+					description = <"Description of the colour of the wound base.">
+					comment = <"For example: red/healthy; red/hyperaemic; pink, yellow; black, brown; or grey.">
+				>
+				["at0056"] = <
+					text = <"Proportion">
+					description = <"The proportion of the wound that is the identified colour.">
+					comment = <"This is the the area of the base of the wound that is a specific colour, compared to the total area of the wound bed and represented as a percentage.">
+				>
+				["at0057"] = <
+					text = <"Periwound description">
+					description = <"Description of the skin surrounding the wound.">
+					comment = <"Multiple occurrences allow for the use of coded text to describe various aspects of the skin around the wound.">
+				>
+				["at0058"] = <
+					text = <"Description">
+					description = <"Narrative description of a tunnel.">
+				>
+				["at0059"] = <
+					text = <"Undermining description">
+					description = <"Narrative description about undermining of the whole wound.">
+				>
+				["at0060"] = <
+					text = <"Association">
+					description = <"Details about factors that may be associated with the wound.">
+				>
+				["at0061"] = <
+					text = <"Factor">
+					description = <"Associated factor that may causing or influencing the healing of the wound.">
+					comment = <"For example: a device; or pressure point.">
+				>
+				["at0062"] = <
+					text = <"Present or absent?">
+					description = <"Is the identified factor present?">
+				>
+				["at0063"] = <
+					text = <"Present">
+					description = <"The identified factor is observed.">
+				>
+				["at0064"] = <
+					text = <"Absent">
+					description = <"The identified factor is not observed.">
+				>
+				["at0065"] = <
+					text = <"Indeterminate">
+					description = <"It is not possible to tell if the identified factor is present or absent.">
+				>
+			>
+		>
+	>
+	term_bindings = <
+		["LOINC"] = <
+			items = <
+				["at0000"] = <[LOINC(2.27)::39135-9]>
+				["at0013"] = <[LOINC(2.27)::72295-9]>
+				["at0015"] = <[LOINC(2.27)::89250-5]>
+				["at0017"] = <[LOINC(2.27)::72298-3]>
+				["at0032"] = <[LOINC(2.27)::89259-6]>
+				["at0036"] = <[LOINC(2.27)::39126-8]>
+				["at0037"] = <[LOINC(2.27)::39125-0]>
+				["at0038"] = <[LOINC(2.27)::39127-6]>
+				["at0039"] = <[LOINC(2.27)::89260-4]>
+				["at0042"] = <[LOINC(2.27)::72293-4]>
+				["at0044"] = <[LOINC(2.27)::72294-2]>
+				["at0046"] = <[LOINC(2.27)::72296-7]>
+				["at0047"] = <[LOINC(2.27)::72297-5]>
+				["at0048"] = <[LOINC(2.27)::72304-9]>
+				["at0049"] = <[LOINC(2.27)::39133-4]>
+				["at0052"] = <[LOINC(2.27)::72371-8]>
+				["at0053"] = <[LOINC(2.27)::72370-0]>
+				["at0055"] = <[LOINC(2.27)::39132-6]>
+				["at0056"] = <[LOINC(2.27)::89255-4]>
+				["at0057"] = <[LOINC(2.27)::72301-5]>
 			>
 		>
 	>
