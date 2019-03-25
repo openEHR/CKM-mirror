@@ -22,20 +22,38 @@ This measurement may be recorded and tracked over time, for example tracking chi
 
 Common measured parameters that are recorded using units of length will be added to the DV_CODED_TEXT data type in the 'Body segment' data element. As further parameters are identified, these can be added to this list over time.">
 			keywords = <"anthropometry, measurement, length, height, circumference, girth, depth", ...>
-			misuse = <"Not to be used to record ubiquitous body segments that have been modelled as separate archetypes - see OBSERVATION.height, OBSERVATION.head_circumference, OBSERVATION.hip_circumference, OBSERVATION.waist_circumference and OBSERVATION.chest_circumference.">
+			misuse = <"Not to be used to record common body segments that have been modelled as separate archetypes:
+- for Body height/length - see OBSERVATION.height;
+- for Head circumference - see OBSERVATION.head_circumference;
+- for Hip circumference - see OBSERVATION.hip_circumference;
+- for Waist circumference - see OBSERVATION.waist_circumference; and
+- for Chest circumference - see OBSERVATION.chest_circumference.
+
+Not to be used to record the weight of an object or part of the body.
+
+Not to be used to record the dimentions of an internal body organ or a lesion.
+
+Not to be used to record skinfold measurements - use archetypes that are specific for this purpose.">
 			copyright = <"© openEHR Foundation">
 		>
 	>
 	lifecycle_state = <"in_development">
 	other_contributors = <"Silje Ljosland Bakke, Nasjonal IKT HF, Norway (openEHR Editor)", "Heather Leslie, Atomica Informatics, Australia (openEHR Editor)", "Ian McNicoll, freshEHR Clinical Informatics, United Kingdom (openEHR Editor)", "Micaela Thierley, Helse Bergen, Norway", "Vebjørn Arntzen, Oslo University Hospital, Norway", "John Tore Valand, Helse Bergen, Norway">
 	other_details = <
-		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
 		["custodian_organisation"] = <"openEHR Foundation">
+		["references"] = <"De Mits S, Coorevits P, De Clercq D, Elewaut D, Woodburn J, Roosen P. Reliability and validity of the INFOOT three-dimensional foot digitizer for patients with rheumatoid arthritis. J Am Podiatr Med Assoc. 2011 May-Jun;101(3):198-207. PubMed PMID: 21622631.
+
+Man-Systems Integration Standards,Volume 1, Section 3. [Internet]. National Aeronautics and Space Administration. Anthropometry and biomechanics; [cited 2019 Mar 25]. Available from: https://msis.jsc.nasa.gov/sections/section03.htm.
+
+National health and nutrition examination survey III: Body Measurements (Anthropometry) [Internet]. Rockville, MD: Westat, Inc; 1988 Oct [cited 2019 Mar 25]. Available from: https://wwwn.cdc.gov/nchs/data/nhanes3/manuals/anthro.pdf.
+
+Gordon, Claire C. et. al. 1988 Anthropometric Survey of U.S. Personnel: Summary Statistics Interim Report [Internet]. March 1989 [cited 2019 Mar 25]. Available from: https://multisite.eos.ncsu.edu/www-ergocenter-ncsu-edu/wp-content/uploads/sites/18/2016/06/Anthropometric-Detailed-Data-Tables.pdf.">
 		["original_namespace"] = <"org.openehr">
-		["custodian_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
-		["MD5-CAM-1.0.1"] = <"294194C87DE58428631B4F8A535FADB2">
-		["build_uid"] = <"a8c81e60-7ac9-47da-b823-5388ed19652d">
+		["custodian_namespace"] = <"org.openehr">
+		["MD5-CAM-1.0.1"] = <"19A69768276BA33B08E12D03CABE9509">
+		["build_uid"] = <"cfea79d8-d1a1-487b-9ba2-82678a54cf83">
 		["revision"] = <"0.0.1-alpha">
 	>
 
@@ -54,12 +72,16 @@ definition
 											DV_CODED_TEXT matches {
 												defining_code matches {
 													[local::
-													at0017, 	-- Upper arm length
-													at0018, 	-- Upper leg length
-													at0019, 	-- Leg length
-													at0020, 	-- Sitting Height
-													at0021, 	-- Crown-Rump Length
-													at0022]	-- Upper Arm Circumference (UAC)
+													at0017, 	-- Sitting Height
+													at0024, 	-- Armspan
+													at0018, 	-- Upper arm length
+													at0019, 	-- Arm Circumference
+													at0020, 	-- Leg length
+													at0021, 	-- Upper leg length
+													at0025, 	-- Thigh circumference
+													at0026, 	-- Calf circumference
+													at0023, 	-- Foot length
+													at0022]	-- Crown-Rump Length
 												}
 											}
 										}
@@ -128,19 +150,6 @@ definition
 							use_node ITEM_TREE /data[at0001]/events[at0002]/state[at0010]	-- /data[Event Series]/events[Any event]/state[ItemTree]
 						}
 					}
-					INTERVAL_EVENT[at0013] occurrences matches {0..1} matches {	-- Difference
-						math_function matches {
-							DV_CODED_TEXT matches {
-								defining_code matches {[openehr::147]}
-							}
-						}
-						data matches {
-							use_node ITEM_TREE /data[at0001]/events[at0002]/data[at0003]	-- /data[Event Series]/events[Any event]/data[ItemTree]
-						}
-						state matches {
-							use_node ITEM_TREE /data[at0001]/events[at0002]/state[at0010]	-- /data[Event Series]/events[Any event]/state[ItemTree]
-						}
-					}
 				}
 			}
 		}
@@ -154,6 +163,11 @@ definition
 					allow_archetype CLUSTER[at0016] occurrences matches {0..*} matches {	-- Extension
 						include
 							archetype_id/value matches {/.*/}
+					}
+					ELEMENT[at0027] occurrences matches {0..1} matches {	-- Method
+						value matches {
+							DV_TEXT matches {*}
+						}
 					}
 				}
 			}
@@ -217,10 +231,6 @@ ontology
 					text = <"Average measurement">
 					description = <"An average of multiple measurements of the body segment.">
 				>
-				["at0013"] = <
-					text = <"Difference">
-					description = <"The difference between two body segment measurements over a specified period of time.">
-				>
 				["at0014"] = <
 					text = <"ItemTree">
 					description = <"@ internal @">
@@ -235,28 +245,49 @@ ontology
 					comment = <"For example: local information requirements or additional metadata to align with FHIR or CIMI equivalents.">
 				>
 				["at0017"] = <
-					text = <"Upper arm length">
-					description = <"Distance between the acromion process of the scapula to the tip of the olecranon, over the posterior surface of the upper arm.">
-				>
-				["at0018"] = <
-					text = <"Upper leg length">
-					description = <"Distance between the inguinal crease to the proximal border of the patella, over the anterior surface of the thigh, performed with the individual sitting.">
-				>
-				["at0019"] = <
-					text = <"Leg length">
-					description = <"Distance between the anterior superior iliac spine (ASIS) and the medial malleolus.">
-				>
-				["at0020"] = <
 					text = <"Sitting Height">
 					description = <"Vertical distance between the sitting surface and the vertex of the head. A measure of trunk length, performed with the individual sitting erect.">
 				>
+				["at0018"] = <
+					text = <"Upper arm length">
+					description = <"Distance between the acromion process of the scapula to the tip of the olecranon, over the posterior surface of the upper arm.">
+				>
+				["at0019"] = <
+					text = <"Arm Circumference">
+					description = <"Girth of the upper arm at the mid point between the acromion process of the scapula and the olecranon process of the ulna. Also referred to as Mid-Upper Arm Circumference (MUAC).">
+				>
+				["at0020"] = <
+					text = <"Leg length">
+					description = <"Distance between the anterior superior iliac spine (ASIS) and the medial malleolus.">
+				>
 				["at0021"] = <
+					text = <"Upper leg length">
+					description = <"Distance between the inguinal crease to the proximal border of the patella, over the anterior surface of the thigh, performed with the individual sitting.">
+				>
+				["at0022"] = <
 					text = <"Crown-Rump Length">
 					description = <"Distance between vertex of head to the lowest part of the trunk, usually the perineum or lowest surface of the buttock. A measure of trunk length, usually conducted on infants under 2 years of age, performed with the individual lying supine.">
 				>
-				["at0022"] = <
-					text = <"Upper Arm Circumference (UAC)">
-					description = <"Measurement of the girth of the upper arm at the mid point between the acromion process of the scapula and the olecranon process of the ulna. Also referred to as Mid-Upper Arm Circumference (MUAC).">
+				["at0023"] = <
+					text = <"Foot length">
+					description = <"Distance between the base of the heel to the tip of the longest toe.">
+				>
+				["at0024"] = <
+					text = <"Armspan">
+					description = <"Distance between each set of fingertips with both arms extended at right angles to the body.">
+				>
+				["at0025"] = <
+					text = <"Thigh circumference">
+					description = <"Girth of the thigh at the midpoint between the tip of the greater trochanter of the femur and the superior aspect of the fibula.">
+				>
+				["at0026"] = <
+					text = <"Calf circumference">
+					description = <"Girth of the calf at its largest point.">
+				>
+				["at0027"] = <
+					text = <"Method">
+					description = <"Narrative description of the method used for measurement.">
+					comment = <"Specify in order to ensure that a sequence of measurements are taken at the same point and in the same way.">
 				>
 			>
 		>
