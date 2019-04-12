@@ -2,7 +2,7 @@
 	openEHR-EHR-SECTION.adverse_reactions.v0
 
 concept
-	[at0000]	-- Adverse Reaction List
+	[at0000]	-- Adverse reactions
 language
 	original_language = <[ISO_639-1::en]>
 	translations = <
@@ -28,8 +28,8 @@ language
 description
 	original_author = <
 		["name"] = <"Heather Leslie">
-		["organisation"] = <"Ocean Informatics">
-		["email"] = <"heather.leslie@oceaninformatics.com">
+		["organisation"] = <"Atomica Informatics">
+		["email"] = <"heather.leslie@atomicainformatics.com">
 		["date"] = <"2010-03-07">
 	>
 	details = <
@@ -69,40 +69,50 @@ Enquanto arquétipos EVALUATION.adverse e EVALUATION.exclusion-adverse e suas es
 		>
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"To demonstrate a design pattern for representation of an Adverse Reaction List.">
-			use = <"Use to support the representation of statements about known adverse reactions that have been recorded PLUS to make positive statements about the absence of adverse reactions - either general statements of absence or specific statements of absence of an adverse reaction to a specific substance.
+			purpose = <"To provide a framework and design guidance for consistent modelling of adverse reactions within a template.">
+			use = <"Use to provide a framework and design guidance for consistent modelling of a list of adverse reactions within a template.
 
-The existence of known adverse reactions can be persisted in records.
+This archetype is intended to be used within the COMPOSITION.adverse_reaction_list or as one component of other COMPOSITION archetypes. For example: complex documents, such as a discharge summary or referral.
 
-Statements about the absence of adverse reactions, either general or specific, can only indicate the state of the subject at the time that the information was actually recorded - that is, they are event based. It is not sensible to persist the recording of a positive absence of an adverse reaction as an adverse reaction that occurs on administration of any substance may render any or all previous positive statements of absence obsolete. In clinical practice this is synonymous with asking a patient if they have a reaction to any medications or substances prior to any and every administration of a medication or substance.
+This list can be comprised of three types of statements, each represented by specific archetypes:
+- statements about the positive presence of adverse reactions can be recorded usingmultiple instances of the EVALUATION.family_history, one per substance; OR
+- statements about the positive exclusion of adverse reactions can be recorded using the specific EVALUATION.exclusion-global ; OR
+- statements about no information being available - neither a positive presence of adverse reactions nor a positive exclusion - can be recorded using the EVALUATION.absence archetype.
 
-It is possible to represent both positive statements about identified adverse reactions alongside specific positive statements about the absence of identified problems/diagnoses in a template (eg patient has had an adverse reaction to tetracycline but never had a reaction to penicillin. However in most use cases either specific statements about the presence of identified adverse reactions (eg patient has had reactions to tetracycline and sticking plaster) or general statements about the positive absence of any known problems/diagnoses will be represented (eg No known adverse reactions), but not both. 
-
-While EVALUATION.adverse and EVALUATION.exclusion-adverse archetypes and their specialisations have been explicitly included in the slot constraints, other archetypes have not been explicitly excluded. This means that any other archetypes can also be included here, if needed - for example, where structured data is not available or there is a need to provide a synopis, the EVALUATION.clinical_synopsis can be inserted and used.">
+Statements about the absence of adverse reactions, either general or specific, can only indicate the state of the subject at the time that the information was actually recorded - that is, they are event based. It is not safe to persist the recording of a positive absence of an adverse reaction.">
 			keywords = <"adverse", "reaction", "exclusion", "absence", "known", "list">
 			misuse = <"">
 			copyright = <"© openEHR Foundation">
 		>
 	>
 	lifecycle_state = <"in_development">
-	other_contributors = <"Ian McNicoll, Ocean Informatics", "Heath Frankel, Ocean Informatics">
+	other_contributors = <"Ian McNicoll, freshEHR Clinical Informatics, UK", "Heath Frankel, Ocean Informatics">
 	other_details = <
 		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
 		["custodian_organisation"] = <"openEHR Foundation">
+		["current_contact"] = <"Heather Leslie, Atomica Informatics<heather.leslie@atomicainformatics.com>">
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"D0F2A312D12FA13131FD24B6FDB4CDCB">
-		["build_uid"] = <"8b72cc68-aea9-49e6-aa5c-91cc69447b5b">
+		["MD5-CAM-1.0.1"] = <"7D3C700F08D2EC68A8C2304351A00CC3">
+		["build_uid"] = <"c20bc63b-5eae-42f4-9224-62f4c5b9bbc6">
 		["revision"] = <"0.0.1-alpha">
 	>
 
 definition
-	SECTION[at0000] matches {	-- Adverse Reaction List
+	SECTION[at0000] matches {	-- Adverse reactions
 		items cardinality matches {1..*; unordered} matches {
-			allow_archetype EVALUATION[at0001] occurrences matches {0..*} matches {	-- Adverse reactions inclusions/exclusions
+			allow_archetype EVALUATION[at0001] occurrences matches {0..*} matches {	-- Adverse reactions
 				include
-					archetype_id/value matches {/openEHR-EHR-EVALUATION\.exclusion-adverse_reaction(-[a-zA-Z0-9_]+)*\.v1|openEHR-EHR-EVALUATION\.adverse_reaction(-[a-zA-Z0-9_]+)*\.v1/}
+					archetype_id/value matches {/openEHR-EHR-EVALUATION\.adverse_reaction_risk(-[a-zA-Z0-9_]+)*\.v1/}
+			}
+			allow_archetype EVALUATION[at0002] occurrences matches {0..*} matches {	-- Exclusion statement
+				include
+					archetype_id/value matches {/openEHR-EHR-EVALUATION\.exclusion_global(-[a-zA-Z0-9_]+)*\.v1/}
+			}
+			allow_archetype EVALUATION[at0003] occurrences matches {0..*} matches {	-- Absence statement
+				include
+					archetype_id/value matches {/openEHR-EHR-EVALUATION\.absence(-[a-zA-Z0-9_]+)*\.v1/}
 			}
 		}
 	}
@@ -113,36 +123,66 @@ ontology
 		["en"] = <
 			items = <
 				["at0000"] = <
-					text = <"Adverse Reaction List">
-					description = <"Suggested design pattern for including an Adverse Reaction List in a template.">
+					text = <"Adverse reactions">
+					description = <"Suggested design pattern for including adverse reactions in a template.">
 				>
 				["at0001"] = <
-					text = <"Adverse reactions inclusions/exclusions">
+					text = <"Adverse reactions">
 					description = <"Slot constrained to specifically include archetypes representing known adverse reactions and exclusion of adverse reactions.">
+				>
+				["at0002"] = <
+					text = <"Exclusion statement">
+					description = <"Positive statement about the exclusion of adverse reactions.">
+					comment = <"For example: 'No known adverse reactions'.">
+				>
+				["at0003"] = <
+					text = <"Absence statement">
+					description = <"Positive statement that no information is available about adverse reactions.">
+					comment = <"For example: 'No information available about adverse reactions'.">
 				>
 			>
 		>
 		["ru"] = <
 			items = <
 				["at0000"] = <
-					text = <"Список побочных реакций">
-					description = <"дизайн списка побочных реакций для включения в шаблоны">
+					text = <"*Adverse reactions(en)">
+					description = <"*Suggested design pattern for including adverse reactions in a template.(en)">
 				>
 				["at0001"] = <
-					text = <"наличие/отсутвие побочных реакций">
-					description = <"Слот, содержащий ограничения на включение архетипов, описывающих наличие или отсутствие побочных реакий">
+					text = <"*Adverse reactions(en)">
+					description = <"*Slot constrained to specifically include archetypes representing known adverse reactions and exclusion of adverse reactions.(en)">
+				>
+				["at0002"] = <
+					text = <"*Exclusion statement(en)">
+					description = <"*Positive statement about the exclusion of adverse reactions.(en)">
+					comment = <"*For example: 'No known adverse reactions'.(en)">
+				>
+				["at0003"] = <
+					text = <"*Absence statement(en)">
+					description = <"*Positive statement that no information is available about adverse reactions.(en)">
+					comment = <"*For example: 'No information available about adverse reactions'.(en)">
 				>
 			>
 		>
 		["pt-br"] = <
 			items = <
 				["at0000"] = <
-					text = <"Lista de Reação Adversa">
-					description = <"Sugestão de padrão de projeto para incluir uma lista de reação adversa em um template.">
+					text = <"*Adverse reactions(en)">
+					description = <"*Suggested design pattern for including adverse reactions in a template.(en)">
 				>
 				["at0001"] = <
-					text = <"Reações Adversas inclusões/exclusões">
-					description = <"Nicho restringido para incluir especificamente arquétipos que representam reações adversas conhecidas e exclusão de reações adversas.">
+					text = <"*Adverse reactions(en)">
+					description = <"*Slot constrained to specifically include archetypes representing known adverse reactions and exclusion of adverse reactions.(en)">
+				>
+				["at0002"] = <
+					text = <"*Exclusion statement(en)">
+					description = <"*Positive statement about the exclusion of adverse reactions.(en)">
+					comment = <"*For example: 'No known adverse reactions'.(en)">
+				>
+				["at0003"] = <
+					text = <"*Absence statement(en)">
+					description = <"*Positive statement that no information is available about adverse reactions.(en)">
+					comment = <"*For example: 'No information available about adverse reactions'.(en)">
 				>
 			>
 		>
