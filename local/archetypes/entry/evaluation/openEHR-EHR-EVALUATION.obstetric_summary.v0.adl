@@ -88,7 +88,7 @@ Some data may be calculated or derived from individual pregnancy records if thes
 			keywords = <"obstetric", "pregnancy", "parity", "gravida", "para", "terminations", "miscarriages", "abortions", "spontaneous", "live", "births", "stillbirths", "caesarean", "ectopic", "neonatal", "death", "tubal", "living", "multiple">
 			misuse = <"Not for recording summary information about a single pregnancy - use EVALUATION. pregnancy_summary for this purpose.
 
-Not for recording detailed information about each of the individual pregnancies, miscarriages, terminations, or deliveries. This information will be recorded using other specific archetypes as event-based data.">
+Not for recording detailed information about each of the individual pregnancies, miscarriages, terminations, or deliveries. Use the ACTION.procedure archetype for this purpose.">
 			copyright = <"© openEHR Foundation">
 		>
 		["es-co"] = <
@@ -111,123 +111,167 @@ No es para registrar la información detallada sobre cada uno de los individuale
 	lifecycle_state = <"in_development">
 	other_contributors = <"Sheryl Alexander, NT Department of Health, Australia", "Margaret Cotter, AMSANT, Australia", "Michelle Dowden, Miwatj Health Ngalkanbuy Health, Australia", "Tim Garden, NTG Department of Health, Australia", "Sam Heard, Ocean Informatics, Australia (Editor)", "Michelle Kealy, Australia", "Bernadette Lack, Deptartment of Health, NT, Australia", "Heather Leslie, Ocean Informatics, Australia (Editor)", "Ian McNicoll, Ocean Informatics UK, United Kingdom", "Jeremy Oats, NT Health, Australia", "Gary Sinclair, NT DoH, Australia", "Cherie Whitbread, Royal Darwin Hospital, Australia", "Jo Wright, NT Dept of Health, Australia">
 	other_details = <
-		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
 		["custodian_organisation"] = <"openEHR Foundation">
-		["references"] = <"NEHTA Clinical Knowledge Manager [Internet]. Australia: National eHealth Transition Authority. [Draft EVALUATION archetype] Obstetric Summary; [authored 2011 Feb 24, cited 2011 Aug 17]. Available from http://dcm.nehta.org.au/ckm/OKM.html#showArchetype_1013.1.971_4.">
+		["references"] = <"Obstetric Summary, Draft Archetype [Internet]. Australian Digital Health Agency, Australia, ADHA Clinical Knowledge Manager [2011 Aug 17]. Available from: http://dcm.nehta.org.au/ckm/OKM.html#showArchetype_1013.1.971_4 (now discontinued).">
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"841C85FC11B1FEC0747C5D95B9A88D1D">
-		["build_uid"] = <"8271dead-5e4c-4315-8da8-7f675783e08d">
+		["MD5-CAM-1.0.1"] = <"BA237F1CFB4181C82EB802C6F0FB87BC">
+		["build_uid"] = <"a0bbfc18-ce5b-47c2-9a64-c0ae79c8efb3">
 		["revision"] = <"0.0.1-alpha">
 	>
 
 definition
-	EVALUATION[at0000] matches {	-- Obstetric summary
+	EVALUATION[at0000] matches {    -- Obstetric summary
 		data matches {
-			ITEM_TREE[at0001] matches {	-- Tree
+			ITEM_TREE[at0001] matches {    -- Tree
 				items cardinality matches {0..*; unordered} matches {
-					ELEMENT[at0014] occurrences matches {0..1} matches {	-- Ever Pregnant?
+					ELEMENT[at0025] occurrences matches {0..1} matches {    -- Description
 						value matches {
-							DV_BOOLEAN matches {
-								value matches {True}
-							}
+							DV_TEXT matches {*}
 						}
 					}
-					ELEMENT[at0002] occurrences matches {0..1} matches {	-- Gravidity (G)
+					ELEMENT[at0002] occurrences matches {0..1} matches {    -- Gravidity (G)
 						value matches {
 							DV_COUNT matches {
 								magnitude matches {|0..<100|}
 							}
 						}
 					}
-					ELEMENT[at0003] occurrences matches {0..1} matches {	-- Parity
+					ELEMENT[at0003] occurrences matches {0..1} matches {    -- Parity
 						value matches {
 							DV_COUNT matches {
-								magnitude matches {|>=0|}
+								magnitude matches {|0..<100|}
 							}
 						}
 					}
-					ELEMENT[at0015] occurrences matches {0..1} matches {	-- Term Births (T)
-						value matches {
-							DV_COUNT matches {*}
-						}
-					}
-					ELEMENT[at0016] occurrences matches {0..1} matches {	-- Preterm Births (P)
-						value matches {
-							DV_COUNT matches {*}
-						}
-					}
-					ELEMENT[at0017] occurrences matches {0..1} matches {	-- Abortions (A)
-						value matches {
-							DV_COUNT matches {*}
-						}
-					}
-					ELEMENT[at0004] occurrences matches {0..1} matches {	-- Miscarriages
+					ELEMENT[at0015] occurrences matches {0..1} matches {    -- Term Births (T)
 						value matches {
 							DV_COUNT matches {
-								magnitude matches {|>=0|}
+								magnitude matches {|0..<100|}
 							}
 						}
 					}
-					ELEMENT[at0005] occurrences matches {0..1} matches {	-- Terminations
+					ELEMENT[at0016] occurrences matches {0..1} matches {    -- Preterm Births (P)
 						value matches {
 							DV_COUNT matches {
-								magnitude matches {|>=0|}
+								magnitude matches {|0..<100|}
 							}
 						}
 					}
-					ELEMENT[at0011] occurrences matches {0..1} matches {	-- Ectopic Pregnancies
-						value matches {
-							DV_COUNT matches {*}
-						}
-					}
-					ELEMENT[at0012] occurrences matches {0..1} matches {	-- Stillbirths
-						value matches {
-							DV_COUNT matches {*}
-						}
-					}
-					ELEMENT[at0006] occurrences matches {0..1} matches {	-- Live Births
+					ELEMENT[at0017] occurrences matches {0..1} matches {    -- Abortions (A)
 						value matches {
 							DV_COUNT matches {
-								magnitude matches {|>=0|}
+								magnitude matches {|0..<100|}
 							}
 						}
 					}
-					ELEMENT[at0010] occurrences matches {0..1} matches {	-- Caesarean Sections
+					ELEMENT[at0004] occurrences matches {0..1} matches {    -- Miscarriages
 						value matches {
 							DV_COUNT matches {
-								magnitude matches {|>=0|}
+								magnitude matches {|0..<100|}
 							}
 						}
 					}
-					ELEMENT[at0018] occurrences matches {0..1} matches {	-- Multiple Births (M)
-						value matches {
-							DV_COUNT matches {*}
-						}
-					}
-					ELEMENT[at0007] occurrences matches {0..1} matches {	-- Living Children (L)
+					ELEMENT[at0005] occurrences matches {0..1} matches {    -- Terminations
 						value matches {
 							DV_COUNT matches {
-								magnitude matches {|>=0|}
+								magnitude matches {|0..<100|}
 							}
+						}
+					}
+					ELEMENT[at0011] occurrences matches {0..1} matches {    -- Ectopic Pregnancies
+						value matches {
+							DV_COUNT matches {
+								magnitude matches {|0..<10|}
+							}
+						}
+					}
+					ELEMENT[at0012] occurrences matches {0..1} matches {    -- Stillbirths
+						value matches {
+							DV_COUNT matches {
+								magnitude matches {|0..<100|}
+							}
+						}
+					}
+					ELEMENT[at0006] occurrences matches {0..1} matches {    -- Live Births
+						value matches {
+							DV_COUNT matches {
+								magnitude matches {|0..<100|}
+							}
+						}
+					}
+					ELEMENT[at0010] occurrences matches {0..1} matches {    -- Caesarean Sections
+						value matches {
+							DV_COUNT matches {
+								magnitude matches {|0..<100|}
+							}
+						}
+					}
+					ELEMENT[at0018] occurrences matches {0..1} matches {    -- Multiple Births (M)
+						value matches {
+							DV_COUNT matches {
+								magnitude matches {|0..<100|}
+							}
+						}
+					}
+					ELEMENT[at0007] occurrences matches {0..1} matches {    -- Living Children (L)
+						value matches {
+							DV_COUNT matches {
+								magnitude matches {|0..<100|}
+							}
+						}
+					}
+					ELEMENT[at0026] occurrences matches {0..1} matches {    -- Comment
+						value matches {
+							DV_TEXT matches {*}
 						}
 					}
 				}
 			}
 		}
 		protocol matches {
-			ITEM_TREE[at0008] matches {	-- Tree
+			ITEM_TREE[at0008] matches {    -- Tree
 				items cardinality matches {0..*; unordered} matches {
-					ELEMENT[at0009] occurrences matches {0..1} matches {	-- Date Updated
+					ELEMENT[at0009] occurrences matches {0..1} matches {    -- Date Updated
 						value matches {
 							DV_DATE_TIME matches {*}
 						}
 					}
-					ELEMENT[at0013] occurrences matches {0..1} matches {	-- Stillbirth Definition
+					ELEMENT[at0013] occurrences matches {0..1} matches {    -- Stillbirth Definition
 						value matches {
 							DV_TEXT matches {*}
 						}
+					}
+					ELEMENT[at0019] occurrences matches {0..1} matches {    -- Preterm birth definition
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0020] occurrences matches {0..1} matches {    -- Term birth definition
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0021] occurrences matches {0..1} matches {    -- Miscarriage definition
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0022] occurrences matches {0..1} matches {    -- Parity definition
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0023] occurrences matches {0..1} matches {    -- Living child definition
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					allow_archetype CLUSTER[at0024] occurrences matches {0..*} matches {    -- Extension
+						include
+							archetype_id/value matches {/.*/}
 					}
 				}
 			}
@@ -249,16 +293,16 @@ ontology
 				>
 				["at0002"] = <
 					text = <"Gravidity (G)">
-					description = <"Number of times a woman has been pregnant, including the current pregnancy, if appropriate.">
+					description = <"Number of times a woman has been pregnant, including a current pregnancy, if appropriate.">
 				>
 				["at0003"] = <
 					text = <"Parity">
-					description = <"Number of times a woman has given birth after 20 weeks and 0 days gestation.">
-					comment = <"Late terminations of pregnancy (after 20 weeks of gestation) are not included. When both 'Term Births (T)' and 'Preterm Births (P)' are recorded, this number should be equal to their sum. Note: Parity is not regarded as the same as the number of infants born - for example, twins would be recorded as one birth event.">
+					description = <"Number of times a woman has given birth.">
+					comment = <"When both 'Term Births (T)' and 'Preterm Births (P)' are recorded, this number should be equal to their sum. Note: Parity is not regarded as the same as the number of infants born - for example, twins would be recorded as one birth event.">
 				>
 				["at0004"] = <
 					text = <"Miscarriages">
-					description = <"Number of times a woman has had a miscarriage at less than 20 weeks of gestation.">
+					description = <"Number of times a woman has had a miscarriage.">
 					comment = <"Including missed abortions.">
 				>
 				["at0005"] = <
@@ -292,17 +336,11 @@ ontology
 				["at0012"] = <
 					text = <"Stillbirths">
 					description = <"Number of stillbirths.">
-					comment = <"Note: Stillbirth definition may be optionally captured in specific data element in Protocol.">
 				>
 				["at0013"] = <
 					text = <"Stillbirth Definition">
-					description = <"Definition of stillbirth.">
+					description = <"The definition of stillbirth that is used in the data collection.">
 					comment = <"Maybe useful to record when comparing data from different regions as, as definitions of stillbirth may vary. For example, in Australia a stillborn baby will have a gestation greater than 20 weeks or, if gestation is unknown, weigh more than 400 grams.">
-				>
-				["at0014"] = <
-					text = <"Ever Pregnant?">
-					description = <"Has the woman ever been pregnant?">
-					comment = <"Record as TRUE if a woman has ever been pregnant. Only useful to record if there is no other detailed data about pregnancies available, or where it may be used to support further knowledge-based activities such as clinical decision support.">
 				>
 				["at0015"] = <
 					text = <"Term Births (T)">
@@ -321,6 +359,39 @@ ontology
 					text = <"Multiple Births (M)">
 					description = <"Number of birth events in which more than one fetus has been born.">
 				>
+				["at0019"] = <
+					text = <"Preterm birth definition">
+					description = <"The definition of a preterm birth that is used in the data collection.">
+				>
+				["at0020"] = <
+					text = <"Term birth definition">
+					description = <"The definition of a term birth that is used in the data collection.">
+				>
+				["at0021"] = <
+					text = <"Miscarriage definition">
+					description = <"The definition of miscarriage that is used in the data collection.">
+				>
+				["at0022"] = <
+					text = <"Parity definition">
+					description = <"The definition of parity that is used in the data collection.">
+				>
+				["at0023"] = <
+					text = <"Living child definition">
+					description = <"The definition of a living child that is used in the data collection.">
+				>
+				["at0024"] = <
+					text = <"Extension">
+					description = <"Additional information required to capture local content or to align with other reference models/formalisms.">
+					comment = <"For example: local information requirements or additional metadata to align with FHIR or CIMI equivalents.">
+				>
+				["at0025"] = <
+					text = <"Description">
+					description = <"Narrative description about the overall obstetric history.">
+				>
+				["at0026"] = <
+					text = <"Comment">
+					description = <"Additional narrative about the obstetric history, not captured in other fields.">
+				>
 			>
 		>
 		["pt-br"] = <
@@ -336,18 +407,18 @@ ontology
 					description = <"@ internal @">
 				>
 				["at0002"] = <
-					text = <"Gestas prévias">
-					description = <"Número de vezes que uma mulher esteve grávida, incluindo a gravidez atual, se for o caso.">
+					text = <"*Gravidity (G)(en)">
+					description = <"*Number of times a woman has been pregnant, including a current pregnancy, if appropriate.(en)">
 				>
 				["at0003"] = <
-					text = <"Paridade">
-					description = <"Número de vezes que uma mulher deu à luz após 20 semanas e 0 dias de gestação.">
-					comment = <"Abortos tardios da gravidez (após 20 semanas de gestação) não estão incluídos. Quando ambos “Nascimento a termo” (T) \"e\" Nascimentos prematuro (P) são gravadas , este número(paridade) deve ser igual a sua soma dos dois. Nota: paridade não é considerado como o mesmo que o número de bebés nascidos - por exemplo , gêmeos seriam registados como um evento nascimento.">
+					text = <"*Parity(en)">
+					description = <"*Number of times a woman has given birth.(en)">
+					comment = <"*When both 'Term Births (T)' and 'Preterm Births (P)' are recorded, this number should be equal to their sum. Note: Parity is not regarded as the same as the number of infants born - for example, twins would be recorded as one birth event.(en)">
 				>
 				["at0004"] = <
-					text = <"Aborto espontâneo">
-					description = <"Número de vezes que uma mulher teve um aborto espontâneo, com menos de 20 semanas de gestação.">
-					comment = <"Incluindo abortos retidos.">
+					text = <"*Miscarriages(en)">
+					description = <"*Number of times a woman has had a miscarriage.(en)">
+					comment = <"*Including missed abortions.(en)">
 				>
 				["at0005"] = <
 					text = <"Aborto induzido">
@@ -378,23 +449,17 @@ ontology
 					description = <"Número de gravidezes ectópicas.">
 				>
 				["at0012"] = <
-					text = <"Natimorto">
-					description = <"Número de natimortos">
-					comment = <"Nota: definição de natimorto pode ser opcionalmente capturada no elemento de dados específicos no protocolo.">
+					text = <"*Stillbirths(en)">
+					description = <"*Number of stillbirths.(en)">
 				>
 				["at0013"] = <
-					text = <"Definição de natimorto">
-					description = <"Definição de natimorto.">
-					comment = <"Talvez útil para gravar quando se comparam dados de diferentes regiões como, como definições de morte fetal pode variar. Por exemplo , na Austrália um feto morto terá uma gestação superior a 20 semanas ou, no caso de idade gestacional desconhecida, pesar mais de 400 gramas .">
-				>
-				["at0014"] = <
-					text = <"Já esteve grávida?">
-					description = <"A mulher já esteve grávida?">
-					comment = <"Registre como VERDADEIRO se a mulher já está grávida. Só é útil para gravar se não há outros dados detalhados sobre as gravidezes disponíveis, ou onde pode ser utilizado para apoiar atividades baseadas no conhecimento, tais como apoio à decisão clínica.">
+					text = <"*Stillbirth Definition(en)">
+					description = <"*The definition of stillbirth that is used in the data collection.(en)">
+					comment = <"*Maybe useful to record when comparing data from different regions as, as definitions of stillbirth may vary. For example, in Australia a stillborn baby will have a gestation greater than 20 weeks or, if gestation is unknown, weigh more than 400 grams.(en)">
 				>
 				["at0015"] = <
-					text = <"Nascimentos a termo">
-					description = <"Número de bebês nascidos em ou após 37 semanas de gestação.">
+					text = <"*Term Births (T)(en)">
+					description = <"*Number of infants born on or after 37 weeks of gestation.(en)">
 				>
 				["at0016"] = <
 					text = <"Nascimento prematuro">
@@ -409,6 +474,39 @@ ontology
 					text = <"Nascimentos múltiplos">
 					description = <"Número de eventos de nascimento (partos) nos quais nasceu mais de um feto.">
 				>
+				["at0019"] = <
+					text = <"*Preterm birth definition(en)">
+					description = <"*The definition of a preterm birth that is used in the data collection.(en)">
+				>
+				["at0020"] = <
+					text = <"*Term birth definition(en)">
+					description = <"*The definition of a term birth that is used in the data collection.(en)">
+				>
+				["at0021"] = <
+					text = <"*Miscarriage definition(en)">
+					description = <"*The definition of miscarriage that is used in the data collection.(en)">
+				>
+				["at0022"] = <
+					text = <"*Parity definition(en)">
+					description = <"*The definition of parity that is used in the data collection.(en)">
+				>
+				["at0023"] = <
+					text = <"*Living child definition(en)">
+					description = <"*The definition of a living child that is used in the data collection.(en)">
+				>
+				["at0024"] = <
+					text = <"*Extension (en)">
+					description = <"*Additional information required to capture local content or to align with other reference models/formalisms. (en)">
+					comment = <"*For example: local information requirements or additional metadata to align with FHIR or CIMI equivalents. (en)">
+				>
+				["at0025"] = <
+					text = <"*Description (en)">
+					description = <"*Narrative description about the overall obstetric history. (en)">
+				>
+				["at0026"] = <
+					text = <"*Comment (en)">
+					description = <"*Additional narrative about the obstetric history, not captured in other fields. (en)">
+				>
 			>
 		>
 		["es-co"] = <
@@ -422,20 +520,18 @@ ontology
 					description = <"@ internal @">
 				>
 				["at0002"] = <
-					text = <"Gravidez">
-					description = <"Número de veces que la mujer ha estado en embarazo, incluida la gestacion actual, si es apropiado">
+					text = <"*Gravidity (G)(en)">
+					description = <"*Number of times a woman has been pregnant, including a current pregnancy, if appropriate.(en)">
 				>
 				["at0003"] = <
-					text = <"Paridad">
-					description = <"Número de veces que una mujer ha dado a luz después de 20 semanas y 0 días de gestación">
-					comment = <"las terminaciones tardías del embarazo (después de 20 semanas de gestación) no están incluidos. 
-
-Cuando se registran los Nacimientos a termino (T) y los nacimientos prematuros (P)' , este número debe ser igual a su suma . Nota : La paridad no es considerado como el mismo que el número de niños nacidos - por ejemplo, los gemelos se registraría como un evento de nacimiento.">
+					text = <"*Parity(en)">
+					description = <"*Number of times a woman has given birth.(en)">
+					comment = <"*When both 'Term Births (T)' and 'Preterm Births (P)' are recorded, this number should be equal to their sum. Note: Parity is not regarded as the same as the number of infants born - for example, twins would be recorded as one birth event.(en)">
 				>
 				["at0004"] = <
-					text = <"abortos involuntarios">
-					description = <"numero de veces que una mujer ha tenido un aborto involuntario antes de las 20 semanas de gestación">
-					comment = <"Incluyendo abortos perdidos">
+					text = <"*Miscarriages(en)">
+					description = <"*Number of times a woman has had a miscarriage.(en)">
+					comment = <"*Including missed abortions.(en)">
 				>
 				["at0005"] = <
 					text = <"Embarazos interrumpidos">
@@ -466,23 +562,17 @@ Cuando se registran los Nacimientos a termino (T) y los nacimientos prematuros (
 					description = <"Número de embarazos ectópicos">
 				>
 				["at0012"] = <
-					text = <"Nacidos Nuertos">
-					description = <"Numero de Nacidos Muertos">
-					comment = <"Nota : definición muerte fetal puede estar opcionalmente registrado en el apartado específico en el Protocolo">
+					text = <"*Stillbirths(en)">
+					description = <"*Number of stillbirths.(en)">
 				>
 				["at0013"] = <
-					text = <"Definición muerte fetal">
-					description = <"Definición muerte fetal">
-					comment = <"útil para comparar datos de diferentes regiones, como las definiciones de muerte fetal pueden variar. Por ejemplo, en Australia un bebé nacido muerto tendrá un embarazo de más de 20 semanas o, si la gestación es desconocida, y pesan más de 400 gramos.">
-				>
-				["at0014"] = <
-					text = <"Nunca ha estado embarazada?">
-					description = <"ha estado alguna vez embarazada?">
-					comment = <"Registrar como verdadero si nunca ha estado embarazada. Sólo es útil para registrar si no hay otros datos detallados sobre los embarazos anteriores, o donde pueda ser utilizado para apoyar otras actividades basadas en el conocimiento , tales como apoyo a la decisión clínica.">
+					text = <"*Stillbirth Definition(en)">
+					description = <"*The definition of stillbirth that is used in the data collection.(en)">
+					comment = <"*Maybe useful to record when comparing data from different regions as, as definitions of stillbirth may vary. For example, in Australia a stillborn baby will have a gestation greater than 20 weeks or, if gestation is unknown, weigh more than 400 grams.(en)">
 				>
 				["at0015"] = <
-					text = <"Nacimientos a Termino">
-					description = <"Numero de recién nacidos de 37 o mas semanas de gestación">
+					text = <"*Term Births (T)(en)">
+					description = <"*Number of infants born on or after 37 weeks of gestation.(en)">
 				>
 				["at0016"] = <
 					text = <"Nacimientos pretermino">
@@ -497,6 +587,39 @@ Cuando se registran los Nacimientos a termino (T) y los nacimientos prematuros (
 					text = <"Nacimientos Múltiples (M)">
 					description = <"Número de nacimientos en los cuales ha nacido mas de un producto vivo">
 				>
+				["at0019"] = <
+					text = <"*Preterm birth definition(en)">
+					description = <"*The definition of a preterm birth that is used in the data collection.(en)">
+				>
+				["at0020"] = <
+					text = <"*Term birth definition(en)">
+					description = <"*The definition of a term birth that is used in the data collection.(en)">
+				>
+				["at0021"] = <
+					text = <"*Miscarriage definition(en)">
+					description = <"*The definition of miscarriage that is used in the data collection.(en)">
+				>
+				["at0022"] = <
+					text = <"*Parity definition(en)">
+					description = <"*The definition of parity that is used in the data collection.(en)">
+				>
+				["at0023"] = <
+					text = <"*Living child definition(en)">
+					description = <"*The definition of a living child that is used in the data collection.(en)">
+				>
+				["at0024"] = <
+					text = <"*Extension (en)">
+					description = <"*Additional information required to capture local content or to align with other reference models/formalisms. (en)">
+					comment = <"*For example: local information requirements or additional metadata to align with FHIR or CIMI equivalents. (en)">
+				>
+				["at0025"] = <
+					text = <"*Description (en)">
+					description = <"*Narrative description about the overall obstetric history. (en)">
+				>
+				["at0026"] = <
+					text = <"*Comment (en)">
+					description = <"*Additional narrative about the obstetric history, not captured in other fields. (en)">
+				>
 			>
 		>
 		["nb"] = <
@@ -510,18 +633,18 @@ Cuando se registran los Nacimientos a termino (T) y los nacimientos prematuros (
 					description = <"@ internal @">
 				>
 				["at0002"] = <
-					text = <"Gravida (G)">
-					description = <"Antall tidligere svangerskap, inkludert gjeldende svangerskap, dersom dette er aktuelt.">
+					text = <"*Gravidity (G)(en)">
+					description = <"*Number of times a woman has been pregnant, including a current pregnancy, if appropriate.(en)">
 				>
 				["at0003"] = <
-					text = <"Para (P)">
-					description = <"Antall ganger kvinnen har født etter gestasjonsuke 20+0.">
-					comment = <"Senaborter, etter getasjonsuke 20, er ikke inkludert. Når både fødseler til termin og premature fødsler er dokumentert, skal dette tallet bli summen av de to. Obs: Para er ikke det samme antall som fødte barn, for eksempel vil en tvillingfødsel telle som en fødsel.">
+					text = <"*Parity(en)">
+					description = <"*Number of times a woman has given birth.(en)">
+					comment = <"*When both 'Term Births (T)' and 'Preterm Births (P)' are recorded, this number should be equal to their sum. Note: Parity is not regarded as the same as the number of infants born - for example, twins would be recorded as one birth event.(en)">
 				>
 				["at0004"] = <
-					text = <"Spontanaborter">
-					description = <"Antall ganger en kvinne har spontanabortert før genstasjonsuke 22.">
-					comment = <"Inkludert missed abortion.">
+					text = <"*Miscarriages(en)">
+					description = <"*Number of times a woman has had a miscarriage.(en)">
+					comment = <"*Including missed abortions.(en)">
 				>
 				["at0005"] = <
 					text = <"Provoserte aborter">
@@ -552,23 +675,17 @@ Cuando se registran los Nacimientos a termino (T) y los nacimientos prematuros (
 					description = <"Antall ekstrauterine graviditeter.">
 				>
 				["at0012"] = <
-					text = <"Dødfødsler">
-					description = <"Antall dødfødsler">
-					comment = <"Notabene: Dødfødsel definisjonen kan eventuelt bli fanget opp i spesifikke data element i Protocol.">
+					text = <"*Stillbirths(en)">
+					description = <"*Number of stillbirths.(en)">
 				>
 				["at0013"] = <
-					text = <"Dødfødsel definisjon">
-					description = <"Definisjon av en dødfødsel.">
-					comment = <"Kan være nyttig å dokumentere når en sammenligner data fra ulike regioner, siden definisjonene av dødfødsel kan variere. For eksempel, i Australia vil en dødfødt baby være eldre enn gestasjonsuke 20, eller om gestasjonsalder er ukjent, veie mer enn 400 gram.">
-				>
-				["at0014"] = <
-					text = <"Tidligere gravid?">
-					description = <"Har kvinnen noen gang vært gravid?">
-					comment = <"Dokumenter som SANT om kvinnen noen gang har vært gravid. Dokumenteres dersom ingen annen form for svangerskapsdokumentasjon finnes eller er tilgjengelig eller der data skal brukes i klinisk beslutningsstøtte.">
+					text = <"*Stillbirth Definition(en)">
+					description = <"*The definition of stillbirth that is used in the data collection.(en)">
+					comment = <"*Maybe useful to record when comparing data from different regions as, as definitions of stillbirth may vary. For example, in Australia a stillborn baby will have a gestation greater than 20 weeks or, if gestation is unknown, weigh more than 400 grams.(en)">
 				>
 				["at0015"] = <
-					text = <"Fødsler til termin">
-					description = <"Antall barn født ved eller etter gestasjonsuke 37.">
+					text = <"*Term Births (T)(en)">
+					description = <"*Number of infants born on or after 37 weeks of gestation.(en)">
 				>
 				["at0016"] = <
 					text = <"Premature fødsler">
@@ -582,6 +699,39 @@ Cuando se registran los Nacimientos a termino (T) y los nacimientos prematuros (
 				["at0018"] = <
 					text = <"Flerlingefødsler">
 					description = <"Antall fødsler der mer enn ett barn ble født.">
+				>
+				["at0019"] = <
+					text = <"*Preterm birth definition(en)">
+					description = <"*The definition of a preterm birth that is used in the data collection.(en)">
+				>
+				["at0020"] = <
+					text = <"*Term birth definition(en)">
+					description = <"*The definition of a term birth that is used in the data collection.(en)">
+				>
+				["at0021"] = <
+					text = <"*Miscarriage definition(en)">
+					description = <"*The definition of miscarriage that is used in the data collection.(en)">
+				>
+				["at0022"] = <
+					text = <"*Parity definition(en)">
+					description = <"*The definition of parity that is used in the data collection.(en)">
+				>
+				["at0023"] = <
+					text = <"*Living child definition(en)">
+					description = <"*The definition of a living child that is used in the data collection.(en)">
+				>
+				["at0024"] = <
+					text = <"*Extension (en)">
+					description = <"*Additional information required to capture local content or to align with other reference models/formalisms. (en)">
+					comment = <"*For example: local information requirements or additional metadata to align with FHIR or CIMI equivalents. (en)">
+				>
+				["at0025"] = <
+					text = <"*Description (en)">
+					description = <"*Narrative description about the overall obstetric history. (en)">
+				>
+				["at0026"] = <
+					text = <"*Comment (en)">
+					description = <"*Additional narrative about the obstetric history, not captured in other fields. (en)">
 				>
 			>
 		>
