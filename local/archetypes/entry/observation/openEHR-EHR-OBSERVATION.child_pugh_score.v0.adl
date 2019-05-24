@@ -2,7 +2,7 @@
 	openEHR-EHR-OBSERVATION.child_pugh_score.v0
 
 concept
-	[at0000]	-- Child-Pugh Score
+	[at0000]	-- Child-Pugh score
 language
 	original_language = <[ISO_639-1::en]>
 description
@@ -15,10 +15,14 @@ description
 	details = <
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"For the capture and reporting of Child-Pugh score for liver disease management.">
-			use = <"Higher Child-Pugh scores indicate worsening liver function, and give the medical and surgical teams an idea of \"liver comorbidity\" and \"liver reserve\". This can be useful when planning interventions on the liver since liver failure is the main cause of death after liver resection.">
+			purpose = <"To record an assessment of prognosis for chronic liver disease.">
+			use = <"Use to record an assessment of prognosis for chronic liver disease.">
 			keywords = <"Child-Pugh, liver, cirrhosis, score, Hepatitis C,", ...>
-			misuse = <"">
+			misuse = <"Not to be used to record the results of various liver function tests or the INR test- use the Laboratory test result family of archetypes for this purpose.
+
+Not to be used to record the diagnosis of hepatic encephalopathy - use EVALUATION.problem_diagnosis for this purpose.
+
+Not to be used to record the finding of ascites - use the Physical examination family of archetypes for this purpose.">
 			copyright = <"© openEHR Foundation">
 		>
 	>
@@ -27,23 +31,24 @@ description
 	other_details = <
 		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
 		["custodian_organisation"] = <"openEHR Foundation">
-		["references"] = <"Derived from: Child-Pugh Score, Draft archetype [Internet]. Apperta UK, Apperta UK Clinical Knowledge Manager [cited: 2019-05-22]. Available from: https://ckm.apperta.org/ckm/archetypes/1051.32.822
-Child CG, Turcotte JG. Surgery and portal hypertension. In: The liver and portal hypertension. Edited by CG Child. Philadelphia: Saunders 1964:50-64.
-https://radiopaedia.org/articles/child-pugh-score cited 27-Sep-2017.">
+		["references"] = <"Derived from: Child-Pugh Score, Draft archetype [Internet]. Apperta UK, Apperta UK Clinical Knowledge Manager [cited: 2019-05-22]. Available from: https://ckm.apperta.org/ckm/archetypes/1051.32.822.
+
+Child CG, Turcotte JG. Surgery and portal hypertension. Major Probl Clin Surg. 1964;1:1-85. Review. PubMed PMID: 4950264.">
+		["current_contact"] = <"Dr Ian McNicoll, freshEHR Clinical Informatics, UK ">
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"9779506DCDAB7D15A249BA2D092F4B02">
-		["build_uid"] = <"2f57274a-906e-492b-ad0d-956c8de40779">
+		["MD5-CAM-1.0.1"] = <"DD84ADDEB2C160AF2BB44CD1DD9D37DA">
+		["build_uid"] = <"a171ff1b-b9cb-4704-a71f-a23d5cb07f5f">
 		["revision"] = <"0.0.1-alpha">
 	>
 
 definition
-	OBSERVATION[at0000] matches {    -- Child-Pugh Score
+	OBSERVATION[at0000] matches {    -- Child-Pugh score
 		data matches {
 			HISTORY[at0001] matches {    -- History
 				events cardinality matches {0..*; unordered} matches {
-					EVENT[at0002] matches {    -- Any Event
+					EVENT[at0002] occurrences matches {0..*} matches {    -- Any Event
 						data matches {
 							ITEM_TREE[at0003] matches {    -- ItemTree
 								items cardinality matches {0..*; unordered} matches {
@@ -89,7 +94,7 @@ definition
 											3|[local::at0027]
 										}
 									}
-									ELEMENT[at0028] occurrences matches {0..1} matches {    -- Total Child-Pugh score
+									ELEMENT[at0028] occurrences matches {0..1} matches {    -- Total score
 										value matches {
 											DV_COUNT matches {
 												magnitude matches {|5..15|}
@@ -106,17 +111,6 @@ definition
 													at0032]    -- Class C 10 to 15 points
 												}
 											}
-										}
-									}
-								}
-							}
-						}
-						state matches {
-							ITEM_TREE[at0033] matches {    -- ItemTree
-								items cardinality matches {0..*; unordered} matches {
-									ELEMENT[at0034] occurrences matches {0..1} matches {    -- Confounding factors
-										value matches {
-											DV_TEXT matches {*}
 										}
 									}
 								}
@@ -145,8 +139,8 @@ ontology
 		["en"] = <
 			items = <
 				["at0000"] = <
-					text = <"Child-Pugh Score">
-					description = <"Child-Pugh score used for chronic liver disease/cirrhosis prognosis.">
+					text = <"Child-Pugh score">
+					description = <"Tool used to assess the prognosis of chronic liver disease, mainly cirrhosis.">
 				>
 				["at0001"] = <
 					text = <"History">
@@ -154,7 +148,7 @@ ontology
 				>
 				["at0002"] = <
 					text = <"Any Event">
-					description = <"@ internal @">
+					description = <"Default, unspecified point in time or interval event which may be explicitly defined in a template or at run-time.">
 				>
 				["at0003"] = <
 					text = <"ItemTree">
@@ -162,7 +156,7 @@ ontology
 				>
 				["at0004"] = <
 					text = <"Total bilirubin">
-					description = <"Score for total bilirubin in micromole/litre.">
+					description = <"Score for total bilirubin in micromole per litre.">
 				>
 				["at0005"] = <
 					text = <"Less than 34">
@@ -257,12 +251,12 @@ ontology
 					description = <"Total bilirubin is greater than 170.">
 				>
 				["at0028"] = <
-					text = <"Total Child-Pugh score">
-					description = <"Total Child-Pugh score.">
+					text = <"Total score">
+					description = <"Sum of the individual scores assigned for each of the contributing variables.">
 				>
 				["at0029"] = <
 					text = <"Grade">
-					description = <"Grading according to total score.">
+					description = <"Grading, based on total score.">
 				>
 				["at0030"] = <
 					text = <"Class A 5 to 6 points">
@@ -275,14 +269,6 @@ ontology
 				["at0032"] = <
 					text = <"Class C 10 to 15 points">
 					description = <"The Child-Pugh grade is Class C with a total score of 10 to 15 points.">
-				>
-				["at0033"] = <
-					text = <"ItemTree">
-					description = <"@ internal @">
-				>
-				["at0034"] = <
-					text = <"Confounding factors">
-					description = <"Narrative description of any issues or factors that may impact on the calculation.">
 				>
 				["at0035"] = <
 					text = <"ItemTree">
