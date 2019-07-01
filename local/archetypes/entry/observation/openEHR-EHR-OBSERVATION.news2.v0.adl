@@ -1,0 +1,650 @@
+﻿archetype (adl_version=1.4; uid=16f0088c-15e4-423e-a7b6-ebd336426a94)
+	openEHR-EHR-OBSERVATION.news2.v0
+
+concept
+	[at0000]	-- NEWS2
+language
+	original_language = <[ISO_639-1::en]>
+	translations = <
+		["nb"] = <
+			language = <[ISO_639-1::nb]>
+			author = <
+				["name"] = <"John Tore Valand">
+				["organisation"] = <"Helse Bergen HF">
+			>
+		>
+	>
+description
+	original_author = <
+		["name"] = <"Hildegard Franke">
+		["organisation"] = <"freshEHR Clinical Informatics Ltd.">
+		["date"] = <"2018-02-01">
+	>
+	details = <
+		["nb"] = <
+			language = <[ISO_639-1::nb]>
+			purpose = <"For å registrere en sammensatt skåring, basert på kategoriserte fysiologiske målinger og observasjoner for å støtte vurderingen av klinisk forverring hos pasient over 16 år.">
+			use = <"Brukes for å registrere en sammensatt skåring for å støtte vurderingen av klinisk forverring hos pasient over 16 år.">
+			keywords = <"varsling", "triage", "NEWS", "sats", "MEWS", "TILT", "forverring">
+			misuse = <"Anvendes ikke for registrering av hver enkelt fysiologisk parameter eller klinisk observasjon. Bruk spesifikke OBSERVATION-arketyper for dette formål - OBSERVATION.blood_pressure, OBSERVATION.pulse, OBSERVATION.respirations, OBSERVATION.body_temperature, OBSERVATION.avpu, CLUSTER.ambient_oxygen og OBSERVATION.indirect_oximetry.
+
+Benyttes ikke for barn under 16 år, bruk en egen arketype for dette formålet.
+
+Benyttes vanligvis ikke for gravide.">
+			copyright = <"© Clinical Models UK, openEHR Foundation">
+		>
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To standardise the assessment of acute-illness severity; the detection of clinical deterioration; and the initiation of a timely and competent clinical response.">
+			use = <"Use to record six physiological parameters, a weighting score for supplemental oxygen and a composite total score to underpin:
+- the assessment of acute-illness severity; 
+- the detection of clinical deterioration; and 
+- the initiation of a timely and competent clinical response.">
+			keywords = <"warning", "triage", "NEWS", "Sats", "EWS">
+			misuse = <"Not to be used to record actual measurements for each parameter. Use specific OBSERVATION archetypes for this purpose:
+- OBSERVATION.blood_pressure;
+- OBSERVATION.pulse;
+- OBSERVATION.respirations;
+- OBSERVATION.body_temperature;
+- OBSERVATION.avpu; and
+- OBSERVATION.indirect_oximetry.
+
+Not to be used for children/teens under the age of 16 years or in pregnancy.">
+			copyright = <"© Clinical Models UK, openEHR Foundation">
+		>
+	>
+	lifecycle_state = <"in_development">
+	other_contributors = <"Heather Leslie, Atomica Informatics, Australia", ...>
+	other_details = <
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
+		["custodian_organisation"] = <"openEHR Foundation">
+		["references"] = <"Derived from: NEWS2 (UK RCP), Draft archetype [Internet]. Apperta UK, Apperta UK Clinical Knowledge Manager [cited: 2019-02-12]. Available from: https://ckm.apperta.org/ckm/#showArchetype_1051.32.707
+
+Royal College of Physicians [Internet]. London: Royal College of Physicians: National Early Warning Score (NEWS) 2; 2017 [cited 2019 02 12]. Available from: https://www.rcplondon.ac.uk/projects/outputs/national-early-warning-score-news-2.">
+		["current_contact"] = <"Heather Leslie, Atomica Informatics,<heather.leslie@atomicainformatics.com>">
+		["original_namespace"] = <"org.openehr">
+		["original_publisher"] = <"openEHR Foundation">
+		["custodian_namespace"] = <"org.openehr">
+		["MD5-CAM-1.0.1"] = <"419859D1BF052C126FC989A7211A3648">
+		["build_uid"] = <"ddc21bba-881e-4538-8e99-29652b40d333">
+		["revision"] = <"0.0.1-alpha">
+	>
+
+definition
+	OBSERVATION[at0000] matches {	-- NEWS2
+		data matches {
+			HISTORY[at0001] matches {	-- Event Series
+				events cardinality matches {1..*; unordered} matches {
+					EVENT[at0002] occurrences matches {0..1} matches {	-- Any event
+						data matches {
+							ITEM_TREE[at0003] matches {	-- Tree
+								items cardinality matches {0..*; unordered} matches {
+									ELEMENT[at0006] occurrences matches {0..1} matches {	-- Respiration rate
+										value matches {
+											0|[local::at0018], 	-- 12-20
+											1|[local::at0019], 	-- 9-11
+											2|[local::at0020], 	-- 21-24
+											3|[local::at0021]  	-- <=8 or >=25
+										}
+									}
+									ELEMENT[at0029] occurrences matches {0..1} matches {	-- SpO₂ Scale 1
+										value matches {
+											0|[local::at0030], 	-- >= 96
+											1|[local::at0031], 	-- 94-95
+											2|[local::at0032], 	-- 92-93
+											3|[local::at0033]  	-- <=91
+										}
+									}
+									ELEMENT[at0047] occurrences matches {0..1} matches {	-- SpO₂ Scale 2
+										value matches {
+											0|[local::at0048], 	-- 88-92 or >=93 on air
+											1|[local::at0049], 	-- 86-87 or 93-94 on O₂
+											2|[local::at0050], 	-- 84-85 or 95-96 on O₂
+											3|[local::at0051]  	-- <=83 or >=97 on O₂
+										}
+									}
+									ELEMENT[at0034] occurrences matches {0..1} matches {	-- Air or oxygen?
+										value matches {
+											0|[local::at0036], 	-- Air
+											2|[local::at0037]  	-- Oxygen
+										}
+									}
+									ELEMENT[at0004] occurrences matches {0..1} matches {	-- Systolic blood pressure
+										value matches {
+											0|[local::at0014], 	-- 111-219
+											1|[local::at0015], 	-- 101-110
+											2|[local::at0016], 	-- 91-100
+											3|[local::at0017]  	-- <=90 or >= 220
+										}
+									}
+									ELEMENT[at0005] occurrences matches {0..1} matches {	-- Pulse
+										value matches {
+											0|[local::at0013], 	-- 51-90
+											1|[local::at0012], 	-- 41-50 or 91-110
+											2|[local::at0011], 	-- 111-130
+											3|[local::at0010]  	-- <=40 or >=131
+										}
+									}
+									ELEMENT[at0008] occurrences matches {0..1} matches {	-- Consciousness
+										value matches {
+											0|[local::at0024], 	-- Alert
+											3|[local::at0025]  	-- Confusion, V, P or U
+										}
+									}
+									ELEMENT[at0007] occurrences matches {0..1} matches {	-- Temperature
+										value matches {
+											0|[local::at0022], 	-- 36.1-38.0
+											1|[local::at0023], 	-- 35.1-36.0 or 38.1-39.0
+											2|[local::at0038], 	-- >=39.1
+											3|[local::at0039]  	-- <=35.0
+										}
+									}
+									ELEMENT[at0028] occurrences matches {0..1} matches {	-- NEWS2 total score
+										value matches {
+											DV_COUNT matches {
+												magnitude matches {|0..20|}
+											}
+										}
+									}
+									ELEMENT[at0056] occurrences matches {0..1} matches {	-- Clinical risk category
+										value matches {
+											DV_CODED_TEXT matches {
+												defining_code matches {
+													[local::
+													at0057, 	-- Low
+													at0058, 	-- Low-medium
+													at0059, 	-- Medium
+													at0060]	-- High
+												}
+											}
+										}
+									}
+									ELEMENT[at0044] occurrences matches {0..1} matches {	-- Comment
+										value matches {
+											DV_TEXT matches {*}
+										}
+									}
+								}
+							}
+						}
+						state matches {
+							ITEM_TREE[at0041] matches {	-- Tree
+								items cardinality matches {0..*; unordered} matches {
+									allow_archetype CLUSTER[at0053] occurrences matches {0..*} matches {	-- Supplemental oxygen delivery details
+										include
+											archetype_id/value matches {/openEHR-EHR-CLUSTER\.inspired_oxygen\.v1/}
+									}
+									ELEMENT[at0043] occurrences matches {0..1} matches {	-- Confounding factors
+										value matches {
+											DV_TEXT matches {*}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		protocol matches {
+			ITEM_TREE[at0045] matches {	-- Tree
+				items cardinality matches {0..*; unordered} matches {
+					allow_archetype CLUSTER[at0046] occurrences matches {0..*} matches {	-- Extension
+						include
+							archetype_id/value matches {/.*/}
+					}
+				}
+			}
+		}
+	}
+
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"NEWS2">
+					description = <"Standardised assessment score used to improve the detection of and response to clinical deterioration in patients with acute illness. This is the second version of the National Early Warning Score, issued by the UK Royal College of Physicians in 2017.">
+				>
+				["at0001"] = <
+					text = <"Event Series">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Any event">
+					description = <"Default, unspecified point in time or interval event which may be explicitly defined in a template or at run-time.">
+					comment = <"In most practical situations this event will be constrained to a Point in time event.">
+				>
+				["at0003"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0004"] = <
+					text = <"Systolic blood pressure">
+					description = <"Range category for the systolic blood pressure measurement.">
+				>
+				["at0005"] = <
+					text = <"Pulse">
+					description = <"Range category for the pulse measurement.">
+				>
+				["at0006"] = <
+					text = <"Respiration rate">
+					description = <"Range category for the respiratory rate measurement.">
+				>
+				["at0007"] = <
+					text = <"Temperature">
+					description = <"Range category for the body temperature measurement.">
+				>
+				["at0008"] = <
+					text = <"Consciousness">
+					description = <"Observed category for the ACVPU scale rating of conscious state.">
+				>
+				["at0010"] = <
+					text = <"<=40 or >=131">
+					description = <"The pulse measurement is less than/equal to 40 beats/min or greater than/equal to 131 beats/min; scored as 3 points.">
+				>
+				["at0011"] = <
+					text = <"111-130">
+					description = <"The pulse measurement is between 111 and 130 beats/min; scored as 2 points.">
+				>
+				["at0012"] = <
+					text = <"41-50 or 91-110">
+					description = <"The pulse measurement is between 41 and 50 beats/min or between 91 and 110 beats/min; scored as 1 point.">
+				>
+				["at0013"] = <
+					text = <"51-90">
+					description = <"The pulse measurement is between 51 and 90 beats/min; scored as 0 points.">
+				>
+				["at0014"] = <
+					text = <"111-219">
+					description = <"The systolic blood pressure measurement is between 111 and 219 mmHg; scored as 0 points.">
+				>
+				["at0015"] = <
+					text = <"101-110">
+					description = <"The systolic blood pressure measurement is between 101 and 110 mmHg; scored as 1 point.">
+				>
+				["at0016"] = <
+					text = <"91-100">
+					description = <"The systolic blood pressure measurement is between 91 and 100 mmHg; scored as 2 points.">
+				>
+				["at0017"] = <
+					text = <"<=90 or >= 220">
+					description = <"The systolic blood pressure measurement is less than/equal to 90 mmHg or greater than/equal to 220 mmHg; scored as 3 points.">
+				>
+				["at0018"] = <
+					text = <"12-20">
+					description = <"The respiratory rate measurement is between 12 and 20 breaths/min; scored as 0 points.">
+				>
+				["at0019"] = <
+					text = <"9-11">
+					description = <"The respiratory rate measurement is between 9 and 11 breaths/min; scored as 1 point.">
+				>
+				["at0020"] = <
+					text = <"21-24">
+					description = <"The respiratory rate measurement is between 21 and 24 breaths/min; scored as 2 points.">
+				>
+				["at0021"] = <
+					text = <"<=8 or >=25">
+					description = <"The respiratory rate measurement is less than/equal to 8 breaths/min or greater than/equal to 25 breaths/min; scored as 3 points.">
+				>
+				["at0022"] = <
+					text = <"36.1-38.0">
+					description = <"The body temperature measurement is between 36.1 and 38.0 degrees Celsius; scored as 0 points.">
+				>
+				["at0023"] = <
+					text = <"35.1-36.0 or 38.1-39.0">
+					description = <"The body temperature measurement is between 35.1 and 36.0 degrees Celsius or between 38.1 and 39.0 degrees Celsius; scored as 1 point.">
+				>
+				["at0024"] = <
+					text = <"Alert">
+					description = <"The patient is alert or awake; scored as 0 points.">
+				>
+				["at0025"] = <
+					text = <"Confusion, V, P or U">
+					description = <"The patient is newly confused, responds only to voice or pain, or is unresponsive; scored as 3 points.">
+				>
+				["at0028"] = <
+					text = <"NEWS2 total score">
+					description = <"The total sum of ordinal values associated with six relevant NEWS2 physiological parameters, plus the supplemental oxygen weighting score.">
+					comment = <"Total score may be generated at run-time.">
+				>
+				["at0029"] = <
+					text = <"SpO₂ Scale 1">
+					description = <"Range category for the oxygen saturation measurement.">
+					comment = <"SpO2 Scale 1 and Scale 2 are variations of the same physiological parameter to be used in different clinical scenarios. Scale 1 will be appropriate for most patients. Do not use Scale 1 in patients with a prescribed oxygen saturation requirement of 88–92%, such as patients with hypercapnic respiratory failure.">
+				>
+				["at0030"] = <
+					text = <">= 96">
+					description = <"The oxygen saturation level is greater than/equal to 96%; scored as 0 points.">
+				>
+				["at0031"] = <
+					text = <"94-95">
+					description = <"The oxygen saturation level is between 94% and 95%; scored as 1 point.">
+				>
+				["at0032"] = <
+					text = <"92-93">
+					description = <"The oxygen saturation level is between 92% and 93%; scored as 2 points.">
+				>
+				["at0033"] = <
+					text = <"<=91">
+					description = <"The oxygen saturation level is less than/equal to 91%; scored as 3 points.">
+				>
+				["at0034"] = <
+					text = <"Air or oxygen?">
+					description = <"Assessment carried out breathing air or supplemental oxygen.">
+				>
+				["at0036"] = <
+					text = <"Air">
+					description = <"The patient is not receiving supplemental oxygen; scored as 0 points.">
+				>
+				["at0037"] = <
+					text = <"Oxygen">
+					description = <"The patient is receiving supplemental oxygen; scored as 2 points.">
+				>
+				["at0038"] = <
+					text = <">=39.1">
+					description = <"The body temperature is greater than/equal to 39.1 degrees Celcius; scored as 2 points.">
+				>
+				["at0039"] = <
+					text = <"<=35.0">
+					description = <"The body temperature is less than/equal to 35 degrees Celcius ; scored as 3 points.">
+				>
+				["at0041"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0043"] = <
+					text = <"Confounding factors">
+					description = <"Record any issues or factors that may impact on the NEWS2 assessment.">
+					comment = <"For example: presence of pain; pregnancy.">
+				>
+				["at0044"] = <
+					text = <"Comment">
+					description = <"Additional narrative about the overall NEWS2 score not captured in other fields.">
+				>
+				["at0045"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0046"] = <
+					text = <"Extension">
+					description = <"Additional information required to capture local content or to align with other reference models/formalisms.">
+					comment = <"For example: local information requirements or additional metadata to align with FHIR or CIMI equivalents.">
+				>
+				["at0047"] = <
+					text = <"SpO₂ Scale 2">
+					description = <"Range category for the oxygen saturation measurement only for use in patients with a prescribed oxygen saturation requirement of 88–92%, such as hypercapnic respiratory failure.">
+					comment = <"SpO2 Scale 1 and Scale 2 are variations of the same physiological parameter to be used in different clinical scenarios. Use Scale 2 in patients confirmed to have hypercapnic respiratory failure on blood gas analysis on either a prior, or their current, hospital admission. Use Scale 1 for all other patients.">
+				>
+				["at0048"] = <
+					text = <"88-92 or >=93 on air">
+					description = <"The oxygen saturation level is between 88% and 92% or greater than/equal to 93% on air; scored as 0 points.">
+				>
+				["at0049"] = <
+					text = <"86-87 or 93-94 on O₂">
+					description = <"The oxygen saturation level is between 86% and 87% or between 93% and 94% on supplemental oxygen; scored as 1 point.">
+				>
+				["at0050"] = <
+					text = <"84-85 or 95-96 on O₂">
+					description = <"The oxygen saturation level is between 84% and 85% or between 95% and 96% on supplemental oxygen; scored as 2 points.">
+				>
+				["at0051"] = <
+					text = <"<=83 or >=97 on O₂">
+					description = <"The oxygen saturation level is less or equal 83% or between >=97% on supplemental oxygen; scored as 3 points.">
+				>
+				["at0053"] = <
+					text = <"Supplemental oxygen delivery details">
+					description = <"Details about the supplemental oxygen delivery.">
+					comment = <"Use the CLUSTER.inspired oxygen to capture the following 3 data points as per the NEWS2 Chart:
+- Use the 'Flow rate' data element to capture the oxygen delivery as L/min.
+- Use the 'Method of oxygen delivery' data element to record the recommended system/device values from Table 1 of the NEWS2 final report_0.pdf (p22), including 'A' (breathing air).
+- Use the 'Percent O₂' data element to record the percent of oxygen delivered using a device, for example 24% for a V24 Venturi device or 28% of humidified oxygen for H28.
+">
+				>
+				["at0056"] = <
+					text = <"Clinical risk category">
+					description = <"Overall category representing the urgency and scale of the clinical response required in response to the physiological parameters.">
+				>
+				["at0057"] = <
+					text = <"Low">
+					description = <"Ward-based response.">
+				>
+				["at0058"] = <
+					text = <"Low-medium">
+					description = <"Urgent ward-based response.">
+				>
+				["at0059"] = <
+					text = <"Medium">
+					description = <"Key threshold for urgent response.">
+				>
+				["at0060"] = <
+					text = <"High">
+					description = <"Urgent or emergency response.">
+				>
+			>
+		>
+		["nb"] = <
+			items = <
+				["at0000"] = <
+					text = <"NEWS">
+					description = <"NEWS (National Early Warning Score) er et skåringsverktøy som benyttes for å gi en objektiv vurdering av grad av klinisk forverring hos en pasient. Denne versjonen følger retningslinjer utgitt av the UK Royal College of Physicians.">
+				>
+				["at0001"] = <
+					text = <"Event Series">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"*Any event (en)">
+					description = <"*Default, unspecified point in time or interval event which may be explicitly defined in a template or at run-time. (en)">
+					comment = <"*In most practical situations this event will be constrained to a Point in time event. (en)">
+				>
+				["at0003"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0004"] = <
+					text = <"Systolisk blodtrykk">
+					description = <"Pasientens systoliske blodtrykk.">
+				>
+				["at0005"] = <
+					text = <"Hjertefrekvens/puls">
+					description = <"Pasientens hjertefrekvens.">
+				>
+				["at0006"] = <
+					text = <"*Respiration rate(en)">
+					description = <"*Pasientens respirasjonsfrekvens.">
+				>
+				["at0007"] = <
+					text = <"*Temperature(en)">
+					description = <"*Pasientens kroppstemperatur.">
+				>
+				["at0008"] = <
+					text = <"*Consciousness (en)">
+					description = <"*Observed category for the ACVPU scale rating of conscious state. (en)">
+				>
+				["at0010"] = <
+					text = <"≤40 eller ≥131">
+					description = <"Hjertefrekvensen målt som mindre enn eller lik 40 pulsslag per min eller større enn eller lik 131 pulsslag per min; skåres som 3 poeng.">
+				>
+				["at0011"] = <
+					text = <"111-130">
+					description = <"Hjertefrekvensen målt fra og med 111 til og med 130 pulsslag per min; skåres som 2 poeng.">
+				>
+				["at0012"] = <
+					text = <"41-50 eller 91-110">
+					description = <"Hjertefrekvensen målt fra og med 41 til og med 50 pulsslag per min eller fra og med 91 til og med 110 pulsslag per min; skåres som 1 poeng.">
+				>
+				["at0013"] = <
+					text = <"51-90">
+					description = <"Hjertefrekvensen målt fra og med 51 til og med 90 pulsslag per min; skåres som 0 poeng.">
+				>
+				["at0014"] = <
+					text = <"111-219">
+					description = <"Det systoliske blodtrykket målt fra og med 111 til og med 219 mmHg; skåres som 0 poeng.">
+				>
+				["at0015"] = <
+					text = <"101-110">
+					description = <"Det systoliske blodtrykket målt fra og med 101 til og med 110 mmHg; skåres som 1 poeng.">
+				>
+				["at0016"] = <
+					text = <"91-100">
+					description = <"Det systoliske blodtrykket målt fra og med 91 til og med 100 mmHg; skåres som 2 poeng.">
+				>
+				["at0017"] = <
+					text = <"≤90 eller ≥220">
+					description = <"Det systoliske blodtrykket målt mindre enn eller lik 90 mmHg eller større enn eller lik 220 mmHg; skåres som 3 poeng.">
+				>
+				["at0018"] = <
+					text = <"12-20">
+					description = <"Respirasjonsfrekvensen målt fra og med 12 til og med 20 pust per min; skåres som 0 poeng.">
+				>
+				["at0019"] = <
+					text = <"9-11">
+					description = <"Respirasjonsfrekvensen målt fra og med 9 til og med 11 pust per min; skåres som 1 poeng.">
+				>
+				["at0020"] = <
+					text = <"21-24">
+					description = <"Respirasjonsfrekvensen målt fra og med 21 til og med 24 pust per min; skåres som 2 poeng.">
+				>
+				["at0021"] = <
+					text = <"≤8 eller ≥25">
+					description = <"Respirasjonsfrekvensen målt, mindre enn eller lik 8, eller større enn eller lik 25 pust per min; skåres som 3 poeng.">
+				>
+				["at0022"] = <
+					text = <"*36.1-38.0(en)">
+					description = <"*The body temperature measurement is between 36.1 and 38.0 degrees Celsius; scored as 0 points.">
+				>
+				["at0023"] = <
+					text = <"*35.1-36.0 or 38.1-39.0(en)">
+					description = <"*The body temperature measurement is between 35.1 and 36.0 degrees Celsius or between 38.1 and 39.0 degrees Celsius; scored as 1 point.">
+				>
+				["at0024"] = <
+					text = <"A">
+					description = <"Pasienten er helt våken; skåres som 0 poeng.">
+				>
+				["at0025"] = <
+					text = <"*Confusion, V, P or U(en)">
+					description = <"*V - Reagerer på lyd/ tiltale, P - Reagerer på smerte, U - Reagerer ikke; skåres som 3 poeng.">
+				>
+				["at0028"] = <
+					text = <"*NEWS2 total score (en)">
+					description = <"Summen av skår til hvert enkelt NEWS-parameter.">
+					comment = <"Totalskår vil normalt beregnes automatisk i en applikasjon.">
+				>
+				["at0029"] = <
+					text = <"*SpO₂ Scale 1 (en)">
+					description = <"Pasientens oksygenmetning.">
+					comment = <"*SpO2 Scale 1 and Scale 2 are variations of the same physiological parameter to be used in different clinical scenarios. Scale 1 will be appropriate for most patients. Do not use Scale 1 in patients with a prescribed oxygen saturation requirement of 88–92%, such as  patients with hypercapnic respiratory failure. (en)">
+				>
+				["at0030"] = <
+					text = <"*>= 96(en)">
+					description = <"*Oksygenmetning målt større enn eller lik 96 prosent; skåres som 0 poeng.">
+				>
+				["at0031"] = <
+					text = <"*94-95(en)">
+					description = <"*Oksygenmetning målt fra og med 94 til og med 95 prosent; skåres som 1 poeng.">
+				>
+				["at0032"] = <
+					text = <"*92-93(en)">
+					description = <"*Oksygenmetning målt fra og med 92 til og med 93 prosent; skåres som 2 poeng.">
+				>
+				["at0033"] = <
+					text = <"*<=91(en)">
+					description = <"*Oksygenmetning målt som mindre enn eller lik 91 prosent; skåres som 3 poeng.">
+				>
+				["at0034"] = <
+					text = <"*Air or oxygen? (en)">
+					description = <"Om pasienten tilføres oksygen for å opprettholde oksygenmetningen.">
+				>
+				["at0036"] = <
+					text = <"Nei">
+					description = <"Pasienten tilføres ikke oksygen; skåres som 0 poeng.">
+				>
+				["at0037"] = <
+					text = <"Ja">
+					description = <"Pasienten tilføres oksygen; skåres som 2 poeng.">
+				>
+				["at0038"] = <
+					text = <"*>=39.1(en)">
+					description = <"*The body temperature is greater than/equal to 39.1 degrees Celcius; scored as 2 points.">
+				>
+				["at0039"] = <
+					text = <"*<=35.0(en)">
+					description = <"*The body temperature is less than/equal to 35 degrees Celcius ; scored as 3 points.">
+				>
+				["at0041"] = <
+					text = <"*Tree(en)">
+					description = <"*@ internal @">
+				>
+				["at0043"] = <
+					text = <"Konfunderende faktorer">
+					description = <"*Record any issues or factors that may impact on the NEWS2 assessment. (en)">
+					comment = <"*For example: presence of pain; pregnancy. (en)">
+				>
+				["at0044"] = <
+					text = <"Kommentar">
+					description = <"Ytterligere kommentar til NEWS-skåringen som ikke er fanget opp i andre felt.">
+				>
+				["at0045"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0046"] = <
+					text = <"Tilleggsinformasjon">
+					description = <"Ytterligere informasjon som trengs for å kunne registrere lokalt definert innhold eller for å tilpasse til andre referansemodeller/formalismer.">
+					comment = <"For eksempel lokale informasjonsbehov eller ytterligere metadata for å kunne tilpasse til tilsvarende konsepter i FHIR eller CIMI.">
+				>
+				["at0047"] = <
+					text = <"*SpO₂ Scale 2 (en)">
+					description = <"*Range category for the oxygen saturation measurement only for use in patients with a prescribed oxygen saturation requirement of 88–92%, such as hypercapnic respiratory failure. (en)">
+					comment = <"*SpO2 Scale 1 and Scale 2 are variations of the same physiological parameter to be used in different clinical scenarios. Use Scale 2 in patients confirmed to have hypercapnic respiratory failure on blood gas analysis on either a prior, or their current, hospital admission. Use Scale 1 for all other patients. (en)">
+				>
+				["at0048"] = <
+					text = <"*88-92 or >=93 on air(en)">
+					description = <"*The oxygen saturation level is between 88% and 92% or greater than/equal to 93% on air; scored as 0 points.">
+				>
+				["at0049"] = <
+					text = <"*86-87 or 93-94 on O₂(en)">
+					description = <"*The oxygen saturation level is between 86% and 87% or between 93% and 94% on oxygen; scored as 1 point.">
+				>
+				["at0050"] = <
+					text = <"*84-85 or 95-96 on O₂(en)">
+					description = <"*The oxygen saturation level is between 84% and 85% or between 95% and 96% on oxygen; scored as 2 points.">
+				>
+				["at0051"] = <
+					text = <"*<=83 or >=97 on O₂(en)">
+					description = <"*The oxygen saturation level is less or equal 83% or between >=97% on oxygen; scored as 3 points.">
+				>
+				["at0053"] = <
+					text = <"*Supplemental oxygen delivery details (en)">
+					description = <"*Details about the supplemental oxygen delivery. (en)">
+					comment = <"*Use the CLUSTER.inspired oxygen to capture the following 3 data points as per the NEWS2 Chart:
+- Use the 'Flow rate' data element to capture the oxygen delivery as L/min.
+- Use the 'Method of oxygen delivery' data element to record the recommended system/device values from Table 1 of the NEWS2 final report_0.pdf (p22), including 'A' (breathing air).
+- Use the 'Percent O₂' data element to record the percent of oxygen delivered using a device, for example 24% for a V24 Venturi device or 28% of humidified oxygen for H28.
+ (en)">
+				>
+				["at0056"] = <
+					text = <"*Clinical risk category (en)">
+					description = <"*">
+				>
+				["at0057"] = <
+					text = <"*Low(en)">
+					description = <"*Ward-based response.(en)">
+				>
+				["at0058"] = <
+					text = <"*Low-medium(en)">
+					description = <"*Urgent ward-based response.(en)">
+				>
+				["at0059"] = <
+					text = <"*Medium(en)">
+					description = <"*Key threshold for urgent response.(en)">
+				>
+				["at0060"] = <
+					text = <"*High(en)">
+					description = <"*Urgent or emergency response.(en)">
+				>
+			>
+		>
+	>

@@ -15,8 +15,8 @@ description
 	details = <
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"To record a persistent and managed list of all relevant family history for the subject, or statements about positive exclusion or actual absence of information about adverse reactions, that may influence clinical decision-making and care provision.">
-			use = <"Use to record a persistent and managed list of all relevant family history for the subject, or statements about positive exclusion or actual absence of information about adverse reactions, that may influence clinical decision-making and care provision.
+			purpose = <"To record a persistent and managed list of all relevant family history for an individual or statements about positive exclusion or actual absence of information about family history, that may influence clinical decision-making and care provision.">
+			use = <"Use to record a persistent and managed list of all relevant family history for an individual or statements about positive exclusion or actual absence of information about family history, that may influence clinical decision-making and care provision.
 
 It is also possible to record family history information for individuals other than the subject of the health record - for example information about the father of an unborn fetus needs to be stored in the mother's health record until birth. In this situation the subject of care must be explicitly specified.
 
@@ -29,15 +29,15 @@ The intent of this COMPOSITION is for use as a persistent summary, however it ha
 	lifecycle_state = <"in_development">
 	other_contributors = <>
 	other_details = <
-		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
 		["custodian_organisation"] = <"openEHR Foundation">
-		["references"] = <"Derived from: Family history, Draft archetype [Internet]. Australian Digital Health Agency (NEHTA), ADHA Clinical Knowledge Manager. Authored: 2013 Jun 16. Available at: http://dcm.nehta.org.au/ckm#showArchetype_1013.1.1297_3 (discontinued)">
+		["references"] = <"Derived from: Family history, Draft archetype [Internet]. Australian Digital Health Agency (NEHTA), ADHA Clinical Knowledge Manager. Authored: 2013 Jun 16. Available at: http://dcm.nehta.org.au/ckm#showArchetype_1013.1.1297_3 (discontinued).">
 		["current_contact"] = <"Dr Heather Leslie, Atomica Informatics, Australia<heather.leslie@atomicainformatics.com>">
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"17D71FBCF2F90899A9CB149DA5FB0211">
-		["build_uid"] = <"91095cf6-5238-41a7-99c5-6efd6554ce2f">
+		["MD5-CAM-1.0.1"] = <"370E065CE9F5D49D8EF4E159A81058BF">
+		["build_uid"] = <"449edec2-3c03-4243-8eac-79ab2c4942f1">
 		["revision"] = <"0.0.1-alpha">
 	>
 
@@ -53,23 +53,13 @@ definition
 				other_context matches {
 					ITEM_TREE[at0003] matches {	-- Tree
 						items cardinality matches {0..*; unordered} matches {
-							allow_archetype ITEM[at0004] occurrences matches {0..*} matches {	-- Items
+							allow_archetype CLUSTER[at0005] occurrences matches {0..*} matches {	-- Extension
 								include
-									archetype_id/value matches {/openEHR-EHR-CLUSTER\.document_entry_metadata(-[a-zA-Z0-9_]+)*\.v1/}
+									archetype_id/value matches {/.*/}
 							}
 						}
 					}
 				}
-			}
-		}
-		content cardinality matches {1..*; unordered} matches {
-			allow_archetype EVALUATION[at0001] occurrences matches {0..*} matches {	-- Family History
-				include
-					archetype_id/value matches {/openEHR-EHR-EVALUATION\.exclusion-family_history(-[a-zA-Z0-9_]+)*\.v1|openEHR-EHR-EVALUATION\.family_history(-[a-zA-Z0-9_]+)*\.v1|openEHR-EHR-EVALUATION\.absence(-[a-zA-Z0-9_]+)*\.v1/}
-			}
-			allow_archetype EVALUATION[at0002] occurrences matches {0..*} matches {	-- Exclusion/Absence
-				include
-					archetype_id/value matches {/.*/}
 			}
 		}
 	}
@@ -83,21 +73,14 @@ ontology
 					text = <"Family history">
 					description = <"A persistent and managed list about relevant family history of the subject that may influence clinical decision-making and care provision.">
 				>
-				["at0001"] = <
-					text = <"Family History">
-					description = <"Details about known family history.">
-				>
-				["at0002"] = <
-					text = <"Exclusion/Absence">
-					description = <"Positive statement/s about exclusion of family history or that no information is available.">
-				>
 				["at0003"] = <
 					text = <"Tree">
 					description = <"@ internal @">
 				>
-				["at0004"] = <
-					text = <"Items">
-					description = <"Additional COMPOSITION related data.">
+				["at0005"] = <
+					text = <"Extension">
+					description = <"Additional information required to capture local context or to align with other reference models/formalisms.">
+					comment = <"For example: local information requirements or additional metadata to align with FHIR or CIMI equivalents.">
 				>
 			>
 		>

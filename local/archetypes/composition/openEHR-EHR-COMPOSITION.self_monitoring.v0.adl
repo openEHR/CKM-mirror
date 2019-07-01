@@ -31,22 +31,31 @@ description
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"21B50C8EFDD51D3AF78C78B2B7D99F88">
-		["build_uid"] = <"da287907-e979-4c1e-b43c-7b066c2fa14f">
+		["MD5-CAM-1.0.1"] = <"7266FD81BB789DCF8A90C79D855DBFB1">
+		["build_uid"] = <"f3213704-4847-4656-bebc-fa561f5a4f42">
 		["revision"] = <"0.0.1-alpha">
 	>
 
 definition
-	COMPOSITION[at0000] matches {	-- Self monitoring
+	COMPOSITION[at0000] matches {    -- Self monitoring
 		category matches {
 			DV_CODED_TEXT matches {
-				defining_code matches {[openehr::433]}
+				defining_code matches {
+					[openehr::433]
+				}
 			}
 		}
 		context matches {
 			EVENT_CONTEXT matches {
 				other_context matches {
-					ITEM_TREE[at0001] matches {*}
+					ITEM_TREE[at0001] matches {    -- Tree
+						items cardinality matches {0..*; unordered} matches {
+							allow_archetype CLUSTER[at0002] occurrences matches {0..*} matches {    -- Extension
+								include
+									archetype_id/value matches {/.*/}
+							}
+						}
+					}
 				}
 			}
 		}
@@ -59,11 +68,16 @@ ontology
 			items = <
 				["at0000"] = <
 					text = <"Self monitoring">
-					description = <"A composition to record a person monitoring particular parameters">
+					description = <"A composition to record a person self-monitoring particular parameters.">
 				>
 				["at0001"] = <
 					text = <"Tree">
 					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Extension">
+					description = <"Additional information required to capture local context or to align with other reference models/formalisms.">
+					comment = <"For example: Local hospital departmental infomation or additional metadata to align with FHIR or CIMI equivalents.">
 				>
 			>
 		>
