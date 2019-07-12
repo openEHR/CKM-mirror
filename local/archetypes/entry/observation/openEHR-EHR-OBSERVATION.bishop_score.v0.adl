@@ -15,86 +15,89 @@ description
 	details = <
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"To rate the readiness of the cervix, for induction of labour, by standard digital vaginal assessment.">
-			use = <"To rate the readiness of the cervix for induction of labour in pregnent women.
-The Bishop score is the most commonly used method to rate the readiness of the cervix for induction of labour. ">
-			keywords = <"Bishop score, cervix score, the uterine cervix (the neck of the womb), induction of labour, cervical readiness (ripeness), standard digital vaginal assessment", ...>
-			misuse = <"Not used for ordinary standard digital vaginal assessment during active labour or pre-labour. Use the 	
-CLUSTER.palpation_of_cervix for this purpose.">
+			purpose = <"To record the Bishop Score findings on vaginal examination of a pregnant woman.">
+			use = <"Use to record the Bishop Score findings on vaginal examination of a pregnant woman.">
+			keywords = <"Bishop score", "Cervix score", "ripeness", "induction">
+			misuse = <"Not to be used to record the findings of physical examination of the vagina and cervix. Use the 	
+CLUSTER.exam-palpation-cervix for this purpose.">
 			copyright = <"© openEHR Foundation">
 		>
 	>
 	lifecycle_state = <"in_development">
-	other_contributors = <>
+	other_contributors = <"Vebjørn Arntzen, Oslo University Hospital, Norway (openEHR Editor)", "Silje Ljosland Bakke, Nasjonal IKT HF, Norway (openEHR Editor)", "Mikkel Gaup Grønmo, Helse-Nord, Norway (openEHR Editor)", "Heather Leslie, Atomica Informatics, Australia (openEHR Editor)", "John Tore Valand, Helse Bergen, Norway (openEHR Editor)", "Marit Alice Venheim, Helse Vest IKT, Norway (openEHR Editor)", "Dennis Forslund, Cambio Healthcare Systems, Sweden">
 	other_details = <
-		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
 		["custodian_organisation"] = <"openEHR Foundation">
-		["references"] = <"Bishop score WikipediA:  https://en.wikipedia.org/wiki/Bishop_score 
-Original Bishop score with modifications, https://europepmc.org/abstract/med/27918160
-Ezebialu, I. U., et al. (2015). \"Methods for assessing pre‐induction cervical ripening.\" Cochrane Database of Systematic Reviews(6). https://www.cochranelibrary.com/cdsr/doi/10.1002/14651858.CD010762.pub2/full?highlightAbstract=withdrawn%7Cscore%7Cbishop%7Cscor">
+		["references"] = <"Bishop EH. Pelvic scoring for elective induction. Obstet Gynecol. 1964 Aug;24:266-8. PubMed PMID: 14199536.
+
+Ezebialu IU, Eke AC, Eleje GU, Nwachukwu CE. Methods for assessing pre-induction cervical ripening. Cochrane Database Syst Rev. 2015 Jun 12;(6):CD010762. doi: 10.1002/14651858.CD010762.pub2. Review. PubMed PMID: 26068943; PubMed Central PMCID: PMC4473357.
+
+Hostinská E, Lubušký M, Huml K, Pilka R. [Original Bishop score with modifications]. Ceska Gynekol. Winter 2016;81(6):426-430. Review. PubMed PMID: 27918160.
+
+Newman RB, Goldenberg RL, Iams JD, Meis PJ, Mercer BM, Moawad AH, Thom E, Miodovnik M, Caritis SN, Dombrowski M. Preterm prediction study: comparison of the cervical score and Bishop score for prediction of spontaneous preterm delivery. Obstet Gynecol. 2008 Sep;112(3):508-15. doi: 10.1097/AOG.0b013e3181842087. PubMed PMID: 18757646; PubMed Central PMCID: PMC2728002.">
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"51FCBF11C2E05CD1B34D00CA2FAE4419">
-		["build_uid"] = <"d58d8f50-fe66-4657-9ca9-f2f2e5691303">
+		["MD5-CAM-1.0.1"] = <"CE59DC64770F73C49297B73DD437B127">
+		["build_uid"] = <"d30f583a-3705-4469-bb7d-3f25fdcbb158">
 		["revision"] = <"0.0.1-alpha">
 	>
 
 definition
-	OBSERVATION[at0000] matches {    -- Bishop score
+	OBSERVATION[at0000] matches {	-- Bishop score
 		data matches {
-			HISTORY[at0001] matches {    -- History
-				events cardinality matches {0..*; unordered} matches {
-					POINT_EVENT[at0002] occurrences matches {0..*} matches {    -- Point in time
+			HISTORY[at0001] matches {	-- History
+				events cardinality matches {1..*; unordered} matches {
+					EVENT[at0002] occurrences matches {0..*} matches {	-- Any event
 						data matches {
-							ITEM_TREE[at0003] matches {    -- ItemTree
+							ITEM_TREE[at0003] matches {	-- ItemTree
 								items cardinality matches {0..*; unordered} matches {
-									ELEMENT[at0023] occurrences matches {0..1} matches {    -- Cervical position
+									ELEMENT[at0023] occurrences matches {0..1} matches {	-- Position
 										value matches {
-											0|[local::at0024],
-											1|[local::at0025],
-											2|[local::at0026]
+											0|[local::at0024], 	-- Posterior
+											1|[local::at0025], 	-- Middle
+											2|[local::at0026]  	-- Anterior
 										}
 									}
-									ELEMENT[at0019] occurrences matches {0..1} matches {    -- Cervical consistency
+									ELEMENT[at0019] occurrences matches {0..1} matches {	-- Consistency
 										value matches {
-											0|[local::at0020],
-											1|[local::at0021],
-											2|[local::at0022]
+											0|[local::at0020], 	-- Firm
+											1|[local::at0021], 	-- Medium
+											2|[local::at0022]  	-- Soft
 										}
 									}
-									ELEMENT[at0014] occurrences matches {0..1} matches {    -- Cervical effacement
+									ELEMENT[at0014] occurrences matches {0..1} matches {	-- Effacement
 										value matches {
-											0|[local::at0015],
-											1|[local::at0016],
-											2|[local::at0017],
-											3|[local::at0018]
+											0|[local::at0015], 	-- 0 - 30%
+											1|[local::at0016], 	-- 40 - 50%
+											2|[local::at0017], 	-- 60 - 70%
+											3|[local::at0018]  	-- 80+ %
 										}
 									}
-									ELEMENT[at0009] occurrences matches {0..1} matches {    -- Cervical dilation
+									ELEMENT[at0009] occurrences matches {0..1} matches {	-- Dilation
 										value matches {
-											0|[local::at0010],
-											1|[local::at0011],
-											2|[local::at0012],
-											3|[local::at0013]
+											0|[local::at0010], 	-- Closed
+											1|[local::at0011], 	-- 1-2 cm
+											2|[local::at0012], 	-- 3-4 cm
+											3|[local::at0013]  	-- 5+ cm
 										}
 									}
-									ELEMENT[at0004] occurrences matches {0..1} matches {    -- Fetal station
+									ELEMENT[at0004] occurrences matches {0..1} matches {	-- Fetal station
 										value matches {
-											0|[local::at0005],
-											1|[local::at0006],
-											2|[local::at0007],
-											3|[local::at0008]
+											0|[local::at0006], 	-- - 2
+											1|[local::at0005], 	-- - 3
+											2|[local::at0007], 	-- -1, 0
+											3|[local::at0008]  	-- +1, +2
 										}
 									}
-									ELEMENT[at0027] occurrences matches {0..1} matches {    -- Total score
+									ELEMENT[at0027] occurrences matches {0..1} matches {	-- Total score
 										value matches {
 											DV_COUNT matches {
-												magnitude matches {|0..10|}
+												magnitude matches {|0..13|}
 											}
 										}
 									}
-									ELEMENT[at0030] occurrences matches {0..1} matches {    -- Comment
+									ELEMENT[at0030] occurrences matches {0..1} matches {	-- Comment
 										value matches {
 											DV_TEXT matches {*}
 										}
@@ -107,7 +110,14 @@ definition
 			}
 		}
 		protocol matches {
-			ITEM_TREE[at0028] matches {*}    -- ItemTree
+			ITEM_TREE[at0028] matches {	-- ItemTree
+				items cardinality matches {0..*; unordered} matches {
+					allow_archetype CLUSTER[at0031] occurrences matches {0..*} matches {	-- Extension
+						include
+							archetype_id/value matches {/.*/}
+					}
+				}
+			}
 		}
 	}
 
@@ -118,16 +128,15 @@ ontology
 			items = <
 				["at0000"] = <
 					text = <"Bishop score">
-					description = <"Bishop score, known as cervix score, is a pre-labor scoring system. 
-">
+					description = <"Assessment of readiness of the cervix in anticipation of induction of labour.">
 				>
 				["at0001"] = <
 					text = <"History">
-					description = <"*">
+					description = <"@ internal @">
 				>
 				["at0002"] = <
-					text = <"Point in time">
-					description = <"A specific date and/or time which may be explicitly defined in a template or at run-time. ">
+					text = <"Any event">
+					description = <"Default, unspecified point in time or interval event which may be explicitly defined in a template or at run-time.">
 				>
 				["at0003"] = <
 					text = <"ItemTree">
@@ -135,8 +144,8 @@ ontology
 				>
 				["at0004"] = <
 					text = <"Fetal station">
-					description = <"Fetal station describes the position of the fetus's head in relation to the distance from the ischial spines.
-Negative numbers indicate that the head is further inside than the ischial spines and positive numbers show that the head is below the level of the ischial spines.">
+					description = <"The position of the fetal head in relation to the ischial spines.">
+					comment = <"Negative numbers indicate that the head is further inside than the ischial spines and positive numbers show that the head is below the level of the ischial spines.">
 				>
 				["at0005"] = <
 					text = <"- 3">
@@ -155,8 +164,8 @@ Negative numbers indicate that the head is further inside than the ischial spine
 					description = <"Fetal station is 1 or 2cm below the level of the ischial spines.">
 				>
 				["at0009"] = <
-					text = <"Cervical dilation">
-					description = <"Diameter of cervical os.">
+					text = <"Dilation">
+					description = <"Diameter of the cervical os.">
 				>
 				["at0010"] = <
 					text = <"Closed">
@@ -175,8 +184,9 @@ Negative numbers indicate that the head is further inside than the ischial spine
 					description = <"The cervical os is 5+ cm dilated.">
 				>
 				["at0014"] = <
-					text = <"Cervical effacement">
-					description = <"Effacement translates to how 'thin' the cervix is. The cervix is normally approximately three centimetres long, as it prepares for labour and labour continues the cervix will efface till it is 'fully effaced' (paper-thin).">
+					text = <"Effacement">
+					description = <"Thinning of the cervix.">
+					comment = <"A fully effaced cervix (80+%) is described as paper-thin.">
 				>
 				["at0015"] = <
 					text = <"0 - 30%">
@@ -195,24 +205,24 @@ Negative numbers indicate that the head is further inside than the ischial spine
 					description = <"Cervical effacement is estimated to 80+ %.">
 				>
 				["at0019"] = <
-					text = <"Cervical consistency">
-					description = <"Softening of the cervix, a decline in the tissue tensile strength. ">
+					text = <"Consistency">
+					description = <"The amount of softening of the cervix, indicating a decline in the tissue tensile strength.">
 				>
 				["at0020"] = <
 					text = <"Firm">
-					description = <"Cervical tissue tensile strength, cervix feels firm.">
+					description = <"The cervix feels firm.">
 				>
 				["at0021"] = <
 					text = <"Medium">
-					description = <"Cervical tissue tensile strength, cervix feels neither firm nor soft, but in between.">
+					description = <"The cervix feels neither firm nor soft, but in between.">
 				>
 				["at0022"] = <
 					text = <"Soft">
-					description = <"Cervicel tissue tensile strength, cervix feels soft.">
+					description = <"The cervix feels soft.">
 				>
 				["at0023"] = <
-					text = <"Cervical position">
-					description = <"The position of the cervix changes and tends to become more anterior (nearer the opening of the vagina) as labour becomes closer. ">
+					text = <"Position">
+					description = <"Position of the cervix.">
 				>
 				["at0024"] = <
 					text = <"Posterior">
@@ -228,7 +238,7 @@ Negative numbers indicate that the head is further inside than the ischial spine
 				>
 				["at0027"] = <
 					text = <"Total score">
-					description = <"The total sum of all the Bishop score parameter ordinals.">
+					description = <"Sum of the individual scores assigned for each of the contributing variables.">
 					comment = <"Total score may be generated at run-time. ">
 				>
 				["at0028"] = <
@@ -237,7 +247,12 @@ Negative numbers indicate that the head is further inside than the ischial spine
 				>
 				["at0030"] = <
 					text = <"Comment">
-					description = <"Additional narrative about the overall Bidhop score not captured in other fields. ">
+					description = <"Additional narrative about the overall Bishop score not captured in other fields.">
+				>
+				["at0031"] = <
+					text = <"Extension">
+					description = <"Additional information required to capture local content or to align with other reference models/formalisms.">
+					comment = <"For example: local information requirements or additional metadata to align with FHIR or CIMI equivalents.">
 				>
 			>
 		>
