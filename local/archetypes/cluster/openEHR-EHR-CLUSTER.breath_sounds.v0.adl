@@ -1,0 +1,199 @@
+﻿archetype (adl_version=1.4; uid=ea2022e0-1213-4ef9-bc8a-b8d6ae54d870)
+	openEHR-EHR-CLUSTER.breath_sounds.v0
+
+concept
+	[at0000]	-- Auscultation of breath sounds
+language
+	original_language = <[ISO_639-1::en]>
+description
+	original_author = <
+		["date"] = <"2019-07-15">
+	>
+	details = <
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To record a narrative description and clinical interpretation of the findings observed during the auscultation of breath sounds in the identified body site.">
+			use = <"Use to record a narrative description and clinical interpretation of the findings observed during the auscultation of breath sounds in the body site, which is identified in the parent archetype in which this archetype is nested.
+
+This archetype has been specifically designed to be used in the 'Examination detail' SLOT within the CLUSTER.exam-lung in which the specific body site is already identified (for example, left lower lobe) or the CLUSTER.exam-abdomen archetype. It can also be used within other ENTRY or CLUSTER archetypes, where clinically appropriate. 
+
+Use to provide a framework in which CLUSTER archetypes can be nested in the 'Examination findings' SLOT to record additional structured physical examination findings.
+
+The CLUSTER.exclusion_exam archetype can be nested within the 'Examination not done' SLOT to optionally record explicit details about the examination not being performed.
+
+Use to incorporate the narrative descriptions of clinical findings within existing or legacy clinical systems into an archetyped format, using the 'Clinical Description' data element.">
+			misuse = <"Not to be used for recording the clinical history - use specific OBSERVATION and CLUSTER archetypes. For example OBSERVATION.story and CLUSTER.symptom_sign.">
+			copyright = <"© openEHR Foundation">
+		>
+	>
+	lifecycle_state = <"in_development">
+	other_contributors = <>
+	other_details = <
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
+		["custodian_organisation"] = <"openEHR Foundation">
+		["original_namespace"] = <"org.openehr">
+		["original_publisher"] = <"openEHR Foundation">
+		["custodian_namespace"] = <"org.openehr">
+		["MD5-CAM-1.0.1"] = <"5669CAE6A5300E749833E65376194AB3">
+		["build_uid"] = <"3aedc7ef-d057-40cf-84d2-3ee8076ed912">
+		["revision"] = <"0.0.1-alpha">
+	>
+
+definition
+	CLUSTER[at0000] matches {    -- Auscultation of breath sounds
+		items cardinality matches {1..*; unordered} matches {
+			ELEMENT[at0001] occurrences matches {0..1} matches {    -- Clinical description
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			CLUSTER[at0002] occurrences matches {0..*} matches {    -- Findings
+				items cardinality matches {1..*; unordered} matches {
+					ELEMENT[at0003] occurrences matches {0..1} matches {    -- Finding
+						value matches {
+							DV_CODED_TEXT matches {
+								defining_code matches {
+									[local::
+									at0004,    -- Wheeze
+									at0005]    -- Crackles
+								}
+							}
+						}
+					}
+					ELEMENT[at0006] occurrences matches {0..1} matches {    -- Phase
+						value matches {
+							DV_CODED_TEXT matches {
+								defining_code matches {
+									[local::
+									at0007,    -- Inspiratory
+									at0008]    -- Expiratory
+								}
+							}
+						}
+					}
+					ELEMENT[at0009] occurrences matches {0..1} matches {    -- Presence
+						value matches {
+							DV_CODED_TEXT matches {
+								defining_code matches {
+									[local::
+									at0010,    -- Present
+									at0011,    -- Absent
+									at0012]    -- Indeterminate
+								}
+							}
+						}
+					}
+					ELEMENT[at0013] occurrences matches {0..1} matches {    -- Description
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0014] occurrences matches {0..1} matches {    -- Response to cough
+						value matches {
+							DV_CODED_TEXT matches {
+								defining_code matches {
+									[local::
+									at0015,    -- Resolves
+									at0016]    -- No change
+								}
+							}
+						}
+					}
+				}
+			}
+			ELEMENT[at0017] occurrences matches {0..1} matches {    -- Comment
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			allow_archetype CLUSTER[at0018] occurrences matches {0..*} matches {    -- Examination not done
+				include
+					archetype_id/value matches {/.*/}
+			}
+		}
+	}
+
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"Auscultation of breath sounds">
+					description = <"Findings observed during the auscultation of breath sounds.">
+				>
+				["at0001"] = <
+					text = <"Clinical description">
+					description = <"Narrative description about the breath sounds.">
+				>
+				["at0002"] = <
+					text = <"Findings">
+					description = <"Findings observed during auscultation.">
+				>
+				["at0003"] = <
+					text = <"Finding">
+					description = <"Identification of the clinical finding, by name or category.">
+				>
+				["at0004"] = <
+					text = <"Wheeze">
+					description = <"Continuous, coarse, whistling noises produced in the airways during breathing.">
+				>
+				["at0005"] = <
+					text = <"Crackles">
+					description = <"Clicking, rattling, or crackling noises produced in the airways during breathing.">
+				>
+				["at0006"] = <
+					text = <"Phase">
+					description = <"Inspiratory or expiratory phase of the breathing cycle.">
+				>
+				["at0007"] = <
+					text = <"Inspiratory">
+					description = <"On inspiration.">
+				>
+				["at0008"] = <
+					text = <"Expiratory">
+					description = <"On expiration.">
+				>
+				["at0009"] = <
+					text = <"Presence">
+					description = <"Is the finding present?">
+				>
+				["at0010"] = <
+					text = <"Present">
+					description = <"The finding is observed.">
+				>
+				["at0011"] = <
+					text = <"Absent">
+					description = <"The finding is not observed.">
+				>
+				["at0012"] = <
+					text = <"Indeterminate">
+					description = <"It is not possible to tell if the finding is present.">
+				>
+				["at0013"] = <
+					text = <"Description">
+					description = <"Narrative description about the finding.">
+				>
+				["at0014"] = <
+					text = <"Response to cough">
+					description = <"Does the finding clear on cough?">
+				>
+				["at0015"] = <
+					text = <"Resolves">
+					description = <"The finding clears on coughing.">
+				>
+				["at0016"] = <
+					text = <"No change">
+					description = <"The finding does not clear on coughing.">
+				>
+				["at0017"] = <
+					text = <"Comment">
+					description = <"Additional narrative about the breath sounds, not captured in other fields.">
+				>
+				["at0018"] = <
+					text = <"Examination not done">
+					description = <"Details to explicitly record that this examination was not performed in this body site.">
+				>
+			>
+		>
+	>
