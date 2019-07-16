@@ -1,0 +1,131 @@
+﻿archetype (adl_version=1.4; uid=886044cc-cb47-4498-bb6a-ade631c8dc79)
+	openEHR-EHR-CLUSTER.bowel_sounds.v0
+
+concept
+	[at0000]	-- Auscultation of bowel sounds
+language
+	original_language = <[ISO_639-1::en]>
+description
+	original_author = <
+		["name"] = <"Heather Leslie">
+		["organisation"] = <"Atomica Informatics">
+		["email"] = <"heather.leslie@atomicainformatics.com">
+		["date"] = <"2019-07-16">
+	>
+	details = <
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To record a narrative description and clinical interpretation of the findings observed during the auscultation of bowel sounds in the identified body site.">
+			use = <"Use to record a narrative description and clinical interpretation of the findings observed during the auscultation of bowel sounds in the body site, which is identified in the parent archetype in which this archetype is nested.
+
+This archetype has been specifically designed to be used in the 'Examination detail' SLOT within the CLUSTER.exam-abdomen or CLUSTER.exam-chest. It can also be used within other ENTRY or CLUSTER archetypes, where clinically appropriate. 
+
+Use to provide a framework in which CLUSTER archetypes can be nested in the 'Examination findings' SLOT to record additional structured physical examination findings.
+
+The CLUSTER.exclusion_exam archetype can be nested within the 'Examination not done' SLOT to optionally record explicit details about the examination not being performed.
+
+Use to incorporate the narrative descriptions of clinical findings within existing or legacy clinical systems into an archetyped format, using the 'Clinical Description' data element.">
+			misuse = <"Not to be used for recording the clinical history - use specific OBSERVATION and CLUSTER archetypes. For example OBSERVATION.story and CLUSTER.symptom_sign.">
+			copyright = <"© openEHR Foundation">
+		>
+	>
+	lifecycle_state = <"in_development">
+	other_contributors = <>
+	other_details = <
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
+		["custodian_organisation"] = <"openEHR Foundation">
+		["current_contact"] = <"Heather Leslie, heather.leslie@atomicainformatics.com">
+		["original_namespace"] = <"org.openehr">
+		["original_publisher"] = <"openEHR Foundation">
+		["custodian_namespace"] = <"org.openehr">
+		["MD5-CAM-1.0.1"] = <"3CEBDC1A646A3D86D9FAEAFBA3DF684E">
+		["build_uid"] = <"7719485b-28d0-4fd1-aece-79be168085b4">
+		["ip_acknowledgements"] = <"This artefact includes content from SNOMED Clinical Terms® (SNOMED CT®) which is copyrighted material of the International Health Terminology Standards Development Organisation (IHTSDO). Where an implementation of this artefact makes use of SNOMED CT content, the implementer must have the appropriate SNOMED CT Affiliate license - for more information contact http://www.snomed.org/snomed-ct/get-snomedct or info@snomed.org.">
+		["revision"] = <"0.0.1-alpha">
+	>
+
+definition
+	CLUSTER[at0000] matches {    -- Auscultation of bowel sounds
+		items cardinality matches {1..*; unordered} matches {
+			ELEMENT[at0001] occurrences matches {0..1} matches {    -- Clinical description
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			ELEMENT[at0009] occurrences matches {0..1} matches {    -- Presence
+				value matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {
+							[local::
+							at0010,    -- Present
+							at0011]    -- Absent
+						}
+					}
+				}
+			}
+			ELEMENT[at0013] occurrences matches {0..1} matches {    -- Character
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			ELEMENT[at0017] occurrences matches {0..1} matches {    -- Comment
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			allow_archetype CLUSTER[at0018] occurrences matches {0..*} matches {    -- Examination not done
+				include
+					archetype_id/value matches {/.*/}
+			}
+		}
+	}
+
+
+ontology
+	terminologies_available = <"SNOMED-CT", ...>
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"Auscultation of bowel sounds">
+					description = <"Findings observed during the auscultation of bowel sounds.">
+				>
+				["at0001"] = <
+					text = <"Clinical description">
+					description = <"Narrative description about the breath sounds.">
+				>
+				["at0009"] = <
+					text = <"Presence">
+					description = <"The presence of bowel sounds.">
+				>
+				["at0010"] = <
+					text = <"Present">
+					description = <"Bowel sounds are heard.">
+				>
+				["at0011"] = <
+					text = <"Absent">
+					description = <"Bowel sounds are not heard.">
+				>
+				["at0013"] = <
+					text = <"Character">
+					description = <"Description of the character of the bowel sounds.">
+					comment = <"For example: tinkling; or high pitched.">
+				>
+				["at0017"] = <
+					text = <"Comment">
+					description = <"Additional narrative about the breath sounds, not captured in other fields.">
+				>
+				["at0018"] = <
+					text = <"Examination not done">
+					description = <"Details to explicitly record that this examination was not performed in this body site.">
+				>
+			>
+		>
+	>
+	term_bindings = <
+		["SNOMED-CT"] = <
+			items = <
+				["at0000"] = <[SNOMED-CT::87042004]>
+			>
+		>
+	>
