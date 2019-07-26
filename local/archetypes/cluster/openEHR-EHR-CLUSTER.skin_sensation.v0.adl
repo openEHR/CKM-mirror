@@ -65,8 +65,8 @@ Use to incorporate the narrative descriptions of clinical findings within existi
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"EB686494665EFF5E7BD41CB02930FC67">
-		["build_uid"] = <"590a3ada-4c2d-48f5-997f-0fc98da1407e">
+		["MD5-CAM-1.0.1"] = <"CF2DF78AED32A91FCA9D8763549F46BB">
+		["build_uid"] = <"56e5fa31-65fe-4747-960f-33457e10b480">
 		["ip_acknowledgements"] = <"This artefact includes content from SNOMED Clinical Terms® (SNOMED CT®) which is copyrighted material of the International Health Terminology Standards Development Organisation (IHTSDO). Where an implementation of this artefact makes use of SNOMED CT content, the implementer must have the appropriate SNOMED CT Affiliate license - for more information contact http://www.snomed.org/snomed-ct/get-snomedct or info@snomed.org.">
 		["revision"] = <"0.0.1-alpha">
 	>
@@ -78,10 +78,22 @@ definition
 				value matches {
 					DV_CODED_TEXT matches {
 						defining_code matches {
-							[local::at0013]    -- Skin
+							[local::
+							at0013,    -- Skin
+							at0034,    -- Dermatome
+							at0035]    -- Nerve
 						}
 					}
 				}
+			}
+			ELEMENT[at0012] occurrences matches {0..1} matches {    -- Body site
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			allow_archetype CLUSTER[at0011] occurrences matches {0..*} matches {    -- Structured body site
+				include
+					archetype_id/value matches {/openEHR-EHR-CLUSTER\.anatomical_location(-[a-zA-Z0-9_]+)*\.v1|openEHR-EHR-CLUSTER\.anatomical_location_circle(-[a-zA-Z0-9_]+)*\.v1|openEHR-EHR-CLUSTER\.anatomical_location_relative(-[a-zA-Z0-9_]+)*\.v1/}
 			}
 			ELEMENT[at0002] occurrences matches {0..1} matches {    -- No abnormality detected
 				value matches {
@@ -265,6 +277,16 @@ ontology
 					text = <"Pain">
 					description = <"Findings observed during testing of pain.">
 				>
+				["at0011"] = <
+					text = <"Structured body site">
+					description = <"A structured description of the area of the body, nerve or dermatome under examination.">
+					comment = <"If the body site has been fully identified in the 'System or structure examined' or the 'Body site' data element, this SLOT becomes redundant.">
+				>
+				["at0012"] = <
+					text = <"Body site">
+					description = <"Identification of the area of the body, nerve or dermatome under examination.">
+					comment = <"If the body site has been fully identified in the parent archetype in which this archetype is nested, this data element becomes redundant.">
+				>
 				["at0023"] = <
 					text = <"Normal (++)">
 					description = <"The response to pain is normal.">
@@ -309,6 +331,14 @@ ontology
 					text = <"Absent (-)">
 					description = <"The response to touch localisation is absent.">
 				>
+				["at0034"] = <
+					text = <"Dermatome">
+					description = <"The sensation related an identified dermatome was examined.">
+				>
+				["at0035"] = <
+					text = <"Nerve">
+					description = <"The sensation related to an identified nerve was examined.">
+				>
 			>
 		>
 		["nb"] = <
@@ -338,6 +368,16 @@ ontology
 				["at0005"] = <
 					text = <"Multimediarepresentasjon">
 					description = <"Digitale bilder, video eller diagram som representerer undersøkelsesfunnene.">
+				>
+				["at0011"] = <
+					text = <"Strukturert anatomisk lokalisasjon">
+					description = <"*A structured description of the area of the body, nerve or dermatome under examination. (en)">
+					comment = <"Hvis anatomisk lokalisasjon er entydig identifisert i elementet \"Undersøkt organsystem eller struktur\" er dette SLOTet ikke nødvendig å benytte.">
+				>
+				["at0012"] = <
+					text = <"Anatomisk lokalisasjon">
+					description = <"*Identification of the area of the body, nerve or dermatome under examination. (en)">
+					comment = <"*If the body site has been fully identified in the parent archetype in which this archetype is nested, this data element becomes redundant. (en)">
 				>
 				["at0006"] = <
 					text = <"Fortolkning">
@@ -436,6 +476,14 @@ ontology
 					text = <"*Absent (-) (en)">
 					description = <"*The response to touch localisation is absent. (en)">
 				>
+				["at0034"] = <
+					text = <"*Dermatome (en)">
+					description = <"*The sensation related an identified dermatome was examined. (en)">
+				>
+				["at0035"] = <
+					text = <"*Cutaneous nerve (en)">
+					description = <"*The sensation related to a cutaneous nerve was examined. (en)">
+				>
 			>
 		>
 	>
@@ -444,6 +492,8 @@ ontology
 			items = <
 				["at0000"] = <[SNOMED-CT::297971001]>
 				["at0013"] = <[SNOMED-CT::39937001]>
+				["at0034"] = <[SNOMED-CT::244023005]>
+				["at0035"] = <[SNOMED-CT::3057000]>
 			>
 		>
 	>
