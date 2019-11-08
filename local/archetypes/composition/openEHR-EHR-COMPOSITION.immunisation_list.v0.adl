@@ -8,27 +8,27 @@ language
 description
 	original_author = <
 		["name"] = <"Heather Leslie">
-		["organisation"] = <"Ocean Informatics">
-		["email"] = <"heather.leslie@oceaninformatics.com">
+		["organisation"] = <"Atomica Informatics">
+		["email"] = <"heather.leslie@atomicainformatics.com">
 		["date"] = <"2013-03-12">
 	>
 	details = <
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"To record a persistent and managed list of immunisations that have been administered to an individual over time and to enable sharing of a immunisation list to other healthcare providers.">
-			use = <"Use to record a persistent and managed list of immunisations given to an individual. Alternatively, it may contain positive and explicit statements about known exclusions or absence of information about medications.
+			purpose = <"To record a persistent and managed list of vaccinations that have been administered to an individual over time and to enable sharing of an Immunisation list between healthcare providers.">
+			use = <"Use to record a persistent and managed list of vaccinations given to an individual. Alternatively, it may contain positive and explicit statements about known exclusions or absence of information about vaccinations. It is intended that the SECTION.immunisation_list archetype is nested within this archetype as design guidance for representing an Immunisation List.
 
-The intent of this archetype is to be a generic container for any Immunisation list, which may have a specific context or limitation of scope set within a template. This list can be utilised as a source of immunisation data for an active current immunisation list within a clinical system, for transition of care, data exchange, or as the basis for decision support. 
+The intent of this archetype is to be a generic container for any Immunisation list, which may have a specific context or limitation of scope set within a template. This list can be utilised as a source of vaccination data for an active current Immunisation list within a clinical system, for transition of care, data exchange, or as the basis for decision support. 
 
 This list can be comprised of three types of archetype:
-- statements about the positive administration of immunisations are recorded using the ACTION.medication archetypes; OR
-- a positive statement about the general exclusion of immunisation administration can be recorded using the general EVALUATION.exclusion_global archetype - for example: \"Never received any immunisations\"; OR
-- a positive statement about the exclusion of use of a specific medication can be recorded using the EVALUATION.exclusion_specific archetype - for example: \"Never received Hepatitis B immunisation\": OR
-- a positive statement about no information being available - neither positive known administrations of immunisations nor a positive exclusion - can be recorded using the EVALUATION.absence archetype.
+- statements about the positive administration of vaccinations are recorded using the ACTION.medication archetypes; OR
+- a positive statement about the general exclusion of vaccination administration can be recorded using the general EVALUATION.exclusion_global archetype - for example: \"Never received any vaccinations\"; OR
+- a positive statement about the exclusion of use of a specific medication can be recorded using the EVALUATION.exclusion_specific archetype - for example: \"Never received Hepatitis B vaccination\": OR
+- a positive statement about no information being available - neither positive known administrations of vaccinations nor a positive exclusion - can be recorded using the EVALUATION.absence archetype.
 
 In order for a Immunisation list to be accurate and safe to use as the basis for decision support activities and for exchange, this Immunisation list should ideally be curated by a clinician responsible for the health record, rather than managed automatically by the clinical system through business rules alone.
 
-In local systems it is possible to generate a list of immunisations by querying the database for all ACTION.medication archetypes that have been used to record immunisations. However this list is useful to support exchange of a local immunisation list with other healthcare.
+In local systems it is possible to generate a list of vaccinations by querying the database for all ACTION.medication archetypes that have been used to record each vaccination. However this list is useful to support exchange of a local Immunisation list with other healthcare.
 
 This archetype is intended to be represented and managed as a persistent list, however there are situations where the list may be used within episodic care and require additional attributes such as context etc to enable accurate recording. The openEHR reference model currently only allows context to be recorded within Event-based COMPOSITION archetypes. As a result, this archetype has been modelled as an Event, rather than Persistent, COMPOSITION, to allow for flexibility so that some clinical systems can safely manage Immunisation lists for episodes of care, while others will choose to implement this COMPOSITION to act in a persistent manner.">
 			keywords = <"vaccination", "immunisation", "list">
@@ -43,55 +43,43 @@ Not to be used to record medications administered - use COMPOSITION.medication_l
 		>
 	>
 	lifecycle_state = <"in_development">
-	other_contributors = <"Ian McNicoll, Ocean Informatics, United Kingdom (Editor)", "Sam Heard, Ocean Informatics, Australia", "Sistine Barretto-Daniels, Ocean Informatics, Australia", "Hildegard Franke, freshEHR Clinical Informatics Ltd, UK">
+	other_contributors = <"Ian McNicoll, Ocean Informatics, United Kingdom (Editor)", "Hildegard Franke, freshEHR Clinical Informatics Ltd, UK">
 	other_details = <
-		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
 		["custodian_organisation"] = <"openEHR Foundation">
 		["references"] = <"Pattern aligned with Medication list: http://www.openehr.org/ckm/#showArchetype_1013.1.286.
 
 Pattern aligned with Problem list: http://www.openehr.org/ckm/#showArchetype_1013.1.287.">
-		["current_contact"] = <"Heather Leslie, Ocean Informatics, heather.leslie@oceaninformatics.com">
+		["current_contact"] = <"Heather Leslie, Atomica Informatics<heather.leslie@atomicainformatics.com>">
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"88873B1BD845F1467A34569ECFFC8118">
-		["build_uid"] = <"6c6e6cb3-a6e6-4c91-a4e2-48e450b5ba7e">
+		["MD5-CAM-1.0.1"] = <"CF14C5C491FE8A7F34E0169DEAF03F9E">
+		["build_uid"] = <"b9d225ad-64a8-411d-84c5-48668715f203">
 		["revision"] = <"0.0.1-alpha">
 	>
 
 definition
-	COMPOSITION[at0000] matches {	-- Immunisation list
+	COMPOSITION[at0000] matches {    -- Immunisation list
 		category matches {
 			DV_CODED_TEXT matches {
-				defining_code matches {[openehr::433]}
+				defining_code matches {
+					[openehr::433]
+				}
 			}
 		}
 		context matches {
 			EVENT_CONTEXT matches {
 				other_context matches {
-					ITEM_TREE[at0004] matches {	-- Tree
+					ITEM_TREE[at0004] matches {    -- Tree
 						items cardinality matches {0..*; unordered} matches {
-							allow_archetype CLUSTER[at0005] occurrences matches {0..*} matches {	-- Extension
+							allow_archetype CLUSTER[at0005] occurrences matches {0..*} matches {    -- Extension
 								include
 									archetype_id/value matches {/.*/}
 							}
 						}
 					}
 				}
-			}
-		}
-		content cardinality matches {1..*; unordered} matches {
-			allow_archetype ACTION[at0001] occurrences matches {0..*} matches {	-- Immunisations administered
-				include
-					archetype_id/value matches {/openEHR-EHR-ACTION\.medication(-[a-zA-Z0-9_]+)*\.v1/}
-			}
-			allow_archetype EVALUATION[at0002] occurrences matches {0..*} matches {	-- Exclusion statement
-				include
-					archetype_id/value matches {/openEHR-EHR-EVALUATION\.exclusion_global(-[a-zA-Z0-9_]+)*\.v1|openEHR-EHR-EVALUATION\.exclusion_specific(-[a-zA-Z0-9_]+)*\.v1/}
-			}
-			allow_archetype EVALUATION[at0003] occurrences matches {0..*} matches {	-- Absent Information
-				include
-					archetype_id/value matches {/openEHR-EHR-EVALUATION\.absence(-[a-zA-Z0-9_]+)*\.v1/}
 			}
 		}
 	}
@@ -103,20 +91,7 @@ ontology
 			items = <
 				["at0000"] = <
 					text = <"Immunisation list">
-					description = <"A persistent and managed list of immunisations that have been administered to an individual over time.">
-				>
-				["at0001"] = <
-					text = <"Immunisations administered">
-					description = <"Details about vaccinations that have been administered to the subject.">
-				>
-				["at0002"] = <
-					text = <"Exclusion statement">
-					description = <"Positive statement about the known global or specific exclusion of administration of immunisations.">
-					comment = <"For example: \"No immunisations have been administered\".">
-				>
-				["at0003"] = <
-					text = <"Absent Information">
-					description = <"Positive statement that no information is available about immunisation administration.">
+					description = <"A persistent and managed list of vaccinations that have been administered to an individual over time.">
 				>
 				["at0004"] = <
 					text = <"Tree">
