@@ -18,7 +18,9 @@ description
 			purpose = <"To record details about the dwelling where an individual lives.">
 			use = <"Use to record details about the dwelling where an individual lives, particularly where this may have an impact on their health and safety or delivery of healthcare services.
 
-It is anticipated that this archetype will gradually evolve to include structural features within a dwelling that may be useful in assessing the needs of the individual who lives there, for example the presence of stairs or rails.
+This archetype has been designed to be used to record attributes of an individual's home that might be used to:
+- contribute to discharge planning; or
+- inform investigations about public health outbreaks.
 
 This archetype has been designed to be used within the EVALUATION.housing_summary or CLUSTER.housing_record archetypes, but may be used within any other appropriate ENTRY or CLUSTER archetype.">
 			keywords = <"stairs", "bedroom", "bathroom", "access">
@@ -29,17 +31,19 @@ Not to be used to record the physical address where an individual lives - use de
 		>
 	>
 	lifecycle_state = <"in_development">
-	other_contributors = <"John Tore Valand, Helse Bergen, Norway", "Vebjørn Arntzen, Oslo University Hospital, Norway", "Silje Ljosland Bakke, Nasjonal IKT HF, Norway", "Nyree Taylor, Ocean Informatics, Australia">
+	other_contributors = <"Vebjørn Arntzen, Oslo University Hospital, Norway (openEHR Editor)", "Silje Ljosland Bakke, Nasjonal IKT HF, Norway (openEHR Editor)", "Heather Leslie, Atomica Informatics, Australia (openEHR Editor)", "John Tore Valand, Helse Bergen, Norway (openEHR Editor)">
 	other_details = <
 		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
 		["custodian_organisation"] = <"openEHR Foundation">
-		["references"] = <"Housing, Draft Archetype [Internet]. Australian Digital Health Agency, Australian Digital Health Agency Clinical Knowledge Manager. No longer available.">
+		["references"] = <"Home Modification Assessment & Planning Tool [Internet]. Australia: SCOPE Access Home Modifications; 2015 [cited 2019 Dec 19]. Available from: http://scopehomeaccess.com.au/wp-content/uploads/2015/07/AWTS.pdf.
+
+Opoko A, Ibem E & Adeyemi E. Housing aspiration in an informal urban settlement: A case study [Internet]. 2015; Urbani Izziv. 26. 10.5379/urbani-izziv-en-2015-26-02-003; [cited 2019 Dec 19] . Available at: https://www.researchgate.net/publication/307851190_Housing_aspiration_in_an_informal_urban_settlement_A_case_study.">
 		["current_contact"] = <"Heather Leslie, Atomica Informatics<heather.leslie@atomicainformatics.com>">
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"DDD52126AF22E72156D71327014203D8">
-		["build_uid"] = <"d7a124c2-7ffd-4dba-90f6-08a2b77f1787">
+		["MD5-CAM-1.0.1"] = <"58FCB2D20D0C03896F8897D0B9B52263">
+		["build_uid"] = <"8b9b7b20-4420-4e0c-b7ab-d82d31a09f3e">
 		["revision"] = <"0.0.1-alpha">
 	>
 
@@ -136,6 +140,11 @@ definition
 					DV_TEXT matches {*}
 				}
 			}
+			ELEMENT[at0022] occurrences matches {0..1} matches {    -- Mail
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
 			ELEMENT[at0021] occurrences matches {0..1} matches {    -- Bins
 				value matches {
 					DV_TEXT matches {*}
@@ -146,7 +155,7 @@ definition
 					DV_TEXT matches {*}
 				}
 			}
-			ELEMENT[at0022] occurrences matches {0..1} matches {    -- Mail
+			ELEMENT[at0033] occurrences matches {0..1} matches {    -- Water source
 				value matches {
 					DV_TEXT matches {*}
 				}
@@ -166,12 +175,12 @@ definition
 					DV_TEXT matches {*}
 				}
 			}
-			ELEMENT[at0027] occurrences matches {0..1} matches {    -- Number of occupants
+			ELEMENT[at0034] occurrences matches {0..1} matches {    -- Sewage disposal
 				value matches {
-					DV_COUNT matches {*}
+					DV_TEXT matches {*}
 				}
 			}
-			ELEMENT[at0030] occurrences matches {0..1} matches {    -- Number of children
+			ELEMENT[at0027] occurrences matches {0..1} matches {    -- Number of occupants
 				value matches {
 					DV_COUNT matches {*}
 				}
@@ -315,13 +324,13 @@ ontology
 				>
 				["at0023"] = <
 					text = <"Water supply">
-					description = <"Coded phrase or brief narrative description about the supply of water to the dwelling.">
-					comment = <"For example: house connection; stand pipe; or yard pipe.">
+					description = <"Coded phrase or brief narrative description about how water is supplied to the dwelling.">
+					comment = <"For example: piped water (in house); stand pipe; or yard pipe.">
 				>
 				["at0024"] = <
 					text = <"Waste disposal">
 					description = <"Coded phrase or brief narrative description about the system of waste disposal from the dwelling.">
-					comment = <"For example: private sector; burning; or burying.">
+					comment = <"For example: private sector collection; burning; burying; field; or river.">
 				>
 				["at0025"] = <
 					text = <"Water storage">
@@ -335,7 +344,7 @@ ontology
 				>
 				["at0027"] = <
 					text = <"Number of occupants">
-					description = <"The number of people living in the dwelling, including one or more households.">
+					description = <"The total number of people living in the dwelling, including one or more households.">
 				>
 				["at0028"] = <
 					text = <"Number of bedrooms">
@@ -345,9 +354,15 @@ ontology
 					text = <"Number of bathrooms">
 					description = <"The number of bathrooms in the dwelling.">
 				>
-				["at0030"] = <
-					text = <"Number of children">
-					description = <"The number of people under the age of 18 living in the dwelling, including one or more households.">
+				["at0033"] = <
+					text = <"Water source">
+					description = <"Coded phrase or brief narrative description about the source of water used at the dwelling.">
+					comment = <"This data element may be used to differentiate between public and private sources as well as the type of source. For example: public; lake; private well; borehole; rain; or water vendors.">
+				>
+				["at0034"] = <
+					text = <"Sewage disposal">
+					description = <"Coded phrase or brief narrative description about the disposal of sewage to the dwelling.">
+					comment = <"For example: septic tank or cesspit; or public sewage system.">
 				>
 			>
 		>
