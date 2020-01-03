@@ -49,7 +49,7 @@ description
 		["nb"] = <
 			language = <[ISO_639-1::nb]>
 			purpose = <"Brukes for å vurdere et individs bevissthetsnivå.">
-			use = <"For raskt og enkel vurdering av et individs bevissthetsnivå, særlig egnet til vurdering i akutte situasjoner. Denne vurderingen har blitt oppdatert i 2017 som følge av endringer NEWS skåringsverktøyet. Verktøyet er nå publisert som NEWS 2.">
+			use = <"Brukes for å gjøre en rask og enkel vurdering av et individs bevissthetsnivå, særlig egnet til vurdering i akutte situasjoner. Denne vurderingen har blitt oppdatert i 2017 som følge av endringer NEWS skåringsverktøyet. Verktøyet er nå publisert som NEWS 2.">
 			keywords = <"AVPU", "alert", "voice", "pain", "unresponsive", "våken", "tale", "smerte", "bevisstløs", "stemme", "bevissthet", "verbal", "verbalrespons", "semikomatøs", "bevisst", "bevissthetsnivå", "komatøs">
 			misuse = <"">
 			copyright = <"© Apperta UK, openEHR Foundation, openEHR Foundation">
@@ -72,19 +72,21 @@ description
 		>
 	>
 	lifecycle_state = <"in_development">
-	other_contributors = <"Heather Leslie, Atomica Informatics, Australia", ...>
+	other_contributors = <"Vebjørn Arntzen, Oslo University Hospital, Norway (openEHR Editor)", "Heather Leslie, Atomica Informatics, Australia (openEHR Editor)", "Ian McNicoll, freshEHR Clinical Informatics, United Kingdom (openEHR Editor)", "John Tore Valand, Helse Bergen, Norway (openEHR Editor)">
 	other_details = <
 		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
 		["custodian_organisation"] = <"openEHR Foundation">
 		["references"] = <"Derived from: ACVPU, Draft archetype [Internet]. Apperta UK, Apperta UK Clinical Knowledge Manager [cited: 2019-03-12]. Available from: https://ckm.apperta.org/ckm/#showArchetype_1051.32.706
 
-https://www.rcplondon.ac.uk/projects/outputs/national-early-warning-score-news-2 [cited 01-Feb-2018].">
+National Early Warning Score (NEWS) 2. Standardising the assessment of acute-illness severity in the NHS. Royal College of Pysicians [cited 2018.02.01]. Available at: https://www.rcplondon.ac.uk/file/8636/download
+
+National Early Warning Score (NEWS) 2. Pasientsikkerhetsprogrammet [cited 2019.03.01]. Norwegian translation. Available at: https://www.pasientsikkerhetsprogrammet.no/om-oss/innsatsomr%C3%A5der/_attachment/4625?_download=false&_ts=162e2b9889e">
 		["current_contact"] = <"Heather Leslie, Atomica Informatics<heather.leslie@atomicainformatics.com>">
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"1FB0687E1011C3665DD211040E99DB1C">
-		["build_uid"] = <"ea3ccc39-9b3d-4f4b-b2ef-9c7bee635857">
+		["MD5-CAM-1.0.1"] = <"0BFCE4D720E2C12F9B2176501C3394DB">
+		["build_uid"] = <"c04237f1-fe48-46d9-af46-bc025495334b">
 		["revision"] = <"0.0.1-alpha">
 	>
 
@@ -93,17 +95,17 @@ definition
 		data matches {
 			HISTORY[at0001] matches {	-- Event Series
 				events cardinality matches {1..*; unordered} matches {
-					EVENT[at0002] occurrences matches {0..*} matches {	-- Any event
+					EVENT[at0002] occurrences matches {0..*} matches {	-- Uspesifikk hendelse.
 						data matches {
 							ITEM_TREE[at0003] matches {	-- Tree
 								items cardinality matches {0..*; unordered} matches {
-									ELEMENT[at0004] occurrences matches {0..1} matches {	-- Observation
+									ELEMENT[at0004] occurrences matches {0..1} matches {	-- Observasjon
 										value matches {
 											DV_CODED_TEXT matches {
 												defining_code matches {
 													[local::
 													at0005, 	-- Alert
-													at0015, 	-- Confusion
+													at0015, 	-- New Confusion
 													at0006, 	-- Voice
 													at0007, 	-- Pain
 													at0008]	-- Unresponsive
@@ -111,7 +113,7 @@ definition
 											}
 										}
 									}
-									ELEMENT[at0012] occurrences matches {0..1} matches {	-- Comment
+									ELEMENT[at0012] occurrences matches {0..1} matches {	-- Kommentar
 										value matches {
 											DV_TEXT matches {*}
 										}
@@ -120,9 +122,9 @@ definition
 							}
 						}
 						state matches {
-							ITEM_TREE[at0013] matches {	-- Tree
+							ITEM_TREE[at0013] matches {	-- *Tree(en)
 								items cardinality matches {0..*; unordered} matches {
-									ELEMENT[at0014] occurrences matches {0..1} matches {	-- Confounding factors
+									ELEMENT[at0014] occurrences matches {0..1} matches {	-- Konfunderende faktorer
 										value matches {
 											DV_TEXT matches {*}
 										}
@@ -137,12 +139,12 @@ definition
 		protocol matches {
 			ITEM_TREE[at0009] matches {	-- Tree
 				items cardinality matches {0..*; unordered} matches {
-					ELEMENT[at0010] occurrences matches {0..1} matches {	-- Pain stimulus
+					ELEMENT[at0010] occurrences matches {0..1} matches {	-- Smertestimuli
 						value matches {
 							DV_TEXT matches {*}
 						}
 					}
-					allow_archetype CLUSTER[at0011] occurrences matches {0..*} matches {	-- Extension
+					allow_archetype CLUSTER[at0011] occurrences matches {0..*} matches {	-- Tilleggsinformasjon
 						include
 							archetype_id/value matches {/.*/}
 					}
@@ -152,19 +154,14 @@ definition
 	}
 
 
-
 ontology
 	term_definitions = <
 		["en"] = <
 			items = <
-				["at0015"] = <
-					text = <"Confusion">
-					description = <"New onset of confusion, disorientation and/or agitation, where previously their mental state was normal.">
-				>
 				["at0000"] = <
 					text = <"ACVPU">
 					description = <"Simple scale used as part of an assessment to measure and record an individual's level of consciousness.">
-					comment = <"ACVPU is an acronym for 'Alert', 'Confusion', 'Voice', 'Pain', 'Unresponsive'.">
+					comment = <"ACVPU is an acronym for 'Alert', 'New Confusion', 'Voice', 'Pain', 'Unresponsive'.">
 				>
 				["at0001"] = <
 					text = <"Event Series">
@@ -184,7 +181,7 @@ ontology
 				>
 				["at0005"] = <
 					text = <"Alert">
-					description = <"Eyes open spontaneously, oriented speech, obeys commands.">
+					description = <"Fully awake. Spontaneous opening of the eyes, responds to voice and have motor function.">
 				>
 				["at0006"] = <
 					text = <"Voice">
@@ -192,7 +189,7 @@ ontology
 				>
 				["at0007"] = <
 					text = <"Pain">
-					description = <"Any verbal, motor or eye response to a pain stimulus, such as pressing the nail root, but not to voice stimulus.">
+					description = <"Any verbal, motor or eye response to a pain stimulus.">
 				>
 				["at0008"] = <
 					text = <"Unresponsive">
@@ -224,18 +221,18 @@ ontology
 					text = <"Confounding factors">
 					description = <"Narrative description of any issues or factors that may impact on the observation.">
 				>
+				["at0015"] = <
+					text = <"New Confusion">
+					description = <"New onset of confusion, the individual may be alert but confused or disorientated.">
+				>
 			>
 		>
 		["nb"] = <
 			items = <
-				["at0015"] = <
-					text = <"Nyoppstått forvirring">
-					description = <"Nyoppstått forvirring og eller agitasjon, der den mentale tilstanden tidligere var normal (C).">
-				>
 				["at0000"] = <
 					text = <"ACVPU">
 					description = <"En enkel skala for å vurdere et individs bevissthetsnivå.">
-					comment = <"AVPU er en forkortelse for engelsk \"Alert\", \"Confusion\", \"Voice\", \"Pain\" og \"Unresponsive\", på norsk \"Våken\", \"Nyoppstått forvirring\", \"Tiltale\", \"Smerte\" og \"Reagerer ikke\".">
+					comment = <"ACVPU er en forkortelse for engelsk \"Alert\", \"New Confusion\", \"Voice\", \"Pain\" og \"Unresponsive\".">
 				>
 				["at0001"] = <
 					text = <"Event Series">
@@ -250,24 +247,24 @@ ontology
 					description = <"@ internal @">
 				>
 				["at0004"] = <
-					text = <"ACVPU-observasjon">
+					text = <"Observasjon">
 					description = <"Observasjonen av individets bevissthetsnivå.">
 				>
 				["at0005"] = <
-					text = <"Våken">
-					description = <"Øynene åpnes spontant, orientert tale, adlyder kommandoer (A).">
+					text = <"Alert">
+					description = <"Våken. Øynene åpnes spontant, responderer på tale og har motorikk.">
 				>
 				["at0006"] = <
-					text = <"Tiltale">
-					description = <"Hvilken som helst verbal, motorisk eller øye-respons på verbal tiltale (rop høyt eller rist forsiktig) (V).">
+					text = <"Voice">
+					description = <"Hvilken som helst verbal, motorisk eller øye-respons på verbal tiltale.">
 				>
 				["at0007"] = <
-					text = <"Smerte">
-					description = <"En hvilken som helst verbal, motorisk eller øye-respons på smertestimuli (eksempelvis press på neglerot), men ikke på verbal tiltale (P).">
+					text = <"Pain">
+					description = <"En hvilken som helst verbal, motorisk eller øye-respons på smertestimuli.">
 				>
 				["at0008"] = <
-					text = <"Reagerer ikke">
-					description = <"Ingen respons på tale- eller smertestimuli (U).">
+					text = <"Unresponsive">
+					description = <"Ingen respons på tale- eller smertestimuli.">
 				>
 				["at0009"] = <
 					text = <"Tree">
@@ -284,7 +281,7 @@ ontology
 					comment = <"For eksempel lokale informasjonsbehov eller ytterligere metadata for å kunne tilpasse til tilsvarende konsepter i FHIR eller CIMI.">
 				>
 				["at0012"] = <
-					text = <"Comment">
+					text = <"Kommentar">
 					description = <"Ytterligere fritekst om observasjonen som ikke passer inn i andre elementer.">
 				>
 				["at0013"] = <
@@ -295,14 +292,14 @@ ontology
 					text = <"Konfunderende faktorer">
 					description = <"Fritekstbeskrivelse av problemer eller faktorer som kan ha påvirkning på observasjonen.">
 				>
+				["at0015"] = <
+					text = <"New Confusion">
+					description = <"Nyoppstått forvirring. Individet kan være våken, men er forvirret eller desorientert.">
+				>
 			>
 		>
 		["pt-br"] = <
 			items = <
-				["at0015"] = <
-					text = <"*Confusion(en)">
-					description = <"*New onset of confusion, disorientation and/or agitation, where previously their mental state was normal.(en)">
-				>
 				["at0000"] = <
 					text = <"*ACVPU(en)">
 					description = <"*Simple scale used as part of an assessment to measure and record an individual's level of consciousness.(en)">
@@ -366,14 +363,14 @@ ontology
 					text = <"*Confounding factors(en)">
 					description = <"*Narrative descripiton of any issues or factors that may impact on the observation.(en)">
 				>
+				["at0015"] = <
+					text = <"*Confusion(en)">
+					description = <"*New onset of confusion, disorientation and/or agitation, where previously their mental state was normal.(en)">
+				>
 			>
 		>
 		["sv"] = <
 			items = <
-				["at0015"] = <
-					text = <"Förvirring">
-					description = <"Nytillkommen förvirring, desorientering och/eller oro, där tillståndet tidigare varit normalt.">
-				>
 				["at0000"] = <
 					text = <"ACVPU">
 					description = <"En skala som används som del av bedömningen och registreringen av en individs medvetandegrad.">
@@ -436,6 +433,10 @@ ontology
 				["at0014"] = <
 					text = <"Möjliga felkällor">
 					description = <"Beskrivning av faktorer och felkällor som kan påverka bedömningen av medvetandegrad.">
+				>
+				["at0015"] = <
+					text = <"Förvirring">
+					description = <"Nytillkommen förvirring, desorientering och/eller oro, där tillståndet tidigare varit normalt.">
 				>
 			>
 		>
