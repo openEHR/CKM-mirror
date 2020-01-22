@@ -57,93 +57,95 @@ Usar alguns dos elementos para gravar detalhes sobre o sangramento menstrual e s
 		>
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"To record details about the menses.">
-			use = <"Use to record details about the menses.
+			purpose = <"To record details about menstrual bleeding and associated symptoms within a specified single cycle or specified group of cycles.">
+			use = <"Use to record details about menstrual bleeding and associated symptoms within a specified single cycle or specified group of cycles.
 
-Use to record the LNMP using the Start date and event of 'Last normal menstrual period'.">
-			keywords = <"menstruation", "menses", "cycle", "menstrual">
-			misuse = <"">
+Use to represent a 'Last Normal Menstrual Period', relevant at the time of recording, by combining the 'Start of menses' data element with the 'Last normal period' event.">
+			keywords = <"menstruation", "menses", "cycle", "menstrual", "dysmenorrhoea", "pain", "bloating">
+			misuse = <"Not to be used to record information about typical or usual menstrual episodes or patterns - use the EVALUATION.menstruation_summary archetype for this purpose.
+
+Not to be used to record details about menarche or menopause - use the EVALUATION.menstruation_summary archetype for this purpose.">
 			copyright = <"© openEHR Foundation">
 		>
 	>
 	lifecycle_state = <"in_development">
-	other_contributors = <>
+	other_contributors = <"Silje Ljosland Bakke, Helse Vest IKT AS, Norway (openEHR Editor)", "John Tore Valand, Helse Bergen Hospital Trust, Norway", "Silje Ljosland Bakke", "Vebjørn Arntzen", "Marit Venheim", "Anca Heyd, DIPS", "Bjorn Naess, DIPS">
 	other_details = <
-		["licence"] = <"TThis work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
 		["custodian_organisation"] = <"openEHR Foundation">
-		["references"] = <"Menstrual cycle, Draft Archetype [Internet]. National eHealth Transition Authority, NEHTA Clinical Knowledge Manager [cited: 2015-03-16]. No longer available.">
+		["references"] = <"Derived from: Menstrual cycle, draft archetype [Internet]. Australian Digital Health Agency (NEHTA), ADHA Clinical Knowledge Manager. No longer available.">
 		["current_contact"] = <"Heather Leslie, Atomica Informatics, Australia<heather.leslie@atomicainformatics.com>">
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"72EAA86A2B6AD2DE753A5C11A86A5294">
-		["build_uid"] = <"a836ab69-e022-43ba-9ee7-a0eb2042d5ae">
+		["MD5-CAM-1.0.1"] = <"EC0B46E45DBEC2FC5505EDF6228C14C0">
+		["build_uid"] = <"cc563c6d-9adc-4e03-9b54-046d61443187">
 		["revision"] = <"0.0.1-alpha">
 	>
 
 definition
-	OBSERVATION[at0000] matches {	-- Menstruation
+	OBSERVATION[at0000] matches {    -- Menstruation
 		data matches {
-			HISTORY[at0001] matches {	-- Event Series
+			HISTORY[at0001] matches {    -- Event Series
 				events cardinality matches {1..*; unordered} matches {
-					EVENT[at0002] occurrences matches {0..1} matches {	-- Any event
+					EVENT[at0002] occurrences matches {0..1} matches {    -- Any interval
 						data matches {
-							ITEM_TREE[at0003] matches {	-- Tree
+							ITEM_TREE[at0003] matches {    -- Tree
 								items cardinality matches {0..*; unordered} matches {
-									ELEMENT[at0004] occurrences matches {0..1} matches {	-- Start of menses
+									ELEMENT[at0004] occurrences matches {0..1} matches {    -- Start of menses
 										value matches {
 											DV_DATE_TIME matches {*}
 										}
 									}
-									ELEMENT[at0005] occurrences matches {0..1} matches {	-- Duration of menses
+									ELEMENT[at0005] occurrences matches {0..1} matches {    -- Duration of menses
 										value matches {
 											DV_DURATION matches {
 												value matches {PWD/|>=P0D|}
 											}
 										}
 									}
-									ELEMENT[at0006] occurrences matches {0..1} matches {	-- Description of menses
+									ELEMENT[at0006] occurrences matches {0..1} matches {    -- Description of menses
 										value matches {
 											DV_TEXT matches {*}
 										}
 									}
-									ELEMENT[at0007] occurrences matches {0..1} matches {	-- Relative flow
+									ELEMENT[at0007] occurrences matches {0..1} matches {    -- Relative flow
 										value matches {
 											DV_CODED_TEXT matches {
 												defining_code matches {
 													[local::
-													at0008, 	-- Very heavy flow
-													at0009, 	-- Heavy flow
-													at0010, 	-- Normal, or typical, flow
-													at0011, 	-- Light flow
-													at0012]	-- Spotting only
+													at0008,    -- Very heavy flow
+													at0009,    -- Heavy flow
+													at0010,    -- Normal, or typical, flow
+													at0011,    -- Light flow
+													at0012]    -- Spotting only
 												}
 											}
 										}
 									}
-									ELEMENT[at0013] occurrences matches {0..1} matches {	-- Blood clots
+									ELEMENT[at0013] occurrences matches {0..1} matches {    -- Blood clots
 										value matches {
 											DV_CODED_TEXT matches {
 												defining_code matches {
 													[local::
-													at0014, 	-- Present
-													at0015]	-- Absent
+													at0014,    -- Present
+													at0015]    -- Absent
 												}
 											}
 										}
 									}
-									ELEMENT[at0016] occurrences matches {0..1} matches {	-- Flooding
+									ELEMENT[at0016] occurrences matches {0..1} matches {    -- Flooding
 										value matches {
 											DV_CODED_TEXT matches {
 												defining_code matches {
 													[local::
-													at0017, 	-- Present
-													at0018]	-- Absent
+													at0017,    -- Present
+													at0018]    -- Absent
 												}
 											}
 										}
 									}
-									allow_archetype CLUSTER[at0019] occurrences matches {0..*} matches {	-- Associated symptoms
+									allow_archetype CLUSTER[at0019] occurrences matches {0..*} matches {    -- Associated symptoms
 										include
 											archetype_id/value matches {/openEHR-EHR-CLUSTER\.symptom_sign(-[a-zA-Z0-9_]+)*\.v1/}
 									}
@@ -151,9 +153,9 @@ definition
 							}
 						}
 						state matches {
-							ITEM_TREE[at0020] matches {	-- Tree
+							ITEM_TREE[at0020] matches {    -- Tree
 								items cardinality matches {0..*; unordered} matches {
-									ELEMENT[at0021] occurrences matches {0..1} matches {	-- Contraception use
+									ELEMENT[at0021] occurrences matches {0..1} matches {    -- Contraception use
 										value matches {
 											DV_TEXT matches {*}
 										}
@@ -162,21 +164,28 @@ definition
 							}
 						}
 					}
-					POINT_EVENT[at0024] occurrences matches {0..1} matches {	-- Last normal menstrual period
+					INTERVAL_EVENT[at0024] occurrences matches {0..1} matches {    -- Last normal period
 						data matches {
-							use_node ITEM_TREE /data[at0001]/events[at0002]/data[at0003]	-- /data[Event Series]/events[Any event]/data[Tree]
+							use_node ITEM_TREE /data[at0001]/events[at0002]/data[at0003]
 						}
 						state matches {
-							use_node ITEM_TREE /data[at0001]/events[at0002]/state[at0020]	-- /data[Event Series]/events[Any event]/state[Tree]
+							use_node ITEM_TREE /data[at0001]/events[at0002]/state[at0020]
+						}
+						math_function matches {
+							DV_CODED_TEXT matches {
+								defining_code matches {
+									[openehr::640]
+								}
+							}
 						}
 					}
 				}
 			}
 		}
 		protocol matches {
-			ITEM_TREE[at0022] matches {	-- Tree
+			ITEM_TREE[at0022] matches {    -- Tree
 				items cardinality matches {0..*; unordered} matches {
-					allow_archetype CLUSTER[at0023] occurrences matches {0..*} matches {	-- Extension
+					allow_archetype CLUSTER[at0023] occurrences matches {0..*} matches {    -- Extension
 						include
 							archetype_id/value matches {/.*/}
 					}
@@ -192,15 +201,15 @@ ontology
 			items = <
 				["at0000"] = <
 					text = <"Menstruation">
-					description = <"The regular discharge of blood and mucosal tissue (known as menses) from the inner lining of the uterus through the vagina.">
+					description = <"Details about menstrual bleeding and associated symptoms within a specified single cycle or specified group of cycles.">
 				>
 				["at0001"] = <
 					text = <"Event Series">
 					description = <"@ internal @">
 				>
 				["at0002"] = <
-					text = <"Any event">
-					description = <"Any event.">
+					text = <"Any interval">
+					description = <"Default, unspecified interval event which may be explicitly defined in a template or at run-time.">
 				>
 				["at0003"] = <
 					text = <"Tree">
@@ -209,10 +218,11 @@ ontology
 				["at0004"] = <
 					text = <"Start of menses">
 					description = <"Date of onset of menstrual bleeding in a single cycle.">
+					comment = <"When recorded against the 'Last normal period' event, this data point captures the 'Last Normal Menstrual Period (LNMP)'.">
 				>
 				["at0005"] = <
 					text = <"Duration of menses">
-					description = <"Duration of menstrual bleeding in a single cycle or typical duration over many cycles.">
+					description = <"Duration of menstrual bleeding in this cycle.">
 				>
 				["at0006"] = <
 					text = <"Description of menses">
@@ -268,7 +278,8 @@ ontology
 				>
 				["at0019"] = <
 					text = <"Associated symptoms">
-					description = <"Details about symptoms related to menses. For example, menstrual cramps or headaches.">
+					description = <"Details about symptoms related to menses.">
+					comment = <"For example: menstrual cramps or headaches.">
 				>
 				["at0020"] = <
 					text = <"Tree">
@@ -276,7 +287,8 @@ ontology
 				>
 				["at0021"] = <
 					text = <"Contraception use">
-					description = <"Identify concurrent hormone or intrauterine contraception use. Coding with a terminology is preferred, where possible.">
+					description = <"Identify concurrent hormone or intrauterine contraception use.">
+					comment = <"Coding with a terminology is preferred, where possible.">
 				>
 				["at0022"] = <
 					text = <"Tree">
@@ -288,7 +300,7 @@ ontology
 					comment = <"For example: local information requirements or additional metadata to align with FHIR or CIMI equivalents.">
 				>
 				["at0024"] = <
-					text = <"Last normal menstrual period">
+					text = <"Last normal period">
 					description = <"The last normal menstrual period experienced by the woman.">
 				>
 			>
@@ -304,7 +316,7 @@ ontology
 					description = <"@ internal @">
 				>
 				["at0002"] = <
-					text = <"Qualquer evento">
+					text = <"*Any interval (en)">
 					description = <"Qualquer evento.">
 				>
 				["at0003"] = <
@@ -314,6 +326,7 @@ ontology
 				["at0004"] = <
 					text = <"Início da regra menstrual">
 					description = <"Data de início do sangramento menstrual num único ciclo.">
+					comment = <"*When recorded against the 'Last normal period' event, this data point captures the 'Last Normal Menstrual Period (LNMP)'. (en)">
 				>
 				["at0005"] = <
 					text = <"Duração da menstruação">
@@ -373,7 +386,8 @@ ontology
 				>
 				["at0019"] = <
 					text = <"Sintomas associados">
-					description = <"Os detalhes sobre os sintomas relacionados à menstruação. Por exemplo, cólicas menstruais e dores de cabeça.">
+					description = <"*Details about symptoms related to menses. (en)">
+					comment = <"*For example: menstrual cramps or headaches. (en)">
 				>
 				["at0020"] = <
 					text = <"Tree">
@@ -381,7 +395,8 @@ ontology
 				>
 				["at0021"] = <
 					text = <"O uso de anticoncepcionais">
-					description = <"Identificar uso o concomitante de hormônio ou de contraceptivo intra-uterino. A coodificação com uma terminologia é preferível, quando possível.">
+					description = <"*Identify concurrent hormone or intrauterine contraception use. (en)">
+					comment = <"*Coding with a terminology is preferred, where possible. (en)">
 				>
 				["at0022"] = <
 					text = <"*Tree(en)">
@@ -393,7 +408,7 @@ ontology
 					comment = <"*For example: local information requirements or additional metadata to align with FHIR or CIMI equivalents.(en)">
 				>
 				["at0024"] = <
-					text = <"*Last normal menstrual period(en)">
+					text = <"*Last normal period (en)">
 					description = <"*The last normal menstrual period experienced by the woman.(en)">
 				>
 			>
@@ -409,7 +424,7 @@ ontology
 					description = <"@ internal @">
 				>
 				["at0002"] = <
-					text = <"Mikä tahansa tapahtuma">
+					text = <"*Any interval (en)">
 					description = <"Mikä tahansa tapahtuma.">
 				>
 				["at0003"] = <
@@ -419,6 +434,7 @@ ontology
 				["at0004"] = <
 					text = <"Kuukautisten ensimmäinen vuotopäivä">
 					description = <"Kuukautisvuodon alkupäivä yksittäisen kierron aikana.">
+					comment = <"*When recorded against the 'Last normal period' event, this data point captures the 'Last Normal Menstrual Period (LNMP)'. (en)">
 				>
 				["at0005"] = <
 					text = <"Kuukautisten kesto">
@@ -478,7 +494,8 @@ ontology
 				>
 				["at0019"] = <
 					text = <"Liittyvät oireet">
-					description = <"Tietoja kuukautisiin liittyvistä oireista. Esimerkiksi kuukautiskivut tai päänsäryt.">
+					description = <"*Details about symptoms related to menses. (en)">
+					comment = <"*For example: menstrual cramps or headaches. (en)">
 				>
 				["at0020"] = <
 					text = <"Tree">
@@ -486,7 +503,8 @@ ontology
 				>
 				["at0021"] = <
 					text = <"Ehkäisyn käyttö">
-					description = <"Kirjaa samanaikainen hormonaalisen tai kohdunsisäisen ehkäisyn käyttö. On suositeltavaa tehdä koodaus terminologiaa käyttäen aina kun mahdollista.">
+					description = <"*Identify concurrent hormone or intrauterine contraception use. (en)">
+					comment = <"*Coding with a terminology is preferred, where possible. (en)">
 				>
 				["at0022"] = <
 					text = <"*Tree(en)">
@@ -498,7 +516,7 @@ ontology
 					comment = <"*For example: local information requirements or additional metadata to align with FHIR or CIMI equivalents.(en)">
 				>
 				["at0024"] = <
-					text = <"*Last normal menstrual period(en)">
+					text = <"*Last normal period (en)">
 					description = <"*The last normal menstrual period experienced by the woman.(en)">
 				>
 			>
