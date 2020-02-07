@@ -9,8 +9,8 @@ language
 		["nb"] = <
 			language = <[ISO_639-1::nb]>
 			author = <
-				["name"] = <"Silje Ljosland Bakke">
-				["organisation"] = <"Nasjonal IKT HF">
+				["name"] = <"Silje Ljosland Bakke og John Tore Valand">
+				["organisation"] = <"Helse Vest IKT og Helse Bergen HF">
 			>
 		>
 	>
@@ -24,12 +24,24 @@ description
 	details = <
 		["nb"] = <
 			language = <[ISO_639-1::nb]>
-			purpose = <"Brukes for å registrere strukturerte detaljer om en enkelt timinganvisning for en rekvirert tjeneste. Hver anvisning er generelt gyldig i et gitt tidsintervall eller antall ganger en tjeneste utføres.">
-			use = <"Brukes for å registrere strukturerte detaljer om en enkelt timinganvisning for en rekvirert tjeneste. En anvisning beskriver en eller flere sekvensielle timingmønstre, koblet med en overordnet anvisningsvarighet og detaljer om repetisjon utover én dag.
+			purpose = <"For å registrere strukturerte detaljer om kompleks timing for en rekvirert eller bestilt tjeneste.">
+			use = <"Brukes for å registrere strukturerte detaljer om en enkel timing for en rekvirert eller bestilt tjeneste.
 
-For eksempen: Dialyseblodprøvepakke 1 på: Onsdager i den andre uken av Januar, Februar, April, Mai, Juli, August, Oktober, November. Denne CLUSTER-arketypen kan repeteres slik at man kan representere det komplettet settet av timinganvisninger for én tjenesteforespørsel. For eksempel \"INR daglig i 1 uke, ukentlig i 1 måned, månedlig i 6 måneder\" eller \"Observasjoner av vitale tegn hver time i 4 timer, deretter hver 2. time i 12 timer\". Arketypen kan gis nye navn i templaten eller applikasjoner for å representere en spesifikk hendelse som f.eks. \"første fire timer eller operasjon\" eller \"baselineundersøkelse\".
+Denne arketypen er utviklet for å nøstes i SLOTet \"Kompleks timing\" i arketypen INSTRUCTION.service_request (Helsetjenesteforespørsel), men kan benyttes i andre arketyper der det er klinisk relevant. Det kan være nødvendig med flere instanser av denne arketypen for å representerer komplekse forespørsler etter tjenester, særlig tjenester som endrer frekvens eller leveringsmønstre over tid.
 
-Arketypen vil generelt bli brukt innenfor en overordnet INSTRUCTION-arketype, primært Helsetjenesteforespørsel.">
+Hver tjenesteanvisning beskriver en eller flere sekvensielle aktiviteter, der hver aktivitet inneholder en \"Mengde\" og en \"Timing innenfor en dag\", sammen med den overordnede varigheten av anvisningen og detaljer om repeterende mønstre utover en enkelt dag. Hvert aktivitetspar gjør det mulig å beskrive et komplekst mønster, for eksempel 2 timer hjemmesykepleie om morgenen og en time om kvelden.
+
+Hver tjenesteanvisning kan være gyldig i en begrenset tidsperiode, over et begrenset nummer hendelser beskrevet i dataelementet \"Totalmengde\".
+
+Den totale mengden for hele tjenesteanvisningen registreres i arketypen INSTRUCTION.service_request (Helsetjenesteforespørsel).
+
+For eksempel: 
+- Hjemmesykepleier 2 timer om morgenen og 1 time om kvelden over en tidsperiode på 6 måneder. Etterfulgt av kun 1 time om morgenen i 6 uker.
+- Dialyseblodprøvepakke tas på onsdager i den andre uken av Januar, Februar, April, Mai, Juli, August, Oktober, November.
+- INR daglig i 1 uke, ukentlig i 1 måned og månedlig i 6 måneder.
+- Vitale observasjoner hver time i 4 timer, deretter hver andre time i 12 timer.
+
+Arketypen kan gis nye navn i et templat eller en applikasjon for å representere en spesifikk hendelse som f.eks. \"første fire timer eller operasjon\".">
 			keywords = <"rekvirering", "rekvirere", "tjeneste", "prosedyre", "undersøkelse", "behandling", "timing">
 			misuse = <"Skal ikke brukes for å registrere timinginformasjon om en rekvirering eller ordinering der det er behov for en doseangivelse, som legemiddel- eller transfusjonsordinasjoner. Bruk arketypen Terapeutisk anvisning for dette formålet.">
 			copyright = <"© openEHR Foundation, Alberta Health Services (Canada)">
@@ -68,8 +80,8 @@ The CLUSTER can be renamed in template or at run-time to represent a specific se
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"24B8E07F5B89B747F67E5CF1569BDC8A">
-		["build_uid"] = <"d6ad329d-441c-42bf-bc5c-6df3dd611a5c">
+		["MD5-CAM-1.0.1"] = <"816239A2E73C09C0A2A5DF261F66B305">
+		["build_uid"] = <"9390cdaa-bcd8-4e83-afd3-e0b9646528f9">
 		["revision"] = <"0.0.1-alpha">
 	>
 
@@ -223,13 +235,36 @@ Where multiple directions are expressed, the 'Direction sequence' makes the orde
 			items = <
 				["at0000"] = <
 					text = <"Tjenesteanvisning">
-					description = <"*Structured details of a complex timing direction for an ordered or requested service. (en)">
-					comment = <"*For example: a sequence of vital signs obervations over the first 24 hours post-operatively; or a request for home nursing attendance in the morning and evening, gradually reducing over a month. (en)">
+					description = <"Strukturerte detaljer om kompleks timing for en rekvirert eller bestilt tjeneste.">
+					comment = <"For eksempel: En sekvens av vitale observasjoner de første 24 timene postoperativt, eller en forespørsel om hjemmesykepleie morgen og kveld, gradvis redusert over en måned.">
 				>
 				["at0001"] = <
 					text = <"Anvisningsrekkefølge">
 					description = <"Tilsiktet rekkefølge for denne anvisningen i den overordnede anvisningssekvensen.">
-					comment = <"For eksempel \"1\", \"2\", \"3\". I tilfeller der ordineringen består av flere doseringsanvisninger, spesifiserer anvisningsrekkefølgen i hvilken rekkefølge anvisningene skal utføres. For eksempel \"(1) 4 ganger daglig i 3 dager, (2) to ganger daglig i 4 dager, (3) 1 gang daglig i 7 dager.\"">
+					comment = <"For eksempel \"1\", \"2\", \"3\". 
+I tilfeller med flere anvisninger spesifiserer \"Anvisningsrekkefølge\" i hvilken rekkefølge anvisningene skal utføres. For eksempel (1) 4 ganger daglig i 3 dager, (2) to ganger daglig i 4 dager, (3) 1 gang daglig i 7 dager.">
+				>
+				["at0002"] = <
+					text = <"Anvisningsbeskrivelse">
+					description = <"Fritekstbeskrivelse av hele anvisningen.">
+				>
+				["at0003"] = <
+					text = <"Aktivitet">
+					description = <"En gruppering av mengde og timing for en del av en tjenesteanvisning.">
+					comment = <"For eksempel: Forespørsel om hjemmesykepleie 2 timer om morgenen som en aktivitet og 1 time om kvelden som en annen aktivitet.">
+				>
+				["at0004"] = <
+					text = <"Aktivitetssekvens">
+					description = <"Den tiltenkte sekvensielle plasseringen av denne aktiviteten innen alle aktiviteter for tjenesteanvisningen.">
+				>
+				["at0005"] = <
+					text = <"Mengde">
+					description = <"Mengde av den forespurte tjenesten som en del av en spesifisert aktivitet.">
+					comment = <"Representeres enten som et antall av tjenester eller varighet av tjeneste(r).">
+				>
+				["at0006"] = <
+					text = <"Tidspunkter innenfor en dag">
+					description = <"Strukturerte detaljer om tidspunkter tjenesten skal leveres på innenfor en dag.">
 				>
 				["at0007"] = <
 					text = <"Anvisningsvarighet">
@@ -246,39 +281,17 @@ Where multiple directions are expressed, the 'Direction sequence' makes the orde
 				>
 				["at0010"] = <
 					text = <"Repetering av anvisning">
-					description = <"*Structured details about pattern of repetition for each set of intraday activities. (en)">
+					description = <"Strukturerte detaljer om mønster for repetering av de daglige aktivitetene.">
 					comment = <"For eksempel \"hver 3. dag\", \"på tirsdager og søndager\", \"3 dager etter menstruasjonsblødningens 1. dag\". Dette SLOTet er ikke for timing innenfor et 24-timersintervall.">
+				>
+				["at0011"] = <
+					text = <"Total mengde">
+					description = <"Det totale antall tjenester eller timer som er tilgjengelige for alle aktiviteter i denne anvisningen.">
+					comment = <"For eksempel: \"Gjennomfør kun en gang\" = 1, eller \"30 timer\".">
 				>
 				["at0012"] = <
 					text = <"Ytterligere detaljer">
 					description = <"Ytterligere detaljer om anvisningen.">
-				>
-				["at0011"] = <
-					text = <"*Total amount (en)">
-					description = <"*The total number of services or hours available for all activities in this direction. (en)">
-					comment = <"*Example: 'Perform once only' = 1; or '30 hours'. (en)">
-				>
-				["at0006"] = <
-					text = <"*Intraday timing (en)">
-					description = <"Strukturerte detaljer om timing av tjenesten innenfor en dag.">
-				>
-				["at0002"] = <
-					text = <"*Direction description (en)">
-					description = <"*Narrative description about the whole direction. (en)">
-				>
-				["at0003"] = <
-					text = <"*Activity (en)">
-					description = <"*A grouping of an amount and timing for a part of a service direction. (en)">
-					comment = <"*For example: home nursing request for 2 hours in the morning as one activity and 1 hour in the evening as a second activity. (en)">
-				>
-				["at0005"] = <
-					text = <"*Amount (en)">
-					description = <"*The amount of service requested as part of a specified activity. (en)">
-					comment = <"*Represented either as the number of services or the duration of service/s. (en)">
-				>
-				["at0004"] = <
-					text = <"*Activity sequence (en)">
-					description = <"*The intended sequential position of this activity within all activities for the service direction. (en)">
 				>
 			>
 		>
