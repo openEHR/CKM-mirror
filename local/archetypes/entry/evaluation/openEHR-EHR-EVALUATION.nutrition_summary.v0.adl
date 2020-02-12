@@ -2,7 +2,7 @@
 	openEHR-EHR-EVALUATION.nutrition_summary.v0
 
 concept
-	[at0000]	-- Nutrition summary
+	[at0000]	-- Food and nutrition summary
 language
 	original_language = <[ISO_639-1::en]>
 description
@@ -31,48 +31,86 @@ description
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"1FC48C2A2851CB8936AE4AB273638A22">
-		["build_uid"] = <"ee096872-73d6-4130-a8a6-a178281489cf">
+		["MD5-CAM-1.0.1"] = <"30D200470B5C5992E5FE144DAECDD07A">
+		["build_uid"] = <"78bb1c3b-9c1c-4ee2-b9d6-997dafadf1a1">
 		["revision"] = <"0.0.1-alpha">
 	>
 
 definition
-	EVALUATION[at0000] matches {	-- Nutrition summary
+	EVALUATION[at0000] matches {    -- Food and nutrition summary
 		data matches {
-			ITEM_TREE[at0001] matches {	-- Tree
+			ITEM_TREE[at0001] matches {    -- Tree
 				items cardinality matches {0..*; unordered} matches {
-					ELEMENT[at0002] occurrences matches {0..1} matches {	-- Nutrition status
+					ELEMENT[at0011] occurrences matches {0..1} matches {    -- Description
 						value matches {
 							DV_TEXT matches {*}
 						}
 					}
-					ELEMENT[at0003] occurrences matches {0..1} matches {	-- Weight status
+					ELEMENT[at0002] occurrences matches {0..1} matches {    -- Nutrition status
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0003] occurrences matches {0..1} matches {    -- Weight status
 						value matches {
 							DV_CODED_TEXT matches {
 								defining_code matches {
 									[local::
-									at0004, 	-- Underweight
-									at0007, 	-- Normal
-									at0005, 	-- Overweight
-									at0006]	-- Obese
+									at0004,    -- Underweight
+									at0007,    -- Normal
+									at0005,    -- Overweight
+									at0006]    -- Obese
 								}
 							}
 						}
 					}
-					ELEMENT[at0008] occurrences matches {0..1} matches {	-- Dietary preference
+					ELEMENT[at0008] occurrences matches {0..1} matches {    -- Dietary preference
 						value matches {
 							DV_TEXT matches {*}
 						}
 					}
-					ELEMENT[at0009] occurrences matches {0..*} matches {	-- Dietary Requirements
+					ELEMENT[at0009] occurrences matches {0..*} matches {    -- Dietary constraints
 						value matches {
 							DV_TEXT matches {*}
 						}
 					}
-					ELEMENT[at0010] occurrences matches {0..1} matches {	-- Comment
+					ELEMENT[at0013] occurrences matches {0..1} matches {    -- Food security status
+						value matches {
+							DV_CODED_TEXT matches {
+								defining_code matches {
+									[local::
+									at0014,    -- Food security
+									at0015,    -- Marginal food security
+									at0016,    -- Low food security
+									at0017]    -- Very low food security
+								}
+							}
+						}
+					}
+					ELEMENT[at0020] occurrences matches {0..1} matches {    -- Food insecurity description
 						value matches {
 							DV_TEXT matches {*}
 						}
+					}
+					ELEMENT[at0010] occurrences matches {0..1} matches {    -- Comment
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+				}
+			}
+		}
+		protocol matches {
+			ITEM_TREE[at0012] matches {    -- Item tree
+				items cardinality matches {0..*; unordered} matches {
+					ELEMENT[at0018] occurrences matches {0..1} matches {    -- Last updated
+						value matches {
+							DV_DATE_TIME matches {*}
+						}
+					}
+					allow_archetype CLUSTER[at0019] occurrences matches {0..*} matches {    -- Extension
+						include
+							archetype_id/value matches {/.*/}
 					}
 				}
 			}
@@ -85,7 +123,7 @@ ontology
 		["en"] = <
 			items = <
 				["at0000"] = <
-					text = <"Nutrition summary">
+					text = <"Food and nutrition summary">
 					description = <"Summary of the nutritional status of an individual, as assessed by a clinician.">
 				>
 				["at0001"] = <
@@ -118,15 +156,59 @@ ontology
 				>
 				["at0008"] = <
 					text = <"Dietary preference">
-					description = <"A description of an individual's dietary preference e.g. Vegetarian or Vegan.  Coding with a terminology is desirable, where possible.">
+					description = <"A description of an individual's dietary preference.">
+					comment = <"For example: omnivore; vegetarian or vegan.  Coding with a terminology is desirable, where possible.">
 				>
 				["at0009"] = <
-					text = <"Dietary Requirements">
-					description = <"Description of a special dietary requirement e.g. Lactose free or Gluten free.  Coding with a terminology is desirable, where possible.">
+					text = <"Dietary constraints">
+					description = <"Description of a special dietary requirements or constraints.">
+					comment = <"For example: lactose or gluten free; low sodium.  Coding with a terminology is desirable, where possible.">
 				>
 				["at0010"] = <
 					text = <"Comment">
 					description = <"Comment about the individual's nutrition.">
+				>
+				["at0011"] = <
+					text = <"Description">
+					description = <"Narrative description about the individual's diet and eating patterns.">
+				>
+				["at0012"] = <
+					text = <"Item tree">
+					description = <"@ internal @">
+				>
+				["at0013"] = <
+					text = <"Food security status">
+					description = <"The current category for secure access to food.">
+					comment = <"The scope of food security includes access to food that is adequate in quantity and nutritional quality; culturally acceptable; safe; and acquired in socially acceptable ways.">
+				>
+				["at0014"] = <
+					text = <"Food security">
+					description = <"An absence of any form of food insecurity.">
+				>
+				["at0015"] = <
+					text = <"Marginal food security">
+					description = <"Mild food insecurity.">
+				>
+				["at0016"] = <
+					text = <"Low food security">
+					description = <"Moderate food insecurity.">
+				>
+				["at0017"] = <
+					text = <"Very low food security">
+					description = <"Severe food insecurity.">
+				>
+				["at0018"] = <
+					text = <"Last updated">
+					description = <"The date this summary was last updated.">
+				>
+				["at0019"] = <
+					text = <"Extension">
+					description = <"Additional information required to extend the model with local content or to align with other reference models/formalisms.">
+					comment = <"For example: local information requirements or additional metadata to align with FHIR or CIMI equivalents.">
+				>
+				["at0020"] = <
+					text = <"Food insecurity description">
+					description = <"Narrative description about any difficulties or issues around food insecurity.">
 				>
 			>
 		>
