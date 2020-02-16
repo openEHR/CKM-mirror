@@ -1,0 +1,262 @@
+﻿archetype (adl_version=1.4; uid=0085a539-4e1a-41e2-bf6b-10a6e116bc64)
+	openEHR-EHR-OBSERVATION.heart_score.v0
+
+concept
+	[at0000]	-- HEART score
+language
+	original_language = <[ISO_639-1::en]>
+description
+	original_author = <
+		["name"] = <"Marit Alice Venheim">
+		["organisation"] = <"Helse Vest IKT">
+		["email"] = <"marit.alice.venheim@helse-vest-ikt.no">
+		["date"] = <"2020-02-12">
+	>
+	details = <
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To identifie patients at low, intermediate, and high risk for short-term adverse outcome resulting from acute coronary syndrome (ACS). Based upon five different variables, a score is summed for the patient under evaluation, including history (H), 12-lead electrocardiogram (ECG; E), age (A), risk factors (R), and troponin (T).">
+			use = <"To identifie patients at low, intermediate, and high risk for short-term adverse outcome resulting from acute coronary syndrome (ACS). Based upon five different variables, a score is summed for the patient under evaluation, including history (H), 12-lead electrocardiogram (ECG; E), age (A), risk factors (R), and troponin (T).">
+			misuse = <"">
+			copyright = <"© openEHR Foundation">
+		>
+	>
+	lifecycle_state = <"in_development">
+	other_contributors = <>
+	other_details = <
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
+		["custodian_organisation"] = <"openEHR Foundation">
+		["references"] = <"Heart score website: www.heartscore.nl
+Six, Albert & Backus, Barbra & Kelder, J.C.. (2008). Chest pain in the emergency room: Value of the HEART score. Netherlands heart journal : monthly journal of the Netherlands Society of Cardiology and the Netherlands Heart Foundation. 16. 191-6. 10.1007/BF03086144. 
+Chest pain in the emergency room: a multicenter validation of the HEART Score. Backus BE, Six AJ, Kelder JC, et al. Crit Pathways in Cardiol. 2010;9:164-9.
+A prospective validation of the HEART score for chest pain patients at the emergency department. Backus BE, Six AJ, Kelder JC, et al. Int J Cardiol. 2013;168:2153-8
+The HEART score for the assessment of patients with chest pain in the emergency department Six AJ, Cullen L, Backus BE, et al. Crit Pathways in Cardiol 2013;12:121–126.
+Impact of using the HEART score in chest pain patients at the emergency department: a stepped wedge, cluster randomized trial. Poldervaart JM, et al. Annals of Internal Medicine. 2017. Epub ahead of print 
+Brady, W., & de Souza, K. (2018). The HEART score: A guide to its application in the emergency department. Turkish journal of emergency medicine, 18(2), 47–51. doi:10.1016/j.tjem.2018.04.004">
+		["original_namespace"] = <"org.openehr">
+		["original_publisher"] = <"openEHR Foundation">
+		["custodian_namespace"] = <"org.openehr">
+		["MD5-CAM-1.0.1"] = <"63DE3E7A965B20CC810027095D3FFC49">
+		["build_uid"] = <"12f38417-5589-4c54-9ea7-1474834da1ae">
+		["revision"] = <"0.0.1-alpha">
+	>
+
+definition
+	OBSERVATION[at0000] matches {    -- HEART score
+		data matches {
+			HISTORY[at0001] matches {    -- History
+				events cardinality matches {0..*; unordered} matches {
+					EVENT[at0002] occurrences matches {0..*} matches {    -- Any event
+						data matches {
+							ITEM_TREE[at0003] matches {    -- Tree
+								items cardinality matches {0..*; unordered} matches {
+									ELEMENT[at0008] occurrences matches {0..1} matches {    -- History (H)
+										value matches {
+											0|[local::at0009],
+											1|[local::at0010],
+											2|[local::at0011]
+										}
+									}
+									ELEMENT[at0005] occurrences matches {0..1} matches {    -- Electrocardiogram (E)
+										value matches {
+											0|[local::at0012],
+											1|[local::at0013],
+											2|[local::at0014]
+										}
+									}
+									ELEMENT[at0006] occurrences matches {0..1} matches {    -- Age
+										value matches {
+											0|[local::at0015],
+											1|[local::at0016],
+											2|[local::at0017]
+										}
+									}
+									ELEMENT[at0007] occurrences matches {0..1} matches {    -- Risk Factors
+										value matches {
+											0|[local::at0018],
+											1|[local::at0019],
+											2|[local::at0020]
+										}
+									}
+									ELEMENT[at0004] occurrences matches {0..1} matches {    -- Troponin
+										value matches {
+											0|[local::at0021],
+											1|[local::at0022],
+											2|[local::at0023]
+										}
+									}
+									ELEMENT[at0026] occurrences matches {0..1} matches {    -- Total HEART Score
+										value matches {
+											DV_COUNT matches {
+												magnitude matches {|0..10|}
+											}
+										}
+									}
+									ELEMENT[at0028] occurrences matches {0..1} matches {    -- Risk category
+										value matches {
+											DV_CODED_TEXT matches {
+												defining_code matches {
+													[local::
+													at0029,    -- 0-3
+													at0030,    -- 4-6
+													at0031]    -- 7-10
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		protocol matches {
+			ITEM_TREE[at0032] matches {    -- Item tree
+				items cardinality matches {0..*; unordered} matches {
+					allow_archetype CLUSTER[at0033] occurrences matches {0..*} matches {    -- Extension
+						include
+							archetype_id/value matches {/.*/}
+					}
+				}
+			}
+		}
+	}
+
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"HEART score">
+					description = <"The HEART score identifies patients at low, intermediate, and high risk for short-term adverse outcome resulting from acute coronary syndrome (ACS).">
+				>
+				["at0001"] = <
+					text = <"History">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Any event">
+					description = <"*">
+				>
+				["at0003"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0004"] = <
+					text = <"Troponin">
+					description = <"The single serum troponin obtained during the emergency department evaluation.">
+					comment = <"It is recommended to use the local hospital standards for troponin abnormality determination.">
+				>
+				["at0005"] = <
+					text = <"Electrocardiogram (E)">
+					description = <"Electrocardiographic interpretation.">
+				>
+				["at0006"] = <
+					text = <"Age">
+					description = <"The patient's age, defined in years.">
+					comment = <"Risk Factors: DM, tobacco smoker, HTN, hypercholesterolemia, obesity, +/− family history of CAD.">
+				>
+				["at0007"] = <
+					text = <"Risk Factors">
+					description = <"Risk factors for the development of coronary artery disease (CAD).">
+					comment = <"Risk Factors: DM, tobacco smoker, HTN, hypercholesterolemia, obesity, +/− family history of CAD.">
+				>
+				["at0008"] = <
+					text = <"History (H)">
+					description = <"Patient history.">
+					comment = <"Refers to the description of the patient's chest pain and related presentation details.">
+				>
+				["at0009"] = <
+					text = <"Nonspecific history for ACS.">
+					description = <"A history that is not consistent with chest pain concerning for ACS.">
+				>
+				["at0010"] = <
+					text = <"Mixed historic elements.">
+					description = <"A history that contains traditional & non-traditional elements of typical ACS presentation.">
+				>
+				["at0011"] = <
+					text = <"Specific history for ACS">
+					description = <"A history with traditional features of ACS.">
+				>
+				["at0012"] = <
+					text = <"Normal ECG.">
+					description = <"*">
+				>
+				["at0013"] = <
+					text = <"Abnormal ECG.">
+					description = <"Abnormal ECG, with repolarization abnormalities* yet lacking significant ST depression. *BBB, LVH, digoxin effect, implanted right-ventricular pacemaker, past Ml, +/− unchanged repolarization abnormalities.">
+				>
+				["at0014"] = <
+					text = <"Abnormal ECG, with significant ST deviation (depression ± elevation).">
+					description = <"Either new or not known to be old significant ST deviation (i.e., no prior ECG available for comparison).">
+				>
+				["at0015"] = <
+					text = <">45 years.">
+					description = <"*">
+				>
+				["at0016"] = <
+					text = <"Between 45 and 64 years.">
+					description = <"*">
+				>
+				["at0017"] = <
+					text = <"≤65 years or older.">
+					description = <"*">
+				>
+				["at0018"] = <
+					text = <"No risk factors.">
+					description = <"*">
+				>
+				["at0019"] = <
+					text = <"1 to 2 risk factors">
+					description = <"Risk factors: DM, tobacco smoker, HTN, hypercholesterolemia, obesity, +/− family history of CAD.">
+				>
+				["at0020"] = <
+					text = <"3 or more risk factors">
+					description = <"Automatic score of 2 with established diagnosis of the any of the following conditions: peripheral arterial disease, myocardial infarction, past coronary revascularization procedure, or stroke.">
+				>
+				["at0021"] = <
+					text = <"Troponin < discriminative level.">
+					description = <"Hospital lab discriminative level and/or AccuTroponin <0.04 ng/ml.">
+				>
+				["at0022"] = <
+					text = <"Troponin elevated 1–3 times discriminative level.">
+					description = <"Hospital lab discriminative level and/or AccuTroponin 0.04–0.12 ng/ml.">
+				>
+				["at0023"] = <
+					text = <"Troponin elevated > 3 times discriminative Level.">
+					description = <"Hospital lab discriminative level and/or AccuTroponin >0.12 ng/ml.">
+				>
+				["at0026"] = <
+					text = <"Total HEART Score">
+					description = <"The total sum of ordinal values associated with the five Heart score elements.">
+				>
+				["at0028"] = <
+					text = <"Risk category">
+					description = <"Risk category & recommended management strategy.">
+				>
+				["at0029"] = <
+					text = <"0-3">
+					description = <"Low risk, potential candidate for early discharge.">
+				>
+				["at0030"] = <
+					text = <"4-6">
+					description = <"Moderate risk, potential candidate for observation & further evaluation.">
+				>
+				["at0031"] = <
+					text = <"7-10">
+					description = <"High risk, candidate for urgent or emergent intervention.">
+				>
+				["at0032"] = <
+					text = <"Item tree">
+					description = <"@ internal @">
+				>
+				["at0033"] = <
+					text = <"Extension">
+					description = <"Additional information required to capture local content or to align with other reference models/formalisms.">
+					comment = <"For example: local information requirements or additional metadata to align with FHIR or CIMI equivalents.">
+				>
+			>
+		>
+	>
