@@ -2,7 +2,7 @@
 	openEHR-EHR-OBSERVATION.grace_admission.v0
 
 concept
-	[at0000]	-- Grace acs risk score
+	[at0000]	-- GRACE score (admission)
 language
 	original_language = <[ISO_639-1::en]>
 	translations = <
@@ -46,67 +46,47 @@ Non-STEMI inlagd på sjukhus:
 För detaljerad beskrivning av denna tolkning, vänligen se (2).">
 			keywords = <"GRACE ACS Risk Score", "GRACE", "STEMI", "NSTEMI", "akut koronart syndrom", "akut kranskärlssjukdom", "kardiologi">
 			misuse = <"Instrumentet är ej avsett för att identifiera patienter med akut koronart syndrom och ska endast användas i samråd med utförlig klinisk utredning.">
-			copyright = <"© Apperta Foundation / Wales Cardiac Network, openEHR Foundation">
+			copyright = <"© Cambio Healthcare Systems, openEHR Foundation">
 		>
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"Identified patients will have a known STEMI (ST Elevation Myocardial Infarction) or NSTEMI (Non-ST Elevation Myocardial Infarction).">
-			use = <"Determining the mortality of these patients can be achieved with these 8 variables:
+			purpose = <"To record the results for each component parameter, the total sum and grade for the GRACE score recorded at presentation or on admission.">
+			use = <"Use to record the results for each component parameter, the total sum and grade for the GRACE score recorded at presentation or on admission.">
+			keywords = <"GRACE", "ACS", "Risk", "score", "STEMI", "NSTEMI", "ACS", "Acute Coronary Syndrome", "cardiology">
+			misuse = <"Not to be used to record details about the followup GRACE score recorded at discharge - use the OBSERVATION.grace_discharge for this purpose.
 
-Age in years 
-Heart Rate
-Systolic Blood Pressure
-Creatinine (mg/dL)
-Cardiac arrest at admission
-ST segment deviation on EKG
-Elevated/abnormal cardiac enzymes
-
-Killip class (signs/symptoms):
-	No CHF - Class I
-	Rales and/or JVD - Class II
-	Pulmonary edema - Class III
-	Cardiogenic shock - Class IV
-
-The sum total of all the individual scores ranges from 0 to 372 with discretized buckets to score for continuous variables such as Age and Heart rate for example. 
-The full details can be seen on (1) with details on scoring and more scoring interpretations beyond that below, in (2).
-
-Score interpretations:
-
-Non-STE ACS in-hospital mortality: 
-Low: score 1-108 (<1% probablility of death in hospital)
-Intermediate: score 109-140 (1-3%)
-High: score 141-372 (>3%)">
-			keywords = <"GRACE ACS Risk score", "STEMI", "NSTEMI", "Acute Coronary Syndrome", "cardiology">
-			misuse = <"The score was not designed to assess which patients’ anginal symptoms are due to ACS and should not be used out of context without a more thorough clinical examination.">
+Not to be used to record details about the GRACE 2.0 score.">
 			copyright = <"© Apperta Foundation / Wales Cardiac Network, openEHR Foundation">
 		>
 	>
 	lifecycle_state = <"in_development">
-	other_contributors = <>
+	other_contributors = <"Heather Leslie, Atomica Informatics, Australia", ...>
 	other_details = <
 		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
 		["custodian_organisation"] = <"openEHR Foundation">
-		["references"] = <"Ref. 1: Fox KA, Dabbous OH, Goldberg RJ, Pieper KS, Eagle KA, Van de Werf F, Avezum A,Goodman SG, Flather MD, Anderson FA Jr, Granger CB. Prediction of risk of death and myocardial infarction in the six months after presentation with acute coronary syndrome: prospective multinational observational study (GRACE). BMJ. 2006 Nov 25;333(7578):1091. Epub 2006 Oct 10. PubMed PMID: 17032691; PubMed Central PMCID: PMC1661748.
+		["references"] = <"Alley W, Mahler SA. Clinical decision aids for chest pain in the emergency department: identifying low-risk patients. Open Access Emerg Med. 2015;7:85–92. Published 2015 Nov 16. doi:10.2147/OAEM.S71282
 
-Ref. 2: http://www.outcomes-umassmed.org/GRACE/grace_risk_table.aspx ; University Court of the University of Edinburgh and the University of Massachusetts Centres for Outcomes Research (COR)">
+Fox KA, Dabbous OH, Goldberg RJ, et al. Prediction of risk of death and myocardial infarction in the six months after presentation with acute coronary syndrome: prospective multinational observational study (GRACE). BMJ. 2006;333(7578):1091. doi:10.1136/bmj.38985.646481.55.
+
+Granger CB, Goldberg RJ, Dabbous O, et al. Predictors of hospital mortality in the global registry of acute coronary events. Arch Intern Med. 2003;163(19):2345–2353. doi:10.1001/archinte.163.19.2345.">
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"1ABFEA9CD7D7E427867280E16A2B061D">
-		["build_uid"] = <"69b6717d-54fd-481c-827c-443993551dbf">
+		["MD5-CAM-1.0.1"] = <"BB018384263BE2A229D5DE60CE2477F2">
+		["build_uid"] = <"5d389215-1ad4-470c-813a-d562400fc800">
 		["revision"] = <"0.0.1-alpha">
 	>
 
 definition
-	OBSERVATION[at0000] matches {    -- Grace acs risk score
+	OBSERVATION[at0000] matches {    -- GRACE score (admission)
 		data matches {
 			HISTORY[at0001] matches {    -- Event Series
 				events cardinality matches {1..*; unordered} matches {
-					EVENT[at0002] occurrences matches {0..1} matches {    -- Any event
+					EVENT[at0002] occurrences matches {0..1} matches {    -- Any point in time event
 						data matches {
 							ITEM_TREE[at0003] matches {    -- Tree
 								items cardinality matches {0..*; unordered} matches {
-									ELEMENT[at0004] occurrences matches {0..1} matches {    -- Age score
+									ELEMENT[at0004] occurrences matches {0..1} matches {    -- Age
 										value matches {
 											0|[local::at0014],
 											8|[local::at0015],
@@ -118,7 +98,7 @@ definition
 											100|[local::at0021]
 										}
 									}
-									ELEMENT[at0005] occurrences matches {0..1} matches {    -- Heart Rate score
+									ELEMENT[at0005] occurrences matches {0..1} matches {    -- Heart rate
 										value matches {
 											0|[local::at0022],
 											3|[local::at0023],
@@ -129,7 +109,7 @@ definition
 											46|[local::at0028]
 										}
 									}
-									ELEMENT[at0006] occurrences matches {0..1} matches {    -- Systolic Blood Pressure score
+									ELEMENT[at0006] occurrences matches {0..1} matches {    -- Systolic blood pressure
 										value matches {
 											0|[local::at0029],
 											10|[local::at0030],
@@ -140,7 +120,7 @@ definition
 											58|[local::at0035]
 										}
 									}
-									ELEMENT[at0007] occurrences matches {0..1} matches {    -- Creatinine score
+									ELEMENT[at0007] occurrences matches {0..1} matches {    -- Creatinine level
 										value matches {
 											0|[local::at0036],
 											1|[local::at0037],
@@ -152,25 +132,25 @@ definition
 											28|[local::at0043]
 										}
 									}
-									ELEMENT[at0008] occurrences matches {0..1} matches {    -- Cardiac Arrest at admission
+									ELEMENT[at0008] occurrences matches {0..1} matches {    -- Cardiac arrest at admission
 										value matches {
 											0|[local::at0044],
 											39|[local::at0045]
 										}
 									}
-									ELEMENT[at0009] occurrences matches {0..1} matches {    -- ST segment Deviation on EKG
+									ELEMENT[at0009] occurrences matches {0..1} matches {    -- ST segment deviation on ECG
 										value matches {
 											0|[local::at0046],
 											28|[local::at0047]
 										}
 									}
-									ELEMENT[at0010] occurrences matches {0..1} matches {    -- Elevated/Abnormal Cardiac Enzymes
+									ELEMENT[at0010] occurrences matches {0..1} matches {    -- Elevated/abnormal cardiac enzymes
 										value matches {
 											0|[local::at0048],
 											14|[local::at0049]
 										}
 									}
-									ELEMENT[at0011] occurrences matches {0..1} matches {    -- Killip Class score
+									ELEMENT[at0011] occurrences matches {0..1} matches {    -- Killip class
 										value matches {
 											0|[local::at0050],
 											20|[local::at0051],
@@ -185,11 +165,6 @@ definition
 											}
 										}
 									}
-									ELEMENT[at0013] occurrences matches {0..1} matches {    -- Comment
-										value matches {
-											DV_TEXT matches {*}
-										}
-									}
 								}
 							}
 						}
@@ -198,10 +173,16 @@ definition
 			}
 		}
 		protocol matches {
-			ITEM_TREE[at0054] matches {*}    -- Item tree
+			ITEM_TREE[at0054] matches {    -- Item tree
+				items cardinality matches {0..*; unordered} matches {
+					allow_archetype CLUSTER[at0055] occurrences matches {0..*} matches {    -- Extension
+						include
+							archetype_id/value matches {/.*/}
+					}
+				}
+			}
 		}
 	}
-
 
 
 ontology
@@ -209,285 +190,283 @@ ontology
 		["en"] = <
 			items = <
 				["at0000"] = <
-					text = <"Grace acs risk score">
-					description = <"GRACE [Global Registry of Acute Coronary Events] acute coronary syndrome (ACS) risk:
-Estimates admission-6-month mortality for patients with ACS">
+					text = <"GRACE score (admission)">
+					description = <"The original 8 variable version of an assessment tool used to risk stratify patients diagnosed with Acute Coronary Syndrome - specifically to estimate their risk of death in-hospital and up to 6 months after the ACS event.">
+					comment = <"GRACE is an acronym for Global Registry of Acute Coronary Events.">
 				>
 				["at0001"] = <
 					text = <"Event Series">
 					description = <"@ internal @">
 				>
 				["at0002"] = <
-					text = <"Any event">
-					description = <"*">
+					text = <"Any point in time event">
+					description = <"Default, unspecified point in time event which may be explicitly defined in a template or at run-time.">
 				>
 				["at0003"] = <
 					text = <"Tree">
 					description = <"@ internal @">
 				>
 				["at0004"] = <
-					text = <"Age score">
-					description = <"Discretized values for Age in years">
+					text = <"Age">
+					description = <"Age at admission.">
 				>
 				["at0005"] = <
-					text = <"Heart Rate score">
-					description = <"Discretized values for Heart rate in BPM">
+					text = <"Heart rate">
+					description = <"Category of heart rate on admission.">
 				>
 				["at0006"] = <
-					text = <"Systolic Blood Pressure score">
-					description = <"Discretized values for Systolic Blood Pressure (mmHg)">
+					text = <"Systolic blood pressure">
+					description = <"Category of systolic blood pressure on admission.">
 				>
 				["at0007"] = <
-					text = <"Creatinine score">
-					description = <"Discretized values for Creatinine (mg/dL)">
+					text = <"Creatinine level">
+					description = <"Category of creatinine measurement on admission.">
 				>
 				["at0008"] = <
-					text = <"Cardiac Arrest at admission">
-					description = <"Yes or No values are 39 and 0 respectively">
+					text = <"Cardiac arrest at admission">
+					description = <"Resuscitated after cardiac arrest at admission.">
 				>
 				["at0009"] = <
-					text = <"ST segment Deviation on EKG">
-					description = <"Yes and No values are 28 and 0 respectively">
+					text = <"ST segment deviation on ECG">
+					description = <"ST segment deviation on admission.">
 				>
 				["at0010"] = <
-					text = <"Elevated/Abnormal Cardiac Enzymes">
-					description = <"Yes and No scores are 14 and 0 respectively">
+					text = <"Elevated/abnormal cardiac enzymes">
+					description = <"Cardiac enzymes out of normal range on admission.">
 				>
 				["at0011"] = <
-					text = <"Killip Class score">
-					description = <"Killip Classification (Signs and Symptoms)">
+					text = <"Killip class">
+					description = <"Killip Classification at admission.">
 				>
 				["at0012"] = <
 					text = <"Total score">
-					description = <"Sum of all the individual scores">
-				>
-				["at0013"] = <
-					text = <"Comment">
-					description = <"Any comments regarding the score">
+					description = <"Sum of points assigned for each of the component parameters.">
 				>
 				["at0014"] = <
 					text = <"≤ 30 years">
-					description = <"≤ 30 years">
+					description = <"Patient is aged ≤ 30 years.">
 				>
 				["at0015"] = <
 					text = <"30-39 years">
-					description = <"30-39 years">
+					description = <"Patient is aged 30-39 years.">
 				>
 				["at0016"] = <
 					text = <"40-49 years">
-					description = <"40-49 years">
+					description = <"Patient is aged 40-49 years.">
 				>
 				["at0017"] = <
 					text = <"50-59 years">
-					description = <"50-59 years">
+					description = <"Patient is aged 50-59 years.">
 				>
 				["at0018"] = <
 					text = <"60-69 years">
-					description = <"60-69 years">
+					description = <"Patient is aged 60-69 years.">
 				>
 				["at0019"] = <
 					text = <"70-79 years">
-					description = <"70-79 years">
+					description = <"Patient is aged 70-79 years.">
 				>
 				["at0020"] = <
 					text = <"80-89 years">
-					description = <"80-89 years">
+					description = <"Patient is aged 80-89 years.">
 				>
 				["at0021"] = <
 					text = <"≥ 90 years">
-					description = <"≥ 90 years">
+					description = <"Patient is aged ≥ 90 years.">
 				>
 				["at0022"] = <
 					text = <"≤ 50 bpm">
-					description = <"*">
+					description = <"Less than 50 beats per minute.">
 				>
 				["at0023"] = <
 					text = <"50-69 bpm">
-					description = <"*">
+					description = <"Between 50 and 69 beats per minute.">
 				>
 				["at0024"] = <
 					text = <"70-89 bpm">
-					description = <"*">
+					description = <"Between 70 and 89 beats per minute.">
 				>
 				["at0025"] = <
 					text = <"90-109 bpm">
-					description = <"*">
+					description = <"Between 90 and 109 beats per minute.">
 				>
 				["at0026"] = <
 					text = <"110-149 bpm">
-					description = <"*">
+					description = <"Between 110 and 149 beats per minute.">
 				>
 				["at0027"] = <
 					text = <"150-199 bpm">
-					description = <"*">
+					description = <"Between 150 and 199 beats per minute.">
 				>
 				["at0028"] = <
 					text = <"≥ 200 bpm">
-					description = <"*">
+					description = <"Greater than 200 beats per minute.">
 				>
 				["at0029"] = <
 					text = <"≥ 200 mmHg">
-					description = <"*">
+					description = <"Greater than 200 mmHg.">
 				>
 				["at0030"] = <
 					text = <"160-199 mmHg">
-					description = <"*">
+					description = <"Between 160 and 199 mmHg.">
 				>
 				["at0031"] = <
 					text = <"140-159 mmHg">
-					description = <"*">
+					description = <"Between 140 and 159 mmHg.">
 				>
 				["at0032"] = <
 					text = <"120-139 mmHg">
-					description = <"*">
+					description = <"Between 120 and 139 mmHg.">
 				>
 				["at0033"] = <
 					text = <"100-119 mmHg">
-					description = <"*">
+					description = <"Between 100 and 119 mmHg.">
 				>
 				["at0034"] = <
 					text = <"80-99 mmHg">
-					description = <"*">
+					description = <"Between 80 and 99 mmHg.">
 				>
 				["at0035"] = <
 					text = <"≤ 80 mmHg">
-					description = <"*">
+					description = <"Less than 80 mmHg.">
 				>
 				["at0036"] = <
 					text = <"NA">
-					description = <"*">
+					description = <"Not available.">
 				>
 				["at0037"] = <
 					text = <"0-0.39 mg/dL">
-					description = <"*">
+					description = <"Between 0 and 0.39 mg/dL.">
 				>
 				["at0038"] = <
 					text = <"0.4-0.79 mg/dL">
-					description = <"*">
+					description = <"Between 0.4 and 0.79 mg/dL.">
 				>
 				["at0039"] = <
 					text = <"0.8-1.19 mg/dL">
-					description = <"*">
+					description = <"Between 0.8 and 1.19 mg/dL.">
 				>
 				["at0040"] = <
 					text = <"1.20-1.59 mg/dL">
-					description = <"*">
+					description = <"Between 1.20 and 1.59 mg/dL.">
 				>
 				["at0041"] = <
 					text = <"1.60-1.99 mg/dL">
-					description = <"*">
+					description = <"Between 1.60 and 1.99 mg/dL.">
 				>
 				["at0042"] = <
-					text = <"2.0-3.99 mg/dL">
-					description = <"*">
+					text = <"2.00-3.99 mg/dL">
+					description = <"Between 2.00 and 3.99 mg/dL.">
 				>
 				["at0043"] = <
 					text = <"> 4.0 mg/dL">
-					description = <"*">
+					description = <"Greater than 4.0 mg/dL.">
 				>
 				["at0044"] = <
 					text = <"No">
-					description = <"*">
+					description = <"No cardiac arrest on admission.">
 				>
 				["at0045"] = <
 					text = <"Yes">
-					description = <"*">
+					description = <"Cardiac arrest on admission.">
 				>
 				["at0046"] = <
 					text = <"No">
-					description = <"*">
+					description = <"No ST segment deviation observed on ECG.">
 				>
 				["at0047"] = <
 					text = <"Yes">
-					description = <"*">
+					description = <"ST segment deviation observed on ECG.">
 				>
 				["at0048"] = <
 					text = <"No">
-					description = <"*">
+					description = <"Cardiac enzymes in normal range.">
 				>
 				["at0049"] = <
 					text = <"Yes">
-					description = <"*">
+					description = <"Cardiac enzymes not in normal range.">
 				>
 				["at0050"] = <
 					text = <"Class 1">
-					description = <"*">
+					description = <"No clinical signs of heart failure.">
 				>
 				["at0051"] = <
 					text = <"Class 2">
-					description = <"*">
+					description = <"Rales or crackles in the lungs, an S3, and elevated jugular venous pressure.">
 				>
 				["at0052"] = <
 					text = <"Class 3">
-					description = <"*">
+					description = <"Acute pulmonary oedema.">
 				>
 				["at0053"] = <
 					text = <"Class 4">
-					description = <"*">
+					description = <"Cardiogenic shock or hypotension (measured as systolic blood pressure lower than 90 mmHg), and evidence of peripheral vasoconstriction (oliguria, cyanosis or sweating).">
 				>
 				["at0054"] = <
 					text = <"Item tree">
 					description = <"@ internal @">
+				>
+				["at0055"] = <
+					text = <"Extension">
+					description = <"Additional information required to extend the model with local content or to align with other reference models/formalisms.">
+					comment = <"For example: local information requirements; or additional metadata to align with FHIR.">
 				>
 			>
 		>
 		["sv"] = <
 			items = <
 				["at0000"] = <
-					text = <"Grace ACS Risk Score">
-					description = <"Global Registry of Acute Coronary Events (GRACE) Acute Coronary Syndrome (ACS) Risk Score används för att uppskatta 6-månadersmortalitet hos nyligen mottagna patienter med akut koronart syndrom.">
+					text = <"*GRACE admission score (en)">
+					description = <"*The original 8 variable version of an assessment tool used to risk stratify patients with diagnosed Acute Coronary Syndrome to estimate their in-hospital to 6 month mortality. (en)">
+					comment = <"*GRACE is an acronym for Global Registry of Acute Coronary Events. (en)">
 				>
 				["at0001"] = <
 					text = <"*Event Series(en)">
 					description = <"*@ internal @(en)">
 				>
 				["at0002"] = <
-					text = <"*Any event(en)">
-					description = <"**(en)">
+					text = <"*Any point in time event (en)">
+					description = <"*Default, unspecified point in time event which may be explicitly defined in a template or at run-time. (en)">
 				>
 				["at0003"] = <
 					text = <"*Tree(en)">
 					description = <"*@ internal @(en)">
 				>
 				["at0004"] = <
-					text = <"Ålder">
-					description = <"Poäng baserat på ålder.">
+					text = <"*Age (en)">
+					description = <"*Age at admission. (en)">
 				>
 				["at0005"] = <
-					text = <"Hjärtfrekvens">
-					description = <"Poäng baserat på hjärtfrekvens angiven i slag per minut.">
+					text = <"*Heart rate (en)">
+					description = <"*Category of heart rate on admission. (en)">
 				>
 				["at0006"] = <
-					text = <"Systoliskt blodtryck">
-					description = <"Poäng baserat på systoliskt blodtryck.">
+					text = <"*Systolic blood pressure (en)">
+					description = <"*Category of systolic blood pressure on admission. (en)">
 				>
 				["at0007"] = <
-					text = <"Kreatinin">
-					description = <"Poäng baserat på kreatininvärde, angivet i mg/dl.">
+					text = <"*Creatinine level (en)">
+					description = <"*Category of creatinine measurement on admission. (en)">
 				>
 				["at0008"] = <
-					text = <"Hjärtstopp vid ankomst">
-					description = <"Hjärtstopp vid ankomst till sjukhus.">
+					text = <"*Cardiac arrest at admission (en)">
+					description = <"*Resuscitated after cardiac arrest at admission. (en)">
 				>
 				["at0009"] = <
-					text = <"Patologiska ST-förändringar på EKG">
-					description = <"Patologiska ST-förändringar på elektrokardiografi (EKG).">
+					text = <"*ST segment deviation on ECG (en)">
+					description = <"*ST segment deviation on admission. (en)">
 				>
 				["at0010"] = <
-					text = <"Förhöjda/avvikande hjärtmarkörer">
-					description = <"Provsvar - förhöjda/avvikande hjärtmarkörer.">
+					text = <"*Elevated/abnormal cardiac enzymes (en)">
+					description = <"*Cardiac enzymes out of normal range on admission. (en)">
 				>
 				["at0011"] = <
-					text = <"Killip-klassificering">
-					description = <"Killip-klassificering baserat på fynd och symtom.">
+					text = <"*Killip class (en)">
+					description = <"*Killip Classification at admission. (en)">
 				>
 				["at0012"] = <
 					text = <"Resultat">
-					description = <"Summan av samtliga faktorer.">
-				>
-				["at0013"] = <
-					text = <"Kommentar">
-					description = <"Ev tillägg.">
+					description = <"*Sum of points assigned for each of the component parameters. (en)">
 				>
 				["at0014"] = <
 					text = <"≤ 30 år">
@@ -652,6 +631,11 @@ Estimates admission-6-month mortality for patients with ACS">
 				["at0054"] = <
 					text = <"*Item tree (en)">
 					description = <"@ internal @">
+				>
+				["at0055"] = <
+					text = <"*Extension (en)">
+					description = <"*Additional information required to extend the model with local content or to align with other reference models/formalisms. (en)">
+					comment = <"*For example: local information requirements; or additional metadata to align with FHIR. (en)">
 				>
 			>
 		>
