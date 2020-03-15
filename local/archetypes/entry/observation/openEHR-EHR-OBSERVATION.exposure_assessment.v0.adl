@@ -1,0 +1,198 @@
+﻿archetype (adl_version=1.4; uid=7bb54daf-b7a3-4189-83f3-85ee407388bd)
+	openEHR-EHR-OBSERVATION.exposure_assessment.v0
+
+concept
+	[at0000]	-- Exposure assessment
+language
+	original_language = <[ISO_639-1::en]>
+description
+	original_author = <
+		["name"] = <"Heather Leslie">
+		["organisation"] = <"Atomica Informatics">
+		["email"] = <"heather.leslie@atomicainformatics.com">
+		["date"] = <"2020-03-14">
+	>
+	details = <
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To record details about risk factors that indicate, or may contribute to an assessment about, actual or potential exposure to a chemical, physical or biological agent.">
+			use = <"Use to record details about risk factors that indicate, or may contribute to an assessment about, actual or potential exposure to a chemical, physical or biological agent.">
+			misuse = <"">
+			copyright = <"© openEHR Foundation">
+		>
+	>
+	lifecycle_state = <"in_development">
+	other_contributors = <>
+	other_details = <
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
+		["custodian_organisation"] = <"openEHR Foundation">
+		["original_namespace"] = <"org.openehr">
+		["original_publisher"] = <"openEHR Foundation">
+		["custodian_namespace"] = <"org.openehr">
+		["MD5-CAM-1.0.1"] = <"28560D4A790C81124E3E877950338CE5">
+		["build_uid"] = <"fe67aceb-cbad-4798-8ffe-d740b557b733">
+		["revision"] = <"0.0.1-alpha">
+	>
+
+definition
+	OBSERVATION[at0000] matches {    -- Exposure assessment
+		data matches {
+			HISTORY[at0001] matches {    -- History
+				events cardinality matches {0..*; unordered} matches {
+					EVENT[at0002] occurrences matches {0..*} matches {    -- Any event
+						data matches {
+							ITEM_TREE[at0042] matches {    -- Item tree
+								items cardinality matches {0..*; unordered} matches {
+									ELEMENT[at0043] matches {    -- Exposure
+										value matches {
+											DV_TEXT matches {*}
+										}
+									}
+									CLUSTER[at0044] occurrences matches {0..*} matches {    -- Per risk factor
+										items cardinality matches {1..*; unordered} matches {
+											ELEMENT[at0045] matches {    -- Risk factor
+												value matches {
+													DV_TEXT matches {*}
+												}
+											}
+											ELEMENT[at0046] occurrences matches {0..1} matches {    -- Presence
+												value matches {
+													DV_CODED_TEXT matches {
+														defining_code matches {
+															[local::
+															at0047,    -- Present
+															at0048,    -- Indeterminate
+															at0049]    -- Absent
+														}
+													}
+												}
+											}
+											ELEMENT[at0050] occurrences matches {0..1} matches {    -- Description
+												value matches {
+													DV_TEXT matches {*}
+												}
+											}
+											ELEMENT[at0051] occurrences matches {0..1} matches {    -- Date identified
+												value matches {
+													DV_DATE_TIME matches {*}
+												}
+											}
+											ELEMENT[at0053] occurrences matches {0..*} matches {    -- Link to evidence
+												value matches {
+													DV_URI matches {*}
+												}
+											}
+											allow_archetype CLUSTER[at0054] occurrences matches {0..*} matches {    -- Detail
+												include
+													archetype_id/value matches {/openEHR-EHR-CLUSTER\.family_prevalence\.v1/}
+											}
+											ELEMENT[at0055] occurrences matches {0..1} matches {    -- Comment
+												value matches {
+													DV_TEXT matches {*}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		protocol matches {
+			ITEM_TREE[at0004] matches {    -- Item tree
+				items cardinality matches {0..*; unordered} matches {
+					allow_archetype CLUSTER[at0056] occurrences matches {0..*} matches {    -- Extension
+						include
+							archetype_id/value matches {/.*/}
+					}
+				}
+			}
+		}
+	}
+
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"Exposure assessment">
+					description = <"Details about actual or potential exposure to a chemical, physical or biological agent which has caused or may cause harm to an individual.">
+				>
+				["at0001"] = <
+					text = <"History">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Any event">
+					description = <"Default, unspecified point in time or interval event which may be explicitly defined in a template or at run-time.">
+				>
+				["at0004"] = <
+					text = <"Item tree">
+					description = <"@ internal @">
+				>
+				["at0042"] = <
+					text = <"Item tree">
+					description = <"@ internal @">
+				>
+				["at0043"] = <
+					text = <"Exposure">
+					description = <"The name of the chemical, physical or biological agent to which an individual may have been exposed.">
+					comment = <"Coding of 'Health risk' with a terminology is preferred, where possible. Free text should be used only if there is no appropriate terminology available. For example: 2019-nCoV; or HIV.">
+				>
+				["at0044"] = <
+					text = <"Per risk factor">
+					description = <"Details about each possible exposure risk factor.">
+				>
+				["at0045"] = <
+					text = <"Risk factor">
+					description = <"The name of the exposure risk factor.">
+					comment = <"For example: Travel to an 'at risk' location; or exposure to infected body fluids. Coding of 'Risk factor' with a terminology is preferred, where possible.">
+				>
+				["at0046"] = <
+					text = <"Presence">
+					description = <"Presence of the exposure risk factor.">
+				>
+				["at0047"] = <
+					text = <"Present">
+					description = <"Exposure risk has been identified for this individual.">
+				>
+				["at0048"] = <
+					text = <"Indeterminate">
+					description = <"It is not possible to determine if the exposure risk is present or absent.">
+				>
+				["at0049"] = <
+					text = <"Absent">
+					description = <"Exposure risk has not been identified for this individual.">
+				>
+				["at0050"] = <
+					text = <"Description">
+					description = <"Narrative description about the exposure risk.">
+				>
+				["at0051"] = <
+					text = <"Date identified">
+					description = <"The date/time that the exposure risk was identified.">
+				>
+				["at0053"] = <
+					text = <"Link to evidence">
+					description = <"Identification of the path to the archetype or data node for the evidence of exposure.">
+				>
+				["at0054"] = <
+					text = <"Detail">
+					description = <"Structured detail about other aspects of the exposure risk factor assessment.">
+					comment = <"For example: Prevalence of the risk factor in family members.">
+				>
+				["at0055"] = <
+					text = <"Comment">
+					description = <"Additional narrative about the exposure risk factor not captured in other fields.">
+				>
+				["at0056"] = <
+					text = <"Extension">
+					description = <"Additional information required to extend the model with local content or to align with other reference models or formalisms.">
+					comment = <"For example: local information requirements; or additional metadata to align with FHIR.">
+				>
+			>
+		>
+	>
