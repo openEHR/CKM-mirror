@@ -1,0 +1,210 @@
+﻿archetype (adl_version=1.4; uid=a2591264-cf7a-4fa8-98dd-7979f44ba8a7)
+	openEHR-EHR-OBSERVATION.procedure_screening.v0
+
+concept
+	[at0000]	-- Procedure/intervention screening
+language
+	original_language = <[ISO_639-1::en]>
+description
+	original_author = <
+		["name"] = <"Heather Leslie">
+		["organisation"] = <"Atomica Informatics">
+		["email"] = <"heather.leslie@atomicainformatics.com">
+		["date"] = <"2020-03-13">
+	>
+	details = <
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To record the responses to an individual- or self-reported questionnaire screening for symptoms and signs.">
+			use = <"Use to record the responses to an individual- or self-reported questionnaire screening for symptoms and signs.
+
+Common use cases include, but are not limited to:
+- Systematic questioning in any consultation; or
+- Specific questioning related to infectious disease surveillance.">
+			misuse = <"Not to be used to record details about a specific reported symptom or sign as part of a typical clinical consultation. Use CLUSTER.symptom_sign for this purpose.">
+			copyright = <"© openEHR Foundation">
+		>
+	>
+	lifecycle_state = <"in_development">
+	other_contributors = <"Silje Ljosland Bakke, Helse Vest IKT AS, Norway (openEHR Editor)", "Heather Leslie, Atomica Informatics, Australia (openEHR Editor)">
+	other_details = <
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
+		["custodian_organisation"] = <"openEHR Foundation">
+		["original_namespace"] = <"org.openehr">
+		["original_publisher"] = <"openEHR Foundation">
+		["custodian_namespace"] = <"org.openehr">
+		["MD5-CAM-1.0.1"] = <"2866521B18B6361A9C9ADC5D7DF1874A">
+		["build_uid"] = <"00749ac1-9431-454e-9d6a-b92b2f7890c2">
+		["revision"] = <"0.0.1-alpha">
+	>
+
+definition
+	OBSERVATION[at0000] matches {    -- Procedure/intervention screening
+		data matches {
+			HISTORY[at0001] matches {    -- History
+				events cardinality matches {0..*; unordered} matches {
+					EVENT[at0002] occurrences matches {0..*} matches {    -- Any event
+						data matches {
+							ITEM_TREE[at0003] matches {    -- Tree
+								items cardinality matches {0..*; unordered} matches {
+									ELEMENT[at0034] occurrences matches {0..1} matches {    -- Screening purpose
+										value matches {
+											DV_TEXT matches {*}
+										}
+									}
+									ELEMENT[at0028] occurrences matches {0..1} matches {    -- Any performed?
+										value matches {
+											DV_CODED_TEXT matches {
+												defining_code matches {
+													[local::
+													at0031,    -- Performed/carried out
+													at0032]    -- Not performed/carried out
+												}
+											}
+										}
+									}
+									CLUSTER[at0022] occurrences matches {0..*} matches {    -- Specific procedure or intervention
+										items cardinality matches {1..*; unordered} matches {
+											ELEMENT[at0004] matches {    -- Procedure/intervention name
+												value matches {
+													DV_TEXT matches {*}
+												}
+											}
+											ELEMENT[at0005] occurrences matches {0..1} matches {    -- Performed?
+												value matches {
+													DV_CODED_TEXT matches {
+														defining_code matches {
+															[local::
+															at0023,    -- Performed/carried out
+															at0024]    -- Not performed/carried out
+														}
+													}
+												}
+											}
+											ELEMENT[at0006] occurrences matches {0..1} matches {    -- Date
+												value matches {
+													DV_DATE_TIME matches {*}
+												}
+											}
+											ELEMENT[at0035] occurrences matches {0..1} matches {    -- Comment
+												value matches {
+													DV_TEXT matches {*}
+												}
+											}
+										}
+									}
+									allow_archetype CLUSTER[at0026] occurrences matches {0..*} matches {    -- Additional details
+										include
+											archetype_id/value matches {/.*/}
+									}
+									ELEMENT[at0025] occurrences matches {0..1} matches {    -- Comment
+										value matches {
+											DV_TEXT matches {*}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		protocol matches {
+			ITEM_TREE[at0007] matches {    -- Item tree
+				items cardinality matches {0..*; unordered} matches {
+					allow_archetype CLUSTER[at0021] occurrences matches {0..*} matches {    -- Extension
+						include
+							archetype_id/value matches {/.*/}
+					}
+				}
+			}
+		}
+	}
+
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"Procedure/intervention screening">
+					description = <"An individual- or self-reported questionnaire screening for symptoms and signs.">
+				>
+				["at0001"] = <
+					text = <"History">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Any event">
+					description = <"Default, unspecified point in time or interval event which may be explicitly defined in a template or at run-time.">
+				>
+				["at0003"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0004"] = <
+					text = <"Procedure/intervention name">
+					description = <"Name of the procedure or intervention being screened.">
+				>
+				["at0005"] = <
+					text = <"Performed?">
+					description = <"Procedure performed or intervention carried out?">
+				>
+				["at0006"] = <
+					text = <"Date">
+					description = <"The date/time when the procedure was performed or intervention was carried out.">
+					comment = <"Partial dates are allowed.">
+				>
+				["at0007"] = <
+					text = <"Item tree">
+					description = <"@ internal @">
+				>
+				["at0021"] = <
+					text = <"Extension">
+					description = <"Additional information required to capture local content or to align with other reference models/formalisms.">
+					comment = <"For example: local information requirements or additional metadata to align with FHIR or CIMI equivalents.">
+				>
+				["at0022"] = <
+					text = <"Specific procedure or intervention">
+					description = <"Grouping of data elements related to screening for a single procedure or intervention.">
+				>
+				["at0023"] = <
+					text = <"Performed/carried out">
+					description = <"The specific procedure was performed or intervention was carried out.">
+				>
+				["at0024"] = <
+					text = <"Not performed/carried out">
+					description = <"The specific procedure was performed or intervention was not carried out.">
+				>
+				["at0025"] = <
+					text = <"Comment">
+					description = <"Additional narrative about all procedures and interventions, not captured in other fields.">
+				>
+				["at0026"] = <
+					text = <"Additional details">
+					description = <"Additional structured details related to procedure/intervention screening.">
+				>
+				["at0028"] = <
+					text = <"Any performed?">
+					description = <"Were any procedures or interventions performed?">
+				>
+				["at0031"] = <
+					text = <"Performed/carried out">
+					description = <"Procedure/s were performed or intervention/s were carried out.">
+				>
+				["at0032"] = <
+					text = <"Not performed/carried out">
+					description = <"Procedure/s were performed or intervention/s were not carried out.">
+				>
+				["at0034"] = <
+					text = <"Screening purpose">
+					description = <"The reason for overall screening.">
+					comment = <"For example: screening for an infectious disease, such as SARS-COV-2.">
+				>
+				["at0035"] = <
+					text = <"Comment">
+					description = <"Additional narrative about the procedure or intervention, not captured in other fields.">
+				>
+			>
+		>
+	>
