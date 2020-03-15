@@ -1,0 +1,273 @@
+﻿archetype (adl_version=1.4; uid=ace192be-a65a-4105-8e4b-2a3e29b1ab39)
+	openEHR-EHR-OBSERVATION.travel_event.v0
+
+concept
+	[at0000]	-- Travel event
+language
+	original_language = <[ISO_639-1::en]>
+description
+	original_author = <
+		["name"] = <"Heather Leslie">
+		["organisation"] = <"Atomica Informatics">
+		["email"] = <"heather.leslie@atomicainformatics.com">
+		["date"] = <"2020-03-12">
+	>
+	details = <
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To record details about travel during an interval of time.">
+			use = <"Use to record details about travel during an interval of time.
+
+In some use cases there is a need to record travel details during a specified period of time, such as the last 6 months or 14 days before onset of symptoms. Use the Interval event attribute to specify the period of time.
+
+If recording a travel history for a contact, the 'subject of care' in this archetype should be recorded as the contact, not the individual who is the subject of care in the health record or assessment.">
+			misuse = <"">
+		>
+	>
+	lifecycle_state = <"in_development">
+	other_contributors = <"Silje Ljosland Bakke, Helse Vest, Norway", ...>
+	other_details = <
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
+		["custodian_organisation"] = <"openEHR Foundation">
+		["original_namespace"] = <"org.openehr">
+		["original_publisher"] = <"openEHR Foundation">
+		["custodian_namespace"] = <"org.openehr">
+		["MD5-CAM-1.0.1"] = <"397BB4DB3E6C3B8487CCB9F959BF07A9">
+		["build_uid"] = <"1ca15cda-fd11-4ca9-ad77-9b315eca1464">
+		["revision"] = <"0.0.1-alpha">
+	>
+
+definition
+	OBSERVATION[at0000] matches {    -- Travel event
+		data matches {
+			HISTORY[at0001] matches {    -- History
+				events cardinality matches {0..*; unordered} matches {
+					INTERVAL_EVENT[at0002] occurrences matches {0..*} matches {    -- Any interval event
+						data matches {
+							ITEM_TREE[at0003] matches {    -- Tree
+								items cardinality matches {0..*; unordered} matches {
+									ELEMENT[at0004] occurrences matches {0..1} matches {    -- Travel?
+										value matches {
+											DV_CODED_TEXT matches {
+												defining_code matches {
+													[local::
+													at0005,    -- No
+													at0006,    -- Yes - national
+													at0023]    -- Yes - international
+												}
+											}
+										}
+									}
+									CLUSTER[at0008] occurrences matches {0..*} matches {    -- Trip detail
+										items cardinality matches {1..*; unordered} matches {
+											ELEMENT[at0009] occurrences matches {0..1} matches {    -- Date of departure
+												value matches {
+													DV_DATE_TIME matches {*}
+												}
+											}
+											ELEMENT[at0022] occurrences matches {0..1} matches {    -- Description
+												value matches {
+													DV_TEXT matches {*}
+												}
+											}
+											CLUSTER[at0010] occurrences matches {0..*} matches {    -- Travel destination
+												items cardinality matches {1..*; unordered} matches {
+													ELEMENT[at0011] occurrences matches {0..1} matches {    -- Country
+														value matches {
+															DV_TEXT matches {*}
+														}
+													}
+													ELEMENT[at0012] occurrences matches {0..1} matches {    -- State/region
+														value matches {
+															DV_TEXT matches {*}
+														}
+													}
+													ELEMENT[at0013] occurrences matches {0..1} matches {    -- City
+														value matches {
+															DV_TEXT matches {*}
+														}
+													}
+													ELEMENT[at0014] occurrences matches {0..1} matches {    -- Date of entry
+														value matches {
+															DV_DATE_TIME matches {*}
+														}
+													}
+													ELEMENT[at0015] occurrences matches {0..1} matches {    -- Date of exit
+														value matches {
+															DV_DATE_TIME matches {*}
+														}
+													}
+													ELEMENT[at0016] occurrences matches {0..1} matches {    -- Description
+														value matches {
+															DV_TEXT matches {*}
+														}
+													}
+													allow_archetype CLUSTER[at0024] occurrences matches {0..*} matches {    -- Additional destination details
+														include
+															archetype_id/value matches {/.*/}
+													}
+													ELEMENT[at0017] occurrences matches {0..1} matches {    -- Comment
+														value matches {
+															DV_TEXT matches {*}
+														}
+													}
+												}
+											}
+											allow_archetype CLUSTER[at0025] occurrences matches {0..*} matches {    -- Additional trip details
+												include
+													archetype_id/value matches {/.*/}
+											}
+											ELEMENT[at0018] occurrences matches {0..*} matches {    -- Return transport
+												value matches {
+													DV_TEXT matches {*}
+												}
+											}
+											ELEMENT[at0019] occurrences matches {0..1} matches {    -- Date of return
+												value matches {
+													DV_DATE_TIME matches {*}
+												}
+											}
+											ELEMENT[at0020] occurrences matches {0..1} matches {    -- Comment
+												value matches {
+													DV_TEXT matches {*}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		protocol matches {
+			ITEM_TREE[at0007] matches {    -- Item tree
+				items cardinality matches {0..*; unordered} matches {
+					allow_archetype CLUSTER[at0021] occurrences matches {0..*} matches {    -- Extension
+						include
+							archetype_id/value matches {/.*/}
+					}
+				}
+			}
+		}
+	}
+
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"Travel event">
+					description = <"Details about travel during an interval of time.">
+				>
+				["at0001"] = <
+					text = <"History">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Any interval event">
+					description = <"Default, unspecified interval event which may be explicitly defined in a template or at run-time.">
+				>
+				["at0003"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0004"] = <
+					text = <"Travel?">
+					description = <"Has the individual travelled during the specified interval?">
+					comment = <"Use the Event to set the relevant interval.">
+				>
+				["at0005"] = <
+					text = <"No">
+					description = <"The individual has not travelled within the specified interval of time.">
+				>
+				["at0006"] = <
+					text = <"Yes - national">
+					description = <"The individual has travelled nationally within the specified interval of time.">
+				>
+				["at0007"] = <
+					text = <"Item tree">
+					description = <"@ internal @">
+				>
+				["at0008"] = <
+					text = <"Trip detail">
+					description = <"Details about a single trip away from the home base.">
+					comment = <"The trip has a single departure and return date to their home base. A trip may include visiting many individual places, and these details should be recorded in the Itinerary.">
+				>
+				["at0009"] = <
+					text = <"Date of departure">
+					description = <"The date when the individual left their home base.">
+				>
+				["at0010"] = <
+					text = <"Travel destination">
+					description = <"Details about a single location visited on a trip.">
+				>
+				["at0011"] = <
+					text = <"Country">
+					description = <"The country visited.">
+				>
+				["at0012"] = <
+					text = <"State/region">
+					description = <"The region visited.">
+					comment = <"Different regions within the same country maybe identified if they potentially pose different health risks.">
+				>
+				["at0013"] = <
+					text = <"City">
+					description = <"The city visited.">
+					comment = <"Different cities within the same country or region maybe identified if they potentially pose different health risks.">
+				>
+				["at0014"] = <
+					text = <"Date of entry">
+					description = <"Date of entry to the identified location.">
+				>
+				["at0015"] = <
+					text = <"Date of exit">
+					description = <"Date of exit from the identified location.">
+				>
+				["at0016"] = <
+					text = <"Description">
+					description = <"Narrative description about the visit to the location, especially about potential exposure to health risks.">
+				>
+				["at0017"] = <
+					text = <"Comment">
+					description = <"Additional narrative about the stay at the identified location, not captured in other fields.">
+				>
+				["at0018"] = <
+					text = <"Return transport">
+					description = <"Details about how the individual returned to their home base.">
+					comment = <"This may be useful if it is necessary to use contact tracing. For example: the carrier and ID of a flight or ship.">
+				>
+				["at0019"] = <
+					text = <"Date of return">
+					description = <"The date when the individual returned back to their home base.">
+				>
+				["at0020"] = <
+					text = <"Comment">
+					description = <"Additional narrative about the whole trip, not captured in other fields.">
+				>
+				["at0021"] = <
+					text = <"Extension">
+					description = <"Additional information required to extend the model with local content or to align with other reference models or formalisms.">
+					comment = <"For example: local information requirements; or additional metadata to align with FHIR.">
+				>
+				["at0022"] = <
+					text = <"Description">
+					description = <"Narrative description about the whole trip, especially about potential exposure to health risks.">
+				>
+				["at0023"] = <
+					text = <"Yes - international">
+					description = <"The individual has travelled internationally within the specified interval of time.">
+				>
+				["at0024"] = <
+					text = <"Additional destination details">
+					description = <"Additional structured details about the travel to, from and at the destination.">
+				>
+				["at0025"] = <
+					text = <"Additional trip details">
+					description = <"Additional structured details about the whole trip.">
+				>
+			>
+		>
+	>
