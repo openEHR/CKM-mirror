@@ -1,0 +1,116 @@
+﻿archetype (adl_version=1.4; uid=dd825ae3-7511-4e3c-a12b-e7e824ae90ab)
+	openEHR-EHR-OBSERVATION.pf_ratio.v0
+
+concept
+	[at0000]	-- PaO2/FiO2 ratio
+language
+	original_language = <[ISO_639-1::en]>
+description
+	original_author = <
+		["name"] = <"Heather Leslie">
+		["organisation"] = <"Atomica Informatics">
+		["email"] = <"heather.leslie@atomicainformatics.com">
+		["date"] = <"2020-03-27">
+	>
+	details = <
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"Use to record the ratio between the partial pressure of oxygen in blood (PaO2) and the fraction of oxygen in the inspired air (FiO2), used to assess lung function in patients, particularly those on ventilators.">
+			use = <"Use to record the ratio between the partial pressure of oxygen in blood (PaO2), in millimeters of mercury, and the fraction of oxygen in the inspired air (FiO2).
+
+The value of PaO2 will be usually be recorded elsewhere in the health record as part of an arterial blood gas test result (OBSERVATION.laboratory_test_result).
+The value of FiO2 will usually be recorded elsewhere in the health record using at0052 within the CLUSTER.inspired_oxygen, typically as part of an arterial blood gas test result or pulse oximetry (OBSERVATION.pulse_oximetry).
+
+This ratio may be used within other scores, such as SMART-COP risk score.">
+			keywords = <"Carrico", "Horowitz", "index", "ratio", "PF">
+			misuse = <"">
+			copyright = <"© openEHR Foundation">
+		>
+	>
+	lifecycle_state = <"in_development">
+	other_contributors = <>
+	other_details = <
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
+		["custodian_organisation"] = <"openEHR Foundation">
+		["references"] = <"Mortelliti MP, Manning HL. Acute respiratory distress syndrome. Am Fam Physician. 2002;65(9):1823–1830.">
+		["original_namespace"] = <"org.openehr">
+		["original_publisher"] = <"openEHR Foundation">
+		["custodian_namespace"] = <"org.openehr">
+		["MD5-CAM-1.0.1"] = <"5696FCD05A23BE10B6CF1A6865A9E94A">
+		["build_uid"] = <"9672de47-03d8-475a-9a69-51e800c0654f">
+		["revision"] = <"0.0.1-alpha">
+	>
+
+definition
+	OBSERVATION[at0000] matches {    -- PaO2/FiO2 ratio
+		data matches {
+			HISTORY[at0001] matches {    -- History
+				events cardinality matches {0..*; unordered} matches {
+					POINT_EVENT[at0002] occurrences matches {0..*} matches {    -- Any point in time event
+						data matches {
+							ITEM_TREE[at0003] matches {    -- Tree
+								items cardinality matches {0..*; unordered} matches {
+									ELEMENT[at0004] occurrences matches {0..1} matches {    -- PaO2/FiO2 ratio
+										value matches {
+											DV_PROPORTION matches {
+												type matches {0}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		protocol matches {
+			ITEM_TREE[at0005] matches {    -- Item tree
+				items cardinality matches {0..*; unordered} matches {
+					allow_archetype CLUSTER[at0006] occurrences matches {0..*} matches {    -- Extension
+						include
+							archetype_id/value matches {/.*/}
+					}
+				}
+			}
+		}
+	}
+
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"PaO2/FiO2 ratio">
+					description = <"Ratio between the partial pressure of oxygen in blood (PaO2) and the fraction of oxygen in the inhaled air (FiO2).">
+					comment = <"Also known as the PF ration, Carrico index or Horowitz quotient.">
+				>
+				["at0001"] = <
+					text = <"History">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Any point in time event">
+					description = <"Default, unspecified point in time event which may be explicitly defined in a template or at run-time.">
+				>
+				["at0003"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0004"] = <
+					text = <"PaO2/FiO2 ratio">
+					description = <"Calculated ration value.">
+				>
+				["at0005"] = <
+					text = <"Item tree">
+					description = <"@ internal @">
+				>
+				["at0006"] = <
+					text = <"Extension">
+					description = <"Additional information required to extend the model with local content or to align with other reference models or formalisms.">
+					comment = <"For example: local information requirements; or additional metadata to align with FHIR.">
+				>
+			>
+		>
+	>
