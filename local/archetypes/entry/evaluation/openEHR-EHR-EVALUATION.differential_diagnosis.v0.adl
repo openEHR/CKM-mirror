@@ -8,66 +8,77 @@ language
 description
 	original_author = <
 		["name"] = <"Sam Heard">
-		["organisation"] = <"Ocean Informatics">
+		["organisation"] = <"Ocean Informatics, Australia">
 		["email"] = <"Sam.Heard@OceanInformatics.com">
 		["date"] = <"2004-12-08">
 	>
 	details = <
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"To express one or more suspected or probable diagnoses, until a single, working diagnosis is determined.">
-			use = <"Use to record a set of differential diagnoses that are to be used as part of the diagnostic process.">
+			purpose = <"To record a list of one or more suspected or likely conditions or diagnoses that may be responsible for the clinical presentation, examination findings and test results until a single, working diagnosis is determined.">
+			use = <"To record a list of one or more suspected or likely conditions or diagnoses that may be responsible for the clinical presentation, examination findings and test results until a single, working diagnosis is determined.
+
+In practice, the intent is that as further evidence is gathered differential diagnoses will be eliminated one by one until one diagnosis becomes most likely.">
 			keywords = <"differential", "diagnosis">
-			misuse = <"Not to be used to record information about working problems or diagnoses - use EVALUATION.problem.">
-			copyright = <"© Australian Digital Health Agency, openEHR Foundation">
+			misuse = <"Not to be used to record detailed information about a known problem or formal diagnosis - use the EVALUATION.problem_diagnosis for this purpose.">
+			copyright = <"© openEHR Foundation">
 		>
 	>
 	lifecycle_state = <"in_development">
-	other_contributors = <"Dipak Kalra, UCL", "Heather Leslie, Atomica Informatics, Australia">
+	other_contributors = <"Dipak Kalra, United Kingdom", "Heather Leslie, Atomica Informatics, Australia">
 	other_details = <
-		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
 		["custodian_organisation"] = <"openEHR Foundation">
-		["references"] = <"Derived from: Differential Diagnoses, Draft archetype [Internet]. Australian Digital Health Agency (NEHTA), ADHA Clinical Knowledge Manager. Authored: 2004 Dec 8. Available at: http://dcm.nehta.org.au/ckm#showArchetype_1013.1.906_2 (discontinued).">
+		["references"] = <"">
 		["current_contact"] = <"Heather Leslie, Atomica Informatics, Australia<heather.leslie@atomicainformatics.com>">
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"417DDAB6140BB7E97B47A996877909D1">
-		["build_uid"] = <"457134fb-dab4-4a0f-b2df-3ffbaec2b046">
+		["MD5-CAM-1.0.1"] = <"D5322D47FF8E267B8F3DF3E524C438E8">
+		["build_uid"] = <"688508aa-f802-4d38-a415-eb291cd68344">
 		["revision"] = <"0.0.1-alpha">
 	>
 
 definition
-	EVALUATION[at0000] matches {	-- Differential diagnoses
+	EVALUATION[at0000] matches {    -- Differential diagnoses
 		data matches {
-			ITEM_TREE[at0001] matches {	-- Tree
+			ITEM_TREE[at0001] matches {    -- Tree
 				items cardinality matches {1..*; ordered} matches {
-					CLUSTER[at0003] occurrences matches {1..*} matches {	-- Differential
-						items cardinality matches {1..2; ordered} matches {
-							ELEMENT[at0007] matches {	-- Diagnosis
+					CLUSTER[at0003] occurrences matches {1..*} matches {    -- Differential diagnosis
+						items cardinality matches {1..*; unordered} matches {
+							ELEMENT[at0007] matches {    -- Diagnosis
 								value matches {
 									DV_TEXT matches {*}
 								}
 							}
-							ELEMENT[at0004] occurrences matches {0..1} matches {	-- Likelihood
+							ELEMENT[at0004] occurrences matches {0..1} matches {    -- Likelihood
 								value matches {
 									DV_CODED_TEXT matches {
 										defining_code matches {
 											[local::
-											at0015, 	-- Suspected
-											at0017]	-- Likely
+											at0015,    -- Suspected
+											at0017]    -- Likely
 										}
 									}
+									DV_TEXT matches {*}
 								}
 							}
-							ELEMENT[at0006] occurrences matches {0..1} matches {	-- Rationale
+							ELEMENT[at0006] occurrences matches {0..1} matches {    -- Rationale
+								value matches {
+									DV_TEXT matches {*}
+								}
+							}
+							allow_archetype CLUSTER[at0020] occurrences matches {0..*} matches {    -- Clinical evidence
+								include
+									archetype_id/value matches {/openEHR-EHR-CLUSTER\.clinical_evidence\.v1/}
+							}
+							ELEMENT[at0005] occurrences matches {0..1} matches {    -- Comment
 								value matches {
 									DV_TEXT matches {*}
 								}
 							}
 						}
 					}
-					ELEMENT[at0005] occurrences matches {0..1} matches {	-- Comment
+					ELEMENT[at0021] occurrences matches {0..1} matches {    -- Overall comment
 						value matches {
 							DV_TEXT matches {*}
 						}
@@ -76,12 +87,11 @@ definition
 			}
 		}
 		protocol matches {
-			ITEM_LIST[at0013] matches {	-- List
+			ITEM_TREE[at0018] matches {    -- Item tree
 				items cardinality matches {0..*; unordered} matches {
-					ELEMENT[at0014] occurrences matches {0..*} matches {	-- Reference
-						value matches {
-							DV_TEXT matches {*}
-						}
+					allow_archetype CLUSTER[at0019] occurrences matches {0..*} matches {    -- Extension
+						include
+							archetype_id/value matches {/.*/}
 					}
 				}
 			}
@@ -95,40 +105,31 @@ ontology
 			items = <
 				["at0000"] = <
 					text = <"Differential diagnoses">
-					description = <"A set of 1 or more diagnoses considered as reasonable but as yet hypothetical causes of the patients signs and symptoms
-Set of one or more interim diagnoses that could account for a patient's history, examination findings, measurements and results. In practice, the intent is that as further evidence is gathered differential diagnoses will be eliminated one by one until one diagnosis becomes most likely.">
+					description = <"A list of one or more possible conditions or diagnoses that may be responsible for the clinical presentation, examination findings and test results.">
 				>
 				["at0001"] = <
 					text = <"Tree">
 					description = <"@ internal @">
 				>
 				["at0003"] = <
-					text = <"Differential">
-					description = <"A group of diagnoses or explanation and likelihoods being considered.">
+					text = <"Differential diagnosis">
+					description = <"Details about a single differential diagnosis.">
 				>
 				["at0004"] = <
 					text = <"Likelihood">
-					description = <"The likelihood of this diagnosis being present.">
+					description = <"Likelihood of this diagnosis being present.">
 				>
 				["at0005"] = <
 					text = <"Comment">
-					description = <"Comment on the whole set of differential diagnoses.">
+					description = <"Additional narrative about all differential diagnoses, not captured in other fields.">
 				>
 				["at0006"] = <
 					text = <"Rationale">
-					description = <"Rationale for this diagnosis being included as a differential.">
+					description = <"Narrative description about the rationale for this diagnosis being included as a differential.">
 				>
 				["at0007"] = <
 					text = <"Diagnosis">
-					description = <"Identification of diagnosis. It is desirable that this should be coded where possible.">
-				>
-				["at0013"] = <
-					text = <"List">
-					description = <"@ internal @">
-				>
-				["at0014"] = <
-					text = <"Reference">
-					description = <"Any literary references supporting the diagnoses.">
+					description = <"Name of the differential diagnosis.">
 				>
 				["at0015"] = <
 					text = <"Suspected">
@@ -137,6 +138,23 @@ Set of one or more interim diagnoses that could account for a patient's history,
 				["at0017"] = <
 					text = <"Likely">
 					description = <"Likely to be the working diagnosis, with good supportive evidence.">
+				>
+				["at0018"] = <
+					text = <"Item tree">
+					description = <"@ internal @">
+				>
+				["at0019"] = <
+					text = <"Extension">
+					description = <"Additional information required to extend the model with local content or to align with other reference models or formalisms.">
+					comment = <"For example: local information requirements; or additional metadata to align with FHIR.">
+				>
+				["at0020"] = <
+					text = <"Clinical evidence">
+					description = <"Details about clinical evidence supporting a differential  diagnosis.">
+				>
+				["at0021"] = <
+					text = <"Overall comment">
+					description = <"Additional narrative about a single differential diagnosis, not captured in other fields.">
 				>
 			>
 		>
