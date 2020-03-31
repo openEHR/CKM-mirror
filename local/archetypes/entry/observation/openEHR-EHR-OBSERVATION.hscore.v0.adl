@@ -1,0 +1,317 @@
+﻿archetype (adl_version=1.4; uid=677a2484-3ebd-49c9-81fc-b8341fae7a33)
+	openEHR-EHR-OBSERVATION.hscore.v0
+
+concept
+	[at0000]	-- HScore
+language
+	original_language = <[ISO_639-1::en]>
+description
+	original_author = <
+		["name"] = <"Liv Laugen">
+		["organisation"] = <"Oslo universitetssykehus">
+		["email"] = <"liv.laugen@ous-hf.no">
+		["date"] = <"2020-03-30">
+	>
+	details = <
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To record an estimation of an individual's risk of having reactive hemophagocytic syndrome.">
+			use = <"Use to record an estimation of an individual's risk of having reactive hemophagocytic syndrome.">
+			keywords = <"HLH, Hemophagocytic lymphohistiocytosis, COVID-19, infection,", ...>
+			misuse = <"">
+		>
+	>
+	lifecycle_state = <"in_development">
+	other_contributors = <"Heather Leslie, Atomica Informatics, Australia (openEHR Editor)", "Vebjørn Arntzen, Oslo university hospital, Norway", "Silje Ljosland Bakke, Helse Vest IKT AS, Norway", "Marit Alice Venheim, Helse Vest IKT AS, Norway">
+	other_details = <
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
+		["custodian_organisation"] = <"openEHR Foundation">
+		["references"] = <"Fardet L, Galicier L, Lambotte O, Marzac C, Aumont C, Chahwan D, Coppo P, Hejblum G. Development and validation of the HScore, a score for the diagnosis of reactive hemophagocytic syndrome. Arthritis Rheumatol. 2014 Sep;66(9):2613-20. doi: 10.1002/art.38690. PubMed PMID: 24782338.
+
+Mehta P, McAuley DF, Brown M, Sanchez E, Tattersall RS, Manson JJ. COVID-19: consider cytokine storm syndromes and immunosuppression. Lancet. 2020 Mar 16;. doi: 10.1016/S0140-6736(20)30628-0. [Epub ahead of print] PubMed PMID: 32192578. ">
+		["original_namespace"] = <"org.openehr">
+		["original_publisher"] = <"openEHR Foundation">
+		["custodian_namespace"] = <"org.openehr">
+		["MD5-CAM-1.0.1"] = <"7C233FEAF72D9299DBDA71F394724B7A">
+		["build_uid"] = <"ef0d1849-e103-4074-803c-b66be3a59682">
+		["revision"] = <"0.0.1-alpha">
+	>
+
+definition
+	OBSERVATION[at0000] matches {    -- HScore
+		data matches {
+			HISTORY[at0001] matches {    -- History
+				events cardinality matches {0..*; unordered} matches {
+					EVENT[at0002] occurrences matches {0..*} matches {    -- Any event
+						data matches {
+							ITEM_TREE[at0003] matches {    -- Tree
+								items cardinality matches {0..*; unordered} matches {
+									ELEMENT[at0004] occurrences matches {0..1} matches {    -- Temperature
+										value matches {
+											0|[local::at0005],
+											33|[local::at0006],
+											49|[local::at0007]
+										}
+									}
+									ELEMENT[at0008] occurrences matches {0..1} matches {    -- Organomegaly
+										value matches {
+											0|[local::at0009],
+											23|[local::at0010],
+											38|[local::at0011]
+										}
+									}
+									ELEMENT[at0012] occurrences matches {0..1} matches {    -- Number of cytopenias
+										value matches {
+											0|[local::at0013],
+											24|[local::at0014],
+											34|[local::at0015]
+										}
+									}
+									ELEMENT[at0016] occurrences matches {0..1} matches {    -- Triglycerides
+										value matches {
+											0|[local::at0024],
+											44|[local::at0025],
+											64|[local::at0026]
+										}
+									}
+									ELEMENT[at0017] occurrences matches {0..1} matches {    -- Fibrinogen
+										value matches {
+											0|[local::at0027],
+											30|[local::at0028]
+										}
+									}
+									ELEMENT[at0018] occurrences matches {0..1} matches {    -- Ferritin
+										value matches {
+											0|[local::at0029],
+											35|[local::at0030],
+											50|[local::at0031]
+										}
+									}
+									ELEMENT[at0019] occurrences matches {0..1} matches {    -- Aspartate aminotransferase
+										value matches {
+											0|[local::at0032],
+											19|[local::at0033]
+										}
+									}
+									ELEMENT[at0020] occurrences matches {0..1} matches {    -- Haemophagocytosis on bone marrow aspirate
+										value matches {
+											0|[local::at0034],
+											35|[local::at0035]
+										}
+									}
+									ELEMENT[at0021] occurrences matches {0..1} matches {    -- Known immunosuppression
+										value matches {
+											0|[local::at0022],
+											18|[local::at0023]
+										}
+									}
+									ELEMENT[at0036] occurrences matches {0..1} matches {    -- Total HScore
+										value matches {
+											DV_COUNT matches {
+												magnitude matches {|0..337|}
+											}
+										}
+									}
+									ELEMENT[at0037] occurrences matches {0..1} matches {    -- Probability of HS
+										value matches {
+											DV_PROPORTION matches {
+												numerator matches {|0.0..100.0|}
+												type matches {2}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		protocol matches {
+			ITEM_TREE[at0038] matches {    -- Item tree
+				items cardinality matches {0..*; unordered} matches {
+					allow_archetype CLUSTER[at0039] occurrences matches {0..*} matches {    -- Extension
+						include
+							archetype_id/value matches {/.*/}
+					}
+				}
+			}
+		}
+	}
+
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"HScore">
+					description = <"Estimate an individual's risk of having reactive hemophagocytic syndrome.
+">
+				>
+				["at0001"] = <
+					text = <"History">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Any event">
+					description = <"Default, unspecified point in time or interval event which may be explicitly defined in a template or at run-time.">
+				>
+				["at0003"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0004"] = <
+					text = <"Temperature">
+					description = <"Range category for the body temperature measurement.">
+				>
+				["at0005"] = <
+					text = <"<38.4°C">
+					description = <"The body temperature of the individual was less than 38.4°C.">
+				>
+				["at0006"] = <
+					text = <"38.4-39.4°C">
+					description = <"The body temperature of the individual was  between 38.4-39.4°C.">
+				>
+				["at0007"] = <
+					text = <">39.4°C">
+					description = <"The body temperature of the individual was greater than 39.4°C.">
+				>
+				["at0008"] = <
+					text = <"Organomegaly">
+					description = <"Findings of any enlargement of the liver or/and spleen in the individual. ">
+				>
+				["at0009"] = <
+					text = <"None">
+					description = <"No enlargement of the liver or the spleen.">
+				>
+				["at0010"] = <
+					text = <"Hepatomegaly or splenomegaly">
+					description = <"Enlargment of the liver or the spleen.">
+				>
+				["at0011"] = <
+					text = <"Hepatomegaly and splenomegaly">
+					description = <"Enlargement of both the liver and the spleen.">
+				>
+				["at0012"] = <
+					text = <"Number of cytopenias">
+					description = <"Number of cytopenias present - in red cells, white cells and/or platelets.">
+					comment = <"Defined as either haemoglobin concentration of 9.2 g/dL or less (≤5.71 mmol/L), a white blood cell count of 5000 white blood cells per mm³ or less, or platelet count of 110 000 platelets per mm³ or less, or all of these criteria combined.
+">
+				>
+				["at0013"] = <
+					text = <"One lineage">
+					description = <"Cytopenia in only one cell lineage.">
+				>
+				["at0014"] = <
+					text = <"Two lineages">
+					description = <"Cytopenia in two cell lineages.">
+				>
+				["at0015"] = <
+					text = <"Three lineages">
+					description = <"Cytopenia in three cell lineages.">
+				>
+				["at0016"] = <
+					text = <"Triglycerides">
+					description = <"The triglycerides category, measured in mmol/L or mg/dL. ">
+				>
+				["at0017"] = <
+					text = <"Fibrinogen">
+					description = <"The fibrinogen category, measured in g/L or mg/dL.">
+				>
+				["at0018"] = <
+					text = <"Ferritin">
+					description = <"The ferritin category, measured in ng/mL or μg/L.">
+				>
+				["at0019"] = <
+					text = <"Aspartate aminotransferase">
+					description = <"An individvals serum aspartate aminotransferase level measured in U/L. ">
+					comment = <"This is also known as AST, AspAT, ASAT, AAT or SGOT.">
+				>
+				["at0020"] = <
+					text = <"Haemophagocytosis on bone marrow aspirate">
+					description = <"Presence of hemophagocytosis features in bone marrow aspirate. ">
+				>
+				["at0021"] = <
+					text = <"Known immunosuppression">
+					description = <"Presence of known underlying immunosuppression.">
+					comment = <"For example HIV positive or receiving long-term immunosuppressive therapy. ">
+				>
+				["at0022"] = <
+					text = <"No">
+					description = <"No known underlying immunosuppression.">
+				>
+				["at0023"] = <
+					text = <"Yes">
+					description = <"Known underlying immunosuppression.">
+				>
+				["at0024"] = <
+					text = <"<1.5 mmol/L">
+					description = <"The Triglyceride level is less than 1.5 mmol/L or 132.7 mg/dL.">
+				>
+				["at0025"] = <
+					text = <"1.5-4.0 mmol/L">
+					description = <"The Triglyceride level is 1.5-4.0 mmol/L or 132.7-354 mg/dL.">
+				>
+				["at0026"] = <
+					text = <">4.0 mmol/L">
+					description = <"The Triglyceride level is greater than >4.0 mmol/L or 354 mg/dL.">
+				>
+				["at0027"] = <
+					text = <">2.5 g/L">
+					description = <"The fibinogen level is greater than 2.5 g/L or 250 mg/dL.">
+				>
+				["at0028"] = <
+					text = <"≤2.5 g/L">
+					description = <"The fibinogen level is less than or equal to 2.5 g/L 250 mg/dL.">
+				>
+				["at0029"] = <
+					text = <"<2000 ng/ml">
+					description = <"The ferritin level is less than 2000 ng/ml or μg/L.">
+				>
+				["at0030"] = <
+					text = <"2000–6000 ng/ml">
+					description = <"The ferritin level is 2000–6000 ng/ml or μg/L.">
+				>
+				["at0031"] = <
+					text = <">6000 ng/ml">
+					description = <"The ferritin level is greater than 6000 ng/ml or μg/L.">
+				>
+				["at0032"] = <
+					text = <"<30 U/L">
+					description = <"The aspartate aminotransferase level is less than 30 U/L.">
+				>
+				["at0033"] = <
+					text = <"≥30 U/L">
+					description = <"The aspartate aminotransferase level is greater than or equal to 30 U/L.">
+				>
+				["at0034"] = <
+					text = <"No">
+					description = <"No hemophagocytosis features are present in bone marrow aspirate.">
+				>
+				["at0035"] = <
+					text = <"Yes">
+					description = <"Hemophagocytosis features are present in bone marrow aspirate.">
+				>
+				["at0036"] = <
+					text = <"Total HScore">
+					description = <"The total sum for each component variable for the HScore.">
+				>
+				["at0037"] = <
+					text = <"Probability of HS">
+					description = <"Probability of an individual having reactive hemophagocytic syndrome.">
+					comment = <"According to table 5 in the original original paper by Fardet et al, https://doi.org/10.1002/art.38690.">
+				>
+				["at0038"] = <
+					text = <"Item tree">
+					description = <"@ internal @">
+				>
+				["at0039"] = <
+					text = <"Extension">
+					description = <"Additional information required to extend the model with local content or to align with other reference models or formalisms.
+">
+					comment = <"For example: local information requirements; or additional metadata to align with FHIR.">
+				>
+			>
+		>
+	>
