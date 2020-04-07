@@ -74,7 +74,7 @@ Hvis du registrerer en reisehistorie for en kontakt, bør \"individet som mottar
 In some use cases there is a need to record travel details during a specified period of time, such as the last 6 months or 14 days before onset of symptoms. Use the Interval event attribute to specify the period of time.
 
 If recording a travel history for a contact, the 'subject of care' in this archetype should be recorded as the contact, not the individual who is the subject of care in the health record or assessment.">
-			misuse = <"">
+			misuse = <"Not to be used for a full contact tracing record., including for example all flights and public transport the individual has taken.">
 		>
 	>
 	lifecycle_state = <"in_development">
@@ -85,8 +85,8 @@ If recording a travel history for a contact, the 'subject of care' in this arche
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"C025989A0CF12250C447F0E4725B0BCC">
-		["build_uid"] = <"48fd4c4e-c380-4b08-8138-8d8bd22b0b4f">
+		["MD5-CAM-1.0.1"] = <"394FFAEB6C1878A89653096C7A778CA1">
+		["build_uid"] = <"0f262efd-1e76-4195-ad96-79b26886ff9e">
 		["revision"] = <"0.0.1-alpha">
 	>
 
@@ -104,14 +104,26 @@ definition
 											DV_CODED_TEXT matches {
 												defining_code matches {
 													[local::
+													at0006,    -- Yes
 													at0005,    -- No
-													at0006,    -- Yes - national
-													at0023]    -- Yes - international
+													at0027]    -- Unknown
 												}
 											}
 										}
 									}
-									CLUSTER[at0008] occurrences matches {0..*} matches {    -- Trip detail
+									ELEMENT[at0026] occurrences matches {0..1} matches {    -- Domestic/international
+										value matches {
+											DV_CODED_TEXT matches {
+												defining_code matches {
+													[local::
+													at0028,    -- Domestic travel
+													at0029,    -- International travel
+													at0030]    -- Domestic and international travel
+												}
+											}
+										}
+									}
+									CLUSTER[at0008] occurrences matches {0..*} matches {    -- Specific trip
 										items cardinality matches {1..*; unordered} matches {
 											ELEMENT[at0009] occurrences matches {0..1} matches {    -- Date of departure
 												value matches {
@@ -123,7 +135,7 @@ definition
 													DV_TEXT matches {*}
 												}
 											}
-											CLUSTER[at0010] occurrences matches {0..*} matches {    -- Travel destination
+											CLUSTER[at0010] occurrences matches {0..*} matches {    -- Specific destination
 												items cardinality matches {1..*; unordered} matches {
 													ELEMENT[at0011] occurrences matches {0..1} matches {    -- Country
 														value matches {
@@ -136,6 +148,11 @@ definition
 														}
 													}
 													ELEMENT[at0013] occurrences matches {0..1} matches {    -- City
+														value matches {
+															DV_TEXT matches {*}
+														}
+													}
+													ELEMENT[at0031] occurrences matches {0..1} matches {    -- Specific place
 														value matches {
 															DV_TEXT matches {*}
 														}
@@ -237,24 +254,24 @@ ontology
 					description = <"The individual has not travelled within the specified interval of time.">
 				>
 				["at0006"] = <
-					text = <"Yes - national">
-					description = <"The individual has travelled nationally within the specified interval of time.">
+					text = <"Yes">
+					description = <"The individual has travelled within the specified interval of time.">
 				>
 				["at0007"] = <
 					text = <"Item tree">
 					description = <"@ internal @">
 				>
 				["at0008"] = <
-					text = <"Trip detail">
+					text = <"Specific trip">
 					description = <"Details about a single trip away from the home base.">
-					comment = <"The trip has a single departure and return date to their home base. A trip may include visiting many individual places, and these details should be recorded in the Itinerary.">
+					comment = <"The trip has a single departure and return date to their home base. A trip may include visiting many individual places, and these details should be recorded in the Specific destination cluster.">
 				>
 				["at0009"] = <
 					text = <"Date of departure">
 					description = <"The date when the individual left their home base.">
 				>
 				["at0010"] = <
-					text = <"Travel destination">
+					text = <"Specific destination">
 					description = <"Details about a single location visited on a trip.">
 				>
 				["at0011"] = <
@@ -309,10 +326,6 @@ ontology
 					text = <"Description">
 					description = <"Narrative description about the whole trip, especially about potential exposure to health risks.">
 				>
-				["at0023"] = <
-					text = <"Yes - international">
-					description = <"The individual has travelled internationally within the specified interval of time.">
-				>
 				["at0024"] = <
 					text = <"Additional destination details">
 					description = <"Additional structured details about the travel to, from and at the destination.">
@@ -320,6 +333,31 @@ ontology
 				["at0025"] = <
 					text = <"Additional trip details">
 					description = <"Additional structured details about the whole trip.">
+				>
+				["at0026"] = <
+					text = <"Domestic/international">
+					description = <"Was the travel domestic, international, or both?">
+				>
+				["at0027"] = <
+					text = <"Unknown">
+					description = <"It is unknown whether the individual has travelled within the specified interval of time.">
+				>
+				["at0028"] = <
+					text = <"Domestic travel">
+					description = <"The individual has travelled domestically within the specified interval of time.">
+				>
+				["at0029"] = <
+					text = <"International travel">
+					description = <"The individual has travelled internationally within the specified interval of time.">
+				>
+				["at0030"] = <
+					text = <"Domestic and international travel">
+					description = <"The individual has travelled both domestically and internationally within the specified interval of time.">
+				>
+				["at0031"] = <
+					text = <"Specific place">
+					description = <"A specific place visited.">
+					comment = <"For example: airport, cruise ship, conference centre, hotel or sports arena.">
 				>
 			>
 		>
@@ -359,16 +397,16 @@ ontology
 					description = <"@ internal @">
 				>
 				["at0008"] = <
-					text = <"Tietoja matkasta">
+					text = <"*Specific trip (en)">
 					description = <"Yksittäisen matkan tietoja">
-					comment = <"*The trip has a single departure and return date to their home base. A trip may include visiting many individual places, and these details should be recorded in the Itinerary.(en)">
+					comment = <"*The trip has a single departure and return date to their home base. A trip may include visiting many individual places, and these details should be recorded in the Specific destination cluster. (en)">
 				>
 				["at0009"] = <
 					text = <"Lähtö pvm">
 					description = <"Päivä jolloin matka on alkanut kotoa.">
 				>
 				["at0010"] = <
-					text = <"Määränpää">
+					text = <"*Specific destination (en)">
 					description = <"Tiedot yhdestä matkalla käydystä paikasta.">
 				>
 				["at0011"] = <
@@ -423,10 +461,6 @@ ontology
 					text = <"Selite">
 					description = <"Lisätietoteksti liittyen vierailuun kohteesta, erityisesti jos mahdollisuus altistumiseen.">
 				>
-				["at0023"] = <
-					text = <"Kyllä - kansainvälinen">
-					description = <"Henkilö on matkustanut kansainvälisesti">
-				>
 				["at0024"] = <
 					text = <"Lisätietoja määräpaikasta">
 					description = <"Lisätietoa matkasta ja määränpäästä">
@@ -434,6 +468,31 @@ ontology
 				["at0025"] = <
 					text = <"Lisätietoa matkasta">
 					description = <"Lisätietoa koko matkasta">
+				>
+				["at0026"] = <
+					text = <"*Domestic/international (en)">
+					description = <"*Was the travel domestic, international, or both? (en)">
+				>
+				["at0027"] = <
+					text = <"*Unknown (en)">
+					description = <"*It is unknown whether the individual has travelled within the specified interval of time. (en)">
+				>
+				["at0028"] = <
+					text = <"*Domestic travel (en)">
+					description = <"*The individual has travelled domestically during the interval of time. (en)">
+				>
+				["at0029"] = <
+					text = <"*International travel (en)">
+					description = <"*The individual has travelled internationally within the specified interval of time. (en)">
+				>
+				["at0030"] = <
+					text = <"*Domestic and international travel (en)">
+					description = <"*The individual has travelled both domestically and internationally within the specified interval of time. (en)">
+				>
+				["at0031"] = <
+					text = <"*Specific place (en)">
+					description = <"*A specific place visited. (en)">
+					comment = <"*For example: airport, cruise ship, conference centre, hotel or sports arena. (en)">
 				>
 			>
 		>
@@ -473,16 +532,16 @@ ontology
 					description = <"@ internal @">
 				>
 				["at0008"] = <
-					text = <"Detaljer om reise">
+					text = <"*Specific trip (en)">
 					description = <"Detaljer om en enkelt tur, bort fra hjemmebasen.">
-					comment = <"Turen har en enkelt avreisedato og hjemreise dato til deres hjemmebase. En tur kan omfatte å besøke mange individuelle steder, og disse detaljene bør registreres i reiseruten.">
+					comment = <"*The trip has a single departure and return date to their home base. A trip may include visiting many individual places, and these details should be recorded in the Specific destination cluster. (en)">
 				>
 				["at0009"] = <
 					text = <"Avreisedato">
 					description = <"Datoen da den enkelte forlot hjemmebasen.">
 				>
 				["at0010"] = <
-					text = <"Destinasjon">
+					text = <"*Specific destination (en)">
 					description = <"Detaljer om et enkelt sted som er besøkt på en tur.">
 				>
 				["at0011"] = <
@@ -537,10 +596,6 @@ ontology
 					text = <"Beskrivelse">
 					description = <"Fritekstbeskrivelse av hele reisen, spesielt om potensiell, spesielt om potensiell eksponering som utgjør en helserisiko.">
 				>
-				["at0023"] = <
-					text = <"Ja - utenlands">
-					description = <"Personen har reist internasjonalt innen det angitte tidsintervallet.">
-				>
 				["at0024"] = <
 					text = <"Ytterligere detaljer om destinasjonen">
 					description = <"Ytterligere strukturerte detaljer om reisen til, fra og destinasjonen.">
@@ -548,6 +603,31 @@ ontology
 				["at0025"] = <
 					text = <"Ytterligere detaljer om reisen">
 					description = <"Ytterligere strukturerte detaljer om hele reisen.">
+				>
+				["at0026"] = <
+					text = <"*Domestic/international (en)">
+					description = <"*Was the travel domestic, international, or both? (en)">
+				>
+				["at0027"] = <
+					text = <"*Unknown (en)">
+					description = <"*It is unknown whether the individual has travelled within the specified interval of time. (en)">
+				>
+				["at0028"] = <
+					text = <"*Domestic travel (en)">
+					description = <"*The individual has travelled domestically during the interval of time. (en)">
+				>
+				["at0029"] = <
+					text = <"*International travel (en)">
+					description = <"*The individual has travelled internationally within the specified interval of time. (en)">
+				>
+				["at0030"] = <
+					text = <"*Domestic and international travel (en)">
+					description = <"*The individual has travelled both domestically and internationally within the specified interval of time. (en)">
+				>
+				["at0031"] = <
+					text = <"*Specific place (en)">
+					description = <"*A specific place visited. (en)">
+					comment = <"*For example: airport, cruise ship, conference centre, hotel or sports arena. (en)">
 				>
 			>
 		>
@@ -587,16 +667,16 @@ ontology
 					description = <"@ internal @">
 				>
 				["at0008"] = <
-					text = <"Angabe zur Reise">
+					text = <"*Specific trip (en)">
 					description = <"Details zu einer einzelnen Reise außerhalb vom Heimatstandort.">
-					comment = <"Die Reise hat ein einziges Ab- und Rückreisedatum von/zu ihrem Heimatstandort. Eine Reise kann den Besuch vieler einzelner Orte beinhalten und diese Details sollten in der Reiseroute dargestellt werden.">
+					comment = <"*The trip has a single departure and return date to their home base. A trip may include visiting many individual places, and these details should be recorded in the Specific destination cluster. (en)">
 				>
 				["at0009"] = <
 					text = <"Abreisedatum">
 					description = <"Das Datum, an dem die Person ihren Heimatstandort verlassen hat.">
 				>
 				["at0010"] = <
-					text = <"Reiseziel">
+					text = <"*Specific destination (en)">
 					description = <"Angaben zu einem einzelnen Ort, der auf einer Reise besucht wurde.">
 				>
 				["at0011"] = <
@@ -651,10 +731,6 @@ ontology
 					text = <"Beschreibung">
 					description = <"Beschreibung der gesamten Reise, insbesondere über mögliche Gesundheitsrisiken.">
 				>
-				["at0023"] = <
-					text = <"Ja - international">
-					description = <"Die Person ist innerhalb des angegebenen Zeitraums international gereist.">
-				>
 				["at0024"] = <
 					text = <"Zusätzliche Angaben zum Zielort">
 					description = <"Zusätzliche strukturierte Details zur Reise nach, von und am Zielort.">
@@ -662,6 +738,31 @@ ontology
 				["at0025"] = <
 					text = <"Zusätzliche Reisedetails">
 					description = <"Zusätzliche strukturierte Informationen zur gesamten Reise.">
+				>
+				["at0026"] = <
+					text = <"*Domestic/international (en)">
+					description = <"*Was the travel domestic, international, or both? (en)">
+				>
+				["at0027"] = <
+					text = <"*Unknown (en)">
+					description = <"*It is unknown whether the individual has travelled within the specified interval of time. (en)">
+				>
+				["at0028"] = <
+					text = <"*Domestic travel (en)">
+					description = <"*The individual has travelled domestically during the interval of time. (en)">
+				>
+				["at0029"] = <
+					text = <"*International travel (en)">
+					description = <"*The individual has travelled internationally within the specified interval of time. (en)">
+				>
+				["at0030"] = <
+					text = <"*Domestic and international travel (en)">
+					description = <"*The individual has travelled both domestically and internationally within the specified interval of time. (en)">
+				>
+				["at0031"] = <
+					text = <"*Specific place (en)">
+					description = <"*A specific place visited. (en)">
+					comment = <"*For example: airport, cruise ship, conference centre, hotel or sports arena. (en)">
 				>
 			>
 		>
