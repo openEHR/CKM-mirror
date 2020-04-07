@@ -2,7 +2,7 @@
 	openEHR-EHR-OBSERVATION.exposure_assessment.v0
 
 concept
-	[at0000]	-- Exposure assessment
+	[at0000]	-- Exposure screening questionnaire
 language
 	original_language = <[ISO_639-1::en]>
 	translations = <
@@ -33,21 +33,25 @@ description
 	details = <
 		["de"] = <
 			language = <[ISO_639-1::de]>
-			purpose = <"Zur Darstellung von Informationen zu Risikofaktoren, die auf eine tatsächliche oder potenzielle Exposition gegenüber einem chemischen, physikalischen oder biologischen Stoff hinweisen oder zu einer Bewertung beitragen können.">
-			use = <"Verwenden Sie diesen Archetyp, um Details zu Risikofaktoren darzustellen, die auf eine tatsächliche oder potenzielle Exposition gegenüber einem chemischen, physikalischen oder biologischen Stoff hinweisen oder zu einer Bewertung beitragen können.">
-			misuse = <"">
+			purpose = <"*To record details about potential exposure that indicate, or may contribute to an assessment about, actual or potential exposure to a chemical, physical or biological agent.(en)">
+			use = <"*Use to record details potential exposure that indicate, or may contribute to an assessment about, actual or potential exposure to a chemical, physical or biological agent.(en)">
+			misuse = <"*Not to be used to record details about a specific exposure that has been identified to be or have been present. For this purpose, use the EVALUATION.exposure archetype.(en)">
 		>
 		["nb"] = <
 			language = <[ISO_639-1::nb]>
-			purpose = <"For å registrere detaljer om risikofaktorer som indikerer eller kan bidra til en vurdering om faktisk eller potensiell eksponering for en kjemisk, fysisk eller biologisk agens.">
-			use = <"Brukes for å registrere detaljer om risikofaktorer som indikerer eller kan bidra til en vurdering om faktisk eller potensiell eksponering for en kjemisk, fysisk eller biologisk agens.">
-			misuse = <"">
+			purpose = <"*To record details about potential exposure that indicate, or may contribute to an assessment about, actual or potential exposure to a chemical, physical or biological agent.(en)">
+			use = <"*Use to record details potential exposure that indicate, or may contribute to an assessment about, actual or potential exposure to a chemical, physical or biological agent.(en)">
+			misuse = <"*Not to be used to record details about a specific exposure that has been identified to be or have been present. For this purpose, use the EVALUATION.exposure archetype.(en)">
 		>
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"To record details about risk factors that indicate, or may contribute to an assessment about, actual or potential exposure to a chemical, physical or biological agent.">
-			use = <"Use to record details about risk factors that indicate, or may contribute to an assessment about, actual or potential exposure to a chemical, physical or biological agent.">
-			misuse = <"">
+			purpose = <"To record the responses to an individual- or self-reported questionnaire screening for exposure to a chemical, physical or biological agent which has caused or may cause harm to an individual.">
+			use = <"Use to record the responses to an individual- or self-reported questionnaire screening for exposure to a chemical, physical or biological agent which has caused or may cause harm to an individual.
+
+Common use cases include, but are not limited to:
+- Systematic questioning in any consultation; or
+- Specific questioning related to infectious disease surveillance.">
+			misuse = <"Not to be used to record details about a specific exposure that has been identified to be or have been present. For this purpose, use the EVALUATION.exposure archetype.">
 			copyright = <"© openEHR Foundation">
 		>
 	>
@@ -59,13 +63,14 @@ description
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"ECF9E819131F5C3A8E6A07EB3DA7B332">
-		["build_uid"] = <"82f4233f-2cbb-4446-bc83-d43a9cd288c6">
+		["MD5-CAM-1.0.1"] = <"D160F7A97A1A96AED7D08863A96944AE">
+		["build_uid"] = <"ee31b18f-ff57-4199-b790-8fdc4eb171c8">
+		["ip_acknowledgements"] = <"This artefact includes content from SNOMED Clinical Terms® (SNOMED CT®) which is copyrighted material of the International Health Terminology Standards Development Organisation (IHTSDO). Where an implementation of this artefact makes use of SNOMED CT content, the implementer must have the appropriate SNOMED CT Affiliate license - for more information contact http://www.snomed.org/snomed-ct/get-snomedct or info@snomed.org.">
 		["revision"] = <"0.0.1-alpha">
 	>
 
 definition
-	OBSERVATION[at0000] matches {    -- Exposure assessment
+	OBSERVATION[at0000] matches {    -- Exposure screening questionnaire
 		data matches {
 			HISTORY[at0001] matches {    -- History
 				events cardinality matches {0..*; unordered} matches {
@@ -73,14 +78,26 @@ definition
 						data matches {
 							ITEM_TREE[at0042] matches {    -- Item tree
 								items cardinality matches {0..*; unordered} matches {
-									ELEMENT[at0043] matches {    -- Exposure
+									ELEMENT[at0043] matches {    -- Agent
 										value matches {
 											DV_TEXT matches {*}
 										}
 									}
-									CLUSTER[at0044] occurrences matches {0..*} matches {    -- Per risk factor
+									ELEMENT[at0057] occurrences matches {0..1} matches {    -- Presence of any exposure?
+										value matches {
+											DV_CODED_TEXT matches {
+												defining_code matches {
+													[local::
+													at0058,    -- Present
+													at0059,    -- Absent
+													at0060]    -- Unknown
+												}
+											}
+										}
+									}
+									CLUSTER[at0044] occurrences matches {0..*} matches {    -- Specific exposure
 										items cardinality matches {1..*; unordered} matches {
-											ELEMENT[at0045] matches {    -- Risk factor
+											ELEMENT[at0045] matches {    -- Exposure
 												value matches {
 													DV_TEXT matches {*}
 												}
@@ -91,36 +108,17 @@ definition
 														defining_code matches {
 															[local::
 															at0047,    -- Present
-															at0048,    -- Indeterminate
-															at0049]    -- Absent
+															at0049,    -- Absent
+															at0048]    -- Unknown
 														}
 													}
 												}
 											}
-											ELEMENT[at0050] occurrences matches {0..1} matches {    -- Description
-												value matches {
-													DV_TEXT matches {*}
-												}
-											}
-											ELEMENT[at0051] occurrences matches {0..1} matches {    -- Date identified
-												value matches {
-													DV_DATE_TIME matches {*}
-												}
-											}
-											ELEMENT[at0053] occurrences matches {0..*} matches {    -- Link to evidence
-												value matches {
-													DV_URI matches {*}
-												}
-											}
-											allow_archetype CLUSTER[at0054] occurrences matches {0..*} matches {    -- Detail
-												include
-													archetype_id/value matches {/openEHR-EHR-CLUSTER\.family_prevalence\.v1/}
-											}
-											ELEMENT[at0055] occurrences matches {0..1} matches {    -- Comment
-												value matches {
-													DV_TEXT matches {*}
-												}
-											}
+										}
+									}
+									ELEMENT[at0055] occurrences matches {0..1} matches {    -- Comment
+										value matches {
+											DV_TEXT matches {*}
 										}
 									}
 								}
@@ -144,12 +142,13 @@ definition
 
 
 ontology
+	terminologies_available = <"SNOMED-CT", ...>
 	term_definitions = <
 		["en"] = <
 			items = <
 				["at0000"] = <
-					text = <"Exposure assessment">
-					description = <"Details about actual or potential exposure to a chemical, physical or biological agent which has caused or may cause harm to an individual.">
+					text = <"Exposure screening questionnaire">
+					description = <"An individual- or self-reported questionnaire screening for exposure to a chemical, physical or biological agent which has caused or may cause harm to an individual.">
 				>
 				["at0001"] = <
 					text = <"History">
@@ -168,68 +167,67 @@ ontology
 					description = <"@ internal @">
 				>
 				["at0043"] = <
-					text = <"Exposure">
+					text = <"Agent">
 					description = <"The name of the chemical, physical or biological agent to which an individual may have been exposed.">
-					comment = <"Coding of 'Health risk' with a terminology is preferred, where possible. Free text should be used only if there is no appropriate terminology available. For example: 2019-nCoV; or HIV.">
+					comment = <"Coding of 'Agent' with a terminology is preferred, where possible. Free text should be used only if there is no appropriate terminology available. For example: 2019-nCoV; or HIV.">
 				>
 				["at0044"] = <
-					text = <"Per risk factor">
-					description = <"Details about each possible exposure risk factor.">
+					text = <"Specific exposure">
+					description = <"Details about each possible specific exposure.">
 				>
 				["at0045"] = <
-					text = <"Risk factor">
-					description = <"The name of the exposure risk factor.">
+					text = <"Exposure">
+					description = <"Name of the exposure being screened.">
 					comment = <"For example: Travel to an 'at risk' location; or exposure to infected body fluids. Coding of 'Risk factor' with a terminology is preferred, where possible.">
 				>
 				["at0046"] = <
 					text = <"Presence">
-					description = <"Presence of the exposure risk factor.">
+					description = <"Presence of the exposure.">
 				>
 				["at0047"] = <
 					text = <"Present">
-					description = <"Exposure risk has been identified for this individual.">
+					description = <"The specific exposure is or has been present at or during the event.">
 				>
 				["at0048"] = <
-					text = <"Indeterminate">
-					description = <"It is not possible to determine if the exposure risk is present or absent.">
+					text = <"Unknown">
+					description = <"It is unknown whether the exposure exposure is or has been present or absent at or during the event.">
 				>
 				["at0049"] = <
 					text = <"Absent">
-					description = <"Exposure risk has not been identified for this individual.">
-				>
-				["at0050"] = <
-					text = <"Description">
-					description = <"Narrative description about the exposure risk.">
-				>
-				["at0051"] = <
-					text = <"Date identified">
-					description = <"The date/time that the exposure risk was identified.">
-				>
-				["at0053"] = <
-					text = <"Link to evidence">
-					description = <"Identification of the path to the archetype or data node for the evidence of exposure.">
-				>
-				["at0054"] = <
-					text = <"Detail">
-					description = <"Structured detail about other aspects of the exposure risk factor assessment.">
-					comment = <"For example: Prevalence of the risk factor in family members.">
+					description = <"The specific exposure is or has been absent at or during the event.">
 				>
 				["at0055"] = <
 					text = <"Comment">
-					description = <"Additional narrative about the exposure risk factor not captured in other fields.">
+					description = <"Additional narrative about the exposure screening questionnaire not captured in other fields.">
 				>
 				["at0056"] = <
 					text = <"Extension">
 					description = <"Additional information required to extend the model with local content or to align with other reference models or formalisms.">
 					comment = <"For example: local information requirements; or additional metadata to align with FHIR.">
 				>
+				["at0057"] = <
+					text = <"Presence of any exposure?">
+					description = <"Presence of any relevant exposure.">
+				>
+				["at0058"] = <
+					text = <"Present">
+					description = <"Exposure is or has been present at or during the event.">
+				>
+				["at0059"] = <
+					text = <"Absent">
+					description = <"Exposure is or has been absent at or during the event.">
+				>
+				["at0060"] = <
+					text = <"Unknown">
+					description = <"It is unknown whether any exposure is or has been present or absent at or during the event.">
+				>
 			>
 		>
 		["nb"] = <
 			items = <
 				["at0000"] = <
-					text = <"Eksponeringsvurdering">
-					description = <"Detaljer om faktisk eller potensiell eksponering for en kjemisk, fysisk eller biologisk agens som har forårsaket eller kan forårsake skade på et individ.">
+					text = <"*Exposure screening questionnaire(en)">
+					description = <"*An individual- or self-reported questionnaire screening for exposure to a chemical, physical or biological agent which has caused or may cause harm to an individual.(en)">
 				>
 				["at0001"] = <
 					text = <"History">
@@ -248,68 +246,67 @@ ontology
 					description = <"@ internal @">
 				>
 				["at0043"] = <
-					text = <"Eksponering">
+					text = <"*Agent (en)">
 					description = <"Navnet på det kjemiske, fysiske eller biologiske middel som en person kan ha blitt utsatt for.">
-					comment = <"Koding av \"Helserisiko\" med en terminologi er å foretrekke, der det er mulig. Fritekst skal bare brukes hvis det ikke er noen passende terminologi tilgjengelig. For eksempel: 2019-nCoV; eller hiv.">
+					comment = <"*Coding of 'Agent' with a terminology is preferred, where possible. Free text should be used only if there is no appropriate terminology available. For example: 2019-nCoV; or HIV. (en)">
 				>
 				["at0044"] = <
-					text = <"Per risikofaktor">
-					description = <"Detaljer om hver mulige risikofaktor.">
+					text = <"*Specific exposure (en)">
+					description = <"*Details about each possible specific exposure. (en)">
 				>
 				["at0045"] = <
-					text = <"Risikofaktor">
+					text = <"*Exposure (en)">
 					description = <"Navnet på risikofaktoren.">
 					comment = <"For eksempel: Reis til et \"utsatt\" sted; eller eksponering for infiserte kroppsvæsker. Koding av \"risikofaktor\" med en terminologi er å foretrekke, der det er mulig.">
 				>
 				["at0046"] = <
 					text = <"Tilstedeværelse">
-					description = <"Tilstedeværelse av risikofaktoren.">
+					description = <"*Presence of the exposure. (en)">
 				>
 				["at0047"] = <
 					text = <"Tilstede">
-					description = <"Eksponeringsrisiko er identifisert for denne personen.">
+					description = <"*The specific exposure is or has been present at or during the event.(en)">
 				>
 				["at0048"] = <
-					text = <"Ubestemmelig">
-					description = <"Det er ikke mulig å avgjøre om eksponeringsrisikoen er til stede eller fraværende.">
+					text = <"Ukjent">
+					description = <"*It is unknown whether the exposure exposure is or has been present or absent at or during the event.(en)">
 				>
 				["at0049"] = <
 					text = <"Ikke tilstede">
-					description = <"Eksponeringsrisiko er ikke identifisert for denne personen.">
-				>
-				["at0050"] = <
-					text = <"Beskrivelse">
-					description = <"Fritekst beskrivelse om eksponeringsrisikoen.">
-				>
-				["at0051"] = <
-					text = <"Dato identifisert">
-					description = <"Dato/klokkeslett da eksponeringsrisikoen ble identifisert.">
-				>
-				["at0053"] = <
-					text = <"Link til evidens">
-					description = <"Adresse til arketypen eller dataelementet der en finner evidens for eksponering.">
-				>
-				["at0054"] = <
-					text = <"Detaljer">
-					description = <"Strukturerte detaljer om andre aspekter om omhandler vurderingen av risikofaktorer for eksponering.">
-					comment = <"For eksempel: Prevalens av risikofaktor hos familiemedlemmer.">
+					description = <"*The specific exposure is or has been absent at or during the event.(en)">
 				>
 				["at0055"] = <
 					text = <"Kommentar">
-					description = <"Ytterligere fritekst om risikofaktoren som ikke fanges opp i andre elementer.">
+					description = <"*Additional narrative about the exposure screening questionnaire not captured in other fields. (en)">
 				>
 				["at0056"] = <
 					text = <"Tilleggsinformasjon">
 					description = <"Ytterligere informasjon som trengs for å kunne registrere lokalt definert innhold eller for å tilpasse til andre referansemodeller/formalismer.">
 					comment = <"For eksempel lokale informasjonsbehov eller ytterligere metadata for å kunne tilpasse til tilsvarende konsepter i FHIR.">
 				>
+				["at0057"] = <
+					text = <"*Presence of any exposure? (en)">
+					description = <"*Presence of any relevant exposure. (en)">
+				>
+				["at0058"] = <
+					text = <"*Present (en)">
+					description = <"*Exposure is or has been present at or during the event. (en)">
+				>
+				["at0059"] = <
+					text = <"*Absent (en)">
+					description = <"*Exposure is or has been absent at or during the event. (en)">
+				>
+				["at0060"] = <
+					text = <"*Unknown (en)">
+					description = <"*It is not known whether any exposure is or has been present or absent at or during the event. (en)">
+				>
 			>
 		>
 		["de"] = <
 			items = <
 				["at0000"] = <
-					text = <"Expositionsbewertung">
-					description = <"Angaben zur tatsächlichen oder potenziellen Exposition gegenüber einem chemischen, physikalischen oder biologischen Stoff, der eine Person geschädigt hat oder schädigen kann.">
+					text = <"*Exposure screening questionnaire(en)">
+					description = <"*An individual- or self-reported questionnaire screening for exposure to a chemical, physical or biological agent which has caused or may cause harm to an individual.(en)">
 				>
 				["at0001"] = <
 					text = <"History">
@@ -328,61 +325,72 @@ ontology
 					description = <"@ internal @">
 				>
 				["at0043"] = <
-					text = <"Exposition">
+					text = <"*Agent (en)">
 					description = <"Der Name des chemischen, physikalischen oder biologischen Stoffes, dem eine Person ausgesetzt gewesen sein könnte.">
-					comment = <"Wenn möglich, wird die Kodierung des \"Riskfaktors\" mit einer Terminologie bevorzugt. Freitext sollte nur verwendet werden, wenn keine geeignete Terminologie verfügbar ist. Zum Beispiel: 2019-nCoV; oder HIV.">
+					comment = <"*Coding of 'Agent' with a terminology is preferred, where possible. Free text should be used only if there is no appropriate terminology available. For example: 2019-nCoV; or HIV. (en)">
 				>
 				["at0044"] = <
-					text = <"Pro Risikofaktor">
-					description = <"Angaben zu jedem möglichen Risikofaktor.">
+					text = <"*Specific exposure (en)">
+					description = <"*Details about each possible specific exposure. (en)">
 				>
 				["at0045"] = <
-					text = <"Risikofaktor">
+					text = <"*Exposure (en)">
 					description = <"Bezeichnung des Expositionsrisikofaktors.">
 					comment = <"Zum Beispiel: Reisen in Risikogebiet oder Exposition gegenüber infizierten Körperflüssigkeiten. Die Kodierung des \"Risikofaktors\" sollte, wenn möglich, mit Hilfe einer Terminologie erfolgen.">
 				>
 				["at0046"] = <
 					text = <"Vorhandensein">
-					description = <"Vorhandensein des Risikofaktors.">
+					description = <"*Presence of the exposure. (en)">
 				>
 				["at0047"] = <
 					text = <"Vorhanden">
-					description = <"Der Risikofaktor wurde bei der Person identifiziert.">
+					description = <"*The specific exposure is or has been present at or during the event.(en)">
 				>
 				["at0048"] = <
-					text = <"Unbestimmt">
-					description = <"Es ist nicht möglich festzustellen, ob der Risikofaktor vorhanden oder nicht vorhanden ist.">
+					text = <"*Unknown(en)">
+					description = <"*It is unknown whether the exposure exposure is or has been present or absent at or during the event.(en)">
 				>
 				["at0049"] = <
 					text = <"Nicht vorhanden">
-					description = <"Der Risikofaktor wurde bei der Person nicht festgestellt.">
-				>
-				["at0050"] = <
-					text = <"Beschreibung">
-					description = <"Beschreibung des Expositionsrisikos.">
-				>
-				["at0051"] = <
-					text = <"Identifizierungszeitpunkt">
-					description = <"Der Zeitpunkt an dem das Expositionsrisiko identifiziert wurde.">
-				>
-				["at0053"] = <
-					text = <"Link zum Nachweis">
-					description = <"Identifizierung des Pfades zum Archetyp oder Datenknoten zum Nachweis der Exposition.">
-				>
-				["at0054"] = <
-					text = <"Details">
-					description = <"Strukturierte Informationen zu anderen Aspekten der Bewertung des Expositionsrisikofaktors.">
-					comment = <"Zum Beispiel: Prävalenz des Risikofaktors bei Familienmitgliedern.">
+					description = <"*The specific exposure is or has been absent at or during the event.(en)">
 				>
 				["at0055"] = <
 					text = <"Kommentar">
-					description = <"Zusätzliche Informationen zum Expositionsrisikofaktor, welche in anderen Bereichen nicht erfasst wurden.">
+					description = <"*Additional narrative about the exposure screening questionnaire not captured in other fields. (en)">
 				>
 				["at0056"] = <
 					text = <"Erweiterung">
 					description = <"Zusätzliche Informationen zur Erfassung lokaler Inhalte oder Anpassung an andere Referenzmodelle/Formalismen.">
 					comment = <"Zum Beispiel: Lokaler Informationsbedarf oder zusätzliche Metadaten zur Anpassung an FHIR-Ressourcen oder CIMI-Modelle.">
 				>
+				["at0057"] = <
+					text = <"*Presence of any exposure? (en)">
+					description = <"*Presence of any relevant exposure. (en)">
+				>
+				["at0058"] = <
+					text = <"*Present (en)">
+					description = <"*Exposure is or has been present at or during the event. (en)">
+				>
+				["at0059"] = <
+					text = <"*Absent (en)">
+					description = <"*Exposure is or has been absent at or during the event. (en)">
+				>
+				["at0060"] = <
+					text = <"*Unknown (en)">
+					description = <"*It is not known whether any exposure is or has been present or absent at or during the event. (en)">
+				>
+			>
+		>
+	>
+	term_bindings = <
+		["SNOMED-CT"] = <
+			items = <
+				["at0048"] = <[SNOMED-CT::261665006]>
+				["at0047"] = <[SNOMED-CT::410515003]>
+				["at0049"] = <[SNOMED-CT::410516002]>
+				["at0060"] = <[SNOMED-CT::261665006]>
+				["at0058"] = <[SNOMED-CT::410515003]>
+				["at0059"] = <[SNOMED-CT::410516002]>
 			>
 		>
 	>
