@@ -1,0 +1,218 @@
+﻿archetype (adl_version=1.4; uid=12205d4c-b355-4011-9dcf-ff4c059cbf20)
+	openEHR-EHR-OBSERVATION.curb_65.v0
+
+concept
+	[at0000]	-- CURB-65 score
+language
+	original_language = <[ISO_639-1::en]>
+description
+	original_author = <
+		["name"] = <"Silje Ljosland Bakke">
+		["organisation"] = <"Helse Vest IKT AS">
+		["email"] = <"silje.ljosland.bakke@helse-vest-ikt.no">
+		["date"] = <"2020-04-29">
+	>
+	details = <
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To record the results for each component parameter and their total sum for the CURB-65 score.">
+			use = <"Use to record the results for each component parameter and their total sum for the CURB-65 score.">
+			keywords = <"pneumonia", ...>
+			misuse = <"Not to be used to record the CRB-65 score. Use the OBSERVATION.crb_65 archetype for this purpose.">
+			copyright = <"© openEHR Foundation">
+		>
+	>
+	lifecycle_state = <"in_development">
+	other_contributors = <>
+	other_details = <
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
+		["custodian_organisation"] = <"openEHR Foundation">
+		["references"] = <"Lim WS, van der Eerden MM, Laing R, Boersma WG, Karalus N, Town GI, Lewis SA, Macfarlane JT. Defining community acquired pneumonia severity on presentation to hospital: an international derivation and validation study. Thorax. 2003 May;58(5):377-82. doi: 10.1136/thorax.58.5.377. PubMed PMID: 12728155; PubMed Central PMCID: PMC1746657.
+
+Lim WS, Baudouin SV, George RC, Hill AT, Jamieson C, Le Jeune I, Macfarlane JT, Read RC, Roberts HJ, Levy ML, Wani M, Woodhead MA. BTS guidelines for the management of community acquired pneumonia in adults: update 2009. Thorax. 2009 Oct;64 Suppl 3:iii1-55. doi: 10.1136/thx.2009.121434. PubMed PMID: 19783532.">
+		["original_namespace"] = <"org.openehr">
+		["original_publisher"] = <"openEHR Foundation">
+		["custodian_namespace"] = <"org.openehr">
+		["MD5-CAM-1.0.1"] = <"6E3FC2B8F1AAF0B5D01A6F0BD419B283">
+		["build_uid"] = <"dd3005b8-407d-4245-8d28-9c815e5048b8">
+		["revision"] = <"0.0.1-alpha">
+	>
+
+definition
+	OBSERVATION[at0000] matches {    -- CURB-65 score
+		data matches {
+			HISTORY[at0001] matches {    -- History
+				events cardinality matches {0..*; unordered} matches {
+					EVENT[at0002] occurrences matches {0..*} matches {    -- Any event
+						data matches {
+							ITEM_TREE[at0003] matches {    -- Tree
+								items cardinality matches {0..*; unordered} matches {
+									ELEMENT[at0004] occurrences matches {0..1} matches {    -- Confusion
+										value matches {
+											0|[local::at0005],
+											1|[local::at0006]
+										}
+									}
+									ELEMENT[at0022] occurrences matches {0..1} matches {    -- Urea
+										value matches {
+											0|[local::at0023],
+											1|[local::at0024]
+										}
+									}
+									ELEMENT[at0007] occurrences matches {0..1} matches {    -- Respiratory rate
+										value matches {
+											0|[local::at0008],
+											1|[local::at0009]
+										}
+									}
+									ELEMENT[at0010] occurrences matches {0..1} matches {    -- Blood pressure
+										value matches {
+											0|[local::at0011],
+											1|[local::at0012]
+										}
+									}
+									ELEMENT[at0014] occurrences matches {0..1} matches {    -- Age
+										value matches {
+											0|[local::at0015],
+											1|[local::at0016]
+										}
+									}
+									ELEMENT[at0017] occurrences matches {0..1} matches {    -- Total score
+										value matches {
+											DV_COUNT matches {
+												magnitude matches {|0..5|}
+											}
+										}
+									}
+									ELEMENT[at0018] occurrences matches {0..1} matches {    -- Severity assessment
+										value matches {
+											DV_CODED_TEXT matches {
+												defining_code matches {
+													[local::
+													at0019,    -- Low severity
+													at0020,    -- Moderate severity
+													at0021]    -- High severity
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		protocol matches {
+			ITEM_TREE[at0013] matches {*}    -- Item tree
+		}
+	}
+
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"CURB-65 score">
+					description = <"A clinical score that is used to roughly estimate the severity of pneumonias in a hospital setting.">
+				>
+				["at0001"] = <
+					text = <"History">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Any event">
+					description = <"Default, unspecified point in time or interval event which may be explicitly defined in a template or at run-time.">
+				>
+				["at0003"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0004"] = <
+					text = <"Confusion">
+					description = <"Does the patient have recent onset confusion?">
+				>
+				["at0005"] = <
+					text = <"No">
+					description = <"The patient does not have recent onset confusion.">
+				>
+				["at0006"] = <
+					text = <"Yes">
+					description = <"The patient has recent onset confusion.">
+				>
+				["at0007"] = <
+					text = <"Respiratory rate">
+					description = <"Does the patient have a respiratory rate equal to or greater than 30 /min?">
+				>
+				["at0008"] = <
+					text = <"No">
+					description = <"The patient has a respiratory rate <30 /min.">
+				>
+				["at0009"] = <
+					text = <"Yes">
+					description = <"The patient has a respiratory rate ≥30 /min.">
+				>
+				["at0010"] = <
+					text = <"Blood pressure">
+					description = <"Does he patient have a systolic blood pressure <90 OR a diastolic blood pressure ≤60 mmHg?">
+				>
+				["at0011"] = <
+					text = <"No">
+					description = <"The patient has a systolic blood pressure ≥90 AND a diastolic blood pressure >60 mmHg.">
+				>
+				["at0012"] = <
+					text = <"Yes">
+					description = <"The patient has a systolic blood pressure <90 OR a diastolic blood pressure ≤60 mmHg.">
+				>
+				["at0013"] = <
+					text = <"Item tree">
+					description = <"@ internal @">
+				>
+				["at0014"] = <
+					text = <"Age">
+					description = <"Is the patient 65 years or older?">
+				>
+				["at0015"] = <
+					text = <"No">
+					description = <"The patient is <65 years old.">
+				>
+				["at0016"] = <
+					text = <"Yes">
+					description = <"The patient is ≥65 years old.">
+				>
+				["at0017"] = <
+					text = <"Total score">
+					description = <"The total sum for each component variable for the CURB-65 score.">
+				>
+				["at0018"] = <
+					text = <"Severity assessment">
+					description = <"Severity assessment based on the CURB-65 score.">
+				>
+				["at0019"] = <
+					text = <"Low severity">
+					description = <"CURB-65 score 0-1: The patient may be suitable for treatment at home.">
+				>
+				["at0020"] = <
+					text = <"Moderate severity">
+					description = <"CURB-65 score 2: The patient should be considered for short-stay inpatient treatment or hospital-supervised outpatient treatment.">
+				>
+				["at0021"] = <
+					text = <"High severity">
+					description = <"CURB-65 score 3-4: The patient should be reviewed by a senior physician at the earliest opportunity to refine disease severity assessment and should usually be managed as having high severity pneumonia. Patients with CURB-65 scores of 4 and 5 should be assessed with specific consideration to the need for transfer to a critical care unit (high dependency unit or intensive care unit).">
+				>
+				["at0022"] = <
+					text = <"Urea">
+					description = <"Does the patient have a blood urea of >7 mmol/L?">
+				>
+				["at0023"] = <
+					text = <"No">
+					description = <"The patient has a blood urea of <7 mmol/L.">
+				>
+				["at0024"] = <
+					text = <"Yes">
+					description = <"The patient has a blood urea of >7 mmol/L.">
+				>
+			>
+		>
+	>
