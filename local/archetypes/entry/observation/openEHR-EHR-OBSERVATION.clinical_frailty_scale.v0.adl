@@ -1,0 +1,187 @@
+﻿archetype (adl_version=1.4; uid=8c4e7594-1457-4c34-9dca-ce19f00bac12)
+	openEHR-EHR-OBSERVATION.clinical_frailty_scale.v0
+
+concept
+	[at0000]	-- Clinical Frailty Scale (CFS)
+language
+	original_language = <[ISO_639-1::en]>
+description
+	original_author = <
+		["name"] = <"Dr Paul Miller">
+		["organisation"] = <"NES Digital Service, NHS Scotland">
+		["email"] = <"paul.miller@nes.scot.nhs.uk">
+		["date"] = <"2019-06-24">
+	>
+	details = <
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To record the Clinical Frailty Scale assessment.">
+			use = <"Use to record the Clinical Frailty Scale assessment.
+
+While openEHR archetypes are all freely available under an open license, the specific content of this Clinical Frailty Scale archetype is copyright protected. Any use of this archetype within implementations must be in compliance with the terms established by the copyright owners.
+Copyright statement: ©2009. Version 1.2_EN. All rights reserved. Geriatric Medicine Research, Dalhousie University, Halifax, Canada. 
+Copyright information: https://www.dal.ca/sites/gmr/our-tools/clinical-frailty-scale.html.">
+			keywords = <"frailty, geriatric, old age, activity, end of life, rockwood", ...>
+			misuse = <"">
+			copyright = <"© openEHR Foundation">
+		>
+	>
+	lifecycle_state = <"in_development">
+	other_contributors = <"Ian McNicoll, NDS, Scotland", ...>
+	other_details = <
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
+		["custodian_organisation"] = <"openEHR Foundation">
+		["references"] = <"Rockwood K, Song X, MacKnight C, Bergman H, Hogan DB, McDowell I, Mitnitski A. A global clinical measure of fitness and frailty in elderly people. CMAJ. 2005 Aug 30;173(5):489-95. doi: 10.1503/cmaj.050051. PMID: 16129869; PMCID: PMC1188185. Available from: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1188185/.
+
+Clinical Frailty Scale [Internet]. Dalhousie University. Dalhousie University; 2019 [cited 2020 Apr 21]. Available from: https://www.dal.ca/sites/gmr/our-tools/clinical-frailty-scale.html.">
+		["current_contact"] = <"Dr Paul Miller, NDS, Scotland">
+		["original_namespace"] = <"org.openehr">
+		["original_publisher"] = <"openEHR Foundation">
+		["custodian_namespace"] = <"org.openehr">
+		["MD5-CAM-1.0.1"] = <"69E3BB7C5220E73CF6E382585D3B253C">
+		["build_uid"] = <"1ae61662-9d44-4213-a911-08af7b17e3fb">
+		["ip_acknowledgements"] = <"This artefact includes content from SNOMED Clinical Terms® (SNOMED CT®) which is copyrighted material of the International Health Terminology Standards Development Organisation (IHTSDO). Where an implementation of this artefact makes use of SNOMED CT content, the implementer must have the appropriate SNOMED CT Affiliate license - for more information contact http://www.snomed.org/snomed-ct/get-snomedct or info@snomed.org. 
+Please note: SNOMED-CT term-bindings currently applied to the individual score values belong to the UK SNOMED_CT namespace.">
+		["revision"] = <"0.0.1-alpha">
+	>
+
+definition
+	OBSERVATION[at0000] matches {    -- Clinical Frailty Scale (CFS)
+		data matches {
+			HISTORY[at0001] matches {    -- History
+				events cardinality matches {0..*; unordered} matches {
+					POINT_EVENT[at0002] occurrences matches {0..*} matches {    -- Any point in time event
+						data matches {
+							ITEM_TREE[at0003] matches {    -- Tree
+								items cardinality matches {0..*; unordered} matches {
+									ELEMENT[at0004] occurrences matches {0..1} matches {    -- Frailty score
+										value matches {
+											1|[local::at0005],
+											2|[local::at0006],
+											3|[local::at0007],
+											4|[local::at0008],
+											5|[local::at0009],
+											6|[local::at0010],
+											7|[local::at0011],
+											8|[local::at0012],
+											9|[local::at0013]
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		protocol matches {
+			ITEM_TREE[at0014] matches {    -- ItemTree
+				items cardinality matches {0..*; unordered} matches {
+					allow_archetype CLUSTER[at0015] occurrences matches {0..*} matches {    -- Extension
+						include
+							archetype_id/value matches {/.*/}
+					}
+				}
+			}
+		}
+	}
+
+
+ontology
+	terminologies_available = <"SNOMED-CT", ...>
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"Clinical Frailty Scale (CFS)">
+					description = <"An assessment scale used to screen for frailty and to broadly stratify degrees of fitness and frailty in an older adult.">
+					comment = <"Also known as the Rockford Clinical Frailty Scale.">
+				>
+				["at0001"] = <
+					text = <"History">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Any point in time event">
+					description = <"Default, unspecified point in time event which may be explicitly defined in a template or at run-time.">
+				>
+				["at0003"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0004"] = <
+					text = <"Frailty score">
+					description = <"The assessed score.">
+				>
+				["at0005"] = <
+					text = <"Very Fit">
+					description = <"People who are robust, energetic and motivated.">
+					comment = <"These people commonly exercise regularly. They are among the fittest for their age.">
+				>
+				["at0006"] = <
+					text = <"Well">
+					description = <"People who have no active disease symptoms but are less fit than category 1.">
+					comment = <"Often, they exercise or are very active occasionally, e.g. seasonally.">
+				>
+				["at0007"] = <
+					text = <"Managing Well">
+					description = <"People whose medical problems are well controlled, but are not regularly active beyond routine walking.">
+				>
+				["at0008"] = <
+					text = <"Vulnerable">
+					description = <"While not dependent on others for daily help, often symptoms limit activities.">
+					comment = <" A common complaint is being \"slowed up\", and/or being tired during the day.">
+				>
+				["at0009"] = <
+					text = <"Mildly Frail">
+					description = <"These people often have more evident slowing, and need help in high order IADLs (finances, transportation, heavy housework, medications).">
+					comment = <"Typically, mildly frailty progressively impairs shopping and walking outside alone, meal preparation and housework. A common complaint is being \"slowed up\", and/or being tired during the day.">
+				>
+				["at0010"] = <
+					text = <"Moderately Frail">
+					description = <"People need help with all outside activities and with keeping house. Inside, they often have problems with stairs and need help with bathing and might need minimal assistance (cuing, standby) with dressing.">
+				>
+				["at0011"] = <
+					text = <"Severely Frail">
+					description = <"Completely dependent for personal care, from whatever cause (physical or cognitive).">
+					comment = <"Even so, they seem stable and not at high risk of dying (within ~ 6 months).">
+				>
+				["at0012"] = <
+					text = <"Very Severely Frail">
+					description = <"Completely dependent, approaching the end of life.">
+					comment = <"Typically, they could not recover even from a minor illness.">
+				>
+				["at0013"] = <
+					text = <"Terminally Ill">
+					description = <"Approaching the end of life.">
+					comment = <"This category applies to people with a life expectancy <6 months, who are not otherwise evidently frail.">
+				>
+				["at0014"] = <
+					text = <"ItemTree">
+					description = <"@ internal @">
+				>
+				["at0015"] = <
+					text = <"Extension">
+					description = <"Additional information required to extend the model with local content or to align with other reference models/formalisms.">
+					comment = <"For example: local information requirements; or additional metadata to align with FHIR.">
+				>
+			>
+		>
+	>
+	term_bindings = <
+		["SNOMED-CT"] = <
+			items = <
+				["at0004"] = <[SNOMED-CT::763264000]>
+				["at0000"] = <[SNOMED-CT::445414007]>
+				["at0005"] = <[SNOMED-CT::1129331000000101]>
+				["at0006"] = <[SNOMED-CT::1129341000000105]>
+				["at0007"] = <[SNOMED-CT::1129351000000108]>
+				["at0008"] = <[SNOMED-CT::1129361000000106]>
+				["at0009"] = <[SNOMED-CT::1129371000000104]>
+				["at0010"] = <[SNOMED-CT::1129381000000102]>
+				["at0013"] = <[SNOMED-CT::1129411000000100]>
+				["at0011"] = <[SNOMED-CT::1129391000000100]>
+				["at0012"] = <[SNOMED-CT::1129401000000102]>
+			>
+		>
+	>
