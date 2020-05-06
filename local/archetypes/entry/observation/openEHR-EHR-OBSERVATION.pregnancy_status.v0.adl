@@ -1,0 +1,201 @@
+﻿archetype (adl_version=1.4; uid=e1bdf2dc-9992-4253-84f7-5426b42d203d)
+	openEHR-EHR-OBSERVATION.pregnancy_status.v0
+
+concept
+	[at0000]	-- Pregnancy status
+language
+	original_language = <[ISO_639-1::en]>
+description
+	original_author = <
+		["name"] = <"Marit Alice Venheim">
+		["organisation"] = <"Helse Vest IKT AS">
+		["email"] = <"marit.alice.venheim@helse-vest-ikt-no">
+		["date"] = <"2020-05-05">
+	>
+	details = <
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To record whether the individual is or may be pregnant or not.">
+			use = <"Use to record whether the individual is or may be pregnant or not.
+
+This archetype should be regarded as a critical archetype by any clinical decision support system testing for pregnancy, as a clinician commences a new clinical intervention for the individual.">
+			keywords = <"pregnancy, pregnant, caution, alert, warning, gravid", ...>
+			misuse = <"Not for recording summary information about a single pregnancy. Use specific archetypes for this purpose.
+
+Not to be used to record details about procedures performed during a pregnancy, for example terminations or deliveries. Use the ACTION.procedure archetype for this purpose.   
+">
+			copyright = <"© openEHR Foundation">
+		>
+	>
+	lifecycle_state = <"in_development">
+	other_contributors = <>
+	other_details = <
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
+		["custodian_organisation"] = <"openEHR Foundation">
+		["original_namespace"] = <"org.openehr">
+		["original_publisher"] = <"openEHR Foundation">
+		["custodian_namespace"] = <"org.openehr">
+		["MD5-CAM-1.0.1"] = <"03C4668A63016ACD99E1153BA1C77C89">
+		["build_uid"] = <"fb788da8-134e-4bfe-8cca-d0d6b432c527">
+		["ip_acknowledgements"] = <"This artefact includes content from SNOMED Clinical Terms® (SNOMED CT®) which is copyrighted material of the International Health Terminology Standards Development Organisation (IHTSDO). Where an implementation of this artefact makes use of SNOMED CT content, the implementer must have the appropriate SNOMED CT Affiliate license - for more information contact http://www.snomed.org/snomed-ct/get-snomedct or info@snomed.org.">
+		["revision"] = <"0.0.1-alpha">
+	>
+
+definition
+	OBSERVATION[at0000] matches {    -- Pregnancy status
+		data matches {
+			HISTORY[at0001] matches {    -- History
+				events cardinality matches {0..*; unordered} matches {
+					EVENT[at0002] occurrences matches {0..*} matches {    -- Any event
+						data matches {
+							ITEM_TREE[at0003] matches {    -- Tree
+								items cardinality matches {0..*; unordered} matches {
+									ELEMENT[at0011] matches {    -- Status
+										value matches {
+											DV_CODED_TEXT matches {
+												defining_code matches {
+													[local::
+													at0012,    -- Pregnant
+													at0024,    -- Possible pregnancy
+													at0013,    -- Not pregnant
+													at0014]    -- Unknown
+												}
+											}
+										}
+									}
+									ELEMENT[at0015] occurrences matches {0..*} matches {    -- Evidence
+										value matches {
+											DV_CODED_TEXT matches {
+												defining_code matches {
+													[local::
+													at0016,    -- On history
+													at0017,    -- Urine test
+													at0018,    -- Blood test
+													at0019,    -- Abdominal palpation
+													at0020]    -- Vaginal examination
+												}
+											}
+											DV_TEXT matches {*}
+										}
+									}
+									ELEMENT[at0010] occurrences matches {0..1} matches {    -- Comment
+										value matches {
+											DV_TEXT matches {*}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		protocol matches {
+			ITEM_TREE[at0021] matches {    -- Item tree
+				items cardinality matches {0..*; unordered} matches {
+					allow_archetype CLUSTER[at0022] occurrences matches {0..*} matches {    -- Extension
+						include
+							archetype_id/value matches {/.*/}
+					}
+				}
+			}
+		}
+	}
+
+
+ontology
+	terminologies_available = <"SNOMED-CT", ...>
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"Pregnancy status">
+					description = <"Statement about whether the individual is or may be pregnant or not.">
+				>
+				["at0001"] = <
+					text = <"History">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Any event">
+					description = <"*">
+				>
+				["at0003"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0010"] = <
+					text = <"Comment">
+					description = <"Additional narrative about the pregnancy, not captured in other fields.">
+				>
+				["at0011"] = <
+					text = <"Status">
+					description = <"Is there a pregnancy present?">
+				>
+				["at0012"] = <
+					text = <"Pregnant">
+					description = <"The individual is pregnant.">
+				>
+				["at0013"] = <
+					text = <"Not pregnant">
+					description = <"The individual is not pregnant.">
+				>
+				["at0014"] = <
+					text = <"Unknown">
+					description = <"It is not known whether the individual is pregnant or not.">
+				>
+				["at0015"] = <
+					text = <"Evidence">
+					description = <"Description of the evidence identified.">
+				>
+				["at0016"] = <
+					text = <"On history">
+					description = <"The individual's narrative confirms pregnancy.">
+				>
+				["at0017"] = <
+					text = <"Urine test">
+					description = <"Urine test confirms pregnancy.">
+				>
+				["at0018"] = <
+					text = <"Blood test">
+					description = <"Blood test confirms pregnancy.">
+				>
+				["at0019"] = <
+					text = <"Abdominal palpation">
+					description = <"Abdominal palpation confirms pregnancy.">
+				>
+				["at0020"] = <
+					text = <"Vaginal examination">
+					description = <"Vaginal examination confirms pregnancy.">
+				>
+				["at0021"] = <
+					text = <"Item tree">
+					description = <"@ internal @">
+				>
+				["at0022"] = <
+					text = <"Extension">
+					description = <"Additional information required to extend the model with local content or to align with other reference models or formalisms.">
+					comment = <"For example: local information requirements; or additional metadata to align with FHIR.">
+				>
+				["at0024"] = <
+					text = <"Possible pregnancy">
+					description = <"The individual thinks they may be pregnant.">
+				>
+			>
+		>
+	>
+	term_bindings = <
+		["SNOMED-CT"] = <
+			items = <
+				["at0016"] = <[SNOMED-CT::169563005]>
+				["at0017"] = <[SNOMED-CT::169560008]>
+				["at0018"] = <[SNOMED-CT::169561007]>
+				["at0019"] = <[SNOMED-CT::169564004]>
+				["at0020"] = <[SNOMED-CT::169562000]>
+				["at0012"] = <[SNOMED-CT::77386006]>
+				["at0013"] = <[SNOMED-CT::60001007]>
+				["at0014"] = <[SNOMED-CT::261665006]>
+				["at0024"] = <[SNOMED-CT::102874004]>
+			>
+		>
+	>
