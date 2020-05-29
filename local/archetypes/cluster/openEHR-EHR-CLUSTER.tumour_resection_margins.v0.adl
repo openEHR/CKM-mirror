@@ -2,10 +2,18 @@
 	openEHR-EHR-CLUSTER.tumour_resection_margins.v0
 
 concept
-	[at0000]	-- Tumour - Surgical resection margins
+	[at0000]	-- Surgical resection margins
 language
 	original_language = <[ISO_639-1::en]>
 	translations = <
+		["de"] = <
+			language = <[ISO_639-1::de]>
+			author = <
+				["name"] = <"Carina Lerch">
+				["organisation"] = <"Heidelberg University Hospital">
+				["email"] = <"carina.lerch@med.uni-heidelberg.de">
+			>
+		>
 		["ar-sy"] = <
 			language = <[ISO_639-1::ar-sy]>
 			author = <
@@ -18,12 +26,19 @@ description
 		["name"] = <"Dr Ian McNicoll">
 		["organisation"] = <"Ocean Informatics">
 		["email"] = <"ian.mcnicoll@oceaninformatics.com">
-		["date"] = <"17/05/2009">
+		["date"] = <"2009-05-17">
 	>
 	details = <
+		["de"] = <
+			language = <[ISO_639-1::de]>
+			purpose = <"Details zum operativen Resektionsrand bei einem malignen Tumor. Der Archetyp kann verwendet werden, um das Tumorvorkommen am Resektionsrand zu beschreiben, sowie Angaben zur Länge der Tumorausbreitung anzugeben. Sollte kein Tumorvorkommen am Resektionsrand nachweisbar sein, kann der Abstand vom Resektionsrand zum Tumor erhoben werden.">
+			use = <"Wird hauptsächlich innerhalb eines histopathologischen Archetypen verwendet.">
+			keywords = <"Malignität", "Rand/Ränder", "Tumor(e)", "Krebs", "Resektion", "Histopathologie", "Biopsie(n)">
+			misuse = <"">
+		>
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"Details of surgical resection margin involvement of malignant tumours. May be used to describe scenarios where tumour is present at the resection margin,detailing the length of tumour involvement, or where tumour is absent from the margin, to indicate the distance of tumour from that margin.">
+			purpose = <"Details of surgical resection margin involvement of malignant tumours. May be used to describe scenarios where tumour is present at the resection margin, detailing the length of tumour involvement, or where tumour is absent from the margin, to indicate the distance of tumour from that margin.">
 			use = <"Normally used within a histopathology archetype.">
 			keywords = <"malignancy", "margins", "tumour", "cancer", "resection", "histopathology", "biopsy">
 			misuse = <"">
@@ -39,7 +54,7 @@ description
 		>
 	>
 	lifecycle_state = <"in_development">
-	other_contributors = <>
+	other_contributors = <"Sabine Leh, Helse Bergen HF, Norway", "John Tore Valand, Helse Bergen HF, Norway", "Silje Ljosland Bakke, Nasjonal IKT HF, Norway", "Therese Högberg Mårder, Linköpings University, Sweden">
 	other_details = <
 		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
 		["custodian_organisation"] = <"openEHR Foundation">
@@ -47,41 +62,39 @@ description
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"1824A3C10B21B7A47FDBA9A9483E15C7">
-		["build_uid"] = <"4d7a3ade-e849-42dc-aac0-79ec8de2d9d0">
+		["MD5-CAM-1.0.1"] = <"7323F700EC9DD50E535E654F4D7D7D30">
+		["build_uid"] = <"ce6a67fd-d831-4730-8db6-c5663597405e">
 		["revision"] = <"0.0.1-alpha">
 	>
 
 definition
-	CLUSTER[at0000] matches {	-- Tumour - Surgical resection margins
-		items cardinality matches {0..*; unordered} matches {
-			ELEMENT[at0018] occurrences matches {0..1} matches {	-- Margin name
+	CLUSTER[at0000] matches {    -- Tumour - Surgical resection margins
+		items cardinality matches {1..*; unordered} matches {
+			ELEMENT[at0018] occurrences matches {0..1} matches {    -- Margin name
 				value matches {
 					DV_TEXT matches {*}
 				}
 			}
-			allow_archetype CLUSTER[at0019] occurrences matches {0..*} matches {	-- Margin location
+			allow_archetype CLUSTER[at0019] occurrences matches {0..*} matches {    -- Margin location
 				include
-					archetype_id/value matches {/openEHR-EHR-CLUSTER\.anatomical_location-precise\.v1/}
-				exclude
-					archetype_id/value matches {/.*/}
+					archetype_id/value matches {/openEHR-EHR-CLUSTER\.anatomical_location(-[a-zA-Z0-9_]+)*\.v1|openEHR-EHR-CLUSTER\.anatomical_location_circle(-[a-zA-Z0-9_]+)*\.v1|openEHR-EHR-CLUSTER\.anatomical_location_relative(-[a-zA-Z0-9_]+)*\.v1|openEHR-EHR-CLUSTER\.anatomical_location_circle(-[a-zA-Z0-9_]+)*\.v0/}
 			}
-			ELEMENT[at0001] occurrences matches {0..1} matches {	-- Marginal involvement
+			ELEMENT[at0001] occurrences matches {0..1} matches {    -- Marginal involvement
 				value matches {
 					DV_CODED_TEXT matches {
 						defining_code matches {
 							[local::
-							at0014, 	-- Present
-							at0015, 	-- Absent
-							at0017, 	-- Equivocal
-							at0016]	-- Indeterminate
+							at0014,    -- Present
+							at0015,    -- Absent
+							at0017,    -- Equivocal
+							at0016]    -- Indeterminate
 						}
 					}
 				}
 			}
-			CLUSTER[at0006] occurrences matches {0..1} matches {	-- Tumour present
-				items cardinality matches {0..*; unordered} matches {
-					ELEMENT[at0007] occurrences matches {0..1} matches {	-- Maximum linear involvement
+			CLUSTER[at0006] occurrences matches {0..*} matches {    -- Tumour present
+				items cardinality matches {1..*; unordered} matches {
+					ELEMENT[at0007] occurrences matches {0..1} matches {    -- Maximum linear involvement
 						value matches {
 							C_DV_QUANTITY <
 								property = <[openehr::122]>
@@ -94,16 +107,16 @@ definition
 							>
 						}
 					}
-					ELEMENT[at0020] occurrences matches {0..1} matches {	-- Nature of involvement
+					ELEMENT[at0020] occurrences matches {0..1} matches {    -- Nature of involvement
 						value matches {
 							DV_TEXT matches {*}
 						}
 					}
 				}
 			}
-			CLUSTER[at0008] occurrences matches {0..1} matches {	-- Tumour absent
-				items cardinality matches {0..*; unordered} matches {
-					ELEMENT[at0009] occurrences matches {0..1} matches {	-- Distance from closest resection margin
+			CLUSTER[at0008] occurrences matches {0..*} matches {    -- Tumour absent
+				items cardinality matches {1..*; unordered} matches {
+					ELEMENT[at0009] occurrences matches {0..1} matches {    -- Distance from resection margin
 						value matches {
 							C_DV_QUANTITY <
 								property = <[openehr::122]>
@@ -116,9 +129,14 @@ definition
 							>
 						}
 					}
+					ELEMENT[at0021] occurrences matches {0..1} matches {    -- Tumour name
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
 				}
 			}
-			ELEMENT[at0010] occurrences matches {0..1} matches {	-- Description
+			ELEMENT[at0010] occurrences matches {0..1} matches {    -- Description
 				value matches {
 					DV_TEXT matches {*}
 				}
@@ -132,9 +150,8 @@ ontology
 		["en"] = <
 			items = <
 				["at0000"] = <
-					text = <"Tumour - Surgical resection margins">
-					description = <"Details of tumour involvement at margins of surgical resections/biopsies.
-">
+					text = <"Surgical resection margins">
+					description = <"Details of tumour involvement at margins of surgical resections/biopsies.">
 				>
 				["at0001"] = <
 					text = <"Marginal involvement">
@@ -153,12 +170,12 @@ ontology
 					description = <"Details where tumour is absent from surgical resection margins.">
 				>
 				["at0009"] = <
-					text = <"Distance from closest resection margin">
-					description = <"When tumour is absent, the distance from tumour to the closest surgical resection margin.">
+					text = <"Distance from resection margin">
+					description = <"When tumour is absent, the distance from tumour to the named surgical resection margin.">
 				>
 				["at0010"] = <
 					text = <"Description">
-					description = <"A text description of  tumour involvement at the surgical resection margin.">
+					description = <"A text description of tumour involvement at the surgical resection margin.">
 				>
 				["at0014"] = <
 					text = <"Present">
@@ -178,7 +195,8 @@ ontology
 				>
 				["at0018"] = <
 					text = <"Margin name">
-					description = <"The name of the margin being described e.g. Deep margin, Vascular margin, Bronchial margin.">
+					description = <"The name of the margin being described.">
+					comment = <"For example: 'closest margin', 'circumferential margin', 'deep margin', 'vascular margin' or 'bronchial margin'.">
 				>
 				["at0019"] = <
 					text = <"Margin location">
@@ -187,6 +205,11 @@ ontology
 				["at0020"] = <
 					text = <"Nature of involvement">
 					description = <"The nature of involvement of the tumour with the surgical margin.">
+				>
+				["at0021"] = <
+					text = <"Tumour name">
+					description = <"Name of the tumour for which the 'Distance from resection margin' applies.">
+					comment = <"For example: 'Invasive tumour' or 'Cancer in situ'.">
 				>
 			>
 		>
@@ -213,8 +236,8 @@ ontology
 					description = <"التفاصيل التي لا يوجد فيها ورم في حواف القطع الجراحي">
 				>
 				["at0009"] = <
-					text = <"المسافة من أقرب حافة للقطع">
-					description = <"إذا كان الورم غير موجود, المسافة بين الورم و أقرب حافة للقطع الجراحي">
+					text = <"*Distance from resection margin (en)">
+					description = <"*When tumour is absent, the distance from tumour to the named surgical resection margin. (en)">
 				>
 				["at0010"] = <
 					text = <"الوصف">
@@ -238,7 +261,8 @@ ontology
 				>
 				["at0018"] = <
 					text = <"اسم الحافة/الهامش">
-					description = <"اسم الحافة/الهامش الذي يتم وصفه, مثل: حافة عميقة, حافة أوعية دموية, حاقة القصبة/الشعبة الهوائية">
+					description = <"*The name of the margin being described. (en)">
+					comment = <"*For example: 'closest margin', 'circumferential margin', 'deep margin', 'vascular margin' or 'bronchial margin'. (en)">
 				>
 				["at0019"] = <
 					text = <"مكان الحافة">
@@ -247,6 +271,77 @@ ontology
 				["at0020"] = <
 					text = <"طبيعة الاكتناف">
 					description = <"طبيعة اكتناف الورم في الحافة الجراحية">
+				>
+				["at0021"] = <
+					text = <"*Tumour name (en)">
+					description = <"*Name of the tumour for which the 'Distance from resection margin' applies. (en)">
+					comment = <"*For example: 'Invasive tumour' or 'Cancer in situ'. (en)">
+				>
+			>
+		>
+		["de"] = <
+			items = <
+				["at0000"] = <
+					text = <"Operative Resektionsränder">
+					description = <"Details über das Tumorvorkommen an operativen Resektionsrändern bzw. Biopsien.">
+				>
+				["at0001"] = <
+					text = <"Status zum Resektionsrand">
+					description = <"Nachweis von Tumorvorkommen am Resektionsrand.">
+				>
+				["at0006"] = <
+					text = <"Tumorvorkommen">
+					description = <"Details zu dem Tumorvorkommen am Resektionsrand.">
+				>
+				["at0007"] = <
+					text = <"Maximale lineare Ausbreitung">
+					description = <"Falls ein Tumorvorkommen im Resektionsrand nachgewiesen wird, so ist die maximale Länge der Ausbreitung anzugeben.">
+				>
+				["at0008"] = <
+					text = <"Tumorfrei">
+					description = <"Details zum tumorfreien Resektionsrand.">
+				>
+				["at0009"] = <
+					text = <"Abstand vom Resektionsrand">
+					description = <"Angabe zum Abstand zwischen Tumor und dem genannten Resektionsrand, falls der Tumor innerhalb des Resektionsrandes nicht nachweisbar ist.">
+				>
+				["at0010"] = <
+					text = <"Beschreibung">
+					description = <"Eine Beschreibung des Tumorvorkommens am Resektionsrand.">
+				>
+				["at0014"] = <
+					text = <"Vorhanden">
+					description = <"Tumor am Resektionsrand ist nachweisbar/vorhanden.">
+				>
+				["at0015"] = <
+					text = <"Nicht vorhanden">
+					description = <"Tumor am Resektionsrand nicht nachweisbar/nicht vorhanden.">
+				>
+				["at0016"] = <
+					text = <"Nicht bestimmt">
+					description = <"Tumorvorkommen am Resektionsrand wurde nicht bestimmt.">
+				>
+				["at0017"] = <
+					text = <"Nicht eindeutig">
+					description = <"Der Nachweis von Tumorvorkommen am Resektionsrand ist nicht eindeutig zu bestimmen.">
+				>
+				["at0018"] = <
+					text = <"Resektionsrandbezeichnung">
+					description = <"Die Bezeichnung des Resektionsrandes, der beschrieben wird.">
+					comment = <"Beispiel: \"nächstgelegener Rand\", \"umlaufender Rand\", \"tiefer Rand\", \"vaskulärer Rand\" oder \"Bronchialrand\".">
+				>
+				["at0019"] = <
+					text = <"Resektionsrand Lokalisation">
+					description = <"Die Lokalisation des Resektionsrandes, der beschrieben wird.">
+				>
+				["at0020"] = <
+					text = <"Art der Ausbreitung">
+					description = <"Die Art der Ausbreitung des Tumors am Resektionsrand.">
+				>
+				["at0021"] = <
+					text = <"Tumorbezeichnung">
+					description = <"Bezeichnung des Tumors, für den der \"Abstand vom Resektionsrand\" gilt.">
+					comment = <"Beispiel: \"Invasiver Tumor\" oder \"In-Situ-Karzinom\".">
 				>
 			>
 		>

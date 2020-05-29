@@ -2,7 +2,7 @@
 	openEHR-EHR-CLUSTER.issue.v0
 
 concept
-	[at0000]	-- Issue presented by a person
+	[at0000]	-- Issue
 language
 	original_language = <[ISO_639-1::en]>
 	translations = <
@@ -15,20 +15,12 @@ language
 	>
 description
 	original_author = <
-		["name"] = <"Sam Heard">
-		["organisation"] = <"Ocean Informatics">
-		["email"] = <"sam.heard@oceaninformatics.com">
-		["date"] = <"23/04/2006">
+		["name"] = <"Heather Leslie">
+		["organisation"] = <"Atomica Informatics">
+		["email"] = <"heather.leslie@atomicainformatics.com">
+		["date"] = <"2020-02-13">
 	>
 	details = <
-		["en"] = <
-			language = <[ISO_639-1::en]>
-			purpose = <"To record an issue as presented by the patient.  ">
-			use = <"For recording issues as presented to the clinician by a patient or their advocate. This archetype has been designed to complement capturing information about the reason for attending a clinician other than recording a symptom or information about an event">
-			keywords = <"issue", ...>
-			misuse = <"Not for recording symptoms or events - use the specific archetypes for this purpose">
-			copyright = <"© openEHR Foundation">
-		>
 		["ar-sy"] = <
 			language = <[ISO_639-1::ar-sy]>
 			purpose = <"لتسجيل قضية/مشكلة كما يتم عرضها بواسطة المريض">
@@ -39,9 +31,19 @@ description
 			misuse = <"لا تستخدم لتسجيل الأعراض أو الوقائع - استخدم النماذج المحددة لهذا الغرض.">
 			copyright = <"© openEHR Foundation">
 		>
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To record a health-related issue or concern held by the individual.">
+			use = <"Use to record a health-related issue or concern held by the individual, their carer or advocate.">
+			keywords = <"issue", ...>
+			misuse = <"Not to be used to record details about a symptom or sign - use CLUSTER.symptom_sign for this purpose.
+
+Not to be used to record details about a health-related event - use CLUSTER.health_event for this purpose.">
+			copyright = <"© openEHR Foundation">
+		>
 	>
 	lifecycle_state = <"in_development">
-	other_contributors = <"NEHTA data groups (Australia)", "Heather Leslie">
+	other_contributors = <>
 	other_details = <
 		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
 		["custodian_organisation"] = <"openEHR Foundation">
@@ -49,20 +51,25 @@ description
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"81A316EB41C6C93517F271D717D5FAC6">
-		["build_uid"] = <"3cd7bd02-7197-42ca-9e3c-532cebcc6b29">
+		["MD5-CAM-1.0.1"] = <"F0F6F626F348547DA9334F1D457FF767">
+		["build_uid"] = <"37042c59-2f54-478c-843a-414e1dc21006">
 		["revision"] = <"0.0.1-alpha">
 	>
 
 definition
-	CLUSTER[at0000] matches {	-- Issue presented by a person
+	CLUSTER[at0000] matches {    -- Issue
 		items cardinality matches {1..*; unordered} matches {
-			ELEMENT[at0001] matches {	-- Issue
+			ELEMENT[at0001] matches {    -- Issue
 				value matches {
 					DV_TEXT matches {*}
 				}
 			}
-			ELEMENT[at0002] occurrences matches {0..1} matches {	-- Detail
+			ELEMENT[at0003] occurrences matches {0..1} matches {    -- Nil significant
+				value matches {
+					DV_BOOLEAN matches {*}
+				}
+			}
+			ELEMENT[at0002] occurrences matches {0..1} matches {    -- Description
 				value matches {
 					DV_TEXT matches {*}
 				}
@@ -76,32 +83,40 @@ ontology
 		["en"] = <
 			items = <
 				["at0000"] = <
-					text = <"Issue presented by a person">
-					description = <"An issue, symptom, or complaint presented to the health provider seeking explanation, education, understanding, investigation or treatment">
+					text = <"Issue">
+					description = <"A health-related issue or concern held by the individual.">
 				>
 				["at0001"] = <
 					text = <"Issue">
-					description = <"The issue as presented by the person">
+					description = <"The name of the issue or concern as presented by the person.">
 				>
 				["at0002"] = <
-					text = <"Detail">
-					description = <"Detailed information about the issue or health problem">
+					text = <"Description">
+					description = <"Narrative description about the issue or concern.">
+				>
+				["at0003"] = <
+					text = <"Nil significant">
+					description = <"The issue was reported as not being present to any significant degree.">
 				>
 			>
 		>
 		["ar-sy"] = <
 			items = <
 				["at0000"] = <
-					text = <"القضية/المشكلة التي يتم عرضها بواسطة المريض">
+					text = <"*Issue (en)">
 					description = <"قضية, عَرَض, أو شكوى يتم تقديمها إلى مقدم الخدمة الصحية, و التي تحتاج إلى تفسير, تعليم/تثقيف, تفهم, تحقيق/استقصاء أو علاج">
 				>
 				["at0001"] = <
 					text = <"قضية/مشكلة">
-					description = <"القضية/المشكلة التي يتم تقديمها بواسطة الشخص">
+					description = <"*The name of the issue or concern as presented by the person (en)">
 				>
 				["at0002"] = <
-					text = <"التفاصيل">
+					text = <"*Description (en)">
 					description = <"المعلومات التفصيلية حول القضية أو المشكلة الصحية">
+				>
+				["at0003"] = <
+					text = <"*Nil significant (en)">
+					description = <"*">
 				>
 			>
 		>

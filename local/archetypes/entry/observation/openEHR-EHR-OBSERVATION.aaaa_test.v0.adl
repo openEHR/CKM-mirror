@@ -1,0 +1,319 @@
+﻿archetype (adl_version=1.4; uid=3a4419db-5442-4f8d-8786-29d5414e48fd)
+	openEHR-EHR-OBSERVATION.aaaa_test.v0
+
+concept
+	[at0000]	-- 4AT
+language
+	original_language = <[ISO_639-1::en]>
+	translations = <
+		["nb"] = <
+			language = <[ISO_639-1::nb]>
+			author = <
+				["name"] = <"John Tore Valand">
+				["organisation"] = <"Haukeland Universitetssjukehus">
+				["email"] = <"john.tore.valand@helse-bergen.no">
+			>
+		>
+	>
+description
+	original_author = <
+		["name"] = <"John Tore Valand">
+		["organisation"] = <"Helse Bergen HF">
+		["date"] = <"2019-02-18">
+	>
+	details = <
+		["nb"] = <
+			language = <[ISO_639-1::nb]>
+			purpose = <"For å påvise delirium ved første kontakt med pasienten, og andre ganger da delirium er mistenkt.">
+			use = <"Brukes for å påvise delirium ved første kontakt med pasienten, og andre ganger da delirium er mistenkt.
+
+Merk at 4AT ikke er laget for daglig monitorering av ny forekomst av delirium (dette på grunn av læringseffekten av oppgaven \"Rekkefølge av årets måneder baklengs\"). Endret nivå \"Årvåkenhet\" og \"Akutt endring eller fluktasjon i tilstand\", kan brukes daglig eller hyppigere sammen med en klinisk vurdering og/eller bruk av verktøy som er spesifikt laget for monitorering av delirium.">
+			keywords = <"delirium", ...>
+			misuse = <"Brukes ikke for daglig monitorering av ny forekomst av delirium (dette på grunn av læringseffekten av oppgaven \"Rekkefølge av årets måneder baklengs\").">
+		>
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To record the 4AT score after screening for delirium in clinical practice.">
+			use = <"Use to record the 4AT score after screening for delirium in clinical practice.
+
+Note that the 4AT is not designed for repeated daily monitoring for new onset delirium (because of practice effects with the Months Backwards task). Altered level of arousal (Item 1), and change or fluctuation (Item 4) can readily be used daily or even more frequently, along with general clinical judgement and/or use of tools specifically designed for ongoing monitoring of delirium.">
+			keywords = <"delirium, assessment, alertness", ...>
+			misuse = <"Not to be used for repeated daily monitoring for new onset delirium (because of practice effects with the Months Backwards task).">
+			copyright = <"© openEHR Foundation, Nasjonal IKT HF">
+		>
+	>
+	lifecycle_state = <"in_development">
+	other_contributors = <"Heather Leslie, Atomica Informatics, Australia", ...>
+	other_details = <
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
+		["custodian_organisation"] = <"openEHR Foundation">
+		["references"] = <"4AT Rapid Clinical Test For Delirium [Internet]. 2014 [cited 2019 Dec 26]. Available from: https://www.the4at.com/">
+		["current_contact"] = <"John Tore Valand, john.tore.valand@helse-bergen.no">
+		["original_namespace"] = <"org.openehr">
+		["original_publisher"] = <"openEHR Foundation">
+		["custodian_namespace"] = <"org.openehr">
+		["MD5-CAM-1.0.1"] = <"959A8882C46631A346A9AF9A58E169CA">
+		["build_uid"] = <"0ebaf060-047e-4f95-b823-7a1045837e4e">
+		["revision"] = <"0.0.1-alpha">
+	>
+
+definition
+	OBSERVATION[at0000] matches {    -- 4AT
+		data matches {
+			HISTORY[at0001] matches {    -- History
+				events cardinality matches {0..*; unordered} matches {
+					POINT_EVENT[at0002] occurrences matches {0..*} matches {    -- Any point in time event
+						data matches {
+							ITEM_TREE[at0003] matches {    -- ItemTree
+								items cardinality matches {0..*; unordered} matches {
+									ELEMENT[at0004] occurrences matches {0..1} matches {    -- [1] ALERTNESS
+										value matches {
+											0|[local::at0005],
+											4|[local::at0007],
+											0|[local::at0006]
+										}
+									}
+									ELEMENT[at0008] occurrences matches {0..1} matches {    -- [2] AMT4
+										value matches {
+											0|[local::at0009],
+											1|[local::at0010],
+											2|[local::at0011]
+										}
+									}
+									ELEMENT[at0012] occurrences matches {0..1} matches {    -- [3] ATTENTION
+										value matches {
+											0|[local::at0013],
+											1|[local::at0014],
+											2|[local::at0015]
+										}
+									}
+									ELEMENT[at0016] occurrences matches {0..1} matches {    -- [4] ACUTE CHANGE OR FLUCTUATING COURSE
+										value matches {
+											0|[local::at0017],
+											4|[local::at0018]
+										}
+									}
+									ELEMENT[at0019] occurrences matches {0..1} matches {    -- 4AT score
+										value matches {
+											DV_COUNT matches {
+												magnitude matches {|0..15|}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		protocol matches {
+			ITEM_TREE[at0020] matches {    -- ItemTree
+				items cardinality matches {0..*; unordered} matches {
+					allow_archetype CLUSTER[at0021] occurrences matches {0..*} matches {    -- Extension
+						include
+							archetype_id/value matches {/.*/}
+					}
+				}
+			}
+		}
+	}
+
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"4AT">
+					description = <"Screening instrument designed for rapid initial assessment of delirium and cognitive impairment.">
+				>
+				["at0001"] = <
+					text = <"History">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Any point in time event">
+					description = <"Unspecified point in time event which may be explicitly defined in a template or at run-time.">
+				>
+				["at0003"] = <
+					text = <"ItemTree">
+					description = <"@ internal @">
+				>
+				["at0004"] = <
+					text = <"[1] ALERTNESS">
+					description = <"This includes patients who may be markedly drowsy (eg. difficult to rouse and/or obviously sleepy 
+during assessment) or agitated/hyperactive. Observe the patient. If asleep, attempt to wake with speech or gentle touch on shoulder. Ask the patient to state their name and address to assist rating.">
+				>
+				["at0005"] = <
+					text = <"Normal (fully alert, but not agitated, throughout assessment)">
+					description = <"*">
+				>
+				["at0007"] = <
+					text = <"Clearly abnormal">
+					description = <"*">
+				>
+				["at0008"] = <
+					text = <"[2] AMT4">
+					description = <"Age, date of birth, place (name of the hospital or building), current year.">
+				>
+				["at0009"] = <
+					text = <"No mistakes">
+					description = <"*">
+				>
+				["at0010"] = <
+					text = <"1 mistake">
+					description = <"*">
+				>
+				["at0011"] = <
+					text = <"2 or more mistakes/untestable">
+					description = <"*">
+				>
+				["at0012"] = <
+					text = <"[3] ATTENTION">
+					description = <"Months of the year backwards.">
+					comment = <"Ask the patient: “Please tell me the months of the year in backwards order, starting at December.” 
+To assist initial understanding one prompt of “what is the month before December?” is permitted.">
+				>
+				["at0013"] = <
+					text = <"Achieves 7 months or more correctly">
+					description = <"*">
+				>
+				["at0014"] = <
+					text = <"Starts but scores <7 months / refuses to start">
+					description = <"*">
+				>
+				["at0015"] = <
+					text = <"Untestable (cannot start because unwell, drowsy, inattentive)">
+					description = <"*">
+				>
+				["at0016"] = <
+					text = <"[4] ACUTE CHANGE OR FLUCTUATING COURSE">
+					description = <"Evidence of significant change or fluctuation in: alertness, cognition, other mental function.">
+					comment = <"eg. paranoia, hallucinations) arising over the last 2 weeks and still evident in last 24hrs.">
+				>
+				["at0017"] = <
+					text = <"No">
+					description = <"*">
+				>
+				["at0018"] = <
+					text = <"Yes">
+					description = <"*">
+				>
+				["at0020"] = <
+					text = <"ItemTree">
+					description = <"@ internal @">
+				>
+				["at0021"] = <
+					text = <"Extension">
+					description = <"Additional information required to capture local content or to align with other reference models/formalisms.">
+					comment = <"For example: local information requirements or additional metadata to align with FHIR or CIMI equivalents.">
+				>
+				["at0019"] = <
+					text = <"4AT score">
+					description = <"The sum of the 4 ordinal scores for each component parameter.">
+				>
+				["at0006"] = <
+					text = <"Mild sleepiness for <11 seconds after waking, then normal">
+					description = <"*">
+				>
+			>
+		>
+		["nb"] = <
+			items = <
+				["at0000"] = <
+					text = <"4AT - Screening for delirium og kognitiv svikt">
+					description = <"Instrumentet 4AT er utformet for en rask førstegangsvurdering av delirium og kognitiv svikt.">
+				>
+				["at0001"] = <
+					text = <"History">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Uspesifisert tidspunkthendelse">
+					description = <"Standard, uspesifisert tidspunkt som kan defineres mer eksplisitt i et templat eller i en applikasjon.">
+				>
+				["at0003"] = <
+					text = <"ItemTree">
+					description = <"@ internal @">
+				>
+				["at0004"] = <
+					text = <"[1] ÅRVÅKENHET (forholder seg normalt til omgivelsene)">
+					description = <"Pasienten virker tydelig døsig (dvs. vanskelig å vekke og/ eller er åpenbart søvnig ved undersøkelsen) eller motorisk urolig/hyperaktiv. Observer pasienten. Hvis pasienten sover, forsøk å vekke pasienten med vanlig stemme eller ved varsom berøring på skulderen. Be pasienten oppgi navn og adresse til hjelp med vurderingen.">
+				>
+				["at0005"] = <
+					text = <"Normal (helt årvåken, ikke urolig ved undersøkelse) eller Lett søvnig <11 sekunder etter oppvåkning, deretter normal.">
+					description = <"*">
+				>
+				["at0007"] = <
+					text = <"Tydelig unormal(t)">
+					description = <"*">
+				>
+				["at0008"] = <
+					text = <"[2] AMT4 (Forkortet mental vurdering)">
+					description = <"Alder, fødselsdato, sted (navnet på sykehuset eller bygning), årstall.">
+				>
+				["at0009"] = <
+					text = <"Ingen feil">
+					description = <"*">
+				>
+				["at0010"] = <
+					text = <"1 feil">
+					description = <"*">
+				>
+				["at0011"] = <
+					text = <"2 feil eller flere/ikke testbar">
+					description = <"*">
+				>
+				["at0012"] = <
+					text = <"[3] OPPMERKSOMHET">
+					description = <"Rekkefølgen av årets måneder baklens">
+					comment = <"Spør pasienten: “Kan du i baklengs rekkefølge nevne for meg årets måneder, begynn med desember». Å hjelpe pasienten med et innledende spørsmål «hva er måneden før desember?» er tillatt.
+">
+				>
+				["at0013"] = <
+					text = <"Oppgir 7 måneder eller flere korrekt">
+					description = <"*">
+				>
+				["at0014"] = <
+					text = <"Begynner, men klarer <7 måneder/ avslår å begynne">
+					description = <"*">
+				>
+				["at0015"] = <
+					text = <"Ikke testbar (er uvel, døsig, uoppmerksom)">
+					description = <"*">
+				>
+				["at0016"] = <
+					text = <"[4] AKUTT ENDRING ELLER FLUKTUASJON I TILSTAND">
+					description = <"Holdepunkter for betydelige endringer eller fluktuasjoner knyttet til: årvåkenhet, kognisjon, annen mental funksjon.
+">
+					comment = <"F.eks. paranoide symptomer, hallusinasjoner) oppstått i løpet av de siste to uker og fremdeles tilstede de siste 24 timer.">
+				>
+				["at0017"] = <
+					text = <"Nei">
+					description = <"*">
+				>
+				["at0018"] = <
+					text = <"Ja">
+					description = <"*">
+				>
+				["at0020"] = <
+					text = <"ItemTree">
+					description = <"@ internal @">
+				>
+				["at0021"] = <
+					text = <"Tilleggsinformasjon">
+					description = <"Ytterligere informasjon som trengs for å kunne registrere lokalt definert innhold eller for å tilpasse til andre referansemodeller/formalismer.">
+					comment = <"For eksempel lokale informasjonsbehov eller ytterligere metadata for å kunne tilpasse til tilsvarende konsepter i FHIR eller CIMI.">
+				>
+				["at0019"] = <
+					text = <"4AT skår">
+					description = <"Summen av de 4 ordinal skårene for hver enkelt parameter.">
+				>
+				["at0006"] = <
+					text = <"*Mild sleepiness for <11 seconds after waking, then normal(en)">
+					description = <"*">
+				>
+			>
+		>
+	>

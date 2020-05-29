@@ -2,16 +2,16 @@
 	openEHR-EHR-CLUSTER.telecom_details.v0
 
 concept
-	[at0000]	-- Telecom details
+	[at0000]	-- Communication details
 language
 	original_language = <[ISO_639-1::en]>
 	translations = <
 		["de"] = <
 			language = <[ISO_639-1::de]>
 			author = <
-				["name"] = <"Hans Demski">
-				["organisation"] = <"Helmholtz Zentrum München">
-				["email"] = <"demski@helmholtz-muenchen.de">
+				["name"] = <"Sarah Ballout">
+				["organisation"] = <"MHH-Hannover">
+				["email"] = <"Ballout.Sarah@mh-hannover.de">
 			>
 		>
 		["ar-sy"] = <
@@ -29,19 +29,19 @@ description
 		["date"] = <"2007-11-04">
 	>
 	details = <
+		["de"] = <
+			language = <[ISO_639-1::de]>
+			purpose = <"Zur Repräsentation von Kontaktdaten einer Person oder Einrichtung.">
+			use = <"Zur Repräsentation von Kontaktdaten einer Person oder Einrichtung, einschließlich Email oder weiterer internetbasierter Kommunikationsmittel.">
+			keywords = <"Telefon", "Mobilfunk", "Email", "Pager", "Handy", "Telefax", "Fax">
+			misuse = <"">
+			copyright = <"© openEHR Foundation">
+		>
 		["en"] = <
 			language = <[ISO_639-1::en]>
 			purpose = <"To record telecommunications details for an individual or organisation.">
 			use = <"Use to record telecommunications details for an individual or organisation, including email or other internet based communication.">
 			keywords = <"telephone", "facsimile", "fax", "mobile", "email", "pager">
-			misuse = <"">
-			copyright = <"© openEHR Foundation">
-		>
-		["de"] = <
-			language = <[ISO_639-1::de]>
-			purpose = <"Zur Dokumentation von Kontaktdaten einer Person oder Einrichtung.">
-			use = <"Zur Dokumentation von Kontaktdaten einer Person oder Einrichtung, einschließlich Email oder weiterer internetbasierter Kommunikationsmittel.">
-			keywords = <"Telefon", "Mobilfunk", "Email", "Pager", "Handy", "Telefax">
 			misuse = <"">
 			copyright = <"© openEHR Foundation">
 		>
@@ -63,22 +63,21 @@ description
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"051A72A0A75627F5389BD5F262701E75">
-		["build_uid"] = <"2f47cb95-5610-4b8e-a0d4-5fd1003a0a85">
+		["MD5-CAM-1.0.1"] = <"D25E67D221F6288857E816CE42D97A3B">
+		["build_uid"] = <"3af0f038-2786-4ed9-8118-ad7d4f0b96d0">
 		["revision"] = <"0.0.1-alpha">
 	>
 
 definition
-	CLUSTER[at0000] matches {	-- Telecom details
+	CLUSTER[at0000] matches {	-- Communication details
 		items cardinality matches {1..*; unordered} matches {
 			ELEMENT[at0010] occurrences matches {0..*} matches {	-- Mode
 				value matches {
 					DV_CODED_TEXT matches {
 						defining_code matches {
 							[local::
-							at0011, 	-- Home
-							at0012, 	-- Work
-							at0018]	-- Contact
+							at0011, 	-- Private
+							at0012]	-- Work
 						}
 					}
 				}
@@ -115,7 +114,7 @@ definition
 									DV_TEXT matches {*}
 								}
 							}
-							ELEMENT[at0007] occurrences matches {0..1} matches {	-- Number
+							ELEMENT[at0007] matches {	-- Number
 								value matches {
 									DV_TEXT matches {*}
 								}
@@ -129,9 +128,19 @@ definition
 					}
 				}
 			}
-			ELEMENT[at0009] occurrences matches {0..*} matches {	-- Email address
-				value matches {
-					DV_TEXT matches {*}
+			CLUSTER[at0020] occurrences matches {0..*} matches {	-- Internet communication
+				items cardinality matches {2..*; unordered} matches {
+					ELEMENT[at0021] matches {	-- Channel
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0009] matches {	-- Address
+						value matches {
+							DV_TEXT matches {*}
+							DV_URI matches {*}
+						}
+					}
 				}
 			}
 		}
@@ -143,8 +152,8 @@ ontology
 		["en"] = <
 			items = <
 				["at0000"] = <
-					text = <"Telecom details">
-					description = <"Personal or organisational telephone, fax, and email details.">
+					text = <"Communication details">
+					description = <"Personal or organisational communication details.">
 				>
 				["at0001"] = <
 					text = <"Telecoms">
@@ -175,20 +184,21 @@ ontology
 					description = <"Telephone number.">
 				>
 				["at0009"] = <
-					text = <"Email address">
-					description = <"Email address.">
+					text = <"Address">
+					description = <"The address or identifier used to communicate on the specified communication channel.">
+					comment = <"For example an email address or a URI.">
 				>
 				["at0010"] = <
 					text = <"Mode">
-					description = <"A qualifier for a telecom contact, describing its context e.g. 'Work', 'Home'.   ENV 13606 - 4:2000 7.11.19.">
+					description = <"A qualifier for a telecom contact, describing its context e.g. 'Work', 'Private'.   ENV 13606 - 4:2000 7.11.19.">
 				>
 				["at0011"] = <
-					text = <"Home">
-					description = <"Telecommunication detail for home.">
+					text = <"Private">
+					description = <"Details of private communication channels.">
 				>
 				["at0012"] = <
 					text = <"Work">
-					description = <"Telecommunication detail for work.">
+					description = <"Details of work communication channels.">
 				>
 				["at0013"] = <
 					text = <"Telephone">
@@ -206,97 +216,108 @@ ontology
 					text = <"Pager">
 					description = <"Pager number details.">
 				>
-				["at0018"] = <
-					text = <"Contact">
-					description = <"Contact.">
-				>
 				["at0019"] = <
 					text = <"Extension">
 					description = <"Telephone extension number.  ENV13606-4:2000 7.11.18.">
+				>
+				["at0020"] = <
+					text = <"Internet communication">
+					description = <"Details of internet based communication.">
+				>
+				["at0021"] = <
+					text = <"Channel">
+					description = <"The type of communication channel or service used.">
+					comment = <"For example e-mail, SIP, Skype, or other type of synchronous or asynchronous internet based communication channel.">
 				>
 			>
 		>
 		["de"] = <
 			items = <
 				["at0000"] = <
-					text = <"Kontaktdaten">
-					description = <"Angaben zur Kontaktaufnahme mit einer Person oder Einrichtung per Telefon, Faxgerät oder Email">
+					text = <"Einzelheiten der Kommunikation">
+					description = <"Angaben zur persönlichen oder organisatorischen Kommunikation.">
 				>
 				["at0001"] = <
 					text = <"Kontaktdaten">
-					description = <"Eine oder mehrere Kontaktadressen einer Person oder Einrichtung">
+					description = <"Eine oder mehrere Kontaktadressen einer Person oder Einrichtung.">
 				>
 				["at0002"] = <
 					text = <"Unstrukturierte Kontaktadresse">
-					description = <"Unstrukturierte Kontaktadresse">
+					description = <"Eine unstrukturierte Zusammenfassung der Kontaktadresse.">
 				>
 				["at0003"] = <
 					text = <"Strukturierte Kontaktadresse">
-					description = <"Strukturierte Angabe von Telefonnummern mit Feldern nach ENV13606-4:2000 7.11.18">
+					description = <"Strukturierte Angabe von Telefonnummern mit Feldern nach ENV13606-4:2000 7.11.18.">
 				>
 				["at0004"] = <
 					text = <"Kontakttyp">
-					description = <"Typ des Kontakts z.B. Telefon, Fax, Pager etc.  ENV 13606-4:2000 7.11.19">
+					description = <"Typ des Kontakts z.B. Telefon, Fax, Pager etc. ENV 13606-4:2000 7.11.19.">
 				>
 				["at0005"] = <
 					text = <"Landesvorwahl">
-					description = <"Landesvorwahl.  ENV13606-4:2000 7.11.18">
+					description = <"Landesvorwahl. ENV13606-4:2000 7.11.18.">
 				>
 				["at0006"] = <
-					text = <"Ortsnetzkennzahl">
-					description = <"Ortsnetzkennzahl oder Vorwahlteil einer Sonderrufnummer">
+					text = <"Ortsvorwahl">
+					description = <"Telefonvorwahl.">
 				>
 				["at0007"] = <
 					text = <"Nummer">
-					description = <"Telefonnummer">
+					description = <"Telefonnummer.">
 				>
 				["at0009"] = <
-					text = <"Emailadresse">
-					description = <"Emailadresse">
+					text = <"Adresse">
+					description = <"Die Adresse oder Kennung, die zur Kommunikation auf dem angegebenen Kommunikationsweg verwendet wird.">
+					comment = <"Zum Beispiel eine E-Mail-Adresse oder eine URI.">
 				>
 				["at0010"] = <
-					text = <"Art">
-					description = <"Zuordnung einer Kontaktangabe bzgl. der Umgebung z.B. 'Arbeit', 'Privat'.   ENV 13606 - 4:2000 7.11.19(en)">
+					text = <"Modus">
+					description = <"Eine Kennzeichnung für einen Telekommunikationskontakt, die dessen Kontext beschreibt, z.B. \"Arbeit\", \"Privat\". ENV 13606 - 4:2000 7.11.19.">
 				>
 				["at0011"] = <
 					text = <"Privat">
-					description = <"*">
+					description = <"Angaben zu den privaten Kommunikationswegen.">
 				>
 				["at0012"] = <
 					text = <"Arbeit">
-					description = <"*">
+					description = <"Angaben zu den Kommunikationswegen der Arbeit.">
 				>
 				["at0013"] = <
 					text = <"Telefon">
-					description = <"*">
+					description = <"Angaben zur Telefonnummer.">
 				>
 				["at0014"] = <
 					text = <"Telefax">
-					description = <"*">
+					description = <"Angaben zur Faxnummer.">
 				>
 				["at0015"] = <
 					text = <"Mobiltelefon">
-					description = <"*">
+					description = <"Angaben zur Mobiltelefonnummer.">
 				>
 				["at0016"] = <
 					text = <"Pager">
-					description = <"*">
-				>
-				["at0018"] = <
-					text = <"Kontakt">
-					description = <"*">
+					description = <"Angaben zur Pager-Nummer.">
 				>
 				["at0019"] = <
 					text = <"Durchwahl">
-					description = <"Durchwahl. ENV13606-4:2000 7.11.18">
+					description = <"Durchwahl des Telefons. ENV13606-4:2000 7.11.18.">
+				>
+				["at0020"] = <
+					text = <"Internet-Kommunikation">
+					description = <"Angaben zur internetbasierten Kommunikation.">
+				>
+				["at0021"] = <
+					text = <"Sender">
+					description = <"Die Art des verwendeten Kommunikationsmediums oder Dienstes.">
+					comment = <"Zum Beispiel E-Mail, SIP, Skype oder andere Arten von synchronen oder asynchronen internetbasierten Kommunikationsmitteln.">
 				>
 			>
 		>
 		["ar-sy"] = <
 			items = <
 				["at0000"] = <
-					text = <"تفاصيل الاتصالات السلكية و اللاسلكية">
-					description = <"تفاصيل الهاتف, الفاكس, و البريد الإلكتروني الخاص بالفرد أو المؤسسة">
+					text = <"*Communication details(en)">
+					description = <"*Personal or organisational communication details.(en)">
 				>
 				["at0001"] = <
 					text = <"الاتصالات السلكية و اللاسلكية">
@@ -330,21 +351,21 @@ ENV13606-4:2000 7.11.18.">
 					description = <"رقم الهاتف">
 				>
 				["at0009"] = <
-					text = <"عنوان البريد الإلكتروني">
-					description = <"عنوان البريد الإلكتروني">
+					text = <"*Address(en)">
+					description = <"*The address or identifier used to communicate on the specified communication channel.(en)">
+					comment = <"*For example an email address or a URI.(en)">
 				>
 				["at0010"] = <
-					text = <"الشكل">
-					description = <"عنصر مميز لأحد جهات الاتصال السلكي أو اللاسلكي بما يصف السياق, مثل: العمل, المنزل.
-ENV 13606 - 4:2000 7.11.19.">
+					text = <"*Mode(en)">
+					description = <"*A qualifier for a telecom contact, describing its context e.g. 'Work', 'Private'.   ENV 13606 - 4:2000 7.11.19.(en)">
 				>
 				["at0011"] = <
-					text = <"المنزل">
-					description = <"تفاصيل الاتصال للمنزل">
+					text = <"*Private(en)">
+					description = <"*Details of private communication channels.(en)">
 				>
 				["at0012"] = <
-					text = <"العمل">
-					description = <"تفاصيل الاتصال للعمل">
+					text = <"*Work(en)">
+					description = <"*Details of work communication channels.(en)">
 				>
 				["at0013"] = <
 					text = <"الهاتف">
@@ -362,14 +383,19 @@ ENV 13606 - 4:2000 7.11.19.">
 					text = <"جهاز الإخطار">
 					description = <"تفاصيل رقم جهاز الإخطار">
 				>
-				["at0018"] = <
-					text = <"جهة الاتصال">
-					description = <"جهة الاتصال">
-				>
 				["at0019"] = <
 					text = <"الامتداد">
 					description = <"رقم امتداد الهاتف.
 ENV13606-4:2000 7.11.18.">
+				>
+				["at0020"] = <
+					text = <"*Internet communication(en)">
+					description = <"*Details of internet based communication.(en)">
+				>
+				["at0021"] = <
+					text = <"*Channel(en)">
+					description = <"*The type of communication channel or service used.(en)">
+					comment = <"*For example e-mail, SIP, Skype, or other type of synchronous or asynchronous internet based communication channel.(en)">
 				>
 			>
 		>

@@ -2,10 +2,18 @@
 	openEHR-EHR-EVALUATION.menstrual_cycle_summary.v0
 
 concept
-	[at0000]	-- Menstrual cycle summary
+	[at0000]	-- Menstruation summary
 language
 	original_language = <[ISO_639-1::en]>
 	translations = <
+		["fi"] = <
+			language = <[ISO_639-1::fi]>
+			author = <
+				["name"] = <"Vesa Peltola">
+				["organisation"] = <"Tieto Finland">
+				["email"] = <"vesa.peltola@tieto.com">
+			>
+		>
 		["nb"] = <
 			language = <[ISO_639-1::nb]>
 			author = <
@@ -18,18 +26,17 @@ language
 description
 	original_author = <
 		["name"] = <"Heather Leslie">
-		["organisation"] = <"Ocean Informatics, Australia">
-		["email"] = <"heather.leslie@oceaninformatics.com">
-		["date"] = <"9/03/2011">
+		["organisation"] = <"Atomica Informatics, Australia">
+		["email"] = <"heather.leslie@atomicainformatics.com">
+		["date"] = <"2011-03-09">
 	>
 	details = <
-		["en"] = <
-			language = <[ISO_639-1::en]>
-			purpose = <"To record an overview of the significant events related to menstrual cycle events.">
-			use = <"Use to record significant events related to the menstrual history.">
-			keywords = <"menstruation", "menstrual", "cycle", "period", "menarche", "menopause", "LNMP">
-			misuse = <"Not to be used to record information about menses or related symptoms for a specific menstrual cycle or pattern over multiple cycles. Use OBSERVATION.menstrual_cycle for this purpose.">
-			copyright = <"© 2011 NEHTA, openEHR Foundation">
+		["fi"] = <
+			language = <[ISO_639-1::fi]>
+			purpose = <"*To record an overview of the significant events related to menstrual cycle events.(en)">
+			use = <"*Use to record significant events related to the menstrual history.(en)">
+			keywords = <"*menstruation(en)", "*menstrual(en)", "*cycle(en)", "*period(en)", "*menarche(en)", "*menopause(en)", "*LNMP(en)">
+			misuse = <"*Not to be used to record information about menses or related symptoms for a specific menstrual cycle or pattern over multiple cycles. Use OBSERVATION.menstrual_cycle for this purpose.(en)">
 		>
 		["nb"] = <
 			language = <[ISO_639-1::nb]>
@@ -38,38 +45,174 @@ description
 			keywords = <"menstruasjon", "menstruerende", "syklus", "menarke", "menopause", "overgangsalder", "mensen">
 			misuse = <"Brukes ikke for å registrere detaljer om selve menstruasjonen eller symptomer som er relatert til en menstruasjonssyklus eller mønsteret for menstruasjonssyklusen. Bruk OBSERVATION.menstrual_cycle for dette formålet.">
 		>
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To record summary or persistent information about an individual's menstruation history events or patterns of menstruation over time.">
+			use = <"Use to record summary or persistent information about an individual's menstruation history events or patterns of menstruation over time.
+
+Multiple instances of the 'Per episode' CLUSTER will allow aggregation of an evolving history of both past and present episodes, or patterns, of menstruation.
+
+The 'Last updated' data element will record the last time that the Menstruation summary as a whole, including each episode, was updated.
+
+Use to incorporate the narrative descriptions of Menstruation or menstrual history within existing or legacy clinical systems into an archetyped format, using the 'Overall description' data element.">
+			keywords = <"menstruation", "menarche", "menopause", "menopausal", "perimenopausal", "postmenopausal">
+			misuse = <"Not to be used to record information about a specific menstrual cycle or a specific number of cycles. Use OBSERVATION.menstruation for this purpose.">
+			copyright = <"© openEHR Foundation">
+		>
 	>
 	lifecycle_state = <"in_development">
-	other_contributors = <"Sam Heard, Ocean Informatics, Australia", ...>
+	other_contributors = <"John Tore Valand, Helse Bergen Hospital Trust, Norway", "Silje Ljosland Bakke", "Vebjørn Arntzen", "Marit Venheim", "Anca Heyd, DIPS", "Bjorn Naess, DIPS">
 	other_details = <
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
 		["custodian_organisation"] = <"openEHR Foundation">
-		["references"] = <"Derived from: Menstrual cycle summary, Draft Archetype [Internet]. Australian Digital Health Agency, Australian Digital Health Agency Clinical Knowledge Manager [cited: 2017-04-28]. Available from: http://dcm.nehta.org.au/ckm/#showArchetype_1013.1.995">
+		["references"] = <"Derived from: Menstrual cycle summary, draft archetype [Internet]. Australian Digital Health Agency (NEHTA), ADHA Clinical Knowledge Manager. No longer available.">
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"E5CD45ABEC00145B6FACD2B88B80BBC4">
-		["build_uid"] = <"c15b3ab5-bb8a-451e-acfa-6c1211263685">
+		["MD5-CAM-1.0.1"] = <"C7C67CCF40013F2B35A5CC5E7B293202">
+		["build_uid"] = <"73edc5b7-b955-4dbd-a658-c6f1933319c7">
 		["revision"] = <"0.0.1-alpha">
 	>
 
 definition
-	EVALUATION[at0000] matches {	-- Menstrual cycle summary
+	EVALUATION[at0000] matches {    -- Menstruation summary
 		data matches {
-			ITEM_TREE[at0001] matches {	-- Tree
+			ITEM_TREE[at0001] matches {    -- Tree
 				items cardinality matches {0..*; unordered} matches {
-					ELEMENT[at0002] occurrences matches {0..1} matches {	-- Menarche
+					ELEMENT[at0025] occurrences matches {0..1} matches {    -- Overall description
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0002] occurrences matches {0..1} matches {    -- Age at menarche
+						value matches {
+							DV_DURATION matches {
+								value matches {PYM/|>=P0M|}
+							}
+						}
+					}
+					CLUSTER[at0010] occurrences matches {0..*} matches {    -- Per episode
+						items cardinality matches {1..*; unordered} matches {
+							ELEMENT[at0011] occurrences matches {0..1} matches {    -- Episode label
+								value matches {
+									DV_TEXT matches {*}
+								}
+							}
+							ELEMENT[at0012] occurrences matches {0..1} matches {    -- Episode start date
+								value matches {
+									DV_DATE_TIME matches {*}
+								}
+							}
+							ELEMENT[at0013] occurrences matches {0..1} matches {    -- Description
+								value matches {
+									DV_TEXT matches {*}
+								}
+							}
+							ELEMENT[at0014] occurrences matches {0..1} matches {    -- Typical pattern
+								value matches {
+									DV_CODED_TEXT matches {
+										defining_code matches {
+											[local::
+											at0015,    -- Regular
+											at0016]    -- Irregular
+										}
+									}
+								}
+							}
+							ELEMENT[at0017] occurrences matches {0..1} matches {    -- Typical cycle length
+								value matches {
+									DV_DURATION matches {
+										value matches {PYMD/|>=P1D|}
+									}
+									DV_INTERVAL<DV_DURATION> matches {
+										lower matches {
+											DV_DURATION matches {
+												value matches {PMD/|>=P1D|}
+											}
+										}
+										upper matches {
+											DV_DURATION matches {
+												value matches {PMD/|>=P2D|}
+											}
+										}
+									}
+								}
+							}
+							ELEMENT[at0018] occurrences matches {0..1} matches {    -- Typical menses duration
+								value matches {
+									DV_DURATION matches {
+										value matches {PYMD/|>=P1D|}
+									}
+									DV_INTERVAL<DV_DURATION> matches {
+										lower matches {
+											DV_DURATION matches {
+												value matches {PMD/|>=P1D|}
+											}
+										}
+										upper matches {
+											DV_DURATION matches {
+												value matches {PMD/|>=P2D|}
+											}
+										}
+									}
+								}
+							}
+							ELEMENT[at0019] occurrences matches {0..*} matches {    -- Contraception used
+								value matches {
+									DV_TEXT matches {*}
+								}
+							}
+							allow_archetype CLUSTER[at0020] occurrences matches {0..*} matches {    -- Additional details
+								include
+									archetype_id/value matches {/.*/}
+							}
+							ELEMENT[at0021] occurrences matches {0..1} matches {    -- Episode end date
+								value matches {
+									DV_DATE_TIME matches {*}
+								}
+							}
+							ELEMENT[at0022] occurrences matches {0..1} matches {    -- Episode comment
+								value matches {
+									DV_TEXT matches {*}
+								}
+							}
+						}
+					}
+					ELEMENT[at0003] occurrences matches {0..1} matches {    -- Menopausal status
+						value matches {
+							DV_CODED_TEXT matches {
+								defining_code matches {
+									[local::
+									at0005,    -- Premenopausal
+									at0006,    -- Perimenopausal
+									at0007]    -- Postmenopausal
+								}
+							}
+						}
+					}
+					ELEMENT[at0004] occurrences matches {0..1} matches {    -- Age at menopause
 						value matches {
 							DV_DATE matches {*}
 						}
 					}
-					ELEMENT[at0003] occurrences matches {0..1} matches {	-- Last normal menstrual period (LNMP)
+					ELEMENT[at0023] occurrences matches {0..1} matches {    -- Comment
 						value matches {
-							DV_DATE matches {*}
+							DV_TEXT matches {*}
 						}
 					}
-					ELEMENT[at0004] occurrences matches {0..1} matches {	-- Menopause
+				}
+			}
+		}
+		protocol matches {
+			ITEM_TREE[at0008] matches {    -- Item tree
+				items cardinality matches {0..*; unordered} matches {
+					allow_archetype CLUSTER[at0009] occurrences matches {0..*} matches {    -- Extension
+						include
+							archetype_id/value matches {/.*/}
+					}
+					ELEMENT[at0024] occurrences matches {0..1} matches {    -- Date last updated
 						value matches {
-							DV_DATE matches {*}
+							DV_DATE_TIME matches {*}
 						}
 					}
 				}
@@ -78,30 +221,120 @@ definition
 	}
 
 
-
 ontology
 	term_definitions = <
 		["en"] = <
 			items = <
 				["at0000"] = <
-					text = <"Menstrual cycle summary">
-					description = <"Summary of significant menstrual cycle events.">
+					text = <"Menstruation summary">
+					description = <"Summary or persistent information about an individual's menstruation history.">
 				>
 				["at0001"] = <
 					text = <"Tree">
 					description = <"@ internal @">
 				>
 				["at0002"] = <
-					text = <"Menarche">
-					description = <"Date of onset of first menstrual cycle. Partial dates, such as year only or year and month are allowed.">
+					text = <"Age at menarche">
+					description = <"Age at onset of first menstrual cycle.">
 				>
 				["at0003"] = <
-					text = <"Last normal menstrual period (LNMP)">
-					description = <"Date of the onset of the last normal menstrual period. Useful to persist for calculations including estimated date of confinement in pregnancy, or to distinguish the latest typical menstrual cycle when there is an irregular menstrual pattern.">
+					text = <"Menopausal status">
+					description = <"The current context of the individual related to menopause.">
+					comment = <"If this data element is updated, the 'Date last updated' in Protocol should also be amended.">
 				>
 				["at0004"] = <
-					text = <"Menopause">
-					description = <"Onset of Menopause. Partial dates, such as year only or year and month are allowed.">
+					text = <"Age at menopause">
+					description = <"Age at cessation of menstrual cycles.">
+				>
+				["at0005"] = <
+					text = <"Premenopausal">
+					description = <"The period of a woman's life preceding the menopause without symptoms related to the hormonal changes preceding menopause.">
+				>
+				["at0006"] = <
+					text = <"Perimenopausal">
+					description = <"The period of a woman's life preceding the menopause with symptoms related to the hormonal changes leading up to menopause.">
+				>
+				["at0007"] = <
+					text = <"Postmenopausal">
+					description = <"The period of a woman's life after menopause.">
+				>
+				["at0008"] = <
+					text = <"Item tree">
+					description = <"@ internal @">
+				>
+				["at0009"] = <
+					text = <"Extension">
+					description = <"Additional information required to capture local content or to align with other reference models/formalisms.">
+					comment = <"For example: local information requirements or additional metadata to align with FHIR or CIMI equivalents.">
+				>
+				["at0010"] = <
+					text = <"Per episode">
+					description = <"Details about a typical pattern of menstruation during a specified interval of time.">
+					comment = <"If the pattern of menstruation changes significantly, or other factors significantly interrupt (for example, a full term pregnancy) or influence (for example, changing contraception methods) the menstrual cycle, then it may be useful to record as a new episode .">
+				>
+				["at0011"] = <
+					text = <"Episode label">
+					description = <"A name or label associated with this episode of menstruation.">
+					comment = <"The label will allow a specific episode to be distinguished from other episodes with similar or different menstruation patterns. For example: 'Post Pregnancy #2'; 'Commenced POP'.">
+				>
+				["at0012"] = <
+					text = <"Episode start date">
+					description = <"Date when this episode commenced.">
+					comment = <"Can be a partial date, for example, only a year.">
+				>
+				["at0013"] = <
+					text = <"Description">
+					description = <"Narrative description about this episode.">
+				>
+				["at0014"] = <
+					text = <"Typical pattern">
+					description = <"The usual predictability of menstruation during this episode.">
+				>
+				["at0015"] = <
+					text = <"Regular">
+					description = <"The start of menses is roughly predictable from month to month.">
+				>
+				["at0016"] = <
+					text = <"Irregular">
+					description = <"The start of menses is not predictable month to month.">
+				>
+				["at0017"] = <
+					text = <"Typical cycle length">
+					description = <"The usual length of cycle during this episode.">
+				>
+				["at0018"] = <
+					text = <"Typical menses duration">
+					description = <"The usual duration of menses during this episode.">
+				>
+				["at0019"] = <
+					text = <"Contraception used">
+					description = <"Identification of contraception used during this episode.">
+					comment = <"If the contraception used changes significantly it may warrant recording the new form as part of a new episode.">
+				>
+				["at0020"] = <
+					text = <"Additional details">
+					description = <"Additional structured details about this episode of menstruation.">
+				>
+				["at0021"] = <
+					text = <"Episode end date">
+					description = <"Date when this episode ceased.">
+					comment = <"Can be a partial date, for example, only a year. This data field will be empty if the episode is current and ongoing.">
+				>
+				["at0022"] = <
+					text = <"Episode comment">
+					description = <"Additional narrative about this episode of menstruation not captured in other fields.">
+				>
+				["at0023"] = <
+					text = <"Comment">
+					description = <"Additional narrative about the overall patterns and episodes of menstruation not captured in other fields.">
+				>
+				["at0024"] = <
+					text = <"Date last updated">
+					description = <"Date when the Menstruation summary, including episodes, was updated.">
+				>
+				["at0025"] = <
+					text = <"Overall description">
+					description = <"Narrative description about the overall pattern of menstruation over the individual's lifetime.">
 				>
 			>
 		>
@@ -116,16 +349,222 @@ ontology
 					description = <"@ internal @">
 				>
 				["at0002"] = <
-					text = <"Menarke">
+					text = <"*Age at menarche (en)">
 					description = <"Dato for første menstruasjon. Deldatoer, som år og måned eller bare år er tillatt.">
 				>
 				["at0003"] = <
-					text = <"Siste normale menstruasjon">
-					description = <"Dato for første dag av siste normale menstruasjon. Kan være nyttig for å utføre kalkulasjoner for bestemmelse av graviditet, eller for å skille mellom siste vanlige menstruasjon når det er et uregelmessig menstruasjonsmønster.">
+					text = <"*Menopausal status (en)">
+					description = <"*The current context of the individual related to menopause. (en)">
+					comment = <"*If this data element is updated, the 'Date last updated' in Protocol should also be amended. (en)">
 				>
 				["at0004"] = <
-					text = <"Menopause">
+					text = <"*Age at menopause (en)">
 					description = <"Datoen menopausen startet. Deldatoer, som år og måned eller bare år er tillatt.">
+				>
+				["at0005"] = <
+					text = <"*Premenopausal (en)">
+					description = <"*">
+				>
+				["at0006"] = <
+					text = <"*Perimenopausal (en)">
+					description = <"*">
+				>
+				["at0007"] = <
+					text = <"*Postmenopausal (en)">
+					description = <"*">
+				>
+				["at0008"] = <
+					text = <"*Item tree (en)">
+					description = <"@ internal @">
+				>
+				["at0009"] = <
+					text = <"*Extension (en)">
+					description = <"*">
+					comment = <"*For example: local information requirements or additional metadata to align with FHIR or CIMI equivalents. (en)">
+				>
+				["at0010"] = <
+					text = <"*Per episode (en)">
+					description = <"*">
+					comment = <"*If the pattern of menstruation changes significantly, or other factors significantly interrupt (for example, a full term pregnancy) or influence (for example, changing contraception methods) the menstrual cycle, then it may be useful to record as a new episode . (en)">
+				>
+				["at0011"] = <
+					text = <"*Episode label (en)">
+					description = <"*">
+					comment = <"*The label will allow a specific episode to be distinguished from other episodes with similar or different menstruation patterns. For example: 'Post Pregnancy #2'; 'Commenced POP'. (en)">
+				>
+				["at0012"] = <
+					text = <"*Episode start date (en)">
+					description = <"*">
+					comment = <"*Can be a partial date, for example, only a year. (en)">
+				>
+				["at0013"] = <
+					text = <"*Description (en)">
+					description = <"*">
+				>
+				["at0014"] = <
+					text = <"*Typical pattern (en)">
+					description = <"*">
+				>
+				["at0015"] = <
+					text = <"*Regular (en)">
+					description = <"*The start of menses is roughly predictable from month to month. (en)">
+				>
+				["at0016"] = <
+					text = <"*Irregular (en)">
+					description = <"*The start of menses is not predictable month to month. (en)">
+				>
+				["at0017"] = <
+					text = <"*Typical cycle length (en)">
+					description = <"*">
+				>
+				["at0018"] = <
+					text = <"*Typical menses duration (en)">
+					description = <"*">
+				>
+				["at0019"] = <
+					text = <"*Contraception used (en)">
+					description = <"*Identification of contraception used during this episode. (en)">
+					comment = <"*If the contraception used changes significantly it may warrant recording the new form as part of a new episode. (en)">
+				>
+				["at0020"] = <
+					text = <"*Additional details (en)">
+					description = <"*Additional structured details about this episode of menstruation. (en)">
+				>
+				["at0021"] = <
+					text = <"*Episode end date (en)">
+					description = <"*Date when this episode ceased. (en)">
+					comment = <"*Can be a partial date, for example, only a year. This data field will be empty if the episode is current and ongoing. (en)">
+				>
+				["at0022"] = <
+					text = <"*Episode comment (en)">
+					description = <"*Additional narrative about this episode of menstruation not captured in other fields. (en)">
+				>
+				["at0023"] = <
+					text = <"*Comment (en)">
+					description = <"*Additional narrative about the overall patterns and episodes of menstruation not captured in other fields. (en)">
+				>
+				["at0024"] = <
+					text = <"*Date last updated (en)">
+					description = <"*">
+				>
+				["at0025"] = <
+					text = <"*Overall description (en)">
+					description = <"*Narrative description about the overall pattern of menstruation over the individual's lifetime. (en)">
+				>
+			>
+		>
+		["fi"] = <
+			items = <
+				["at0000"] = <
+					text = <"Kuukautiskierron yhteenveto">
+					description = <"Yhteenveto merkittävistä kuukautiskiertoon liittyvistä tapahtumista.">
+				>
+				["at0001"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"*Age at menarche (en)">
+					description = <"Ensimmäisen kuukautiskierron alkamispäivä. Epätäydelliset päivämäärät, kuten pelkkä vuosi tai vuosi ja kuukausi, ovat sallittuja.">
+				>
+				["at0003"] = <
+					text = <"*Menopausal status (en)">
+					description = <"*The current context of the individual related to menopause. (en)">
+					comment = <"*If this data element is updated, the 'Date last updated' in Protocol should also be amended. (en)">
+				>
+				["at0004"] = <
+					text = <"*Age at menopause (en)">
+					description = <"Menopaussin alku – kuukautisten loppuminen (vaihdevuosi-iässä). Epätäydelliset päivämäärät, kuten pelkkä vuosi tai vuosi ja kuukausi, ovat sallittuja.">
+				>
+				["at0005"] = <
+					text = <"*Premenopausal (en)">
+					description = <"*">
+				>
+				["at0006"] = <
+					text = <"*Perimenopausal (en)">
+					description = <"*">
+				>
+				["at0007"] = <
+					text = <"*Postmenopausal (en)">
+					description = <"*">
+				>
+				["at0008"] = <
+					text = <"*Item tree (en)">
+					description = <"@ internal @">
+				>
+				["at0009"] = <
+					text = <"*Extension (en)">
+					description = <"*">
+					comment = <"*For example: local information requirements or additional metadata to align with FHIR or CIMI equivalents. (en)">
+				>
+				["at0010"] = <
+					text = <"*Per episode (en)">
+					description = <"*">
+					comment = <"*If the pattern of menstruation changes significantly, or other factors significantly interrupt (for example, a full term pregnancy) or influence (for example, changing contraception methods) the menstrual cycle, then it may be useful to record as a new episode . (en)">
+				>
+				["at0011"] = <
+					text = <"*Episode label (en)">
+					description = <"*">
+					comment = <"*The label will allow a specific episode to be distinguished from other episodes with similar or different menstruation patterns. For example: 'Post Pregnancy #2'; 'Commenced POP'. (en)">
+				>
+				["at0012"] = <
+					text = <"*Episode start date (en)">
+					description = <"*">
+					comment = <"*Can be a partial date, for example, only a year. (en)">
+				>
+				["at0013"] = <
+					text = <"*Description (en)">
+					description = <"*">
+				>
+				["at0014"] = <
+					text = <"*Typical pattern (en)">
+					description = <"*">
+				>
+				["at0015"] = <
+					text = <"*Regular (en)">
+					description = <"*The start of menses is roughly predictable from month to month. (en)">
+				>
+				["at0016"] = <
+					text = <"*Irregular (en)">
+					description = <"*The start of menses is not predictable month to month. (en)">
+				>
+				["at0017"] = <
+					text = <"*Typical cycle length (en)">
+					description = <"*">
+				>
+				["at0018"] = <
+					text = <"*Typical menses duration (en)">
+					description = <"*">
+				>
+				["at0019"] = <
+					text = <"*Contraception used (en)">
+					description = <"*Identification of contraception used during this episode. (en)">
+					comment = <"*If the contraception used changes significantly it may warrant recording the new form as part of a new episode. (en)">
+				>
+				["at0020"] = <
+					text = <"*Additional details (en)">
+					description = <"*Additional structured details about this episode of menstruation. (en)">
+				>
+				["at0021"] = <
+					text = <"*Episode end date (en)">
+					description = <"*Date when this episode ceased. (en)">
+					comment = <"*Can be a partial date, for example, only a year. This data field will be empty if the episode is current and ongoing. (en)">
+				>
+				["at0022"] = <
+					text = <"*Episode comment (en)">
+					description = <"*Additional narrative about this episode of menstruation not captured in other fields. (en)">
+				>
+				["at0023"] = <
+					text = <"*Comment (en)">
+					description = <"*Additional narrative about the overall patterns and episodes of menstruation not captured in other fields. (en)">
+				>
+				["at0024"] = <
+					text = <"*Date last updated (en)">
+					description = <"*">
+				>
+				["at0025"] = <
+					text = <"*Overall description (en)">
+					description = <"*Narrative description about the overall pattern of menstruation over the individual's lifetime. (en)">
 				>
 			>
 		>

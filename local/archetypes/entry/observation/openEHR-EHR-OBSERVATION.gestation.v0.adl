@@ -1,0 +1,219 @@
+﻿archetype (adl_version=1.4; uid=8fb4cc02-03f0-484e-b19d-805b29e455ea)
+	openEHR-EHR-OBSERVATION.gestation.v0
+
+concept
+	[at0000]	-- Gestation
+language
+	original_language = <[ISO_639-1::en]>
+description
+	original_author = <
+		["name"] = <"Sam Heard">
+		["organisation"] = <"NT mEHR Project">
+		["email"] = <"sam.heard@oceaninformatics.com">
+		["date"] = <"2012-01-04">
+	>
+	details = <
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To record the estimated or known gestation age of a current pregnancy or new born at a point in time.">
+			use = <"To record the estimated or known gestational age of a pregnancy or new born.">
+			keywords = <"gestation", "gestational age", "conceptional age", "maturity">
+			misuse = <"Not to record the historical gestational age of the fetus at birth. This is recorded in the pregnancy summary.">
+			copyright = <"© openEHR Foundation">
+		>
+	>
+	lifecycle_state = <"in_development">
+	other_contributors = <>
+	other_details = <
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
+		["custodian_organisation"] = <"openEHR Foundation">
+		["references"] = <"Mongelli M. Evaluation of Gestation. Medscape Reference. See http://emedicine.medscape.com/article/259269-overview#showall (accessed Jan 2012)
+
+Peek MJ, Devonald KJ, Beilby R, Ellwood D. The value of routine early pregnancy ultrasound in the antenatal booking clinic. Aust N Z J Obstet Gynaecol. May 1994;34(2):140-3.
+
+Geirsson RT, Busby-Earle RM. Certain dates may not provide a reliable estimate of gestational age. Br J Obstet Gynaecol. Jan 1991;98(1):108-9.
+
+Guerrero R, Florez PE. The duration of pregnancy. Lancet. Aug 2 1969;2(7614):268-9.">
+		["original_namespace"] = <"org.openehr">
+		["original_publisher"] = <"openEHR Foundation">
+		["custodian_namespace"] = <"org.openehr">
+		["MD5-CAM-1.0.1"] = <"665142D2B612AC2FF76D2D981D9D970E">
+		["build_uid"] = <"ca140364-08ee-4131-bda6-a7878815d838">
+		["revision"] = <"0.0.1-alpha">
+	>
+
+definition
+	OBSERVATION[at0000] matches {    -- Gestation
+		data matches {
+			HISTORY[at0001] matches {    -- Event Series
+				events cardinality matches {1..*; unordered} matches {
+					POINT_EVENT[at0002] occurrences matches {1..*} matches {    -- Date of measurement
+						data matches {
+							ITEM_TREE[at0003] matches {    -- Tree
+								items cardinality matches {0..*; unordered} matches {
+									ELEMENT[at0004] occurrences matches {0..1} matches {    -- Gestational age
+										value matches {
+											DV_DURATION matches {
+												value matches {PWD/|P0W..P60W|}
+											}
+										}
+									}
+									ELEMENT[at0005] occurrences matches {0..1} matches {    -- Conceptional age
+										value matches {
+											DV_DURATION matches {
+												value matches {PWD/|P0W..P60W|}
+											}
+										}
+									}
+									ELEMENT[at0020] occurrences matches {0..1} matches {    -- Trimester
+										value matches {
+											DV_CODED_TEXT matches {
+												defining_code matches {
+													[local::
+													at0021,    -- First trimester
+													at0022,    -- Second trimester
+													at0023]    -- Third trimester
+												}
+											}
+										}
+									}
+									ELEMENT[at0019] occurrences matches {0..1} matches {    -- Comment
+										value matches {
+											DV_TEXT matches {*}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		protocol matches {
+			ITEM_TREE[at0017] matches {    -- Tree
+				items cardinality matches {0..*; unordered} matches {
+					ELEMENT[at0006] occurrences matches {0..1} matches {    -- Calculation based on
+						value matches {
+							DV_CODED_TEXT matches {
+								defining_code matches {
+									[local::
+									at0007,    -- Ultrasound - first trimester
+									at0008,    -- Ultrasound - second trimester
+									at0009,    -- Ultrasound - third trimester
+									at0010,    -- Date of last menstrual period
+									at0011,    -- Date of conception
+									at0012,    -- Uterine examination - first trimester
+									at0013,    -- Uterine examination - second trimester
+									at0014,    -- Uterine examination - third trimester
+									at0015,    -- Date of first positive pregnancy test
+									at0016]    -- Calculated from expected date of birth (EDB)
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"Gestation">
+					description = <"The estimate or known period or duration of the pregnancy or gestational age of the fetus or new born.">
+				>
+				["at0001"] = <
+					text = <"Event Series">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Date of measurement">
+					description = <"The date and time of the measurement of gestation.">
+				>
+				["at0003"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0004"] = <
+					text = <"Gestational age">
+					description = <"Estimate of time since conception + 2 weeks.">
+				>
+				["at0005"] = <
+					text = <"Conceptional age">
+					description = <"The time since conception.">
+				>
+				["at0006"] = <
+					text = <"Calculation based on">
+					description = <"The base for the calculation of the durataion of pregnancy.">
+				>
+				["at0007"] = <
+					text = <"Ultrasound - first trimester">
+					description = <"An ultrasound done before 14 weeks gestation.">
+				>
+				["at0008"] = <
+					text = <"Ultrasound - second trimester">
+					description = <"An ultrasound done between 14 and 28 weeks gestation.">
+				>
+				["at0009"] = <
+					text = <"Ultrasound - third trimester">
+					description = <"An ultrasound done greater than 28 weeks gestation.">
+				>
+				["at0010"] = <
+					text = <"Date of last menstrual period">
+					description = <"The date of the first day of the last menstruation.">
+				>
+				["at0011"] = <
+					text = <"Date of conception">
+					description = <"The date of conception is known.">
+				>
+				["at0012"] = <
+					text = <"Uterine examination - first trimester">
+					description = <"The size of the uterus before 14 weeks gestation.">
+				>
+				["at0013"] = <
+					text = <"Uterine examination - second trimester">
+					description = <"The fundal height measured between 14 and 28 weeks gestation.">
+				>
+				["at0014"] = <
+					text = <"Uterine examination - third trimester">
+					description = <"The fundal height after 28 weeks gestation.">
+				>
+				["at0015"] = <
+					text = <"Date of first positive pregnancy test">
+					description = <"Date of first positive pregnancy test, ideally involving serial pregnancy tests with a known sensitivity.">
+				>
+				["at0016"] = <
+					text = <"Calculated from expected date of birth (EDB)">
+					description = <"Calculated back from the expected date of birth.">
+				>
+				["at0017"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0019"] = <
+					text = <"Comment">
+					description = <"Clinical comment on gestational or conceptional age.">
+				>
+				["at0020"] = <
+					text = <"Trimester">
+					description = <"Duration of pregnancy grouped into 12-14 week intervals.">
+				>
+				["at0021"] = <
+					text = <"First trimester">
+					description = <"First day of last normal menstrual period until the end of week 12 of a pregnancy.">
+				>
+				["at0022"] = <
+					text = <"Second trimester">
+					description = <"Beginning of week 13 to the end of week 28 of a pregnancy.">
+				>
+				["at0023"] = <
+					text = <"Third trimester">
+					description = <"Beginning of week 29 until birth.">
+				>
+			>
+		>
+	>

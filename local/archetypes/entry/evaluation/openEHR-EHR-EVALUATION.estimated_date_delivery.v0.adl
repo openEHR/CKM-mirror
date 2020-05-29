@@ -1,0 +1,176 @@
+﻿archetype (adl_version=1.4; uid=d65a175e-00b9-4697-821e-0650696b1daf)
+	openEHR-EHR-EVALUATION.estimated_date_delivery.v0
+
+concept
+	[at0000]	-- Estimated date of delivery
+language
+	original_language = <[ISO_639-1::en]>
+description
+	original_author = <
+		["name"] = <"Heather Leslie">
+		["organisation"] = <"Atomica Informatics">
+		["email"] = <"heather.leslie@atomicainformatics.com">
+		["date"] = <"2020-02-04">
+	>
+	details = <
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To record estimated due dated for a pregnancy, calculated or estimated by a variety of methods.">
+			use = <"Use to record one or more estimated date of delivery (EDD), calculated or estimated by a variety of methods during the span of a single pregnancy. 
+
+The agreed EDD is used as the basis for management of the pregnancy.">
+			keywords = <"EDD, EDB, EDC", ...>
+			misuse = <"">
+			copyright = <"© openEHR Foundation">
+		>
+	>
+	lifecycle_state = <"in_development">
+	other_contributors = <>
+	other_details = <
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
+		["custodian_organisation"] = <"openEHR Foundation">
+		["original_namespace"] = <"org.openehr">
+		["original_publisher"] = <"openEHR Foundation">
+		["custodian_namespace"] = <"org.openehr">
+		["MD5-CAM-1.0.1"] = <"5603F6C3A1BEFE2DCDA162BD004B4C54">
+		["build_uid"] = <"3e06f127-3d41-4613-a9ad-8cf3907bcf2c">
+		["revision"] = <"0.0.1-alpha">
+	>
+
+definition
+	EVALUATION[at0000] matches {    -- Estimated date of delivery
+		data matches {
+			ITEM_TREE[at0002] matches {    -- Item tree
+				items cardinality matches {0..*; unordered} matches {
+					ELEMENT[at0003] occurrences matches {0..1} matches {    -- By date of conception
+						value matches {
+							DV_DATE_TIME matches {*}
+						}
+					}
+					ELEMENT[at0004] occurrences matches {0..1} matches {    -- By cycle
+						value matches {
+							DV_DATE_TIME matches {*}
+						}
+					}
+					CLUSTER[at0006] occurrences matches {0..1} matches {    -- By ultrasound
+						items cardinality matches {1..*; unordered} matches {
+							ELEMENT[at0005] occurrences matches {0..1} matches {    -- Date of ultrasound
+								value matches {
+									DV_DATE_TIME matches {*}
+								}
+							}
+							ELEMENT[at0007] occurrences matches {0..1} matches {    -- Gestation by scan
+								value matches {
+									DV_DURATION matches {*}
+								}
+							}
+							ELEMENT[at0008] matches {    -- Estimated date by ultrasound
+								value matches {
+									DV_DATE_TIME matches {*}
+								}
+							}
+						}
+					}
+					CLUSTER[at0009] occurrences matches {0..*} matches {    -- Agreed EDD
+						items cardinality matches {1..*; unordered} matches {
+							ELEMENT[at0010] occurrences matches {0..1} matches {    -- Agreed date
+								value matches {
+									DV_DATE_TIME matches {*}
+								}
+							}
+							ELEMENT[at0011] occurrences matches {0..1} matches {    -- Rationale
+								value matches {
+									DV_TEXT matches {*}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		protocol matches {
+			ITEM_TREE[at0001] matches {    -- Item tree
+				items cardinality matches {0..*; unordered} matches {
+					ELEMENT[at0013] occurrences matches {0..1} matches {    -- Last updated
+						value matches {
+							DV_DATE_TIME matches {*}
+						}
+					}
+					allow_archetype CLUSTER[at0012] occurrences matches {0..*} matches {    -- Extension
+						include
+							archetype_id/value matches {/.*/}
+					}
+				}
+			}
+		}
+	}
+
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"Estimated date of delivery">
+					description = <"Estimated date of delivery for a pregnancy.">
+				>
+				["at0001"] = <
+					text = <"Item tree">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Item tree">
+					description = <"@ internal @">
+				>
+				["at0003"] = <
+					text = <"By date of conception">
+					description = <"The EDD calculated from a known date of conception.">
+					comment = <"The date of conception will be recorded elsewhere in the health record, for example as part of the record for an IVF procedure.">
+				>
+				["at0004"] = <
+					text = <"By cycle">
+					description = <"The EDD estimated from an LNMP and characteristics of the menstrual cycle.">
+					comment = <"The details about the menstrual cycle will be recorded elsewhere in the health record, usually captured using the OBSERVATION.menstruation archetype.">
+				>
+				["at0005"] = <
+					text = <"Date of ultrasound">
+					description = <"The date on which the ultrasound was carried out.">
+				>
+				["at0006"] = <
+					text = <"By ultrasound">
+					description = <"Details about an EDD estimated from the findings on a pregnancy ultrasound.">
+					comment = <"Each ultrasound and estimated gestation pair will be captured as a separate instance of this CLUSTER.">
+				>
+				["at0007"] = <
+					text = <"Gestation by scan">
+					description = <"The gestation estimated from the scan.">
+				>
+				["at0008"] = <
+					text = <"Estimated date by ultrasound">
+					description = <"Details about an EDD estimated from the findings on a pregnancy ultrasound.">
+					comment = <"Only one 'Agreed EDD' is appropriate at any one time. If the agreed EDD needs to be revised then this should be captured in a new revision of this archetype within a health record.">
+				>
+				["at0009"] = <
+					text = <"Agreed EDD">
+					description = <"Details about the agreed EDD which is used as the basis for clinical decision-making during the pregnancy.">
+				>
+				["at0010"] = <
+					text = <"Agreed date">
+					description = <"The EDD which is to be used as the basis for clinical decision-making.">
+				>
+				["at0011"] = <
+					text = <"Rationale">
+					description = <"The rationale which explains why the 'Agreed date' has been selected.">
+				>
+				["at0012"] = <
+					text = <"Extension">
+					description = <"Additional information required to capture local content or to align with other reference models/formalisms.">
+					comment = <"For example: local information requirements or additional metadata to align with FHIR or CIMI equivalents.">
+				>
+				["at0013"] = <
+					text = <"Last updated">
+					description = <"The date any EDD was last updated.">
+				>
+			>
+		>
+	>

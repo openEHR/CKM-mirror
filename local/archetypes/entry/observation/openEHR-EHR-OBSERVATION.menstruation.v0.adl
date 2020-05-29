@@ -1,0 +1,524 @@
+﻿archetype (adl_version=1.4; uid=910463ba-c50f-405a-82e2-25dc4fd045fd)
+	openEHR-EHR-OBSERVATION.menstruation.v0
+
+concept
+	[at0000]	-- Menstruation
+language
+	original_language = <[ISO_639-1::en]>
+	translations = <
+		["fi"] = <
+			language = <[ISO_639-1::fi]>
+			author = <
+				["name"] = <"Vesa Peltola">
+				["organisation"] = <"Tieto Finland">
+				["email"] = <"vesa.peltola@tieto.com">
+			>
+		>
+		["pt-br"] = <
+			language = <[ISO_639-1::pt-br]>
+			author = <
+				["name"] = <"Marivan Abrahão, Gabriela Alves, Adriana Kitajima e Maria Ângela Scatena">
+				["organisation"] = <"Core Consulting">
+				["email"] = <"contato@coreconsulting.com.br">
+			>
+			accreditation = <"Hospital Alemão Oswaldo Cruz (HAOC)">
+		>
+	>
+description
+	original_author = <
+		["name"] = <"Heather Leslie">
+		["organisation"] = <"Atomica Informatics, Australia">
+		["email"] = <"heather.leslie@atomicainformatics.com">
+		["date"] = <"2011-03-09">
+	>
+	details = <
+		["fi"] = <
+			language = <[ISO_639-1::fi]>
+			purpose = <"*To record details about the menstrual cycle, including the menses and associated symptoms.(en)">
+			use = <"*Use to record details about a single menstrual cycle - using the 'Specific cycle' event.
+
+Use to record details about the typical, or average, menstrual pattern over multiple cycles - using the 'Multiple cycles' event.
+
+Use some of the elements to record details about menstrual bleeding and associated symptoms on a single day eg as part of a menstrual diary - using the 'Specific day in a cycle' event.(en)">
+			keywords = <"*menstruation(en)", "*menses(en)", "*cycle(en)", "*menstrual(en)">
+			misuse = <"">
+		>
+		["pt-br"] = <
+			language = <[ISO_639-1::pt-br]>
+			purpose = <"Para registar detalhes sobre o ciclo menstrual, incluindo a menstruação e sintomas associados.">
+			use = <"Usar para gravar detalhes sobre um único ciclo menstrual - usando o evento \"ciclo específico\".
+
+Usar para gravar detalhes sobre o padrão menstrual típico ou médio, ao longo de vários ciclos - usando o evento dos \"vários ciclos \".
+
+Usar alguns dos elementos para gravar detalhes sobre o sangramento menstrual e sintomas associados em um único dia, por exemplo, como parte de um diário menstrual - usando o \"dia específico em um ciclo de 'evento.">
+			keywords = <"menstruação", "regras menstruais", "ciclo", "menstrual">
+			misuse = <"">
+			copyright = <"© openEHR Foundation">
+		>
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To record details about menstrual bleeding and associated symptoms within a specified single cycle or specified group of cycles.">
+			use = <"Use to record details about menstrual bleeding and associated symptoms within a specified single cycle or specified group of cycles.
+
+Use to represent a 'Last Normal Menstrual Period', relevant at the time of recording, by combining the 'Start of menses' data element with the 'Last normal period' event.">
+			keywords = <"menstruation", "menses", "cycle", "menstrual", "dysmenorrhoea", "pain", "bloating">
+			misuse = <"Not to be used to record information about typical or usual menstrual episodes or patterns - use the EVALUATION.menstruation_summary archetype for this purpose.
+
+Not to be used to record details about menarche or menopause - use the EVALUATION.menstruation_summary archetype for this purpose.">
+			copyright = <"© openEHR Foundation">
+		>
+	>
+	lifecycle_state = <"in_development">
+	other_contributors = <"Silje Ljosland Bakke, Helse Vest IKT AS, Norway (openEHR Editor)", "John Tore Valand, Helse Bergen Hospital Trust, Norway", "Silje Ljosland Bakke", "Vebjørn Arntzen", "Marit Venheim", "Anca Heyd, DIPS", "Bjorn Naess, DIPS">
+	other_details = <
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
+		["custodian_organisation"] = <"openEHR Foundation">
+		["references"] = <"Derived from: Menstrual cycle, draft archetype [Internet]. Australian Digital Health Agency (NEHTA), ADHA Clinical Knowledge Manager. No longer available.">
+		["current_contact"] = <"Heather Leslie, Atomica Informatics, Australia<heather.leslie@atomicainformatics.com>">
+		["original_namespace"] = <"org.openehr">
+		["original_publisher"] = <"openEHR Foundation">
+		["custodian_namespace"] = <"org.openehr">
+		["MD5-CAM-1.0.1"] = <"EC0B46E45DBEC2FC5505EDF6228C14C0">
+		["build_uid"] = <"cc563c6d-9adc-4e03-9b54-046d61443187">
+		["revision"] = <"0.0.1-alpha">
+	>
+
+definition
+	OBSERVATION[at0000] matches {    -- Menstruation
+		data matches {
+			HISTORY[at0001] matches {    -- Event Series
+				events cardinality matches {1..*; unordered} matches {
+					EVENT[at0002] occurrences matches {0..1} matches {    -- Any interval
+						data matches {
+							ITEM_TREE[at0003] matches {    -- Tree
+								items cardinality matches {0..*; unordered} matches {
+									ELEMENT[at0004] occurrences matches {0..1} matches {    -- Start of menses
+										value matches {
+											DV_DATE_TIME matches {*}
+										}
+									}
+									ELEMENT[at0005] occurrences matches {0..1} matches {    -- Duration of menses
+										value matches {
+											DV_DURATION matches {
+												value matches {PWD/|>=P0D|}
+											}
+										}
+									}
+									ELEMENT[at0006] occurrences matches {0..1} matches {    -- Description of menses
+										value matches {
+											DV_TEXT matches {*}
+										}
+									}
+									ELEMENT[at0007] occurrences matches {0..1} matches {    -- Relative flow
+										value matches {
+											DV_CODED_TEXT matches {
+												defining_code matches {
+													[local::
+													at0008,    -- Very heavy flow
+													at0009,    -- Heavy flow
+													at0010,    -- Normal, or typical, flow
+													at0011,    -- Light flow
+													at0012]    -- Spotting only
+												}
+											}
+										}
+									}
+									ELEMENT[at0013] occurrences matches {0..1} matches {    -- Blood clots
+										value matches {
+											DV_CODED_TEXT matches {
+												defining_code matches {
+													[local::
+													at0014,    -- Present
+													at0015]    -- Absent
+												}
+											}
+										}
+									}
+									ELEMENT[at0016] occurrences matches {0..1} matches {    -- Flooding
+										value matches {
+											DV_CODED_TEXT matches {
+												defining_code matches {
+													[local::
+													at0017,    -- Present
+													at0018]    -- Absent
+												}
+											}
+										}
+									}
+									allow_archetype CLUSTER[at0019] occurrences matches {0..*} matches {    -- Associated symptoms
+										include
+											archetype_id/value matches {/openEHR-EHR-CLUSTER\.symptom_sign(-[a-zA-Z0-9_]+)*\.v1/}
+									}
+								}
+							}
+						}
+						state matches {
+							ITEM_TREE[at0020] matches {    -- Tree
+								items cardinality matches {0..*; unordered} matches {
+									ELEMENT[at0021] occurrences matches {0..1} matches {    -- Contraception use
+										value matches {
+											DV_TEXT matches {*}
+										}
+									}
+								}
+							}
+						}
+					}
+					INTERVAL_EVENT[at0024] occurrences matches {0..1} matches {    -- Last normal period
+						data matches {
+							use_node ITEM_TREE /data[at0001]/events[at0002]/data[at0003]
+						}
+						state matches {
+							use_node ITEM_TREE /data[at0001]/events[at0002]/state[at0020]
+						}
+						math_function matches {
+							DV_CODED_TEXT matches {
+								defining_code matches {
+									[openehr::640]
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		protocol matches {
+			ITEM_TREE[at0022] matches {    -- Tree
+				items cardinality matches {0..*; unordered} matches {
+					allow_archetype CLUSTER[at0023] occurrences matches {0..*} matches {    -- Extension
+						include
+							archetype_id/value matches {/.*/}
+					}
+				}
+			}
+		}
+	}
+
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"Menstruation">
+					description = <"Details about menstrual bleeding and associated symptoms within a specified single cycle or specified group of cycles.">
+				>
+				["at0001"] = <
+					text = <"Event Series">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Any interval">
+					description = <"Default, unspecified interval event which may be explicitly defined in a template or at run-time.">
+				>
+				["at0003"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0004"] = <
+					text = <"Start of menses">
+					description = <"Date of onset of menstrual bleeding in a single cycle.">
+					comment = <"When recorded against the 'Last normal period' event, this data point captures the 'Last Normal Menstrual Period (LNMP)'.">
+				>
+				["at0005"] = <
+					text = <"Duration of menses">
+					description = <"Duration of menstrual bleeding in this cycle.">
+				>
+				["at0006"] = <
+					text = <"Description of menses">
+					description = <"Narrative description of the menstrual bleeding.">
+				>
+				["at0007"] = <
+					text = <"Relative flow">
+					description = <"Relative description of amount of menstrual flow.">
+				>
+				["at0008"] = <
+					text = <"Very heavy flow">
+					description = <"Very heavy menstrual flow, often causing additional problems such as flooding and clotting.">
+				>
+				["at0009"] = <
+					text = <"Heavy flow">
+					description = <"Heavy menstrual flow.">
+				>
+				["at0010"] = <
+					text = <"Normal, or typical, flow">
+					description = <"Normal menstrual flow.">
+				>
+				["at0011"] = <
+					text = <"Light flow">
+					description = <"Light menstrual flow.">
+				>
+				["at0012"] = <
+					text = <"Spotting only">
+					description = <"Menstrual spotting only.">
+				>
+				["at0013"] = <
+					text = <"Blood clots">
+					description = <"Presence of blood clots in the menstrual flow.">
+				>
+				["at0014"] = <
+					text = <"Present">
+					description = <"Blood clots occurred during the menstrual flow.">
+				>
+				["at0015"] = <
+					text = <"Absent">
+					description = <"Blood clots did not occur during the menstrual flow.">
+				>
+				["at0016"] = <
+					text = <"Flooding">
+					description = <"Presence of heavy menstrual flow that exceeded capacity of sanitary napkins and other menstrual products to absorb the menstrual flow.">
+				>
+				["at0017"] = <
+					text = <"Present">
+					description = <"Flooding occurred during the menstrual flow.">
+				>
+				["at0018"] = <
+					text = <"Absent">
+					description = <"Flooding did not occur during the menstrual flow.">
+				>
+				["at0019"] = <
+					text = <"Associated symptoms">
+					description = <"Details about symptoms related to menses.">
+					comment = <"For example: menstrual cramps or headaches.">
+				>
+				["at0020"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0021"] = <
+					text = <"Contraception use">
+					description = <"Identify concurrent hormone or intrauterine contraception use.">
+					comment = <"Coding with a terminology is preferred, where possible.">
+				>
+				["at0022"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0023"] = <
+					text = <"Extension">
+					description = <"Additional information required to capture local content or to align with other reference models/formalisms.">
+					comment = <"For example: local information requirements or additional metadata to align with FHIR or CIMI equivalents.">
+				>
+				["at0024"] = <
+					text = <"Last normal period">
+					description = <"The last normal menstrual period experienced by the woman.">
+				>
+			>
+		>
+		["pt-br"] = <
+			items = <
+				["at0000"] = <
+					text = <"Ciclo menstrual">
+					description = <"Registre as informações sobre um ciclo menstrual, um único dia durante um ciclo menstrual.">
+				>
+				["at0001"] = <
+					text = <"Event Series">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"*Any interval (en)">
+					description = <"Qualquer evento.">
+				>
+				["at0003"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0004"] = <
+					text = <"Início da regra menstrual">
+					description = <"Data de início do sangramento menstrual num único ciclo.">
+					comment = <"*When recorded against the 'Last normal period' event, this data point captures the 'Last Normal Menstrual Period (LNMP)'. (en)">
+				>
+				["at0005"] = <
+					text = <"Duração da menstruação">
+					description = <"Duração do sangramento menstrual num único ciclo de duração típica ou ao longo de muitos ciclos.">
+				>
+				["at0006"] = <
+					text = <"Descrição da menstruação">
+					description = <"Descrição narrativa do sangramento menstrual.">
+				>
+				["at0007"] = <
+					text = <"*Relative flow (en)">
+					description = <"*Relative description of amount of menstrual flow.(en)">
+				>
+				["at0008"] = <
+					text = <"Fluxo muito intenso">
+					description = <"Fluxo menstrual muito intenso, muitas vezes causando problemas adicionais, tais como vazamentos e coagulação.">
+				>
+				["at0009"] = <
+					text = <"Fluxo intenso">
+					description = <"Fluxo menstrual intenso.">
+				>
+				["at0010"] = <
+					text = <"Fluxo médio ou típico">
+					description = <"Fluxo menstrual médio.">
+				>
+				["at0011"] = <
+					text = <"Fluxo fraco">
+					description = <"Fluxo menstrual fraco.">
+				>
+				["at0012"] = <
+					text = <"Somente mancha">
+					description = <"Manchas menstruais somente.">
+				>
+				["at0013"] = <
+					text = <"Coágulos de sangue">
+					description = <"Presença de coágulos sanguíneos no fluxo menstrual.">
+				>
+				["at0014"] = <
+					text = <"*Present(en)">
+					description = <"*Blood clots occurred during the menstrual flow.(en)">
+				>
+				["at0015"] = <
+					text = <"*Absent(en)">
+					description = <"*Blood clots did not occur during the menstrual flow.(en)">
+				>
+				["at0016"] = <
+					text = <"Vazamento">
+					description = <"Presença de fluxo menstrual intenso, que excedeu a capacidade dos absorventes higiênicos e outros produtos para absorver o fluxo menstrual.">
+				>
+				["at0017"] = <
+					text = <"*Present(en)">
+					description = <"*Flooding occurred during the menstrual flow.(en)">
+				>
+				["at0018"] = <
+					text = <"*Absent(en)">
+					description = <"*Flooding did not occur during the menstrual flow.(en)">
+				>
+				["at0019"] = <
+					text = <"Sintomas associados">
+					description = <"*Details about symptoms related to menses. (en)">
+					comment = <"*For example: menstrual cramps or headaches. (en)">
+				>
+				["at0020"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0021"] = <
+					text = <"O uso de anticoncepcionais">
+					description = <"*Identify concurrent hormone or intrauterine contraception use. (en)">
+					comment = <"*Coding with a terminology is preferred, where possible. (en)">
+				>
+				["at0022"] = <
+					text = <"*Tree(en)">
+					description = <"*@ internal @(en)">
+				>
+				["at0023"] = <
+					text = <"*Extension(en)">
+					description = <"*Additional information required to capture local content or to align with other reference models/formalisms.(en)">
+					comment = <"*For example: local information requirements or additional metadata to align with FHIR or CIMI equivalents.(en)">
+				>
+				["at0024"] = <
+					text = <"*Last normal period (en)">
+					description = <"*The last normal menstrual period experienced by the woman.(en)">
+				>
+			>
+		>
+		["fi"] = <
+			items = <
+				["at0000"] = <
+					text = <"Kuukautiskierto">
+					description = <"Kirjaa tietoja kuukautiskierrosta, yksittäinen kuukautiskierron päivä.">
+				>
+				["at0001"] = <
+					text = <"Event Series">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"*Any interval (en)">
+					description = <"Mikä tahansa tapahtuma.">
+				>
+				["at0003"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0004"] = <
+					text = <"Kuukautisten ensimmäinen vuotopäivä">
+					description = <"Kuukautisvuodon alkupäivä yksittäisen kierron aikana.">
+					comment = <"*When recorded against the 'Last normal period' event, this data point captures the 'Last Normal Menstrual Period (LNMP)'. (en)">
+				>
+				["at0005"] = <
+					text = <"Kuukautisten kesto">
+					description = <"Kuukautisvuodon kesto yksittäisessä kierrossa tai tyypillinen kesto useita kiertoja tarkasteltaessa.">
+				>
+				["at0006"] = <
+					text = <"Kuukautisten kuvaus">
+					description = <"Kertomusmuodossa oleva kuvaus kuukautisvuodosta.">
+				>
+				["at0007"] = <
+					text = <"Kuukautisvuodon määrä">
+					description = <"Laadullinen kuvaus kuukautisvuodon määrästä.">
+				>
+				["at0008"] = <
+					text = <"Erittäin runsas vuoto">
+					description = <"Erittäin runsas kuukautisvuoto, joka aiheuttaa usein lisäongelmia, kuten tulvimista ja hyytymistä.">
+				>
+				["at0009"] = <
+					text = <"Runsas vuoto">
+					description = <"Runsas kuukautisvuoto.">
+				>
+				["at0010"] = <
+					text = <"Normaali tai tyypillinen vuoto">
+					description = <"Normaali kuukautisvuoto.">
+				>
+				["at0011"] = <
+					text = <"Vähäinen vuoto">
+					description = <"Vähäinen kuukautisvuoto.">
+				>
+				["at0012"] = <
+					text = <"Vain tiputtelua">
+					description = <"Vain tiputteluvuotoa.">
+				>
+				["at0013"] = <
+					text = <"Verihyytymiä">
+					description = <"Kuukautisvuodossa on verihyytymiä.">
+				>
+				["at0014"] = <
+					text = <"*Present(en)">
+					description = <"*Blood clots occurred during the menstrual flow.(en)">
+				>
+				["at0015"] = <
+					text = <"*Absent(en)">
+					description = <"*Blood clots did not occur during the menstrual flow.(en)">
+				>
+				["at0016"] = <
+					text = <"Poikkeuksellisen runsasta vuotoa">
+					description = <"Niin runsas kuukautisvuoto, että se ylittää terveyssiteiden ja muiden kuukautistuotteiden imukyvyn.">
+				>
+				["at0017"] = <
+					text = <"*Present(en)">
+					description = <"*Flooding occurred during the menstrual flow.(en)">
+				>
+				["at0018"] = <
+					text = <"*Absent(en)">
+					description = <"*Flooding did not occur during the menstrual flow.(en)">
+				>
+				["at0019"] = <
+					text = <"Liittyvät oireet">
+					description = <"*Details about symptoms related to menses. (en)">
+					comment = <"*For example: menstrual cramps or headaches. (en)">
+				>
+				["at0020"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0021"] = <
+					text = <"Ehkäisyn käyttö">
+					description = <"*Identify concurrent hormone or intrauterine contraception use. (en)">
+					comment = <"*Coding with a terminology is preferred, where possible. (en)">
+				>
+				["at0022"] = <
+					text = <"*Tree(en)">
+					description = <"*@ internal @(en)">
+				>
+				["at0023"] = <
+					text = <"*Extension(en)">
+					description = <"*Additional information required to capture local content or to align with other reference models/formalisms.(en)">
+					comment = <"*For example: local information requirements or additional metadata to align with FHIR or CIMI equivalents.(en)">
+				>
+				["at0024"] = <
+					text = <"*Last normal period (en)">
+					description = <"*The last normal menstrual period experienced by the woman.(en)">
+				>
+			>
+		>
+	>

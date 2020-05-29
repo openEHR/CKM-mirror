@@ -1,0 +1,468 @@
+﻿archetype (adl_version=1.4; uid=f2debd59-f888-4729-87dc-e398a8c496d2)
+	openEHR-EHR-OBSERVATION.management_screening.v0
+
+concept
+	[at0000]	-- Management/treatment screening questionnaire
+language
+	original_language = <[ISO_639-1::en]>
+	translations = <
+		["de"] = <
+			language = <[ISO_639-1::de]>
+			author = <
+				["name"] = <"Natalia Strauch, Nina Schewe">
+				["organisation"] = <"Medizinische Hochschule Hannover">
+				["email"] = <"Strauch.Natalia@mh-hannover.de, nina.schewe@plri.de">
+			>
+		>
+		["nb"] = <
+			language = <[ISO_639-1::nb]>
+			author = <
+				["name"] = <"Silje Ljosland Bakke, Marit Alice Venheim">
+				["organisation"] = <"Helse Vest IKT AS">
+				["email"] = <"silje.ljosland.bakke@helse-vest-ikt.no, marit.alice.venheim@helse-vest-ikt.no">
+			>
+		>
+	>
+description
+	original_author = <
+		["name"] = <"Heather Leslie">
+		["organisation"] = <"Atomica Informatics">
+		["email"] = <"heather.leslie@atomicainformatics.com">
+		["date"] = <"2020-03-13">
+	>
+	details = <
+		["de"] = <
+			language = <[ISO_639-1::de]>
+			purpose = <"Zur Darstellung der Antworten in einem Personen- oder Selbstbeurteilungs-Screening-Fragebogen zur erfolgten Behandlung oder zum Management.">
+			use = <"Zur Darstellung der Antworten in einem Personen- oder Selbstbeurteilungs-Screening-Fragebogen zur erfolgten Behandlung oder zum Management.
+
+Wenn zusätzliche Details über eine bestimmte Tätigkeit aufgezeichnet werden müssen, verwenden Sie die LINK-Klasse im Referenzmodel, um eine Beziehung zwischen diesem Archetyp und einer Instanz des entsprechenden ENTRY-Archetyp innerhalb desselben Templates zu definieren.
+
+Häufige Anwendungsfälle sind unter anderem, aber nicht ausschließlich:
+- Systematische Befragungen bei jeder Konsultation oder
+- Spezifische Befragung im Zusammenhang mit der Überwachung von Infektionskrankheiten.">
+			misuse = <"">
+		>
+		["nb"] = <
+			language = <[ISO_639-1::nb]>
+			purpose = <"For å registrere responsen i et individuelt eller selvrapportert spørreskjema for sykdomshåndtering eller behandling som blir utført.">
+			use = <"Brukes for å registrere responsen i et individuelt eller selvrapportert spørreskjema for sykdomshåndtering eller behandling som blir utført.
+
+Vanlige bruksområder inkluderer, men er ikke begrenset til:
+- Systematisk spørring i enhver konsultasjon; eller
+- Spesifikk spørring relatert til overvåkning av infeksjonssykdom.">
+			misuse = <"">
+		>
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To record the responses to an individual- or self-reported questionnaire screening for management or treatment carried out.">
+			use = <"Use to record the responses to an individual- or self-reported questionnaire screening for management or treatment carried out.
+
+If additional details about a specific activity need to be recorded, use the RM LINK class to define a relationship between this archetype and an instance of the appropriate ENTRY archetype archetype within the same template.
+
+Common use cases include, but are not limited to:
+- Systematic questioning in any consultation; or
+- Specific questioning related to infectious disease surveillance;
+- Preventive activities, such as breast or bowel cancer screening.">
+			misuse = <"">
+			copyright = <"© openEHR Foundation">
+		>
+	>
+	lifecycle_state = <"in_development">
+	other_contributors = <"Silje Ljosland Bakke, Helse Vest IKT AS, Norway (openEHR Editor)", "Heather Leslie, Atomica Informatics, Australia (openEHR Editor)">
+	other_details = <
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
+		["custodian_organisation"] = <"openEHR Foundation">
+		["original_namespace"] = <"org.openehr">
+		["original_publisher"] = <"openEHR Foundation">
+		["custodian_namespace"] = <"org.openehr">
+		["MD5-CAM-1.0.1"] = <"410DF740168950FCFDEFC9B6FBBA59A3">
+		["build_uid"] = <"96f60bb3-7147-46fd-8464-0812f53f30f5">
+		["ip_acknowledgements"] = <"This artefact includes content from SNOMED Clinical Terms® (SNOMED CT®) which is copyrighted material of the International Health Terminology Standards Development Organisation (IHTSDO). Where an implementation of this artefact makes use of SNOMED CT content, the implementer must have the appropriate SNOMED CT Affiliate license - for more information contact http://www.snomed.org/snomed-ct/get-snomedct or info@snomed.org.">
+		["revision"] = <"0.0.1-alpha">
+	>
+
+definition
+	OBSERVATION[at0000] matches {    -- Management/treatment screening questionnaire
+		data matches {
+			HISTORY[at0001] matches {    -- History
+				events cardinality matches {0..*; unordered} matches {
+					EVENT[at0002] occurrences matches {0..*} matches {    -- Any event
+						data matches {
+							ITEM_TREE[at0003] matches {    -- Tree
+								items cardinality matches {0..*; unordered} matches {
+									ELEMENT[at0034] occurrences matches {0..1} matches {    -- Screening purpose
+										value matches {
+											DV_TEXT matches {*}
+										}
+									}
+									CLUSTER[at0022] occurrences matches {0..*} matches {    -- Specific management/treatment activity
+										items cardinality matches {1..*; unordered} matches {
+											ELEMENT[at0004] matches {    -- Activity name
+												value matches {
+													DV_TEXT matches {*}
+												}
+											}
+											ELEMENT[at0005] occurrences matches {0..1} matches {    -- Status
+												value matches {
+													DV_CODED_TEXT matches {
+														defining_code matches {
+															[local::
+															at0038,    -- Planned
+															at0039,    -- Scheduled
+															at0041,    -- Started
+															at0023,    -- Completed
+															at0024,    -- Not done
+															at0027,    -- Unknown
+															at0040]    -- Declined
+														}
+													}
+												}
+											}
+											ELEMENT[at0006] occurrences matches {0..1} matches {    -- Completed
+												value matches {
+													DV_DATE_TIME matches {*}
+												}
+											}
+											ELEMENT[at0037] occurrences matches {0..1} matches {    -- Scheduled
+												value matches {
+													DV_DATE_TIME matches {*}
+												}
+											}
+											allow_archetype CLUSTER[at0036] occurrences matches {0..*} matches {    -- Activity details
+												include
+													archetype_id/value matches {/openEHR-EHR-CLUSTER\.inspired_oxygen\.v1/}
+											}
+											ELEMENT[at0035] occurrences matches {0..1} matches {    -- Comment
+												value matches {
+													DV_TEXT matches {*}
+												}
+											}
+										}
+									}
+									ELEMENT[at0025] occurrences matches {0..1} matches {    -- Overall comment
+										value matches {
+											DV_TEXT matches {*}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		protocol matches {
+			ITEM_TREE[at0007] matches {    -- Item tree
+				items cardinality matches {0..*; unordered} matches {
+					allow_archetype CLUSTER[at0021] occurrences matches {0..*} matches {    -- Extension
+						include
+							archetype_id/value matches {/.*/}
+					}
+				}
+			}
+		}
+	}
+
+
+ontology
+	terminologies_available = <"SNOMED-CT", ...>
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"Management/treatment screening questionnaire">
+					description = <"An individual- or self-reported questionnaire screening for management or treatment carried out.">
+				>
+				["at0001"] = <
+					text = <"History">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Any event">
+					description = <"Default, unspecified point in time or interval event which may be explicitly defined in a template or at run-time.">
+				>
+				["at0003"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0004"] = <
+					text = <"Activity name">
+					description = <"Name of the management or treatment activity being screened.">
+				>
+				["at0005"] = <
+					text = <"Status">
+					description = <"The current status of a specific activity.">
+				>
+				["at0006"] = <
+					text = <"Completed">
+					description = <"The date/time when the activity was (last) carried out.">
+					comment = <"Partial dates are allowed.">
+				>
+				["at0007"] = <
+					text = <"Item tree">
+					description = <"@ internal @">
+				>
+				["at0021"] = <
+					text = <"Extension">
+					description = <"Additional information required to capture local content or to align with other reference models/formalisms.">
+					comment = <"For example: local information requirements or additional metadata to align with FHIR or CIMI equivalents.">
+				>
+				["at0022"] = <
+					text = <"Specific management/treatment activity">
+					description = <"Grouping of data elements related to screening for a single management or treatment activity.">
+				>
+				["at0023"] = <
+					text = <"Completed">
+					description = <"The specific activity has been completed.">
+				>
+				["at0024"] = <
+					text = <"Not done">
+					description = <"The specific activity was not carried out.">
+				>
+				["at0025"] = <
+					text = <"Overall comment">
+					description = <"Additional narrative about all management and treatment activities, not captured in other fields.">
+				>
+				["at0027"] = <
+					text = <"Unknown">
+					description = <"It is not known whether the activity was carried out.">
+				>
+				["at0034"] = <
+					text = <"Screening purpose">
+					description = <"The reason for overall screening.">
+					comment = <"For example: screening for an infectious disease, such as SARS-COV-2.">
+				>
+				["at0035"] = <
+					text = <"Comment">
+					description = <"Additional narrative about the specific management or treatment activity, not captured in other fields.">
+				>
+				["at0036"] = <
+					text = <"Activity details">
+					description = <"Additional details about the specific activity.">
+					comment = <"For example: Details about oxygen therapy.">
+				>
+				["at0037"] = <
+					text = <"Scheduled">
+					description = <"The date/time when the activity is (next) due to be carried out.">
+				>
+				["at0038"] = <
+					text = <"Planned">
+					description = <"The specific activity is planned but not scheduled.">
+				>
+				["at0039"] = <
+					text = <"Scheduled">
+					description = <"The specific activity is scheduled.">
+				>
+				["at0040"] = <
+					text = <"Declined">
+					description = <"The specific activity has been refused or declined by the individual.">
+				>
+				["at0041"] = <
+					text = <"Started">
+					description = <"The specific activity has been started but not completed.">
+				>
+			>
+		>
+		["nb"] = <
+			items = <
+				["at0000"] = <
+					text = <"Spørreskjema for sykdomshåndtering/behandling">
+					description = <"Et individuelt eller selvrapportert spørreskjema for sykdomshåndtering eller behandling som blir utført.">
+				>
+				["at0001"] = <
+					text = <"History">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Uspesifisert hendelse">
+					description = <"Standard, uspesifisert tidspunkt eller tidsintervall som kan defineres mer eksplisitt i et templat eller i en applikasjon.">
+				>
+				["at0003"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0004"] = <
+					text = <"Navn på aktiviteten">
+					description = <"Navnet på sykdomshåndteringen (tiltaket) eller behandlingsaktiviteten som blir registrert.">
+				>
+				["at0005"] = <
+					text = <"Status">
+					description = <"Den nåværende statusen på en spesifikk aktivitet.">
+				>
+				["at0006"] = <
+					text = <"Ferdig">
+					description = <"Dato/tid for når tiltaket sist ble uført.">
+					comment = <"Delvis dato er tillatt.">
+				>
+				["at0007"] = <
+					text = <"Item tree">
+					description = <"@ internal @">
+				>
+				["at0021"] = <
+					text = <"Tilleggsinformasjon">
+					description = <"Ytterligere informasjon som trengs for å kunne registrere lokalt definert innhold eller for å tilpasse til andre referansemodeller/formalismer.">
+					comment = <"For eksempel lokale informasjonsbehov eller ytterligere metadata for å kunne tilpasse til tilsvarende konsepter i FHIR eller CIMI.">
+				>
+				["at0022"] = <
+					text = <"Spesifikk håndterings-/behandlingsaktivitet">
+					description = <"Gruppering av dataelementer relatert til registreringen for en enkel sykdomshåndtering eller behandlingsaktivitet.">
+				>
+				["at0023"] = <
+					text = <"Utført">
+					description = <"Det spesifikke tiltaket har blitt utført.">
+				>
+				["at0024"] = <
+					text = <"Ikke iverksatt">
+					description = <"Det spesifikke tiltaket ble ikke iverksatt.">
+				>
+				["at0025"] = <
+					text = <"Kommentar">
+					description = <"Ytterligere kommentar til all sykdomshåndtering og behandlingsaktivitet som ikke er fanget opp i andre felt.">
+				>
+				["at0027"] = <
+					text = <"Ukjent">
+					description = <"Det er ukjent om tiltaket ble iverksatt.">
+				>
+				["at0034"] = <
+					text = <"Registreringsformål">
+					description = <"Årsaken til registreringen.">
+					comment = <"For eksempel: Screening for en infeksjonssykdom, som SARS-COV-2.">
+				>
+				["at0035"] = <
+					text = <"Kommentar">
+					description = <"Ytterligere kommentar til den spesifikke sykdomshåndteringen eller behandlingen som ikke er fanget opp i andre felt.">
+				>
+				["at0036"] = <
+					text = <"Ytterligere detaljer">
+					description = <"Ytterligere detaljer om den spesifikke aktiviteten.">
+					comment = <"For eksempel detaljer om oksygenbehandling.">
+				>
+				["at0037"] = <
+					text = <"Tildelt tid">
+					description = <"Dato/tid for når aktiviteten skal utføres.">
+				>
+				["at0038"] = <
+					text = <"Planlagt">
+					description = <"Det spesifikke tiltaket er planlagt, men ikke tidsbestemt.">
+				>
+				["at0039"] = <
+					text = <"Tildelt tid.">
+					description = <"Det spesifikke tiltaket har fått tildelt en tid.">
+				>
+				["at0040"] = <
+					text = <"Avslått">
+					description = <"Det spesifikke tiltaket har blitt nektet eller avslått av individet.">
+				>
+				["at0041"] = <
+					text = <"Startet">
+					description = <"Det spesifikke tiltaket er påbegynt, men ikke utført.">
+				>
+			>
+		>
+		["de"] = <
+			items = <
+				["at0000"] = <
+					text = <"Screening-Fragebogen zu Management/Behandlung">
+					description = <"Ein Personen- oder Selbstbeurteilungs-Screening-Fragebogen zu erfolgten Behandlung oder Verwaltungsmaßnahmen.">
+				>
+				["at0001"] = <
+					text = <"History">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Beliebiges Ereignis">
+					description = <"Standardwert, ein undefinierter/s Zeitpunkt oder Intervallereignis, das explizit im Template oder zur Laufzeit der Anwendung definiert werden kann.">
+				>
+				["at0003"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0004"] = <
+					text = <"Name der Aktivität">
+					description = <"Name der geprüften Management- oder Behandlungsaktivität.">
+				>
+				["at0005"] = <
+					text = <"Status">
+					description = <"Aktueller Status der spezifischen Aktivität.">
+				>
+				["at0006"] = <
+					text = <"Abgeschlossen">
+					description = <"Das Datum / die Uhrzeit der (letzten) Ausführung der Aktivität.">
+					comment = <"Erlaubt sind Angaben als Teildatum.">
+				>
+				["at0007"] = <
+					text = <"Item tree">
+					description = <"@ internal @">
+				>
+				["at0021"] = <
+					text = <"Erweiterung">
+					description = <"Zusätzliche Informationen zur Erfassung lokaler Inhalte oder Anpassung an andere Referenzmodelle/Formalismen.">
+					comment = <"Zum Beispiel: Lokaler Informationsbedarf oder zusätzliche Metadaten zur Anpassung an FHIR-Ressourcen oder CIMI-Modelle.">
+				>
+				["at0022"] = <
+					text = <"Bestimmte Management-/Behandlungsaktivität">
+					description = <"Gruppierung von Datenelementen im Zusammenhang mit dem Screening auf eine einzelne Management-/Behandlungsaktivität.">
+				>
+				["at0023"] = <
+					text = <"Abgeschlossen">
+					description = <"Die spezifische Aktivität wurde abgeschlossen.">
+				>
+				["at0024"] = <
+					text = <"Nicht durchgeführt">
+					description = <"Die spezifische Aktivität wurde nicht durchgeführt.">
+				>
+				["at0025"] = <
+					text = <"Allgemeiner Kommentar">
+					description = <"Zusätzliche Beschreibung über alle Management- oder Behandlungsaktivitäten, die nicht in anderen Bereichen dargestellt wurde.">
+				>
+				["at0027"] = <
+					text = <"Unbekannt">
+					description = <"Es ist nicht bekannt, ob die Aktivität durchgeführt wurde.">
+				>
+				["at0034"] = <
+					text = <"Zweck des Screenings">
+					description = <"Der Grund für das gesamte Screening.">
+					comment = <"Zum Beispiel: Screening auf eine Infektionskrankheit, wie aufgrund von SARS-COV-2.">
+				>
+				["at0035"] = <
+					text = <"Kommentar">
+					description = <"Zusätzliche Beschreibung über die spezifische Management- oder Behandlungsaktivität, die nicht in anderen Bereichen dargestellt wurde.">
+				>
+				["at0036"] = <
+					text = <"Detaillierte Angaben zur Aktivität">
+					description = <"Zusätzliche detaillierte Angaben zu der spezifischen Aktivität.">
+					comment = <"Zum Beispiel: Details zur Sauerstofftherapie.">
+				>
+				["at0037"] = <
+					text = <"Terminiert">
+					description = <"Das Datum / die Uhrzeit, wann die Aktivität (als nächstes) ausgeführt werden soll.">
+				>
+				["at0038"] = <
+					text = <"Geplant">
+					description = <"Die spezifische Aktivität ist geplant, aber nicht terminiert.">
+				>
+				["at0039"] = <
+					text = <"Terminiert">
+					description = <"Ein Termin für die Aktivität wurde geplant.">
+				>
+				["at0040"] = <
+					text = <"Abgelehnt">
+					description = <"Die spezifische Aktivität wurde von der Person abgelehnt oder verweigert.">
+				>
+				["at0041"] = <
+					text = <"Begonnen">
+					description = <"Die spezifische Aktivität wurde begonnen, aber nicht abgeschlossen.">
+				>
+			>
+		>
+	>
+	term_bindings = <
+		["SNOMED-CT"] = <
+			items = <
+				["at0027"] = <[SNOMED-CT::261665006]>
+				["at0023"] = <[SNOMED-CT::385652002]>
+				["at0024"] = <[SNOMED-CT::385660001]>
+			>
+		>
+	>
