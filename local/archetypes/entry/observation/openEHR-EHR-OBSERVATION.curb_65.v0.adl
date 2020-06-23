@@ -28,32 +28,31 @@ description
 			language = <[ISO_639-1::nb]>
 			purpose = <"For å registrere resultatene for hvert parameter og deres totalsum for CURB-65 skår.">
 			use = <"Brukes for å registrere resultatene for hvert parameter og deres totalsum for CURB-65 skår.">
-			keywords = <"pneumonia, lungebetennelse, pneumoni", ...>
-			misuse = <"Brukes ikke til å registrere CRB-65 skår. Bruk arketypen OBSERVATION.crb_65 til dette formålet.
-">
+			keywords = <"pneumonia, samfunnservervet, sykehus, LRTI, CAP,", ...>
+			misuse = <"Brukes ikke til å registrere CRB-65 skår, som er ment brukt utenfor sykehus. Bruk arketypen OBSERVATION.crb_65 til dette formålet.">
 		>
 		["en"] = <
 			language = <[ISO_639-1::en]>
 			purpose = <"To record the results for each component parameter and their total sum for the CURB-65 score.">
 			use = <"Use to record the results for each component parameter and their total sum for the CURB-65 score.">
-			keywords = <"pneumonia", ...>
-			misuse = <"Not to be used to record the CRB-65 score. Use the OBSERVATION.crb_65 archetype for this purpose.">
+			keywords = <"pneumonia, community, acquired, hospital, LRTI, CAP, community-acquired", ...>
+			misuse = <"Not to be used to record the CRB-65 score, which is intended for use in a community or primary care setting. Use the OBSERVATION.crb_65 archetype for this purpose.">
 			copyright = <"© openEHR Foundation">
 		>
 	>
 	lifecycle_state = <"in_development">
-	other_contributors = <>
+	other_contributors = <"Dag Aarhus, Vestre Viken HF, Norway", "Nuno Abreu, Oporto Hospital Center, Portugal", "Erling Are Hole, Helse Bergen, Norway", "Vebjørn Arntzen, Oslo University Hospital, Norway (openEHR Editor)", "Heidi Aursand, Oslo universitetssykehus, Norway", "steve baguley, NDS, United Kingdom", "Silje Ljosland Bakke, Helse Vest IKT AS, Norway (openEHR Editor)", "SB Bhattacharyya, Sudisa Consultancy Services, India", "Kåre Flø, DIPS ASA, Norway", "Grant Forrest, NHS Scotland, United Kingdom", "Mikkel Gaup Grønmo, Helse-Nord, FSE, Norway (openEHR Editor)", "Evelyn Hovenga, EJSH Consulting, Australia", "Henrik Kockum, Cambio, Sweden", "Liv Laugen, Oslo universitetssykehus, Norway (Nasjonal IKT redaktør)", "Heather Leslie, Atomica Informatics, Australia (openEHR Editor)", "Mark Luciani, Bath and North East Somerset, Swindon and Wiltshire Clinical Commisioning Group, United Kingdom", "Ian McNicoll, freshEHR Clinical Informatics, United Kingdom (openEHR Editor)", "Ana Pereira, CINTESIS, CUF-Porto, Portugal", "Norwegian Review Summary, Nasjonal IKT HF, Norway", "Rowan Thomas, St. Vincent's Hospital Melbourne, Australia", "Anders Thurin, VGR, Sweden", "John Tore Valand, Helse Bergen, Norway (openEHR Editor)", "Marit Alice Venheim, Helse Vest IKT, Norway (openEHR Editor)">
 	other_details = <
 		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
 		["custodian_organisation"] = <"openEHR Foundation">
 		["references"] = <"Lim WS, van der Eerden MM, Laing R, Boersma WG, Karalus N, Town GI, Lewis SA, Macfarlane JT. Defining community acquired pneumonia severity on presentation to hospital: an international derivation and validation study. Thorax. 2003 May;58(5):377-82. doi: 10.1136/thorax.58.5.377. PubMed PMID: 12728155; PubMed Central PMCID: PMC1746657.
 
-Lim WS, Baudouin SV, George RC, Hill AT, Jamieson C, Le Jeune I, Macfarlane JT, Read RC, Roberts HJ, Levy ML, Wani M, Woodhead MA. BTS guidelines for the management of community acquired pneumonia in adults: update 2009. Thorax. 2009 Oct;64 Suppl 3:iii1-55. doi: 10.1136/thx.2009.121434. PubMed PMID: 19783532.">
+Lim WS, Baudouin SV, George RC, Hill AT, Jamieson C, Le Jeune I, Macfarlane JT, Read RC, Roberts HJ, Levy ML, Wani M, Woodhead MA. BTS guidelines for the management of community acquired pneumonia in adults: update 2009. Thorax. 2009 Oct;64 Suppl 3:iii1-55. doi: 10.1136/thx.2009.121434. PubMed PMID: 19783532. Available from: https://www.brit-thoracic.org.uk/quality-improvement/guidelines/pneumonia-adults/.">
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"443A42A27ABF1BBF55CA3C36F1F90995">
-		["build_uid"] = <"013ef2ea-6d6f-4a1f-bd1a-9e1211af9b97">
+		["MD5-CAM-1.0.1"] = <"23E0009CAEDCBE501D56BC73E73F402D">
+		["build_uid"] = <"59209a38-adb0-4fbf-abc3-44056fa1d314">
 		["revision"] = <"0.0.1-alpha">
 	>
 
@@ -62,7 +61,7 @@ definition
 		data matches {
 			HISTORY[at0001] matches {    -- History
 				events cardinality matches {0..*; unordered} matches {
-					EVENT[at0002] occurrences matches {0..*} matches {    -- Any event
+					POINT_EVENT[at0002] occurrences matches {0..*} matches {    -- Any point in time event
 						data matches {
 							ITEM_TREE[at0003] matches {    -- Tree
 								items cardinality matches {0..*; unordered} matches {
@@ -103,7 +102,7 @@ definition
 											}
 										}
 									}
-									ELEMENT[at0018] occurrences matches {0..1} matches {    -- Severity assessment
+									ELEMENT[at0018] occurrences matches {0..1} matches {    -- Grade
 										value matches {
 											DV_CODED_TEXT matches {
 												defining_code matches {
@@ -123,7 +122,14 @@ definition
 			}
 		}
 		protocol matches {
-			ITEM_TREE[at0013] matches {*}    -- Item tree
+			ITEM_TREE[at0013] matches {    -- Item tree
+				items cardinality matches {0..*; unordered} matches {
+					allow_archetype CLUSTER[at0025] occurrences matches {0..*} matches {    -- Extension SLOT
+						include
+							archetype_id/value matches {/.*/}
+					}
+				}
+			}
 		}
 	}
 
@@ -134,14 +140,14 @@ ontology
 			items = <
 				["at0000"] = <
 					text = <"CURB-65 score">
-					description = <"A clinical score that is used to roughly estimate the severity of community-acquired pneumonias in patient seen in hospital.">
+					description = <"An assessment score used within an acute hospital setting to estimate the severity of community-acquired pneumonia.">
 				>
 				["at0001"] = <
 					text = <"History">
 					description = <"@ internal @">
 				>
 				["at0002"] = <
-					text = <"Any event">
+					text = <"Any point in time event">
 					description = <"Default, unspecified point in time or interval event which may be explicitly defined in a template or at run-time.">
 				>
 				["at0003"] = <
@@ -154,11 +160,11 @@ ontology
 				>
 				["at0005"] = <
 					text = <"No">
-					description = <"The patient does not have recent onset confusion.">
+					description = <"">
 				>
 				["at0006"] = <
 					text = <"Yes">
-					description = <"The patient has recent onset confusion.">
+					description = <"">
 				>
 				["at0007"] = <
 					text = <"Respiratory rate">
@@ -166,11 +172,11 @@ ontology
 				>
 				["at0008"] = <
 					text = <"No">
-					description = <"The patient has a respiratory rate <30 /min.">
+					description = <"">
 				>
 				["at0009"] = <
 					text = <"Yes">
-					description = <"The patient has a respiratory rate ≥30 /min.">
+					description = <"">
 				>
 				["at0010"] = <
 					text = <"Blood pressure">
@@ -178,11 +184,11 @@ ontology
 				>
 				["at0011"] = <
 					text = <"No">
-					description = <"The patient has a systolic blood pressure ≥90 AND a diastolic blood pressure >60 mmHg.">
+					description = <"">
 				>
 				["at0012"] = <
 					text = <"Yes">
-					description = <"The patient has a systolic blood pressure <90 OR a diastolic blood pressure ≤60 mmHg.">
+					description = <"">
 				>
 				["at0013"] = <
 					text = <"Item tree">
@@ -194,43 +200,48 @@ ontology
 				>
 				["at0015"] = <
 					text = <"No">
-					description = <"The patient is <65 years old.">
+					description = <"">
 				>
 				["at0016"] = <
 					text = <"Yes">
-					description = <"The patient is ≥65 years old.">
+					description = <"">
 				>
 				["at0017"] = <
 					text = <"Total score">
-					description = <"The total sum for each component variable for the CURB-65 score.">
+					description = <"The total sum of each component variable for the CURB-65 score.">
 				>
 				["at0018"] = <
-					text = <"Severity assessment">
+					text = <"Grade">
 					description = <"Severity assessment based on the CURB-65 score.">
 				>
 				["at0019"] = <
 					text = <"Low severity">
-					description = <"CURB-65 score 0-1: The patient may be suitable for treatment at home.">
+					description = <"CURB-65 score 0-1: Low risk of death.">
 				>
 				["at0020"] = <
 					text = <"Moderate severity">
-					description = <"CURB-65 score 2: The patient should be considered for short-stay inpatient treatment or hospital-supervised outpatient treatment.">
+					description = <"CURB-65 score 2: Moderate risk of death.">
 				>
 				["at0021"] = <
 					text = <"High severity">
-					description = <"CURB-65 score 3-4: The patient should be reviewed by a senior physician at the earliest opportunity to refine disease severity assessment and should usually be managed as having high severity pneumonia. Patients with CURB-65 scores of 4 and 5 should be assessed with specific consideration to the need for transfer to a critical care unit (high dependency unit or intensive care unit).">
+					description = <"CURB-65 score 3-5: High risk of death.">
 				>
 				["at0022"] = <
 					text = <"Urea">
-					description = <"Does the patient have a blood urea of >7 mmol/L?">
+					description = <"Does the patient have a blood urea of >7 mmol/L (or 19 mg/dL)?">
 				>
 				["at0023"] = <
 					text = <"No">
-					description = <"The patient has a blood urea of <7 mmol/L.">
+					description = <"">
 				>
 				["at0024"] = <
 					text = <"Yes">
-					description = <"The patient has a blood urea of >7 mmol/L.">
+					description = <"">
+				>
+				["at0025"] = <
+					text = <"Extension SLOT">
+					description = <"Additional information required to extend the model with local content or to align with other reference models or formalisms.">
+					comment = <"For example: local information requirements; or additional metadata to align with FHIR.">
 				>
 			>
 		>
@@ -238,16 +249,15 @@ ontology
 			items = <
 				["at0000"] = <
 					text = <"CURB-65 skår">
-					description = <"En klinisk skår som brukes til å grovt estimere alvorlighetsgraden av samfunnservervet lungebetennelse hos pasienter tilsett i sykehus.
-">
+					description = <"En klinisk skår som brukes i sykehus til å grovt estimere alvorlighetsgraden av samfunnservervet lungebetennelse.">
 				>
 				["at0001"] = <
 					text = <"History">
 					description = <"@ internal @">
 				>
 				["at0002"] = <
-					text = <"Uspesifisert hendelse">
-					description = <"Uspesifisert tidspunkt eller tidsintervall som kan defineres mer eksplisitt i en templat eller i en applikasjon.">
+					text = <"Uspesifisert tidspunkthendelse">
+					description = <"Uspesifisert tidspunkt som kan defineres mer eksplisitt i en templat eller i en applikasjon.">
 				>
 				["at0003"] = <
 					text = <"Tree">
@@ -259,11 +269,11 @@ ontology
 				>
 				["at0005"] = <
 					text = <"Nei">
-					description = <"Pasienten har ikke nyoppstått forvirring.">
+					description = <"">
 				>
 				["at0006"] = <
 					text = <"Ja">
-					description = <"Pasienten har nyoppstått forvirring.">
+					description = <"">
 				>
 				["at0007"] = <
 					text = <"Respirasjonsfrekvens">
@@ -271,11 +281,11 @@ ontology
 				>
 				["at0008"] = <
 					text = <"Nei">
-					description = <"Pasienten har en respirasjonsfrekvens <30/min.">
+					description = <"">
 				>
 				["at0009"] = <
 					text = <"Ja">
-					description = <"Pasienten har en respirasjonsfrekvens ≥30 /min.">
+					description = <"">
 				>
 				["at0010"] = <
 					text = <"Blodtrykk">
@@ -283,11 +293,11 @@ ontology
 				>
 				["at0011"] = <
 					text = <"Nei">
-					description = <"Pasienten har systolisk blodtrykk ≥90 og diastolisk blodtrykk >60 mmHg.">
+					description = <"">
 				>
 				["at0012"] = <
 					text = <"Ja">
-					description = <"Pasienten har systolisk blodtrykk <90 eller diastolisk blodtrykk ≤60 mmHg?">
+					description = <"">
 				>
 				["at0013"] = <
 					text = <"Item tree">
@@ -299,43 +309,48 @@ ontology
 				>
 				["at0015"] = <
 					text = <"Nei">
-					description = <"Pasienten er <65 år.">
+					description = <"">
 				>
 				["at0016"] = <
 					text = <"Ja">
-					description = <"Pasienten er ≥65 år.">
+					description = <"">
 				>
 				["at0017"] = <
 					text = <"Total skår">
 					description = <"Summen av poeng på hvert enkelt parameter i CURB-65 skåren.">
 				>
 				["at0018"] = <
-					text = <"Vurdering av alvorlighet">
+					text = <"Alvorlighetsgrad">
 					description = <"Alvorlighetsvurdering basert på CURB-65 skåren.">
 				>
 				["at0019"] = <
 					text = <"Lav alvorlighetsgrad">
-					description = <"CURB-65 score 0-1: Pasienten kan vurderes å behandles ambulant.">
+					description = <"CURB-65 skår 0-1: Lav mortalitetsrisiko.">
 				>
 				["at0020"] = <
 					text = <"Moderat alvorlighetsgrad">
-					description = <"CURB-65 score 2: Pasienten bør vurderes for korttidsopphold i spesialisthelsetjenesten eller poliklinisk behandling i samarbeid med spesialisthelsetjenesten.">
+					description = <"CURB-65 skår 2: Moderat mortalitetsrisiko.">
 				>
 				["at0021"] = <
 					text = <"Høy alvorlighetsgrad">
-					description = <"CURB-65 score 3-4: Pasienten bør tilses av en overlege eller tilsvarende uten opphold for å kartlegge alvorlighet av sykdom og bør som regel bli behandlet som en alvorlig pneumoni. Pasienter med CURB-65 skår på 4 og 5 bør vurderes med tanke på nærstående behov for intensivbehandling eller liknende tjenestenivå.">
+					description = <"CURB-65 skår 3-5: Høy mortalitetsrisiko.">
 				>
 				["at0022"] = <
 					text = <"Urea">
-					description = <"Har pasienten >7 mmol/L Urea i blodet?">
+					description = <"Har pasienten >7 mmol/L (eller 19 mg/dL) Urea i blodet?">
 				>
 				["at0023"] = <
 					text = <"Nei">
-					description = <"Pasienten har <7 mmol/L urea i blodet.">
+					description = <"">
 				>
 				["at0024"] = <
 					text = <"Ja">
-					description = <"Pasienten har >7 mmol/L urea i blodet.">
+					description = <"">
+				>
+				["at0025"] = <
+					text = <"Tilleggsinformasjon">
+					description = <"Ytterligere informasjon som trengs for å kunne registrere lokalt definert innhold eller for å tilpasse til andre referansemodeller/formalismer.">
+					comment = <"For eksempel lokale informasjonsbehov eller ytterligere metadata for å kunne tilpasse til tilsvarende konsepter i FHIR eller CIMI.">
 				>
 			>
 		>
