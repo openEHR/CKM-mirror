@@ -1,0 +1,302 @@
+﻿archetype (adl_version=1.4; uid=4fa2604b-a1c6-4585-8829-ebb1b4669fde)
+	openEHR-EHR-EVALUATION.limitation_of_treatment.v0
+
+concept
+	[at0000]	-- Limitation of treatment
+language
+	original_language = <[ISO_639-1::en]>
+description
+	original_author = <
+		["name"] = <"Heather Leslie">
+		["organisation"] = <"Atomica Informatics, Australia">
+		["email"] = <"heather.leslie@atomicainformatics.com">
+		["date"] = <"2020-07-31">
+	>
+	details = <
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To record the decision/s about limitation of future treatment, determined by a senior clinician.">
+			use = <"Use to record the decision/s about limitation of future treatment, determined by a senior clinician. 
+
+In many clinical situations, there are 'Not For Resuscitation' or 'Do not attempt resuscitation' orders in place, recorded in clinical records. 
+
+The assumed default is that the patient should be resuscitated as clinically appropriate. This archetype has been designed to explicitly record 'No limitation of treatment' as default. Any alteration to this is also recorded explicitly in the health record. It is also possible to record specific limitations on treatment, for example allowing IV fluids and antibiotics only.
+
+In keeping with recent trends, the 'Status' value set comprises 'No limitation of treatment' (for full resuscitation measures), 'Allow natural death' (for no active resuscitation measures, with the exception of treatments providing comfort) and the specification of treatment limitations at a category level.
+
+The 'Limitation of treatment' information contained in this archetype should be aligned with an Advanced Care Directive, initiated by the patient or carers, wherever possible.">
+			keywords = <"DNR", "DNAR", "DNACPR", "NFR", "resuscitation", "EoL", "directive", "preference">
+			misuse = <"Not to be used to record an 'Advanced care directive' - use EVALUATION.advanced_care_directive for this purpose.">
+			copyright = <"© openEHR Foundation">
+		>
+	>
+	lifecycle_state = <"in_development">
+	other_contributors = <>
+	other_details = <
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
+		["custodian_organisation"] = <"openEHR Foundation">
+		["references"] = <"Breault JL. DNR, DNAR, or AND? Is Language Important? Ochsner J. 2011 Winter;11(4):302-6. PMID: 22190879; PMCID: PMC3241061.
+
+Salins N, Gursahani R, Mathur R, Iyer S, Macaden S, Simha N, Mani RK, Rajagopal MR. Definition of Terms Used in Limitation of Treatment and Providing Palliative Care at the End of Life: The Indian Council of Medical Research Commission Report. Indian J Crit Care Med. 2018 Apr;22(4):249-262. doi: 10.4103/ijccm.IJCCM_165_18. PMID: 29743764; PMCID: PMC5930529.
+
+Thomas RL, Zubair MY, Hayes B, Ashby MA. Goals of care: a clinical framework for limitation of medical treatment. Med J Aust. 2014 Oct 20;201(8):452-5. doi: 10.5694/mja14.00623. PMID: 25332031.">
+		["original_namespace"] = <"org.openehr">
+		["original_publisher"] = <"openEHR Foundation">
+		["custodian_namespace"] = <"org.openehr">
+		["MD5-CAM-1.0.1"] = <"AE314FAF01ACBB50C8CB7CBC8EAA33FA">
+		["build_uid"] = <"a6c8461a-0688-4552-ac0f-e4e827f33d55">
+		["ip_acknowledgements"] = <"This artefact includes content from SNOMED Clinical Terms® (SNOMED CT®) which is copyrighted material of the International Health Terminology Standards Development Organisation (IHTSDO). Where an implementation of this artefact makes use of SNOMED CT content, the implementer must have the appropriate SNOMED CT Affiliate license - for more information contact http://www.snomed.org/snomed-ct/get-snomedct or info@snomed.org.">
+		["revision"] = <"0.0.1-alpha">
+	>
+
+definition
+	EVALUATION[at0000] matches {    -- Limitation of treatment
+		data matches {
+			ITEM_TREE[at0001] matches {    -- Tree
+				items cardinality matches {0..*; unordered} matches {
+					ELEMENT[at0002] occurrences matches {0..1} matches {    -- Status
+						value matches {
+							DV_CODED_TEXT matches {
+								defining_code matches {
+									[local::
+									at0003,    -- No limitation of treatment
+									at0004,    -- Limitation of medical treatment
+									at0005;    -- Allow natural death
+									at0003]
+								}
+							}
+						}
+					}
+					CLUSTER[at0006] occurrences matches {0..*} matches {    -- Per limitation
+						items cardinality matches {1..*; unordered} matches {
+							ELEMENT[at0007] occurrences matches {0..1} matches {    -- Type of limitation
+								value matches {
+									DV_CODED_TEXT matches {
+										defining_code matches {
+											[local::
+											at0008,    -- Cardiopulmonary resuscitation
+											at0009,    -- Endotracheal intubation
+											at0010,    -- Mechanical ventilation
+											at0011,    -- Vasopressor therapy
+											at0012,    -- Parenteral or artificial nutrition
+											at0013,    -- Dialysis
+											at0014,    -- Blood products
+											at0015,    -- Antibiotics
+											at0016]    -- Intravenous fluids
+										}
+									}
+								}
+							}
+							ELEMENT[at0017] occurrences matches {0..1} matches {    -- Decision
+								value matches {
+									DV_CODED_TEXT matches {
+										defining_code matches {
+											[local::
+											at0018,    -- Permitted
+											at0019]    -- Not permitted
+										}
+									}
+								}
+							}
+							ELEMENT[at0020] occurrences matches {0..1} matches {    -- Qualification
+								value matches {
+									DV_TEXT matches {*}
+								}
+							}
+						}
+					}
+					ELEMENT[at0021] occurrences matches {0..1} matches {    -- Rationale
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0022] occurrences matches {0..1} matches {    -- Patient awareness
+						value matches {
+							DV_CODED_TEXT matches {
+								defining_code matches {
+									[local::
+									at0024,    -- Patient not aware of the decision/s
+									at0023]    -- Patient aware of the decision/s
+								}
+							}
+						}
+					}
+					ELEMENT[at0025] occurrences matches {0..1} matches {    -- Carer awareness
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0026] occurrences matches {0..1} matches {    -- Comment
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+				}
+			}
+		}
+		protocol matches {
+			ITEM_TREE[at0027] matches {    -- Tree
+				items cardinality matches {0..*; unordered} matches {
+					ELEMENT[at029] occurrences matches {0..1} matches {    -- ELEMENT
+						value matches {
+							DV_DATE_TIME matches {*}
+						}
+					}
+					ELEMENT[at0030] occurrences matches {0..1} matches {    -- Review date
+						value matches {
+							DV_DATE_TIME matches {*}
+						}
+					}
+					allow_archetype CLUSTER[at0031] occurrences matches {0..*} matches {    -- Extension
+						include
+							archetype_id/value matches {/.*/}
+					}
+				}
+			}
+		}
+	}
+
+
+ontology
+	terminologies_available = <"SNOMED-CT", ...>
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"Limitation of treatment">
+					description = <"Decision/s about limitation of future treatment, determined by a senior clinician.">
+					comment = <"In many countries this is known as the NFR (Not for resuscitation), DNR (Do not resuscitate), DNAR (Do not attempt resuscitation) or DNACPR (Do not attempt cardiopulmonary resuscitation) decision.">
+				>
+				["at0001"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0017"] = <
+					text = <"Decision">
+					description = <"The decision about whether the identified treatment type is permitted or not.">
+				>
+				["at0018"] = <
+					text = <"Permitted">
+					description = <"The treatment is permitted, if clinically appropriate.">
+				>
+				["at0019"] = <
+					text = <"Not permitted">
+					description = <"The treatment is not permitted.">
+				>
+				["at0022"] = <
+					text = <"Patient awareness">
+					description = <"Is the patient aware of the limitation of treatment decision/s?">
+				>
+				["at0024"] = <
+					text = <"Patient not aware of the decision/s">
+					description = <"The patient is not aware of the limitation of treatment decision/s.">
+				>
+				["at0023"] = <
+					text = <"Patient aware of the decision/s">
+					description = <"The patient is aware of the limitation of treatment decision/s.">
+				>
+				["at0030"] = <
+					text = <"Review date">
+					description = <"The date when this Limitation of treatment archetype is due for review.">
+				>
+				["at0027"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0025"] = <
+					text = <"Carer awareness">
+					description = <"Narrative description about awareness of the treatment decision/s by carers and family.">
+				>
+				["at0026"] = <
+					text = <"Comment">
+					description = <"Additional narrative about the limitation of treatment decision/s, not captured in other fields.">
+				>
+				["at0007"] = <
+					text = <"Type of limitation">
+					description = <"Description about ">
+				>
+				["at0002"] = <
+					text = <"Status">
+					description = <"Category describing the presence of any limitation of treatment.">
+				>
+				["at0003"] = <
+					text = <"No limitation of treatment">
+					description = <"For full resuscitation. No limitations on future treatment options have been recorded.">
+				>
+				["at0004"] = <
+					text = <"Limitation of medical treatment">
+					description = <"Limitations on future treatment options have been recorded in an advanced care directive or similar.">
+				>
+				["at0005"] = <
+					text = <"Allow natural death">
+					description = <"Do not attempt resuscitation. Comfort during the dying process.">
+				>
+				["at0006"] = <
+					text = <"Per limitation">
+					description = <"Details about each limitation on treatment">
+				>
+				["at0008"] = <
+					text = <"Cardiopulmonary resuscitation">
+					description = <"Lifesaving emergency procedure involving chest compressions and artificial ventilation.">
+				>
+				["at0009"] = <
+					text = <"Endotracheal intubation">
+					description = <"">
+				>
+				["at0010"] = <
+					text = <"Mechanical ventilation">
+					description = <"">
+				>
+				["at0011"] = <
+					text = <"Vasopressor therapy">
+					description = <"">
+				>
+				["at0012"] = <
+					text = <"Parenteral or artificial nutrition">
+					description = <"">
+				>
+				["at0013"] = <
+					text = <"Dialysis">
+					description = <"">
+				>
+				["at0014"] = <
+					text = <"Blood products">
+					description = <"">
+				>
+				["at0015"] = <
+					text = <"Antibiotics">
+					description = <"">
+				>
+				["at0016"] = <
+					text = <"Intravenous fluids">
+					description = <"">
+				>
+				["at0020"] = <
+					text = <"Qualification">
+					description = <"Description about any criteria, caveats or futher clarification about the limitation.">
+					comment = <"For example: the types of antibiotics that would be acceptable. ">
+				>
+				["at0021"] = <
+					text = <"Rationale">
+					description = <"Narrative rationale or justification for the limitation of treatment decision/s.">
+				>
+				["at0031"] = <
+					text = <"Extension">
+					description = <"Additional information required to extend the model with local content or to align with other reference models or formalisms.">
+					comment = <"For example: local information requirements; or additional metadata to align with FHIR.">
+				>
+				["at029"] = <
+					text = <"ELEMENT">
+					description = <"*">
+				>
+			>
+		>
+	>
+	term_bindings = <
+		["SNOMED-CT"] = <
+			items = <
+				["at0003"] = <[SNOMED-CT::304253006]>
+				["at0005"] = <[SNOMED-CT::304252001]>
+			>
+		>
+	>
