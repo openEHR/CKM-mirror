@@ -86,113 +86,121 @@ Not to be used for documenting the administration or consumption of a medication
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"75082BEEF15E139A76B4F5BD3D2E70B3">
-		["build_uid"] = <"36796d10-b5bf-444c-bdff-64fc9ec4452f">
+		["MD5-CAM-1.0.1"] = <"0D472B88170D2E19BC0544FC63681537">
+		["build_uid"] = <"6fc28525-aadd-41f4-a309-cf959326bd55">
 		["revision"] = <"0.0.1-alpha">
 	>
 
 definition
-	EVALUATION[at0000] matches {	-- Medication summary
+	EVALUATION[at0000] matches {    -- Medication summary
 		data matches {
-			ITEM_TREE[at0001] matches {	-- Tree
+			ITEM_TREE[at0001] matches {    -- Tree
 				items cardinality matches {0..*; unordered} matches {
-					ELEMENT[at0002] occurrences matches {0..1} matches {	-- Medication name
+					ELEMENT[at0002] occurrences matches {0..1} matches {    -- Medication name
 						value matches {
 							DV_TEXT matches {*}
 						}
 					}
-					ELEMENT[at0003] occurrences matches {0..1} matches {	-- Ever used?
+					ELEMENT[at0023] occurrences matches {0..1} matches {    -- Status
 						value matches {
-							DV_BOOLEAN matches {
-								value matches {True}
+							DV_CODED_TEXT matches {
+								defining_code matches {
+									[local::
+									at0024,    -- Never used
+									at0025,    -- Currently using
+									at0026]    -- Used in the past
+								}
 							}
 						}
 					}
-					ELEMENT[at0004] occurrences matches {0..1} matches {	-- Current use?
-						value matches {
-							DV_BOOLEAN matches {
-								value matches {True, False}
-							}
-						}
-					}
-					ELEMENT[at0007] occurrences matches {0..1} matches {	-- Clinical description
+					ELEMENT[at0007] occurrences matches {0..1} matches {    -- Clinical description
 						value matches {
 							DV_TEXT matches {*}
 						}
 					}
-					ELEMENT[at0009] occurrences matches {0..1} matches {	-- Onset of use
+					ELEMENT[at0009] occurrences matches {0..1} matches {    -- Onset of use
 						value matches {
 							DV_DATE_TIME matches {*}
 						}
 					}
-					CLUSTER[at0008] occurrences matches {0..*} matches {	-- Episode
+					CLUSTER[at0008] occurrences matches {0..*} matches {    -- Episode
 						items cardinality matches {1..*; unordered} matches {
-							ELEMENT[at0021] occurrences matches {0..1} matches {	-- Specific name
+							ELEMENT[at0021] occurrences matches {0..1} matches {    -- Specific name
 								value matches {
 									DV_TEXT matches {*}
 								}
 							}
-							ELEMENT[at0011] occurrences matches {0..1} matches {	-- Episode onset
+							ELEMENT[at0011] occurrences matches {0..1} matches {    -- Episode onset
 								value matches {
 									DV_DATE_TIME matches {*}
 								}
 							}
-							ELEMENT[at0018] occurrences matches {0..1} matches {	-- Clinical indication
+							ELEMENT[at0018] occurrences matches {0..1} matches {    -- Clinical indication
 								value matches {
 									DV_TEXT matches {*}
 								}
 							}
-							ELEMENT[at0020] occurrences matches {0..1} matches {	-- Intent
+							ELEMENT[at0020] occurrences matches {0..1} matches {    -- Intent
 								value matches {
 									DV_TEXT matches {*}
 								}
 							}
-							ELEMENT[at0014] occurrences matches {0..1} matches {	-- Description
+							ELEMENT[at0014] occurrences matches {0..1} matches {    -- Description
 								value matches {
 									DV_TEXT matches {*}
 								}
 							}
-							ELEMENT[at0012] occurrences matches {0..1} matches {	-- Episode cessation
+							ELEMENT[at0012] occurrences matches {0..1} matches {    -- Episode cessation
 								value matches {
 									DV_DATE_TIME matches {*}
 								}
 							}
-							ELEMENT[at0016] occurrences matches {0..1} matches {	-- Episode dose
+							ELEMENT[at0016] occurrences matches {0..1} matches {    -- Episode dose
 								value matches {
-									C_DV_QUANTITY <
-									>
+									DV_QUANTITY matches {*}
 								}
 							}
-							ELEMENT[at0013] occurrences matches {0..1} matches {	-- Reason for cessation
+							ELEMENT[at0013] occurrences matches {0..1} matches {    -- Reason for cessation
+								value matches {
+									DV_TEXT matches {*}
+								}
+							}
+							ELEMENT[at0022] occurrences matches {0..1} matches {    -- Treatment response
 								value matches {
 									DV_TEXT matches {*}
 								}
 							}
 						}
 					}
-					ELEMENT[at0015] occurrences matches {0..1} matches {	-- Cumulative dose
+					ELEMENT[at0015] occurrences matches {0..1} matches {    -- Cumulative dose
 						value matches {
-							C_DV_QUANTITY <
-							>
+							DV_QUANTITY matches {*}
 						}
 					}
-					ELEMENT[at0010] occurrences matches {0..1} matches {	-- Cessation of use
+					ELEMENT[at0010] occurrences matches {0..1} matches {    -- Cessation of use
 						value matches {
 							DV_DATE_TIME matches {*}
+						}
+					}
+					ELEMENT[at0027] occurrences matches {0..1} matches {    -- Cumulative duration of use
+						value matches {
+							DV_DURATION matches {
+								value matches {|>=PT0S|}
+							}
 						}
 					}
 				}
 			}
 		}
 		protocol matches {
-			ITEM_TREE[at0005] matches {	-- Tree
+			ITEM_TREE[at0005] matches {    -- Tree
 				items cardinality matches {0..*; unordered} matches {
-					ELEMENT[at0006] occurrences matches {0..1} matches {	-- Last updated
+					ELEMENT[at0006] occurrences matches {0..1} matches {    -- Last updated
 						value matches {
 							DV_DATE_TIME matches {*}
 						}
 					}
-					allow_archetype CLUSTER[at0019] occurrences matches {0..*} matches {	-- Extension
+					allow_archetype CLUSTER[at0019] occurrences matches {0..*} matches {    -- Extension
 						include
 							archetype_id/value matches {/.*/}
 					}
@@ -217,14 +225,6 @@ ontology
 				["at0002"] = <
 					text = <"Medication name">
 					description = <"Name of medication or class of medication.">
-				>
-				["at0003"] = <
-					text = <"Ever used?">
-					description = <"Has the individual ever used the medication or class of medication?">
-				>
-				["at0004"] = <
-					text = <"Current use?">
-					description = <"Is the individual currently using the medication or class of medications?">
 				>
 				["at0005"] = <
 					text = <"Tree">
@@ -293,13 +293,37 @@ ontology
 					description = <"Specific name of medication.">
 					comment = <"Use to identify the specific medication used if a class is identified in 'Medication name'. Redundant if the name is identified using the 'Medication name' data element.">
 				>
+				["at0022"] = <
+					text = <"Treatment response">
+					description = <"The individual's response to the treatment by this medication during this episode.">
+				>
+				["at0023"] = <
+					text = <"Status">
+					description = <"Status about historical and current use of the medication or medication class.">
+				>
+				["at0024"] = <
+					text = <"Never used">
+					description = <"The individual has never used the medication or medication class.">
+				>
+				["at0025"] = <
+					text = <"Currently using">
+					description = <"The individual is currently using the medication or medication class.">
+				>
+				["at0026"] = <
+					text = <"Used in the past">
+					description = <"The individual has used the medication or medication class in the past but is not currently using it.">
+				>
+				["at0027"] = <
+					text = <"Cumulative duration of use">
+					description = <"The total duration of the episodes where the medication has been used.">
+				>
 			>
 		>
 		["nb"] = <
 			items = <
 				["at0000"] = <
 					text = <"Legemiddelsammendrag">
-					description = <"Sammendrag om administrasjon eller forbruk av et spesifisert legemiddel eller legemiddelklasse over individets levetid.">
+					description = <"*Summary information about the administration or consumption history for a specified medication or class of medication over the individual's lifetime. (en)">
 				>
 				["at0001"] = <
 					text = <"Tree">
@@ -308,14 +332,6 @@ ontology
 				["at0002"] = <
 					text = <"Legemiddel">
 					description = <"Legemiddelets navn eller klasse.">
-				>
-				["at0003"] = <
-					text = <"Bruk av medikament">
-					description = <"Har personen noen gang brukt dette medikamentet?">
-				>
-				["at0004"] = <
-					text = <"Nåværende bruk">
-					description = <"Bruker personen medikamentet nå?">
 				>
 				["at0005"] = <
 					text = <"Tree">
@@ -384,13 +400,37 @@ ontology
 					description = <"Detaljert navn på medikamentet">
 					comment = <"Brukt for å identifisere et spesifikt medikament som brukes, hvis en klasse medikamenter er identifisert i 'Medikament navn'">
 				>
+				["at0022"] = <
+					text = <"*Treatment response (en)">
+					description = <"*The individual's response to the treatment by this medication during this episode. (en)">
+				>
+				["at0023"] = <
+					text = <"*Status (en)">
+					description = <"*Status about historical and current use of the medication or medication class. (en)">
+				>
+				["at0024"] = <
+					text = <"*Never used (en)">
+					description = <"*The individual has never used the medication or medication class. (en)">
+				>
+				["at0025"] = <
+					text = <"*Currently using (en)">
+					description = <"*The individual is currently using the medication or medication class. (en)">
+				>
+				["at0026"] = <
+					text = <"*Used in the past (en)">
+					description = <"*The individual has used the medication or medication class in the past but is not currently using it. (en)">
+				>
+				["at0027"] = <
+					text = <"*Cumulative duration of use (en)">
+					description = <"*The total duration of the episodes where the medication has been used. (en)">
+				>
 			>
 		>
 		["pt-br"] = <
 			items = <
 				["at0000"] = <
 					text = <"Sumário de medicamentos">
-					description = <"Informações sumarizadas sobre a administração ou histórico de consumo de um medicamento específico ou de uma classe de medicamento durante a vida do indivíduo.">
+					description = <"*Summary information about the administration or consumption history for a specified medication or class of medication over the individual's lifetime. (en)">
 				>
 				["at0001"] = <
 					text = <"Tree">
@@ -399,14 +439,6 @@ ontology
 				["at0002"] = <
 					text = <"Nome do medicamento">
 					description = <"Nome ou classe do medicamento.">
-				>
-				["at0003"] = <
-					text = <"Já usou?">
-					description = <"O indivíduo já usou alguma vez esse medicamento ou essa classe de medicamento?">
-				>
-				["at0004"] = <
-					text = <"Usa atualmente?">
-					description = <"O indivíduo está atualmente usando esse medicamento ou essa classe de medicamento?">
 				>
 				["at0005"] = <
 					text = <"Tree">
@@ -475,13 +507,37 @@ ontology
 					description = <"Nome específico do medicamento.">
 					comment = <"Usado para identificar o medicamento específico utilizado caso a classe esteja identificada em \"Nome do medicamento\". Redundante se o nome é identificado usando o elemento de dado \"Nome do medicamento\".">
 				>
+				["at0022"] = <
+					text = <"*Treatment response (en)">
+					description = <"*The individual's response to the treatment by this medication during this episode. (en)">
+				>
+				["at0023"] = <
+					text = <"*Status (en)">
+					description = <"*Status about historical and current use of the medication or medication class. (en)">
+				>
+				["at0024"] = <
+					text = <"*Never used (en)">
+					description = <"*The individual has never used the medication or medication class. (en)">
+				>
+				["at0025"] = <
+					text = <"*Currently using (en)">
+					description = <"*The individual is currently using the medication or medication class. (en)">
+				>
+				["at0026"] = <
+					text = <"*Used in the past (en)">
+					description = <"*The individual has used the medication or medication class in the past but is not currently using it. (en)">
+				>
+				["at0027"] = <
+					text = <"*Cumulative duration of use (en)">
+					description = <"*The total duration of the episodes where the medication has been used. (en)">
+				>
 			>
 		>
 		["de"] = <
 			items = <
 				["at0000"] = <
 					text = <"Zusammenfassung der Medikation">
-					description = <"Zusammenfassende Informationen über die Verabreichungen und Einnahmen eines speziellen Medikaments oder einer bestimmten Medikamentenklasse über die Lebenszeit einer Person.">
+					description = <"*Summary information about the administration or consumption history for a specified medication or class of medication over the individual's lifetime. (en)">
 				>
 				["at0001"] = <
 					text = <"Tree">
@@ -490,14 +546,6 @@ ontology
 				["at0002"] = <
 					text = <"Name des Medikaments">
 					description = <"Name des Medikaments oder der Medikamentenklasse.">
-				>
-				["at0003"] = <
-					text = <"Jemals angewendet?">
-					description = <"Fand das Medikament oder die Medikamentenklasse bei der Person jemals die Anwendung?">
-				>
-				["at0004"] = <
-					text = <"Aktuelle Anwendung?">
-					description = <"Findet derzeit das Medikament oder die Medikamentenklasse bei der Person die Anwendung?">
 				>
 				["at0005"] = <
 					text = <"Tree">
@@ -567,6 +615,30 @@ ontology
 					comment = <"Dient der Identifizierung des Medikaments, wenn unter \"Name des Medikaments\" eine Medikamentenklasse angegeben wurde. Bitte tragen Sie hier die tatsächliche Medikationsbezeichnung ein. Falls bei \"Name des Medikaments\" bereits die genaue Bezeichnung angegeben wurde, ist dieser Eintrag hier redundant.
 
 ">
+				>
+				["at0022"] = <
+					text = <"*Treatment response (en)">
+					description = <"*The individual's response to the treatment by this medication during this episode. (en)">
+				>
+				["at0023"] = <
+					text = <"*Status (en)">
+					description = <"*Status about historical and current use of the medication or medication class. (en)">
+				>
+				["at0024"] = <
+					text = <"*Never used (en)">
+					description = <"*The individual has never used the medication or medication class. (en)">
+				>
+				["at0025"] = <
+					text = <"*Currently using (en)">
+					description = <"*The individual is currently using the medication or medication class. (en)">
+				>
+				["at0026"] = <
+					text = <"*Used in the past (en)">
+					description = <"*The individual has used the medication or medication class in the past but is not currently using it. (en)">
+				>
+				["at0027"] = <
+					text = <"*Cumulative duration of use (en)">
+					description = <"*The total duration of the episodes where the medication has been used. (en)">
 				>
 			>
 		>
