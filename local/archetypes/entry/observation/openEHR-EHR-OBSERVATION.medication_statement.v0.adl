@@ -1,0 +1,291 @@
+﻿archetype (adl_version=1.4; uid=3c3cd4d6-8573-4376-b843-e9c0ab6ab74e)
+	openEHR-EHR-OBSERVATION.medication_statement.v0
+
+concept
+	[at0000]	-- Medication statement
+language
+	original_language = <[ISO_639-1::en]>
+description
+	original_author = <
+		["name"] = <"Heather Leslie">
+		["organisation"] = <"Atomica Informatics">
+		["email"] = <"heather.leslie@atomicainformatics.com">
+		["date"] = <"2020-08-26">
+	>
+	details = <
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To record a snapshot view about the use of a specified medication, including current use, past use or planned use.">
+			use = <"To record a snapshot view about the use of a specified medication, including current use, past use or planned use.
+
+This archetype has been designed to align with the FHIR MedicationStatement resource.">
+			misuse = <"Not to be used to record details about a medication order - use INSTRUCTION.medication_order for this purpose.
+Not to be used to record details about specific medication related activities, such as administration or dispense - use ACTION.medication for this purpose.">
+			copyright = <"© openEHR Foundation">
+		>
+	>
+	lifecycle_state = <"in_development">
+	other_contributors = <>
+	other_details = <
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
+		["custodian_organisation"] = <"openEHR Foundation">
+		["references"] = <"https://www.hl7.org/fhir/medicationstatement.html">
+		["original_namespace"] = <"org.openehr">
+		["original_publisher"] = <"openEHR Foundation">
+		["custodian_namespace"] = <"org.openehr">
+		["MD5-CAM-1.0.1"] = <"F0BD3CD67E237EBE2605AA68875B8BC0">
+		["build_uid"] = <"c2d7c10c-f262-420d-b758-27b69dd8a27b">
+		["revision"] = <"0.0.1-alpha">
+	>
+
+definition
+	OBSERVATION[at0000] matches {    -- Medication statement
+		data matches {
+			HISTORY[at0001] matches {    -- History
+				events cardinality matches {0..*; unordered} matches {
+					EVENT[at0002] occurrences matches {0..*} matches {    -- Any event
+						data matches {
+							ITEM_TREE[at0003] matches {    -- Tree
+								items cardinality matches {0..*; unordered} matches {
+									ELEMENT[at0006] occurrences matches {0..1} matches {    -- Medication item name
+										value matches {
+											DV_TEXT matches {*}
+										}
+									}
+									allow_archetype CLUSTER[at0007] occurrences matches {0..*} matches {    -- Preparation details
+										include
+											archetype_id/value matches {/.*/}
+									}
+									ELEMENT[at0008] occurrences matches {0..1} matches {    -- Status
+										value matches {
+											DV_CODED_TEXT matches {
+												defining_code matches {
+													[local::
+													at0009,    -- Planned
+													at0010,    -- Scheduled
+													at0011,    -- Active
+													at0012,    -- Completed
+													at0013,    -- Postponed
+													at0014,    -- Cancelled
+													at0015,    -- Suspended
+													at0016,    -- Discontinued
+													at0017]    -- Unknown
+												}
+											}
+										}
+									}
+									ELEMENT[at0018] occurrences matches {0..1} matches {    -- Status reason
+										value matches {
+											DV_TEXT matches {*}
+											DV_URI matches {*}
+										}
+									}
+									ELEMENT[at0019] occurrences matches {0..1} matches {    -- Status start time
+										value matches {
+											DV_DATE_TIME matches {*}
+										}
+									}
+									ELEMENT[at0020] occurrences matches {0..1} matches {    -- Status duration
+										value matches {
+											DV_DURATION matches {*}
+										}
+									}
+									ELEMENT[at0021] occurrences matches {0..1} matches {    -- Status end time
+										value matches {
+											DV_DATE_TIME matches {*}
+										}
+									}
+									allow_archetype CLUSTER[at0022] occurrences matches {0..*} matches {    -- Structured dose and timing directions
+										include
+											archetype_id/value matches {/.*/}
+									}
+									ELEMENT[at0023] occurrences matches {0..1} matches {    -- Clinical indication
+										value matches {
+											DV_TEXT matches {*}
+										}
+									}
+									ELEMENT[at0024] occurrences matches {0..1} matches {    -- First prescribed
+										value matches {
+											DV_DATE_TIME matches {*}
+										}
+									}
+									ELEMENT[at0025] occurrences matches {0..1} matches {    -- Last prescribed
+										value matches {
+											DV_DATE_TIME matches {*}
+										}
+									}
+									ELEMENT[at0026] occurrences matches {0..1} matches {    -- Last administered
+										value matches {
+											DV_DATE_TIME matches {*}
+										}
+									}
+									ELEMENT[at0027] occurrences matches {0..1} matches {    -- Last reviewed
+										value matches {
+											DV_DATE_TIME matches {*}
+										}
+									}
+									ELEMENT[at0028] occurrences matches {0..1} matches {    -- Discontinued
+										value matches {
+											DV_DATE_TIME matches {*}
+										}
+									}
+									ELEMENT[at0029] occurrences matches {0..1} matches {    -- Comment
+										value matches {
+											DV_TEXT matches {*}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		protocol matches {
+			ITEM_TREE[at0004] matches {    -- Item tree
+				items cardinality matches {0..*; unordered} matches {
+					allow_archetype CLUSTER[at0005] occurrences matches {0..*} matches {    -- Extension
+						include
+							archetype_id/value matches {/.*/}
+					}
+				}
+			}
+		}
+	}
+
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"Medication statement">
+					description = <"A snapshot view about the use of a specified medication.">
+				>
+				["at0001"] = <
+					text = <"History">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Any event">
+					description = <"Default, unspecified point in time or interval event which may be explicitly defined in a template or at run-time.">
+				>
+				["at0003"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0004"] = <
+					text = <"Item tree">
+					description = <"@ internal @">
+				>
+				["at0005"] = <
+					text = <"Extension">
+					description = <"Additional information required to extend the model with local content or to align with other reference models or formalisms.
+">
+					comment = <"For example: local information requirements; or additional metadata to align with FHIR.">
+				>
+				["at0006"] = <
+					text = <"Medication item name">
+					description = <"Name of the medication, vaccine or other therapeutic/prescribable item.">
+					comment = <"It is strongly recommended that the 'Medication item' be coded with a terminology capable of triggering decision support, where possible. The extent of coding may vary from the simple generic or product name of the medication item through to structured details about the actual medication pack to be used. Free text entry should only be used if there is no appropriate terminology available.">
+				>
+				["at0008"] = <
+					text = <"Status">
+					description = <"The status of use of the medication.">
+					comment = <"For example: the medication is still actively being taken; or a course of antibiotics has been completed.">
+				>
+				["at0009"] = <
+					text = <"Planned">
+					description = <"The medication is intended to be taken at an unspecified time in the future.">
+				>
+				["at0010"] = <
+					text = <"Scheduled">
+					description = <"The medication is scheduled to be taken at a future date.">
+				>
+				["at0011"] = <
+					text = <"Active">
+					description = <"The medication is currently being taken.">
+				>
+				["at0012"] = <
+					text = <"Completed">
+					description = <"The medication is no longer being taken.">
+				>
+				["at0013"] = <
+					text = <"Postponed">
+					description = <"The medication is planned to be taken but commencement has been temporarily delayed.">
+				>
+				["at0014"] = <
+					text = <"Cancelled">
+					description = <"The medication was planned to be taken but cancelled before commencement.">
+				>
+				["at0015"] = <
+					text = <"Suspended">
+					description = <"The medication was commenced but use temporarily supended.">
+				>
+				["at0016"] = <
+					text = <"Discontinued">
+					description = <"The medication was commenced but use was ceased.">
+				>
+				["at0019"] = <
+					text = <"Status start time">
+					description = <"The valid start date/time for the Status.">
+				>
+				["at0020"] = <
+					text = <"Status duration">
+					description = <"The valid duration for the Status.">
+					comment = <"This data element can be combined with either the Status start time or the Status end time, but not both.">
+				>
+				["at0021"] = <
+					text = <"Status end time">
+					description = <"The valid end date/time for the Status.">
+				>
+				["at0023"] = <
+					text = <"Clinical indication">
+					description = <"The clinical reason for use of the medication item.">
+					comment = <"For example: 'Angina'. Coding of the clinical indication with a terminology is preferred, where possible. This data element allows multiple occurrences.">
+				>
+				["at0029"] = <
+					text = <"Comment">
+					description = <"Additional narrative about the medication statement not captured in other fields.">
+				>
+				["at0007"] = <
+					text = <"Preparation details">
+					description = <"Structured details about the overall preparation including strength, form and constituent substances.">
+					comment = <"Use this SLOT where the detailed description of the ordered item needs to be explicitly stated. For example: the form, strength, any diluents or mixture of ingredients.">
+				>
+				["at0022"] = <
+					text = <"Structured dose and timing directions">
+					description = <"Details of structured dose and timing directions.">
+				>
+				["at0018"] = <
+					text = <"Status reason">
+					description = <"Reason for the status.">
+					comment = <"For example: abandoned due to adverse reaction; suspended due to pending surgery.">
+				>
+				["at0024"] = <
+					text = <"First prescribed">
+					description = <"The date/time when a prescription for the medication was first issued.">
+				>
+				["at0025"] = <
+					text = <"Last prescribed">
+					description = <"The date/time when a prescription for the medication was last issued.">
+				>
+				["at0026"] = <
+					text = <"Last administered">
+					description = <"The date/time when the medication was last taken by or administered to the individual.">
+				>
+				["at0027"] = <
+					text = <"Last reviewed">
+					description = <"The date/time when usage of the medication was last reviewed by a clinician or phamacist.">
+				>
+				["at0028"] = <
+					text = <"Discontinued">
+					description = <"The date/time when use of the medication was ceased.">
+				>
+				["at0017"] = <
+					text = <"Unknown">
+					description = <"The status of the medication is not known.">
+				>
+			>
+		>
+	>
