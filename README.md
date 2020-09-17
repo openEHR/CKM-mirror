@@ -26,9 +26,9 @@ Tools, tool settings and behavoiurs
 List of available modelling tools: https://www.openehr.org/downloads/modellingtools
 
 ### The online Archetype-designer
-Please note the somewhat odd directory choices used for saving new anbd imported assets described above. Template files created in the tool are by default saved with a ".t.json"-file ending. They can also be exported to several formats.
+Please note the somewhat odd directory choices used for saving new and imported assets described above. Template files created in the tool are by default saved with a ".t.json"-file ending. They can also be exported to several formats.
 
-If you are using openEHRs online Archetype-designer https://tools.openehr.org/designer/#/ and login with a persoonal account (or a group/organization-account) that is new in the tool, then this setting should work to add this repo:
+If you are using openEHRs online Archetype-designer https://tools.openehr.org/designer/#/ and login with a persoonal Github-account (or a group/organization-account) that is new in the tool, then this setting should work to add this repo:
 
 Repositories (top menu bar) --> New repository (button) --> Repository type: GitHub
 ```
@@ -42,12 +42,12 @@ Important: If you want to save files (and avoid some GitHub rate-limiting-relate
 
 ### Local-file-based tools
 If you are using Ocean's Template designer or other local-file-based tools it should be possible to either 
-* download and unpack the zip-file of this repository, found under the green "Clone or download" button on the https://github.com/regionostergotland/CKM-mirror page or
+* download and unpack the zip-file of this repository, found under the green "Clone or download" button on the https://github.com/modellbibliotek/CKM-mirror page or
 * set up GIT client to keep in sync (this has a bit of learning curve...)
 
 Update policy & instructions
 ----------------------------
-We do occasional manual one-way updates from https://github.com/openEHR/CKM-mirror (that most often update the content of the '/local/archetypes' subdirectory tree). The direction is always _from_ the international CKM tool (automatically) to https://github.com/openEHR/CKM-mirror and from there (manually) to this fork https://github.com/regionostergotland/CKM-mirror/.
+We do occasional manual one-way updates from https://github.com/openEHR/CKM-mirror (that most often update the content of the '/local/archetypes' subdirectory tree). The direction is always _from_ the international CKM tool (automatically) to https://github.com/openEHR/CKM-mirror and from there (manually) to this fork https://github.com/modellbibliotek/CKM-mirror.
 
 If we find an error or want to contribute new content to the international repository, then the web-based tools at http://ckm.openehr.org should be used for submitting such content. Files in this fork will _not_ be synced back automatically to the international repository.
 
@@ -70,7 +70,7 @@ Using or forking this repository will give you access to both international asse
 
 
 ### Marand's online ADL-designer
-Please note the somewhat odd directory choices used for saving new anbd imported assets described above. Template files created in the tool are by default saved with a ".t.json"-file ending. They can also be exported to several formats.
+Please note the somewhat odd directory choices used for saving new and imported assets described above. Template files created in the tool are by default saved with a ".t.json"-file ending. They can also be exported to several formats.
 
 If you are using Marand's online ADL-designer https://ehrscape.marand.si/designerv2 and nobody in your organization has yet added this repo, then this setting should work:
 
@@ -86,12 +86,12 @@ If you want to save files (and avoid some GitHub rate-limiting-related related "
 
 ### Local-file-based tools
 If you are using Ocean's Template designer or other local-file-based tools it should be possible to either 
-* download and unpack the zip-file of this repository, found under the green "Clone or download" button on the https://github.com/regionostergotland/CKM-mirror page or
+* download and unpack the zip-file of this repository, found under the green "Clone or download" button on the https://github.com/modellbibliotek/CKM-mirror page or
 * set up GIT client to keep in sync (this has a bit of learning curve...)
 
 Update policy & instructions
 ----------------------------
-Without warning, we may do manual one-way updates from https://github.com/openEHR/CKM-mirror (that most often update the content of the '/local/archetypes' subdirectory tree). The direction is always _from_ the international CKM tool (automatically) to https://github.com/openEHR/CKM-mirror and from there (manually) to this fork https://github.com/regionostergotland/CKM-mirror/.
+Without warning, we may do manual one-way updates from https://github.com/openEHR/CKM-mirror (that most often update the content of the '/local/archetypes' subdirectory tree). The direction is always _from_ the international CKM tool (automatically) to https://github.com/openEHR/CKM-mirror and from there (manually) to this fork https://github.com/modellbibliotek/CKM-mirror.
 
 If we find an error or want to contribute new content to the international repository, then the web-based tools at http://ckm.openehr.org should be used for submitting such content. Files in this fork will _not_ be synced back automatically to the international repository.
 
