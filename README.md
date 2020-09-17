@@ -6,7 +6,7 @@ Archetypes of international value and Swedish translations of international arch
 
 Please note that _operational_ templates (.opt-files) and other downstream openEHR-related artifacts should be maintained elsewhere, not here. (To see an example of how e.g. Region Östergötland plans to do this, look at the https://github.com/regionostergotland/openehr_definitions/ repository.)
 
-Als note the shared ad-hoc work area at https://github.com/modellbibliotek/Arbetsyta-openEHR
+Also note the shared ad-hoc work area at https://github.com/modellbibliotek/Arbetsyta-openEHR that can be used when you do not want the entire CKM-mirror content to potentially interfere with your work.
 
 Directory names and content
 ---------------------------
