@@ -121,7 +121,7 @@ Niet te gebruiken voor het vastleggen van microbiologische bevindingen.">
 	lifecycle_state = <"published">
 	other_contributors = <"Vebjørn Arntzen, Oslo University Hospital, Norway (openEHR Editor)", "Heidi Aursand, Oslo universitetssykehus, Norway", "Silje Ljosland Bakke, Nasjonal IKT HF, Norway (openEHR Editor)", "SB Bhattacharyya, Sudisa Consultancy Services, India", "Fatemeh Chalabianloo, Helse Bergen, Norway", "Anca Heyd, DIPS ASA, Norway", "Evelyn Hovenga, EJSH Consulting, Australia", "Nasjonal IKT, Norway", "Silje Kaada, Helse-Bergen, Avdeling for immunologi og transfusjonsmedisin, Norway", "Lars Morgan Karlsen, DIPS ASA, Norway", "Nils Kolstrup, Skansen Legekontor og Nasjonalt Senter for samhandling og telemedisin, Norway", "Liv Laugen, Oslo universitetssykehus, Norway", "Heather Leslie, Atomica Informatics, Australia (openEHR Editor)", "Ole Martin Sand, DIPS ASA, Norway", "Ian McNicoll, freshEHR Clinical Informatics, United Kingdom (openEHR Editor)", "Paul Miller, SCIMP NHS Scotland, United Kingdom", "Andrej Orel, Marand d.o.o., Slovenia", "Jussara Rotzsch, Hospital Alemão Oswaldo Cruz, Brazil", "Norwegian Review Summary, Nasjonal IKT HF, Norway", "Line Sæle, Nasjonal IKT HF, Norway", "Nyree Taylor, Ocean Informatics, Australia", "John Tore Valand, Helse Bergen, Norway (openEHR Editor)", "Wouter Zanen, Eurotranplant, Netherlands", "Lin Zhang, Taikang Insurance Group, China">
 	other_details = <
-		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.0/.">
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
 		["custodian_organisation"] = <"openEHR Foundation">
 		["references"] = <"Pathology Test Result, Draft Archetype [Internet]. Australian Digital Health Agency, Australian Digital Health Agency Clinical Knowledge Manager [cited: 2017-06-27]. No longer available.
 
@@ -133,9 +133,9 @@ HL7 FHIR Resource - Observation V1.8.0 FHIR STU3 [Internet]. Health Level Seven 
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"535B50D8F5E64E67B41AEA0AA225DB16">
-		["build_uid"] = <"b096e577-0627-4288-b641-9d86324e0063">
-		["revision"] = <"1.0.5">
+		["MD5-CAM-1.0.1"] = <"EDD2BD02AADC202939C1665A34F03202">
+		["build_uid"] = <"a1bf2a9c-6502-4367-85d7-2e0a9b9e5b61">
+		["revision"] = <"1.1.0">
 	>
 
 definition
@@ -161,12 +161,13 @@ definition
 					DV_TEXT matches {*}
 				}
 			}
+			ELEMENT[at0028] occurrences matches {0..1} matches {*}    -- Test method
 			ELEMENT[at0025] occurrences matches {0..1} matches {    -- Validation time
 				value matches {
 					DV_DATE_TIME matches {*}
 				}
 			}
-			ELEMENT[at0005] occurrences matches {0..1} matches {    -- Result status
+			ELEMENT[at0005] occurrences matches {0..*} matches {    -- Result status
 				value matches {
 					DV_CODED_TEXT matches {
 						defining_code matches {
@@ -266,11 +267,11 @@ ontology
 				>
 				["at0019"] = <
 					text = <"Corrected">
-					description = <"The result has been modified subsequent to being Final, and is complete and verified by the responsible pathologist. This is a sub-category of 'Amended'.">
+					description = <"The result has been modified subsequent to being Final, and is complete and verified by the responsible laboratory scientist. This is a sub-category of 'Amended'.">
 				>
 				["at0020"] = <
 					text = <"Amended">
-					description = <"The result has been modified subsequent to being Final, and is complete and verified by the responsible pathologist, and result data has been changed.">
+					description = <"The result has been modified subsequent to being Final, and is complete and verified by the responsible laboratory scientist, and result data has been changed.">
 				>
 				["at0021"] = <
 					text = <"Appended">
@@ -305,6 +306,11 @@ ontology
 					text = <"Analyte result sequence">
 					description = <"The intended position of this analyte result within the overall sequence of analyte results.">
 					comment = <"For example: ''1' '2', '3'. Where multiple analyte results are reported, the 'Analyte result sequence' makes the order in which they were reported explicit.">
+				>
+				["at0028"] = <
+					text = <"Test method">
+					description = <"Description about the method used to perform the test on this analyte only.">
+					comment = <"If the test method applies to an entire panel, the test method can be captured using the 'Test method' data element within the OBSERVATION.laboratory_test_result">
 				>
 			>
 		>
@@ -367,11 +373,11 @@ ontology
 				>
 				["at0019"] = <
 					text = <"Korrigert">
-					description = <"Resultatet har blitt modifisert etter å ha vært i status \"Endelig\", og er komplett og verifisert av ansvarlig laboratorielege. Dette er en underkategori av \"Revidert\".">
+					description = <"*The result has been modified subsequent to being Final, and is complete and verified by the responsible laboratory scientist. This is a sub-category of 'Amended'. (en)">
 				>
 				["at0020"] = <
 					text = <"Revidert">
-					description = <"Resultatet har blitt modifisert etter å ha vært i status \"Endelig\", og er komplett og verifisert av ansvarlig laboratorielege, og resultatdata er endret.">
+					description = <"*The result has been modified subsequent to being Final, and is complete and verified by the responsible laboratory scientist, and result data has been changed. (en)">
 				>
 				["at0021"] = <
 					text = <"Tillegg">
@@ -406,6 +412,11 @@ ontology
 					text = <"Resultatrekkefølge">
 					description = <"Plasseringen av dette analyseresultatet i den overordnede rekkefølgen av resultater.">
 					comment = <"For eksempel \"1\", \"2\", \"3\". Dersom det er flere analyseresultater i en rapport gjør \"Resultatrekkefølge\" rekkefølgen i svarrapporten eksplisitt.">
+				>
+				["at0028"] = <
+					text = <"*Test method (en)">
+					description = <"*Description about the method used to perform the test on this analyte only. (en)">
+					comment = <"*If the test method applies to an entire panel, the test method can be captured using the 'Test method' data element within the OBSERVATION.laboratory_test_result (en)">
 				>
 			>
 		>
@@ -468,11 +479,11 @@ ontology
 				>
 				["at0019"] = <
 					text = <"*Corrected(en)">
-					description = <"*The result has been modified subsequent to being Final, and is complete and verified by the responsible pathologist. This is a sub-category of 'Amended'.(en)">
+					description = <"*The result has been modified subsequent to being Final, and is complete and verified by the responsible laboratory scientist. This is a sub-category of 'Amended'. (en)">
 				>
 				["at0020"] = <
 					text = <"*Amended(en)">
-					description = <"*The result has been modified subsequent to being Final, and is complete and verified by the responsible pathologist, and result data has been changed.(en)">
+					description = <"*The result has been modified subsequent to being Final, and is complete and verified by the responsible laboratory scientist, and result data has been changed. (en)">
 				>
 				["at0021"] = <
 					text = <"*Appended(en)">
@@ -506,6 +517,11 @@ ontology
 				["at0027"] = <
 					text = <"*Analyte result sequence(en)">
 					description = <"*">
+				>
+				["at0028"] = <
+					text = <"*Test method (en)">
+					description = <"*Description about the method used to perform the test on this analyte only. (en)">
+					comment = <"*If the test method applies to an entire panel, the test method can be captured using the 'Test method' data element within the OBSERVATION.laboratory_test_result (en)">
 				>
 			>
 		>
@@ -571,11 +587,11 @@ auf einen passenden Datentypen eingeschränkt werden müssen, um das aktuelle An
 				>
 				["at0019"] = <
 					text = <"Endbefund, korrigiert">
-					description = <"Der Endbefund wurde erneut modifiziert, ist vollständig und wurde durch den verantwortlichen Pathologen verifiziert. Dies ist eine Unterkategorie von \"Endbefund, geändert\".">
+					description = <"*The result has been modified subsequent to being Final, and is complete and verified by the responsible laboratory scientist. This is a sub-category of 'Amended'. (en)">
 				>
 				["at0020"] = <
 					text = <"Endbefund, geändert">
-					description = <"Der Endbefund wurde erneut modifiziert, ist vollständig und wurde durch den verantwortlichen Pathologen verifiziert. Des Weiteren haben sich die Ergebnisdaten hierdurch verändert.">
+					description = <"*The result has been modified subsequent to being Final, and is complete and verified by the responsible laboratory scientist, and result data has been changed. (en)">
 				>
 				["at0021"] = <
 					text = <"Endbefund, ergänzt">
@@ -612,6 +628,11 @@ Die Codierung mit einer externen Terminologie, wie LOINC, NPU, SNOMED-CT oder lo
 					text = <"Analyseergebnis-Reihenfolge">
 					description = <"Die beabsichtigte Position dieses Analyseergebnisses in der Reihenfolge aller Analyseergebnisse">
 					comment = <"z.B. '1', '2', '3'. Werden mehrere Analysenergebnisse berichtet, gibt die Analyseergebnis-Reihenfolge explizit die Reihenfolge der Analyseergebnisse an.">
+				>
+				["at0028"] = <
+					text = <"*Test method (en)">
+					description = <"*Description about the method used to perform the test on this analyte only. (en)">
+					comment = <"*If the test method applies to an entire panel, the test method can be captured using the 'Test method' data element within the OBSERVATION.laboratory_test_result (en)">
 				>
 			>
 		>
@@ -674,11 +695,11 @@ Die Codierung mit einer externen Terminologie, wie LOINC, NPU, SNOMED-CT oder lo
 				>
 				["at0019"] = <
 					text = <"Gewijzigd">
-					description = <"De uitslag is aangepast nadat de eerder Definitief was en is nu compleet en geverifieerd door een bevoegd persoon. Dit is een subcategorie van 'Aangepast'.">
+					description = <"*The result has been modified subsequent to being Final, and is complete and verified by the responsible laboratory scientist. This is a sub-category of 'Amended'. (en)">
 				>
 				["at0020"] = <
 					text = <"Aangepast">
-					description = <"Het resultaat is aangepast nadat het eerder Definitief was en is opnieuw compleet en geverifieerd door een bevoegd persoon en de uitslag is veranderd.">
+					description = <"*The result has been modified subsequent to being Final, and is complete and verified by the responsible laboratory scientist, and result data has been changed. (en)">
 				>
 				["at0021"] = <
 					text = <"Informatie toegevoegd">
@@ -713,6 +734,11 @@ Die Codierung mit einer externen Terminologie, wie LOINC, NPU, SNOMED-CT oder lo
 					text = <"Analyt uitslag volgore">
 					description = <"De bedoelde positie van deze analyt uitslag binnen de gehele volgorde van analyt uitslagen.">
 					comment = <"Bijvoorbeeld: '1', '2' of '3'. Waar meerdere analyt uitslagen worden gerapporteerd, maakt de 'Analyt uitslag volgorde' de volgorde waarin de uitslagen worden gerapporteerd expliciet.">
+				>
+				["at0028"] = <
+					text = <"*Test method (en)">
+					description = <"*Description about the method used to perform the test on this analyte only. (en)">
+					comment = <"*If the test method applies to an entire panel, the test method can be captured using the 'Test method' data element within the OBSERVATION.laboratory_test_result (en)">
 				>
 			>
 		>
