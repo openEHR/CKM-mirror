@@ -17,9 +17,9 @@ language
 		["nb"] = <
 			language = <[ISO_639-1::nb]>
 			author = <
-				["name"] = <"Kristian Berg; Line Silsand">
-				["organisation"] = <"Universitetssykehuset Nord-Norge">
-				["email"] = <"kristian.berg@unn.no; line.silsand@unn.no">
+				["name"] = <"Kristian Berg; Line Silsand, Liv Laugen, Vebjørn Arntzen">
+				["organisation"] = <"Universitetssykehuset Nord-Norge, ​Oslo University Hospital, Norway">
+				["email"] = <"kristian.berg@unn.no; line.silsand@unn.no, liv.laugen@ous-hf.no, varntzen@ous-hf.no">
 			>
 		>
 		["sl"] = <
@@ -54,13 +54,22 @@ Dieser Archetyp kann zusammen mit dem Archetyp \"Probenbehälter\" auf zwei Arte
 		["nb"] = <
 			language = <[ISO_639-1::nb]>
 			purpose = <"For å registrere detaljer om prøvebeholderen som brukes for å oppbevare en laboratorieprøve.">
-			use = <"Brukes for å registrere detaljer om beholderen som brukes for å oppbevare en laboratorieprøve. Dette er ofte en integrert del av arbeidsflyt og rapportering av laboratorieprøver, særlig anatomiske og histologiske laboratorieprøver.
+			use = <"Brukes for å registrere detaljer om beholderen som brukes for å oppbevare en laboratorieprøve. Dette er ofte en integrert del av arbeidsflyt og rapportering av laboratorieprøver, særlig laboratorieprøver til patologisk laboratorium. 
 
 Denne arketypen er laget for å brukes innenfor en Laboratorieresultat-arketype og Prøvemateriale-arketype, som skissert under.
 
 Denne arketypen kan brukes sammen med Prøvemateriale-arketypen på to måter: Ved nøsting av \"Prøvebeholder\" inni \"Prøvemateriale\" (for eksempel når et vakuumglass med venøst blod fordeles på to mindre glass, eller en hel tykktarm deles på tre bøtter), eller \"Prøvemateriale\" nøstet inni \"Prøvebeholder\" (for eksempel når en bøtte inneholder en seksjon av en tykktarm og en endetarm, eller et glass inneholder fem individuelt merkede føflekker).">
 			keywords = <"prøve", "laboratorium", "lab", "patologi", "beholder", "glass", "bøtte", "pensel", "transportmedie", "prøveglass", "vakumglass", "vakumrør", "swab", "dyrkningsmedie", "filterkort">
 			misuse = <"">
+		>
+		["sl"] = <
+			language = <[ISO_639-1::sl]>
+			purpose = <"">
+			use = <"">
+			misuse = <"">
+			other_details = <
+				["notes"] = <"Generated automatically by Adl Designer">
+			>
 		>
 		["en"] = <
 			language = <[ISO_639-1::en]>
@@ -73,15 +82,6 @@ This archetype can be used together with the Specimen archetype in two main ways
 			keywords = <"specimen", "lab", "laboratory", "pathology">
 			misuse = <"">
 			copyright = <"© openEHR Foundation">
-		>
-		["sl"] = <
-			language = <[ISO_639-1::sl]>
-			purpose = <"">
-			use = <"">
-			misuse = <"">
-			other_details = <
-				["notes"] = <"Generated automatically by Adl Designer">
-			>
 		>
 	>
 	lifecycle_state = <"in_development">
@@ -97,8 +97,8 @@ Hl7 FHIR Specimen resource: HL7 FHIR; Available from http://www.hl7.org/implemen
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"8158331F09D4E9A03A6530A81CC35588">
-		["build_uid"] = <"04ecc40c-f60d-472e-970d-70bd58300077">
+		["MD5-CAM-1.0.1"] = <"7628113D10FCD16531742187F5871685">
+		["build_uid"] = <"ff9e7d07-a172-4415-8f91-4c34a25f5f08">
 		["revision"] = <"0.0.1-alpha">
 	>
 
@@ -107,18 +107,17 @@ definition
 		items cardinality matches {1..*; unordered} matches {
 			ELEMENT[at0005] occurrences matches {0..1} matches {    -- Container type
 				value matches {
-					DV_CODED_TEXT matches {
-						defining_code matches {
-							[local::
-							at0006,    -- Tissue cassette
-							at0007,    -- Tissue microarray cassette
-							at0008,    -- Specimen vial
-							at0009,    -- Microscope slide
-							at0010,    -- Specimen container
-							at0011,    -- Electron microscopy grid
-							at0012]    -- Specimen well
-						}
-					}
+					DV_CODED_TEXT matches {*}
+					DV_TEXT matches {*}
+				}
+			}
+			ELEMENT[at0003] occurrences matches {0..*} matches {    -- Container identifier
+				value matches {
+					DV_IDENTIFIER matches {*}
+				}
+			}
+			ELEMENT[at0013] occurrences matches {0..1} matches {    -- Description
+				value matches {
 					DV_TEXT matches {*}
 				}
 			}
@@ -127,36 +126,21 @@ definition
 					DV_TEXT matches {*}
 				}
 			}
-			ELEMENT[at0013] occurrences matches {0..1} matches {    -- Description
-				value matches {
-					DV_TEXT matches {*}
-				}
-			}
-			ELEMENT[at0024] occurrences matches {0..1} matches {    -- Datetime transported
-				value matches {
-					DV_DATE_TIME matches {*}
-				}
-			}
-			ELEMENT[at0003] occurrences matches {0..*} matches {    -- Container identifier
-				value matches {
-					DV_IDENTIFIER matches {*}
-				}
-			}
-			ELEMENT[at0002] occurrences matches {0..1} matches {    -- Collection area Identifier
-				value matches {
-					DV_IDENTIFIER matches {*}
-				}
-			}
-			ELEMENT[at0025] occurrences matches {0..1} matches {    -- Transporter identifier
-				value matches {
-					DV_IDENTIFIER matches {*}
-				}
-			}
+			ELEMENT[at0035] occurrences matches {0..1} matches {*}    -- Container capacity
 			allow_archetype CLUSTER[at0028] occurrences matches {0..*} matches {    -- Container component
 			}
 			allow_archetype CLUSTER[at0029] occurrences matches {0..*} matches {    -- Contained specimen
 				include
-					archetype_id/value matches {/openEHR-EHR-CLUSTER\.specimen(-[a-zA-Z0-9_]+)*\.v0|openEHR-EHR-CLUSTER\.specimen(-[a-zA-Z0-9_]+)*\.v1/}
+					archetype_id/value matches {/openEHR-EHR-CLUSTER\.specimen(-[a-zA-Z0-9_]+)*\.v1/}
+			}
+			allow_archetype CLUSTER[at0031] occurrences matches {0..*} matches {    -- Transport details
+				include
+					archetype_id/value matches {/openEHR-EHR-CLUSTER\.specimen_transport\.v0/}
+			}
+			ELEMENT[at0033] occurrences matches {0..1} matches {    -- Date/Time received
+				value matches {
+					DV_DATE_TIME matches {*}
+				}
 			}
 		}
 	}
@@ -170,57 +154,19 @@ ontology
 					text = <"Specimen container">
 					description = <"Details of the container used to hold a specimen for laboratory examination.">
 				>
-				["at0002"] = <
-					text = <"Collection area Identifier">
-					description = <"Identifier of the place from where the container should be collected.">
-				>
 				["at0003"] = <
 					text = <"Container identifier">
 					description = <"The unique identifier given to the container. May be multiple.">
 				>
 				["at0005"] = <
 					text = <"Container type">
-					description = <"The type of container.">
-				>
-				["at0006"] = <
-					text = <"Tissue cassette">
-					description = <"The container is a tissue cassette.">
-				>
-				["at0007"] = <
-					text = <"Tissue microarray cassette">
-					description = <"The container is a tissue microarray cassette.">
-				>
-				["at0008"] = <
-					text = <"Specimen vial">
-					description = <"The container is a specimen vial.">
-				>
-				["at0009"] = <
-					text = <"Microscope slide">
-					description = <"The container is a microscope slide.">
-				>
-				["at0010"] = <
-					text = <"Specimen container">
-					description = <"The container is a gneric specimen container.">
-				>
-				["at0011"] = <
-					text = <"Electron microscopy grid">
-					description = <"The container is an electron microscopy grid.">
-				>
-				["at0012"] = <
-					text = <"Specimen well">
-					description = <"The container is a specimen well.">
+					description = <"The type of container. Coding with an external terminology is strongly recommended, such as SNOMED CT, LOINC, FHIR or local lab terminologies.">
+					comment = <"For example: Loinc code 'LA20376-2' for Vial. 
+SNOMED code '702283008' for Non-evacuated blood collection tube, gel separator, '22566001' for Cytology brush, device or '701394007' for General specimen receptacle transport container.">
 				>
 				["at0013"] = <
 					text = <"Description">
 					description = <"A text description of the container.">
-				>
-				["at0024"] = <
-					text = <"Datetime transported">
-					description = <"The data and time that the specimen was uplifted for transportation to the laboratory.">
-				>
-				["at0025"] = <
-					text = <"Transporter identifier">
-					description = <"Identifier of person or agency responsible for transporting the container to the lab.">
 				>
 				["at0026"] = <
 					text = <"Container additive">
@@ -229,12 +175,24 @@ ontology
 				["at0028"] = <
 					text = <"Container component">
 					description = <"Details of a sub-components which comprises the container.">
-					comment = <"For example: Description of the slide 
-and of the coverslip.">
+					comment = <"For example: Description of the slide and of the coverslip.">
 				>
 				["at0029"] = <
 					text = <"Contained specimen">
 					description = <"A specimen contained by this container.">
+				>
+				["at0031"] = <
+					text = <"Transport details">
+					description = <"Structured details about transport of the specimen.">
+				>
+				["at0033"] = <
+					text = <"Date/Time received">
+					description = <"The date and time that the specimen container was received.">
+				>
+				["at0035"] = <
+					text = <"Container capacity">
+					description = <"The capacity, e.g. volume or other measure, the container may hold.">
+					comment = <"For example: \"The volume is 125mL.\", \"Draw volume of 2mL-5ml.\" or \"Internal dimensions are 12cm diameter by 9cm high.\"">
 				>
 			>
 		>
@@ -244,57 +202,19 @@ and of the coverslip.">
 					text = <"*Specimen container(en)">
 					description = <"*Details of a specimen container. This is often integral to workflow and reporting of pathology specimens, particularly antamical and histological pathology specimens.(en)">
 				>
-				["at0002"] = <
-					text = <"*Collection Area Identifier(en)">
-					description = <"*Identifier of the place from where the container should be collected.(en)">
-				>
 				["at0003"] = <
 					text = <"*Container identifier (en)">
 					description = <"*The unique identifier given to the container. May be multiple.(en)">
 				>
 				["at0005"] = <
 					text = <"*Container type(en)">
-					description = <"*The type of container.(en)">
-				>
-				["at0006"] = <
-					text = <"*Tissue cassette(en)">
-					description = <"**(en)">
-				>
-				["at0007"] = <
-					text = <"*Tissue microarray cassette(en)">
-					description = <"**(en)">
-				>
-				["at0008"] = <
-					text = <"*Specimen vial(en)">
-					description = <"**(en)">
-				>
-				["at0009"] = <
-					text = <"*Microscope slide(en)">
-					description = <"**(en)">
-				>
-				["at0010"] = <
-					text = <"*Specimen container(en)">
-					description = <"**(en)">
-				>
-				["at0011"] = <
-					text = <"*Electron microscopy grid(en)">
-					description = <"**(en)">
-				>
-				["at0012"] = <
-					text = <"*Specimen well(en)">
-					description = <"**(en)">
+					description = <"*The type of container. Coding with an external terminology is strongly recommended, such as SNOMED CT, LOINC, FHIR or local lab terminologies. (en)">
+					comment = <"*For example: Loinc code 'LA20376-2' for Vial. 
+SNOMED code '702283008'  for Non-evacuated blood collection tube, gel separator, '22566001' for Cytology brush, device or '701394007'  for General specimen receptacle transport container. (en)">
 				>
 				["at0013"] = <
 					text = <"*Description(en)">
 					description = <"*A text description of the container.(en)">
-				>
-				["at0024"] = <
-					text = <"*Datetime Transported(en)">
-					description = <"*The data and time that the specimen was uplifted for transportation to the laboratory.(en)">
-				>
-				["at0025"] = <
-					text = <"*Transporter Identifier(en)">
-					description = <"*Identifier of person or agency responsible for transporting the container to the lab.(en)">
 				>
 				["at0026"] = <
 					text = <"*Container Additive(en)">
@@ -310,6 +230,20 @@ and of the coverslip. (en)">
 					text = <"*Contained specimen (en)">
 					description = <"*A specimen contained by this container. (en)">
 				>
+				["at0031"] = <
+					text = <"*Transport details (en)">
+					description = <"*Structured details about transport of the specimen. (en)">
+				>
+				["at0033"] = <
+					text = <"*Date/Time received (en)">
+					description = <"*The date and time that the specimen container was received. (en)">
+				>
+				["at0035"] = <
+					text = <"*Container capacity (en)">
+					description = <"*The capacity, e.g. volume or other measure,  the container may contain. (en)">
+					comment = <"*For example: \"The volume is 125mL.\" 
+\"Draw volume of 2mL-5ml. \"Internal dimensions are 12cm diameter by 9cm high.\" (en)">
+				>
 			>
 		>
 		["nb"] = <
@@ -318,70 +252,44 @@ and of the coverslip. (en)">
 					text = <"Prøvebeholder">
 					description = <"Detaljer om en prøvebeholder.">
 				>
-				["at0002"] = <
-					text = <"Identifikator for hentested">
-					description = <"Identifikator av stedet hvor beholderen skal hentes.">
-				>
 				["at0003"] = <
 					text = <"Beholder ID">
 					description = <"Identifikator av beholderen. Dataelementet kan gjentas.">
 				>
 				["at0005"] = <
 					text = <"Type beholder">
-					description = <"Beskrivelse av typen beholder.">
-				>
-				["at0006"] = <
-					text = <"Vevskassett">
-					description = <"Beholderen er en beholder for parafinstøping av prøve.">
-				>
-				["at0007"] = <
-					text = <"TMA-blokk">
-					description = <"Beholderen er en posisjonsbeholder for parafinstøping av prøve.">
-				>
-				["at0008"] = <
-					text = <"Prøveglass">
-					description = <"Beholderen er et prøveglass.">
-				>
-				["at0009"] = <
-					text = <"Objektglass">
-					description = <"Beholderen er et objektglass.">
-				>
-				["at0010"] = <
-					text = <"Prøvebeholder">
-					description = <"Beholderen er en generisk prøvebeholder.">
-				>
-				["at0011"] = <
-					text = <"Grid">
-					description = <"Beholderen er et rutenett for elektronmikroskopi.">
-				>
-				["at0012"] = <
-					text = <"Prøvebrønn">
-					description = <"Beholderen er en prøvebrønn til prøve.">
+					description = <"Prøvebeholdertype. Det er sterkt anbefalt å kode dette elementet med en terminologi, for eksempel SNOMED CT, LOINC, FHIR eller lokale terminologier/kodesett.">
+					comment = <"For eksembel: Loinc kode \"LA20376-2\" for hetteglass. SNOMED kode \"702283008\" for prøveglass til blodprøver, uten vakum og med gelseparator (non-evacuated blood collection tube, gel separator), '22566001' for cytologibørste enhet eller \"701394007\" for en generell transportboks for prøvebeholderen.">
 				>
 				["at0013"] = <
 					text = <"Beskrivelse">
 					description = <"Fritekstbeskrivelse av beholderen.">
 				>
-				["at0024"] = <
-					text = <"Tidspunkt for transport">
-					description = <"Datoen og klokkeslettet da prøven ble klargjort for transport til laboratoriet.">
-				>
-				["at0025"] = <
-					text = <"Identifikator på transportør">
-					description = <"Identifikator av personen eller instansen som er ansvarlig for å frakte prøvebeholderen til laboratoriet.">
-				>
 				["at0026"] = <
 					text = <"Tilsetningsstoff">
-					description = <"Spesielle tilsetninger for fiksering eller til preservering.">
+					description = <"Ethvert fiksativ, preserveringsmiddel eller transportmedium.">
 				>
 				["at0028"] = <
 					text = <"Komponent av beholder">
-					description = <"Detaljer om del-komponenter som omfatter beholderen.">
+					description = <"Detaljer om del-komponenter som beholderen består av.">
 					comment = <"For eksempel en beskrivelse av objektglass og dekkglass.">
 				>
 				["at0029"] = <
 					text = <"Inneholdt prøvemateriale">
-					description = <"Et prøvemateriale som beholderen inneholder.">
+					description = <"Prøvemateriale som beholderen inneholder.">
+				>
+				["at0031"] = <
+					text = <"Transportdetaljer">
+					description = <"Strukturert detaljer om transporten til prøven.">
+				>
+				["at0033"] = <
+					text = <"Dato/tid mottatt">
+					description = <"Dato og klokkeslett da prøvebeholderen ble mottatt.">
+				>
+				["at0035"] = <
+					text = <"Prøvebeholderkapasitet">
+					description = <"Kapasiteten til prøvebeholderen, f.eks. volum eller et annet mål.">
+					comment = <"For eksempel: \"Volumet er 125ml\" , \"Trekkvolum er på 2ml-5ml\", \"Innvendige mål er diameter på 12 cm diameter og høyde på 9 cm\".">
 				>
 			>
 		>
@@ -391,57 +299,19 @@ and of the coverslip. (en)">
 					text = <"Probenbehälter">
 					description = <"Angaben zum Behälter, in dem eine Probe für eine Laboruntersuchung aufbewahrt wird.">
 				>
-				["at0002"] = <
-					text = <"Kennung des Sammelgebiets">
-					description = <"Identifikator des Ortes, von dem der Behälter abgeholt wurdel.">
-				>
 				["at0003"] = <
 					text = <"Behälter-Identifikator">
 					description = <"Die eindeutige Kennung des Behälters. Es können mehrere sein.">
 				>
 				["at0005"] = <
 					text = <"Behältertyp">
-					description = <"Die Art des Behälters.">
-				>
-				["at0006"] = <
-					text = <"Gewebe-Kassette">
-					description = <"Der Behälter ist eine Gewebekassette.">
-				>
-				["at0007"] = <
-					text = <"Gewebe-Mikroarray-Kassette">
-					description = <"Der Behälter ist eine Gewebe-Mikroarray-Kassette.">
-				>
-				["at0008"] = <
-					text = <"Probenflasche">
-					description = <"Der Behälter ist ein Probengefäß.">
-				>
-				["at0009"] = <
-					text = <"Mikroskopischer Objektträger">
-					description = <"Der Behälter ist ein mikroskopischer Objektträger.">
-				>
-				["at0010"] = <
-					text = <"Probenbehälter">
-					description = <"Der Behälter ist ein allgemeiner Probenbehälter.">
-				>
-				["at0011"] = <
-					text = <"Elektronenmikroskopie-Gitter">
-					description = <"Der Behälter ist ein elektronenmikroskopisches Gitter.">
-				>
-				["at0012"] = <
-					text = <"Probenvertiefung">
-					description = <"Der Behälter ist eine Probenvertiefung.">
+					description = <"*The type of container. Coding with an external terminology is strongly recommended, such as SNOMED CT, LOINC, FHIR or local lab terminologies. (en)">
+					comment = <"*For example: Loinc code 'LA20376-2' for Vial. 
+SNOMED code '702283008'  for Non-evacuated blood collection tube, gel separator, '22566001' for Cytology brush, device or '701394007'  for General specimen receptacle transport container. (en)">
 				>
 				["at0013"] = <
 					text = <"Beschreibung">
 					description = <"Eine Textbeschreibung des Behälters.">
-				>
-				["at0024"] = <
-					text = <"Zeitpunkt des Transports">
-					description = <"Angaben zu den Daten und der Zeit, in der die Probe für den Transport vom Labor erhoben wurde.">
-				>
-				["at0025"] = <
-					text = <"Transporter-Kennung">
-					description = <"Kennung der Person oder Einrichtung, die für den Transport des Behälters zum Labor verantwortlich ist.">
 				>
 				["at0026"] = <
 					text = <"Zusatzmittel für Behälter">
@@ -456,6 +326,20 @@ und des Deckblatts.">
 				["at0029"] = <
 					text = <"Enthaltene Probe">
 					description = <"Eine Probe, die in diesem Behälter aufbewahrt wird.">
+				>
+				["at0031"] = <
+					text = <"*Transport details (en)">
+					description = <"*Structured details about transport of the specimen. (en)">
+				>
+				["at0033"] = <
+					text = <"*Date/Time received (en)">
+					description = <"*The date and time that the specimen container was received. (en)">
+				>
+				["at0035"] = <
+					text = <"*Container capacity (en)">
+					description = <"*The capacity, e.g. volume or other measure,  the container may contain. (en)">
+					comment = <"*For example: \"The volume is 125mL.\" 
+\"Draw volume of 2mL-5ml. \"Internal dimensions are 12cm diameter by 9cm high.\" (en)">
 				>
 			>
 		>

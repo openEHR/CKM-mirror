@@ -1,0 +1,299 @@
+﻿archetype (adl_version=1.4; uid=87a31a4f-02ee-418f-8ebf-608e78986df1)
+	openEHR-EHR-EVALUATION.support_network.v0
+
+concept
+	[at0000]	-- Support network
+language
+	original_language = <[ISO_639-1::en]>
+	translations = <
+		["fr"] = <
+			language = <[ISO_639-1::fr]>
+			author = <
+				["name"] = <"Vanessa Pereira">
+				["organisation"] = <"Better - Pathfinder">
+				["email"] = <"vanessapereira@protonmail.com">
+			>
+		>
+	>
+description
+	original_author = <
+		["name"] = <"Heather Leslie">
+		["organisation"] = <"Atomica Informatics">
+		["email"] = <"heather.leslie@atomicainformatics.com">
+		["date"] = <"2018-05-29">
+	>
+	details = <
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To record information about the people who are connected by social interactions and personal relationships to the individual.">
+			use = <"Use to record information about the people who are connected by social interactions and personal relationships to the individual.">
+			misuse = <"">
+			copyright = <"© openEHR Foundation">
+		>
+		["fr"] = <
+			language = <[ISO_639-1::fr]>
+			purpose = <"*To record information about the people who are connected by social interactions and personal relationships to the individual.(en)">
+			use = <"*Use to record information about the people who are connected by social interactions and personal relationships to the individual.(en)">
+			misuse = <"">
+		>
+	>
+	lifecycle_state = <"in_development">
+	other_contributors = <"John Tore Valand, Helse Bergen, Norway", "Vebjørn Arntzen, Oslo University Hospital, Norway", "Silje Ljosland Bakke, Nasjonal IKT HF, Norway", "Nyree Taylor, Ocean Informatics, Australia">
+	other_details = <
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
+		["custodian_organisation"] = <"openEHR Foundation">
+		["current_contact"] = <"Heather Leslie, Atomica Informatics<heather.leslie@atomicainformatics.com>">
+		["original_namespace"] = <"org.openehr">
+		["original_publisher"] = <"openEHR Foundation">
+		["custodian_namespace"] = <"org.openehr">
+		["MD5-CAM-1.0.1"] = <"1BD198A2C53D3DA3A3AE6190F03F0FDD">
+		["build_uid"] = <"74f75426-a603-4c5b-8dc1-e8027d462e4f">
+		["revision"] = <"0.0.1-alpha">
+	>
+
+definition
+	EVALUATION[at0000] matches {    -- Support network
+		data matches {
+			ITEM_TREE[at0001] matches {    -- Tree
+				items cardinality matches {0..*; unordered} matches {
+					ELEMENT[at0015] occurrences matches {0..1} matches {    -- Description
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0002] occurrences matches {0..1} matches {    -- Relationship status
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					CLUSTER[at0003] occurrences matches {0..*} matches {    -- Network
+						items cardinality matches {1..*; unordered} matches {
+							ELEMENT[at0004] occurrences matches {0..1} matches {    -- Alias
+								value matches {
+									DV_TEXT matches {*}
+								}
+							}
+							allow_archetype CLUSTER[at0005] occurrences matches {0..*} matches {    -- Personal details
+								include
+									archetype_id/value matches {/openEHR-EHR-CLUSTER\.individual_personal(-[a-zA-Z0-9_]+)*\.v1/}
+							}
+							ELEMENT[at0006] occurrences matches {0..1} matches {    -- Relationship
+								value matches {
+									DV_TEXT matches {*}
+								}
+							}
+							ELEMENT[at0007] occurrences matches {0..1} matches {    -- Role
+								value matches {
+									DV_TEXT matches {*}
+								}
+							}
+						}
+					}
+					ELEMENT[at0014] occurrences matches {0..1} matches {    -- Number of living children
+						value matches {
+							DV_COUNT matches {*}
+						}
+					}
+					ELEMENT[at0008] occurrences matches {0..1} matches {    -- Number of dependents
+						value matches {
+							DV_COUNT matches {*}
+						}
+					}
+					ELEMENT[at0009] occurrences matches {0..1} matches {    -- Number of dependent children
+						value matches {
+							DV_COUNT matches {*}
+						}
+					}
+				}
+			}
+		}
+		protocol matches {
+			ITEM_TREE[at0010] matches {    -- Tree
+				items cardinality matches {0..*; unordered} matches {
+					ELEMENT[at0011] occurrences matches {0..1} matches {    -- Last updated
+						value matches {
+							DV_DATE_TIME matches {*}
+						}
+					}
+					ELEMENT[at0013] occurrences matches {0..1} matches {    -- Age definition for a dependent child
+						value matches {
+							C_DV_QUANTITY <
+								property = <[openehr::128]>
+								list = <
+									["1"] = <
+										units = <"a">
+										magnitude = <|>=0.0|>
+										precision = <|1|>
+									>
+									["2"] = <
+										units = <"mo">
+										magnitude = <|>=0.0|>
+										precision = <|1|>
+									>
+								>
+							>
+						}
+					}
+					allow_archetype CLUSTER[at0012] occurrences matches {0..*} matches {    -- Extension
+						include
+							archetype_id/value matches {/.*/}
+					}
+				}
+			}
+		}
+	}
+
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"Support network">
+					description = <"Group of individuals connected by social interactions, support activities and personal relationships.">
+				>
+				["at0001"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Relationship status">
+					description = <"Single word or phrase that describes an individual's relationship with a life partner or significant other.">
+					comment = <"Coding of the relationship status with a terminology is preferred, where possible. For example: a 'marital status' value set including never married or single; married; divorced; or widowed. Also to be used for terms related to 'civil status' or 'partnership status' depending on local requirements.">
+				>
+				["at0003"] = <
+					text = <"Network">
+					description = <"Details about the significant social connections and/or relationships of an individual.">
+				>
+				["at0004"] = <
+					text = <"Alias">
+					description = <"An alternative name or label to uniquely identify a social connection or relationship.">
+					comment = <"To be used to assist in distinguishing one individual from multiple family members with identical relationships or connections without using a personal name which might publicly identify the individual. For example: 'sister #1' or 'neighbour upstairs'.">
+				>
+				["at0005"] = <
+					text = <"Personal details">
+					description = <"Structured detail about an identified social connection or relationship.">
+				>
+				["at0006"] = <
+					text = <"Relationship">
+					description = <"The relationship of the social connection or relationship to the individual.">
+					comment = <"Coding of the relationship with a terminology is preferred, where possible. For example: spouse, child, grandmother; or friend.">
+				>
+				["at0007"] = <
+					text = <"Role">
+					description = <"The part that the social connection or relationship plays in the life of the individual.">
+					comment = <"Coding of the role with a terminology is preferred, where possible. For example: dependent; houshold member; next of kin; or carer.">
+				>
+				["at0008"] = <
+					text = <"Number of dependents">
+					description = <"The number of people who are dependent on the individual for financial or other support.">
+				>
+				["at0009"] = <
+					text = <"Number of dependent children">
+					description = <"The number of children who are dependent on the individual for financial or other support.">
+				>
+				["at0010"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0011"] = <
+					text = <"Last updated">
+					description = <"Date when the summary was updated.">
+				>
+				["at0012"] = <
+					text = <"Extension">
+					description = <"Additional information required to capture local content or to align with other reference models/formalisms.">
+					comment = <"For example: local information requirements or additional metadata to align with FHIR or CIMI equivalents.">
+				>
+				["at0013"] = <
+					text = <"Age definition for a dependent child">
+					description = <"The upper limit of age which defines a dependent child.">
+					comment = <"This may vary enormously between geographical locations and jurisdictions.">
+				>
+				["at0014"] = <
+					text = <"Number of living children">
+					description = <"The number of children of the individual who are alive.">
+					comment = <"This data element can be recorded as part of the TPAL obstetric assessment but may have broader use and so has been included in this archetype.">
+				>
+				["at0015"] = <
+					text = <"Description">
+					description = <"Narrative description about the social network supporting the individual.">
+				>
+			>
+		>
+		["fr"] = <
+			items = <
+				["at0000"] = <
+					text = <"*Support network (en)">
+					description = <"*Group of individuals connected by social interactions, support activities and personal relationships. (en)">
+				>
+				["at0001"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Statut de la relation">
+					description = <"Un seul mot ou une seule phrase qui décrit la relation d'un individu avec un partenaire de vie ou une personne importante.">
+					comment = <"Le codage de l'état de la relation avec une terminologie est préférable, lorsque cela est possible. Par exemple : un ensemble de valeurs \"état civil\" comprenant \"jamais marié ou célibataire\", \"marié\", \"divorcé\" ou \"veuf\". À utiliser également pour les termes liés à l'\"état civil\" ou au \"statut de partenariat\" en fonction des exigences locales.">
+				>
+				["at0003"] = <
+					text = <"Réseau">
+					description = <"Détails sur les liens et/ou relations sociales importantes d'un individu.">
+				>
+				["at0004"] = <
+					text = <"Alias">
+					description = <"Un nom alternatif ou une étiquette permettant d'identifier de manière unique un lien ou une relation sociale.">
+					comment = <"Aider à distinguer une personne de plusieurs membres de sa famille ayant des relations ou des liens identiques sans utiliser un nom personnel qui pourrait identifier publiquement la personne. Par exemple : \"sœur n°1\" ou \"voisin d'en haut\".">
+				>
+				["at0005"] = <
+					text = <"Données personnelles">
+					description = <"Détail structuré d'une relation ou d'un lien social identifié.">
+				>
+				["at0006"] = <
+					text = <"Relations">
+					description = <"La relation du lien social ou de la relation à l'individu.">
+					comment = <"Le codage de la relation avec une terminologie est préférable, dans la mesure du possible. Par exemple : conjoint, enfant, grand-mère ; ou ami.">
+				>
+				["at0007"] = <
+					text = <"Role">
+					description = <"La part que le lien ou la relation sociale joue dans la vie de l'individu.">
+					comment = <"Le codage du rôle avec une terminologie est préférable, dans la mesure du possible. Par exemple : personne à charge, membre de la famille, proche parent ou aidant.">
+				>
+				["at0008"] = <
+					text = <"Nombre de personnes à charge">
+					description = <"Le nombre de personnes qui dépendent de l'individu pour un soutien financier ou autre.">
+				>
+				["at0009"] = <
+					text = <"Nombre d'enfants à charge">
+					description = <"Le nombre d'enfants qui dépendent de la personne pour un soutien financier ou autre.">
+				>
+				["at0010"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0011"] = <
+					text = <"Dernière mise à jour">
+					description = <"Date de la mise à jour du résumé.">
+				>
+				["at0012"] = <
+					text = <"Extension">
+					description = <"Informations supplémentaires requises pour saisir le contenu local ou pour s'aligner sur d'autres modèles/formalismes de référence.">
+					comment = <"Par exemple : exigences locales en matière d'information ou métadonnées supplémentaires à aligner sur les équivalents FHIR ou CIMI.">
+				>
+				["at0013"] = <
+					text = <"Définition de l'âge d'un enfant à charge">
+					description = <"La limite d'âge supérieure qui définit un enfant à charge.">
+					comment = <"Cela peut varier énormément selon les lieux géographiques et les juridictions.">
+				>
+				["at0014"] = <
+					text = <"Nombre d'enfants vivants">
+					description = <"Le nombre d'enfants de l'individu qui sont en vie.">
+					comment = <"Cet élément de données peut être enregistré dans le cadre de l'évaluation obstétrique TPAL mais peut avoir une utilisation plus large et a donc été inclus dans cet archétype.">
+				>
+				["at0015"] = <
+					text = <"*Description (en)">
+					description = <"*Narrative description about the social network supporting the individual. (en)">
+				>
+			>
+		>
+	>

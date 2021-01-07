@@ -49,17 +49,21 @@
             </item>
             <item>
                 <key>MD5-CAM-1.0.1</key>
-                <value>bb9b30a340e898bdf28e481ff2e8891f</value>
+                <value>d27f459a998a61e2a29c7fe7adf04863</value>
             </item>
             <item>
                 <key>PARENT:MD5-CAM-1.0.1</key>
                 <value>E3BC8668BB89A4BD43BF551931977A9D</value>
             </item>
+            <item>
+                <key>original_language</key>
+                <value>ISO_639-1::en</value>
+            </item>
         </other_details>
     </description>
     <definition archetype_id="openEHR-EHR-COMPOSITION.report.v1"
         concept_name="Report"
-        name="openEHR confirmed COVID-19 infection report.v0"
+        name="Confirmed COVID-19 infection report2"
         xmlns:tem="openEHR/v1/Template"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="tem:COMPOSITION">
         <Content archetype_id="openEHR-EHR-SECTION.adhoc.v1"
@@ -163,7 +167,8 @@
                         <includedValues>SNOMED-CT::315642008::Influenza-like symptoms</includedValues>
                     </constraint>
                 </Rule>
-                <Rule max="0" path="/data[at0001]/events[at0002]/data[at0003]/items[at0025]"/>
+                <Rule name="Has symptoms at specimen time" path="/data[at0001]/events[at0002]/data[at0003]/items[at0022]/items[at0005]"/>
+                <Rule max="0" name="Comment" path="/data[at0001]/events[at0002]/data[at0003]/items[at0025]"/>
             </Item>
             <Item
                 archetype_id="openEHR-EHR-OBSERVATION.condition_screening.v0"
@@ -175,6 +180,8 @@
                         <includedValues>SNOMED-CT::840544004::Suspected COVID-19</includedValues>
                     </constraint>
                 </Rule>
+                <Rule name="Any underlying conditions?" path="/data[at0001]/events[at0002]/data[at0003]/items[at0028]"/>
+                <Rule name="Specific condition" path="/data[at0001]/events[at0002]/data[at0003]/items[at0022]"/>
                 <Rule path="/data[at0001]/events[at0002]/data[at0003]/items[at0022, 'Specific condition']/items[at0004]">
                     <constraint xsi:type="tem:textConstraint">
                         <includedValues>Pregnancy</includedValues>
@@ -189,12 +196,41 @@
                         <includedValues>Chronic lung disease</includedValues>
                     </constraint>
                 </Rule>
-                <Rule max="0" path="/data[at0001]/events[at0002]/data[at0003]/items[at0022, 'Specific condition']/items[at0006]"/>
-                <Rule max="0" path="/data[at0001]/events[at0002]/data[at0003]/items[at0022, 'Specific condition']/items[at0035]"/>
-                <Rule name="Other condition" path="/data[at0001]/events[at0002]/data[at0003]/items[at0022]"/>
-                <Rule max="0" path="/data[at0001]/events[at0002]/data[at0003]/items[at0022, 'Other condition']/items[at0006]"/>
-                <Rule max="0" path="/data[at0001]/events[at0002]/data[at0003]/items[at0022, 'Other condition']/items[at0035]"/>
+                <Rule path="/data[at0001]/events[at0002]/data[at0003]/items[at0022, 'Specific condition']/items[at0005]">
+                    <constraint xsi:type="tem:textConstraint">
+                        <excludedValues>local::at0027</excludedValues>
+                    </constraint>
+                </Rule>
+                <Rule clone="true" name="Other condition" path="/data[at0001]/events[at0002]/data[at0003]/items[at0022]"/>
+                <Rule max="0" path="/data[at0001]/events[at0002]/data[at0003]/items[at0022, 'Other condition']/items[at0005]">
+                    <constraint xsi:type="tem:textConstraint">
+                        <excludedValues>local::at0027</excludedValues>
+                    </constraint>
+                </Rule>
                 <Rule max="0" path="/data[at0001]/events[at0002]/data[at0003]/items[at0025]"/>
+            </Item>
+            <Item archetype_id="openEHR-EHR-OBSERVATION.gestation.v0"
+                max="1" path="/items" xsi:type="tem:OBSERVATION">
+                <Rule max="0" path="/data[at0001]/events[at0002]/data[at0003]/items[at0004]">
+                    <constraint xsi:type="tem:durationConstraint">
+                        <pattern>PWD</pattern>
+                        <maxMagnitude>P60W</maxMagnitude>
+                        <minMagnitude>P0W</minMagnitude>
+                        <includesMaximum>true</includesMaximum>
+                        <includesMinimum>true</includesMinimum>
+                    </constraint>
+                </Rule>
+                <Rule max="0" path="/data[at0001]/events[at0002]/data[at0003]/items[at0005]">
+                    <constraint xsi:type="tem:durationConstraint">
+                        <pattern>PWD</pattern>
+                        <maxMagnitude>P60W</maxMagnitude>
+                        <minMagnitude>P0W</minMagnitude>
+                        <includesMaximum>true</includesMaximum>
+                        <includesMinimum>true</includesMinimum>
+                    </constraint>
+                </Rule>
+                <Rule name="Trimester if pregnant" path="/data[at0001]/events[at0002]/data[at0003]/items[at0020]"/>
+                <Rule max="0" path="/protocol[at0017]/items[at0006]"/>
             </Item>
             <Item
                 archetype_id="openEHR-EHR-OBSERVATION.procedure_screening.v0"
@@ -232,8 +268,15 @@
                         <includedValues>Isolation</includedValues>
                     </constraint>
                 </Rule>
-                <Rule name="Date first admitted" path="/data[at0001]/events[at0002]/data[at0003]/items[at0022]/items[at0006]"/>
-                <Rule max="0" path="/data[at0001]/events[at0002]/data[at0003]/items[at0025]"/>
+                <Rule path="/data[at0001]/events[at0002]/data[at0003]/items[at0022]/items[at0005]">
+                    <constraint xsi:type="tem:textConstraint">
+                        <excludedValues>local::at0038</excludedValues>
+                        <excludedValues>local::at0039</excludedValues>
+                        <excludedValues>local::at0041</excludedValues>
+                        <excludedValues>local::at0040</excludedValues>
+                    </constraint>
+                </Rule>
+                <Rule max="0" name="Comment" path="/data[at0001]/events[at0002]/data[at0003]/items[at0025]"/>
             </Item>
         </Content>
         <Content archetype_id="openEHR-EHR-SECTION.adhoc.v1"
@@ -252,11 +295,15 @@
                     <constraint xsi:type="tem:textConstraint">
                         <includedValues>Travel</includedValues>
                         <includedValues>Occupation</includedValues>
+                        <includedValues>Confirmed positive contact</includedValues>
+                        <includedValues>Visited healthcare facilities</includedValues>
                     </constraint>
                 </Rule>
+                <Rule max="0" path="/data[at0001]/items[at0005]/items[at0006]"/>
                 <Rule name="Date/time of first exposure" path="/data[at0001]/items[at0005]/items[at0007]"/>
                 <Rule clone="true" name="Date/time of last exposure" path="/data[at0001]/items[at0005]/items[at0007]"/>
                 <Rule max="0" path="/data[at0001]/items[at0005]/items[at0018]"/>
+                <Rule name="Likely location for exposure" path="/data[at0001]/items[at0005]/items[at0009]"/>
                 <Rule name="Total number of contacts" path="/data[at0001]/items[at0030]"/>
                 <Rule max="0" path="/data[at0001]/items[at0013]"/>
             </Item>
@@ -290,19 +337,13 @@
                     <Rule max="0" path="/items[at0019]">
                         <constraint xsi:type="tem:quantityConstraint">
                             <unitMagnitude>
-                                <unit>d/wk</unit>
-                                <minMagnitude>0.0</minMagnitude>
-                                <includesMaximum>false</includesMaximum>
-                                <includesMinimum>true</includesMinimum>
-                            </unitMagnitude>
-                            <unitMagnitude>
                                 <unit>wk/a</unit>
                                 <minMagnitude>0.0</minMagnitude>
                                 <includesMaximum>false</includesMaximum>
                                 <includesMinimum>true</includesMinimum>
                             </unitMagnitude>
                             <unitMagnitude>
-                                <unit>d/mo</unit>
+                                <unit>d/wk</unit>
                                 <minMagnitude>0.0</minMagnitude>
                                 <includesMaximum>false</includesMaximum>
                                 <includesMinimum>true</includesMinimum>
@@ -314,7 +355,7 @@
                                 <includesMinimum>true</includesMinimum>
                             </unitMagnitude>
                             <unitMagnitude>
-                                <unit>d/a</unit>
+                                <unit>d/mo</unit>
                                 <minMagnitude>0.0</minMagnitude>
                                 <includesMaximum>false</includesMaximum>
                                 <includesMinimum>true</includesMinimum>
@@ -326,19 +367,25 @@
                                 <includesMinimum>true</includesMinimum>
                             </unitMagnitude>
                             <unitMagnitude>
+                                <unit>d/a</unit>
+                                <minMagnitude>0.0</minMagnitude>
+                                <includesMaximum>false</includesMaximum>
+                                <includesMinimum>true</includesMinimum>
+                            </unitMagnitude>
+                            <unitMagnitude>
                                 <unit>h/mo</unit>
                                 <minMagnitude>0.0</minMagnitude>
                                 <includesMaximum>false</includesMaximum>
                                 <includesMinimum>true</includesMinimum>
                             </unitMagnitude>
                             <unitMagnitude>
-                                <unit>h/wk</unit>
+                                <unit>h/a</unit>
                                 <minMagnitude>0.0</minMagnitude>
                                 <includesMaximum>false</includesMaximum>
                                 <includesMinimum>true</includesMinimum>
                             </unitMagnitude>
                             <unitMagnitude>
-                                <unit>h/a</unit>
+                                <unit>h/wk</unit>
                                 <minMagnitude>0.0</minMagnitude>
                                 <includesMaximum>false</includesMaximum>
                                 <includesMinimum>true</includesMinimum>
@@ -382,6 +429,16 @@
                 path="/items" xsi:type="tem:OBSERVATION">
                 <Rule name="Recent travel" path="/data[at0001]/events[at0002]"/>
                 <Rule name="Recent travel?" path="/data[at0001]/events[at0002]/data[at0003]/items[at0004]"/>
+                <Rule max="0" path="/data[at0001]/events[at0002]/data[at0003]/items[at0026]"/>
+                <Rule max="0" path="/data[at0001]/events[at0002]/data[at0003]/items[at0008]/items[at0009]"/>
+                <Rule max="0" path="/data[at0001]/events[at0002]/data[at0003]/items[at0008]/items[at0022]"/>
+                <Rule max="0" path="/data[at0001]/events[at0002]/data[at0003]/items[at0008]/items[at0010]/items[at0031]"/>
+                <Rule max="0" path="/data[at0001]/events[at0002]/data[at0003]/items[at0008]/items[at0010]/items[at0014]"/>
+                <Rule name="Date left location" path="/data[at0001]/events[at0002]/data[at0003]/items[at0008]/items[at0010]/items[at0015]"/>
+                <Rule max="0" path="/data[at0001]/events[at0002]/data[at0003]/items[at0008]/items[at0010]/items[at0016]"/>
+                <Rule max="0" path="/data[at0001]/events[at0002]/data[at0003]/items[at0008]/items[at0010]/items[at0017]"/>
+                <Rule max="0" path="/data[at0001]/events[at0002]/data[at0003]/items[at0008]/items[at0018]"/>
+                <Rule max="0" path="/data[at0001]/events[at0002]/data[at0003]/items[at0008]/items[at0020]"/>
             </Item>
         </Content>
         <Content archetype_id="openEHR-EHR-SECTION.adhoc.v1"
@@ -474,7 +531,7 @@
                         <includedValues>SNOMED-CT::315642008::Influenza-like symptoms</includedValues>
                     </constraint>
                 </Rule>
-                <Rule max="0" path="/data[at0001]/events[at0002]/data[at0003]/items[at0025]"/>
+                <Rule max="0" name="Comment" path="/data[at0001]/events[at0002]/data[at0003]/items[at0025]"/>
             </Item>
             <Item
                 archetype_id="openEHR-EHR-OBSERVATION.procedure_screening.v0"
@@ -513,8 +570,18 @@
                         <includedValues>Isolation</includedValues>
                     </constraint>
                 </Rule>
+                <Rule path="/data[at0001]/events[at0002]/data[at0003]/items[at0022]/items[at0005]">
+                    <constraint xsi:type="tem:textConstraint">
+                        <excludedValues>local::at0038</excludedValues>
+                        <excludedValues>local::at0039</excludedValues>
+                        <excludedValues>local::at0041</excludedValues>
+                        <excludedValues>local::at0024</excludedValues>
+                        <excludedValues>local::at0027</excludedValues>
+                        <excludedValues>local::at0040</excludedValues>
+                    </constraint>
+                </Rule>
                 <Rule name="Date first admitted" path="/data[at0001]/events[at0002]/data[at0003]/items[at0022]/items[at0006]"/>
-                <Rule max="0" path="/data[at0001]/events[at0002]/data[at0003]/items[at0025]"/>
+                <Rule max="0" name="Comment" path="/data[at0001]/events[at0002]/data[at0003]/items[at0025]"/>
             </Item>
             <Item
                 archetype_id="openEHR-EHR-ADMIN_ENTRY.episode_institution.v0"
@@ -606,17 +673,17 @@
         archetype_id="openEHR-EHR-CLUSTER.person_anonymised_parent.v0"
         xmlns:tem="openEHR/v1/Template"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="tem:ArchetypeIntegrity">
-        <digest id="MD5-CAM-1.0.1">0CC1B5AB3AC6199C1CB4A8AFCE1BFF6F</digest>
+        <digest id="MD5-CAM-1.0.1">6E981F7E2BD74617DB240F31AE129126</digest>
     </integrity_checks>
     <integrity_checks archetype_id="openEHR-EHR-CLUSTER.address_cc.v0"
         xmlns:tem="openEHR/v1/Template"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="tem:ArchetypeIntegrity">
-        <digest id="MD5-CAM-1.0.1">DCA924293B6B69683E31819BD3FDFF50</digest>
+        <digest id="MD5-CAM-1.0.1">B45108B932C6EF98E9395E13A429D538</digest>
     </integrity_checks>
     <integrity_checks archetype_id="openEHR-EHR-SECTION.adhoc.v1"
         xmlns:tem="openEHR/v1/Template"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="tem:ArchetypeIntegrity">
-        <digest id="MD5-CAM-1.0.1">0C2394431867543AD5B88E7ED5D589B2</digest>
+        <digest id="MD5-CAM-1.0.1">8FE80F3E80C594AAF99D3BA540A53D73</digest>
     </integrity_checks>
     <integrity_checks
         archetype_id="openEHR-EHR-OBSERVATION.laboratory_test_result.v1"
@@ -627,49 +694,55 @@
     <integrity_checks archetype_id="openEHR-EHR-OBSERVATION.story.v1"
         xmlns:tem="openEHR/v1/Template"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="tem:ArchetypeIntegrity">
-        <digest id="MD5-CAM-1.0.1">D5AC52C70A99C8A90ED0239A76BB61B9</digest>
+        <digest id="MD5-CAM-1.0.1">3A1B4D8A5FDB61199F2DA05400462F93</digest>
     </integrity_checks>
     <integrity_checks
         archetype_id="openEHR-EHR-OBSERVATION.symptom_sign_screening.v0"
         xmlns:tem="openEHR/v1/Template"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="tem:ArchetypeIntegrity">
-        <digest id="MD5-CAM-1.0.1">5BA1ED1517F653898833FAB09D118D9A</digest>
+        <digest id="MD5-CAM-1.0.1">269EE020BE81616AF9DC9B47EB6BFFD6</digest>
     </integrity_checks>
     <integrity_checks
         archetype_id="openEHR-EHR-OBSERVATION.condition_screening.v0"
         xmlns:tem="openEHR/v1/Template"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="tem:ArchetypeIntegrity">
-        <digest id="MD5-CAM-1.0.1">CD16BFC28F648FBAC9D73FF51BBDE44B</digest>
+        <digest id="MD5-CAM-1.0.1">B47079167DF0B0F1AFAC21B4A5F3227B</digest>
+    </integrity_checks>
+    <integrity_checks
+        archetype_id="openEHR-EHR-OBSERVATION.gestation.v0"
+        xmlns:tem="openEHR/v1/Template"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="tem:ArchetypeIntegrity">
+        <digest id="MD5-CAM-1.0.1">665142D2B612AC2FF76D2D981D9D970E</digest>
     </integrity_checks>
     <integrity_checks
         archetype_id="openEHR-EHR-OBSERVATION.procedure_screening.v0"
         xmlns:tem="openEHR/v1/Template"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="tem:ArchetypeIntegrity">
-        <digest id="MD5-CAM-1.0.1">43BA32C7B8B611501964819445E66FDA</digest>
+        <digest id="MD5-CAM-1.0.1">3E4B1BF3952ABE4BD8D26848DE1F1538</digest>
     </integrity_checks>
     <integrity_checks
         archetype_id="openEHR-EHR-OBSERVATION.management_screening.v0"
         xmlns:tem="openEHR/v1/Template"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="tem:ArchetypeIntegrity">
-        <digest id="MD5-CAM-1.0.1">41AACE2B810C1CF609282D62DD2DBE23</digest>
+        <digest id="MD5-CAM-1.0.1">410DF740168950FCFDEFC9B6FBBA59A3</digest>
     </integrity_checks>
     <integrity_checks
         archetype_id="openEHR-EHR-EVALUATION.infectious_exposure.v0"
         xmlns:tem="openEHR/v1/Template"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="tem:ArchetypeIntegrity">
-        <digest id="MD5-CAM-1.0.1">AE83E37D83F5E02A0C96C4A1ECF733D6</digest>
+        <digest id="MD5-CAM-1.0.1">365FF276F84E80453823135E933A8453</digest>
     </integrity_checks>
     <integrity_checks
         archetype_id="openEHR-EHR-EVALUATION.occupation_summary.v1"
         xmlns:tem="openEHR/v1/Template"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="tem:ArchetypeIntegrity">
-        <digest id="MD5-CAM-1.0.1">7E6F0883E14EDE591F38805F00280D56</digest>
+        <digest id="MD5-CAM-1.0.1">37053661135B974855AAA356073EA23A</digest>
     </integrity_checks>
     <integrity_checks
         archetype_id="openEHR-EHR-CLUSTER.occupation_record.v1"
         xmlns:tem="openEHR/v1/Template"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="tem:ArchetypeIntegrity">
-        <digest id="MD5-CAM-1.0.1">8A419A318393ABB88CF8188C747918D2</digest>
+        <digest id="MD5-CAM-1.0.1">B104E02E1AA2C6F3BCC5DA9379179833</digest>
     </integrity_checks>
     <integrity_checks
         archetype_id="openEHR-EHR-CLUSTER.organisation_cc.v0"
@@ -681,12 +754,12 @@
         archetype_id="openEHR-EHR-OBSERVATION.travel_event.v0"
         xmlns:tem="openEHR/v1/Template"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="tem:ArchetypeIntegrity">
-        <digest id="MD5-CAM-1.0.1">EB7BEF40EE0C829E2C725CA37CB7666B</digest>
+        <digest id="MD5-CAM-1.0.1">BF1CA2D363655EBF46316581EE739BE9</digest>
     </integrity_checks>
     <integrity_checks
         archetype_id="openEHR-EHR-ADMIN_ENTRY.episode_institution.v0"
         xmlns:tem="openEHR/v1/Template"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="tem:ArchetypeIntegrity">
-        <digest id="MD5-CAM-1.0.1">1A131F351152897CDFBA543B020A4134</digest>
+        <digest id="MD5-CAM-1.0.1">D6DF6F04B7B2183FB14AD8DCB6C566C4</digest>
     </integrity_checks>
 </template>

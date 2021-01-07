@@ -1,0 +1,406 @@
+﻿archetype (adl_version=1.4; uid=0039a21e-a652-4999-a8ad-fdc3d8a28f59)
+	openEHR-EHR-OBSERVATION.medication_screening.v0
+
+concept
+	[at0000]	-- Medication screening questionnaire
+language
+	original_language = <[ISO_639-1::en]>
+	translations = <
+		["de"] = <
+			language = <[ISO_639-1::de]>
+			author = <
+				["name"] = <"Kim Sommer, Natalia Strauch, Alina Rehberg">
+				["organisation"] = <"Medizinische Hochschule Hannover">
+				["email"] = <"sommer.kimkatrin@mh-hannover.de, Strauch.Natalia@mh-hannover.de, rehberg.alina@mh-hannover.de">
+			>
+		>
+		["nb"] = <
+			language = <[ISO_639-1::nb]>
+			author = <
+				["name"] = <"Silje Ljosland Bakke">
+				["organisation"] = <"Nasjonal IKT HF, Helse Vest IKT AS">
+				["email"] = <"silje.ljosland.bakke@nasjonalikt.no, silje.ljosland.bakke@helse-vest-ikt.no">
+			>
+		>
+	>
+description
+	original_author = <
+		["name"] = <"Silje Ljosland Bakke">
+		["organisation"] = <"Nasjonal IKT HF">
+		["email"] = <"silje.ljosland.bakke@nasjonalikt.no">
+		["date"] = <"2018-11-07">
+	>
+	details = <
+		["de"] = <
+			language = <[ISO_639-1::de]>
+			purpose = <"*To record responses to an individual- or self-reported questionnaire screening for use of any medication or class of medication. (en)">
+			use = <"*Use to record responses to an individual- or self-reported questionnaire screening for use of any medication or class of medication.
+
+In order to record the response at a specific point in time or within an interval of time, use the EVENT RM attribute. (en)">
+			misuse = <"*Not to be used for recordning an order for a medication to be administered or consumed - use INSTRUCTION.medication_order for this purpose.
+
+Not to be used for recording the administration, dispensing or consumption of a medication - use ACTION.medication for this purpose.
+
+Not to be used for recording a summary of use of a medication over the lifetime of the individual - use EVALUATION.medication_summary for this purpose. (en)">
+			copyright = <"© openEHR Foundation, Nasjonal IKT HF, openEHR Foundation, openEHR Foundation">
+		>
+		["nb"] = <
+			language = <[ISO_639-1::nb]>
+			purpose = <"*To record responses to an individual- or self-reported questionnaire screening for use of any medication or class of medication. (en)">
+			use = <"*Use to record responses to an individual- or self-reported questionnaire screening for use of any medication or class of medication.
+
+In order to record the response at a specific point in time or within an interval of time, use the EVENT RM attribute. (en)">
+			misuse = <"*Not to be used for recordning an order for a medication to be administered or consumed - use INSTRUCTION.medication_order for this purpose.
+
+Not to be used for recording the administration, dispensing or consumption of a medication - use ACTION.medication for this purpose.
+
+Not to be used for recording a summary of use of a medication over the lifetime of the individual - use EVALUATION.medication_summary for this purpose. (en)">
+			copyright = <"© openEHR Foundation, Nasjonal IKT HF, openEHR Foundation, openEHR Foundation">
+		>
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To record responses to an individual- or self-reported questionnaire screening for use of any medication or class of medication.">
+			use = <"Use to record responses to an individual- or self-reported questionnaire screening for use of any medication or class of medication.
+
+In order to record the response at a specific point in time or within an interval of time, use the EVENT RM attribute.">
+			misuse = <"Not to be used for recordning an order for a medication to be administered or consumed - use INSTRUCTION.medication_order for this purpose.
+
+Not to be used for recording the administration, dispensing or consumption of a medication - use ACTION.medication for this purpose.
+
+Not to be used for recording a summary of use of a medication over the lifetime of the individual - use EVALUATION.medication_summary for this purpose.">
+			copyright = <"© openEHR Foundation, Nasjonal IKT HF">
+		>
+	>
+	lifecycle_state = <"in_development">
+	other_contributors = <"Silje Ljosland Bakke, Nasjonal IKT HF, Norway", "Heather Leslie, Atomica Informatics, Australia", "Ian McNicoll, FreshEHR Clinical Informatics, United Kingdom">
+	other_details = <
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
+		["custodian_organisation"] = <"openEHR Foundation">
+		["original_namespace"] = <"org.openehr">
+		["original_publisher"] = <"openEHR Foundation">
+		["custodian_namespace"] = <"org.openehr">
+		["MD5-CAM-1.0.1"] = <"97F5A5BFD3B9AE599A4D31A10C64549D">
+		["build_uid"] = <"db128b63-bde9-40c1-8511-fe1e4295fc5e">
+		["revision"] = <"0.0.1-alpha">
+	>
+
+definition
+	OBSERVATION[at0000] matches {    -- Medication screening questionnaire
+		data matches {
+			HISTORY[at0022] matches {    -- Event Series
+				events cardinality matches {0..*; unordered} matches {
+					EVENT[at0023] occurrences matches {0..*} matches {    -- Any event
+						data matches {
+							ITEM_TREE[at0001] matches {    -- Tree
+								items cardinality matches {0..*; unordered} matches {
+									ELEMENT[at0027] occurrences matches {0..1} matches {    -- Any medication use?
+										value matches {
+											DV_CODED_TEXT matches {
+												defining_code matches {
+													[local::
+													at0028,    -- Used
+													at0029,    -- Not used
+													at0030]    -- Unknown
+												}
+											}
+										}
+									}
+									CLUSTER[at0026] occurrences matches {0..*} matches {    -- Medication class
+										items cardinality matches {1..*; unordered} matches {
+											ELEMENT[at0002] occurrences matches {0..1} matches {    -- Class name
+												value matches {
+													DV_TEXT matches {*}
+												}
+											}
+											ELEMENT[at0003] occurrences matches {0..1} matches {    -- Class used?
+												value matches {
+													DV_CODED_TEXT matches {
+														defining_code matches {
+															[local::
+															at0028,    -- Used
+															at0029,    -- Not used
+															at0030]    -- Unknown
+														}
+													}
+												}
+											}
+										}
+									}
+									CLUSTER[at0008] occurrences matches {0..*} matches {    -- Specific medication
+										items cardinality matches {1..*; unordered} matches {
+											ELEMENT[at0021] matches {    -- Medication name
+												value matches {
+													DV_TEXT matches {*}
+												}
+											}
+											ELEMENT[at0024] occurrences matches {0..1} matches {    -- Medication used?
+												value matches {
+													DV_CODED_TEXT matches {
+														defining_code matches {
+															[local::
+															at0028,    -- Used
+															at0029,    -- Not used
+															at0030]    -- Unknown
+														}
+													}
+												}
+											}
+										}
+									}
+									ELEMENT[at0025] occurrences matches {0..1} matches {    -- Comment
+										value matches {
+											DV_TEXT matches {*}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		protocol matches {
+			ITEM_TREE[at0005] matches {    -- Tree
+				items cardinality matches {0..*; unordered} matches {
+					allow_archetype CLUSTER[at0019] occurrences matches {0..*} matches {    -- Extension
+						include
+							archetype_id/value matches {/.*/}
+					}
+				}
+			}
+		}
+	}
+
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"Medication screening questionnaire">
+					description = <"An individual- or self-reported questionnaire screening for use of any medication or class of medication.">
+				>
+				["at0001"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Class name">
+					description = <"Name of class or subclass of medication.">
+					comment = <"For example: opioid drugs; or NSAIDs.">
+				>
+				["at0003"] = <
+					text = <"Class used?">
+					description = <"Is the individual using the class of medication?">
+				>
+				["at0005"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0008"] = <
+					text = <"Specific medication">
+					description = <"Details about the use of a specific medication.">
+				>
+				["at0019"] = <
+					text = <"Extension">
+					description = <"Additional information required to extend the model with local content or to align with other reference models or formalisms.">
+					comment = <"For example: local information requirements; or additional metadata to align with FHIR.">
+				>
+				["at0021"] = <
+					text = <"Medication name">
+					description = <"Name of medication.">
+					comment = <"For example: Oxycodone.">
+				>
+				["at0022"] = <
+					text = <"Event Series">
+					description = <"@ internal @">
+				>
+				["at0023"] = <
+					text = <"Any event">
+					description = <"Default, unspecified point in time or interval event which may be explicitly defined in a template or at run-time.">
+				>
+				["at0024"] = <
+					text = <"Medication used?">
+					description = <"Is the individual using the specific medication?">
+				>
+				["at0025"] = <
+					text = <"Comment">
+					description = <"Additional narrative about the medication use screening, not captured in other fields.">
+				>
+				["at0026"] = <
+					text = <"Medication class">
+					description = <"Details about the use of a specific class of medication.">
+					comment = <"Use another instance of this CLUSTER to represent a subclass of medication.">
+				>
+				["at0027"] = <
+					text = <"Any medication use?">
+					description = <"Is the individual using any medication?">
+				>
+				["at0028"] = <
+					text = <"Used">
+					description = <"The individual uses or has used the medication class.">
+				>
+				["at0029"] = <
+					text = <"Not used">
+					description = <"The individual does not use or has not used the medication class.">
+				>
+				["at0030"] = <
+					text = <"Unknown">
+					description = <"It is not known whether the individual uses or has used the medication class.">
+				>
+			>
+		>
+		["nb"] = <
+			items = <
+				["at0000"] = <
+					text = <"*Medication screeening questionnaire (en)">
+					description = <"*An individual- or self-reported questionnaire screening for use of any medication or class of medication. (en)">
+				>
+				["at0001"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"*Class name (en)">
+					description = <"Navnet på klassen eller typen legemiddel.">
+					comment = <"*For example: opioid drugs; or NSAIDs. (en)">
+				>
+				["at0003"] = <
+					text = <"*Class used? (en)">
+					description = <"*Is the individual using the class of medication? (en)">
+				>
+				["at0005"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0008"] = <
+					text = <"Spesifikt legemiddel">
+					description = <"Detaljer om bruk av et spesifikt legemiddel eller en spesifikk underklasse av legemiddelklassen.">
+				>
+				["at0019"] = <
+					text = <"Ytterligere informasjon">
+					description = <"*Additional information required to extend the model with local content or to align with other reference models or formalisms. (en)">
+					comment = <"*For example: local information requirements; or additional metadata to align with FHIR. (en)">
+				>
+				["at0021"] = <
+					text = <"Legemiddelnavn">
+					description = <"*Name of medication. (en)">
+					comment = <"For eksempel oksykodon.">
+				>
+				["at0022"] = <
+					text = <"*HISTORY (en)">
+					description = <"*">
+				>
+				["at0023"] = <
+					text = <"Uspesifisert hendelse">
+					description = <"Standard, uspesifisert tidspunkt eller tidsintervall som kan defineres mer eksplisitt i et templat eller i en applikasjon.">
+				>
+				["at0024"] = <
+					text = <"*Medication used? (en)">
+					description = <"*Is the individual using the specific medication? (en)">
+				>
+				["at0025"] = <
+					text = <"Kommentar">
+					description = <"*Additional narrative about the medication use screening, not captured in other fields. (en)">
+				>
+				["at0026"] = <
+					text = <"*Medication class (en)">
+					description = <"Detaljer om bruk av en spesifikk legemiddelklasse.">
+					comment = <"*Use another instance of this CLUSTER to represent a subclass of medication. (en)">
+				>
+				["at0027"] = <
+					text = <"Er noen legemidler i bruk?">
+					description = <"Bruker individet noen legemidler i det hele tatt ved eller i løpet av hendelsen?">
+				>
+				["at0028"] = <
+					text = <"*Used (en)">
+					description = <"*The individual uses or has used the medication class. (en)">
+				>
+				["at0029"] = <
+					text = <"*Not used (en)">
+					description = <"*The individual does not use or has not used the medication class. (en)">
+				>
+				["at0030"] = <
+					text = <"Ukjent">
+					description = <"*It is not known whether the individual uses or has used the medication class. (en)">
+				>
+			>
+		>
+		["de"] = <
+			items = <
+				["at0000"] = <
+					text = <"*Medication screeening questionnaire (en)">
+					description = <"*An individual- or self-reported questionnaire screening for use of any medication or class of medication. (en)">
+				>
+				["at0001"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"*Class name (en)">
+					description = <"Name der Klasse oder des Medikamententyps.">
+					comment = <"*For example: opioid drugs; or NSAIDs. (en)">
+				>
+				["at0003"] = <
+					text = <"*Class used? (en)">
+					description = <"*Is the individual using the class of medication? (en)">
+				>
+				["at0005"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0008"] = <
+					text = <"Spezifische Medikamente">
+					description = <"Details über ein spezifisches Medikament oder eine Medikamentenunterklasse der Medikamentenklasse.">
+				>
+				["at0019"] = <
+					text = <"Erweiterung">
+					description = <"*Additional information required to extend the model with local content or to align with other reference models or formalisms. (en)">
+					comment = <"*For example: local information requirements; or additional metadata to align with FHIR. (en)">
+				>
+				["at0021"] = <
+					text = <"Name des Medikaments">
+					description = <"*Name of medication. (en)">
+					comment = <"Zum Beispiel: Oxycodon.">
+				>
+				["at0022"] = <
+					text = <"Event Series">
+					description = <"@ internal @">
+				>
+				["at0023"] = <
+					text = <"Beliebiges Ereignis">
+					description = <"Standard, ein nicht spezifizierter Zeitpunkt oder ein Intervallereignis, das explizit in einem Template oder zur Laufzeit definiert werden kann.">
+				>
+				["at0024"] = <
+					text = <"*Medication used? (en)">
+					description = <"*Is the individual using the specific medication? (en)">
+				>
+				["at0025"] = <
+					text = <"Kommentar">
+					description = <"*Additional narrative about the medication use screening, not captured in other fields. (en)">
+				>
+				["at0026"] = <
+					text = <"*Medication class (en)">
+					description = <"Details über die Verwendung einer bestimmten Medikamentenklasse.">
+					comment = <"*Use another instance of this CLUSTER to represent a subclass of medication. (en)">
+				>
+				["at0027"] = <
+					text = <"Medikamente in Verwendung?">
+					description = <"Wendet die Person das Medikament bei oder während des Zeitpunkts des Ergebnisses an?
+">
+				>
+				["at0028"] = <
+					text = <"*Used (en)">
+					description = <"*The individual uses or has used the medication class. (en)">
+				>
+				["at0029"] = <
+					text = <"*Not used (en)">
+					description = <"*The individual does not use or has not used the medication class. (en)">
+				>
+				["at0030"] = <
+					text = <"Unbekannt">
+					description = <"*It is not known whether the individual uses or has used the medication class. (en)">
+				>
+			>
+		>
+	>

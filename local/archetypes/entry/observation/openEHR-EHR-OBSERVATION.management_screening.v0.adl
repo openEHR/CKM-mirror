@@ -22,6 +22,11 @@ language
 				["email"] = <"silje.ljosland.bakke@helse-vest-ikt.no, marit.alice.venheim@helse-vest-ikt.no">
 			>
 		>
+		["it"] = <
+			language = <[ISO_639-1::it]>
+			author = <
+			>
+		>
 	>
 description
 	original_author = <
@@ -67,6 +72,16 @@ Common use cases include, but are not limited to:
 			misuse = <"">
 			copyright = <"© openEHR Foundation">
 		>
+		["it"] = <
+			language = <[ISO_639-1::it]>
+			purpose = <"Registrare le risposte a un questionario individuale o a un questionario autodenunciato per la gestione o il trattamento effettuato.">
+			use = <"Utilizzare per registrare le risposte a un questionario di screening individuale o auto-riferito per la gestione o il trattamento effettuato.
+
+I casi di uso comune includono, ma non sono limitati a:
+- Interrogazione sistematica in qualsiasi consultazione; o
+- Interrogazione specifica relativa alla sorveglianza delle malattie infettive.">
+			misuse = <"">
+		>
 	>
 	lifecycle_state = <"in_development">
 	other_contributors = <"Silje Ljosland Bakke, Helse Vest IKT AS, Norway (openEHR Editor)", "Heather Leslie, Atomica Informatics, Australia (openEHR Editor)">
@@ -76,8 +91,8 @@ Common use cases include, but are not limited to:
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"410DF740168950FCFDEFC9B6FBBA59A3">
-		["build_uid"] = <"96f60bb3-7147-46fd-8464-0812f53f30f5">
+		["MD5-CAM-1.0.1"] = <"05E503214D10CE3F5276FD97F001CF52">
+		["build_uid"] = <"70973d8e-fb59-446a-9aa6-8be7fc224b9e">
 		["ip_acknowledgements"] = <"This artefact includes content from SNOMED Clinical Terms® (SNOMED CT®) which is copyrighted material of the International Health Terminology Standards Development Organisation (IHTSDO). Where an implementation of this artefact makes use of SNOMED CT content, the implementer must have the appropriate SNOMED CT Affiliate license - for more information contact http://www.snomed.org/snomed-ct/get-snomedct or info@snomed.org.">
 		["revision"] = <"0.0.1-alpha">
 	>
@@ -96,37 +111,23 @@ definition
 											DV_TEXT matches {*}
 										}
 									}
-									CLUSTER[at0022] occurrences matches {0..*} matches {    -- Specific management/treatment activity
+									CLUSTER[at0022] occurrences matches {0..*} matches {    -- Management/treatment activity
 										items cardinality matches {1..*; unordered} matches {
 											ELEMENT[at0004] matches {    -- Activity name
 												value matches {
 													DV_TEXT matches {*}
 												}
 											}
-											ELEMENT[at0005] occurrences matches {0..1} matches {    -- Status
+											ELEMENT[at0005] occurrences matches {0..1} matches {    -- Presence
 												value matches {
 													DV_CODED_TEXT matches {
 														defining_code matches {
 															[local::
-															at0038,    -- Planned
-															at0039,    -- Scheduled
-															at0041,    -- Started
-															at0023,    -- Completed
-															at0024,    -- Not done
-															at0027,    -- Unknown
-															at0040]    -- Declined
+															at0023,    -- Present
+															at0024,    -- Absent
+															at0027]    -- Unknown
 														}
 													}
-												}
-											}
-											ELEMENT[at0006] occurrences matches {0..1} matches {    -- Completed
-												value matches {
-													DV_DATE_TIME matches {*}
-												}
-											}
-											ELEMENT[at0037] occurrences matches {0..1} matches {    -- Scheduled
-												value matches {
-													DV_DATE_TIME matches {*}
 												}
 											}
 											allow_archetype CLUSTER[at0036] occurrences matches {0..*} matches {    -- Activity details
@@ -191,13 +192,8 @@ ontology
 					description = <"Name of the management or treatment activity being screened.">
 				>
 				["at0005"] = <
-					text = <"Status">
+					text = <"Presence">
 					description = <"The current status of a specific activity.">
-				>
-				["at0006"] = <
-					text = <"Completed">
-					description = <"The date/time when the activity was (last) carried out.">
-					comment = <"Partial dates are allowed.">
 				>
 				["at0007"] = <
 					text = <"Item tree">
@@ -209,16 +205,16 @@ ontology
 					comment = <"For example: local information requirements or additional metadata to align with FHIR or CIMI equivalents.">
 				>
 				["at0022"] = <
-					text = <"Specific management/treatment activity">
+					text = <"Management/treatment activity">
 					description = <"Grouping of data elements related to screening for a single management or treatment activity.">
 				>
 				["at0023"] = <
-					text = <"Completed">
-					description = <"The specific activity has been completed.">
+					text = <"Present">
+					description = <"The specific activity is present.">
 				>
 				["at0024"] = <
-					text = <"Not done">
-					description = <"The specific activity was not carried out.">
+					text = <"Absent">
+					description = <"The specific activity is not present.">
 				>
 				["at0025"] = <
 					text = <"Overall comment">
@@ -226,7 +222,7 @@ ontology
 				>
 				["at0027"] = <
 					text = <"Unknown">
-					description = <"It is not known whether the activity was carried out.">
+					description = <"It is not known whether the activity is present or absent.">
 				>
 				["at0034"] = <
 					text = <"Screening purpose">
@@ -241,26 +237,6 @@ ontology
 					text = <"Activity details">
 					description = <"Additional details about the specific activity.">
 					comment = <"For example: Details about oxygen therapy.">
-				>
-				["at0037"] = <
-					text = <"Scheduled">
-					description = <"The date/time when the activity is (next) due to be carried out.">
-				>
-				["at0038"] = <
-					text = <"Planned">
-					description = <"The specific activity is planned but not scheduled.">
-				>
-				["at0039"] = <
-					text = <"Scheduled">
-					description = <"The specific activity is scheduled.">
-				>
-				["at0040"] = <
-					text = <"Declined">
-					description = <"The specific activity has been refused or declined by the individual.">
-				>
-				["at0041"] = <
-					text = <"Started">
-					description = <"The specific activity has been started but not completed.">
 				>
 			>
 		>
@@ -287,13 +263,8 @@ ontology
 					description = <"Navnet på sykdomshåndteringen (tiltaket) eller behandlingsaktiviteten som blir registrert.">
 				>
 				["at0005"] = <
-					text = <"Status">
+					text = <"*Presence (en)">
 					description = <"Den nåværende statusen på en spesifikk aktivitet.">
-				>
-				["at0006"] = <
-					text = <"Ferdig">
-					description = <"Dato/tid for når tiltaket sist ble uført.">
-					comment = <"Delvis dato er tillatt.">
 				>
 				["at0007"] = <
 					text = <"Item tree">
@@ -305,16 +276,16 @@ ontology
 					comment = <"For eksempel lokale informasjonsbehov eller ytterligere metadata for å kunne tilpasse til tilsvarende konsepter i FHIR eller CIMI.">
 				>
 				["at0022"] = <
-					text = <"Spesifikk håndterings-/behandlingsaktivitet">
+					text = <"*Management/treatment activity (en)">
 					description = <"Gruppering av dataelementer relatert til registreringen for en enkel sykdomshåndtering eller behandlingsaktivitet.">
 				>
 				["at0023"] = <
-					text = <"Utført">
-					description = <"Det spesifikke tiltaket har blitt utført.">
+					text = <"*Present (en)">
+					description = <"*The specific activity is present. (en)">
 				>
 				["at0024"] = <
-					text = <"Ikke iverksatt">
-					description = <"Det spesifikke tiltaket ble ikke iverksatt.">
+					text = <"*Absent (en)">
+					description = <"*The specific activity is not present. (en)">
 				>
 				["at0025"] = <
 					text = <"Kommentar">
@@ -322,7 +293,7 @@ ontology
 				>
 				["at0027"] = <
 					text = <"Ukjent">
-					description = <"Det er ukjent om tiltaket ble iverksatt.">
+					description = <"*It is not known whether the activity is present or absent. (en)">
 				>
 				["at0034"] = <
 					text = <"Registreringsformål">
@@ -337,26 +308,6 @@ ontology
 					text = <"Ytterligere detaljer">
 					description = <"Ytterligere detaljer om den spesifikke aktiviteten.">
 					comment = <"For eksempel detaljer om oksygenbehandling.">
-				>
-				["at0037"] = <
-					text = <"Tildelt tid">
-					description = <"Dato/tid for når aktiviteten skal utføres.">
-				>
-				["at0038"] = <
-					text = <"Planlagt">
-					description = <"Det spesifikke tiltaket er planlagt, men ikke tidsbestemt.">
-				>
-				["at0039"] = <
-					text = <"Tildelt tid.">
-					description = <"Det spesifikke tiltaket har fått tildelt en tid.">
-				>
-				["at0040"] = <
-					text = <"Avslått">
-					description = <"Det spesifikke tiltaket har blitt nektet eller avslått av individet.">
-				>
-				["at0041"] = <
-					text = <"Startet">
-					description = <"Det spesifikke tiltaket er påbegynt, men ikke utført.">
 				>
 			>
 		>
@@ -383,13 +334,8 @@ ontology
 					description = <"Name der geprüften Management- oder Behandlungsaktivität.">
 				>
 				["at0005"] = <
-					text = <"Status">
+					text = <"Vorhandensein">
 					description = <"Aktueller Status der spezifischen Aktivität.">
-				>
-				["at0006"] = <
-					text = <"Abgeschlossen">
-					description = <"Das Datum / die Uhrzeit der (letzten) Ausführung der Aktivität.">
-					comment = <"Erlaubt sind Angaben als Teildatum.">
 				>
 				["at0007"] = <
 					text = <"Item tree">
@@ -401,16 +347,16 @@ ontology
 					comment = <"Zum Beispiel: Lokaler Informationsbedarf oder zusätzliche Metadaten zur Anpassung an FHIR-Ressourcen oder CIMI-Modelle.">
 				>
 				["at0022"] = <
-					text = <"Bestimmte Management-/Behandlungsaktivität">
-					description = <"Gruppierung von Datenelementen im Zusammenhang mit dem Screening auf eine einzelne Management-/Behandlungsaktivität.">
+					text = <"Management-/Behandlungsaktivität">
+					description = <"Gruppierung von Datenelementen im Zusammenhang mit dem Screening auf eine einzelne Management- oder Behandlungsaktivität.">
 				>
 				["at0023"] = <
-					text = <"Abgeschlossen">
-					description = <"Die spezifische Aktivität wurde abgeschlossen.">
+					text = <"Vorhanden">
+					description = <"Die spezifische Aktivität ist vorhanden.">
 				>
 				["at0024"] = <
-					text = <"Nicht durchgeführt">
-					description = <"Die spezifische Aktivität wurde nicht durchgeführt.">
+					text = <"Nicht vorhanden">
+					description = <"Die spezifische Aktivität ist nicht vorhanden.">
 				>
 				["at0025"] = <
 					text = <"Allgemeiner Kommentar">
@@ -418,7 +364,7 @@ ontology
 				>
 				["at0027"] = <
 					text = <"Unbekannt">
-					description = <"Es ist nicht bekannt, ob die Aktivität durchgeführt wurde.">
+					description = <"Es ist nicht bekannt, ob die spezifische Aktivität vorhanden oder nicht vorhanden ist.">
 				>
 				["at0034"] = <
 					text = <"Zweck des Screenings">
@@ -434,25 +380,76 @@ ontology
 					description = <"Zusätzliche detaillierte Angaben zu der spezifischen Aktivität.">
 					comment = <"Zum Beispiel: Details zur Sauerstofftherapie.">
 				>
-				["at0037"] = <
-					text = <"Terminiert">
-					description = <"Das Datum / die Uhrzeit, wann die Aktivität (als nächstes) ausgeführt werden soll.">
+			>
+		>
+		["it"] = <
+			items = <
+				["at0000"] = <
+					text = <"Questionario di screening per la gestione/trattamento">
+					description = <"Uno screening con questionario individuale o autodichiarato per la gestione o il trattamento effettuato. ">
 				>
-				["at0038"] = <
-					text = <"Geplant">
-					description = <"Die spezifische Aktivität ist geplant, aber nicht terminiert.">
+				["at0001"] = <
+					text = <"History">
+					description = <"@ internal @">
 				>
-				["at0039"] = <
-					text = <"Terminiert">
-					description = <"Ein Termin für die Aktivität wurde geplant.">
+				["at0002"] = <
+					text = <"Qualsiasi evento">
+					description = <"Evento predefinito, non specificato nel tempo o nell'intervallo di tempo, che può essere definito esplicitamente in un modello o in fase di esecuzione. ">
 				>
-				["at0040"] = <
-					text = <"Abgelehnt">
-					description = <"Die spezifische Aktivität wurde von der Person abgelehnt oder verweigert.">
+				["at0003"] = <
+					text = <"Tree">
+					description = <"@ internal @">
 				>
-				["at0041"] = <
-					text = <"Begonnen">
-					description = <"Die spezifische Aktivität wurde begonnen, aber nicht abgeschlossen.">
+				["at0004"] = <
+					text = <"Nome attività">
+					description = <"Nome dell'attività di gestione o di trattamento oggetto di screening.">
+				>
+				["at0005"] = <
+					text = <"Eseguita?">
+					description = <"L'attività di gestione o di trattamento ha avuto luogo? ">
+				>
+				["at0007"] = <
+					text = <"Item tree">
+					description = <"@ internal @">
+				>
+				["at0021"] = <
+					text = <"Estensione">
+					description = <"Informazioni aggiuntive necessarie per rilevare il contenuto locale o per allinearsi con altri modelli/formalismi di riferimento. ">
+					comment = <"Ad esempio: requisiti informativi locali o metadati aggiuntivi per allinearsi agli equivalenti FHIR o CIMI. ">
+				>
+				["at0022"] = <
+					text = <"Attività specifica di gestione/trattamento">
+					description = <"Raggruppamento di elementi di dati relativi allo screening per una singola attività di gestione o trattamento.">
+				>
+				["at0023"] = <
+					text = <"Eseguita">
+					description = <"L'attività di gestione specifica è stata svolta.">
+				>
+				["at0024"] = <
+					text = <"Non eseguita">
+					description = <"L'attività di gestione specifica non è stata svolta.">
+				>
+				["at0025"] = <
+					text = <"Commento">
+					description = <"Descrizione aggiuntiva di tutte le attività di gestione e di trattamento, non rilevata in altri campi.">
+				>
+				["at0027"] = <
+					text = <"Indeterminato">
+					description = <"Non è possibile sapere se l'attività di gestione è stata svolta. ">
+				>
+				["at0034"] = <
+					text = <"Scopo dello screening">
+					description = <"Il motivo di uno screening globale.">
+					comment = <"Ad esempio: screening per una malattia infettiva, come la SARS-COV-2. ">
+				>
+				["at0035"] = <
+					text = <"Commento">
+					description = <"Descrizione aggiuntiva della specifica attività di gestione o di trattamento, non rilevata in altri campi. ">
+				>
+				["at0036"] = <
+					text = <"*Activity details(en)">
+					description = <"*Additional details about the specific activity.(en)">
+					comment = <"*For example: Details about oxygen therapy.(en)">
 				>
 			>
 		>

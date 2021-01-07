@@ -9,9 +9,9 @@ language
 		["de"] = <
 			language = <[ISO_639-1::de]>
 			author = <
-				["name"] = <"Sarah Ballout">
-				["organisation"] = <"MHH-Hannover">
-				["email"] = <"ballout.sarah@mh-hannover.de">
+				["name"] = <"Sarah Ballout, Natalia Strauch">
+				["organisation"] = <"MHH-Hannover, Medizinische Hochschule Hannover">
+				["email"] = <"ballout.sarah@mh-hannover.de, Strauch.Natalia@mh-hannover.de">
 			>
 		>
 		["nb"] = <
@@ -33,27 +33,27 @@ description
 	details = <
 		["de"] = <
 			language = <[ISO_639-1::de]>
-			purpose = <"Zur Darstellung der Altersparameter einer Person.">
-			use = <"Zur Darstellung der Altersparameter einer Person.
+			purpose = <"Zur Darstellung der Altersparameter einer Person zu einem bestimmten Zeitpunkt.">
+			use = <"Verwenden Sie diesen Archetyp, um die Altersparameter einer Person zu einem bestimmten Zeitpunkt darzustellen.
 
-Diesen Archetypen zusammen mit dem OBSERVATION.child_growth Archetypen im Template verwenden, um das korrigierte Alter eines Säuglings im Rahmen der Überwachung des Kinderwachstums darzustellen.">
-			keywords = <"Alter", "Lebensalter">
+Verwenden Sie diesen Archetyp innerhalb eines Templates zusammen mit anderen kontextbezogenen Archetypen. Beispiel: Verwendung mit dem Archetyp OBSERVATION.child_growth, um das korrigierte Alter eines Säuglings im Rahmen der Überwachung des Kinderwachstums darzustellen.">
+			keywords = <"Alter, Chronologisches Alter, Korrigiertes alter, Altersklasse, Alterkategorie, Altersgruppe", ...>
 			misuse = <"">
 		>
 		["nb"] = <
 			language = <[ISO_639-1::nb]>
-			purpose = <"For å registrere informasjon om et individs alder.">
-			use = <"Bruk for å registrere informasjon om et individs alder.
+			purpose = <"*To record details about the age of an individual at a specific point in time. (en)">
+			use = <"*Use to record parameters about the age of an individual at a specific point in time.
 
-Bruk i et templat sammen med arketypen OBSERVATION.child_growth for å registrere den justerte alderen av et spedbarn, som en del av overvåkning av vekst.">
+Use within a template alongside other contextually relevant archetypes. For example: use with OBSERVATION.child_growth to record the adjusted age of an infant as part of monitoring child growth patterns. (en)">
 			misuse = <"">
 		>
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"To record parameters about the age of an individual.">
-			use = <"Use to record parameters about the age of an individual.
+			purpose = <"To record details about the age of an individual at a specific point in time.">
+			use = <"Use to record parameters about the age of an individual at a specific point in time.
 
-Use to in a template alongside OBSERVATION.child_growth to record the adjusted age of an infant as part of monitoring child growth patterns.">
+Use within a template alongside other contextually relevant archetypes. For example: use with OBSERVATION.child_growth to record the adjusted age of an infant as part of monitoring child growth patterns.">
 			misuse = <"">
 			copyright = <"© openEHR Foundation">
 		>
@@ -61,37 +61,44 @@ Use to in a template alongside OBSERVATION.child_growth to record the adjusted a
 	lifecycle_state = <"in_development">
 	other_contributors = <>
 	other_details = <
-		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
 		["custodian_organisation"] = <"openEHR Foundation">
 		["current_contact"] = <"Heather Leslie, Atomica Informatics<heather.leslie@atomicainformatics.com>">
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"45882860D5E6A587813BB6BE0B586334">
-		["build_uid"] = <"97827399-ef75-4d1e-942c-f154ec284b82">
+		["MD5-CAM-1.0.1"] = <"C6BB2CC326224283D9781167768DCE40">
+		["build_uid"] = <"2f18c02d-7e07-4d94-bb97-cb50a60b0fe5">
 		["revision"] = <"0.0.1-alpha">
 	>
 
 definition
-	OBSERVATION[at0000] matches {	-- Age
+	OBSERVATION[at0000] matches {    -- Age
 		data matches {
-			HISTORY[at0001] matches {	-- Event Series
+			HISTORY[at0001] matches {    -- Event Series
 				events cardinality matches {1..*; unordered} matches {
-					EVENT[at0002] occurrences matches {0..1} matches {	-- Any event
+					POINT_EVENT[at0002] occurrences matches {0..1} matches {    -- Point in time event
 						data matches {
-							ITEM_TREE[at0003] matches {	-- Tree
+							ITEM_TREE[at0003] matches {    -- Tree
 								items cardinality matches {0..*; unordered} matches {
-									ELEMENT[at0004] occurrences matches {0..1} matches {	-- Chronological age
+									ELEMENT[at0004] occurrences matches {0..1} matches {    -- Chronological age
+										value matches {
+											DV_DURATION matches {
+												value matches {|PT0S..P200Y|}
+											}
+										}
+									}
+									ELEMENT[at0005] occurrences matches {0..1} matches {    -- Adjusted age
 										value matches {
 											DV_DURATION matches {*}
 										}
 									}
-									ELEMENT[at0005] occurrences matches {0..1} matches {	-- Adjusted age
+									ELEMENT[at0007] occurrences matches {0..1} matches {    -- Age category
 										value matches {
-											DV_DURATION matches {*}
+											DV_TEXT matches {*}
 										}
 									}
-									ELEMENT[at0006] occurrences matches {0..1} matches {	-- Comment
+									ELEMENT[at0006] occurrences matches {0..1} matches {    -- Comment
 										value matches {
 											DV_TEXT matches {*}
 										}
@@ -99,6 +106,16 @@ definition
 								}
 							}
 						}
+					}
+				}
+			}
+		}
+		protocol matches {
+			ITEM_TREE[at0008] matches {    -- Item tree
+				items cardinality matches {0..*; unordered} matches {
+					allow_archetype CLUSTER[at0009] occurrences matches {0..*} matches {    -- Extension
+						include
+							archetype_id/value matches {/.*/}
 					}
 				}
 			}
@@ -112,15 +129,15 @@ ontology
 			items = <
 				["at0000"] = <
 					text = <"Age">
-					description = <"Details about the age of an individual.">
+					description = <"Details about the age of an individual at a specific point in time.">
 				>
 				["at0001"] = <
 					text = <"Event Series">
 					description = <"@ internal @">
 				>
 				["at0002"] = <
-					text = <"Any event">
-					description = <"Default, unspecified point in time or interval event which may be explicitly defined in a template or at run-time.">
+					text = <"Point in time event">
+					description = <"Default, unspecified point in time event which may be explicitly defined in a template or at run-time.">
 				>
 				["at0003"] = <
 					text = <"Tree">
@@ -128,16 +145,30 @@ ontology
 				>
 				["at0004"] = <
 					text = <"Chronological age">
-					description = <"Age based on actual date of birth.">
+					description = <"Duration of time since birth.">
 				>
 				["at0005"] = <
 					text = <"Adjusted age">
-					description = <"Age based on due date.">
+					description = <"Chronological age of an infant, less the number of weeks or months they were born premature.">
+					comment = <"Also known as 'Corrected age'.">
 				>
 				["at0006"] = <
 					text = <"Comment">
 					description = <"Additional narrative about the age of an individual, not captured in other fields.">
-					comment = <"For example: pre-term delivery">
+				>
+				["at0007"] = <
+					text = <"Age category">
+					description = <"Duration of time since birth, expressed as a specified age range or grouping.">
+					comment = <"Categories for each specific use case will be defined within a template.">
+				>
+				["at0008"] = <
+					text = <"Item tree">
+					description = <"@ internal @">
+				>
+				["at0009"] = <
+					text = <"Extension">
+					description = <"Additional information required to extend the model with local content or to align with other reference models or formalisms.">
+					comment = <"For example: local information requirements; or additional metadata to align with FHIR.">
 				>
 			>
 		>
@@ -145,15 +176,15 @@ ontology
 			items = <
 				["at0000"] = <
 					text = <"Alter">
-					description = <"Angaben über das Alter einer Person.">
+					description = <"Angaben über das Alter einer Person zu einem bestimmten Zeitpunkt.">
 				>
 				["at0001"] = <
 					text = <"Event Series">
 					description = <"@ internal @">
 				>
 				["at0002"] = <
-					text = <"Beliebiges Ereignis">
-					description = <"Standardwert, ein undefinierter/s Zeitpunkt oder Intervallereignis, das explizit im Template oder zur Laufzeit der Anwendung definiert werden kann.">
+					text = <"Ereigniszeitpunkt">
+					description = <"Standardwert, ein undefinierter Zeitpunkt des Ereignisses, das explizit im Template oder zur Laufzeit der Anwendung definiert werden kann.">
 				>
 				["at0003"] = <
 					text = <"Tree">
@@ -161,17 +192,30 @@ ontology
 				>
 				["at0004"] = <
 					text = <"Chronologisches Alter">
-					description = <"Das Alter bezieht sich auf das tatsächliche Geburtsdatum.">
+					description = <"Zeitdauer seit der Geburt.">
 				>
 				["at0005"] = <
 					text = <"Korrigiertes Alter">
-					description = <"Das Alter bezogen auf das errechnete Geburtsdatum.
-">
+					description = <"Chronologisches Alter eines Säuglings, abzüglich der Anzahl der Wochen oder Monate, in denen es zu früh geboren wurde.">
+					comment = <"Auch als \"Korrigiertes Alter\" bekannt.">
 				>
 				["at0006"] = <
 					text = <"Kommentar">
 					description = <"Beschreibung des Alters einer Person, das nicht in anderen Datenelementen dargestellt wird.">
-					comment = <"Zum Beispiel: Frühgeburt">
+				>
+				["at0007"] = <
+					text = <"Altersklasse">
+					description = <"Zeitdauer seit der Geburt, ausgedrückt als festgelegte Altersspanne oder Gruppierung.">
+					comment = <"Kategorien für jeden spezifischen Anwendungsfall werden in einem Template definiert.">
+				>
+				["at0008"] = <
+					text = <"*Item tree (en)">
+					description = <"@ internal @">
+				>
+				["at0009"] = <
+					text = <"Erweiterung">
+					description = <"Zusätzliche Informationen zur Erfassung lokaler Inhalte oder Anpassung an andere Referenzmodelle/Formalismen.">
+					comment = <"Zum Beispiel: Lokaler Informationsbedarf oder zusätzliche Metadaten zur Anpassung an FHIR-Ressourcen.">
 				>
 			>
 		>
@@ -179,15 +223,15 @@ ontology
 			items = <
 				["at0000"] = <
 					text = <"Alder">
-					description = <"Detaljer om et individs alder.">
+					description = <"*Details about the age of an individual at a specific point in time. (en)">
 				>
 				["at0001"] = <
 					text = <"Event Series">
 					description = <"@ internal @">
 				>
 				["at0002"] = <
-					text = <"Uspesifisert hendelse">
-					description = <"Standard, uspesifisert tidspunkt eller tidsintervall som kan defineres mer eksplisitt i et templat eller i en applikasjon.">
+					text = <"*Point in time event (en)">
+					description = <"*Default, unspecified point in time event which may be explicitly defined in a template or at run-time. (en)">
 				>
 				["at0003"] = <
 					text = <"Tree">
@@ -195,16 +239,30 @@ ontology
 				>
 				["at0004"] = <
 					text = <"Kronologisk alder">
-					description = <"Alder basert på faktisk fødselsdato.">
+					description = <"*Duration of time since birth. (en)">
 				>
 				["at0005"] = <
 					text = <"Justert alder">
-					description = <"Alder basert på termindato.">
+					description = <"*Chronological age of an infant, less the number of weeks or months they were born premature. (en)">
+					comment = <"*Also known as 'Corrected age'. (en)">
 				>
 				["at0006"] = <
 					text = <"Kommentar">
 					description = <"Ytterligere fritekst om et individs alder som ikke fanges opp i andre felt.">
-					comment = <"For eksempel fødsel før termin.">
+				>
+				["at0007"] = <
+					text = <"*Age category (en)">
+					description = <"*Duration of time since birth, expressed as a specified age range or grouping. (en)">
+					comment = <"*Categories for each specific use case will be defined within a template. (en)">
+				>
+				["at0008"] = <
+					text = <"*Item tree (en)">
+					description = <"@ internal @">
+				>
+				["at0009"] = <
+					text = <"*Extension (en)">
+					description = <"*Additional information required to extend the model with local content or to align with other reference models or formalisms. (en)">
+					comment = <"*For example: local information requirements; or additional metadata to align with FHIR. (en)">
 				>
 			>
 		>
