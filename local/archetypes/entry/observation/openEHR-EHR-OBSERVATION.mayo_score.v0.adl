@@ -25,15 +25,21 @@ description
 	details = <
 		["nb"] = <
 			language = <[ISO_639-1::nb]>
-			purpose = <"For å evaluere hvor aktiv en ulcerøs colitt er.">
-			use = <"Bruk for å evaluere hvor aktiv en ulcerøs colitt er.">
+			purpose = <"For å registrere en evaluering av alvorlighetsgrad av ulcerøs colitt.">
+			use = <"Bruk for å registrere en evaluering av alvorlighetsgrad av ulcerøs colitt.
+
+Denne arketypen tillater å registrere en eller flere av følgende: Full Mayo skår (12 poeng), Partial Mayo skår (9 poeng) og 6-poengs klinisk skår (Forenklet Mayo skår).">
+			keywords = <"IBD (Inflammatory bowel disease)", ...>
 			misuse = <"">
 			copyright = <"© openEHR Foundation">
 		>
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"To make an assessment of ulcerative colitis activity.">
-			use = <"Use to make an assessment of ulcerative colitis activity.">
+			purpose = <"To record an assessment of the severity of ulcerative colitis.">
+			use = <"Use to record an assessment of the severity of ulcerative colitis.
+
+This archetype allows the recording of one or more of: the full Mayo score (12 points); the partial Mayo score (9 points); and the 6-point clinical score (Simplified Mayo score).">
+			keywords = <"IBD (Inflammatory bowel disease)", ...>
 			misuse = <"">
 			copyright = <"© openEHR Foundation">
 		>
@@ -43,21 +49,21 @@ description
 	other_details = <
 		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
 		["custodian_organisation"] = <"openEHR Foundation">
-		["references"] = <"Schroeder KW, Tremaine WJ, Ilstrup DM. Coated oral 5-aminosalicylic acid therapy for mildly to moderately active ulcerative colitis. A randomized study. N Engl J Med. 1987;317(26):1625-9.
+		["references"] = <"Clinical Review Report: adalimumab (Humira) [Internet]. Ottawa (ON): Canadian Agency for Drugs and Technologies in Health; 2016 Apr. PMID: 30912894. Available from: https://pubmed.ncbi.nlm.nih.gov/30912894/.
 
-https://www.mdcalc.com/mayo-score-disease-activity-index-dai-ulcerative-colitis
+Lewis JD, Chuai S, Nessel L, Lichtenstein GR, Aberra FN, Ellenberg JH. Use of the noninvasive components of the Mayo score to assess clinical response in ulcerative colitis. Inflamm Bowel Dis. 2008 Dec;14(12):1660-6. doi: 10.1002/ibd.20520. PMID: 18623174; PMCID: PMC2597552.
 
-https://bestpractice.bmj.com/calculators/en-gb/MayoScore.htm">
+Schroeder KW, Tremaine WJ, Ilstrup DM. Coated oral 5-aminosalicylic acid therapy for mildly to moderately active ulcerative colitis. A randomized study. N Engl J Med. 1987 Dec 24;317(26):1625-9. doi: 10.1056/NEJM198712243172603. PMID: 3317057.">
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"5164E40F683EBFA75E8478D0A7BE12AC">
-		["build_uid"] = <"4edadcef-5840-4545-aab5-2da54c8405c0">
+		["MD5-CAM-1.0.1"] = <"B10C7780F51B8E041C42975B67756468">
+		["build_uid"] = <"0b832865-f1f9-4126-ba3f-c57e220987b1">
 		["revision"] = <"0.0.1-alpha">
 	>
 
 definition
-	OBSERVATION[at0000] matches {    -- Mayo_score
+	OBSERVATION[at0000] matches {    -- Mayo score
 		data matches {
 			HISTORY[at0001] matches {    -- History
 				events cardinality matches {0..*; unordered} matches {
@@ -81,7 +87,7 @@ definition
 											3|[local::at0018]
 										}
 									}
-									ELEMENT[at0019] occurrences matches {0..1} matches {    -- Mucosal appearance at endoscopy
+									ELEMENT[at0019] occurrences matches {0..1} matches {    -- Endoscopy findings
 										value matches {
 											0|[local::at0020],
 											1|[local::at0021],
@@ -89,7 +95,7 @@ definition
 											3|[local::at0023]
 										}
 									}
-									ELEMENT[at0024] occurrences matches {0..1} matches {    -- Physician rating of desease activity
+									ELEMENT[at0024] occurrences matches {0..1} matches {    -- Global assessment
 										value matches {
 											0|[local::at0025],
 											1|[local::at0026],
@@ -101,6 +107,20 @@ definition
 										value matches {
 											DV_COUNT matches {
 												magnitude matches {|0..12|}
+											}
+										}
+									}
+									ELEMENT[at0033] occurrences matches {0..1} matches {    -- Partial Mayo score
+										value matches {
+											DV_COUNT matches {
+												magnitude matches {|0..9|}
+											}
+										}
+									}
+									ELEMENT[at0034] occurrences matches {0..1} matches {    -- 6-point clinical score
+										value matches {
+											DV_COUNT matches {
+												magnitude matches {|0..6|}
 											}
 										}
 									}
@@ -130,7 +150,7 @@ ontology
 			items = <
 				["at0000"] = <
 					text = <"Mayo score">
-					description = <"Scoring system for assessment of ulcerative colitis activity.">
+					description = <"An assessment score used to estimate the severity of ulcerative colitis.">
 				>
 				["at0001"] = <
 					text = <"History">
@@ -146,27 +166,27 @@ ontology
 				>
 				["at0009"] = <
 					text = <"Stool frequency">
-					description = <"Category for number stools per day exceeding what is normal for the individual.">
+					description = <"The number stools per day, in excess of normal for the individual.">
 				>
 				["at0010"] = <
-					text = <"Normal number of stools/day">
-					description = <"Normal number of stools/day for this patient.">
+					text = <"Normal number of stools">
+					description = <"">
 				>
 				["at0011"] = <
-					text = <"1-2 stools/day more than normal">
-					description = <"1-2 stools/day more than normal for this patient.">
+					text = <"1-2 stools more than normal">
+					description = <"">
 				>
 				["at0012"] = <
-					text = <"3-4 stools/day more than normal">
-					description = <"3-4 stools/day more than normal for this patient.">
+					text = <"3-4 stools more than normal">
+					description = <"">
 				>
 				["at0013"] = <
-					text = <">4 stools/day more than normal">
-					description = <">4 stools/day more than normal for this patient.">
+					text = <"5 or more stools more than normal">
+					description = <"">
 				>
 				["at0014"] = <
 					text = <"Rectal bleeding">
-					description = <"Category for number of stools per day with visible blood, if any.">
+					description = <"The most severe rectal bleeding of the day, as observed by the individual.">
 					comment = <"3 points requires patients to have ≥50% of BMs with visible blood AND ≥1 BM with blood alone.">
 				>
 				["at0015"] = <
@@ -174,11 +194,11 @@ ontology
 					description = <"">
 				>
 				["at0016"] = <
-					text = <"Visible blood with stool less than half the time">
+					text = <"Streaks of blood with stool less than half the time">
 					description = <"">
 				>
 				["at0017"] = <
-					text = <"Visible blood with stool half the time or more">
+					text = <"Obvious blood with stool most of the time">
 					description = <"">
 				>
 				["at0018"] = <
@@ -186,8 +206,9 @@ ontology
 					description = <"">
 				>
 				["at0019"] = <
-					text = <"Mucosal appearance at endoscopy">
-					description = <"Category for findings of mucosal appearance during endoscopy.">
+					text = <"Endoscopy findings">
+					description = <"Assessment of the mucosal appearance during endoscopy or sigmoidoscopy.">
+					comment = <"Also known as \"Endoscopic subscore\".">
 				>
 				["at0020"] = <
 					text = <"Normal or inactive disease">
@@ -195,39 +216,39 @@ ontology
 				>
 				["at0021"] = <
 					text = <"Mild disease">
-					description = <"Mild disease (erythema, decreased vascular pattern, mild friability).">
+					description = <"Characterised by erythema, decreased vascular pattern, mild friability.">
 				>
 				["at0022"] = <
 					text = <"Moderate disease">
-					description = <"Moderate disease (marked erythema, absent vascular pattern, friability, erosions).">
+					description = <"Characterised by marked erythema, absent vascular pattern, friability, erosions.">
 				>
 				["at0023"] = <
 					text = <"Severe disease">
-					description = <"Severe disease (spontaneous bleeding, ulceration).">
+					description = <"Characterised by spontaneous bleeding, ulceration.">
 				>
 				["at0024"] = <
-					text = <"Physician rating of disease activity">
-					description = <"Category for the overall assessment of ulcerative colitis activity made by physician.">
+					text = <"Global assessment">
+					description = <"Overall assessment of ulcerative colitis severity, as made by a physician.">
 				>
 				["at0025"] = <
-					text = <"Normal">
+					text = <"Normal or inactive disease">
 					description = <"">
 				>
 				["at0026"] = <
-					text = <"Mild">
-					description = <"Mild disease.">
+					text = <"Mild disease">
+					description = <"">
 				>
 				["at0027"] = <
-					text = <"Moderate">
-					description = <"Moderate disease.">
+					text = <"Moderate disease">
+					description = <"">
 				>
 				["at0028"] = <
-					text = <"Severe">
-					description = <"Severe disease.">
+					text = <"Severe disease">
+					description = <"">
 				>
 				["at0029"] = <
 					text = <"Total Mayo score">
-					description = <"The sum of points assigned for each of the component variables.">
+					description = <"The total sum of all 4 component parameters.">
 					comment = <"Scores range from zero to 12, with higher scores correlating with more severe disease.">
 				>
 				["at0030"] = <
@@ -239,13 +260,23 @@ ontology
 					description = <"Additional information required to extend the model with local content or to align with other reference models or formalisms.">
 					comment = <"For example: local information requirements; or additional metadata to align with FHIR.">
 				>
+				["at0033"] = <
+					text = <"Partial Mayo score">
+					description = <"The total sum of the 3 non-invasive component parameters only.">
+					comment = <"The Partial Mayo score specifically excludes 'Endoscopy findings'.">
+				>
+				["at0034"] = <
+					text = <"6-point clinical score">
+					description = <"The total sum of the 2 symptom-related component parameters only.">
+					comment = <"The 6-point score includes 'Stool frequency' and 'Rectal bleeding' only, and excludes 'Endoscopy findings' and 'Global assessment'. Also known as \"Simplified Mayo score\".">
+				>
 			>
 		>
 		["nb"] = <
 			items = <
 				["at0000"] = <
 					text = <"Mayo skår">
-					description = <"Skåringssystem for å evaluere hvor aktiv en ulcerøs colitt er.">
+					description = <"Skåringssystem for å evaluere alvorlighetsgrad av ulcerøs colitt.">
 				>
 				["at0001"] = <
 					text = <"History">
@@ -261,27 +292,27 @@ ontology
 				>
 				["at0009"] = <
 					text = <"Avføringsfrekvens">
-					description = <"Kategori for antall avføringer per dag som overstiger det som er normalt for individet.">
+					description = <"Antall avføringer per dag som overstiger det som er normalt for individet.">
 				>
 				["at0010"] = <
-					text = <"Normalt">
+					text = <"Normalt antall avføringer">
 					description = <"">
 				>
 				["at0011"] = <
-					text = <"1-2 tømminger/dag flere enn normalt">
-					description = <"1-2 tømminger/dag flere enn normalt for denne pasienten.">
+					text = <"1-2 flere avføringer enn normalt">
+					description = <"">
 				>
 				["at0012"] = <
-					text = <"3-4 tømminger/dag flere enn normalt">
-					description = <"3-4 tømminger/dag flere enn normalt for denne pasienten.">
+					text = <"3-4 flere avføringer enn normalt">
+					description = <"">
 				>
 				["at0013"] = <
-					text = <">5 tømminger/dag flere enn normalt">
-					description = <">5 tømminger/dag flere enn normalt for denne pasienten.">
+					text = <"5 eller mer flere avføringer enn normalt">
+					description = <"">
 				>
 				["at0014"] = <
 					text = <"Rektale blødninger">
-					description = <"Kategori for antall avføringer per dag med synlig blod, om noen.">
+					description = <"Dagens mest alvorlige rektale blødning, observert av individet selv.">
 					comment = <"For at man skal skåre 3 poeng kreves at ≥50% av avføringene har synlig blod, OG at ≥1 har kun blod.">
 				>
 				["at0015"] = <
@@ -301,8 +332,9 @@ ontology
 					description = <"">
 				>
 				["at0019"] = <
-					text = <"Slimhinnevurdering ved koloskopi">
-					description = <"Kategori for vurdering av slimhinne ved koloskopi.">
+					text = <"Funn ved endoskopi">
+					description = <"Slimhinnevurdering ved koloskopi.">
+					comment = <"Også kjent som \"Mayo endoskopisk subscore\"">
 				>
 				["at0020"] = <
 					text = <"Normal eller inaktiv sykdom">
@@ -318,11 +350,11 @@ ontology
 				>
 				["at0023"] = <
 					text = <"Alvorlig sykdom">
-					description = <"Alvorlig sykdom (spontan blødning, ulcerasjoner)">
+					description = <"Kjennetegnet ved spontan blødning, ulcerasjoner.">
 				>
 				["at0024"] = <
-					text = <"Legens vurdering av tilstanden">
-					description = <"Kategori for den overordnede vurderingen av ulcerøs colitt gjort av lege.">
+					text = <"Overordnet vurdering">
+					description = <"Den overordnede vurderingen av alvorlighetsgrad av ulcerøs colitt, gjort av lege.">
 				>
 				["at0025"] = <
 					text = <"Normal">
@@ -353,6 +385,16 @@ ontology
 					text = <"Tilleggsinformasjon">
 					description = <"Ytterligere informasjon som trengs for å kunne registrere lokalt definert innhold eller for å tilpasse til andre referansemodeller/formalismer.">
 					comment = <"For eksempel: lokale informasjonsbehov eller ytterligere metadata for å kunne tilpasse til tilsvarende konsepter i FHIR.">
+				>
+				["at0033"] = <
+					text = <"Partial Mayo skår">
+					description = <"Summen av verdiene i alle de ikke-invasive komponentene.">
+					comment = <"Partial Mayo skår eksluderer eksplisitt \"Funn ved endoskopi\".">
+				>
+				["at0034"] = <
+					text = <"6-poengs klinisk skår">
+					description = <"Summen av verdiene i alle de to symptomrelaterte komponentene.">
+					comment = <"6-poengsskåren inkluderer bare \"Avføringsfrekvens\" og \"Rektale blødninger\". \"Funn ved endoskopi\" og \"Overordnet vurdering\" er ekskludert. Også kjent som \"Forenklet Mayo skår\".">
 				>
 			>
 		>
