@@ -17,8 +17,9 @@ language
 		["nb"] = <
 			language = <[ISO_639-1::nb]>
 			author = <
-				["name"] = <"Gro-Hilde Ulriksen">
-				["organisation"] = <"Norwegian centre for e-health research">
+				["name"] = <"Gro-Hilde Ulriksen, John Tore Valand, Liv Laugen">
+				["organisation"] = <"Norwegian centre for e-health research, Helse Bergen, ​Oslo University Hospital, Norway">
+				["email"] = <"john.tore.valand@helse-bergen.no, liv.laugen@ous-hf.no">
 			>
 		>
 		["pt-br"] = <
@@ -44,6 +45,7 @@ description
 			purpose = <"Zur Darstellung von zusammenfassenden Informationen über die Verabreichung und Einnahme eines speziellen Medikaments oder einer bestimmten Medikamentenklasse über die Lebenszeit einer Person.">
 			use = <"Zur Darstellung von zusammenfassenden Informationen über die Verabreichung und Einnahme eines speziellen Medikaments oder einer bestimmten Medikamentenklasse über die Lebenszeit einer Person.
 ">
+			keywords = <"*drug, lifelong (en)", ...>
 			misuse = <"Nicht zur Darstellung einer Anordnung zur Verabreichung oder Einnahme eines Medikamentes - für diesen Zweck bitte den Archetyp INSTRUCTION.medication_order verwenden.
 
 Nicht zur Darstellung der Verabreichung oder Einnahme eines Medikamentes - für diesen Zweck bitte den Archetyp ACTION.medication verwenden.
@@ -53,9 +55,12 @@ Nicht zur Darstellung der Verabreichung oder Einnahme eines Medikamentes - für 
 		>
 		["nb"] = <
 			language = <[ISO_639-1::nb]>
-			purpose = <"For å registrere et sammendrag om administrasjon eller forbruk av et spesifisert legemiddel eller legemiddelklasse over individets levetid.">
-			use = <"Brukes for å registrere et sammendrag om administrasjon eller forbruk av et spesifisert legemiddel eller legemiddelklasse over individets levetid.">
-			misuse = <"Brukes ikke for å registrere en ordinering av et legemiddel som skal administreres eller forbrukes - bruk arketypen INSTRUCTION.medication_order (Legemiddelordinering) for dette formålet.">
+			purpose = <"For å registrere et sammendrag om bruk av et spesifisert legemiddel eller legemiddelklasse i individets levetid.">
+			use = <"Brukes for å registrere et sammendrag om bruk av et spesifisert legemiddel eller legemiddelklasse i individets levetid.">
+			keywords = <"medisin, livslang", ...>
+			misuse = <"Brukes ikke for å registrere en ordinering av et legemiddel som skal administreres eller brukes - bruk arketypen INSTRUCTION.medication_order (Legemiddelordinering) til dette formålet.
+
+Brukes ikke for å dokumentere den faktiske administrering eller bruk av et legemiddel - bruk arketypen ACTION.medication (Legemiddelhåndtering) til dette formålet.">
 		>
 		["pt-br"] = <
 			language = <[ISO_639-1::pt-br]>
@@ -63,6 +68,7 @@ Nicht zur Darstellung der Verabreichung oder Einnahme eines Medikamentes - für 
 ">
 			use = <"Usado para registrar informações sumarizadas sobre a administração ou histórico de consumo de um medicamento específico ou de uma classe de medicamento durante a vida do indivíduo.
 ">
+			keywords = <"*drug, lifelong (en)", ...>
 			misuse = <"Não deve ser usado para registrar uma solicitação de administração ou consumo de um medicamento - use INSTRUCTION.medication_order para este propósito.
 
 Não deve ser usado documentar a administração ou consumo de um medicamento - use ACTION.medication para este propósito.
@@ -70,11 +76,12 @@ Não deve ser usado documentar a administração ou consumo de um medicamento - 
 		>
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"For recording summary information about the administration or consumption history for a specified medication or class of medication over the individual's lifetime.">
-			use = <"Use for recording summary information about the administration or consumption history for a specified medication or class of medication over the individual's lifetime.">
-			misuse = <"Not to be used for recordning an order for a medication to be administered or consumed - use INSTRUCTION.medication_order for this purpose.
+			purpose = <"To record summary information about the administration or consumption of a specified medication or class of medication over the lifetime of an individual.">
+			use = <"Use to record summary information about the use of a specified medication or class of medication medication over the lifetime of an individual.">
+			keywords = <"drug, lifelong", ...>
+			misuse = <"Not to be used for recording an order for a medication to be administered or consumed - use INSTRUCTION.medication_order for this purpose.
 
-Not to be used for documenting the administration or consumption of a medication - use ACTION.medication for this purpose.">
+Not to be used for documenting the actual administration or consumption of a medication - use ACTION.medication for this purpose.">
 			copyright = <"© openEHR Foundation">
 		>
 	>
@@ -86,8 +93,8 @@ Not to be used for documenting the administration or consumption of a medication
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"402CE9F022E0AD817C6F3343E6D542AB">
-		["build_uid"] = <"3115db62-2681-421f-ba8f-abff3eb84876">
+		["MD5-CAM-1.0.1"] = <"78841DD979CAC93FDDB5DF874D77DA0F">
+		["build_uid"] = <"2ee1d4dc-5227-4538-a6bd-ec470639d143">
 		["revision"] = <"0.0.1-alpha">
 	>
 
@@ -118,6 +125,11 @@ definition
 							DV_TEXT matches {*}
 						}
 					}
+					ELEMENT[at0028] occurrences matches {0..1} matches {    -- Clinical indication
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
 					ELEMENT[at0009] occurrences matches {0..1} matches {    -- Onset of use
 						value matches {
 							DV_DATE_TIME matches {*}
@@ -135,7 +147,7 @@ definition
 									DV_DATE_TIME matches {*}
 								}
 							}
-							ELEMENT[at0018] occurrences matches {0..1} matches {    -- Clinical indication
+							ELEMENT[at0018] occurrences matches {0..1} matches {    -- Episode indication
 								value matches {
 									DV_TEXT matches {*}
 								}
@@ -216,7 +228,7 @@ ontology
 			items = <
 				["at0000"] = <
 					text = <"Medication summary">
-					description = <"Summary information about the administration or consumption history for a specified medication or class of medication over the individual's lifetime.">
+					description = <"Summary information about the use of a specified medication or class of medication.">
 				>
 				["at0001"] = <
 					text = <"Tree">
@@ -224,7 +236,7 @@ ontology
 				>
 				["at0002"] = <
 					text = <"Medication name">
-					description = <"Name of medication or class of medication.">
+					description = <"Name of medication or class of medication administered or consumed.">
 				>
 				["at0005"] = <
 					text = <"Tree">
@@ -236,86 +248,90 @@ ontology
 				>
 				["at0007"] = <
 					text = <"Clinical description">
-					description = <"Narrative description about the medication use.">
+					description = <"Narrative description about the use of the medication.">
 				>
 				["at0008"] = <
 					text = <"Episode">
-					description = <"Details about each episode of use.">
+					description = <"Details about each episode of use of the medication or class of medication.">
 				>
 				["at0009"] = <
 					text = <"Onset of use">
-					description = <"First ever onset of use.">
+					description = <"First ever onset of use of the medication.">
 				>
 				["at0010"] = <
-					text = <"Cessation of use">
-					description = <"Most recent cessation of use.">
+					text = <"Overall cessation">
+					description = <"The date when the medication or class of medication was last used.">
 				>
 				["at0011"] = <
 					text = <"Episode onset">
-					description = <"The date of onset for this episode of use.">
+					description = <"The date of onset for this episode.">
 				>
 				["at0012"] = <
 					text = <"Episode cessation">
-					description = <"The date of cessation for this episode of use.">
+					description = <"The date of cessation of use of this medication for this episode.">
 				>
 				["at0013"] = <
 					text = <"Reason for cessation">
-					description = <"The reason why the medication was ceased.">
+					description = <"The reason why use of the medication was stopped.">
 				>
 				["at0014"] = <
 					text = <"Description">
-					description = <"Description of use during the identified episode of use.">
+					description = <"Narrative description about the use of the medication during this episode.">
 				>
 				["at0015"] = <
 					text = <"Cumulative dose">
-					description = <"Total amount ever consumed.">
+					description = <"Total amount of the medication used over the lifetime of the individual.">
 				>
 				["at0016"] = <
 					text = <"Episode dose">
-					description = <"Total dose for the identified episode.">
+					description = <"Total dose of the medication used in this episode.">
 				>
 				["at0018"] = <
-					text = <"Clinical indication">
-					description = <"The clinical indication for the administration or consumption of the medication.">
+					text = <"Episode indication">
+					description = <"The clinical indication for the use of the medication during this episode, particularly if this is more specific or differs from the 'Clinical indication', or there is no clinical indication that applies for all episodes.">
 				>
 				["at0019"] = <
 					text = <"Extension">
-					description = <"Additional information required to capture local content or to align with other reference models/formalisms.">
-					comment = <"For example: local information requirements or additional metadata to align with FHIR or CIMI equivalents.">
+					description = <"Additional information required to extend the model with local content or to align with other reference models or formalisms.">
+					comment = <"For example: local information requirements; or additional metadata to align with FHIR.">
 				>
 				["at0020"] = <
 					text = <"Intent">
-					description = <"Intent for use.">
+					description = <"The intended type of the use of the medication during this episode.">
 					comment = <"For example: palliative; short term; or a specified duration">
 				>
 				["at0021"] = <
 					text = <"Specific name">
-					description = <"Specific name of medication.">
+					description = <"Specific name of the medication.">
 					comment = <"Use to identify the specific medication used if a class is identified in 'Medication name'. Redundant if the name is identified using the 'Medication name' data element.">
 				>
 				["at0022"] = <
 					text = <"Treatment response">
-					description = <"The individual's response to the treatment by this medication during this episode.">
+					description = <"The observed response to the treatment with this medication during this episode.">
 				>
 				["at0023"] = <
 					text = <"Status">
-					description = <"Status about historical and current use of the medication or medication class.">
+					description = <"Status about historical and current use of the medication.">
 				>
 				["at0024"] = <
 					text = <"Never used">
-					description = <"The individual has never used the medication or medication class.">
+					description = <"The individual has never used the medication or class of medication.">
 				>
 				["at0025"] = <
 					text = <"Currently using">
-					description = <"The individual is currently using the medication or medication class.">
+					description = <"The individual is currently using the medication or class of medication.">
 				>
 				["at0026"] = <
 					text = <"Used in the past">
-					description = <"The individual has used the medication or medication class in the past but is not currently using it.">
+					description = <"The individual has used the medication or class of medication in the past but is not currently using it.">
 				>
 				["at0027"] = <
-					text = <"Cumulative duration of use">
-					description = <"The total duration of the episodes where the medication has been used.">
+					text = <"Duration of use">
+					description = <"The cumulative duration of use of the medication over the lifetime of the individual.">
+				>
+				["at0028"] = <
+					text = <"Clinical indication">
+					description = <"The overall clinical indication for the use of the medication.">
 				>
 			>
 		>
@@ -323,15 +339,15 @@ ontology
 			items = <
 				["at0000"] = <
 					text = <"Legemiddelsammendrag">
-					description = <"*Summary information about the administration or consumption history for a specified medication or class of medication over the individual's lifetime. (en)">
+					description = <"Sammendrag om bruk av et spesifisert legemiddel eller legemiddelklasse.">
 				>
 				["at0001"] = <
 					text = <"Tree">
 					description = <"@ internal @">
 				>
 				["at0002"] = <
-					text = <"Legemiddel">
-					description = <"Legemiddelets navn eller klasse.">
+					text = <"Navn på legemiddel">
+					description = <"Navnet på legemiddelet eller legemiddelklassen som administreres eller brukes.">
 				>
 				["at0005"] = <
 					text = <"Tree">
@@ -339,90 +355,94 @@ ontology
 				>
 				["at0006"] = <
 					text = <"Sists oppdatert">
-					description = <"Datoen da medikament oppsummeringen sist ble oppdatert">
+					description = <"Datoen da legemiddelsammendraget sist ble oppdatert.">
 				>
 				["at0007"] = <
 					text = <"Klinisk beskrivelse">
-					description = <"Fritekstbeskrivelse om bruken av legemeddelet.">
+					description = <"Fritekstbeskrivelse om bruken av legemiddelet eller legemiddelklassen.">
 				>
 				["at0008"] = <
 					text = <"Episode">
-					description = <"Detaljer om hver episode som har ført til bruk av medikamentet">
+					description = <"Detaljer om hver bruksepisode av legemiddelet eller legemiddelklassen.">
 				>
 				["at0009"] = <
-					text = <"**Startet bruk">
-					description = <"Første gang personen startet å bruke medikamentet">
+					text = <"Startdato for bruk">
+					description = <"Datoen da individet første gang brukte legemiddelet eller legemiddelklassen.">
 				>
 				["at0010"] = <
-					text = <"Avsluttet bruk">
-					description = <"Sist avsluttet bruk">
+					text = <"Sluttdato for bruk">
+					description = <"Datoen da bruken av legemiddelet eller legemiddelklassen sist ble avsluttet.">
 				>
 				["at0011"] = <
-					text = <"Starttidspunkt for episoden">
-					description = <"Datoen en episode startet">
+					text = <"Episodens startdato">
+					description = <"Datoen da denne episoden startet.">
 				>
 				["at0012"] = <
-					text = <"Episode slutt">
-					description = <"Dato for avslutning av medikamentbruk knytte til en spesifikk episode">
+					text = <"Episodens sluttdato">
+					description = <"Datoen da bruken av dette legemiddelet i denne episoden opphørte.">
 				>
 				["at0013"] = <
-					text = <"Årsak til å avslutte">
-					description = <"Årsak til at medikament ble avsluttet">
+					text = <"Årsak til å opphør">
+					description = <"Årsak til at bruken av legemiddelet ble avsluttet.">
 				>
 				["at0014"] = <
 					text = <"Beskrivelse">
-					description = <"Beskrivelse av bruk i løpet av en identifisert episode">
+					description = <"Fritekstbeskrivelse om legemiddelbruken i denne episoden.">
 				>
 				["at0015"] = <
-					text = <"Samlet dose">
-					description = <"Total mengde en person har inntatt av et medikament">
+					text = <"Kumulativ mengde">
+					description = <"Samlet mengde av legemiddelet eller legemiddelklassen brukt over individets livstid.">
 				>
 				["at0016"] = <
 					text = <"Totaldose for en episode">
-					description = <"Total medikamentdose for en definert episode">
+					description = <"Total mengde brukt av legemiddelet i denne episoden.">
 				>
 				["at0018"] = <
-					text = <"Klinisk indikasjon">
-					description = <"Klinisk indikasjon for bruk av medikament">
+					text = <"Indikasjon for episoden">
+					description = <"Klinisk indikasjon for bruk av legemiddelet i denne episoden, særlig der dette er mer spesifikt eller skiller seg fra 'Klinisk indikasjon'. Kan også brukes der det ikke er noen klinisk indikasjon som gjelder for alle episoder.">
 				>
 				["at0019"] = <
-					text = <"Forlengelse">
-					description = <"Tilleggsinformasjon nødvendig for å fange opp lokalt innhold eller synkronisere med andre referansemodeller">
-					comment = <"For eksempel: krav til lokal informasjon eller tilleggs data for å kunne synkronisere med FHIR eller CIMI ekvivalenter">
+					text = <"Tilleggsinformasjon">
+					description = <"Ytterligere informasjon som trengs for å kunne registrere lokalt definert innhold eller for å tilpasse til andre referansemodeller/formalismer.">
+					comment = <"For eksempel lokale informasjonsbehov eller ytterligere metadata for å kunne tilpasse til tilsvarende konsepter i FHIR.">
 				>
 				["at0020"] = <
 					text = <"Hensikt">
-					description = <"Hensikt med bruk">
-					comment = <"For eksempel lindrende, kort tid, spesifikk lengde">
+					description = <"Den tiltenkte hensikten med bruk av legemiddelet i denne episoden.">
+					comment = <"For eksempel lindrende, kort tids bruk eller spesifikk varighet.">
 				>
 				["at0021"] = <
-					text = <"Detaljert navn">
-					description = <"Detaljert navn på medikamentet">
-					comment = <"Brukt for å identifisere et spesifikt medikament som brukes, hvis en klasse medikamenter er identifisert i 'Medikament navn'">
+					text = <"Spesifikt navn">
+					description = <"Spesifikt navn på legemiddelet.">
+					comment = <"Brukes for å identifisere et spesifikt legemiddel i de tilfeller der legemiddelklasse er dokumentert i \"Navn på legemiddel\". Dersom navnet på legemiddelet er registrert i dataelementet \"Navn på legemiddel\" blir dette dataelementet overflødig.">
 				>
 				["at0022"] = <
-					text = <"*Treatment response (en)">
-					description = <"*The individual's response to the treatment by this medication during this episode. (en)">
+					text = <"Behandlingsrespons">
+					description = <"Individets respons til behandling med dette legemiddelet i løpet av denne episoden.">
 				>
 				["at0023"] = <
-					text = <"*Status (en)">
-					description = <"*Status about historical and current use of the medication or medication class. (en)">
+					text = <"Status">
+					description = <"Status på tidligere og nåværende bruk av legemiddelet eller legemiddelklassen.">
 				>
 				["at0024"] = <
-					text = <"*Never used (en)">
-					description = <"*The individual has never used the medication or medication class. (en)">
+					text = <"Aldri brukt">
+					description = <"Individet har aldri brukt legemiddelet eller legemiddelklassen.">
 				>
 				["at0025"] = <
-					text = <"*Currently using (en)">
-					description = <"*The individual is currently using the medication or medication class. (en)">
+					text = <"Nåværende bruker">
+					description = <"Individet er en nåværende bruker av legemiddelet eller legemiddelklassen.">
 				>
 				["at0026"] = <
-					text = <"*Used in the past (en)">
-					description = <"*The individual has used the medication or medication class in the past but is not currently using it. (en)">
+					text = <"Tidligere bruker">
+					description = <"Individet har tidligere brukt legemiddelet eller legemiddelklassen, men er ikke en nåværende bruker.">
 				>
 				["at0027"] = <
-					text = <"*Cumulative duration of use (en)">
-					description = <"*The total duration of the episodes where the medication has been used. (en)">
+					text = <"Kumulativ brukstid">
+					description = <"Samlet varighet av bruken av legemiddelet eller legemiddelklassen i løpet av individets levetid.">
+				>
+				["at0028"] = <
+					text = <"Klinisk indikasjon">
+					description = <"Overordnet klinisk indikasjon for administrasjon eller bruk av legemiddelet eller legemiddelklassen.">
 				>
 			>
 		>
@@ -489,8 +509,8 @@ ontology
 					description = <"Dose total para o episódio identificado.">
 				>
 				["at0018"] = <
-					text = <"Indicação clínica">
-					description = <"Indicação clínica para a administração ou consumo desse medicamento.">
+					text = <"*Episode indication (en)">
+					description = <"*The clinical indication for the administration or consumption of the medication during this episode. (en)">
 				>
 				["at0019"] = <
 					text = <"Extensão">
@@ -530,6 +550,10 @@ ontology
 				["at0027"] = <
 					text = <"*Cumulative duration of use (en)">
 					description = <"*The total duration of the episodes where the medication has been used. (en)">
+				>
+				["at0028"] = <
+					text = <"*Clinical indication (en)">
+					description = <"*The overall clinical indication for the administration or consumption of the medication. (en)">
 				>
 			>
 		>
@@ -596,8 +620,8 @@ ontology
 					description = <"Gesamtdosis innerhalb des Anwendungszeitraums.">
 				>
 				["at0018"] = <
-					text = <"Klinische Indikation">
-					description = <"Die klinische Indikation für die Verabreichung oder die Einnahme des Medikaments.">
+					text = <"*Episode indication (en)">
+					description = <"*The clinical indication for the administration or consumption of the medication during this episode. (en)">
 				>
 				["at0019"] = <
 					text = <"Erweiterung">
@@ -639,6 +663,10 @@ ontology
 				["at0027"] = <
 					text = <"Kumulative Dauer der Nutzung">
 					description = <"Die Gesamtdauer der Episoden, in denen das Medikament verwendet wurde.">
+				>
+				["at0028"] = <
+					text = <"*Clinical indication (en)">
+					description = <"*The overall clinical indication for the administration or consumption of the medication. (en)">
 				>
 			>
 		>
