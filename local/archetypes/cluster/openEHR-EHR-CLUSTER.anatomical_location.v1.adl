@@ -16,9 +16,9 @@ language
 		["sv"] = <
 			language = <[ISO_639-1::sv]>
 			author = <
-				["name"] = <"Åsa Skagerhult">
-				["organisation"] = <"Region Östergötland">
-				["email"] = <"asa.skagerhult@regionostergotland.se">
+				["name"] = <"Åsa Skagerhult, Linda Aulin">
+				["organisation"] = <"Region Östergötland, Region Stockholm">
+				["email"] = <"asa.skagerhult@regionostergotland.se, linda.aulin@sll.se">
 			>
 		>
 		["nb"] = <
@@ -89,9 +89,19 @@ Wenn dieser Archetyp in anderen Archetypen verwendet wird, in denen das angegebe
 		["sv"] = <
 			language = <[ISO_639-1::sv]>
 			purpose = <"Att identifiera och strukturerat registrera detaljer om en enskild del på eller i människokroppen genom att använda termer inom makroskopisk anatomi.">
-			use = <"Används för att strukturerat och konsekvent registrera detaljer om ett enskilt fysiskt ställe på eller i människokroppen.
+			use = <"Används för att på ett strukturerat och konsekvent vis registrera detaljer om ett enskilt fysiskt ställe på eller i människokroppen.
 
-Arketypen är specifikt utformad för att användas i lämpliga ENTRY- och CLUSTER-arketyper som sätter den anatomiska lokalisationen i ett sammanhang.">
+Arketypen är specifikt utformad för att användas i lämpliga ENTRY- och CLUSTER-arketyper som sätter den anatomiska lokalisationen i ett sammanhang.
+
+Som en grundläggande del av klinisk praxis kan kliniker beskriva anatomiska platser på en mängd olika sätt. Vissa arketyper innehåller ett enkelt dataelement för enkel beskrivning av en kroppslig plats - till exempel OBSERVATION.blood_pressure och CLUSTER.symptoms när man beskriver smärta i örat. I denna situation, där uppsättningen värden är förutsägbar och lätt att definiera, är detta enkla dataelement ett mycket exakt och praktiskt sätt att registrera en anatomisk plats på eller i kroppen och söka efter den vid ett senare tillfälle. Men när den anatomiska platsen inte är väldefinierad eller behöver definieras kontinuerligt kan det vara mer flexibelt att använda denna strukturerade arketyp. Till exempel, i en situation där symptom ska registreras utan förkunskap om vilka typer av symptom det kan vara, kan denna arketyp vara användbar för att definiera en anatomisk plats i kroppen. I det här fallet har CLUSTER.symptom-arketypen en \"Lokalisation\"-SLOT som kan innehålla denna arketyp för att stödja maximal flexibilitet vid registrering av anatomiska platsdata.
+
+Arketypen stöder registrering av komplexa strukturerade anatomiska platser. Till exempel finns hjärtspetsstöten typiskt i mitralområdet, ömhet vid McBurneys punkt på bukenväggen eller sårskada på handflatan av den proximala högra tummen.
+
+En kombination av dataelement i den här arketypen kan användas för att registrera varje komponent i ett postkoordinerat terminologiskt uttryck som representerar den anatomiska platsen.
+
+SLOT för ''Alternativ struktur '' möjliggör användning av ytterligare arketyper som ger en alternativ struktur för beskrivning av samma kroppsplats, såsom CLUSTER.anatomical_location_relative eller CLUSTER.anatomical_location_circle, om detta skulle krävas. I den situation där den här arketypen endast kan användas för att namnge en stor och/eller ospecifik kroppsdel, kan ”CLUSTER. Anatomical_location_relative”-arketypen användas för att registrera en mer exakt plats – till exempel 2 cm främre än fossa cubitalis på vänster arm eller 4 cm under revbensbågen i medioklavikularlinjen på bröstväggen.
+
+Om denna arketyp används i andra arketyper där patienten inte är den som dokumentationen syftar till, till exempel foster-in-utero, kommer den anatomiska lokalisationen att identifieras som en lokalisation på eller i fostrets kropp.">
 			keywords = <"lokalisation", "ställe", "anatomisk", "anatomiskt område", "topografisk anatomi", "makroskopisk", "anatomi">
 			misuse = <"Används inte för att ange unilaterala eller bilaterala förekomster av ett anatomiskt särdrag.">
 		>
@@ -188,9 +198,9 @@ If this archetype is used within other archetypes where the specified subject of
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"5D0F5DCDC1EE023C17264AADA785B272">
-		["build_uid"] = <"7a71673a-7bc9-41f0-8cd9-0f9f60cbda28">
-		["revision"] = <"1.2.1">
+		["MD5-CAM-1.0.1"] = <"62823A86BC1C2B02574125E21F5DECCB">
+		["build_uid"] = <"13ee6d25-aa99-4221-bdc1-3c7ee7e58795">
+		["revision"] = <"1.2.2">
 	>
 
 definition
@@ -1341,7 +1351,14 @@ Wenn der Name der Körperstelle bereits im übergeordneten Archetyp angegeben is
 				["at0001"] = <
 					text = <"Namn på kroppsställe">
 					description = <"Identifiering av enskilt fysiskt ställe på eller i människokroppen.">
-					comment = <"Det här är det enda obligatoriska fältet i denna arketyp och det ska användas som det primära stället att registrera en anatomisk lokalisation med ett vedertaget namn. Det rekommenderas starkt att \"Namn på kroppsställe\" anges så specifikt som det är anatomiskt möjligt.">
+					comment = <"Det här är det enda obligatoriska fältet i denna arketyp och det ska användas som det primära stället att registrera en anatomisk lokalisation med ett vedertaget namn. Det rekommenderas starkt att \"Namn på kroppsställe\" anges så specifikt som det är anatomiskt möjligt. Till exempel; registrera \"övre ögonlock\" snarare än \"ögonlock\" med \"övre\" som kvalificering; \"femte revbenet\" snarare än \"revben\" med en numerisk kvalificering. Använd de andra dataelementen för lateralitet, aspekt, region och anatomisk linje för att ge mer information.
+
+Detta dataelement bör kodas med en terminologi som kan starta beslutsstödsfunktionalitet när så är möjligt - en lämplig terminologi för användning här kan innehålla enskilda begrepp eller listor med förkoordinerade termer. Fritext bör endast användas om det inte finns någon lämplig terminologi.
+
+Om kroppsställets namn anges i den överordnade arketypen kan detta dataelement vara överflödigt. Emellertid har användningsfall identifierats där datavärdet kan kopieras till detta element för att stödja semantiska utsökningsfrågor baserat på denna arketyp snarare än den överordnade arketypen.
+
+
+">
 				>
 				["at0002"] = <
 					text = <"Lateralitet">
@@ -1359,22 +1376,23 @@ Om fältet \"Namn på kroppsställe\" har prekoordinerade termer som innefattar 
 				>
 				["at0023"] = <
 					text = <"Beskrivning">
-					description = <"*Narrative description that can be used to further refine and support the 'Body site name'.(en)">
-					comment = <"*For example: adjacent to the vermilion border; a tattoo covers the bottom half of this area.(en)">
+					description = <"Beskrivning för att ytterligare specificera och detaljera \"Namn på kroppsställe\".">
+					comment = <"Till exempel: intill läppröda; en tatuering täcker den nedre halvan av detta område.">
 				>
 				["at0053"] = <
 					text = <"Alternativ struktur">
-					description = <"*Additional detail about the anatomical site using alternative approaches to describe the same body site.(en)">
-					comment = <"*For example, relative location or precise locations using coordinates. (en)">
+					description = <"Ytterligare information om den anatomiska platsen med en alternativ metod för att beskriva samma kroppsställe.
+">
+					comment = <"Till exempel relativ plats eller exakt plats med hjälp av koordinater.">
 				>
 				["at0054"] = <
-					text = <"*Multimedia representation(en)">
-					description = <"*Image or other media used to support identification of the body site.(en)">
+					text = <"Multimediarepresentation">
+					description = <"Bild eller annat medium som används för att stödja identifieringen av kroppsplatsen.">
 				>
 				["at0055"] = <
 					text = <"Anatomisk linje">
 					description = <"Ytterligare detalj där teoretiska linjer dragits genom anatomiska strukturer för att ge en fast referenspunkt på människokroppen.">
-					comment = <"Vanligt förekommande anatomiska linjer finns inkluderade som en värdemängd som kan utökas över tid, plus möjlighet till fritext.">
+					comment = <"Vanligt förekommande anatomiska linjer finns inkluderade som en värdemängd som kan utökas över tid, plus möjlighet till fritext. Om dataelementet 'Kroppsställets namn' använder förkoordinerade termer som inkluderar det specifika kroppsstället är detta dataelement överflödigt.">
 				>
 				["at0056"] = <
 					text = <"Mellersta axillarlinjen">
@@ -1382,19 +1400,19 @@ Om fältet \"Namn på kroppsställe\" har prekoordinerade termer som innefattar 
 				>
 				["at0057"] = <
 					text = <"Främre axillarlinjen">
-					description = <"*Line running vertically down the surface of the body, passing through the anterior axillary skinfold.(en)">
+					description = <"En linje som löper vertikalt ner över kroppens yta och passerar genom det främre axillära hudvecket.">
 				>
 				["at0058"] = <
 					text = <"Bakre axillarlinjen">
-					description = <"*Line running vertically down the surface of the body, passing through the posterior axillary skinfold.(en)">
+					description = <"En linje som löper vertikalt ner över kroppens yta och passerar genom det bakre axillära hudvecket.">
 				>
 				["at0059"] = <
-					text = <"Mellersta klavikulärlinjen">
-					description = <"*Line running vertically down the surface of the body, parallel to the midline and passing through the midpoint of the clavicle.(en)">
+					text = <"Medioklavikularlinjen">
+					description = <"En linje som löper vertikalt ner på kroppens yta, parallellt med mittlinjen och passerar genom nyckelbenets mittpunkt.">
 				>
 				["at0060"] = <
 					text = <"Mellersta pupillinjen">
-					description = <"*Line running vertically down the face through the midpoint of the pupil when looking directly forward.(en)">
+					description = <"En linjen löper lodrätt nedåt längs ansiktet genom pupillens mittpunkt när man tittar direkt framåt.">
 				>
 				["at0062"] = <
 					text = <"Mittlinje">
@@ -1402,17 +1420,17 @@ Om fältet \"Namn på kroppsställe\" har prekoordinerade termer som innefattar 
 				>
 				["at0063"] = <
 					text = <"Mellersta skapularlinjen">
-					description = <"*Line running vertically down the posterior surface of the body, parallel to the midline and passing through the inferior point of the scapula.(en)">
+					description = <"En linje som löper vertikalt längs kroppens bakre yta, parallellt med mittlinjen och passerar genom den lägre punkten på skulderbladet.">
 				>
 				["at0064"] = <
 					text = <"Del">
 					description = <"Utmärkande detalj hos den specifika delen av det identifierade kroppsstället.">
-					comment = <"Används, om det behövs, för att öka precisionen i identifieringen av kroppsstället.">
+					comment = <"Används, om det behövs, för att öka precisionen i identifieringen av kroppsstället. Om dataelementet 'Namn på kroppsstället' använder förkoordinerade termer som inkluderar kroppsdelen är detta dataelement överflödigt.">
 				>
 				["at0065"] = <
 					text = <"Specifikt ställe">
 					description = <"Ytterligare detalj angiven som ett specifikt område eller en punkt på eller i det identifierade kroppsstället.">
-					comment = <"Används för att öka precisionen i identifieringen av kroppsstället.">
+					comment = <"Används för att öka precisionen i identifieringen av kroppsstället. Till exempel McBurneys punkt på bukväggen. Om dataelementet 'Kroppsställets namn' använder förkoordinerade termer som inkluderar det specifika kroppsstället är detta dataelement överflödigt.">
 				>
 				["at0067"] = <
 					text = <"Medial">
