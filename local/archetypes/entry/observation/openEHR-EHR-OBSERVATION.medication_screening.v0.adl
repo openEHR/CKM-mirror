@@ -72,15 +72,15 @@ Not to be used for recording a summary of use of a medication over the lifetime 
 		>
 	>
 	lifecycle_state = <"in_development">
-	other_contributors = <"Silje Ljosland Bakke, Nasjonal IKT HF, Norway", "Heather Leslie, Atomica Informatics, Australia", "Ian McNicoll, FreshEHR Clinical Informatics, United Kingdom">
+	other_contributors = <"Heather Leslie, Atomica Informatics, Australia (openEHR Editor)", "Silje Ljosland Bakke, Helse Vest IKT, Norway", "Ian McNicoll, FreshEHR Clinical Informatics, United Kingdom", "Marit Alice Venheim, Helse Vest IKT, Norway">
 	other_details = <
 		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
 		["custodian_organisation"] = <"openEHR Foundation">
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"97F5A5BFD3B9AE599A4D31A10C64549D">
-		["build_uid"] = <"db128b63-bde9-40c1-8511-fe1e4295fc5e">
+		["MD5-CAM-1.0.1"] = <"1F63701215C2510089BC226640B12BA8">
+		["build_uid"] = <"8278bea8-5cef-450a-9b60-de3fb5a4b8c9">
 		["revision"] = <"0.0.1-alpha">
 	>
 
@@ -93,16 +93,23 @@ definition
 						data matches {
 							ITEM_TREE[at0001] matches {    -- Tree
 								items cardinality matches {0..*; unordered} matches {
-									ELEMENT[at0027] occurrences matches {0..1} matches {    -- Any medication use?
+									ELEMENT[at0040] occurrences matches {0..1} matches {    -- Screening purpose
+										value matches {
+											DV_TEXT matches {*}
+										}
+									}
+									ELEMENT[at0027] occurrences matches {0..1} matches {    -- Any medication status
 										value matches {
 											DV_CODED_TEXT matches {
 												defining_code matches {
 													[local::
-													at0028,    -- Used
-													at0029,    -- Not used
+													at0028,    -- Currently used
+													at0029,    -- Never used
+													at0031,    -- Used in the past
 													at0030]    -- Unknown
 												}
 											}
+											DV_TEXT matches {*}
 										}
 									}
 									CLUSTER[at0026] occurrences matches {0..*} matches {    -- Medication class
@@ -112,16 +119,18 @@ definition
 													DV_TEXT matches {*}
 												}
 											}
-											ELEMENT[at0003] occurrences matches {0..1} matches {    -- Class used?
+											ELEMENT[at0003] occurrences matches {0..1} matches {    -- Class status
 												value matches {
 													DV_CODED_TEXT matches {
 														defining_code matches {
 															[local::
-															at0028,    -- Used
-															at0029,    -- Not used
-															at0030]    -- Unknown
+															at0032,    -- Currently used
+															at0033,    -- Never used
+															at0034,    -- Used in the past
+															at0035]    -- Unknown
 														}
 													}
+													DV_TEXT matches {*}
 												}
 											}
 										}
@@ -133,16 +142,18 @@ definition
 													DV_TEXT matches {*}
 												}
 											}
-											ELEMENT[at0024] occurrences matches {0..1} matches {    -- Medication used?
+											ELEMENT[at0024] occurrences matches {0..1} matches {    -- Medication status
 												value matches {
 													DV_CODED_TEXT matches {
 														defining_code matches {
 															[local::
-															at0028,    -- Used
-															at0029,    -- Not used
-															at0030]    -- Unknown
+															at0036,    -- Currently used
+															at0037,    -- Never used
+															at0038,    -- Used in the past
+															at0039]    -- Unknown
 														}
 													}
+													DV_TEXT matches {*}
 												}
 											}
 										}
@@ -190,7 +201,7 @@ ontology
 					comment = <"For example: opioid drugs; or NSAIDs.">
 				>
 				["at0003"] = <
-					text = <"Class used?">
+					text = <"Class status">
 					description = <"Is the individual using the class of medication?">
 				>
 				["at0005"] = <
@@ -220,7 +231,7 @@ ontology
 					description = <"Default, unspecified point in time or interval event which may be explicitly defined in a template or at run-time.">
 				>
 				["at0024"] = <
-					text = <"Medication used?">
+					text = <"Medication status">
 					description = <"Is the individual using the specific medication?">
 				>
 				["at0025"] = <
@@ -233,20 +244,61 @@ ontology
 					comment = <"Use another instance of this CLUSTER to represent a subclass of medication.">
 				>
 				["at0027"] = <
-					text = <"Any medication use?">
+					text = <"Any medication status">
 					description = <"Is the individual using any medication?">
 				>
 				["at0028"] = <
-					text = <"Used">
-					description = <"The individual uses or has used the medication class.">
+					text = <"Currently used">
+					description = <"The individual currently uses any medication.">
 				>
 				["at0029"] = <
-					text = <"Not used">
-					description = <"The individual does not use or has not used the medication class.">
+					text = <"Never used">
+					description = <"The individual has never used any medication.">
 				>
 				["at0030"] = <
 					text = <"Unknown">
+					description = <"It is not known whether the individual uses or has used any medication.">
+				>
+				["at0031"] = <
+					text = <"Used in the past">
+					description = <"The individual has used any medication in the past, but isn't currently using any.">
+				>
+				["at0032"] = <
+					text = <"Currently used">
+					description = <"The individual currently uses the medication class.">
+				>
+				["at0033"] = <
+					text = <"Never used">
+					description = <"The individual has never used the medication class.">
+				>
+				["at0034"] = <
+					text = <"Used in the past">
+					description = <"The individual has used the medication class in the past, but isn't currently using it.">
+				>
+				["at0035"] = <
+					text = <"Unknown">
 					description = <"It is not known whether the individual uses or has used the medication class.">
+				>
+				["at0036"] = <
+					text = <"Currently used">
+					description = <"The individual currently uses the specific medication.">
+				>
+				["at0037"] = <
+					text = <"Never used">
+					description = <"The individual has never used the specific medication.">
+				>
+				["at0038"] = <
+					text = <"Used in the past">
+					description = <"The individual has used the specific medication in the past, but isn't currently using it.">
+				>
+				["at0039"] = <
+					text = <"Unknown">
+					description = <"It is not known whether the individual uses or has used the specific medication.">
+				>
+				["at0040"] = <
+					text = <"Screening purpose">
+					description = <"The reason for overall screening.">
+					comment = <"For example: screening for previous use of a class lof medications, such as bisphosphonates.">
 				>
 			>
 		>
@@ -266,7 +318,7 @@ ontology
 					comment = <"*For example: opioid drugs; or NSAIDs. (en)">
 				>
 				["at0003"] = <
-					text = <"*Class used? (en)">
+					text = <"*Class status (en)">
 					description = <"*Is the individual using the class of medication? (en)">
 				>
 				["at0005"] = <
@@ -296,7 +348,7 @@ ontology
 					description = <"Standard, uspesifisert tidspunkt eller tidsintervall som kan defineres mer eksplisitt i et templat eller i en applikasjon.">
 				>
 				["at0024"] = <
-					text = <"*Medication used? (en)">
+					text = <"*Medication status (en)">
 					description = <"*Is the individual using the specific medication? (en)">
 				>
 				["at0025"] = <
@@ -309,20 +361,61 @@ ontology
 					comment = <"*Use another instance of this CLUSTER to represent a subclass of medication. (en)">
 				>
 				["at0027"] = <
-					text = <"Er noen legemidler i bruk?">
+					text = <"*Any medication status (en)">
 					description = <"Bruker individet noen legemidler i det hele tatt ved eller i løpet av hendelsen?">
 				>
 				["at0028"] = <
-					text = <"*Used (en)">
-					description = <"*The individual uses or has used the medication class. (en)">
+					text = <"*Currently used (en)">
+					description = <"*The individual currently uses any medication. (en)">
 				>
 				["at0029"] = <
-					text = <"*Not used (en)">
-					description = <"*The individual does not use or has not used the medication class. (en)">
+					text = <"*Never used (en)">
+					description = <"*The individual has never used any medication. (en)">
 				>
 				["at0030"] = <
 					text = <"Ukjent">
+					description = <"*It is not known whether the individual uses or has used any medication. (en)">
+				>
+				["at0031"] = <
+					text = <"*Used in the past (en)">
+					description = <"*The individual has used any medication in the past, but isn't currently using any. (en)">
+				>
+				["at0032"] = <
+					text = <"*Currently used (en)">
+					description = <"*The individual currently uses the medication class. (en)">
+				>
+				["at0033"] = <
+					text = <"*Never used (en)">
+					description = <"*The individual has never used the medication class. (en)">
+				>
+				["at0034"] = <
+					text = <"*Used in the past (en)">
+					description = <"*The individual has used the medication class in the past, but isn't currently using it. (en)">
+				>
+				["at0035"] = <
+					text = <"*Unknown (en)">
 					description = <"*It is not known whether the individual uses or has used the medication class. (en)">
+				>
+				["at0036"] = <
+					text = <"*Currently used (en)">
+					description = <"*The individual currently uses the specific medication. (en)">
+				>
+				["at0037"] = <
+					text = <"*Never used (en)">
+					description = <"*The individual has never used the specific medication. (en)">
+				>
+				["at0038"] = <
+					text = <"*Used in the past (en)">
+					description = <"*The individual has used the specific medication in the past, but isn't currently using it. (en)">
+				>
+				["at0039"] = <
+					text = <"*Unknown (en)">
+					description = <"*It is not known whether the individual uses or has used the specific medication. (en)">
+				>
+				["at0040"] = <
+					text = <"*Screening purpose (en)">
+					description = <"*The reason for overall screening. (en)">
+					comment = <"*For example: screening for previous use of a class lof medications, such as bisphosphonates. (en)">
 				>
 			>
 		>
@@ -342,7 +435,7 @@ ontology
 					comment = <"*For example: opioid drugs; or NSAIDs. (en)">
 				>
 				["at0003"] = <
-					text = <"*Class used? (en)">
+					text = <"*Class status (en)">
 					description = <"*Is the individual using the class of medication? (en)">
 				>
 				["at0005"] = <
@@ -372,7 +465,7 @@ ontology
 					description = <"Standard, ein nicht spezifizierter Zeitpunkt oder ein Intervallereignis, das explizit in einem Template oder zur Laufzeit definiert werden kann.">
 				>
 				["at0024"] = <
-					text = <"*Medication used? (en)">
+					text = <"*Medication status (en)">
 					description = <"*Is the individual using the specific medication? (en)">
 				>
 				["at0025"] = <
@@ -385,21 +478,62 @@ ontology
 					comment = <"*Use another instance of this CLUSTER to represent a subclass of medication. (en)">
 				>
 				["at0027"] = <
-					text = <"Medikamente in Verwendung?">
+					text = <"*Any medication status (en)">
 					description = <"Wendet die Person das Medikament bei oder während des Zeitpunkts des Ergebnisses an?
 ">
 				>
 				["at0028"] = <
-					text = <"*Used (en)">
-					description = <"*The individual uses or has used the medication class. (en)">
+					text = <"*Currently used (en)">
+					description = <"*The individual currently uses any medication. (en)">
 				>
 				["at0029"] = <
-					text = <"*Not used (en)">
-					description = <"*The individual does not use or has not used the medication class. (en)">
+					text = <"*Never used (en)">
+					description = <"*The individual has never used any medication. (en)">
 				>
 				["at0030"] = <
 					text = <"Unbekannt">
+					description = <"*It is not known whether the individual uses or has used any medication. (en)">
+				>
+				["at0031"] = <
+					text = <"*Used in the past (en)">
+					description = <"*The individual has used any medication in the past, but isn't currently using any. (en)">
+				>
+				["at0032"] = <
+					text = <"*Currently used (en)">
+					description = <"*The individual currently uses the medication class. (en)">
+				>
+				["at0033"] = <
+					text = <"*Never used (en)">
+					description = <"*The individual has never used the medication class. (en)">
+				>
+				["at0034"] = <
+					text = <"*Used in the past (en)">
+					description = <"*The individual has used the medication class in the past, but isn't currently using it. (en)">
+				>
+				["at0035"] = <
+					text = <"*Unknown (en)">
 					description = <"*It is not known whether the individual uses or has used the medication class. (en)">
+				>
+				["at0036"] = <
+					text = <"*Currently used (en)">
+					description = <"*The individual currently uses the specific medication. (en)">
+				>
+				["at0037"] = <
+					text = <"*Never used (en)">
+					description = <"*The individual has never used the specific medication. (en)">
+				>
+				["at0038"] = <
+					text = <"*Used in the past (en)">
+					description = <"*The individual has used the specific medication in the past, but isn't currently using it. (en)">
+				>
+				["at0039"] = <
+					text = <"*Unknown (en)">
+					description = <"*It is not known whether the individual uses or has used the specific medication. (en)">
+				>
+				["at0040"] = <
+					text = <"*Screening purpose (en)">
+					description = <"*The reason for overall screening. (en)">
+					comment = <"*For example: screening for previous use of a class lof medications, such as bisphosphonates. (en)">
 				>
 			>
 		>
