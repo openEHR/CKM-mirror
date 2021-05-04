@@ -15,12 +15,12 @@ description
 	details = <
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"To record details related to naming or contacting an individual within the context of a health record.">
-			use = <"Use to record details related to naming or contacting an individual within the context of a health record.
+			purpose = <"To record details related to naming or contacting an organisation within the context of a health record.">
+			use = <"Use to record details related to naming or contacting an organisation, including a contact person, within the context of a health record.
 
-The intended scope of this archetype is to provide simple details about the name or contact details for an individual within the context of a component of the health record, extract or external communication For example: naming a care team member and their contact details in a referral.">
-			keywords = <"person, individual, patient, provider, carer", ...>
-			misuse = <"Not to be used to represent or replace the formal subject of care demographic details which require additional details such as alternative names and identifiers for formal identification management. It is recommended that an external Healthcare Provider Index or archetypes based on the openEHR Demographic Information Model be used for this purpose.">
+The intended scope of this archetype is to provide simple details about the name or contact details for an organisation, or contact person in an organisation, within the context of a component of the health record, extract or external communication For example: naming a care team member and their contact details in a referral.">
+			keywords = <"organisation, provider, carer", ...>
+			misuse = <"Not to be used to represent or replace the formal demographic details which require additional details such as alternative names and identifiers for formal identification management. It is recommended that an external Healthcare Provider Index or archetypes based on the openEHR Demographic Information Model be used for this purpose.">
 			copyright = <"© openEHR Foundation">
 		>
 	>
@@ -33,14 +33,16 @@ The intended scope of this archetype is to provide simple details about the name
 
 AS 5017-2006 Health Care Client Identification. Standards Australia.
 
-HL7 FHIR Resource - Person v4.0.1: R4 [Internet]. Health Level Seven International; [accessed 2021 05 04]. Available from: http://hl7.org/fhir/2021May/person.html
+HL7 FHIR Resource - Person v4.6.0: R5 [Internet]. Health Level Seven International; [accessed 2021 05 04]. Available from: http://hl7.org/fhir/2021May/person.html
+
+HL7 FHIR Resource - Provider v4.6.0: R5 [Internet]. Health Level Seven International; [accessed 2021 05 04]. Available from: http://hl7.org/fhir/2021May/practitioner.html
 
 ISO/TS 22220:2007 Health informatics — Identification of subjects of health care. International Organization for Standardization.">
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"AE2AEECCAFF9E46785E7E05653D9FF9A">
-		["build_uid"] = <"67ab14c9-f165-469d-996d-7117d5ff3d50">
+		["MD5-CAM-1.0.1"] = <"6A6C21D5432F0451D386D3F07F9984F6">
+		["build_uid"] = <"c3d5185c-838f-4daa-ba84-6faae0060a96">
 		["revision"] = <"0.0.1-alpha">
 	>
 
@@ -75,8 +77,7 @@ definition
 									[local::
 									at0007,    -- Business
 									at0008,    -- Postal
-									at0009,    -- Residential
-									at0010]    -- Temporary accomodation
+									at0010]    -- Temporary
 								}
 							}
 							DV_TEXT matches {*}
@@ -146,12 +147,12 @@ definition
 			}
 			CLUSTER[at0025] occurrences matches {0..*} matches {    -- Electronic communication
 				items cardinality matches {1..*; unordered} matches {
-					ELEMENT[at0026] occurrences matches {0..1} matches {    -- Mobile (cellular) telephone
+					ELEMENT[at0026] occurrences matches {0..1} matches {    -- Medium
 						value matches {
 							DV_CODED_TEXT matches {
 								defining_code matches {
 									[local::
-									at0026,    -- Mobile (cellular) telephone
+									at0026,    -- Medium
 									at0027,    -- Telephone (excluding mobile telephone)
 									at0028,    -- Email
 									at0029]    -- Pager
@@ -162,14 +163,6 @@ definition
 					}
 					ELEMENT[at0030] occurrences matches {0..1} matches {    -- Type
 						value matches {
-							DV_CODED_TEXT matches {
-								defining_code matches {
-									[local::
-									at0031,    -- Business use
-									at0032,    -- Personal use
-									at0033]    -- Both business and personal use
-								}
-							}
 							DV_TEXT matches {*}
 						}
 					}
@@ -205,12 +198,12 @@ ontology
 			items = <
 				["at0000"] = <
 					text = <"Organisation">
-					description = <"A record of details related to naming or contacting an individual.">
+					description = <"A record of details related to naming or contacting an organisation.">
 					comment = <"For example: a clinician working as part of a care team; a relative; or a care-giver.">
 				>
 				["at0001"] = <
 					text = <"Identifier">
-					description = <"Identifier associated with the identified person.">
+					description = <"Identifier associated with the identified organisation.">
 				>
 				["at0016"] = <
 					text = <"Structured address">
@@ -218,7 +211,7 @@ ontology
 				>
 				["at0037"] = <
 					text = <"Additional details">
-					description = <"Additional details about the person.">
+					description = <"Additional details about the organisation.">
 				>
 				["at0004"] = <
 					text = <"Role">
@@ -230,11 +223,11 @@ ontology
 				>
 				["at0003"] = <
 					text = <"Contact person">
-					description = <"Details about contact person, or people, within the organisation.">
+					description = <"Details about a contact person, or people, within the organisation.">
 				>
 				["at0005"] = <
 					text = <"Address">
-					description = <"">
+					description = <"Details about a specific type of address for the organisation.">
 				>
 				["at0023"] = <
 					text = <"Valid from">
@@ -256,13 +249,9 @@ ontology
 					text = <"Postal">
 					description = <"Address for sending correspondence.">
 				>
-				["at0009"] = <
-					text = <"Residential">
-					description = <"Address of where a person is living on a regular basis.">
-				>
 				["at0010"] = <
-					text = <"Temporary accomodation">
-					description = <"Address of where a person is living on a temporary basis.">
+					text = <"Temporary">
+					description = <"Temporary address for an organisation.">
 				>
 				["at0011"] = <
 					text = <"Address line">
@@ -316,8 +305,9 @@ For example: 52 Davis Street; Level 2; Upper ground; Treasury building; Australi
 					description = <"A unique number assigned to a postal delivery point, as defined by the relevant postal delivery service.">
 				>
 				["at0026"] = <
-					text = <"Mobile (cellular) telephone">
-					description = <"">
+					text = <"Medium">
+					description = <"The type of communication mechanism or channel.">
+					comment = <"The scope of electronic communication medium includes, but is not limited to use of : a telephone, cellular phone, computer, or pager.">
 				>
 				["at0027"] = <
 					text = <"Telephone (excluding mobile telephone)">
@@ -336,27 +326,14 @@ For example: 52 Davis Street; Level 2; Upper ground; Treasury building; Australi
 					description = <"The purpose or use for the identified medium.">
 					comment = <"Coding with an external terminology is preferred, where possible.">
 				>
-				["at0031"] = <
-					text = <"Business use">
-					description = <"">
-				>
-				["at0032"] = <
-					text = <"Personal use">
-					description = <"">
-				>
-				["at0033"] = <
-					text = <"Both business and personal use">
-					description = <"">
-				>
 				["at0034"] = <
 					text = <"Value">
-					description = <"The unique combination of alphnumeric characters, meaningful for the identified medium, for contacting the person or organisation.">
+					description = <"The unique combination of alphnumeric characters, meaningful for the identified medium, for contacting the organisation.">
 					comment = <"For example: area code + landline phone/pager number; country code + mobile phone number; email address; or skype contact name.">
 				>
 				["at0025"] = <
 					text = <"Electronic communication">
-					description = <"Details about how to contact a person or organisation by means of any electronic device.">
-					comment = <"The scope of an 'electronic device' includes, but is not limited to: a telephone, cellular phone, computer, or pager.">
+					description = <"Details about a specific type of electronic communication for the organisation.">
 				>
 				["at0035"] = <
 					text = <"Valid from">
