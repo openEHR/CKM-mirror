@@ -15,12 +15,15 @@ description
 	details = <
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"To record details related to naming or contacting an organisation within the context of a health record.">
-			use = <"Use to record details related to naming or contacting an organisation, including a contact person, within the context of a health record.
+			purpose = <"To record details about an organisation that needs to be represented within the health record.">
+			use = <"Use to record details about an organisation that needs to be represented within the health record. Examples include:
+- the name and contact details for an organisation which holds a physical copy of an advanced care record;
+- the name and contact details of a carer organisation in a referral; or
+- the name, role and contact details of a member of a care team.
 
-The intended scope of this archetype is to provide simple details about the name or contact details for an organisation, or contact person in an organisation, within the context of a component of the health record, extract or external communication For example: naming a care team member and their contact details in a referral.">
+This archetype could also be used as a proxy for formal demographic data when reviewing a template with domain experts - for example, an assessment where reviewers would expect to see an organisations's details on an assessment form.">
 			keywords = <"organisation, provider, carer", ...>
-			misuse = <"Not to be used to represent or replace the formal demographic details which require additional details such as alternative names and identifiers for formal identification management. It is recommended that an external Healthcare Provider Index or archetypes based on the openEHR Demographic Information Model be used for this purpose.">
+			misuse = <"Not to be used to represent or replace the formal demographic details for formal identification management or for the purposes of maintaining a demographic register or index. Use a formal Healthcare Provider Index for this purpose, or archetypes based on the openEHR Demographic Information Model.">
 			copyright = <"© openEHR Foundation">
 		>
 	>
@@ -31,30 +34,24 @@ The intended scope of this archetype is to provide simple details about the name
 		["custodian_organisation"] = <"openEHR Foundation">
 		["references"] = <"AS 4846-2006 Health Care Provider Identification. Standards Australia.
 
-AS 5017-2006 Health Care Client Identification. Standards Australia.
-
-HL7 FHIR Resource - Person v4.6.0: R5 [Internet]. Health Level Seven International; [accessed 2021 05 04]. Available from: http://hl7.org/fhir/2021May/person.html
-
-HL7 FHIR Resource - Provider v4.6.0: R5 [Internet]. Health Level Seven International; [accessed 2021 05 04]. Available from: http://hl7.org/fhir/2021May/practitioner.html
-
-ISO/TS 22220:2007 Health informatics — Identification of subjects of health care. International Organization for Standardization.">
+HL7 FHIR Resource - Organization v4.0.1: R4 [Internet]. Health Level Seven International; [accessed 2021 05 04]. Available from: http://hl7.org/fhir/2021May/organization.html">
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"6A6C21D5432F0451D386D3F07F9984F6">
-		["build_uid"] = <"c3d5185c-838f-4daa-ba84-6faae0060a96">
+		["MD5-CAM-1.0.1"] = <"CBB5F55AA9F52AE8C7D93AE630DAD9D6">
+		["build_uid"] = <"f47d671e-7eb6-4bb5-9cbb-40f756f4e782">
 		["revision"] = <"0.0.1-alpha">
 	>
 
 definition
 	CLUSTER[at0000] matches {    -- Organisation
 		items cardinality matches {1..*; unordered} matches {
-			ELEMENT[at0002] occurrences matches {0..1} matches {    -- Name line
+			ELEMENT[at0001] matches {    -- Name line
 				value matches {
 					DV_TEXT matches {*}
 				}
 			}
-			ELEMENT[at0001] occurrences matches {0..*} matches {    -- Identifier
+			ELEMENT[at0003] occurrences matches {0..*} matches {    -- Identifier
 				value matches {
 					DV_IDENTIFIER matches {*}
 				}
@@ -64,127 +61,39 @@ definition
 					DV_TEXT matches {*}
 				}
 			}
-			allow_archetype CLUSTER[at0003] occurrences matches {0..*} matches {    -- Contact person
+			allow_archetype CLUSTER[at0005] occurrences matches {0..*} matches {    -- Address
+				include
+					archetype_id/value matches {/openEHR-EHR-CLUSTER\.address\.v0/}
+			}
+			allow_archetype CLUSTER[at0002] occurrences matches {0..*} matches {    -- Contact person
 				include
 					archetype_id/value matches {/openEHR-EHR-CLUSTER\.person\.v0/}
 			}
-			CLUSTER[at0005] occurrences matches {0..*} matches {    -- Address
+			CLUSTER[at0006] occurrences matches {0..*} matches {    -- Electronic communication
 				items cardinality matches {1..*; unordered} matches {
-					ELEMENT[at0006] occurrences matches {0..1} matches {    -- Type
+					ELEMENT[at0007] occurrences matches {0..1} matches {    -- Medium
 						value matches {
 							DV_CODED_TEXT matches {
 								defining_code matches {
 									[local::
-									at0007,    -- Business
-									at0008,    -- Postal
-									at0010]    -- Temporary
+									at0008,    -- Mobile (cellular) telephone
+									at0009,    -- Telephone (excluding mobile telephone)
+									at0010,    -- Email
+									at0011]    -- Pager
 								}
 							}
 							DV_TEXT matches {*}
 						}
 					}
-					ELEMENT[at0011] occurrences matches {0..*} matches {    -- Address line
-						value matches {
-							DV_TEXT matches {*}
-						}
-						name matches {
-							DV_CODED_TEXT matches {
-								defining_code matches {
-									[local::
-									at0012,    -- Address line 1
-									at0013,    -- Address line 2
-									at0014,    -- Address line 3
-									at0015]    -- Address line 4
-								}
-							}
-						}
-					}
-					allow_archetype CLUSTER[at0016] occurrences matches {0..*} matches {    -- Structured address
-						include
-							archetype_id/value matches {/openEHR-EHR-CLUSTER\.structured_address\.v0/}
-					}
-					ELEMENT[at0017] occurrences matches {0..*} matches {    -- Suburb/Town/City/Locality
-						value matches {
-							DV_TEXT matches {*}
-						}
-					}
-					ELEMENT[at0018] occurrences matches {0..*} matches {    -- District/County
-						value matches {
-							DV_TEXT matches {*}
-						}
-					}
-					ELEMENT[at0019] occurrences matches {0..1} matches {    -- State/Territory/Province
-						value matches {
-							DV_TEXT matches {*}
-						}
-					}
-					ELEMENT[at0020] occurrences matches {0..1} matches {    -- Postcode
-						value matches {
-							DV_TEXT matches {*}
-						}
-					}
-					ELEMENT[at0021] occurrences matches {0..1} matches {    -- Country
-						value matches {
-							DV_TEXT matches {*}
-						}
-					}
-					ELEMENT[at0022] occurrences matches {0..1} matches {    -- Postal delivery point
-						value matches {
-							DV_IDENTIFIER matches {*}
-						}
-					}
-					ELEMENT[at0023] occurrences matches {0..1} matches {    -- Valid from
-						value matches {
-							DV_DATE_TIME matches {*}
-						}
-					}
-					ELEMENT[at0024] occurrences matches {0..1} matches {    -- Valid to
-						value matches {
-							DV_DATE_TIME matches {*}
-						}
-					}
-				}
-			}
-			CLUSTER[at0025] occurrences matches {0..*} matches {    -- Electronic communication
-				items cardinality matches {1..*; unordered} matches {
-					ELEMENT[at0026] occurrences matches {0..1} matches {    -- Medium
-						value matches {
-							DV_CODED_TEXT matches {
-								defining_code matches {
-									[local::
-									at0026,    -- Medium
-									at0027,    -- Telephone (excluding mobile telephone)
-									at0028,    -- Email
-									at0029]    -- Pager
-								}
-							}
-							DV_TEXT matches {*}
-						}
-					}
-					ELEMENT[at0030] occurrences matches {0..1} matches {    -- Type
-						value matches {
-							DV_TEXT matches {*}
-						}
-					}
-					ELEMENT[at0034] matches {    -- Value
+					ELEMENT[at0016] matches {    -- Value
 						value matches {
 							DV_TEXT matches {*}
 							DV_URI matches {*}
 						}
 					}
-					ELEMENT[at0035] occurrences matches {0..1} matches {    -- Valid from
-						value matches {
-							DV_DATE_TIME matches {*}
-						}
-					}
-					ELEMENT[at0036] occurrences matches {0..1} matches {    -- Valid to
-						value matches {
-							DV_DATE_TIME matches {*}
-						}
-					}
 				}
 			}
-			allow_archetype CLUSTER[at0037] occurrences matches {0..*} matches {    -- Additional details
+			allow_archetype CLUSTER[at0017] occurrences matches {0..*} matches {    -- Additional details
 				include
 					archetype_id/value matches {/.*/}
 			}
@@ -198,18 +107,17 @@ ontology
 			items = <
 				["at0000"] = <
 					text = <"Organisation">
-					description = <"A record of details related to naming or contacting an organisation.">
-					comment = <"For example: a clinician working as part of a care team; a relative; or a care-giver.">
+					description = <"An organisation that needs to be represented within the health record.">
 				>
-				["at0001"] = <
+				["at0003"] = <
 					text = <"Identifier">
 					description = <"Identifier associated with the identified organisation.">
 				>
-				["at0016"] = <
-					text = <"Structured address">
-					description = <"Additional structured low level geographical/physical details about a location that can be concatenated to form one or more 'Address line' entries.">
+				["at0005"] = <
+					text = <"Address">
+					description = <"Details about a specific address for the organisation.">
 				>
-				["at0037"] = <
+				["at0017"] = <
 					text = <"Additional details">
 					description = <"Additional details about the organisation.">
 				>
@@ -217,131 +125,43 @@ ontology
 					text = <"Role">
 					description = <"The role or capacity in which the organisation contributes to the health or social care of the subject of care.">
 				>
-				["at0002"] = <
+				["at0001"] = <
 					text = <"Name line">
 					description = <"The name by which an organisation is known.">
 				>
-				["at0003"] = <
+				["at0002"] = <
 					text = <"Contact person">
 					description = <"Details about a contact person, or people, within the organisation.">
 				>
-				["at0005"] = <
-					text = <"Address">
-					description = <"Details about a specific type of address for the organisation.">
-				>
-				["at0023"] = <
-					text = <"Valid from">
-					description = <"The start of the period for which this address is valid.">
-				>
-				["at0024"] = <
-					text = <"Valid to">
-					description = <"The end of the period for which this address is valid.">
-				>
-				["at0006"] = <
-					text = <"Type">
-					description = <"The purpose or use for an address.">
-				>
 				["at0007"] = <
-					text = <"Business">
-					description = <"Address of the physical location of a business or office.">
-				>
-				["at0008"] = <
-					text = <"Postal">
-					description = <"Address for sending correspondence.">
-				>
-				["at0010"] = <
-					text = <"Temporary">
-					description = <"Temporary address for an organisation.">
-				>
-				["at0011"] = <
-					text = <"Address line">
-					description = <"A text composite of one or more structured address components that represent a low level of geographical/physical description of a location that, used in conjunction with the other high-level  address components i.e. ‘Suburb/Town/Locality’, ‘Postcode’, and ‘State/Territory/Province’, forms a complete geographical/physical address.">
-					comment = <"Run-time name constraints allow for multiple named 'Address lines', as required.
-For example: 52 Davis Street; Level 2; Upper ground; Treasury building; Australia House; Apartment 7A.">
-				>
-				["at0012"] = <
-					text = <"Address line 1">
-					description = <"">
-				>
-				["at0013"] = <
-					text = <"Address line 2">
-					description = <"">
-				>
-				["at0014"] = <
-					text = <"Address line 3">
-					description = <"">
-				>
-				["at0015"] = <
-					text = <"Address line 4">
-					description = <"">
-				>
-				["at0017"] = <
-					text = <"Suburb/Town/City/Locality">
-					description = <"The name of the general locality containing the address.">
-					comment = <"Coding with an external terminology is preferred, where possible. For example: Fitzroy, Calgary.">
-				>
-				["at0018"] = <
-					text = <"District/County">
-					description = <"The name of an internal political or geographic district or area within a state, territory or province containing the address.">
-					comment = <"Coding with an external terminology is preferred, where possible. ">
-				>
-				["at0019"] = <
-					text = <"State/Territory/Province">
-					description = <"The name of an internal political or geographic division of a country containing the address.">
-					comment = <"Coding with an external terminology is preferred, where possible. For example: Victoria; Alberta.">
-				>
-				["at0020"] = <
-					text = <"Postcode">
-					description = <"The code for a postal delivery area containing the address, aligned with locality, suburb or place for an address, as defined by the relevant postal delivery service.">
-					comment = <"Also known as ZIP code.">
-				>
-				["at0021"] = <
-					text = <"Country">
-					description = <"The name of the country containing the address.">
-					comment = <"Coding with an external terminology is preferred, where possible. For example: Australia; Canada">
-				>
-				["at0022"] = <
-					text = <"Postal delivery point">
-					description = <"A unique number assigned to a postal delivery point, as defined by the relevant postal delivery service.">
-				>
-				["at0026"] = <
 					text = <"Medium">
-					description = <"The type of communication mechanism or channel.">
+					description = <"The type of electronic communication or channel.">
 					comment = <"The scope of electronic communication medium includes, but is not limited to use of : a telephone, cellular phone, computer, or pager.">
 				>
-				["at0027"] = <
+				["at0008"] = <
+					text = <"Mobile (cellular) telephone">
+					description = <"">
+				>
+				["at0009"] = <
 					text = <"Telephone (excluding mobile telephone)">
 					description = <"">
 				>
-				["at0028"] = <
+				["at0010"] = <
 					text = <"Email">
 					description = <"">
 				>
-				["at0029"] = <
+				["at0011"] = <
 					text = <"Pager">
 					description = <"">
 				>
-				["at0030"] = <
-					text = <"Type">
-					description = <"The purpose or use for the identified medium.">
-					comment = <"Coding with an external terminology is preferred, where possible.">
-				>
-				["at0034"] = <
+				["at0016"] = <
 					text = <"Value">
-					description = <"The unique combination of alphnumeric characters, meaningful for the identified medium, for contacting the organisation.">
+					description = <"The unique combination of alphanumeric characters, meaningful for the identified medium, for contacting the organisation.">
 					comment = <"For example: area code + landline phone/pager number; country code + mobile phone number; email address; or skype contact name.">
 				>
-				["at0025"] = <
+				["at0006"] = <
 					text = <"Electronic communication">
 					description = <"Details about a specific type of electronic communication for the organisation.">
-				>
-				["at0035"] = <
-					text = <"Valid from">
-					description = <"The start of the period for which this medium and type is valid.">
-				>
-				["at0036"] = <
-					text = <"Valid to">
-					description = <"The end of the period for which this medium and type is valid.">
 				>
 			>
 		>
