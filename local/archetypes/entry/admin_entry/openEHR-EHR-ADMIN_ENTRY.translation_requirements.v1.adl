@@ -58,35 +58,41 @@ Not to be used to record details about an interpretation that was performed - us
 		>
 	>
 	lifecycle_state = <"published">
-	other_contributors = <"Erling Are Hole, Helse Bergen, Norway", "Vebjørn Arntzen, Oslo University Hospital, Norway (openEHR Editor)", "Heidi Aursand, Oslo universitetssykehus, Norway", "Silje Ljosland Bakke, Nasjonal IKT HF, Norway (openEHR Editor)", "Birgitte Bjerkely, Senter for sjeldne diagnoser, OUS, Norway", "Anita Bjørnnes, Helse Bergen, Norway", "Bjørn Christensen, Helse Bergen HF, Norway", "Lisbeth Dahlhaug, Helse Midt - Norge IT, Norway", "Valborg Ellingsen, Haraldsplass Diakonale sykehus, Norway", "Heather Grain, Llewelyn Grain Informatics, Australia", "Tom Jarl Jakobsen, Helse Bergen, Norway", "Nils Kolstrup, Skansen Legekontor og Nasjonalt Senter for samhandling og telemedisin, Norway", "Liv Laugen, Oslo universitetssykehus, Norway", "Heather Leslie, Atomica Informatics, Australia (openEHR Editor)", "Siv Marie Lien, DIPS ASA, Norway", "Ian McNicoll, freshEHR Clinical Informatics, United Kingdom", "Lars Morgan Karlsen, Nordlandssykehuset Bodø, Norway", "Andrej Orel, Marand d.o.o., Slovenia", "Gro-Hilde Severinsen, Norwegian center for ehealthresearch, Norway", "Line Silsand, Universitetssykehuset i Nord-Norge, Norway", "Norwegian Review Summary, Nasjonal IKT HF, Norway", "Nyree Taylor, Ocean Informatics, Australia", "Susanne Trønnes, Norway", "John Tore Valand, Helse Bergen, Norway (openEHR Editor)">
+	other_contributors = <"Erling Are Hole, Helse Bergen, Norway", "Vebjørn Arntzen, Oslo University Hospital, Norway (openEHR Editor)", "Heidi Aursand, Oslo universitetssykehus, Norway", "Silje Ljosland Bakke, Helse Vest IKT AS, Norway (openEHR Editor)", "Birgitte Bjerkely, Senter for sjeldne diagnoser, OUS, Norway", "Anita Bjørnnes, Helse Bergen, Norway", "Bjørn Christensen, Helse Bergen HF, Norway", "Lisbeth Dahlhaug, Helse Midt - Norge IT, Norway", "Valborg Ellingsen, Haraldsplass Diakonale sykehus, Norway", "Heather Grain, Llewelyn Grain Informatics, Australia", "Mikkel Johan Gaup Grønmo, Forvaltningssenter EPJ, Helse-Nord, Norway (openEHR Editor)", "Tom Jarl Jakobsen, Helse Bergen, Norway", "Nils Kolstrup, Skansen Legekontor og Nasjonalt Senter for samhandling og telemedisin, Norway", "Liv Laugen, ​Oslo University Hospital, Norway, Norway (openEHR Editor)", "Heather Leslie, Atomica Informatics, Australia (openEHR Editor)", "Siv Marie Lien, DIPS ASA, Norway", "Ian McNicoll, freshEHR Clinical Informatics, United Kingdom", "Lars Morgan Karlsen, Nordlandssykehuset Bodø, Norway", "Andrej Orel, Marand d.o.o., Slovenia", "Gro-Hilde Severinsen, Norwegian center for ehealthresearch, Norway", "Line Silsand, Universitetssykehuset i Nord-Norge, Norway", "Norwegian Review Summary, Nasjonal IKT HF, Norway", "Nyree Taylor, Ocean Informatics, Australia", "Susanne Trønnes, Norway", "John Tore Valand, Helse Bergen, Norway (openEHR Editor)", "Marit Alice Venheim, Helse Vest IKT, Norway (openEHR Editor)">
 	other_details = <
 		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
 		["custodian_organisation"] = <"openEHR Foundation">
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"8B84BE0CEB12B6EF0C5F00E947FA8000">
-		["build_uid"] = <"858bdc6c-fa56-4b4f-b630-4281023ffb17">
-		["revision"] = <"1.0.0">
+		["MD5-CAM-1.0.1"] = <"F362F3C3C6C4CDB72218DA947B07F805">
+		["build_uid"] = <"9e3db454-01e9-4562-bfc6-b4598240b7fc">
+		["revision"] = <"1.1.0">
 	>
 
 definition
-	ADMIN_ENTRY[at0000] matches {	-- Translation requirement
+	ADMIN_ENTRY[at0000] matches {    -- Translation requirement
 		data matches {
-			ITEM_TREE[at0001] matches {	-- Tree
+			ITEM_TREE[at0001] matches {    -- Tree
 				items cardinality matches {1..*; unordered} matches {
-					allow_archetype CLUSTER[at0002] matches {	-- Administrative language
+					allow_archetype CLUSTER[at0002] matches {    -- Administrative language
 						include
 							archetype_id/value matches {/openEHR-EHR-CLUSTER\.language(-[a-zA-Z0-9_]+)*\.v1/}
 					}
-					ELEMENT[at0003] occurrences matches {0..1} matches {	-- Translation required?
+					ELEMENT[at0003] occurrences matches {0..1} matches {    -- Translation required?
 						value matches {
-							DV_BOOLEAN matches {
-								value matches {True, False}
+							DV_BOOLEAN matches {*}
+							DV_TEXT matches {*}
+							DV_CODED_TEXT matches {
+								defining_code matches {
+									[local::
+									at0005,    -- Interpreter not needed
+									at0006]    -- Interpreter needed
+								}
 							}
 						}
 					}
-					ELEMENT[at0004] occurrences matches {0..1} matches {	-- Comment
+					ELEMENT[at0004] occurrences matches {0..1} matches {    -- Comment
 						value matches {
 							DV_TEXT matches {*}
 						}
@@ -122,6 +128,14 @@ ontology
 					text = <"Comment">
 					description = <"Additional narrative about the administrative language not captured in other fields.">
 				>
+				["at0005"] = <
+					text = <"Interpreter not needed">
+					description = <"The individual does not normally need an interpreter.">
+				>
+				["at0006"] = <
+					text = <"Interpreter needed">
+					description = <"The individual normally needs an interpreter.">
+				>
 			>
 		>
 		["nb"] = <
@@ -146,6 +160,14 @@ ontology
 				["at0004"] = <
 					text = <"Kommentar">
 					description = <"Ytterligere fritekstbeskrivelse om administrasjonsspråket som ikke er registrert i andre felt.">
+				>
+				["at0005"] = <
+					text = <"*Interpreter not needed (en)">
+					description = <"*The individual does not normally need an interpreter. (en)">
+				>
+				["at0006"] = <
+					text = <"*Interpreter needed (en)">
+					description = <"*The individual normally needs an interpreter. (en)">
 				>
 			>
 		>
