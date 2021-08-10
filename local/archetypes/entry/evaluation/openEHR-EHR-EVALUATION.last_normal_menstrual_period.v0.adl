@@ -2,13 +2,16 @@
 	openEHR-EHR-EVALUATION.last_normal_menstrual_period.v0
 
 concept
-	[at0000]	-- Last normal menstrual period (LNMP)
+	[at0000]	-- Last normal menstrual period
 language
 	original_language = <[ISO_639-1::en]>
 	translations = <
 		["nb"] = <
 			language = <[ISO_639-1::nb]>
 			author = <
+				["name"] = <"Marit Alice Venheim, John Tore Valand">
+				["organisation"] = <"Helse Vest IKT">
+				["email"] = <"marit.alice.venheim@helse-vest-ikt.no, john.tore.valand@helse-vest-ikt.no">
 			>
 		>
 	>
@@ -22,19 +25,26 @@ description
 	details = <
 		["nb"] = <
 			language = <[ISO_639-1::nb]>
-			purpose = <"">
-			use = <"">
-			misuse = <"">
+			purpose = <"For å registrere detaljer om den siste normale menstruasjonsperioden individet opplevde.">
+			use = <"Brukes for å registrere detaljer om den siste normale menstruasjonsperioden individet opplevde.">
+			keywords = <"menstruasjon, mensen, LNMP, LMP, LNP, DLMP", ...>
+			misuse = <"Brukes ikke for å registrere detaljer om menarke eller overgangsalder - bruk arketypen EVALUATION.menstruation_summary for dette formålet.
+
+Brukes ikke for å registrere informasjon om en spesifikk dag i menstruasjonssyklusen, bruk arketypen OBSERVATION.menstrual_diary for dette formålet.
+
+Brukes ikke for å registrere informasjon om typiske eller vanlige menstruasjonssykluser eller mønstre - bruk arketypen EVALUATION.menstruation_summary for dette formålet.">
 			copyright = <"© openEHR Foundation">
 		>
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"To record the last normal menstrual period experienced by the woman.">
-			use = <"Use to to recorde the last normal menstrual period experienced by the woman.">
-			keywords = <"menstruation, menses", ...>
-			misuse = <"Not to be used to record information about menses or related symptoms, use OBSERVATION.menstruation for this purpose. 
-Not to be used to record information about a specific day in a menstrual cycle, use OBSERVATION.menstrual_diary for this purpose.
-Not to be used to record information about an individual's menstruation history events or patterns of menstruation over time, use EVALUATION.menstruation_summary for this purpose.">
+			purpose = <"To record the details about the last normal menstrual period experienced by the individual.">
+			use = <"Use to to record details about the last normal menstrual period experienced by the individual.">
+			keywords = <"menstruation, menses, LNMP, LMP, LNP, DLMP", ...>
+			misuse = <"Not to be used to record information about menses or related symptoms, use the OBSERVATION.menstruation archetype for this purpose. 
+
+Not to be used to record information about a specific day in a menstrual cycle, use the OBSERVATION.menstrual_diary archetype for this purpose.
+
+Not to be used to record information about an individual's menstruation history events or patterns of menstruation over time, use the EVALUATION.menstruation_summary archetype for this purpose.">
 			copyright = <"© openEHR Foundation">
 		>
 	>
@@ -46,22 +56,32 @@ Not to be used to record information about an individual's menstruation history 
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"CC4B084740AB1235E46E53452FF3AF61">
-		["build_uid"] = <"ad3da892-d1bd-4b28-a540-ede31a3a926f">
+		["MD5-CAM-1.0.1"] = <"4B1412B9436D52A0500EFE4652592F20">
+		["build_uid"] = <"4f149cb6-2893-42bb-9fe3-4f1194d78eeb">
 		["revision"] = <"0.0.1-alpha">
 	>
 
 definition
-	EVALUATION[at0000] matches {    -- Last normal menstrual period (LNMP)
+	EVALUATION[at0000] matches {    -- Last normal menstrual period
 		data matches {
 			ITEM_TREE[at0001] matches {    -- Item tree
 				items cardinality matches {0..*; unordered} matches {
-					ELEMENT[at0002] occurrences matches {0..1} matches {    -- Last normal period
+					ELEMENT[at0002] occurrences matches {0..1} matches {    -- Date of onset (LNMP)
 						value matches {
 							DV_DATE matches {*}
 						}
 					}
+					ELEMENT[at0009] occurrences matches {0..1} matches {    -- Certainty
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
 					ELEMENT[at0007] occurrences matches {0..1} matches {    -- Description
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0008] occurrences matches {0..1} matches {    -- Comment
 						value matches {
 							DV_TEXT matches {*}
 						}
@@ -87,26 +107,24 @@ definition
 	}
 
 
+
 ontology
 	term_definitions = <
 		["en"] = <
 			items = <
 				["at0000"] = <
-					text = <"Last normal menstrual period (LNMP)">
-					description = <"Last normal menstrual period experienced by the woman.">
+					text = <"Last normal menstrual period">
+					description = <"Information about the last normal menstrual period experienced by the individual.">
 				>
 				["at0001"] = <
 					text = <"Item tree">
 					description = <"@ internal @">
 				>
 				["at0002"] = <
-					text = <"Last normal period">
-					description = <"Date of the onset of the last normal menstrual period. 
-
-Date of onset of menstrual bleeding in the last normal menstrual cycle.
-
-The last normal menstrual period experienced by the woman.">
-					comment = <"Useful to persist for calculations including estimated date of confinement in pregnancy, or to distinguish the latest typical menstrual cycle when there is an irregular menstrual pattern.">
+					text = <"Date of onset (LNMP)">
+					description = <"Date of onset of menstrual bleeding.">
+					comment = <"Also known as 'LNMP'. Useful to persist for calculations including estimated date of confinement in pregnancy, or to distinguish the latest typical menstrual cycle when there is an irregular menstrual pattern.
+Can be a partial date, for example, only a year.">
 				>
 				["at0003"] = <
 					text = <"Item tree">
@@ -118,50 +136,65 @@ The last normal menstrual period experienced by the woman.">
 				>
 				["at0006"] = <
 					text = <"Extension">
-					description = <"Additional information required to capture local content or to align with other reference models/formalisms.
-Comment: For example: local information requirements or additional metadata to align with FHIR.">
+					description = <"Additional information required to capture local content or to align with other reference models/formalisms.">
+					comment = <"For example: local information requirements or additional metadata to align with FHIR.">
 				>
 				["at0007"] = <
 					text = <"Description">
 					description = <"Narrative description about the last normal menstrual period.">
+				>
+				["at0008"] = <
+					text = <"Comment">
+					description = <"Additional narrative about the last normal menstrual period, not captured in other fields.">
+				>
+				["at0009"] = <
+					text = <"Certainty">
+					description = <"The level of certainty the date was accurate.">
+					comment = <"For example certain or uncertain.">
 				>
 			>
 		>
 		["nb"] = <
 			items = <
 				["at0000"] = <
-					text = <"*Last normal menstrual period (LNMP) (en)">
-					description = <"*Last normal menstrual period experienced by the woman. (en)">
+					text = <"Siste normale menstruasjonsperiode">
+					description = <"Informasjon om den siste normale menstruasjonsperioden individet opplevde.">
 				>
 				["at0001"] = <
 					text = <"Item tree">
 					description = <"@ internal @">
 				>
 				["at0002"] = <
-					text = <"*Last normal period (en)">
-					description = <"*Date of the onset of the last normal menstrual period. 
-
-Date of onset of menstrual bleeding in the last normal menstrual cycle.
-
-The last normal menstrual period experienced by the woman. (en)">
-					comment = <"*Useful to persist for calculations including estimated date of confinement in pregnancy, or to distinguish the latest typical menstrual cycle when there is an irregular menstrual pattern. (en)">
+					text = <"Startdato for siste menstruasjonsperiode">
+					description = <"Dato for første blødningsdag.">
+					comment = <"Også kjent som siste menstruasjons første dag. Nyttig å lagre for senere bruk i beregninger som estimert termindato under graviditet, eller for å skille den siste typiske menstruasjonssyklusen fra et uregelmessig menstruasjonsmønster.
+Kan være en delvis dato, for eksempel bare et årstall.">
 				>
 				["at0003"] = <
 					text = <"Item tree">
 					description = <"@ internal @">
 				>
 				["at0004"] = <
-					text = <"*Last updated (en)">
-					description = <"*Date when the Last normal menstrual period was updated. (en)">
+					text = <"Sist oppdatert">
+					description = <"Dato for når Siste normale menstruasjonsperiode ble oppdatert.">
 				>
 				["at0006"] = <
-					text = <"*Extension (en)">
-					description = <"*Additional information required to capture local content or to align with other reference models/formalisms.
-Comment: For example: local information requirements or additional metadata to align with FHIR. (en)">
+					text = <"Tilleggsinformasjon">
+					description = <"Ytterligere informasjon som trengs for å kunne registrere lokalt definert innhold eller for å tilpasse til andre referansemodeller/formalismer.">
+					comment = <"For eksempel lokale informasjonsbehov eller ytterligere metadata for å kunne tilpasse til tilsvarende konsepter i FHIR.">
 				>
 				["at0007"] = <
-					text = <"*Description (en)">
-					description = <"*Narrative description about the last normal menstrual period. (en)">
+					text = <"Beskrivelse av siste normale menstruasjonsperiode.">
+					description = <"Fritekstbeskrivelse av siste normale menstruasjonsperiode.">
+				>
+				["at0008"] = <
+					text = <"Kommentar">
+					description = <"Ytterligere fritekst om siste normale menstruasjonsperiode som ikke er omfattet av andre felt.">
+				>
+				["at0009"] = <
+					text = <"Sikkerhet">
+					description = <"Sikkerhetsgraden for at datoen var korrekt.">
+					comment = <"For eksempel sikker eller usikker.">
 				>
 			>
 		>
