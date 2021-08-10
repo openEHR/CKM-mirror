@@ -56,8 +56,8 @@ description
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"D6DF6F04B7B2183FB14AD8DCB6C566C4">
-		["build_uid"] = <"5b9dd4cd-429e-463f-af7a-e3cda745669e">
+		["MD5-CAM-1.0.1"] = <"C1488262A4D555EF348B91A9E590E89C">
+		["build_uid"] = <"b5012b1b-38c4-4fe1-bbf7-b7dc77be7483">
 		["revision"] = <"0.0.1-alpha">
 	>
 
@@ -66,15 +66,34 @@ definition
 		data matches {
 			ITEM_TREE[at0001] matches {    -- Item tree
 				items cardinality matches {0..*; unordered} matches {
+					ELEMENT[at0014] occurrences matches {0..1} matches {    -- Episode ID
+						value matches {
+							DV_IDENTIFIER matches {*}
+						}
+					}
 					ELEMENT[at0004] occurrences matches {0..1} matches {    -- Admission date
 						value matches {
 							DV_DATE_TIME matches {*}
 						}
 					}
-					ELEMENT[at0007] occurrences matches {0..1} matches {    -- Admitted from
+					ELEMENT[at0008] occurrences matches {0..1} matches {    -- Reason for admission
 						value matches {
 							DV_TEXT matches {*}
 						}
+					}
+					ELEMENT[at0009] occurrences matches {0..1} matches {    -- Type of admission
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0007] occurrences matches {0..1} matches {    -- Source category
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					allow_archetype CLUSTER[at0013] occurrences matches {0..*} matches {    -- Source
+						include
+							archetype_id/value matches {/openEHR-EHR-CLUSTER\.organisation(-[a-zA-Z0-9_]+)*\.v0|openEHR-EHR-CLUSTER\.organisation(-[a-zA-Z0-9_]+)*\.v1|openEHR-EHR-CLUSTER\.address(-[a-zA-Z0-9_]+)*\.v0|openEHR-EHR-CLUSTER\.address(-[a-zA-Z0-9_]+)*\.v1/}
 					}
 					ELEMENT[at0002] occurrences matches {0..1} matches {    -- Separation date
 						value matches {
@@ -87,6 +106,19 @@ definition
 						}
 					}
 					ELEMENT[at0003] occurrences matches {0..1} matches {    -- Destination category
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					allow_archetype CLUSTER[at0012] occurrences matches {0..*} matches {    -- Destination
+						include
+							archetype_id/value matches {/openEHR-EHR-CLUSTER\.organisation(-[a-zA-Z0-9_]+)*\.v0|openEHR-EHR-CLUSTER\.organisation(-[a-zA-Z0-9_]+)*\.v1|openEHR-EHR-CLUSTER\.address(-[a-zA-Z0-9_]+)*\.v0|openEHR-EHR-CLUSTER\.address(-[a-zA-Z0-9_]+)*\.v1/}
+					}
+					allow_archetype CLUSTER[at0011] occurrences matches {0..*} matches {    -- Additional details
+						include
+							archetype_id/value matches {/.*/}
+					}
+					ELEMENT[at0010] occurrences matches {0..1} matches {    -- Comment
 						value matches {
 							DV_TEXT matches {*}
 						}
@@ -111,26 +143,60 @@ ontology
 				>
 				["at0002"] = <
 					text = <"Separation date">
-					description = <"The date of transfer of care to home or another instituion, or date of death.">
+					description = <"The date and/or time of the formal or statistical end of the admission to the institution.">
+					comment = <"For example: transfer of care to home or another institution; or date of death.
+Formal recording of the date of death should use CLUSTER.death_details.">
 				>
 				["at0003"] = <
 					text = <"Destination category">
-					description = <"The category of destination after discharge.">
+					description = <"The type of residence where the individual resided after the episode of care.">
 					comment = <"For example: home; hospital; nursing home; or rehabilitation hospital.">
 				>
 				["at0004"] = <
 					text = <"Admission date">
-					description = <"The date of formal or statistical admission to the institution.">
+					description = <"The date and/or time of the formal or statistical admission to the institution.">
 				>
 				["at0006"] = <
 					text = <"Outcome">
-					description = <"Outcome for the individual at the end of the episode.">
+					description = <"Outcome for the individual at the end of the episode of care.">
 					comment = <"For example: recovered/not recovered/death.">
 				>
 				["at0007"] = <
-					text = <"Admitted from">
-					description = <"Where the individual was admitted from into the institution.">
-					comment = <"For example: hospital, community, or nursing home. 'Admitted from' should be coded with a terminology, where possible.">
+					text = <"Source category">
+					description = <"The type of residence where the individual resided prior to admission.">
+					comment = <"For example: hospital, community, or nursing home. 'Admission source' should be coded with a terminology, where possible.">
+				>
+				["at0008"] = <
+					text = <"Reason for admission">
+					description = <"The reason why the individual was admitted for an episode of care.">
+					comment = <"For example: respite; rehabilitation; or infection isolation.
+Diagnosies should be recorded using the EVAL.problem_diagnosis archetype plus the nested CLUSTER.problem_qualifier, if necessary.">
+				>
+				["at0009"] = <
+					text = <"Type of admission">
+					description = <"The category of admission.">
+					comment = <"For example: day surgery; elective surgery or em. ">
+				>
+				["at0010"] = <
+					text = <"Comment">
+					description = <"Additional narrative about the episode, not captured in other fields.">
+				>
+				["at0011"] = <
+					text = <"Additional details">
+					description = <"Additional structured details about the episode of care within an institution.">
+					comment = <"For example: ">
+				>
+				["at0012"] = <
+					text = <"Destination">
+					description = <"The organisation or address for the individual after the admission.">
+				>
+				["at0013"] = <
+					text = <"Source">
+					description = <"The organisation or address for the individual prior to the admission.">
+				>
+				["at0014"] = <
+					text = <"Episode ID">
+					description = <"An identifier for the episode of care.">
 				>
 			>
 		>
@@ -146,24 +212,58 @@ ontology
 				>
 				["at0002"] = <
 					text = <"Utskrivelsesdato">
-					description = <"*The date of transfer of care to home or another instituion, or date of death.(en)">
+					description = <"*The date and/or time of the formal or statistical end of the admission to the institution. (en)">
+					comment = <"*For example: transfer of care to home or another institution; or date of death.
+Formal recording of the date of death should use CLUSTER.death_details. (en)">
 				>
 				["at0003"] = <
 					text = <"Utskrevet til">
-					description = <"*The category of destination after discharge.(en)">
+					description = <"*The type of residence where the individual resided after the episode of care. (en)">
 				>
 				["at0004"] = <
 					text = <"Innleggelsesdato">
-					description = <"*The date of formal or statistical admission to the institution.(en)">
+					description = <"*The date and/or time of the formal or statistical admission to the institution. (en)">
 				>
 				["at0006"] = <
 					text = <"Utfall">
-					description = <"*Outcome for the individual at the end of the episode.(en)">
+					description = <"*Outcome for the individual at the end of the episode of care. (en)">
 				>
 				["at0007"] = <
-					text = <"Innleggelse fra">
-					description = <"*Where the individual was admitted from into the institution. (en)">
-					comment = <"*For example: hospital, community, or nursing home. 'Admitted from' should be coded with a terminology, where possible. (en)">
+					text = <"*Source category (en)">
+					description = <"*The category of residence where the individual resided prior to admission. (en)">
+					comment = <"*For example: hospital, community, or nursing home. 'Admission source' should be coded with a terminology, where possible. (en)">
+				>
+				["at0008"] = <
+					text = <"*Reason for admission (en)">
+					description = <"*The reason why the individual was admitted for an episode of care. (en)">
+					comment = <"*For example: respite; rehabilitation; or infection isolation.
+Diagnosies should be recorded using the EVAL.problem_diagnosis archetype plus the nested CLUSTER.problem_qualifier, if necessary. (en)">
+				>
+				["at0009"] = <
+					text = <"*Type of admission (en)">
+					description = <"*The categoory of admission. (en)">
+					comment = <"*For example: day surgery; elective surgery or em.  (en)">
+				>
+				["at0010"] = <
+					text = <"*Comment (en)">
+					description = <"">
+				>
+				["at0011"] = <
+					text = <"*Additional details (en)">
+					description = <"">
+					comment = <"*For example:  (en)">
+				>
+				["at0012"] = <
+					text = <"*Destination (en)">
+					description = <"">
+				>
+				["at0013"] = <
+					text = <"*Source (en)">
+					description = <"">
+				>
+				["at0014"] = <
+					text = <"*Episode ID (en)">
+					description = <"*An identifier for the episode of care. (en)">
 				>
 			>
 		>
@@ -179,26 +279,60 @@ ontology
 				>
 				["at0002"] = <
 					text = <"Data di dimissione">
-					description = <"La data del trasferimento delle cure a domicilio o in un altro istituto, o la data del decesso.">
+					description = <"*The date and/or time of the formal or statistical end of the admission to the institution. (en)">
+					comment = <"*For example: transfer of care to home or another institution; or date of death.
+Formal recording of the date of death should use CLUSTER.death_details. (en)">
 				>
 				["at0003"] = <
 					text = <"Categoria destinazione">
-					description = <"La categoria di destinazione dopo la dimissione.">
+					description = <"*The type of residence where the individual resided after the episode of care. (en)">
 					comment = <"Ad esempio: casa, ospedale, casa di cura o ospedale di riabilitazione. ">
 				>
 				["at0004"] = <
 					text = <"Data di ingresso">
-					description = <"La data di ammissione formale o statistica all'istituzione.">
+					description = <"*The date and/or time of the formal or statistical admission to the institution. (en)">
 				>
 				["at0006"] = <
 					text = <"Esito">
-					description = <"Esito per l'individuo alla fine dell'episodio. ">
+					description = <"*Outcome for the individual at the end of the episode of care. (en)">
 					comment = <"Per esempio: recuperato/non recuperato/morte.">
 				>
 				["at0007"] = <
-					text = <"*Admitted from(en)">
-					description = <"*Where the individual was admitted from into the institution.(en)">
-					comment = <"*For example: hospital, community, or nursing home. 'Admitted from' should be coded with a terminology, where possible.(en)">
+					text = <"*Source category (en)">
+					description = <"*The category of residence where the individual resided prior to admission. (en)">
+					comment = <"*For example: hospital, community, or nursing home. 'Admission source' should be coded with a terminology, where possible. (en)">
+				>
+				["at0008"] = <
+					text = <"*Reason for admission (en)">
+					description = <"*The reason why the individual was admitted for an episode of care. (en)">
+					comment = <"*For example: respite; rehabilitation; or infection isolation.
+Diagnosies should be recorded using the EVAL.problem_diagnosis archetype plus the nested CLUSTER.problem_qualifier, if necessary. (en)">
+				>
+				["at0009"] = <
+					text = <"*Type of admission (en)">
+					description = <"*The categoory of admission. (en)">
+					comment = <"*For example: day surgery; elective surgery or em.  (en)">
+				>
+				["at0010"] = <
+					text = <"*Comment (en)">
+					description = <"">
+				>
+				["at0011"] = <
+					text = <"*Additional details (en)">
+					description = <"">
+					comment = <"*For example:  (en)">
+				>
+				["at0012"] = <
+					text = <"*Destination (en)">
+					description = <"">
+				>
+				["at0013"] = <
+					text = <"*Source (en)">
+					description = <"">
+				>
+				["at0014"] = <
+					text = <"*Episode ID (en)">
+					description = <"*An identifier for the episode of care. (en)">
 				>
 			>
 		>
