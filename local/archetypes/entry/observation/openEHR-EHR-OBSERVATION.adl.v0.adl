@@ -1,0 +1,196 @@
+﻿archetype (adl_version=1.4; uid=64e6c887-ddb7-4ca9-ab27-3d32d50bee74)
+	openEHR-EHR-OBSERVATION.adl.v0
+
+concept
+	[at0000]	-- ADL assessment
+language
+	original_language = <[ISO_639-1::en]>
+description
+	original_author = <
+		["name"] = <"Heather Leslie">
+		["organisation"] = <"Atomica Informatics">
+		["email"] = <"heather.leslie@atomicainformatics.com">
+		["date"] = <"2020-10-26">
+	>
+	details = <
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To record details about an individual's ability to perform an identified activity of daily living.">
+			use = <"Use to record details about an individual's ability to perform an identified activity of daily living.
+
+Record one instance of the archetype for each identified activity.">
+			misuse = <"Not to be used to record the results of formal instruments, scores or scales, assessing capability for activities of daily living, such as the Barthel Index - use specific archetypes for each score or scale, such as OBSERVATION.modified_barthel_index.">
+			copyright = <"© openEHR Foundation">
+		>
+	>
+	lifecycle_state = <"in_development">
+	other_contributors = <>
+	other_details = <
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
+		["custodian_organisation"] = <"openEHR Foundation">
+		["current_contact"] = <"Heather Leslie, Atomica Informatics, Australia">
+		["original_namespace"] = <"org.openehr">
+		["original_publisher"] = <"openEHR Foundation">
+		["custodian_namespace"] = <"org.openehr">
+		["MD5-CAM-1.0.1"] = <"65C487F1E244EF67297888F8BE846145">
+		["build_uid"] = <"31a849fd-61d7-4676-bfb5-0368225dbfd8">
+		["revision"] = <"0.0.1-alpha">
+	>
+
+definition
+	OBSERVATION[at0000] matches {    -- Activity of daily living
+		data matches {
+			HISTORY[at0001] matches {    -- History
+				events cardinality matches {0..*; unordered} matches {
+					EVENT[at0002] occurrences matches {0..*} matches {    -- Any event
+						data matches {
+							ITEM_TREE[at0003] matches {    -- Tree
+								items cardinality matches {0..*; unordered} matches {
+									ELEMENT[at0004] occurrences matches {0..1} matches {    -- Activity name
+										value matches {
+											DV_TEXT matches {*}
+										}
+									}
+									ELEMENT[at0005] occurrences matches {0..1} matches {    -- Clinical description
+										value matches {
+											DV_TEXT matches {*}
+										}
+									}
+									ELEMENT[at0006] occurrences matches {0..1} matches {    -- Capability
+										value matches {
+											DV_CODED_TEXT matches {
+												defining_code matches {
+													[local::
+													at0007,    -- Independent
+													at0008,    -- Independent with equipment
+													at0009,    -- Requires support
+													at0010]    -- Dependent
+												}
+											}
+											DV_TEXT matches {*}
+										}
+									}
+									ELEMENT[at0011] occurrences matches {0..1} matches {    -- Support description
+										value matches {
+											DV_TEXT matches {*}
+										}
+									}
+									ELEMENT[at0012] occurrences matches {0..1} matches {    -- Equipment description
+										value matches {
+											DV_TEXT matches {*}
+										}
+									}
+									allow_archetype CLUSTER[at0013] occurrences matches {0..*} matches {    -- Equipment
+										include
+											archetype_id/value matches {/.*/}
+									}
+									allow_archetype CLUSTER[at0014] occurrences matches {0..*} matches {    -- Additional details
+										include
+											archetype_id/value matches {/.*/}
+									}
+									ELEMENT[at0015] occurrences matches {0..1} matches {    -- Comment
+										value matches {
+											DV_TEXT matches {*}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		protocol matches {
+			ITEM_TREE[at0016] matches {    -- Item tree
+				items cardinality matches {0..*; unordered} matches {
+					allow_archetype CLUSTER[at0017] occurrences matches {0..*} matches {    -- Extension
+						include
+							archetype_id/value matches {/.*/}
+					}
+				}
+			}
+		}
+	}
+
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"ADL assessment">
+					description = <"Details about an individual's ability to perform an identified activity of daily living.">
+				>
+				["at0001"] = <
+					text = <"History">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Any event">
+					description = <"Default, unspecified point in time or interval event which may be explicitly defined in a template or at run-time.">
+				>
+				["at0003"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0004"] = <
+					text = <"Activity name">
+					description = <"The name of the activity of daily living.">
+					comment = <"For example: movement in bed; transfers; locomotion; dressing; personal hygiene; and feeding">
+				>
+				["at0005"] = <
+					text = <"Clinical description">
+					description = <"Narrative description about the individual's ability to perform the activity.">
+				>
+				["at0006"] = <
+					text = <"Capability">
+					description = <"Category of the ability for the individual to perform the identified activity.">
+				>
+				["at0007"] = <
+					text = <"Independent">
+					description = <"The individual is able to perform the activity independently.">
+				>
+				["at0008"] = <
+					text = <"Independent with equipment">
+					description = <"The individual is able to perform the activity with the assistance of equipment or aids.">
+				>
+				["at0009"] = <
+					text = <"Requires assistance">
+					description = <"The individual requires active support to perform the activity.">
+				>
+				["at0010"] = <
+					text = <"Dependent">
+					description = <"The individual is not able to perform the activity by themselves.">
+				>
+				["at0011"] = <
+					text = <"Support description">
+					description = <"Description about the support required to carry out the activity.">
+				>
+				["at0012"] = <
+					text = <"Equipment description">
+					description = <"Description about the equipment or aide required to carry out the activity.">
+				>
+				["at0013"] = <
+					text = <"Equipment">
+					description = <"Structured details about the equipment required.">
+				>
+				["at0014"] = <
+					text = <"Additional details">
+					description = <"Additional structured details about the ability to perform the activity.">
+				>
+				["at0015"] = <
+					text = <"Comment">
+					description = <"Additional narrative about the individual's ability to perform the activity not captured in other fields.">
+				>
+				["at0016"] = <
+					text = <"Item tree">
+					description = <"@ internal @">
+				>
+				["at0017"] = <
+					text = <"Extension">
+					description = <"Additional information required to extend the model with local content or to align with other reference models or formalisms.">
+					comment = <"For example: local information requirements; or additional metadata to align with FHIR.">
+				>
+			>
+		>
+	>
