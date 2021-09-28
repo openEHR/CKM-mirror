@@ -17,9 +17,9 @@ language
 		["nb"] = <
 			language = <[ISO_639-1::nb]>
 			author = <
-				["name"] = <"Silje Ljosland Bakke, Marit Alice Venheim">
-				["organisation"] = <"Helse Vest IKT AS">
-				["email"] = <"silje.ljosland.bakke@helse-vest-ikt.no, marit.alice.venheim@helse-vest-ikt.no">
+				["name"] = <"Silje Ljosland Bakke, Marit Alice Venheim, John Tore Valand">
+				["organisation"] = <"Helse Vest IKT AS, Helse Bergen">
+				["email"] = <"silje.ljosland.bakke@helse-vest-ikt.no, marit.alice.venheim@helse-vest-ikt.no, john.tore.valand@helse-bergen.no">
 			>
 		>
 	>
@@ -47,17 +47,17 @@ This archetype has been designed to be used as a screening tool or to record sim
 		>
 		["nb"] = <
 			language = <[ISO_639-1::nb]>
-			purpose = <"*To record the responses to a screening questionnaire for potential exposure to harmful agents. (en)">
-			use = <"*Use to record the responses to a screening questionnaire for potential exposure to harmful agents.
+			purpose = <"For å registrere responsen i et spørreskjema for mulig eksponering av farlige agenser.">
+			use = <"Brukes for å registrere responsen i et spørreskjema for mulig eksponering av farlige agenser.
 
-Common use cases include, but are not limited to:
-- Systematic questioning in any consultation; or
-- Specific questioning related to infectious disease surveillance.
-	
-In order to record the response at a specific point in time or within an interval of time, use the EVENT RM attribute.
+Vanlige bruksområder inkluderer, men er ikke begrenset til:
+- Systematisk spørring i enhver konsultasjon; eller
+- Spesifikk spørring relatert til overvåkning av infeksjonssykdom.
 
-This archetype has been designed to be used as a screening tool or to record simple questionnaire-format data for use in situations such as a disease registry. If the screening process identifies an exposure and it is intended that the details are to be recorded and persisted as part of an ongoing health record, any further specific details about the exposure should be recorded using the EVALUATION.exposure archetype. (en)">
-			misuse = <"Skal ikke brukes for å registrere spesifikke detaljer om en eksponering som er identifisert som å være eller har vært tilstede. Bruk EVALUATION.problem_exposure for dette formålet.">
+For å registrere responsen på et spesifikt tidspunkt, eller i et tidsintervall bruk referansemodellens EVENT RM attributt.
+
+Denne arketypen er laget for bruk som et screeningverktøy for å registrere enkle data i et spørreskjema, for eksempel til et sykdomsregister. Oppdager man i screeningprosessen at eksponering er tilstede, bør detaljer om eksponeringen lagres som en del av den løpende journalen. Bruk da arketypen EVALUATION.exposure for å registrere spesifikke detaljer om tilstanden som for eksempel diagnosedato.">
+			misuse = <"Skal ikke brukes for å registrere spesifikke detaljer om en eksponering som er identifisert som å være eller har vært tilstede. Bruk EVALUATION.exposure for dette formålet.">
 		>
 		["en"] = <
 			language = <[ISO_639-1::en]>
@@ -83,8 +83,8 @@ This archetype has been designed to be used as a screening tool or to record sim
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"DC89EE6125500393941B6102ABD3904A">
-		["build_uid"] = <"e50068b4-307e-4787-a2e3-d5bb9d3128c0">
+		["MD5-CAM-1.0.1"] = <"56D08582DB87C269FAA38B9716CC6B82">
+		["build_uid"] = <"c6cb7db0-c319-4986-bc61-4876744d18f7">
 		["ip_acknowledgements"] = <"This artefact includes content from SNOMED Clinical Terms® (SNOMED CT®) which is copyrighted material of the International Health Terminology Standards Development Organisation (IHTSDO). Where an implementation of this artefact makes use of SNOMED CT content, the implementer must have the appropriate SNOMED CT Affiliate license - for more information contact http://www.snomed.org/snomed-ct/get-snomedct or info@snomed.org.">
 		["revision"] = <"0.0.1-alpha">
 	>
@@ -98,7 +98,7 @@ definition
 						data matches {
 							ITEM_TREE[at0042] matches {    -- Item tree
 								items cardinality matches {0..*; unordered} matches {
-									ELEMENT[at0043] matches {    -- Screening purpose
+									ELEMENT[at0043] occurrences matches {0..1} matches {    -- Screening purpose
 										value matches {
 											DV_TEXT matches {*}
 										}
@@ -151,6 +151,11 @@ definition
 													DV_TEXT matches {*}
 												}
 											}
+										}
+									}
+									ELEMENT[at0064] occurrences matches {0..1} matches {    -- Overall comment
+										value matches {
+											DV_TEXT matches {*}
 										}
 									}
 								}
@@ -262,13 +267,17 @@ ontology
 					description = <"The date/s when the individual was exposed to the agent.">
 					comment = <"Can be a partial date, for example, only a year.">
 				>
+				["at0064"] = <
+					text = <"Overall comment">
+					description = <"Additional narrative about all exposure events, not captured in other fields.">
+				>
 			>
 		>
 		["nb"] = <
 			items = <
 				["at0000"] = <
 					text = <"Spørreskjema for eksponering">
-					description = <"*An individual- or self-reported questionnaire screening for potential exposure to a chemical, physical or biological agent which has caused or may cause harm to an individual. (en)">
+					description = <"Et spørreskjema for registrering av eksponering av kjemisk, fysisk eller biologisk agens som har forårsaket eller kan forårsake skade på et individ.">
 				>
 				["at0001"] = <
 					text = <"History">
@@ -287,38 +296,38 @@ ontology
 					description = <"@ internal @">
 				>
 				["at0043"] = <
-					text = <"*Screening purpose (en)">
+					text = <"Registreringsformål">
 					description = <"Navnet på den kjemiske, fysiske eller biologiske agensen som et individ kan ha blitt utsatt for.">
-					comment = <"Koding av \"Agens\" med en terminologi er å foretrekke, der det er mulig. Fritekst skal bare brukes hvis det ikke er noen passende terminologi tilgjengelig. For eksempel: 2019-nCoV; eller hiv.">
+					comment = <"Koding av \"Agens\" med en terminologi er å foretrekke, der det er mulig. Fritekst skal bare brukes hvis det ikke er noen passende terminologi tilgjengelig. For eksempel: 2019-nCoV; eller HIV.">
 				>
 				["at0044"] = <
 					text = <"Spesifikk eksponeringsmåte">
 					description = <"Detaljer om hvert mulige spesifikke eksponeringsforhold.">
 				>
 				["at0045"] = <
-					text = <"*Exposure event (en)">
+					text = <"Eksponeringshendelse">
 					description = <"Omstendigheten rundt mulig eksponering.">
 					comment = <"For eksempel: Reist til et \"utsatt\" sted; eksponering for infiserte kroppsvæsker; eller jobbet som tanntekniker. Koding av \"Eksponeringssituasjon\" med en terminologi er å foretrekke, der det er mulig.">
 				>
 				["at0046"] = <
-					text = <"*Exposure? (en)">
-					description = <"Tilstedeværelse av eksponeringssituasjon.">
+					text = <"Eksponering?">
+					description = <"Tilstedeværelse av eksponeringsforhold.">
 				>
 				["at0047"] = <
 					text = <"Tilstede">
-					description = <"Den spesifikke eksponeringssituasjonen er eller har vært til stede.">
+					description = <"Det spesifikke eksponeringsforholdet er eller har vært til stede.">
 				>
 				["at0048"] = <
 					text = <"Ukjent">
-					description = <"Den ukjent om den spesifikke eksponeringssituasjonen er eller har vært til stede.">
+					description = <"Den ukjent om det spesifikke eksponeringsforholdet er eller har vært til stede.">
 				>
 				["at0049"] = <
 					text = <"Ikke tilstede">
-					description = <"Den spesifikke eksponeringssituasjonen er ikke eller har ikke vært til stede.">
+					description = <"Det spesifikke eksponeringsforholdet er ikke eller har ikke vært til stede.">
 				>
 				["at0055"] = <
 					text = <"Kommentar">
-					description = <"*Additional narrative about the specific exposure event, not captured in other fields. (en)">
+					description = <"Ytterligere fritekst om den spesifikke eskponeringshendelsen som ikke er omfattet av andre felt.">
 				>
 				["at0056"] = <
 					text = <"Tilleggsinformasjon">
@@ -326,12 +335,12 @@ ontology
 					comment = <"For eksempel lokale informasjonsbehov eller ytterligere metadata for å kunne tilpasse til tilsvarende konsepter i FHIR.">
 				>
 				["at0057"] = <
-					text = <"*Any exposure? (en)">
+					text = <"Eksponert?">
 					description = <"Individet er eller har blitt eksponert for relevant agens.">
 				>
 				["at0058"] = <
-					text = <"Exponert">
-					description = <"Individet har er eller har blitt eksponert for agensen. 24932003 | Exposure to (contextual qualifier) (qualifier value) |">
+					text = <"Eksponert">
+					description = <"Individet har er eller har blitt eksponert for agensen.">
 				>
 				["at0059"] = <
 					text = <"Ikke eksponert">
@@ -342,13 +351,17 @@ ontology
 					description = <"Det er ukjent om individet er eller har blitt eksponert for agensen.">
 				>
 				["at0062"] = <
-					text = <"*Screening details (en)">
-					description = <"*Additional details or questions about the specific exposure event. (en)">
+					text = <"Screening detaljer">
+					description = <"Ytterligere detaljer eller spørsmål om eksponeringsforholdet.">
 				>
 				["at0063"] = <
-					text = <"*Date of exposure (en)">
-					description = <"*The date/s when the individual was exposed to the agent. (en)">
-					comment = <"*Can be a partial date, for example, only a year. (en)">
+					text = <"Eksponeringsdato">
+					description = <"Dato(er) da individet ble eksponert for agensen.">
+					comment = <"Kan være en deldato, for eksempel kun et årstall.">
+				>
+				["at0064"] = <
+					text = <"*Overall comment(en)">
+					description = <"*Additional narrative about all exposure events, not captured in other fields.(en)">
 				>
 			>
 		>
@@ -437,6 +450,10 @@ ontology
 					text = <"*Date of exposure (en)">
 					description = <"*The date/s when the individual was exposed to the agent. (en)">
 					comment = <"*Can be a partial date, for example, only a year. (en)">
+				>
+				["at0064"] = <
+					text = <"*Overall comment (en)">
+					description = <"*Additional narrative about all exposure events, not captured in other fields. (en)">
 				>
 			>
 		>
