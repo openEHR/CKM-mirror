@@ -15,11 +15,11 @@ description
 	details = <
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"To record the outcome after an agent is administered to an individual.">
-			use = <"Use to record the outcome after an agent is administered to an individual.
+			purpose = <"To record information about the outcome of monitoring after administration of a substance.">
+			use = <"Use to record information about the outcome of monitoring after administration of a substance.
 
-This archetype has been designed to capture that an agent was administered to an individual and whether a reaction occurred in response. It includes details about the context of administration, such as corticosteroid cover or location in ICU. It is not intended to carry any details about a reaction that occurred - use the EVALUATION.adverse_reaction_risk archetype for this purpose.">
-			misuse = <"Not to be used to record the details about the reaction. Use the EVALUATION.adverse_reaction_risk archetype for this purpose.">
+This archetype has been designed to capture whether a reaction occurred after administration of an agent to an individual. It includes details about any mitigation efforts in the context of administration, such as corticosteroid cover, or ICU admission. Summary details about a reaction that occurred can be recorded using the CLUSTER.reaction_event_summary in the 'Reaction event summary' SLOT.">
+			misuse = <"Not to be used to record a propensity of the individual to have adverse reactions to specific substances or groups or classes of substances. Use the EVALUATION.adverse_reaction_risk archetype for this purpose.">
 			copyright = <"© openEHR Foundation">
 		>
 	>
@@ -31,8 +31,8 @@ This archetype has been designed to capture that an agent was administered to an
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"BC91C2B07DD93F4422F70DAD8B70A204">
-		["build_uid"] = <"623b1598-c8a1-4a00-abeb-70801dea42dd">
+		["MD5-CAM-1.0.1"] = <"ED1824B6E2320708D73544A5D4473CF0">
+		["build_uid"] = <"cfbb09fa-6c1a-400e-a73e-1775f048f563">
 		["revision"] = <"0.0.1-alpha">
 	>
 
@@ -41,11 +41,16 @@ definition
 		data matches {
 			HISTORY[at0001] matches {    -- History
 				events cardinality matches {1..*; unordered} matches {
-					EVENT[at0002] occurrences matches {0..*} matches {    -- Any event
+					INTERVAL_EVENT[at0002] occurrences matches {0..*} matches {    -- Monitoring interval
 						data matches {
 							ITEM_TREE[at0003] matches {    -- Tree
 								items cardinality matches {0..*; unordered} matches {
-									ELEMENT[at0004] occurrences matches {0..1} matches {    -- Agent administered
+									ELEMENT[at0013] occurrences matches {0..1} matches {    -- Purpose
+										value matches {
+											DV_TEXT matches {*}
+										}
+									}
+									ELEMENT[at0004] matches {    -- Substance
 										value matches {
 											DV_TEXT matches {*}
 										}
@@ -55,11 +60,20 @@ definition
 											DV_CODED_TEXT matches {
 												defining_code matches {
 													[local::
-													at0006,    -- Present
-													at0007]    -- Absent
+													at0006,    -- Yes
+													at0007,    -- No
+													at0015]    -- Indeterminate
 												}
 											}
 										}
+									}
+									allow_archetype CLUSTER[at0014] occurrences matches {0..*} matches {    -- Substance details
+										include
+											archetype_id/value matches {/openEHR-EHR-CLUSTER\.medication(-[a-zA-Z0-9_]+)*\.v1/}
+									}
+									allow_archetype CLUSTER[at0016] occurrences matches {0..1} matches {    -- Reaction event summary
+										include
+											archetype_id/value matches {/openEHR-EHR-CLUSTER\.adverse_reaction_event_summary(-[a-zA-Z0-9_]+)*\.v0|openEHR-EHR-CLUSTER\.adverse_reaction_event_summary\.v1/}
 									}
 									ELEMENT[at0008] occurrences matches {0..1} matches {    -- Comment
 										value matches {
@@ -72,7 +86,7 @@ definition
 						state matches {
 							ITEM_TREE[at0012] matches {    -- Item tree
 								items cardinality matches {0..*; unordered} matches {
-									ELEMENT[at0011] occurrences matches {0..1} matches {    -- Circumstances
+									ELEMENT[at0011] occurrences matches {0..1} matches {    -- Mitigation
 										value matches {
 											DV_TEXT matches {*}
 										}
@@ -103,22 +117,22 @@ ontology
 			items = <
 				["at0000"] = <
 					text = <"Adverse reaction monitoring">
-					description = <"Record of the outcome after an agent is administered to an individual.">
+					description = <"Information about the outcome of monitoring after administration of a substance.">
 				>
 				["at0001"] = <
 					text = <"History">
 					description = <"@ internal @">
 				>
 				["at0002"] = <
-					text = <"Any event">
-					description = <"Default, unspecified point in time or interval event which may be explicitly defined in a template or at run-time.">
+					text = <"Monitoring interval">
+					description = <"The time from onset of monitoring to end of monitoring.">
 				>
 				["at0003"] = <
 					text = <"Tree">
 					description = <"@ internal @">
 				>
 				["at0004"] = <
-					text = <"Agent administered">
+					text = <"Substance">
 					description = <"Identification of a substance administered to the individual.">
 					comment = <"For example, an agent that has previously triggered an adverse reaction or a vaccination.">
 				>
@@ -127,11 +141,11 @@ ontology
 					description = <"Was there a reaction to the agent administered?">
 				>
 				["at0006"] = <
-					text = <"Present">
+					text = <"Yes">
 					description = <"The individual reacted.">
 				>
 				["at0007"] = <
-					text = <"Absent">
+					text = <"No">
 					description = <"The individual did not react.">
 				>
 				["at0008"] = <
@@ -148,13 +162,30 @@ ontology
 					comment = <"For example: local information requirements; or additional metadata to align with FHIR.">
 				>
 				["at0011"] = <
-					text = <"Circumstances">
-					description = <"Narrative description about the circumstances of administration, including technique, approach, mitigating factors or physical location.">
+					text = <"Mitigation">
+					description = <"Narrative description about any reaction mitigation factors applied before or during administration of the substance.">
 					comment = <"For example, that the substance was administered in ICU and under cover of high dose corticosteroids.">
 				>
 				["at0012"] = <
 					text = <"Item tree">
 					description = <"@ internal @">
+				>
+				["at0013"] = <
+					text = <"Purpose">
+					description = <"The reason why the reaction monitoring was carried out.">
+					comment = <"For example: vaccination, transfusion, chemotherapy, allergy desensitisation.">
+				>
+				["at0014"] = <
+					text = <"Substance details">
+					description = <"Structured details about the substance administered to the individual.">
+				>
+				["at0015"] = <
+					text = <"Indeterminate">
+					description = <"It cannot be determined whether the individual reacted or not.">
+				>
+				["at0016"] = <
+					text = <"Reaction event summary">
+					description = <"Summary details about the adverse reaction event.">
 				>
 			>
 		>
