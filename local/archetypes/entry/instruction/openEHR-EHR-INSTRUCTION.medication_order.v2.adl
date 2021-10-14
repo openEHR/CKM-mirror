@@ -14,6 +14,14 @@ language
 				["email"] = <"nazli.soltani@med.uni-goettingen.de / Strauch.Natalia@mh-hannover.de">
 			>
 		>
+		["sv"] = <
+			language = <[ISO_639-1::sv]>
+			author = <
+				["name"] = <"Emma Malm">
+				["organisation"] = <"Karolinska Universitetssjukhuset">
+				["email"] = <"emma.malm@cambio.se">
+			>
+		>
 		["nb"] = <
 			language = <[ISO_639-1::nb]>
 			author = <
@@ -93,6 +101,51 @@ Beachten Sie, dass diese Verwendungen sowohl die Anwendungsfälle der FHIR-Profi
 Nicht zur Repräsentation der Verordnung von Blutprodukten verwenden, da dies einen grundlegend anderen klinischen Prozess beinhaltet und wahrscheinlich andere unterstützende Informationen erfordert. Verwenden Sie dafür den Archetyp INSTRUCTION.transfusion.
 
 Nicht zur Repräsentation der Verordnung zum Einsetzen von Implantaten oder medizinischen Geräten wie Herzschrittmachern und Defibrillatoren verwenden. Verwenden Sie dafür den Archetyp INSTRUCTION.procedure">
+		>
+		["sv"] = <
+			language = <[ISO_639-1::sv]>
+			purpose = <"Att registrera samtliga aspekter av en beställning av ett läkemedel, vaccin, näringspreparat eller annat terapeutiskt produkt för en identifierad individ.">
+			use = <"Används för att registrera samtliga aspekter av en beställning av ett läkemedel, vaccin, näringspreparat eller annan terapeutisk produkt för en identifierad individ.
+
+Den här arketypen är avsedd att användas för alla typer av läkemedel och relaterade ordrar, oavsett om de ordinerats av vårdpersonal eller är tillgängligt för köp \"över disk\". Omfattningen av denna arketyp inkluderar även beställning av vaccin, parenterala vätskor och andra terapeutiska produkter, såsom bandage, näringspreparat eller andra föremål som appliceras eller administreras för att uppnå en terapeutisk effekt. 
+
+Denna arketyp är utformad för att användas vid ett flertal kliniska sammanhang, bland annat: 
+- dokumentation i ett kliniskt samråd (COMPOSITION.encounter);
+- skriftlig ordination av en läkare, tandläkare, sjuksköterska eller annan utsedd hälso- och sjukvårdspersonal för ett läkemedel eller ett näringsperparat som ska dispenseras och administreras (COMPOSITION.prescription);
+- objekt i aktuell läkemedelslista, ordination eller läkemedelsjournal (COMPOSITION.medication_list); och
+- objekt i ett sammanfattande dokument för exempelvis vårdöverföring (COMPOSITION.transfer_summary) eller en remiss (COMPOSITION.request).
+
+I många fall är en läkemedelsbeställning simpel och omfattar vanligtvis en läkemedelsartikel med okomplicerade instruktioner för dosering och administrering. Denna arketyp är dock utformad för att även möjliggöra mer komplexa beställningar. Till exempel:
+- en reducerande dos av prednisolon under en period på några veckor;
+- titrering av insulin, med dosering beroende på testresultat;
+- flera läkemedel (del av samma läkemedelsregim) som ordinerats samtidigt. Exempelvis trippelbehandling för magsår; och
+- intravenös administrering av läkemedel eller näringstillskott, inklusive parenteral nutrition. 
+
+Arketypen har därför utformats för att hantera olika komplexiteter:
+- enkla beställningsinstruktioner som \"furosemid 40 mg två tabletter på morgonen och en vid lunch\" för att säkerställa kompatibilitet med befintliga system; och
+- läkemedelsmängden betecknas vanligtvis genom antal och motsvarande dosenhet. För att säkerställa kompatibilitet med befintliga system samt omfatta alla kliniska scenarier, kan det dock finnas alternativa redogörelser; genom att 
+- strukturera detaljer för dosering, administreringsväg och tidpunkt för att uppnå fullständig specifikation. 
+
+Arketypen har även utformats så att strukturen för alla läkemedelsbeställningar omfattar:
+- komplexa och sekventiella läkemedelsbeställningar med samma beredningsstyrka; och
+- flera läkemedelsbeställningar kan under omständigheter där olika läkemedel eller preparat måste ges i följd länkas.
+
+Arketypen är även lämplig för beställning av parenterala vätskor, trots att dessa normalt är \"ordinationsbara\" artiklar. I andra fall kan dock en separat \"parenteral vätskebeställning\" vara lämpligt. 
+
+De SLOTs som innehåller CLUSTER-arketyper används för att representera vis del av innehållet. Detta grundas på tre skäl:
+- För att säkerställa att en kärnarketyp kan användas för alla ovanstående användningsfall, samt möjliggöra flexibilitet där det behövs. Under exempelvis ”Detaljer om beredning” kan ytterligare information tilläggas. För läkemedel föreslås en kandidatarketyp. Det är även möjligt att andra CLUSTER-arketyper i framtiden kan krävas för ytterlige ändamål, såsom komplexa parenterala nutritionsordrar;
+- för att stödja återanvändning av arketyper i situationer där innehållet används i flera kliniska sammanhang, i synnerhet ACTION.medication-arketypen som används för registrering av dispensering, administrering osv; och
+- för att avlägsna mindre vanligt förekommande innehåll från kärnarketypen.
+
+Flera beställningar kan representeras som separata aktiviteter inom denna arketypsinstans, för hantering av beställningar av olika läkemedel, exempelvis terapi för H. pylori när det inte ordineras som enpack.
+
+Det bör nämnas att dessa användningsområden omfattar både fall av FHIR-läkemedelsorder och läkemedelsutlåtande. Denna arketyp är således anpassad för båda FHIR-resurserna, och används i lämpligt sammanhang.">
+			keywords = <"medicinering", "order", "beställning", "ordinera", "terapi", "substans", "läkemedel", "terapeutisk", "farmaceutisk", "produkt", "dosering", "behandling", "vätska", "näring", "medicin">
+			misuse = <"Ska inte användas för att registrera aktiviteter relaterade till att utföra en beställning av läkemedel, vaccin, näringspreparat eller terapeutiska produkter, såsom information om administrering eller dispensering. Använd i stället ACTION.medication för detta ändamål.
+
+Ska inte användas för att registrera beställning av blodprodukter, då denna aktivitet kräver annan klinisk process. Använd i stället INSTRUCTION.transfusion för detta ändamål.
+
+Ska inte användas för att registrera beställning av insättning av implantat eller medicintekniska produkter som pacemaker och defibrillatorer. Använd i stället INSTRUCTION.procedure för detta ändamål.">
 		>
 		["es-ar"] = <
 			language = <[ISO_639-1::es-ar]>
@@ -302,9 +355,9 @@ Standards for medication and medical device records – technical annex [Interne
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"9E291C33479D637EB408AD301B2E6A83">
-		["build_uid"] = <"c10394c6-a9dd-4eb9-a8d4-1bebef3b0384">
-		["revision"] = <"2.0.3">
+		["MD5-CAM-1.0.1"] = <"6CC0756A333164EBF4C7370F482612A8">
+		["build_uid"] = <"5a192a21-2dd4-45c6-963c-cdab24fa2230">
+		["revision"] = <"2.0.4">
 	>
 
 definition
@@ -1999,6 +2052,283 @@ Das Ziel oder die Zieldosis kann hier als Teil eines verknüpften EVALUATION-Arc
 				["at0178"] = <
 					text = <"Sicherheitsgrenze überschritten">
 					description = <"Überschreiten eines bekannten oder anerkannten Sicherheitshinweis des Medikaments, wie z. B. eine Allergie, eine Warnung vor Drogenmissbrauch oder eine Kontraindikation.">
+				>
+			>
+		>
+		["sv"] = <
+			items = <
+				["at0000"] = <
+					text = <"Läkemedelsbeställning">
+					description = <"En beställning av ett läkemedel, vaccin, näringspreparat eller annat terapeutiskt produkt för en identifierad individ.">
+				>
+				["at0001"] = <
+					text = <"Order">
+					description = <"Information om den begärda ordern.">
+				>
+				["at0002"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0004"] = <
+					text = <"Beställnings-ID">
+					description = <"Unik identifikator för läkemedelsbeställningen.">
+					comment = <"Detta dataelement möjliggör exakt identifiering av flera ordrar samtidigt.">
+				>
+				["at0005"] = <
+					text = <"Beskrivning av dosmängd">
+					description = <"Mängd med tillhörande enhet av läkemedlet, vaccinet eller annat terapeutiskt produkt som ska användas eller administreras vid samma tillfälle.">
+				>
+				["at0008"] = <
+					text = <"Tilläggsinformation">
+					description = <"Plats för att infoga tilläggsinformation som krävs för lokala anpassningar eller anpassning till andra referensmodeller eller formella krav.">
+					comment = <"Exempelvis lokala informationskrav eller metadata för anpassning till FHIR- eller CIMI-motsvarigheter.">
+				>
+				["at0009"] = <
+					text = <"Fullständig beskrivning av anvisningar">
+					description = <"Komplett beskrivning om hur den beställda artikeln ska användas.">
+					comment = <"Beskrivningen ska normalt sammanfoga data som registrerats i \"Dosmängd\", \"Tidpunkt för dos\" och eventuella ytterligare bruksanvisningar. Where the medication dose directions are fully carried by the structured, computable dose directions, this element should carry the narrative equivalent, generally auto-generated. If it is not possible to represent the intended 'Dose direction' fully in computable form, partial representation is not recommended, and the directions should be only recorded in narrative form using this data element.">
+				>
+				["at0011"] = <
+					text = <"Startkriterium för order">
+					description = <"Det villkor som måste vara uppfyllt innan administrering eller användning påbörjas.">
+					comment = <"Till exempel: \"Påbörja om symptomen återkommer\". Detta är ett generellt förhandsvillkor som bör leda till att hela läkemedelsbehandlingen startar, och inte för \"vid behov\"-administreringar av en pågående order.">
+				>
+				["at0012"] = <
+					text = <"Datum/tid för påbörjad order">
+					description = <"Datum och tid (valfritt) då användning av den beställda artikeln planeras påbörja.">
+				>
+				["at0013"] = <
+					text = <"Datum/tid för avslutad order">
+					description = <"Datum och tid (valfritt) då användning av den beställda artikeln planeras upphöra.">
+				>
+				["at0016"] = <
+					text = <"Stoppkriterium för order">
+					description = <"Det villkor som måste vara uppfyllt innan administrering eller användning upphör.">
+					comment = <"Till exempel: \"Stoppa efter att symptomen försvinner\".">
+				>
+				["at0018"] = <
+					text = <"Klinisk indikation">
+					description = <"Klinisk orsak till användning av den beställda artikeln.">
+					comment = <"Till exempel: \"Angina pectoris\". Om möjligt, benämn den kliniska indikationen med en terminologi. Dataelementet tillåter flera förekomster. Är dock ej avsedd att innehålla indikation för administrativa tillståndsändamål.">
+				>
+				["at0044"] = <
+					text = <"Ytterligare instruktioner">
+					description = <"Ytterligare instruktioner för hur beställd produkt ska brukas.">
+					comment = <"Exempelvis försiktighetsåtgärder som \"Ta med mat\", \"Undvik grapefrukt\", \"Lös upp i vatten\", \"Förvara på en sval, torr plats\". Detta dataelement tillåter flera förekomster och bör kodas med en referensterminologi där det är möjligt.">
+				>
+				["at0047"] = <
+					text = <"Tolkningsanvisningar">
+					description = <"En tolkbar, computable textrepresentation av anvisningarna.">
+					comment = <"Generellt används detta endast när information skickas mellan äldre system. Till exempel: \"10 mg bd; 20 mg n\" som används av NHS dos-syntax (under utveckling).">
+				>
+				["at0050"] = <
+					text = <"Varaktighet för slutförd order">
+					description = <"Den tidsperiod under vilken individen/patienten redan har använt den beställda artikeln. Detta är en del av den avsedda totala beställningen, men före utfärdandet av denna beställning.">
+					comment = <"Exempelvis för att registrera att patienten hade tagit antibiotika tre dagar före inskrivning på sjukhus i samband med en 7-dagarskur.">
+				>
+				["at0051"] = <
+					text = <"Maximal dos">
+					description = <"Detaljer om den maximala, kumulativa dosen av den beställda artikeln som tillåts under en definierad period.">
+					comment = <"Till exempel: \"upp till 1 gram per dag\". För att möjliggöra representation av flera maximala doser som gäller för olika tidsperioder, tillåts flera dosvärden i detta kluster. Maximal dos under en livstid bör inte tas till hänsyn här eftersom det hänvisar till flera beställningar över tiden.">
+				>
+				["at0053"] = <
+					text = <"Tillåten period">
+					description = <"Tidsperioden under vilken den maximala dosen är beräknad.">
+					comment = <"Exempelvis 24 timmar.">
+				>
+				["at0060"] = <
+					text = <"Slutförda administrationer">
+					description = <"Antalet slutförda administrationer av den beställda artikeln. Detta är en del av den avsedda totala beställningen, men före utfärdandet av denna beställning.">
+					comment = <"Exempelvis för att registrera att patienten har tagit de två första antibiotikatabletterna under en 3-dagarskur före utskrivning från sjukhuset till ett vårdhem.">
+				>
+				["at0062"] = <
+					text = <"Läkemedelssäkerhet">
+					description = <"Detaljer om medicinsk säkerhet för den beställda artikeln.">
+				>
+				["at0064"] = <
+					text = <"Säkerhet åsidosatt?">
+					description = <"Bekräftelse från ordineraren att normal dos eller annan säkerhetsgräns har åsidosatts på grund av exceptionella omständigheter.">
+				>
+				["at0065"] = <
+					text = <"Dispenseringsmängd">
+					description = <"Detaljer om den mängden av beställd artikel som ska dispenseras.">
+					comment = <"Denna SLOT gör det möjligt att hantera lokal variation i olika jurisdiktioner angående läkemedelsdispensering.">
+				>
+				["at0069"] = <
+					text = <"Anvisningar om auktorisering">
+					description = <"Detaljer om auktorisering av den beställda artikeln, inklusive stöd för lokal självadministrering, utförda och godkännandepolicyer.">
+					comment = <"Exempelvis information om upprepning/påfyllning. Denna SLOT gör det möjligt att hantera lokal variation i de olika jurisdiktionerna med avseende på medicineringstillstånd och återbehörighet.">
+				>
+				["at0070"] = <
+					text = <"Läkemedelsartikel">
+					description = <"Benämning på det läkemedel, vaccin eller annan terapeutisk/ordinerbar artikel som beställs.
+">
+					comment = <"Beroende på ordinationstyp, kan detta fält användas för antingen generisk eller produktbaserad ordination. Detta datafält kan användas för att registrera relaterade beställningar av olika läkemedel när de ordineras som enpack. Om möjligt, benämn läkemedelsartikeln med en terminologi. Omfattningen av benämningen kan variera från namn på läkemedelsartikeln till detaljer om själva läkemedelspaketet. Fri textinmatning bör endast användas om det inte finns någon lämplig terminologi tillgänglig.">
+				>
+				["at0091"] = <
+					text = <"Administreringsväg">
+					description = <"Sättet genom vilken den beställda artikeln ska administreras i patientens kropp.">
+					comment = <"Till exempel: \"oralt\", \"intravenöst\" eller \"lokalt\". Om möjligt, benämn administreringsvägen med en terminologi. Flera potentiella administreringsvägar kan specificeras.">
+				>
+				["at0092"] = <
+					text = <"Kroppsområde">
+					description = <"Beskrivning av administrationsstället för den beställda artikeln.">
+					comment = <"Till exempel: \"vänster överarm\", \"intravenös kateter, höger hand\". Om möjligt, benämn den anatomiska lokaliseringen med en terminologi.">
+				>
+				["at0093"] = <
+					text = <"Strukturerat kroppsområde">
+					description = <"Strukturerad beskrivning av administrationsstället för den beställda produkten.">
+				>
+				["at0094"] = <
+					text = <"Administreringsmetod">
+					description = <"Den teknik eller utrustning med vilken den beställda artikeln ska administreras.">
+					comment = <"Till exempel: \"via Z-teknik\"; \"via nebulisator\". Om möjligt, benämn metoden med en terminologi.">
+				>
+				["at0095"] = <
+					text = <"Administreringsutrustning">
+					description = <"Information om den medicinska utrustning som används vid administrering av läkemedlet.">
+				>
+				["at0105"] = <
+					text = <"Patientinformation">
+					description = <"Ytterligare instruktion främst riktad till vårdtagaren eller vårdgivaren.">
+					comment = <"Till exempel: \"Att sänka ditt blodtryck\", \"Att tona ut ditt blod\". Detta dataelement tillåter flera förekomster och bör kodas med en referensterminologi där det är möjligt. Vid behov är det även möjligt att använda ett LINK-attribut för att associera detta element till exempelvis den ''ursprungliga diagnosen'' i en separat komposition. En indikation bör dock explicit registreras här, eftersom lLINK-attributet kan förändras över tiden.">
+				>
+				["at0106"] = <
+					text = <"Instruktion för dispensering">
+					description = <"Ytterligare instruktion riktad främst till den individ som ska dispensera den beställda artikeln.">
+					comment = <"Exempelvis detaljerade instruktioner för fasvis dosering av opiater.">
+				>
+				["at0107"] = <
+					text = <"Övervakningsinstruktioner">
+					description = <"Ytterligare instruktion om rekommenderad eller begärd övervakning av den beställda artikeln.">
+					comment = <"Till exempel: \"Kontrollera njurfunktionen om två veckor\". Detta dataelement tillåter flera förekomster.">
+				>
+				["at0112"] = <
+					text = <"Ordersammanfattning">
+					description = <"Sammanfattad information om användning av den beställda artikeln, såsom aktuell status eller nyckeldatum som vanligtvis används i receptfria sammanhang.">
+					comment = <"Översikt av kuren kan krävas vid överföring av läkemedelsinformation mellan system eller vid representation av ett FHIR-läkemedelsuttalande. Exempelvis som en del av en remiss, översikt av patient på akutavdelning eller utskrivning.">
+				>
+				["at0113"] = <
+					text = <"Orderdetaljer">
+					description = <"Detaljer om läkemedelsbeställningen.">
+				>
+				["at0129"] = <
+					text = <"Anvisningar för dispensering">
+					description = <"Anvisningar för dispensering av den beställda artikeln.">
+				>
+				["at0130"] = <
+					text = <"Maximal dosmängd">
+					description = <"Den maximala, kumulativa dosmängden av ett läkemedel som ska administreras inom den tillåtna perioden. Enheten för detta belopp redovisas i \"Enhet för maximal dosmängd\".">
+					comment = <"Till exempel: 1, 1.5, 0.125.">
+				>
+				["at0132"] = <
+					text = <"Anvisningar för substitution">
+					description = <"Tillstånd för att ersätta en bioekvivalent artikel.">
+					comment = <"I många jurisdiktioner är det möjligt att vid dispenseringstillfället ersätta en beställd artikel med en generisk sort eller med ett annat varumärke, förutsatt att bioekvivalens är uppnått. I andra fall antas substitution vara tillåtet, såvida en kliniker explicit inte begär annat.">
+				>
+				["at0139"] = <
+					text = <"Prioritet">
+					description = <"Indikation på hur brådskande den beställda artikeln ska dispenseras.">
+					comment = <"Till exempel \"Brådskande\". Detta ska modelleras eller specialiseras enligt lokala värdesatser. Vissa jurisdiktioner tillåter att instruktioner om dispensering markeras som ”brådskande” så att apoteket hanterar dem snabbt.">
+				>
+				["at0143"] = <
+					text = <"Detaljer om beredning">
+					description = <"Information om den totala beredningen. Detta inkluderar styrka, form och beståndsdelar.">
+					comment = <"Använd denna SLOT om beskrivningen av den beställda artikeln måste anges explicit. Till exempel: formen, styrkan, eventuella utspädningsmedel eller blandning av ingredienser.">
+				>
+				["at0146"] = <
+					text = <"Enhet för maximal dosmängd">
+					description = <"Enheten för den maximalt tillåtna dosmängden.">
+					comment = <"Till exempel: \"tablett\", \"mg\". Om möjligt, benämn dosenheten med en terminologi.">
+				>
+				["at0148"] = <
+					text = <"Behandlingsavsikt">
+					description = <"Den övergripande behandlingsavsikten med den beställda artikeln.">
+					comment = <"Till exempel: \"smärtlindring\"; \"palliativ vård\"; \"lågdosprofylakse\"; \"rehydrering\"; \"näringsinfusion\".">
+				>
+				["at0150"] = <
+					text = <"Total daglig effektiv dos">
+					description = <"Detaljer om den totala mängden per dag för den beställda artikeln som förväntas administreras.">
+					comment = <"Den totala dagliga dosen registrerar den förväntade effektiva dosen. På så vis stödjs titrering av en initial låg dos mot den effektiva dosen över viss tidsperiod. Detta är inte måldosen i sig, utan den effektiva dagliga dosen som resulterar i måldosen. Under vissa omständigheter kan den totala dagliga dosen beräknas från beräkningsbara anvisningar, i andra fall kan den behöva anges manuellt.">
+				>
+				["at0151"] = <
+					text = <"Total daglig dos">
+					description = <"Mängd av beställd produkt som kommer att tas varje dag om avsedda administreringsanvisningar följs.">
+					comment = <"Till exempel: \"20 mg\".">
+				>
+				["at0152"] = <
+					text = <"Enhet för total daglig dos">
+					description = <"Dosenheten för den totalt dagliga dosmängden.">
+					comment = <"Dosenheterna anges vanligen i mg och ml snarare än \"tabletter\".">
+				>
+				["at0154"] = <
+					text = <"Skäl till ej tillåten substitution">
+					description = <"Anledningen till att en beställd artikel inte ska ersättas vid dispensering.">
+					comment = <"Till exempel \"Generisk beredning inte bioekvivalent\".">
+				>
+				["at0155"] = <
+					text = <"Startdatum för dispensering">
+					description = <"Det datum från vilket den beställda artikeln får dispenseras för första gången.">
+					comment = <"Kan användas för att kontrollera tidpunkten för dispensering av läkemedel med risk för missbruk. Exempelvis bensodiazepiner eller analgetika.">
+				>
+				["at0161"] = <
+					text = <"Utgångsdatum för dispensering">
+					description = <"Datumet efter det att den beställda artikeln inte längre är giltig för laglig dispensering">
+					comment = <"I vissa jurisdiktioner kan ordrar om utdelning ha ett utgångsdatum efter vilket receptet kanske inte ges ut.">
+				>
+				["at0162"] = <
+					text = <"Anledning för åsidosättning">
+					description = <"Anledningen till åsidosättning av en klinisk säkerhet eller överskridande av maximal dos.">
+					comment = <"Till exempel: \"Inte mottaglig för maximal rekommenderad dos. Kritisk situation.\", \"Peniciilin är endast giltig behandling, sannolikheten för sann penicillinallergi är låg\".">
+				>
+				["at0165"] = <
+					text = <"Syfte">
+					description = <"Beskrivning av anledningen till registrering av en total daglig effektiv dos.">
+					comment = <"Till exempel: \"Hypertonikontroll\", \"Måldos 20 mg dagligen\". Beskrivningen kan användas för att identifiera ett namn, en fras eller ett stycke om syftet med att registrera den totala dagliga effektiva dosen, vanligtvis för att möjliggöra titrering mot en specifik måldos. Målet eller måldosen kan registreras här eller som en del av bifogad EVALUATION \"Mål\"-arketyp.">
+				>
+				["at0166"] = <
+					text = <"Ytterligare information">
+					description = <"Ytterligare strukturerad information om den beställda artikeln som inte fångats i andra fält.">
+				>
+				["at0167"] = <
+					text = <"Kommentar">
+					description = <"Kommentarer avseende läkemedelsbeställningen som inte beskrivs i övriga fält.">
+				>
+				["at0168"] = <
+					text = <"Tillåtet">
+					description = <"Ersättning av läkemedlet med ett bioekvivalent alternativ är tillåtet.">
+				>
+				["at0169"] = <
+					text = <"Ej tillåtet">
+					description = <"Ersättning av läkemedlet med ett bioekvivalent alternativ är inte tillåtet.">
+				>
+				["at0170"] = <
+					text = <"Detaljer om dispensering">
+					description = <"Ytterligare information om dispenseringsanvisningar.">
+					comment = <"Denna SLOT möjliggör lokal variation i de olika jurisdiktionerna när det gäller läkemedelsdispensering.">
+				>
+				["at0171"] = <
+					text = <"Åsidosatta säkerhetsanvisningar">
+					description = <"En känd säkerhetsfråga som gäller för vårdtagaren och den beställda artikeln, såsom en allergi, varning om läkemedel eller kontraindikation. Detta element registreras normalt bara när säkerhetsanvisningarna åsidosätts.">
+					comment = <"Till exempel: \"Allergiskt mot penicillin\", \"Atenolol duplicerat\".">
+				>
+				["at0173"] = <
+					text = <"Specifika anvisningar">
+					description = <"Beskrivning av en specifik del av de övergripande anvisningarna.">
+					comment = <"I vissa fall är det vanligt att fördela övergripande anvisningar i mer specifika segment. I exempelvis sjukhussammanhang kan det vara vanligt att dela upp anvisningarna i \"Dosmängd\" och \"Tidpunkt för dos\", båda som berättande text. These terms can be applied at template or run-time.">
+				>
+				["at0174"] = <
+					text = <"Motivering till dos">
+					description = <"Motivering till beräkning av dosmängd eller administreringshastighet där detta är beroende av utomstående faktor.">
+					comment = <"Till exempel: \"Justerad för amputation\".">
+				>
+				["at0177"] = <
+					text = <"Strukturerad dos och tidsanvisningar">
+					description = <"Detaljer om strukturerad dos och tidsanvisningar.">
+				>
+				["at0178"] = <
+					text = <"Åsidosättande av säkerhet">
+					description = <"Åsidosättande av en känd säkerhetsfråga som gäller för vårdtagaren och den beställda artikeln, såsom en allergi, varning om läkemedelsdubblering eller kontraindikation.">
 				>
 			>
 		>
