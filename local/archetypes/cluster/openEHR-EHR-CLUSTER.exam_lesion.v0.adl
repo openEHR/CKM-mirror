@@ -6,6 +6,14 @@ concept
 language
 	original_language = <[ISO_639-1::en]>
 	translations = <
+		["nb"] = <
+			language = <[ISO_639-1::nb]>
+			author = <
+				["name"] = <"Silje Ljosland Bakke">
+				["organisation"] = <"Helse Vest IKT AS">
+				["email"] = <"silje.ljosland.bakke@helse-vest-ikt.no">
+			>
+		>
 		["pt-br"] = <
 			language = <[ISO_639-1::pt-br]>
 			author = <
@@ -23,6 +31,18 @@ description
 		["date"] = <"2015-06-25">
 	>
 	details = <
+		["nb"] = <
+			language = <[ISO_639-1::nb]>
+			purpose = <"For å registrere en fritekstbeskrivelse og klinisk tolking av funn observert under fysisk undersøkelse av en identifisert lesjon.">
+			use = <"For å registrere en fritekstbeskrivelse av de overordnede funnene observert under fysisk undersøkelse av en identifisert lesjon.
+
+Arketypen er spesielt laget for å brukes i SLOTet \"Undersøkelsesfunn\" i arketypene CLUSTER.exam-skin eller OBSERVATION.exam, men kan også brukes i en hvilken som helst annen OBSERVATION- eller CLUSTER-arketype, der det er klinisk passende. For eksempel CLUSTER.exam-breast eller CLUSTER.exam-penis.">
+			misuse = <"*Not to be used for recording data not related to the physical examination of an identified lesion.
+
+Not to be used for recording the clinical history - use specific OBSERVATION and CLUSTER archetypes. For example OBSERVATION.story and CLUSTER.symptom.
+
+Not to be used to record stand-alone clinical observations or measurements or test results - use specific OBSERVATION archetypes. For example OBSERVATION.blood_pressure or OBSERVATION.imaging_exam.(en)">
+		>
 		["pt-br"] = <
 			language = <[ISO_639-1::pt-br]>
 			purpose = <"Para registro de uma descrição narrativa e interpretação clínica dos resultados observados durante o exame físico de uma lesão identificada 
@@ -72,57 +92,76 @@ Not to be used to record stand-alone clinical observations or measurements or te
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"FC08A47619EFC4E271F5ADFB1808A217">
-		["build_uid"] = <"2855eb1c-e592-4a90-87ec-2c4df3ae6fd8">
+		["MD5-CAM-1.0.1"] = <"CF6F08F1836EFEADB630EE7CECF3F391">
+		["build_uid"] = <"8552e899-c40a-4c7a-88a6-dc5b11478c2a">
 		["revision"] = <"0.0.1-alpha">
 	>
 
 definition
-	CLUSTER[at0000] matches {	-- Examination of a lesion
+	CLUSTER[at0000] matches {    -- Examination of a lesion
 		items cardinality matches {1..*; unordered} matches {
-			ELEMENT[at0002] occurrences matches {0..1} matches {	-- Lesion type
+			ELEMENT[at0002] occurrences matches {0..1} matches {    -- Lesion type
 				value matches {
 					DV_TEXT matches {*}
 				}
 			}
-			ELEMENT[at0012] occurrences matches {0..1} matches {	-- Alias
+			ELEMENT[at0012] occurrences matches {0..1} matches {    -- Alias
 				value matches {
 					DV_TEXT matches {*}
 				}
 			}
-			ELEMENT[at0003] occurrences matches {0..1} matches {	-- Clinical description
+			ELEMENT[at0003] occurrences matches {0..1} matches {    -- Clinical description
 				value matches {
 					DV_TEXT matches {*}
 				}
 			}
-			ELEMENT[at0001] occurrences matches {0..1} matches {	-- Body site
+			ELEMENT[at0013] occurrences matches {0..1} matches {    -- Diameter
+				value matches {
+					C_DV_QUANTITY <
+						property = <[openehr::122]>
+						list = <
+							["1"] = <
+								units = <"mm">
+								magnitude = <|>=0.0|>
+							>
+							["2"] = <
+								units = <"cm">
+								magnitude = <|>=0.0|>
+							>
+							["3"] = <
+								units = <"[in_i]">
+								magnitude = <|>=0.0|>
+							>
+						>
+					>
+				}
+			}
+			ELEMENT[at0001] occurrences matches {0..1} matches {    -- Body site
 				value matches {
 					DV_TEXT matches {*}
 				}
 			}
-			allow_archetype CLUSTER[at0011] occurrences matches {0..*} matches {	-- Structured body site
+			allow_archetype CLUSTER[at0011] occurrences matches {0..*} matches {    -- Structured body site
 				include
-					archetype_id/value matches {/openEHR-EHR-CLUSTER\.anatomical_location(-[a-zA-Z0-9_]+)*\.v1|openEHR-EHR-CLUSTER\.anatomical_location_relative(-[a-zA-Z0-9_]+)*\.v1|openEHR-EHR-CLUSTER\.anatomical_location_clock(-[a-zA-Z0-9_]+)*\.v0/}
+					archetype_id/value matches {/openEHR-EHR-CLUSTER\.anatomical_location(-[a-zA-Z0-9_]+)*\.v1|openEHR-EHR-CLUSTER\.anatomical_location_relative(-[a-zA-Z0-9_]+)*\.v2|openEHR-EHR-CLUSTER\.anatomical_location_circle(-[a-zA-Z0-9_]+)*\.v1/}
 			}
-			allow_archetype CLUSTER[at0004] occurrences matches {0..*} matches {	-- Examination findings
+			allow_archetype CLUSTER[at0004] occurrences matches {0..*} matches {    -- Examination findings
+			}
+			allow_archetype CLUSTER[at0005] occurrences matches {0..*} matches {    -- Multimedia representation
 				include
-					archetype_id/value matches {/openEHR-EHR-CLUSTER\.dimensions(-[a-zA-Z0-9_]+)*\.v1/}
+					archetype_id/value matches {/openEHR-EHR-CLUSTER\.media_file(-[a-zA-Z0-9_]+)*\.v1/}
 			}
-			allow_archetype CLUSTER[at0005] occurrences matches {0..*} matches {	-- Multimedia representation
-				include
-					archetype_id/value matches {/openEHR-EHR-CLUSTER\.multimedia(-[a-zA-Z0-9_]+)*\.v1/}
-			}
-			ELEMENT[at0006] occurrences matches {0..*} matches {	-- Clinical interpretation
+			ELEMENT[at0006] occurrences matches {0..*} matches {    -- Clinical interpretation
 				value matches {
 					DV_TEXT matches {*}
 				}
 			}
-			ELEMENT[at0007] occurrences matches {0..1} matches {	-- Comment
+			ELEMENT[at0007] occurrences matches {0..1} matches {    -- Comment
 				value matches {
 					DV_TEXT matches {*}
 				}
 			}
-			allow_archetype CLUSTER[at0008] occurrences matches {0..*} matches {	-- Examination not done
+			allow_archetype CLUSTER[at0008] occurrences matches {0..*} matches {    -- Examination not done
 				include
 					archetype_id/value matches {/openEHR-EHR-CLUSTER\.exclusion_exam(-[a-zA-Z0-9_]+)*\.v1/}
 			}
@@ -182,6 +221,10 @@ ontology
 					description = <"Identification, by using a alias name, of the lesion to distinguish one lesion from similar lesions at the same body site.">
 					comment = <"For example, 'Mole #1' as marked on a diagram of the body site.">
 				>
+				["at0013"] = <
+					text = <"Diameter">
+					description = <"Diameter of the lesion.">
+				>
 			>
 		>
 		["pt-br"] = <
@@ -233,6 +276,66 @@ ontology
 					text = <"Número da lesão">
 					description = <"Identificação, usando um apelido ou numeração da lesão, para distinguir de outra lesão semelhante no mesmo local do corpo">
 					comment = <"Por exemplo, \"Papiloma #1\" foi marcado no diagrama do lado do corpo na parte superior">
+				>
+				["at0013"] = <
+					text = <"*Diameter (en)">
+					description = <"*Diameter of the lesion. (en)">
+				>
+			>
+		>
+		["nb"] = <
+			items = <
+				["at0000"] = <
+					text = <"Undersøkelse av en lesjon">
+					description = <"Funn observert under fysisk undersøkelse av en identifisert lesjon.">
+				>
+				["at0001"] = <
+					text = <"Kroppssted">
+					description = <"Identifisering av kroppsstedet der lesjonen befinner seg.">
+					comment = <"Kroppsstedet kan være på et område av hud eller slimhinne, for eksempel høyre kne, ganen, eller duodenum. Dersom kroppsstedet allerede er angitt i en annen arketype denne arketypen er nøstet inni, er dette dataelementet overflødig.">
+				>
+				["at0002"] = <
+					text = <"Type lesjon">
+					description = <"Identifisering av typen lesjon.">
+					comment = <"\"Type lesjon\" bør kodes med en terminologi, der det er mulig. For eksempel føflekk, papillom eller depigmentert område.">
+				>
+				["at0003"] = <
+					text = <"Klinisk beskrivelse">
+					description = <"Fritekstbeskrivelse av funnene som ble gjort under undersøkelsen av lesjonen.">
+				>
+				["at0004"] = <
+					text = <"Undersøkelsesfunn">
+					description = <"Strukturerte detaljer om undersøkelsesfunnene.">
+				>
+				["at0005"] = <
+					text = <"Multimediarepresentasjon">
+					description = <"Digitalt bilde, video eller diagram som representerer undersøkelsesfunnene.">
+				>
+				["at0006"] = <
+					text = <"Klinisk tolkning">
+					description = <"Enkeltord, frase eller kort beskrivelse som representerer den kliniske betydningen og signifikansen av undersøkelsesfunnene.">
+				>
+				["at0007"] = <
+					text = <"Kommentar">
+					description = <"Ytterligere fritekst om undersøkelsesfunnene som ikke dekkes av andre felt.">
+				>
+				["at0008"] = <
+					text = <"Undersøkelse ikke utført">
+					description = <"Detaljer for å eksplisitt angi at undersøkelsen ikke ble utført.">
+				>
+				["at0011"] = <
+					text = <"Strukturert kroppssted">
+					description = <"En strukturert angivelse av kroppssted for lesjonen.">
+					comment = <"Dersom kroppsstedet allerede er angitt i en annen arketype denne arketypen er nøstet inni, er dette SLOTet overflødig.">
+				>
+				["at0012"] = <
+					text = <"Alias">
+					description = <"Identifisering av lesjonen ved bruk av et alias, for å skille en lesjon fra lignende lesjoner ved det samme kroppsstedet.">
+					comment = <"For eksempel \"Føflekk nr 1\" som markert på et diagram over kroppsstedet.">
+				>
+				["at0013"] = <
+					text = <"Diameter">
+					description = <"Diameteren til lesjonen.">
 				>
 			>
 		>
