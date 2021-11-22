@@ -1,0 +1,318 @@
+﻿archetype (adl_version=1.4; uid=cb226bf8-0fd0-44ee-85b9-1d39cf64e7a6)
+	openEHR-EHR-OBSERVATION.embryo_score.v0
+
+concept
+	[at0000]	-- Embryo score
+language
+	original_language = <[ISO_639-1::en]>
+description
+	original_author = <
+		["name"] = <"Heather Leslie">
+		["organisation"] = <"Atomica Informatics">
+		["email"] = <"heather.leslie@atomicainformatics.com">
+		["date"] = <"2021-10-28">
+	>
+	details = <
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To record details about the assessment of the development of a single embryo during assisted reproduction treatment.">
+			use = <"Use to record details about the assessment of the development of a single embryo during assisted reproduction treatment.">
+			misuse = <"">
+			copyright = <"© openEHR Foundation">
+		>
+	>
+	lifecycle_state = <"in_development">
+	other_contributors = <>
+	other_details = <
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
+		["custodian_organisation"] = <"openEHR Foundation">
+		["original_namespace"] = <"org.openehr">
+		["original_publisher"] = <"openEHR Foundation">
+		["custodian_namespace"] = <"org.openehr">
+		["MD5-CAM-1.0.1"] = <"65E39ECB83CA22FDBC05DD01C606B1C3">
+		["build_uid"] = <"8b7fcd13-196a-45ad-b45c-ee00bfbc92fe">
+		["revision"] = <"0.0.1-alpha">
+	>
+
+definition
+	OBSERVATION[at0000] matches {    -- Embryo score
+		data matches {
+			HISTORY[at0001] matches {    -- History
+				events cardinality matches {1..*; unordered} matches {
+					EVENT[at0002] occurrences matches {0..*} matches {    -- Any event
+						data matches {
+							ITEM_TREE[at0003] matches {    -- Tree
+								items cardinality matches {0..*; unordered} matches {
+									ELEMENT[at0010] occurrences matches {0..1} matches {    -- Label
+										value matches {
+											DV_TEXT matches {*}
+										}
+									}
+									ELEMENT[at0011] occurrences matches {0..1} matches {    -- ID
+										value matches {
+											DV_IDENTIFIER matches {*}
+										}
+									}
+									ELEMENT[at0034] occurrences matches {0..1} matches {    -- Description
+										value matches {
+											DV_TEXT matches {*}
+										}
+									}
+									ELEMENT[at0036] occurrences matches {0..1} matches {    -- Cell number/stage
+										value matches {
+											DV_CODED_TEXT matches {
+												defining_code matches {
+													[local::
+													at0037,    -- Pronuclear stage
+													at0038,    -- 2-cell stage
+													at0039,    -- 4-cell stage
+													at0040,    -- 8-cell stage
+													at0041,    -- Morula
+													at0042]    -- Blastocyst
+												}
+											}
+										}
+									}
+									allow_archetype CLUSTER[at0013] occurrences matches {0..*} matches {    -- Findings
+										include
+											archetype_id/value matches {/openEHR-EHR-CLUSTER\.exam_embryo\.v0|openEHR-EHR-CLUSTER\.exam_blastocyst\.v0|openEHR-EHR-CLUSTER\.exam_oocyte\.v0|openEHR-EHR-CLUSTER\.exam_zygote\.v0/}
+									}
+									allow_archetype CLUSTER[at0022] occurrences matches {0..*} matches {    -- Image/video representation
+									}
+									ELEMENT[at0023] occurrences matches {0..1} matches {    -- Time post-insemination
+										value matches {
+											DV_DURATION matches {*}
+										}
+									}
+									ELEMENT[at0024] occurrences matches {0..1} matches {    -- Interpretation
+										value matches {
+											DV_CODED_TEXT matches {
+												defining_code matches {
+													[local::
+													at0025,    -- Viable
+													at0026]    -- Non-viable
+												}
+											}
+										}
+									}
+									ELEMENT[at0035] occurrences matches {0..1} matches {    -- Comment
+										value matches {
+											DV_TEXT matches {*}
+										}
+									}
+								}
+							}
+						}
+					}
+					POINT_EVENT[at0027] occurrences matches {0..1} matches {    -- Fertilisation check
+						data matches {
+							use_node ITEM_TREE /data[at0001]/events[at0002]/data[at0003]
+						}
+					}
+					POINT_EVENT[at0028] occurrences matches {0..1} matches {    -- Syngamy check
+						data matches {
+							use_node ITEM_TREE /data[at0001]/events[at0002]/data[at0003]
+						}
+					}
+					POINT_EVENT[at0029] occurrences matches {0..1} matches {    -- Early cleavage check
+						data matches {
+							use_node ITEM_TREE /data[at0001]/events[at0002]/data[at0003]
+						}
+					}
+					POINT_EVENT[at0030] occurrences matches {0..1} matches {    -- Day-2 embryo assessment
+						data matches {
+							use_node ITEM_TREE /data[at0001]/events[at0002]/data[at0003]
+						}
+					}
+					POINT_EVENT[at0031] occurrences matches {0..1} matches {    -- Day-3 embryo assessment
+						data matches {
+							use_node ITEM_TREE /data[at0001]/events[at0002]/data[at0003]
+						}
+					}
+					POINT_EVENT[at0032] occurrences matches {0..1} matches {    -- Day-4 embryo assessment
+						data matches {
+							use_node ITEM_TREE /data[at0001]/events[at0002]/data[at0003]
+						}
+					}
+					POINT_EVENT[at0033] occurrences matches {0..1} matches {    -- Day-5 embryo assessment
+						data matches {
+							use_node ITEM_TREE /data[at0001]/events[at0002]/data[at0003]
+						}
+					}
+				}
+			}
+		}
+		protocol matches {
+			ITEM_TREE[at0004] matches {    -- Item tree
+				items cardinality matches {0..*; unordered} matches {
+					allow_archetype CLUSTER[at0005] occurrences matches {0..*} matches {    -- Device
+						include
+							archetype_id/value matches {/.*/}
+					}
+					ELEMENT[at0006] occurrences matches {0..1} matches {    -- Container ID
+						value matches {
+							DV_IDENTIFIER matches {*}
+						}
+					}
+					ELEMENT[at0007] occurrences matches {0..1} matches {    -- Method
+						value matches {
+							DV_CODED_TEXT matches {
+								defining_code matches {
+									[local::
+									at0008,    -- Manual
+									at0009]    -- Automatic
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"Embryo score">
+					description = <"Assessment of the development of a single embryo during assisted reproduction treatment.">
+				>
+				["at0001"] = <
+					text = <"History">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Any event">
+					description = <"">
+				>
+				["at0003"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0004"] = <
+					text = <"Item tree">
+					description = <"@ internal @">
+				>
+				["at0005"] = <
+					text = <"Device">
+					description = <"">
+				>
+				["at0006"] = <
+					text = <"Container ID">
+					description = <"">
+				>
+				["at0007"] = <
+					text = <"Method">
+					description = <"">
+				>
+				["at0008"] = <
+					text = <"Manual">
+					description = <"">
+				>
+				["at0009"] = <
+					text = <"Automatic">
+					description = <"">
+				>
+				["at0010"] = <
+					text = <"Label">
+					description = <"Label or name identifying an embryo, or precursor.">
+				>
+				["at0011"] = <
+					text = <"ID">
+					description = <"The unique identifier for the embryo.">
+					comment = <"For example: the \"Single European Code” or “SEC” identifier.">
+				>
+				["at0013"] = <
+					text = <"Findings">
+					description = <"Structured findings appropriate for the development of the embryo.">
+				>
+				["at0022"] = <
+					text = <"Image/video representation">
+					description = <"">
+				>
+				["at0023"] = <
+					text = <"Time post-insemination">
+					description = <"The duration since insemination.">
+				>
+				["at0024"] = <
+					text = <"Interpretation">
+					description = <"">
+				>
+				["at0025"] = <
+					text = <"Viable">
+					description = <"">
+				>
+				["at0026"] = <
+					text = <"Non-viable">
+					description = <"">
+				>
+				["at0027"] = <
+					text = <"Fertilisation check">
+					description = <"Observation of the fertilised oocyte on the day of insemination.">
+				>
+				["at0028"] = <
+					text = <"Syngamy check">
+					description = <"Observation while in syngamy on the day of insemination.">
+				>
+				["at0029"] = <
+					text = <"Early cleavage check">
+					description = <"Observation of the cleavage-stage embryo development during Day 1 post insemination.">
+				>
+				["at0030"] = <
+					text = <"Day-2 embryo assessment">
+					description = <"Embryo observation on Day 2 post insemination.">
+				>
+				["at0031"] = <
+					text = <"Day-3 embryo assessment">
+					description = <"Embryo observation on Day 3 post insemination.">
+				>
+				["at0032"] = <
+					text = <"Day-4 embryo assessment">
+					description = <"Embryo observation on Day 4 post insemination.">
+				>
+				["at0033"] = <
+					text = <"Day-5 embryo assessment">
+					description = <"Embryo observation on Day 5 post insemination.">
+				>
+				["at0034"] = <
+					text = <"Description">
+					description = <"">
+				>
+				["at0035"] = <
+					text = <"Comment">
+					description = <"Additional narrative about the embryo assessment, not captured in other fields.">
+					comment = <"For example: difficulties in visualisation.">
+				>
+				["at0036"] = <
+					text = <"Cell number/stage">
+					description = <"">
+				>
+				["at0037"] = <
+					text = <"Pronuclear stage">
+					description = <"">
+				>
+				["at0038"] = <
+					text = <"2-cell stage">
+					description = <"">
+				>
+				["at0039"] = <
+					text = <"4-cell stage">
+					description = <"">
+				>
+				["at0040"] = <
+					text = <"8-cell stage">
+					description = <"">
+				>
+				["at0041"] = <
+					text = <"Morula">
+					description = <"">
+				>
+				["at0042"] = <
+					text = <"Blastocyst">
+					description = <"">
+				>
+			>
+		>
+	>
