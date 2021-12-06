@@ -14,6 +14,14 @@ language
 				["email"] = <"Strauch.Natalia@mh-hannover.de">
 			>
 		>
+		["sv"] = <
+			language = <[ISO_639-1::sv]>
+			author = <
+				["name"] = <"Åsa Skagerhult, Linda Aulin">
+				["organisation"] = <"Region Östergötland, Region Stockholm">
+				["email"] = <"asa.skagerhult@regionostergotland.se, linda.aulin@sll.se">
+			>
+		>
 	>
 description
 	original_author = <
@@ -25,21 +33,30 @@ description
 	details = <
 		["de"] = <
 			language = <[ISO_639-1::de]>
-			purpose = <"Zur Darstellung von Angaben zu einem einzelnen Befund bei einer bildgebenden Untersuchung.">
-			use = <"Verwenden Sie diesen Archetyp, um Angaben zu einem einzelnen Befund bei einer bildgebenden Untersuchung darzustellen.
+			purpose = <"*To record details about a significant clinical finding identified by radiological imaging techniques. (en)">
+			use = <"*Use to record details about a single significant positive or negative clinical finding identified by radiological imaging techniques and not available in existing imaging examination archetypes for the identified body site. 
 
-Eine oder mehrere Instanzen dieses Archetyps können im SLOT \"Bildgebende Befunde\" im Archetyp OBSERVATION.imaging_test_result verschachtelt sein.">
+This archetype has been designed to be nested within the 'Imaging findings' SLOT in the OBSERVATION.imaging_exam_result or in one of the relevant CLUSTER.imaging_exam family of archetypes, but can also be used within other ENTRY or CLUSTER archetypes, where clinically appropriate. While common findings anticipated and associated with each body site are modelled explicitly in the relevant CLUSTER.imaging_exam specialisation, this archetype provides a generic pattern to model any significant clinical finding found or not found at any body site. (en)">
 			keywords = <"Labor", "Pathologie", "Analyt", "Bestandteil", "Ergebnis">
-			misuse = <"">
+			misuse = <"*Not to be used to record clinical findings already modelled within the specialised CLUSTER.imaging_exam archetype relevant for the identified body site. (en)">
+		>
+		["sv"] = <
+			language = <[ISO_639-1::sv]>
+			purpose = <"Att registrera detaljer om ett enskilt fynd i en bilddiagnostik undersökning.">
+			use = <"Används för att registrera detaljer om ett enskilt fynd i en bilddiagnostik undersökning.
+
+En eller flera instanser av den här arketypen kan vara nästlade i SLOT för \"Fynd\" i OBSERVATION.imaging_test_result.">
+			keywords = <"fynd", "resultat", "röntgen", "radiologi", "bilddiagnostik">
+			misuse = <"*Not to be used to record clinical findings already modelled within the specialised CLUSTER.imaging_exam archetype relevant for the identified body site.(en)">
 		>
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"To record details about a single finding in an imaging examination.">
-			use = <"Use to record details about a single finding in an imaging examination.
+			purpose = <"To record details about a significant clinical finding identified by radiological imaging techniques.">
+			use = <"Use to record details about a single significant positive or negative clinical finding identified by radiological imaging techniques and not available in existing imaging examination archetypes for the identified body site. 
 
-One or more instances of this archetype may be nested within the 'Findings' SLOT in the OBSERVATION.imaging_test_result.">
+This archetype has been designed to be nested within the 'Imaging findings' SLOT in the OBSERVATION.imaging_exam_result or in one of the relevant CLUSTER.imaging_exam family of archetypes, but can also be used within other ENTRY or CLUSTER archetypes, where clinically appropriate. While common findings anticipated and associated with each body site are modelled explicitly in the relevant CLUSTER.imaging_exam specialisation, this archetype provides a generic pattern to model any significant clinical finding found or not found at any body site.">
 			keywords = <"laboratory", "pathology", "analyte", "constituent", "result">
-			misuse = <"">
+			misuse = <"Not to be used to record clinical findings already modelled within the specialised CLUSTER.imaging_exam archetype relevant for the identified body site.">
 			copyright = <"© openEHR Foundation">
 		>
 	>
@@ -58,27 +75,18 @@ Hl7 FHIR Observation resource: HL7 [Internet]; [cited 2017 Jun 27]. Available fr
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"9DB57D901FE2C39920950143C75208D5">
-		["build_uid"] = <"ab1cb85a-b9c3-4551-a32a-b5df32c2ddb0">
+		["MD5-CAM-1.0.1"] = <"ABEE0B8323667632B5A0BC62B8DDCDCB">
+		["build_uid"] = <"10ab2e99-9f4d-46d4-b9d2-76ba5a14706f">
 		["revision"] = <"0.0.1-alpha">
 	>
 
 definition
 	CLUSTER[at0000] matches {    -- Imaging finding
 		items cardinality matches {1..*; unordered} matches {
-			ELEMENT[at0024] occurrences matches {0..1} matches {    -- Finding name
+			ELEMENT[at0024] occurrences matches {0..1} matches {    -- Finding
 				value matches {
 					DV_TEXT matches {*}
 				}
-			}
-			ELEMENT[at0033] occurrences matches {0..1} matches {    -- Anatomical location
-				value matches {
-					DV_TEXT matches {*}
-				}
-			}
-			allow_archetype CLUSTER[at0034] occurrences matches {0..*} matches {    -- Structured anatomical location
-				include
-					archetype_id/value matches {/openEHR-EHR-CLUSTER\.anatomical_location\.v1/}
 			}
 			ELEMENT[at0001] occurrences matches {0..*} matches {    -- Presence?
 				value matches {
@@ -92,25 +100,21 @@ definition
 					}
 				}
 			}
-			ELEMENT[at0028] occurrences matches {0..1} matches {    -- Description
+			ELEMENT[at0028] occurrences matches {0..1} matches {    -- Clinical description
 				value matches {
 					DV_TEXT matches {*}
 				}
+			}
+			ELEMENT[at0033] occurrences matches {0..1} matches {    -- Body site
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			allow_archetype CLUSTER[at0034] occurrences matches {0..*} matches {    -- Structured body site
+				include
+					archetype_id/value matches {/openEHR-EHR-CLUSTER\.anatomical_location\.v1/}
 			}
 			allow_archetype CLUSTER[at0014] occurrences matches {0..*} matches {    -- Structured detail
-			}
-			ELEMENT[at0029] occurrences matches {0..1} matches {    -- Comparison to previous
-				value matches {
-					DV_CODED_TEXT matches {
-						defining_code matches {
-							[local::
-							at0030,    -- Improving
-							at0031,    -- Unchanged
-							at0032]    -- Worsening
-						}
-					}
-					DV_TEXT matches {*}
-				}
 			}
 			ELEMENT[at0003] occurrences matches {0..*} matches {    -- Comment
 				value matches {
@@ -127,18 +131,18 @@ ontology
 			items = <
 				["at0000"] = <
 					text = <"Imaging finding">
-					description = <"A single finding in an imaging examination.">
+					description = <"A significant clinical finding identified by radiological imaging techniques.">
 				>
 				["at0001"] = <
 					text = <"Presence?">
-					description = <"The presence or absence of the finding.">
+					description = <"The presence or absence of the significant finding.">
 					comment = <"For example '7.3 mmol/l', 'Raised'. The 'Any' data type will need to be constrained to an appropriate data type in a specialisation, a template or at run-time to reflect the actual analyte result. The Quantity data type has reference model attributes that include flags for normal/abnormal, reference ranges and approximations - see https://specifications.openehr.org/releases/RM/latest/data_types.html#_dv_quantity_class for more details.">
 					hl7v2_mapping = <"OBX.2, OBX.5, OBX.6, OBX.7, OBX.8">
 					fhir_mapping = <"Observation.value[x]">
 				>
 				["at0003"] = <
 					text = <"Comment">
-					description = <"Additional narrative about the finding, not captured in other fields.">
+					description = <"Additional narrative about the clinical finding, not captured in other fields.">
 					hl7v2_mapping = <"NTE.3">
 					fhir_mapping = <"Observation.note">
 				>
@@ -147,39 +151,24 @@ ontology
 					description = <"Additional structured detail about the finding.">
 				>
 				["at0024"] = <
-					text = <"Finding name">
-					description = <"The name of the finding.">
-					comment = <"Coding with an external terminology is strongly recommended.">
+					text = <"Finding">
+					description = <"Identification of the significant clinical finding, by name.">
+					comment = <"Coding with an external terminology is strongly recommended. For example: free fluid; or abscess.">
 					hl7v2_mapping = <"OBX.3">
 					fhir_mapping = <"Observation.code">
 				>
 				["at0028"] = <
-					text = <"Description">
+					text = <"Clinical description">
 					description = <"Narrative description about the observed clinical finding.">
 				>
-				["at0029"] = <
-					text = <"Comparison to previous">
-					description = <"Narrative description about the difference between a previous finding and the finding in this report.">
-				>
-				["at0030"] = <
-					text = <"Improving">
-					description = <"The finding is improving compared to previous imaging examinations.">
-				>
-				["at0031"] = <
-					text = <"Unchanged">
-					description = <"The finding is unchanged compared to previous imaging examinations.">
-				>
-				["at0032"] = <
-					text = <"Worsening">
-					description = <"The finding is worsening compared to previous imaging examinations.">
-				>
 				["at0033"] = <
-					text = <"Anatomical location">
-					description = <"Simple description of anatomical location.">
+					text = <"Body site">
+					description = <"Simple description of anatomical location of the finding.">
+					comment = <"For example: Pouch of Douglas.">
 				>
 				["at0034"] = <
-					text = <"Structured anatomical location">
-					description = <"Structured details about the location of the finding.">
+					text = <"Structured body site">
+					description = <"Structured details about the anatomical location of the finding.">
 				>
 				["at0035"] = <
 					text = <"Present">
@@ -199,17 +188,17 @@ ontology
 			items = <
 				["at0000"] = <
 					text = <"Bildgebender Befund">
-					description = <"Ein einzelner Befund bei einer bildgebenden Untersuchung.">
+					description = <"*A significant clinical finding identified by radiological imaging techniques. (en)">
 				>
 				["at0001"] = <
 					text = <"Vorhanden?">
-					description = <"Das Vorhandensein oder Fehlen des Befundes.">
+					description = <"*The presence or absence of the significant finding. (en)">
 					hl7v2_mapping = <"OBX.2, OBX.5, OBX.6, OBX.7, OBX.8">
 					fhir_mapping = <"Observation.value[x]">
 				>
 				["at0003"] = <
 					text = <"Kommentar">
-					description = <"Zusätzliche Information über den Befund, die in anderen Bereichen nicht erfasst wurde.">
+					description = <"*Additional narrative about the clinical finding, not captured in other fields. (en)">
 					hl7v2_mapping = <"NTE.3">
 					fhir_mapping = <"Observation.note">
 				>
@@ -218,38 +207,23 @@ ontology
 					description = <"Zusätzliches strukturiertes Detail zum Befund.">
 				>
 				["at0024"] = <
-					text = <"Befund">
-					description = <"Name des Befundes.">
-					comment = <"Die Codierung mit einer externen Terminologie wird dringend empfohlen.">
+					text = <"*Finding (en)">
+					description = <"*Identification of the significant clinical finding, by name. (en)">
+					comment = <"*Coding with an external terminology is strongly recommended. For example: free fluid; or abscess. (en)">
 					hl7v2_mapping = <"OBX.3">
 					fhir_mapping = <"Observation.code">
 				>
 				["at0028"] = <
-					text = <"Beschreibung">
+					text = <"*Clinical description (en)">
 					description = <"Beschreibung des beobachteten klinischen Befundes.">
 				>
-				["at0029"] = <
-					text = <"Vergleich zum Vorbefund">
-					description = <"Beschreibung des Unterschieds zwischen einem früheren Befund und dem Befund in diesem Bericht.">
-				>
-				["at0030"] = <
-					text = <"Verbesserung">
-					description = <"Der Befund verbessert sich im Vergleich zu früheren bildgebenden Untersuchungen.">
-				>
-				["at0031"] = <
-					text = <"Befundkonstanz">
-					description = <"Der Befund ist im Vergleich zu früheren bildgebenden Untersuchungen unverändert.">
-				>
-				["at0032"] = <
-					text = <"Verschlechterung">
-					description = <"Der Befund verschlechtert sich im Vergleich zu früheren bildgebenden Untersuchungen.">
-				>
 				["at0033"] = <
-					text = <"Anatomische Lokalisation">
+					text = <"*Body site (en)">
 					description = <"Einfache Beschreibung der anatomischen Position.">
+					comment = <"*For example: Pouch of Douglas. (en)">
 				>
 				["at0034"] = <
-					text = <"Anatomische Lokalisation strukturiert">
+					text = <"*Structured body site (en)">
 					description = <"Strukturierte Angaben über die anatomische Lokalisation des Befundes.">
 				>
 				["at0035"] = <
@@ -263,6 +237,63 @@ ontology
 				["at0037"] = <
 					text = <"Unbestimmt">
 					description = <"Es ist nicht möglich festzustellen, ob der Befund vorhanden ist oder nicht.">
+				>
+			>
+		>
+		["sv"] = <
+			items = <
+				["at0000"] = <
+					text = <"Bilddiagnostiskt fynd">
+					description = <"Ett enskilt resultat i en bilddiagnostisk undersökning.">
+				>
+				["at0001"] = <
+					text = <"Förekomst?">
+					description = <"Förekomst eller avsaknad av fyndet.">
+					comment = <"Exempelvis \"7,3 mmol/l\", \"Förhöjt\". Datatypen \"Any\" måste begränsas till en lämplig datatyp i en specialisering, i en mall eller genereras automatiskt av ett IT-system för att motsvara det faktiska analysresultatet. Datatypen \"Quantity\" innehåller attribut från referensmodellen som inkluderar flaggor för normal och onormal, för referensintervall och för approximationer. Mer information finns på https://specifications.openehr.org/releases/RM/latest/data_types.html#_dv_quantity_class.">
+					hl7v2_mapping = <"OBX.2, OBX.5, OBX.6, OBX.7, OBX.8">
+					fhir_mapping = <"Observation.value[x]">
+				>
+				["at0003"] = <
+					text = <"Kommentar">
+					description = <"Kommentar avseende fyndet som inte beskrivs i övriga fält.">
+					hl7v2_mapping = <"NTE.3">
+					fhir_mapping = <"Observation.note">
+				>
+				["at0014"] = <
+					text = <"Strukturerade detaljer">
+					description = <"Ytterligare strukturerade detaljer om fyndet.">
+				>
+				["at0024"] = <
+					text = <"Namn på fynd">
+					description = <"Fyndets namn.">
+					comment = <"Det rekommenderas starkt att använda en extern terminologi för kodning.">
+					hl7v2_mapping = <"OBX.3">
+					fhir_mapping = <"Observation.code">
+				>
+				["at0028"] = <
+					text = <"Beskrivning">
+					description = <"Beskrivning i fritext av det observerade kliniska fyndet.">
+				>
+				["at0033"] = <
+					text = <"Anatomisk lokalisation">
+					description = <"Enkel beskrivning av den anatomiska lokalisationen.">
+					comment = <"*For example: Pouch of Douglas.(en)">
+				>
+				["at0034"] = <
+					text = <"Strukturerad anatomisk lokalisation">
+					description = <"Strukturerade detaljer om fyndets anatomiska lokalisation.">
+				>
+				["at0035"] = <
+					text = <"Förekomst">
+					description = <"Fyndet har observerats på bilden.">
+				>
+				["at0036"] = <
+					text = <"Avsaknad">
+					description = <"Fyndet har inte observerats på bilden.">
+				>
+				["at0037"] = <
+					text = <"Obestämbar">
+					description = <"Det är inte möjligt att avgöra om förekomst av fyndet finns i bilden eller inte.">
 				>
 			>
 		>
