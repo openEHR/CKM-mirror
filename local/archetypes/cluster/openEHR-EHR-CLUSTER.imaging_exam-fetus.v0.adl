@@ -1,10 +1,10 @@
-﻿archetype (adl_version=1.4; uid=4fea727f-be22-464d-a6a9-0a4cfb7ede5c)
-	openEHR-EHR-CLUSTER.imaging_exam-scrotum.v0
+﻿archetype (adl_version=1.4; uid=fe617ce7-0243-4edc-b4af-6c9cd7057470)
+	openEHR-EHR-CLUSTER.imaging_exam-fetus.v0
 specialise
 	openEHR-EHR-CLUSTER.imaging_exam.v0
 
 concept
-	[at0000.1]	-- Imaging examination of the scrotum
+	[at0000.1]	-- Imaging examination of a fetus
 language
 	original_language = <[ISO_639-1::en]>
 description
@@ -17,12 +17,13 @@ description
 	details = <
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"To record a narrative description, structured details and clinical impression of the findings observed in an imaging examination targeting the scrotum.">
-			use = <"Use to record a narrative description, structured details and clinical impression of the findings observed in an imaging examination targeting the scrotum.
+			purpose = <"To record a narrative description, structured details and clinical impression of the findings observed in an imaging examination targeting a single fetus.">
+			use = <"Use to record a narrative description, structured details and clinical impression of the findings observed in an imaging examination targeting a single fetus.
 
-This archetype has been designed to be used in the 'Structured imaging findings' SLOT within the OBSERVATION.imaging_exam_result archetype, but can also be used within other ENTRY or CLUSTER archetypes, where clinically appropriate. 
+This archetype has been designed to be nested in the 'Structured imaging findings' SLOT within the OBSERVATION.imaging_exam_result archetype, but can also be used within other ENTRY or CLUSTER archetypes, where clinically appropriate.
 
-Use to provide a framework in which CLUSTER archetypes can be nested in the 'Additional details' SLOT within this archetype to record additional nested levels of structured imaging findings for related body substructures or site-specific findings.">
+Use to provide a framework in which CLUSTER archetypes can be nested in the 'Additional details' SLOT within this archetype to record additional nested levels of structured imaging findings for related body substructures or site-specified findings.
+">
 			misuse = <"Not to be used to record findings outside the specified body structure or region. Use other archetypes from the CLUSTER.imaging_exam family for this purpose.
 
 Not to be used to record details related to the overall findings, context or technical details related to a complete imaging examination test result. Use the OBERSERVATION.imaging_exam_result for this purpose. For example, comments on the study quality, differential diagnoses, and overall impression.">
@@ -37,20 +38,20 @@ Not to be used to record details related to the overall findings, context or tec
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"6F4ED666C48D276609AF177C6B1C1C15">
-		["build_uid"] = <"8e202399-a3d0-47e9-b350-98105b871e54">
+		["MD5-CAM-1.0.1"] = <"637C2C90E9A661492A4FA305D87480CC">
+		["build_uid"] = <"2394b769-6548-4237-b5ae-d0514b5e4e15">
 		["ip_acknowledgements"] = <"This artefact includes content from SNOMED Clinical Terms® (SNOMED CT®) which is copyrighted material of the International Health Terminology Standards Development Organisation (IHTSDO). Where an implementation of this artefact makes use of SNOMED CT content, the implementer must have the appropriate SNOMED CT Affiliate license - for more information contact https://www.snomed.org/snomed-ct/get-snomed or info@snomed.org.">
 		["revision"] = <"0.0.1-alpha">
 	>
 
 definition
-	CLUSTER[at0000.1] matches {    -- Imaging examination of the scrotum
+	CLUSTER[at0000.1] matches {    -- Imaging examination of a fetus
 		items cardinality matches {1..*; unordered} matches {
 			ELEMENT[at0001.1] matches {    -- Body structure
 				value matches {
 					DV_CODED_TEXT matches {
 						defining_code matches {
-							[local::at0.1]    -- Scrotum
+							[local::at0.1]    -- Fetus
 						}
 					}
 				}
@@ -78,6 +79,32 @@ definition
 					DV_TEXT matches {*}
 				}
 			}
+			ELEMENT[at0.2] occurrences matches {0..1} matches {    -- Estimated gestational age
+				value matches {
+					DV_DURATION matches {
+						value matches {PWD/|P0D..P50W|}
+					}
+				}
+			}
+			ELEMENT[at0.3] occurrences matches {0..1} matches {    -- Estimated weight
+				value matches {
+					C_DV_QUANTITY <
+						property = <[openehr::124]>
+						list = <
+							["1"] = <
+								units = <"g">
+								magnitude = <|>=0.0|>
+								precision = <|0|>
+							>
+							["2"] = <
+								units = <"kg">
+								magnitude = <|>=0.0|>
+								precision = <|2|>
+							>
+						>
+					>
+				}
+			}
 			ELEMENT[at0007] occurrences matches {0..1} matches {    -- Comment
 				value matches {
 					DV_TEXT matches {*}
@@ -92,6 +119,22 @@ ontology
 	term_definitions = <
 		["en"] = <
 			items = <
+				["at0000.1"] = <
+					text = <"Imaging examination of a fetus">
+					description = <"Findings observed in an imaging examination targeting a single fetus, using radiographic techniques.">
+				>
+				["at0001.1"] = <
+					text = <"Body structure">
+					description = <"Identification of the body structure or region examined.">
+				>
+				["at0.1"] = <
+					text = <"Fetus">
+					description = <"Examination of a fetus">
+				>
+				["at0000"] = <
+					text = <"Imaging examination">
+					description = <"Findings observed in an imaging examination targeting a specified structure or region, using radiographic techniques.">
+				>
 				["at0004"] = <
 					text = <"Imaging findings">
 					description = <"Narrative description of the imaging findings observed during this examination.">
@@ -123,17 +166,13 @@ ontology
 					description = <"Simple body site for the identified structure.">
 					comment = <"If the anatomical location of the identified body structure is known, this data element is obsolete.">
 				>
-				["at0000.1"] = <
-					text = <"Imaging examination of the scrotum">
-					description = <"Findings observed in an imaging examination targeting the scrotum, using radiographic techniques.">
+				["at0.2"] = <
+					text = <"Estimated gestational age">
+					description = <"">
 				>
-				["at0001.1"] = <
-					text = <"Body structure">
-					description = <"Identification of the body structure or region examined.">
-				>
-				["at0.1"] = <
-					text = <"Scrotum">
-					description = <"Imaging examination of the entire scrotum.">
+				["at0.3"] = <
+					text = <"Estimated weight">
+					description = <"">
 				>
 			>
 		>
@@ -141,7 +180,7 @@ ontology
 	term_bindings = <
 		["SNOMED-CT"] = <
 			items = <
-				["at0.1"] = <[SNOMED-CT::20233005]>
+				["at0.1"] = <[SNOMED-CT::55460000]>
 			>
 		>
 	>
