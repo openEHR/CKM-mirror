@@ -2,7 +2,7 @@
 	openEHR-EHR-OBSERVATION.condition_screening.v0
 
 concept
-	[at0000]	-- Condition screening questionnaire
+	[at0000]	-- Problem/Diagnosis screening questionnaire
 language
 	original_language = <[ISO_639-1::en]>
 	translations = <
@@ -22,6 +22,14 @@ language
 				["email"] = <"marit.alice.venheim@helse-vest-ikt.no, silje.ljosland.bakke@helse-vest-ikt.no, john.tore.valand@helse-bergen.no, john.tore.valand@helse-vest-ikt.no">
 			>
 		>
+		["nl"] = <
+			language = <[ISO_639-1::nl]>
+			author = <
+				["name"] = <"Martijn van Eenennaam, John Tore Valand">
+				["organisation"] = <"Nedap Healthcare, Helse Bergen">
+				["email"] = <"martijn.vaneenennaam@nedap.com, john.tore.valand@helse-vest-ikt.no">
+			>
+		>
 	>
 description
 	original_author = <
@@ -33,65 +41,141 @@ description
 	details = <
 		["de"] = <
 			language = <[ISO_639-1::de]>
-			purpose = <"Zur Darstellung der Antworten in einem Screening-Fragebogen zur Ermittlung von Zuständen.">
-			use = <"*Use to record the responses to a screening questionnaire for conditions.
+			purpose = <"*To create a framework for recording answers about problems or diagnoses, to the questions of a pre-defined screening questionnaire. (en)">
+			use = <"*Use to create a framework for recording answers about problems or diagnoses, to the questions of a pre-defined screening questionnaire.
 
 Common use cases include, but are not limited to:
-- Systematic questioning in any consultation; or
-- Specific questioning related to infectious disease surveillance.
+- Systematic questioning in any consultation, for example:
+--- Diagnosed with cancer? Yes, No, Unkown.
+--- Diagnosed with Covid 19 or Influenza in the past twelve months? Yes, No, Unkown.
+- Specific questioning related to disease surveillance.
 
-In order to record the response at a specific point in time or within an interval of time, use the EVENT RM attribute.
+In use cases where it's important to differentiate the time context of a question in the persisted data, the reference model EVENT structure can be used to record this difference. For questions specifically about the point in time of recording, use a point in time EVENT, for example \"Do you have influenza?\". In contrast, for questions specifically about a period of time, use the interval event, for example, \"Have you had influenza in the past 4 weeks?\".
+
+The source of the information in a questionnaire response may vary in different contexts but can be specifically identified using the 'Information provider' element in the Reference Model.
 
 This archetype has been designed to be used as a screening tool or to record simple questionnaire-format data for use in situations such as a disease registry. If the screening process identifies the presence of a health condition and it is intended that the details are to be recorded and persisted as part of an ongoing health record, any further specific details about the condition (such as the date of clinical recognition) should be recorded using the EVALUATION.problem_diagnosis archetype. (en)">
-			misuse = <"Nicht zu verwenden, um Details zu einem bestimmten gesundheitlichen Zustand im Rahmen einer typischen klinischen Beratung darzustellen. Verwenden Sie dazu EVALUATION.problem_diagnosis.">
+			keywords = <"*Condition, state, illness, syndrome (en)", ...>
+			misuse = <"*Not to be used to record details about the positive presence of a specific condition as part of a typical clinical consultation. Use EVALUATION.problem_diagnosis for this purpose.
+
+Not to be used to record details about issues, worries or concerns affecting an individual. Use OBSERVATION.issue_screening for this purpose.
+
+Not to be used to record details about procedures performed. Use the OBSERVATION.procedure_screening for this purpose.
+
+Not to be used to record details about the positive presence of an adverse reaction risk as part of a typical clinical consultation. Use EVALUATION.adverse_reaction_risk for this purpose.
+
+Not to be used to record details about the positive absence of an adverse reaction risk as part of a typical clinical consultation. Use EVALUATION.exclusion_specific for this purpose. (en)">
 		>
 		["nb"] = <
 			language = <[ISO_639-1::nb]>
-			purpose = <"For å dokumentere responsen gitt i et selvregistreringsskjema eller undersøkelsesskjema om et individs helsetilstander.">
-			use = <"Brukes for å dokumentere responsen gitt i et selvregistreringsskjema eller undersøkelsesskjema om et individs helsetilstander.
+			purpose = <"For å lage et rammeverk for registrering av svar på forhåndsdefinerte spørsmål om problemer eller diagnoser.">
+			use = <"Brukes for å lage et rammeverk for registrering av svar på forhåndsdefinerte spørsmål om problemer eller diagnoser.
 
 Vanlige bruksområder inkluderer, men er ikke begrenset til:
-- Systematisk bruk av selvregistrering- eller undersøkelsesskjema ved konsultasjoner.
-- Spesifikk spørring relatert til overvåkning av infeksjonssykdommer.
+- Systematiske spørsmål ved konsultasjoner, for eksempel:
+--- Diagnostisert med kreft? Ja, Nei, Ukjent.
+--- Diagnostisert med Covid 19 eller influensa de siste tolv månedene? Ja, Nei, Ukjent.
+- Spesifikke spørsmål relatert til overvåkning av sykdommer.
 
-For å registrere det spesifikke tidspunktet, eller tidsintervallet responsen ble gitt, bruk referansemodellens EVENT RM attributt
+Semantikken til denne arketypen er med vilje løst definert, og spørringer etter data i denne arketypen vil normalt bare være nyttig eller trygt innenfor konteksten av hvert spesifikke spørreskjema. I et templat vil hvert dataelement vanligvis døpes om til det spesifikke spørsmålet. Der det er foreslått verdisett for vanlige brukstilfeller, kan disse tilpasses for lokal bruk ved å bruke 'tekst'-datatypen for å matche hvert enkelt brukstilfelle.
 
-Denne arketypen er laget for bruk som et screeningverktøy for å registrere enkle data i et spørreskjema/undersøkelsesskjema, som for eksempel til et sykdomsregister. Dersom det i screeningsprosessen blir identifisert at en medisinsk tilstand er tilstede, og som bør være en del av den løpende journalen, bruk arketypen EVALUATION.problem_diagnosis (Problem diagnose) for dette formålet. Her kan det registreres spesifikke detaljer om tilstanden som for eksempel diagnosedato.
+I tilfeller der det er viktig å skille tid i konteksten av spørsmål i de persisterte dataene, kan referansemodellens EVENT-struktur brukes for å registrere denne variasjonen. For spørsmål som spesifikt handler om tidspunktet ved registrering, bruk tidspunkt (point in time) EVENT. For eksempel: \"Har du influensa?\". Spørsmål som spesifikt omhandler en tidsperiode, bruk et intervall (interval) EVENT. For eksempel: \"Har du hatt influensa de siste 4 ukene?\".
 
-">
-			misuse = <"Skal ikke brukes for å registrere spesifikke detaljer om en helsetilstand som en del av en typisk klinisk konsultasjon. Bruk arketypen EVALUATION.problem_diagnosis (Problem/ diagnose) for dette formålet.">
+Kilden til informasjonen i et kartleggingskjema kan variere i ulike kontekster, men kan identifiseres spesifikt ved å benytte \"Information provider\" elementet i openEHR referansemodellen.
+
+Denne arketypen er laget for å bli brukt i et kartleggingsverktøy, for å registrere enkle strukturerte data til for eksempel et sykdomsregister. Dersom det i kartleggingsprosessen etableres at et problem eller en diagnose er tilstede, brukes arketypen EVALUATION.problem_diagnosis (Problem/diagnose) til å registrere tilhørende spesifikke detaljer som for eksempel diagnosedato, dersom detaljene bør være den del av den løpende journalen.">
+			keywords = <"tilstand, sykdom, syndrom, spørreskjema", ...>
+			misuse = <"Brukes ikke for å registrere detaljer om en etablert tilstedeværelse av et spesifikt problem eller diagnose pasientjournalen. BBruk arketypen EVALUATION.problem_diagnosis for dette formålet.
+
+Brukes ikke for å registrere detaljer om etablert fravær av et spesifikt problem eller diagnose i pasientjournalen. Bruk arketypen EVALUATION.exclusion_specific for dette formålet.
+
+Brukes ikke for å registrere detaljer om bekymringer eller forhold som gjelder et individ. Bruk arketypen OBSERVATION.issue_screening for dette formålet.
+
+Brukes ikke for å registrere detaljer om gjennomførte prosedyrer, bruk arketypen ACTION.procedure for dette formålet.
+
+Brukes ikke for å registrere detaljer om positiv tilstedeværelse av en overfølsomhetsreaksjon som en del av en klinisk konsultasjon. Bruk arketypen EVALUATION.adverse_reaction_risk for dette formålet.
+
+Brukes ikke for å registrere detaljer om positivt fravær av en overfølsomhetsreaksjon som en del av en klinisk konsultasjon. Bruk arketypen EVALUATION.exclusion_specific for dette formålet.">
 		>
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"To record the responses to a screening questionnaire for conditions.">
-			use = <"Use to record the responses to a screening questionnaire for conditions.
+			purpose = <"To create a framework for recording answers to pre-defined screening questions about problems or diagnoses.">
+			use = <"Use to create a framework for recording answers to pre-defined screening questions about problems or diagnoses.
 
 Common use cases include, but are not limited to:
-- Systematic questioning in any consultation; or
-- Specific questioning related to infectious disease surveillance.
+- Systematic questioning in any consultation, for example:
+--- Diagnosed with cancer? Yes, No, Unkown.
+--- Diagnosed with Covid 19 or Influenza in the past twelve months? Yes, No, Unkown.
+- Specific questioning related to disease surveillance.
 
-In order to record the response at a specific point in time or within an interval of time, use the EVENT RM attribute.
+The semantics of this archetype are intentionally loose, and querying this archetype would normally only be useful or safe within the context of each specific questionnaire. In a template, each data element would usually be renamed to the specific question asked. Where value sets have been proposed for common use cases, these can be adapted for local use by using the 'text' choice to match each specific use case.
+
+In use cases where it's important to differentiate the time context of a question in the persisted data, the reference model EVENT structure can be used to record this difference. For questions specifically about the point in time of recording, use a point in time EVENT, for example \"Do you have influenza?\". In contrast, for questions specifically about a period of time, use the interval event, for example, \"Have you had influenza in the past 4 weeks?\".
+
+The source of the information in a questionnaire response may vary in different contexts but can be specifically identified using the 'Information provider' element in the Reference Model.
 
 This archetype has been designed to be used as a screening tool or to record simple questionnaire-format data for use in situations such as a disease registry. If the screening process identifies the presence of a health condition and it is intended that the details are to be recorded and persisted as part of an ongoing health record, any further specific details about the condition (such as the date of clinical recognition) should be recorded using the EVALUATION.problem_diagnosis archetype.">
-			misuse = <"Not to be used to record details about a specific condition as part of a typical clinical consultation. Use EVALUATION.problem_diagnosis for this purpose.">
+			keywords = <"Condition, state, illness, syndrome", ...>
+			misuse = <"Not to be used to record details about the positive presence of a specific problem or diagnosis for persistence in a health record. Use EVALUATION.problem_diagnosis for this purpose.
+
+Not to be used to record details about the positive absence of a specific problem or diagnosis for persistence in a health record. Use EVALUATION.exclusion_specific for this purpose.
+
+Not to be used to record details about issues, worries or concerns affecting an individual. Use OBSERVATION.issue_screening for this purpose.
+
+Not to be used to record details about procedures performed. Use the OBSERVATION.procedure_screening for this purpose.
+
+Not to be used to record details about the positive presence of an adverse reaction risk as part of a typical clinical consultation. Use EVALUATION.adverse_reaction_risk for this purpose.
+
+Not to be used to record details about the positive absence of an adverse reaction risk as part of a typical clinical consultation. Use EVALUATION.exclusion_specific for this purpose.">
+		>
+		["nl"] = <
+			language = <[ISO_639-1::nl]>
+			purpose = <"*To create a framework for recording answers to pre-defined screening questions about problems or diagnoses.(en)">
+			use = <"*Use to create a framework for recording answers to pre-defined screening questions about problems or diagnoses.
+
+Common use cases include, but are not limited to:
+- Systematic questioning in any consultation, for example:
+--- Diagnosed with cancer? Yes, No, Unkown.
+--- Diagnosed with Covid 19 or Influenza in the past twelve months? Yes, No, Unkown.
+- Specific questioning related to disease surveillance.
+
+The semantics of this archetype are intentionally loose, and querying this archetype would normally only be useful or safe within the context of each specific questionnaire. In a template, each data element would usually be renamed to the specific question asked. Where value sets have been proposed for common use cases, these can be adapted for local use by using the 'text' choice to match each specific use case.
+
+In use cases where it's important to differentiate the time context of a question in the persisted data, the reference model EVENT structure can be used to record this difference. For questions specifically about the point in time of recording, use a point in time EVENT, for example \"Do you have influenza?\". In contrast, for questions specifically about a period of time, use the interval event, for example, \"Have you had influenza in the past 4 weeks?\".
+
+The source of the information in a questionnaire response may vary in different contexts but can be specifically identified using the 'Information provider' element in the Reference Model.
+
+This archetype has been designed to be used as a screening tool or to record simple questionnaire-format data for use in situations such as a disease registry. If the screening process identifies the presence of a health condition and it is intended that the details are to be recorded and persisted as part of an ongoing health record, any further specific details about the condition (such as the date of clinical recognition) should be recorded using the EVALUATION.problem_diagnosis archetype.(en)">
+			keywords = <"Aandoening, toestand, ziekte, syndroom", ...>
+			misuse = <"*Not to be used to record details about the positive presence of a specific problem or diagnosis for persistence in a health record. Use EVALUATION.problem_diagnosis for this purpose.
+
+Not to be used to record details about the positive absence of a specific problem or diagnosis for persistence in a health record. Use EVALUATION.exclusion_specific for this purpose.
+
+Not to be used to record details about issues, worries or concerns affecting an individual. Use OBSERVATION.issue_screening for this purpose.
+
+Not to be used to record details about procedures performed. Use the OBSERVATION.procedure_screening for this purpose.
+
+Not to be used to record details about the positive presence of an adverse reaction risk as part of a typical clinical consultation. Use EVALUATION.adverse_reaction_risk for this purpose.
+
+Not to be used to record details about the positive absence of an adverse reaction risk as part of a typical clinical consultation. Use EVALUATION.exclusion_specific for this purpose.(en)">
 		>
 	>
 	lifecycle_state = <"in_development">
-	other_contributors = <"Silje Ljosland Bakke, Helse Vest IKT AS, Norway (openEHR Editor)", "Ian McNicoll, freshEHR Clinical Informatics, UK", "Heather Leslie, Atomica Informatics, Australia (openEHR Editor)">
+	other_contributors = <"Vebjørn Arntzen, Oslo University Hospital, Norway (openEHR Editor)", "Silje Ljosland Bakke, Helse Vest IKT AS, Norway (openEHR Editor)", "SB Bhattacharyya, Sudisa Consultancy Services, India", "Yexuan Cheng, 浙江大学, China", "Grant Forrest, Lunaria Ltd, United Kingdom", "Joost Holslag, Nedap, Netherlands", "Evelyn Hovenga, EJSH Consulting, Australia", "Liv Laugen, ​Oslo University Hospital, Norway, Norway", "Heather Leslie, Atomica Informatics, Australia (openEHR Editor)", "Ian McNicoll, freshEHR Clinical Informatics, UK", "Mikael Nyström, Cambio Healthcare Systems AB, Sweden", "Norwegian Review Summary, Nasjonal IKT HF, Norway", "John Tore Valand, Helse Bergen, Norway (openEHR Editor)", "Marit Alice Venheim, Helse Vest IKT, Norway (openEHR Editor)">
 	other_details = <
 		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
 		["custodian_organisation"] = <"openEHR Foundation">
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"CABF06A8F8DEDD38822B1B0CB013AA81">
-		["build_uid"] = <"52a4ab8e-360a-4be5-87d3-3142a143f829">
+		["MD5-CAM-1.0.1"] = <"7D807FC5F298E23920648519A50943F8">
+		["build_uid"] = <"1baa1b74-a476-4220-91e2-784a9a6286b9">
 		["ip_acknowledgements"] = <"This artefact includes content from SNOMED Clinical Terms® (SNOMED CT®) which is copyrighted material of the International Health Terminology Standards Development Organisation (IHTSDO). Where an implementation of this artefact makes use of SNOMED CT content, the implementer must have the appropriate SNOMED CT Affiliate license - for more information contact http://www.snomed.org/snomed-ct/get-snomedct or info@snomed.org.">
 		["revision"] = <"0.0.1-alpha">
 	>
 
 definition
-	OBSERVATION[at0000] matches {    -- Condition screening questionnaire
+	OBSERVATION[at0000] matches {    -- Problem/Diagnosis screening questionnaire
 		data matches {
 			HISTORY[at0001] matches {    -- History
 				events cardinality matches {0..*; unordered} matches {
@@ -104,7 +188,7 @@ definition
 											DV_TEXT matches {*}
 										}
 									}
-									ELEMENT[at0028] occurrences matches {0..1} matches {    -- Any presence?
+									ELEMENT[at0028] occurrences matches {0..1} matches {    -- Any problems or diagnoses?
 										value matches {
 											DV_CODED_TEXT matches {
 												defining_code matches {
@@ -117,9 +201,18 @@ definition
 											DV_TEXT matches {*}
 										}
 									}
-									CLUSTER[at0022] occurrences matches {0..*} matches {    -- Specific condition
+									ELEMENT[at0043] occurrences matches {0..1} matches {    -- Description
+										value matches {
+											DV_TEXT matches {*}
+										}
+									}
+									allow_archetype CLUSTER[at0042] occurrences matches {0..*} matches {    -- Overall addtional details
+										include
+											archetype_id/value matches {/.*/}
+									}
+									CLUSTER[at0022] occurrences matches {0..*} matches {    -- Specific problem or diagnosis
 										items cardinality matches {1..*; unordered} matches {
-											ELEMENT[at0004] matches {    -- Condition name
+											ELEMENT[at0004] matches {    -- Problem/Diagnosis name
 												value matches {
 													DV_TEXT matches {*}
 												}
@@ -139,16 +232,19 @@ definition
 											}
 											ELEMENT[at0040] occurrences matches {0..1} matches {    -- Age at diagnosis
 												value matches {
-													DV_DURATION matches {*}
+													DV_TEXT matches {*}
 													DV_INTERVAL<DV_DURATION> matches {*}
+													DV_DURATION matches {*}
 												}
 											}
 											ELEMENT[at0041] occurrences matches {0..1} matches {    -- Duration
 												value matches {
 													DV_DURATION matches {*}
+													DV_INTERVAL<DV_DURATION> matches {*}
+													DV_TEXT matches {*}
 												}
 											}
-											allow_archetype CLUSTER[at0039] occurrences matches {0..*} matches {    -- Screening details
+											allow_archetype CLUSTER[at0039] occurrences matches {0..*} matches {    -- Additional details
 												include
 													archetype_id/value matches {/openEHR-EHR-CLUSTER\.organisation\.v0/}
 											}
@@ -185,8 +281,9 @@ ontology
 		["en"] = <
 			items = <
 				["at0000"] = <
-					text = <"Condition screening questionnaire">
-					description = <"An individual- or self-reported questionnaire screening for health conditions, including problems and diagnoses.">
+					text = <"Problem/Diagnosis screening questionnaire">
+					description = <"Answers to pre-defined screening questions about problems or diagnoses.">
+					comment = <"The answers may be self-reported.">
 				>
 				["at0001"] = <
 					text = <"History">
@@ -201,12 +298,13 @@ ontology
 					description = <"@ internal @">
 				>
 				["at0004"] = <
-					text = <"Condition name">
-					description = <"Name of the condition or group of conditions being screened.">
+					text = <"Problem/Diagnosis name">
+					description = <"Name of a problem or diagnosis; or grouping of problems or diagnoses.">
+					comment = <"Coding of the Problem/Diagnosis name with a terminology is preferred, where possible.">
 				>
 				["at0005"] = <
 					text = <"Presence?">
-					description = <"Presence of the condition.">
+					description = <"Presence of the specific problem or diagnosis; or grouping of problems or diagnoses.">
 				>
 				["at0007"] = <
 					text = <"Item tree">
@@ -214,54 +312,55 @@ ontology
 				>
 				["at0021"] = <
 					text = <"Extension">
-					description = <"Additional information required to capture local content or to align with other reference models/formalisms.">
-					comment = <"For example: local information requirements or additional metadata to align with FHIR or CIMI equivalents.">
+					description = <"Additional information required to extend the model with local content or to align with other reference models or formalisms.">
+					comment = <"For example: local information requirements; or additional metadata to align with FHIR.">
 				>
 				["at0022"] = <
-					text = <"Specific condition">
-					description = <"Screening details about a specified condition or grouping of conditions.">
+					text = <"Specific problem or diagnosis">
+					description = <"Details about a specific problem or diagnosis or grouping of problems or diagnoses related to the screening purpose.">
 				>
 				["at0023"] = <
 					text = <"Yes">
-					description = <"The specific condition is present.">
+					description = <"The specific problem or diagnosis; or grouping of problems or diagnoses is present.">
 				>
 				["at0024"] = <
 					text = <"No">
-					description = <"The specific condition is not present.">
+					description = <"The specific problem or diagnosis; or grouping of problems or diagnoses is not present.">
 				>
 				["at0025"] = <
 					text = <"Comment">
-					description = <"Additional narrative about the specified condition, not captured in other fields.">
+					description = <"Additional narrative about the specified problem or diagnosis, not captured in other fields.">
 				>
 				["at0027"] = <
 					text = <"Unknown">
-					description = <"It is not known whether the condition is present or absent.">
+					description = <"It is not known whether the specific problem or diagnosis; or grouping of problems or diagnoses is present or absent.">
 				>
 				["at0028"] = <
-					text = <"Any presence?">
-					description = <"Presence of any relevant conditions.">
+					text = <"Any problems or diagnoses?">
+					description = <"Presence of problems or diagnoses related to the screening purpose.">
 				>
 				["at0031"] = <
 					text = <"Yes">
-					description = <"Conditions are present.">
+					description = <"Problems or diagnoses are present.">
 				>
 				["at0032"] = <
 					text = <"No">
-					description = <"Conditions are not present.">
+					description = <"Problems or diagnoses are not present.">
 				>
 				["at0033"] = <
 					text = <"Unknown">
-					description = <"It is not known whether any conditions are present or absent.">
+					description = <"It is not known whether any problems or diagnoses are present or absent.">
 				>
 				["at0034"] = <
 					text = <"Screening purpose">
 					description = <"The reason for overall screening.">
-					comment = <"For example: pre-operative screening.">
+					comment = <"This data element is intended to provide collection context for the question/answer groups when queried at a later date. It is not expected that this data element will be exposed to the individual, but only stored in data.
+For example: pre-admission screening or the name of the actual questionnaire.">
 				>
 				["at0039"] = <
-					text = <"Screening details">
-					description = <"Additional details or questions about the specific condition.">
-					comment = <"For example: hospital where treated.">
+					text = <"Additional details">
+					description = <"Structured details or questions about the specific problem or diagnosis.">
+					comment = <"For example; hospital where treated.">
 				>
 				["at0040"] = <
 					text = <"Age at diagnosis">
@@ -271,13 +370,22 @@ ontology
 					text = <"Duration">
 					description = <"Duration of time since diagnosis.">
 				>
+				["at0042"] = <
+					text = <"Overall addtional details">
+					description = <"Structured details or questions about the overall problems or diagnoses.">
+				>
+				["at0043"] = <
+					text = <"Description">
+					description = <"Narrative description about all problems or diagnosis.">
+				>
 			>
 		>
 		["nb"] = <
 			items = <
 				["at0000"] = <
-					text = <"Kartlegging av helsetilstander">
-					description = <"En individuell eller selvrapportert kartlegging av et individs helsetilstander, inkludert problemer og diagnoser i et spørreskjema.">
+					text = <"Kartlegging av problemer eller diagnoser">
+					description = <"Svar på forhåndsdefinerte spørsmål om problemer eller diagnoser.">
+					comment = <"Svarene kan være selvrapporterte.">
 				>
 				["at0001"] = <
 					text = <"History">
@@ -292,12 +400,13 @@ ontology
 					description = <"@ internal @">
 				>
 				["at0004"] = <
-					text = <"Navn på helsetilstand">
-					description = <"Navn på tilstanden eller en gruppe av tilstander.">
+					text = <"Problem/diagnosenavn">
+					description = <"Navnet på et problem eller en diagnose, eller grupper av problemer eller diagnoser.">
+					comment = <"Koding av problem/diagnosenavnet med en terminologi foretrekkes, der det er mulig.">
 				>
 				["at0005"] = <
 					text = <"Tilstede?">
-					description = <"Tilstedeværelse av helsetilstanden.">
+					description = <"Tilstedeværelse av spesifisert problem/diagnose; eller gruppe av problemer eller diagnoser.">
 				>
 				["at0007"] = <
 					text = <"Item tree">
@@ -309,66 +418,75 @@ ontology
 					comment = <"For eksempel lokale informasjonsbehov eller ytterligere metadata for å kunne tilpasse til tilsvarende konsepter i FHIR.">
 				>
 				["at0022"] = <
-					text = <"Spesifikk helsetilstand">
-					description = <"Detaljer om en spesifikk helsetilstand eller en gruppe av helsetilstander.">
+					text = <"Spesifikt problem eller diagnose">
+					description = <"Detaljer om et spesifikt problem eller diagnose eller grupper av problemer eller diagnoser relatert til kartleggingsformålet.">
 				>
 				["at0023"] = <
 					text = <"Ja">
-					description = <"Den spesifikke tilstanden er tilstede.">
+					description = <"Det spesifiserte problemet eller diagnosen; eller gruppen av problemer eller diagnoser er tilstede.">
 				>
 				["at0024"] = <
 					text = <"Nei">
-					description = <"Den spesifikke tilstanden er fraværende.">
+					description = <"Det spesifiserte problemet eller diagnosen; eller gruppen av problemer eller diagnoser er fraværende.">
 				>
 				["at0025"] = <
 					text = <"Kommentar">
-					description = <"Ytterligere fritekst om den spesifikke tilstanden som ikke er omfattet av andre felt.">
+					description = <"Ytterligere fritekst om det spesifikke problemet eller diagnosen som ikke er omfattet av andre felt.">
 				>
 				["at0027"] = <
 					text = <"Ukjent">
-					description = <"Det er ukjent om tilstanden er tilstede eller fraværende.">
+					description = <"Det er ukjent om det spesifiserte problemet eller diagnosen; eller gruppen av problemer eller diagnoser er tilstede eller fraværende.">
 				>
 				["at0028"] = <
-					text = <"Tilstedeværelse?">
-					description = <"Tilstedeværelse av relevante tilstander.">
+					text = <"Tilstedeværelse av problemer eller diagnoser?">
+					description = <"Tilstedeværelse av problemer eller diagnoser relatert til kartleggingsformålet.">
 				>
 				["at0031"] = <
 					text = <"Ja">
-					description = <"Tilstander er tilstede.">
+					description = <"Problemer eller diagnoser er tilstede.">
 				>
 				["at0032"] = <
 					text = <"Nei">
-					description = <"Tilstander er ikke tilstede.">
+					description = <"Problemer eller diagnoser er ikke tilstede.">
 				>
 				["at0033"] = <
 					text = <"Ukjent">
-					description = <"Det er ukjent om noen tilstander er tilstede eller fraværende.">
+					description = <"Det er ukjent om noen problemer eller diagnoser er tilstede eller fraværende.">
 				>
 				["at0034"] = <
-					text = <"Registreringsformål">
-					description = <"Årsaken til registreringen.">
-					comment = <"For eksempel: Pre-operativ screening.">
+					text = <"Kartleggingsformål">
+					description = <"Årsaken til kartleggingen.">
+					comment = <"Dette dataelementet er ment for å sette en kontekst for spørsmålene om man senere ønsker å gjøre spørringer på dataene. Det er ikke forventet at dette dataelementet skal være synlig for en bruker av skjemaet, men kun tilgjengelig i de lagrede dataene. For eksempel: \"Pre operativ screening\" eller navnet på det faktiske spørreskjemaet.">
 				>
 				["at0039"] = <
-					text = <"Screening detaljer">
-					description = <"Ytterligere detaljer eller spørsmål om den spesifikke tilstanden.">
-					comment = <"For eksempel behandlende sykehus.">
+					text = <"Ytterligere detaljer">
+					description = <"Strukturerte detaljer eller spørsmål om det spesifikke problemet eller diagnosen.">
+					comment = <"For eksempel: Behandlende sykehus.">
 				>
 				["at0040"] = <
 					text = <"Alder ved diagnose">
-					description = <"Individets alder da helsetilstanden ble diagnostisert eller oppdaget.">
+					description = <"Individets alder da problemet/diagnosen ble diagnostisert eller oppdaget.">
 				>
 				["at0041"] = <
 					text = <"Varighet">
 					description = <"Tid/varighet siden diagnosen ble satt.">
+				>
+				["at0042"] = <
+					text = <"Overordnede ytterligere detaljer">
+					description = <"Strukturerte detaljer eller spørsmål om overordnede problemer eller diagnoser.">
+				>
+				["at0043"] = <
+					text = <"Beskrivelse">
+					description = <"Fritekstbeskrivelse om alle problemene eller diagnosene.">
 				>
 			>
 		>
 		["de"] = <
 			items = <
 				["at0000"] = <
-					text = <"Screening-Fragebogen für Zustände">
-					description = <"*An individual- or self-reported questionnaire screening for health conditions, including problems and diagnoses. (en)">
+					text = <"*Problem/Diagnosis screening questionnaire (en)">
+					description = <"*Answers to questions about problems or diagnoses in a pre-defined screening questionnaire. (en)">
+					comment = <"*The answers may be self-reported. (en)">
 				>
 				["at0001"] = <
 					text = <"History">
@@ -384,11 +502,12 @@ ontology
 				>
 				["at0004"] = <
 					text = <"Name des Zustands">
-					description = <"*Name of the condition or group of conditions being screened. (en)">
+					description = <"*Name of a problem or diagnosis; or grouping of problems or diagnoses. (en)">
+					comment = <"*Coding of the Problem/Diagnosis name with a terminology is preferred, where possible. (en)">
 				>
 				["at0005"] = <
 					text = <"Vorhanden?">
-					description = <"Vorhandensein des Zustands.">
+					description = <"*Presence of the specific problem or diagnosis.  (en)">
 				>
 				["at0007"] = <
 					text = <"Item tree">
@@ -396,12 +515,12 @@ ontology
 				>
 				["at0021"] = <
 					text = <"Erweiterung">
-					description = <"Zusätzliche Informationen zur Erfassung lokaler Inhalte oder Anpassung an andere Referenzmodelle/Formalismen.">
-					comment = <"Zum Beispiel: Lokaler Informationsbedarf oder zusätzliche Metadaten zur Anpassung an FHIR-Ressourcen oder CIMI-Modelle.">
+					description = <"*Additional information required to extend the model with local content or to align with other reference models or formalisms. (en)">
+					comment = <"*For example: local information requirements; or additional metadata to align with FHIR. (en)">
 				>
 				["at0022"] = <
 					text = <"Bestimmter Zustand">
-					description = <"*Screening details about a specified condition or grouping of conditions. (en)">
+					description = <"*Details about a specific problem or diagnosis or grouping of problems or diagnoses related to the screening purpose. (en)">
 				>
 				["at0023"] = <
 					text = <"*Yes (en)">
@@ -420,8 +539,8 @@ ontology
 					description = <"Es ist nicht bekannt, ob der spezifische Zustand vorhanden oder nicht vorhanden ist.">
 				>
 				["at0028"] = <
-					text = <"*Any presence? (en)">
-					description = <"Vorhandensein relevanter Zustände.">
+					text = <"*Any problems or diagnoses? (en)">
+					description = <"*Presence of problems or diagnoses related to the screening purpose. (en)">
 				>
 				["at0031"] = <
 					text = <"*Yes (en)">
@@ -438,12 +557,13 @@ ontology
 				["at0034"] = <
 					text = <"Zweck des Screenings">
 					description = <"Der Grund für das gesamte Screening.">
-					comment = <"Zum Beispiel: präoperatives Screening.">
+					comment = <"*This data element is intended to provide collection context for the question/answer groups when queried at a later date. It is not expected that this data element will be exposed to the individual, but only stored in data.
+For example: pre-admission screening or the name of the actual questionnaire. (en)">
 				>
 				["at0039"] = <
-					text = <"*Screening details (en)">
-					description = <"*Additional details or questions about the specific condition. (en)">
-					comment = <"*For example: hospital where treated. (en)">
+					text = <"*Additional details (en)">
+					description = <"*Structured details or questions about the specific problem or diagnosis. (en)">
+					comment = <"*For example; hospital where treated. (en)">
 				>
 				["at0040"] = <
 					text = <"*Age at diagnosis (en)">
@@ -452,6 +572,116 @@ ontology
 				["at0041"] = <
 					text = <"*Duration (en)">
 					description = <"*Duration of time since diagnosis. (en)">
+				>
+				["at0042"] = <
+					text = <"*Overall addtional details (en)">
+					description = <"*Structured details or questions about the overall problems or diagnoses. (en)">
+				>
+				["at0043"] = <
+					text = <"*Description (en)">
+					description = <"*Narrative description about all problems or diagnosis. (en)">
+				>
+			>
+		>
+		["nl"] = <
+			items = <
+				["at0000"] = <
+					text = <"Problem/Diagnosis screening questionnaire(en)">
+					description = <"Answers to pre-defined screening questions about problems or diagnoses.(en)">
+					comment = <"*The answers may be self-reported.(en)">
+				>
+				["at0001"] = <
+					text = <"History">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Gebeurtenis">
+					description = <"Standaard, ongespecificeerd moment in tijd of een interval dat expliciet gedefiniëerd kan worden in een template of tijdens run-time.">
+				>
+				["at0003"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0004"] = <
+					text = <"Problem/Diagnosis name(en)">
+					description = <"Name of a problem or diagnosis; or grouping of problems or diagnoses.(en)">
+					comment = <"*Coding of the Problem/Diagnosis name with a terminology is preferred, where possible.(en)">
+				>
+				["at0005"] = <
+					text = <"*Aanwezig?">
+					description = <"Presence of the specific problem or diagnosis; or grouping of problems or diagnoses.(en)">
+				>
+				["at0007"] = <
+					text = <"Item tree">
+					description = <"@ internal @">
+				>
+				["at0021"] = <
+					text = <"Uitbreiding">
+					description = <"Aanvullende informatie benodigd voor het vastleggen van lokale inhoud of om aan te sluiten bij referenctie modellen/formalismen.">
+					comment = <"Bijvoorbeeld: lokale informatie eisen of aanvullende metadata om aan te sluiten bij FHIR of CIMI equivalenten.">
+				>
+				["at0022"] = <
+					text = <"*Specifieke aandoening">
+					description = <"Details about a specific problem or diagnosis or grouping of problems or diagnoses related to the screening purpose.">
+				>
+				["at0023"] = <
+					text = <"*Ja">
+					description = <"The specific problem or diagnosis; or grouping of problems or diagnoses is present.(en)">
+				>
+				["at0024"] = <
+					text = <"*Nee">
+					description = <"The specific problem or diagnosis; or grouping of problems or diagnoses is not present.(en)">
+				>
+				["at0025"] = <
+					text = <"*Opmerking">
+					description = <"Additional narrative about the specified problem or diagnosis, not captured in other fields.(en)">
+				>
+				["at0027"] = <
+					text = <"*Onbekend">
+					description = <"It is not known whether the specific problem or diagnosis; or grouping of problems or diagnoses is present or absent.(en)">
+				>
+				["at0028"] = <
+					text = <"*Aanwezig?">
+					description = <"Presence of problems or diagnoses related to the screening purpose.(en)">
+				>
+				["at0031"] = <
+					text = <"*Ja">
+					description = <"Problems or diagnoses are present.(en)">
+				>
+				["at0032"] = <
+					text = <"*Nee">
+					description = <"Problems or diagnoses are not present.(en)">
+				>
+				["at0033"] = <
+					text = <"*Onbekend">
+					description = <"It is not known whether any problems or diagnoses are present or absent.(en)">
+				>
+				["at0034"] = <
+					text = <"*Doel van vragenlijst">
+					description = <"De reden voor het uitvoeren van de screening met deze vragenlijst.">
+					comment = <"This data element is intended to provide collection context for the question/answer groups when queried at a later date. It is not expected that this data element will be exposed to the individual, but only stored in data.
+For example: pre-admission screening or the name of the actual questionnaire.(en)">
+				>
+				["at0039"] = <
+					text = <"*Additional details(en)">
+					description = <"Structured details or questions about the specific problem or diagnosis.(en)">
+					comment = <"Bijvoorbeeld: ziekenhuis waar behandeling plaatsvond.">
+				>
+				["at0040"] = <
+					text = <"*Leeftijd ten tijde van diagnose">
+					description = <"The age of the individual when the condition was diagnosed or recognised.(en)">
+				>
+				["at0041"] = <
+					text = <"*Duur">
+					description = <"Tijdsduur sinds diagnose.">
+				>
+				["at0042"] = <
+					text = <"*Overall addtional details(en)">
+					description = <"*Structured details or questions about the overall problems or diagnoses.(en)">
+				>
+				["at0043"] = <
+					text = <"*Description(en)">
+					description = <"*Narrative description about all problems or diagnosis.(en)">
 				>
 			>
 		>
