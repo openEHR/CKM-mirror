@@ -69,8 +69,8 @@ World Health Organization (2016). International statistical classification of di
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"73C41FB5A933A5DF2718D9AF34F97697">
-		["build_uid"] = <"3a3a5e79-bd09-4985-b820-9333ce316325">
+		["MD5-CAM-1.0.1"] = <"F61ACBEEE81E5CAB91DE897AA9C86007">
+		["build_uid"] = <"1ee0794b-5785-4034-8dc3-942c2aba5758">
 		["revision"] = <"0.0.1-alpha">
 	>
 
@@ -84,9 +84,24 @@ definition
 							DV_TEXT matches {*}
 						}
 					}
-					ELEMENT[at0017] matches {    -- Time of death
+					ELEMENT[at0017] occurrences matches {0..1} matches {    -- Duration
 						value matches {
-							DV_DATE_TIME matches {*}
+							DV_DURATION matches {
+								value matches {|>=PT0S|}
+							}
+							DV_INTERVAL<DV_DURATION> matches {
+								lower matches {
+									DV_DURATION matches {
+										value matches {|>=PT0S|}
+									}
+								}
+								upper matches {
+									DV_DURATION matches {
+										value matches {|>=PT0S|}
+									}
+								}
+							}
+							DV_TEXT matches {*}
 						}
 					}
 					CLUSTER[at0003] occurrences matches {1..*} matches {    -- Chain of events
@@ -109,11 +124,16 @@ definition
 									}
 								}
 							}
-							ELEMENT[at0009] occurrences matches {0..1} matches {    -- Duration of cause
+							ELEMENT[at0009] occurrences matches {0..1} matches {    -- Duration
 								value matches {
 									DV_TEXT matches {*}
 									DV_INTERVAL<DV_DURATION> matches {
 										lower matches {
+											DV_DURATION matches {
+												value matches {|>=PT0S|}
+											}
+										}
+										upper matches {
 											DV_DURATION matches {
 												value matches {|>=PT0S|}
 											}
@@ -217,7 +237,7 @@ due to Breast cancer C.">
 					description = <"Due to or as a consequence of.">
 				>
 				["at0009"] = <
-					text = <"Duration of cause">
+					text = <"Duration">
 					description = <"Approximate time from onset of indirect cause to death.">
 				>
 				["at0015"] = <
@@ -238,9 +258,8 @@ due to Breast cancer C.">
 					comment = <"For example: local information requirements; or additional metadata to align with FHIR.">
 				>
 				["at0017"] = <
-					text = <"Time of death">
-					description = <"Time of death.">
-					comment = <"Exact or estimated time of death.">
+					text = <"Duration">
+					description = <"Approximate time from onset of direct cause to death.">
 				>
 			>
 		>
@@ -303,7 +322,7 @@ som følge av Brystkreft C.">
 					description = <"På grunn av eller som følge av.">
 				>
 				["at0009"] = <
-					text = <"Varighet årsak">
+					text = <"Varighet">
 					description = <"Omtrentlig tid fra årsaksdebut til død.">
 				>
 				["at0015"] = <
@@ -324,9 +343,8 @@ som følge av Brystkreft C.">
 					comment = <"For eksempel lokale informasjonsbehov eller ytterligere metadata for å kunne tilpasse til tilsvarende konsepter i FHIR.">
 				>
 				["at0017"] = <
-					text = <"Dødstidspunkt">
-					description = <"Tidspunkt for død.">
-					comment = <"Nøyaktig eller omtrentlig tid for død.">
+					text = <"Varighet">
+					description = <"Omtrentlig tid fra årsaksdebut til død.">
 				>
 			>
 		>
