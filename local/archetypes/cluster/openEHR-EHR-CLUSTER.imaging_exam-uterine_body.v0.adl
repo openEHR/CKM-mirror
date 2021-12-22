@@ -22,7 +22,7 @@ description
 
 This archetype has been designed to be used in the 'Structured imaging findings' SLOT within the OBSERVATION.imaging_exam_result archetype, but can also be used within other ENTRY or CLUSTER archetypes, where clinically appropriate. 
 
-Use to provide a framework in which CLUSTER archetypes can be nested in the 'Additional details' SLOT within this archetype to record additional nested levels of structured imaging findings for related body substructures or site-specific findings.">
+Use to provide a framework in which CLUSTER archetypes can be nested in the 'Additional details' SLOT within this archetype to record additional nested levels of structured imaging findings for related body substructures, pregnancy findings, details about structural abnormalities such as a bicornuate uterus, morphological abnormalities such as a myometrial mass or intracavity lesion, or an adnexal mass.">
 			misuse = <"Not to be used to record findings outside the specified body structure or region. Use other archetypes from the CLUSTER.imaging_exam family for this purpose.
 
 Not to be used to record details related to the overall findings, context or technical details related to a complete imaging examination test result. Use the OBERSERVATION.imaging_exam_result for this purpose. For example, comments on the study quality, differential diagnoses, and overall impression.">
@@ -34,11 +34,17 @@ Not to be used to record details related to the overall findings, context or tec
 	other_details = <
 		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
 		["custodian_organisation"] = <"openEHR Foundation">
+		["references"] = <"
+Abuhamad A, Chaoui R, Jeanty P, Paladini D, Walsh E. Ultrasound in Obstetrics and Gynecology: A Practical Approach [Internet]. The Global Library of Women’s Medicine; 2014 [cited 2021 Dec 21]. 322 p. Available from: https://www.glowm.com/pdf/Ultrasound_in_obstetrics_and_gynecology-chapter11.pdf.
+
+AIUM Practice Parameter for the Performance of an Ultrasound Examination of the Female Pelvis. J Ultrasound Med. 2020 May;39(5):E17-E23. doi: 10.1002/jum.15205. Epub 2020 Mar 9. PMID: 32150295. Available from: https://www.aium.org/resources/guidelines/femalePelvis.pdf.
+
+American Institute of Ultrasound in Medicine; Society for Reproductive Endocrinology and Infertility; American Society of Reproductive Medicine. AIUM practice guideline for ultrasonography in reproductive medicine. J Ultrasound Med. 2009 Jan;28(1):128-37. PMID: 19106372. Available from: https://www.aium.org/resources/guidelines/reproductiveMed.pdf.">
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"3ED826542139BF4C2075543566193AA9">
-		["build_uid"] = <"e6ab177a-2555-472e-a0f3-18cb232566af">
+		["MD5-CAM-1.0.1"] = <"862AB7125F6020A22AEFF502D2BC42C8">
+		["build_uid"] = <"0b7a0abe-b5cb-41c8-b86d-00be9f5a46c2">
 		["ip_acknowledgements"] = <"This artefact includes content from SNOMED Clinical Terms® (SNOMED CT®) which is copyrighted material of the International Health Terminology Standards Development Organisation (IHTSDO). Where an implementation of this artefact makes use of SNOMED CT content, the implementer must have the appropriate SNOMED CT Affiliate license - for more information contact https://www.snomed.org/snomed-ct/get-snomed or info@snomed.org.">
 		["revision"] = <"0.0.1-alpha">
 	>
@@ -83,10 +89,215 @@ definition
 					DV_TEXT matches {*}
 				}
 			}
-			ELEMENT[at0.2] occurrences matches {0..1} matches {    -- Fetal number
+			ELEMENT[at0.13] occurrences matches {0..1} matches {    -- Length
+				value matches {
+					C_DV_QUANTITY <
+						property = <[openehr::122]>
+						list = <
+							["1"] = <
+								units = <"mm">
+								magnitude = <|>=0.0|>
+								precision = <|0|>
+							>
+							["2"] = <
+								units = <"cm">
+								magnitude = <|>=0.0|>
+								precision = <|1|>
+							>
+						>
+					>
+				}
+			}
+			ELEMENT[at0.14] occurrences matches {0..1} matches {    -- Width
+				value matches {
+					C_DV_QUANTITY <
+						property = <[openehr::122]>
+						list = <
+							["1"] = <
+								units = <"mm">
+								magnitude = <|>=0.0|>
+								precision = <|0|>
+							>
+							["2"] = <
+								units = <"cm">
+								magnitude = <|>=0.0|>
+								precision = <|1|>
+							>
+						>
+					>
+				}
+			}
+			ELEMENT[at0.15] occurrences matches {0..1} matches {    -- Depth
+				value matches {
+					C_DV_QUANTITY <
+						property = <[openehr::122]>
+						list = <
+							["1"] = <
+								units = <"mm">
+								magnitude = <|>=0.0|>
+								precision = <|0|>
+							>
+							["2"] = <
+								units = <"cm">
+								magnitude = <|>=0.0|>
+								precision = <|1|>
+							>
+						>
+					>
+				}
+			}
+			ELEMENT[at0.16] occurrences matches {0..1} matches {    -- Endometrium description
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			ELEMENT[at0.17] occurrences matches {0..1} matches {    -- Endometrial thickness
+				value matches {
+					C_DV_QUANTITY <
+						property = <[openehr::122]>
+						list = <
+							["1"] = <
+								units = <"mm">
+								magnitude = <|>=0.0|>
+								precision = <|0|>
+							>
+						>
+					>
+				}
+			}
+			ELEMENT[at0.18] occurrences matches {0..*} matches {    -- Endometrial texture
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			ELEMENT[at0.5] occurrences matches {0..1} matches {    -- Intrauterine pregnancy
+				value matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {
+							[local::
+							at0.6,    -- Present, viable
+							at0.7,    -- Absent
+							at0.8,    -- Indeterminate
+							at0.12]    -- Present, non-viable
+						}
+					}
+				}
+			}
+			ELEMENT[at0.2] occurrences matches {0..1} matches {    -- Number of gestations
 				value matches {
 					DV_COUNT matches {
 						magnitude matches {|>=0|}
+					}
+					DV_CODED_TEXT matches {
+						defining_code matches {
+							[local::
+							at0.10,    -- Single
+							at0.11]    -- Multiple
+						}
+					}
+				}
+			}
+			ELEMENT[at0.3] occurrences matches {0..1} matches {    -- Chorionicity
+				value matches {
+					DV_COUNT matches {
+						magnitude matches {|>=0|}
+					}
+				}
+			}
+			ELEMENT[at0.4] occurrences matches {0..1} matches {    -- Amnionicity
+				value matches {
+					DV_COUNT matches {*}
+				}
+			}
+			ELEMENT[at0.19] occurrences matches {0..1} matches {    -- Myometrium description
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			ELEMENT[at0.20] occurrences matches {0..1} matches {    -- Myometrial walls
+				value matches {
+					DV_TEXT matches {*}
+					DV_CODED_TEXT matches {
+						defining_code matches {
+							[local::
+							at0.21,    -- Symmetrical
+							at0.22]    -- Asymmetrical
+						}
+					}
+				}
+			}
+			ELEMENT[at0.23] occurrences matches {0..1} matches {    -- Myometrial texture
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			ELEMENT[at0.24] occurrences matches {0..1} matches {    -- Junctional zone
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			ELEMENT[at0.37] occurrences matches {0..1} matches {    -- Junctional zone thickness
+				value matches {
+					C_DV_QUANTITY <
+						property = <[openehr::122]>
+						list = <
+							["1"] = <
+								units = <"mm">
+								magnitude = <|>=0.0|>
+								precision = <|0|>
+							>
+						>
+					>
+				}
+			}
+			ELEMENT[at0.25] occurrences matches {0..1} matches {    -- Uterine axis
+				value matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {
+							[local::
+							at0.26,    -- Anteverted
+							at0.27,    -- Axial
+							at0.28]    -- Retroverted
+						}
+					}
+				}
+			}
+			ELEMENT[at0.29] occurrences matches {0..1} matches {    -- Uterine flexion
+				value matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {
+							[local::
+							at0.30,    -- Anteflexed
+							at0.31]    -- Retroflexed
+						}
+					}
+				}
+			}
+			ELEMENT[at0.32] occurrences matches {0..1} matches {    -- IUD presence
+				value matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {
+							[local::
+							at0.33,    -- Present
+							at0.34,    -- Absent
+							at0.35]    -- Indeterminate
+						}
+					}
+				}
+			}
+			ELEMENT[at0.36] occurrences matches {0..1} matches {    -- IUD description
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			ELEMENT[at0.38] occurrences matches {0..1} matches {    -- Acoustic shadow
+				value matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {
+							[local::
+							at0.39,    -- Present
+							at0.40]    -- Absent
+						}
 					}
 				}
 			}
@@ -112,8 +323,154 @@ ontology
 					description = <"Imaging examination of the uterine body.">
 				>
 				["at0.2"] = <
-					text = <"Fetal number">
+					text = <"Number of gestations">
 					description = <"Number of fetuses observed.">
+				>
+				["at0.3"] = <
+					text = <"Chorionicity">
+					description = <"The number of gestational sacs observed.">
+				>
+				["at0.4"] = <
+					text = <"Amnionicity">
+					description = <"The number of yolk sacs observed.">
+				>
+				["at0.5"] = <
+					text = <"Intrauterine pregnancy">
+					description = <"The presence or absence of an intrauterine pregnancy.">
+				>
+				["at0.6"] = <
+					text = <"Present, viable">
+					description = <"Intrauterine pregnancy is observed, with associated cardiac activity.">
+				>
+				["at0.7"] = <
+					text = <"Absent">
+					description = <"No intrauterine pregnancy is observed.">
+				>
+				["at0.8"] = <
+					text = <"Indeterminate">
+					description = <"It is not possible to determine if an intrauterine pregnancy is present of absent.">
+				>
+				["at0.10"] = <
+					text = <"Single">
+					description = <"A singleton pregnancy is observed.">
+				>
+				["at0.11"] = <
+					text = <"Multiple">
+					description = <"Multiple pregnancies are observed.">
+				>
+				["at0.12"] = <
+					text = <"Present, non-viable">
+					description = <"Intrauterine pregnancy is observed, with no associated cardiac activity.">
+				>
+				["at0.13"] = <
+					text = <"Length">
+					description = <"The length of the uterus.">
+					comment = <"Usually measured in the midsagittal plane, from the outer serosal surface of the fundus to the external os of the cervix.">
+				>
+				["at0.14"] = <
+					text = <"Width">
+					description = <"The width of the uterus.">
+					comment = <"Usually measured at the widest dimension in the transverse or coronal plane, perpendicular to the length.">
+				>
+				["at0.15"] = <
+					text = <"Depth">
+					description = <"The depth or height of the uterus.">
+					comment = <"Usually measured in the sagittal plane, from the anterior to posterior walls, perpendicular to the length. Also known as 'antero-posterior diameter' or total 'endometrial thickness'.">
+				>
+				["at0.16"] = <
+					text = <"Endometrium description">
+					description = <"Narrative description about the endometrium.">
+					comment = <"For example: thickness, focal abnormalities, echogenicity, and the presence and characteristics of fluid or masses in the cavity. Record structured details about any morphological abnormality using CLUSTER.imaging_exam-abnormality nested within the 'Additional details' SLOT.">
+				>
+				["at0.17"] = <
+					text = <"Endometrial thickness">
+					description = <"Maximal measured thickness of the endometrium.">
+					comment = <"Also known as the endometrial stripe.">
+				>
+				["at0.18"] = <
+					text = <"Endometrial texture">
+					description = <"Description about the endometrial texture.">
+					comment = <"For example: homogeneous or heterogeneous; or describing ultrasound echogenicity as hypoechoic, isoechoic, or hyperechoic.">
+				>
+				["at0.19"] = <
+					text = <"Myometrium description">
+					description = <"Narrative description about the myometrium.">
+					comment = <"For example: contour changes, texture, masses, and cysts as well as symmetry between the anterior and posterior segments of the myometrium. Record structured details about any morphological abnormality using CLUSTER.imaging_exam-abnormality nested within the 'Additional details' SLOT.">
+				>
+				["at0.20"] = <
+					text = <"Myometrial walls">
+					description = <"Maximal measured thickness of the endometrium.">
+				>
+				["at0.21"] = <
+					text = <"Symmetrical">
+					description = <"The myometrial walls are symmetrical.">
+				>
+				["at0.22"] = <
+					text = <"Asymmetrical">
+					description = <"The myometrial walls are not symmetrical.">
+				>
+				["at0.23"] = <
+					text = <"Myometrial texture">
+					description = <"Description about the myometrial texture.">
+					comment = <"For example: homogeneous or heterogeneous.">
+				>
+				["at0.24"] = <
+					text = <"Junctional zone">
+					description = <"Description about the junctional zone of the myometrium.">
+					comment = <"For example: regular, interrupted, or not visible.">
+				>
+				["at0.25"] = <
+					text = <"Uterine axis">
+					description = <"The axis of the cervix relative to the vagina. ">
+					comment = <"Also known as 'position'.">
+				>
+				["at0.26"] = <
+					text = <"Anteverted">
+					description = <"The vagina-cervix angle faces anteriorly.">
+				>
+				["at0.27"] = <
+					text = <"Axial">
+					description = <"The cervix is in the same axis as the vagina.">
+				>
+				["at0.28"] = <
+					text = <"Retroverted">
+					description = <"The vagina-cervix angle faces posteriorly.">
+				>
+				["at0.29"] = <
+					text = <"Uterine flexion">
+					description = <"The axis of the uterine fundus relative to the axis of the cervix.">
+				>
+				["at0.30"] = <
+					text = <"Anteflexed">
+					description = <"The cervix-body angle faces anteriorly.">
+				>
+				["at0.31"] = <
+					text = <"Retroflexed">
+					description = <"The cervix-body angle faces posteriorly.">
+				>
+				["at0.32"] = <
+					text = <"IUD presence">
+					description = <"The presence or absence of an intrauterine contraceptive device.">
+				>
+				["at0.33"] = <
+					text = <"Present">
+					description = <"An IUD is observed in the uterus.">
+				>
+				["at0.34"] = <
+					text = <"Absent">
+					description = <"No IUD is observed in the uterus.">
+				>
+				["at0.35"] = <
+					text = <"Indeterminate">
+					description = <"It is not possible to determine if an IUD is present or absent.">
+				>
+				["at0.36"] = <
+					text = <"IUD description">
+					description = <"Narrative description about an observed IUD in the uterus.">
+				>
+				["at0.37"] = <
+					text = <"Junctional zone thickness">
+					description = <"Measured thickness of the junctional zone.">
 				>
 				["at0000"] = <
 					text = <"Imaging examination">
@@ -138,7 +495,7 @@ ontology
 				["at0003"] = <
 					text = <"Structured anatomical location">
 					description = <"Structured details about the anatomical location of the identified body structure.">
-					comment = <"If the anatomical location of the identified body structure is known or it has been identified in the 'Anatomical location' data element, this data element is obsolete.">
+					comment = <"If the anatomical location of the identified body structure is known or it has been identified in the 'Anatomical location' data element, this data element is redundant.">
 				>
 				["at0006"] = <
 					text = <"Impression">
@@ -148,7 +505,19 @@ ontology
 				["at0002"] = <
 					text = <"Anatomical location">
 					description = <"Simple body site for the identified structure.">
-					comment = <"If the anatomical location of the identified body structure is known, this data element is obsolete.">
+					comment = <"If the anatomical location of the identified body structure is known, this data element is redundant.">
+				>
+				["at0.38"] = <
+					text = <"Acoustic shadow">
+					description = <"The presence or absence of an acoustic shadow behind the uterus on ultrasound.">
+				>
+				["at0.39"] = <
+					text = <"Present">
+					description = <"An acoustic shadow is present.">
+				>
+				["at0.40"] = <
+					text = <"Absent">
+					description = <"An acoustic shadow is not present.">
 				>
 			>
 		>

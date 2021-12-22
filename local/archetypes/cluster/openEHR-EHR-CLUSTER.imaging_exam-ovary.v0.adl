@@ -34,11 +34,12 @@ Not to be used to record details related to the overall findings, context or tec
 	other_details = <
 		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
 		["custodian_organisation"] = <"openEHR Foundation">
+		["references"] = <"Timmerman, D., et al., Terms, definitions and measurements to describe the sonographic features of adnexal tumors: a consensus opinion from the International Ovarian Tumor Analysis (IOTA) Group. Ultrasound Obstet Gynecol, 2000. 16(5): p. 500-5.">
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"DB7D19AE661FD7E6FC64731DE81BDD44">
-		["build_uid"] = <"8a9fd705-0c34-4a83-8756-594591dbc067">
+		["MD5-CAM-1.0.1"] = <"1D82CB43587CD220298C36E948466103">
+		["build_uid"] = <"135187a0-115f-4475-b90c-0c288df6cfa2">
 		["ip_acknowledgements"] = <"This artefact includes content from SNOMED Clinical Terms® (SNOMED CT®) which is copyrighted material of the International Health Terminology Standards Development Organisation (IHTSDO). Where an implementation of this artefact makes use of SNOMED CT content, the implementer must have the appropriate SNOMED CT Affiliate license - for more information contact https://www.snomed.org/snomed-ct/get-snomed or info@snomed.org.">
 		["revision"] = <"0.0.1-alpha">
 	>
@@ -71,9 +72,26 @@ definition
 					DV_TEXT matches {*}
 				}
 			}
+			ELEMENT[at0.3] occurrences matches {0..3} matches {    -- Diameter
+				value matches {
+					DV_QUANTITY matches {*}
+				}
+			}
+			ELEMENT[at0.4] occurrences matches {0..3} matches {    -- Largest follicle diameter
+				value matches {
+					DV_QUANTITY matches {*}
+				}
+			}
+			ELEMENT[at0.5] occurrences matches {0..1} matches {    -- Number of antral follicles
+				value matches {
+					DV_COUNT matches {
+						magnitude matches {|>=0|}
+					}
+				}
+			}
 			allow_archetype CLUSTER[at0005] occurrences matches {0..*} matches {    -- SLOT: Additional details
 				include
-					archetype_id/value matches {/openEHR-EHR-CLUSTER\.imaging_finding(-[a-zA-Z0-9_]+)*\.v0|openEHR-EHR-CLUSTER\.imaging_exam-lymph_node(-[a-zA-Z0-9_]+)*\.v0|openEHR-EHR-CLUSTER\.imaging_exam-lymph_node_group(-[a-zA-Z0-9_]+)*\.v0|openEHR-EHR-CLUSTER\.imaging_exam-abnormality(-[a-zA-Z0-9_]+)*\.v0/}
+					archetype_id/value matches {/openEHR-EHR-CLUSTER\.imaging_finding(-[a-zA-Z0-9_]+)*\.v0|openEHR-EHR-CLUSTER\.imaging_exam-lymph_node(-[a-zA-Z0-9_]+)*\.v0|openEHR-EHR-CLUSTER\.imaging_exam-lymph_node_group(-[a-zA-Z0-9_]+)*\.v0|openEHR-EHR-CLUSTER\.imaging_exam-abnormality(-[a-zA-Z0-9_]+)*\.v0|openEHR-EHR-CLUSTER\.imaging_exam-abnormality-adnexal_mass(-[a-zA-Z0-9_]+)*\.v0/}
 			}
 			ELEMENT[at0006] occurrences matches {0..1} matches {    -- Impression
 				value matches {
@@ -94,6 +112,26 @@ ontology
 	term_definitions = <
 		["en"] = <
 			items = <
+				["at0000.1"] = <
+					text = <"Imaging examination of an ovary">
+					description = <"Findings observed in an imaging examination targeting an ovary, using radiographic techniques.">
+				>
+				["at0001.1"] = <
+					text = <"Body structure">
+					description = <"Identification of the body structure or region examined.">
+				>
+				["at0.1"] = <
+					text = <"Left ovary">
+					description = <"Imaging examination of the left ovary.">
+				>
+				["at0.2"] = <
+					text = <"Right ovary">
+					description = <"Imaging examination of the right ovary.">
+				>
+				["at0000"] = <
+					text = <"Imaging examination">
+					description = <"Findings observed in an imaging examination targeting a specified structure or region, using radiographic techniques.">
+				>
 				["at0004"] = <
 					text = <"Imaging findings">
 					description = <"Narrative description of the imaging findings observed during this examination.">
@@ -113,7 +151,7 @@ ontology
 				["at0003"] = <
 					text = <"Structured anatomical location">
 					description = <"Structured details about the anatomical location of the identified body structure.">
-					comment = <"If the anatomical location of the identified body structure is known or it has been identified in the 'Anatomical location' data element, this data element is obsolete.">
+					comment = <"If the anatomical location of the identified body structure is known or it has been identified in the 'Anatomical location' data element, this data element is redundant.">
 				>
 				["at0006"] = <
 					text = <"Impression">
@@ -123,23 +161,21 @@ ontology
 				["at0002"] = <
 					text = <"Anatomical location">
 					description = <"Simple body site for the identified structure.">
-					comment = <"If the anatomical location of the identified body structure is known, this data element is obsolete.">
+					comment = <"If the anatomical location of the identified body structure is known, this data element is redundant.">
 				>
-				["at0000.1"] = <
-					text = <"Imaging examination of an ovary">
-					description = <"Findings observed in an imaging examination targeting an ovary, using radiographic techniques.">
+				["at0.3"] = <
+					text = <"Diameter">
+					description = <"A measured axis of the ovary.">
+					comment = <"This data element has 3 occurrences to allow for 3 measurements in different axes.">
 				>
-				["at0001.1"] = <
-					text = <"Body structure">
-					description = <"Identification of the body structure or region examined.">
+				["at0.4"] = <
+					text = <"Largest follicle diameter">
+					description = <"A measured axis of the largest ovarian follicle.">
+					comment = <"This data element has 3 occurrences to allow for 3 measurements in different axes.">
 				>
-				["at0.1"] = <
-					text = <"Left ovary">
-					description = <"Imaging examination of the left ovary.">
-				>
-				["at0.2"] = <
-					text = <"Right ovary">
-					description = <"Imaging examination of the right ovary.">
+				["at0.5"] = <
+					text = <"Number of antral follicles">
+					description = <"The number of antral follicles.">
 				>
 			>
 		>

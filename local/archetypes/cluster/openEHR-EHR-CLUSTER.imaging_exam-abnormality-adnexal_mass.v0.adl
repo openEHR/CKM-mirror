@@ -1,10 +1,10 @@
-﻿archetype (adl_version=1.4; uid=699e95a0-eee5-41e4-a7d3-4d99a1a6d677)
-	openEHR-EHR-CLUSTER.imaging_exam-abnormality.v0
+﻿archetype (adl_version=1.4; uid=4a8e5a60-98b9-42c1-9d6d-c0049eaf9ca4)
+	openEHR-EHR-CLUSTER.imaging_exam-abnormality-adnexal_mass.v0
 specialise
-	openEHR-EHR-CLUSTER.imaging_exam.v0
+	openEHR-EHR-CLUSTER.imaging_exam-abnormality.v0
 
 concept
-	[at0000.1]	-- Imaging examination of an abnormality
+	[at0000.1.1]	-- Imaging examination of a uterine adnexal mass
 language
 	original_language = <[ISO_639-1::en]>
 description
@@ -17,8 +17,9 @@ description
 	details = <
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"To record a narrative description, structured details and clinical impression of the findings of a morphological abnormality observed in an imaging examination targeting a specified body structure or region.">
-			use = <"Use to record a narrative description, structured details and clinical impression of the findings of a morphological abnormality observed in an imaging examination targeting a specified body structure or region.
+			purpose = <"To record a narrative description, structured details and clinical impression of the findings of a morphological abnormality observed in an imaging examination targeting a uterine
+ adnexal mass.">
+			use = <"Use to record a narrative description, structured details and clinical impression of the findings of a morphological abnormality observed in an imaging examination targeting a uterine adnexal mass.
 
 This archetype has been designed to be used in the 'Structured imaging findings' SLOT within a CLUSTER.imagin_exam archetype which will identify the structure containing the morphological abnormality, but can also be used within other ENTRY or CLUSTER archetypes, where clinically appropriate. 
 
@@ -37,20 +38,22 @@ Not to be used to record details related to the overall findings, context or tec
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"F9DA6C9529D95ADC7E436142128CD329">
-		["build_uid"] = <"d710b666-ce7b-44db-be8d-f532d6b7df65">
+		["MD5-CAM-1.0.1"] = <"BA84D70ABC3865AA83B679DBA442063C">
+		["build_uid"] = <"1424b3e6-2174-4e06-9c65-5e8bc61423cb">
 		["ip_acknowledgements"] = <"This artefact includes content from SNOMED Clinical Terms® (SNOMED CT®) which is copyrighted material of the International Health Terminology Standards Development Organisation (IHTSDO). Where an implementation of this artefact makes use of SNOMED CT content, the implementer must have the appropriate SNOMED CT Affiliate license - for more information contact https://www.snomed.org/snomed-ct/get-snomed or info@snomed.org.">
 		["revision"] = <"0.0.1-alpha">
 	>
 
 definition
-	CLUSTER[at0000.1] matches {    -- Imaging examination of an abnormality
+	CLUSTER[at0000.1.1] matches {    -- Imaging examination of a uterine adnexal mass
 		items cardinality matches {1..*; unordered} matches {
-			ELEMENT[at0001.1] matches {    -- Body structure
+			ELEMENT[at0001.1.1] matches {    -- Body structure
 				value matches {
 					DV_CODED_TEXT matches {
 						defining_code matches {
-							[local::at0.1]    -- Morphological abnormality
+							[local::
+							at0.1,    -- Morphological abnormality
+							at0.0.1]    -- Uterine adnexal mass
 						}
 					}
 				}
@@ -88,9 +91,19 @@ definition
 					DV_TEXT matches {*}
 				}
 			}
-			ELEMENT[at0.3] occurrences matches {0..1} matches {    -- Type
+			ELEMENT[at0.3.1] occurrences matches {0..1} matches {    -- Type
 				value matches {
-					DV_TEXT matches {*}
+					DV_CODED_TEXT matches {
+						defining_code matches {
+							[local::
+							at0.0.2,    -- Unilocular cyst
+							at0.0.3,    -- Unilocular-solid cyst
+							at0.0.4,    -- Multilocular cyst
+							at0.0.5,    -- Multilocular-solid cyst
+							at0.0.6,    -- Solid tumour
+							at0.0.7]    -- Indeterminate
+						}
+					}
 				}
 			}
 			ELEMENT[at0.4] occurrences matches {0..3} matches {    -- Diameter
@@ -110,6 +123,11 @@ definition
 							>
 						>
 					>
+				}
+			}
+			ELEMENT[at0.0.15] occurrences matches {0..1} matches {    -- Solid diameter
+				value matches {
+					DV_QUANTITY matches {*}
 				}
 			}
 			ELEMENT[at0.9] occurrences matches {0..1} matches {    -- Shape
@@ -174,6 +192,23 @@ definition
 					}
 				}
 			}
+			ELEMENT[at0.0.8] occurrences matches {0..3} matches {    -- Number of cyst locules
+				value matches {
+					DV_COUNT matches {
+						magnitude matches {|>=0|}
+					}
+				}
+			}
+			ELEMENT[at0.0.13] occurrences matches {0..1} matches {    -- Number of papillary projections
+				value matches {
+					DV_COUNT matches {*}
+				}
+			}
+			ELEMENT[at0.0.14] occurrences matches {0..1} matches {    -- Maximal septum width
+				value matches {
+					DV_QUANTITY matches {*}
+				}
+			}
 		}
 	}
 
@@ -183,6 +218,63 @@ ontology
 	term_definitions = <
 		["en"] = <
 			items = <
+				["at0000.1.1"] = <
+					text = <"Imaging examination of a uterine adnexal mass">
+					description = <"Findings of a morphological abnormality observed in an imaging examination targeting a uterine adnexal mass, using radiographic techniques.">
+				>
+				["at0001.1.1"] = <
+					text = <"Body structure">
+					description = <"Identification of the body structure or region examined.">
+				>
+				["at0.0.1"] = <
+					text = <"Uterine adnexal mass">
+					description = <"Imaging examination of a uterine adnexal mass.">
+				>
+				["at0.4"] = <
+					text = <"Diameter">
+					description = <"The measured length of an axis of the abnormality.">
+				>
+				["at0.3.1"] = <
+					text = <"Type">
+					description = <"The type of abnormality.">
+					comment = <"Coding of the morphological type with an external terminology is preferred, where possible. For example, a cyst or nodule from the SNOMED 4147007 | Mass (morphologic abnormality) | hierarchy.">
+				>
+				["at0.0.2"] = <
+					text = <"Unilocular cyst">
+					description = <"A unilocular cyst without septa, solid parts or papillary structures.">
+				>
+				["at0.0.3"] = <
+					text = <"Unilocular-solid cyst">
+					description = <"A unilocular cyst with a measurable solid component or at least one papillary structure.">
+				>
+				["at0.0.4"] = <
+					text = <"Multilocular cyst">
+					description = <"A cyst with at least one septum but no measurable solid components or papillary projections.">
+				>
+				["at0.0.5"] = <
+					text = <"Multilocular-solid cyst">
+					description = <"A cyst with at least one septum and a measurable solid component or at least one papillary projection.">
+				>
+				["at0.0.6"] = <
+					text = <"Solid tumour">
+					description = <"A tumor where the solid components comprise 80% or more of the tumour when assessed in a two-dimensional section.">
+				>
+				["at0.0.7"] = <
+					text = <"Indeterminate">
+					description = <"It is not possible to determine the type of mass.">
+				>
+				["at0.0.8"] = <
+					text = <"Number of cyst locules">
+					description = <"The number of cyst locules in the adnexal mass.">
+				>
+				["at0.0.13"] = <
+					text = <"Number of papillary projections">
+					description = <"The number of papillary projections in the adnexal mass.">
+				>
+				["at0.0.14"] = <
+					text = <"Maximal septum width">
+					description = <"The measured width of the thickest septum.">
+				>
 				["at0000.1"] = <
 					text = <"Imaging examination of an abnormality">
 					description = <"Findings of a morphological abnormality observed in an imaging examination targeting a specified structure or region, using radiographic techniques.">
@@ -204,11 +296,6 @@ ontology
 					text = <"Type">
 					description = <"The type of abnormality.">
 					comment = <"Coding of the morphological type with an external terminology is preferred, where possible. For example, a cyst or nodule from the SNOMED 4147007 | Mass (morphologic abnormality) | hierarchy.">
-				>
-				["at0.4"] = <
-					text = <"Diameter">
-					description = <"A measured axis of the abnormality.">
-					comment = <"This data element has 3 occurrences to allow for 3 measurements in different axes.">
 				>
 				["at0.9"] = <
 					text = <"Shape">
@@ -311,12 +398,34 @@ ontology
 					description = <"Simple body site for the identified structure.">
 					comment = <"If the anatomical location of the identified body structure is known, this data element is redundant.">
 				>
+				["at0.0.15"] = <
+					text = <"Solid diameter">
+					description = <"A measured axis of the largest solid tissue component.">
+					comment = <"This data element has 3 occurrences to allow for 3 measurements in different axes.">
+				>
+				["at0.5"] = <
+					text = <"Diameter">
+					description = <"The measured length of the an axis of the abnormality.">
+				>
+				["at0.6"] = <
+					text = <"Dimension 1">
+					description = <"The measured length of the longest axis of the abnormality.">
+				>
+				["at0.7"] = <
+					text = <"Dimension 2">
+					description = <"The measured length of an axis of the abnormality perpendicular to Dimension 1.">
+				>
+				["at0.8"] = <
+					text = <"Dimension 3">
+					description = <"The measured length of an axis of the abnormality perpendicular to Dimension 1 and Dimension 2..">
+				>
 			>
 		>
 	>
 	term_bindings = <
 		["SNOMED-CT"] = <
 			items = <
+				["at0000.1.1"] = <[SNOMED-CT::445039006]>
 				["at0.1"] = <[SNOMED-CT::49755003]>
 			>
 		>
