@@ -35,7 +35,7 @@ Repositories (top menu bar) --> New repository (button) --> Repository type: Git
   Repository name: Region/Company Nnnns fork of Modellbibliotek's CKM-mirror (or whatever you want to call it)  
   Owner: modellbibliotek
   Repository: CKM-mirror
-  Branch: master (or the name of a branch instead of "master" if you wnat to work in a branch)
+  Branch: master (or, if you want to work in a branch, the name of the branch instead of "master" )
 ```
 
 Important: If you want to save files (and avoid some GitHub rate-limiting-related related "403" errors) you need to be logged in to github with a user account that has write permission to this repository, ideally before opening the ADL designer.
