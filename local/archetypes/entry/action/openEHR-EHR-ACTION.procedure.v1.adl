@@ -22,11 +22,20 @@ language
 			>
 			accreditation = <"hmm">
 		>
+		["sv"] = <
+			language = <[ISO_639-1::sv]>
+			author = <
+				["name"] = <"Sofia Lång Janstad, Sofia Janstad">
+				["organisation"] = <"SLL">
+				["email"] = <"sofia.lang-janstad@sll.se">
+			>
+		>
 		["nb"] = <
 			language = <[ISO_639-1::nb]>
 			author = <
 				["name"] = <"John Tore Valand / Silje Ljosland Bakke">
 				["organisation"] = <"Helse Bergen HF / Nasjonal IKT HF">
+				["email"] = <"john.tore.valand@helse-bergen.no">
 			>
 		>
 		["pt-br"] = <
@@ -120,6 +129,58 @@ Nicht zur Erfassung eines vollständigen Berichts über eine OP- oder eine Proze
 			keywords = <"процедура, выполнение", ...>
 			misuse = <"">
 			copyright = <"© openEHR Foundation">
+		>
+		["sv"] = <
+			language = <[ISO_639-1::sv]>
+			purpose = <"Att registrera information om de aktiviteter som krävs för att genomföra en procedur, inklusive planering, schemaläggning, utförande, avstängning, avbokning, dokumentation och slutförande. 
+
+">
+			use = <"Används för att registrera information om de aktiviteter som krävs för att genomföra en procedur, inklusive planering, schemaläggning, utförande, avstängning, avbokning, dokumentation och slutförande. Detta görs genom registrering av data mot specifika aktiviteter, som definieras av \"Pathway\" -flödesstegen i denna arketyp.
+ 
+Denna arketyp omfattar aktiviteter för ett brett spektrum av kliniska procedurer som utförs för utvärderande, undersökande, screening, diagnostiska, botande, terapeutiska eller palliativa ändamål. Till exempel kan den användas för allt från relativt enkla aktiviteter, såsom insättning av en intravenös kanyl, till komplexa kirurgiska operationer. 
+
+Ytterligare strukturerad och detaljerad information om proceduren kan fångas med hjälp av specifika arketyper infogade i rutan 'Procedur detaljer', om så krävs. 
+
+Tider relaterade till ett förfarande kan hanteras på ett av två sätt: 
+- Med hjälp av referensmodellen - tiden för utförandet av något vägsteg ska använda attributet ACTION time för varje steg. 
+- Archetyped dataelement: 
+--- dataelementet 'Schemalagt datum/tid' är avsett att registrera den exakta tidpunkt då proceduren planeras. 
+
+Obs! Motsvarande ACTION-tidsattribut för det schemalagda vägsteget registrerar den tid som proceduren planerades i ett system, inte det avsedda datumet/tiden då proceduren är avsedd att genomföras; och 
+--- \"Slutdatum/tid\" är avsedd att registrera den exakta tidpunkt då proceduren avslutades. Den kan användas för att dokumentera komplexa procedurer med flera komponenter. 
+
+Obs! Motsvarande ACTION-tidsattribut för \"Procedur utförd\" kommer att dokumentera den tid varje komponent som utfördes påbörjades. Det \"Slutliga slutdatum/tid\" -element registrerar datum/tid för den slutliga aktiva komponenten i proceduren. 
+Detta gör det möjligt att beräkna en fullständig varaktighet av det aktiva förfarandet. 
+
+Inom ramen för en operationsrapport kommer denna arketyp att användas för att bara registrera vad som gjordes under proceduren. Separata arketyper kommer att användas för att registrera de andra nödvändiga komponenterna i operationsrapporten, inklusive att ta prover av vävnadsprover, användning av avbildningsvägledning, funktionsresultat, postoperativa instruktioner och planer för uppföljning. 
+
+Inom ramen för en problemlista eller sammanfattning kan denna arketyp användas för att representera procedurer som har utförts. EVALUATION.problem_diagnosis kommer att användas för att representera patientens problem och diagnoser. 
+
+I praktiken kommer många förfaranden (till exempel ambulansvård) att inträffa en gång och inte beställas i förväg. Detaljerna om proceduren kommer att läggas till i steget, \"Procedur slutförd\". I vissa fall kommer ett återkommande förfarande att beställas, och i denna situation registreras data över steget \"Procedur utförd\" vid varje tillfälle och lämnar instruktionen i aktivt tillstånd. När den senaste händelsen registreras registreras åtgärden 'Procedur slutförd' som visar att denna procedur nu är i det färdiga tillståndet. 
+
+I andra situationer, till exempel sekundärvård, kan det finnas en formell order för ett förfarande med en motsvarande INSTRUKTION-arketyp. Denna ACTION-arketyp kan sedan användas för att registrera arbetsflödet för när och hur proceduren har genomförts. 
+
+Dokumentation med den här ACTION-arketypen indikerar att någon form av aktivitet faktiskt har inträffat; detta är vanligtvis själva proceduren men kan vara ett misslyckat försök eller en annan aktivitet som att skjuta upp proceduren. Om det finns en formell beställning för proceduren representeras tillståndet för denna beställning av det Pathway-steg mot vilket data registreras. Till exempel, med den här arketypen kan det fortskridande tillståndet för en Gastroskopi-beställning registreras genom separata poster i EHR-framstegsanteckningarna vid varje \"Pathway\" -steg: 
+- registrera schemalagt startdatum/tid för gastroskopi (schemalagd procedur); och 
+- registrera att gastroskopiproceduren har slutförts, inklusive information om proceduruppgifterna (proceduren avslutad). 
+
+Observera att i openEHR-referensmodellen finns ett attribut 'Time' som är avsett att registrera datum och tidpunkt då varje steg i åtgärden utfördes. Detta är attributet som ska användas för att registrera inledningen av proceduren (med hjälp av steget 'Procedur utfört') eller den tid då proceduren avbröts (med hjälp av steget 'Procedur avbruten').
+">
+			keywords = <"*procedur", "*intervention", "*kirurgi", "*medicinsk", "*klinisk", "*terapeutisk", "*diagnostisk", "*botande", "*behandling", "*utredning", "*undersökning", "*screening", "*palliativ", "*terapi">
+			misuse = <"Får inte användas för att registrera detaljer om narkos - använd en separat ACTION-arketyp för detta ändamål. 
+
+Används inte för att registrera detaljer om bild undersökningar - använd ACTION.imaging_exam för detta ändamål. 
+
+Används inte för att registrera detaljer om laboratorieundersökningar - använd ACTION.laboratory_test för detta ändamål. 
+
+Används inte för att registrera detaljer om utbildning - använd ACTION.health_education för detta ändamål. 
+
+Används inte för att registrera detaljer om administrativa aktiviteter - använd specifika ADMIN-arketyper för detta ändamål. 
+
+Får inte användas för att registrera detaljer om relaterade aktiviteter, såsom användning av frysta snitt som tagits under en operation, läkemedel som administreras som en del av proceduren eller när bildvisningsvägledning används under proceduren - använd separata och specifika ACTION-arketyper inom samma mall för detta syfte. 
+
+Används inte för att registrera en hel operation eller procedurrapport - använd en mall där den här arketypen bara är en komponent i hela rapporten.
+">
 		>
 		["nb"] = <
 			language = <[ISO_639-1::nb]>
@@ -296,9 +357,9 @@ No utilizar para registrar detalles acerca del informe de la operación, para es
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"108CD01BE8E751B5AA89279E73962671">
-		["build_uid"] = <"b4858e75-fcfe-43ab-8854-88e8e38e42f9">
-		["revision"] = <"1.4.1">
+		["MD5-CAM-1.0.1"] = <"7976419EEFB8BFACDA7BAB23201F9BEF">
+		["build_uid"] = <"33afaca3-e291-407c-891f-88c364f4e48e">
+		["revision"] = <"1.4.3">
 	>
 
 definition
@@ -1635,9 +1696,9 @@ ontology
 					comment = <"Eksempler: Pasienten var urolig, magen var ikke skikkelig tømt før gastroskopi, en svulst i gallegangene gjorde det umulig å få skopet gjennom.">
 				>
 				["at0070"] = <
-					text = <"*Indication (en)">
-					description = <"*The clinical or process-related reason for the procedure. (en)">
-					comment = <"*Coding of the indication with a terminology is preferred, where possible. This data element allows multiple occurrences. For example: 'Failed bowel preparation' or 'Bowel cancer screening'. (en)">
+					text = <"Indikasjon">
+					description = <"Den kliniske eller prosessrelaterte årsaken til prosedyren.">
+					comment = <"Koding av indikasjon med en terminologi er foretrukket, om mulig. Dette dataelementet kan repeteres. For eksempel \"Brudd i arm\" eller \"Mislykket tarmtømming\" , \"Tarmkreftscreening\" eller \"Pakkeforløp for kreft\".">
 				>
 			>
 		>
@@ -1979,6 +2040,188 @@ ontology
 					text = <"Indikation">
 					description = <"Der klinische oder prozessbezogene Grund für die Prozedur.">
 					comment = <"Die Kodierung der Indikation mit einer Terminologie wird nach Möglichkeit bevorzugt. Dieses Datenelement ermöglicht mehrere Vorkommen. Zum Beispiel: \"Fehlgeschlagenen Darmvorbereitung\" oder \"Darmkrebsvorsorge\".">
+				>
+			>
+		>
+		["sv"] = <
+			items = <
+				["at0000"] = <
+					text = <"Procedur">
+					description = <"En klinisk aktivitet utförd för screening, undersökande, diagnostiska, botande, terapeutiska, utvärderande eller palliativa ändamål.">
+				>
+				["at0001"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Namn på procedur">
+					description = <"Identifiering av procedur med namn.">
+					comment = <"Kodning av den specifika proceduren med en terminologi är att föredra, där det är möjligt.">
+				>
+				["at0003"] = <
+					text = <"Prodedur detaljer">
+					description = <"Strukturerad information om proceduren.
+">
+					comment = <"Används för att fånga detaljerad, strukturerad information om anatomisk plats, metod & teknik, utrustning som används, implanterade enheter/utrustning, resultat, fynd m.m.">
+				>
+				["at0004"] = <
+					text = <"Procedur planerad">
+					description = <"Proceduren som ska genomföras är planerad">
+				>
+				["at0005"] = <
+					text = <"Kommentar">
+					description = <"Ytterligare beskrivning om aktiviteten eller vårdsteget som inte fångas i andra fält.">
+				>
+				["at0006"] = <
+					text = <"Komplikation">
+					description = <"Detaljer om eventuella komplikationer som uppstår från proceduren">
+					comment = <"Använd detta dataelement för att dokumentera enkla termer eller förkoordinerade komplikationer. Om kraven för dokumentation av komplikationen är mer komplexa rekommenderas användning av ett specifikt CLUSTER i öppningen \"Procedur detaljer\", då blir detta dataelement överflödigt. 
+Exempel: Hematuri efter njurbiopsi, vävnadsirritation efter införande av intravenös kateter.">
+				>
+				["at0007"] = <
+					text = <"Förfrågan om procedur skickad">
+					description = <"Förfrågan om procedur är skickad
+">
+				>
+				["at0014"] = <
+					text = <"Anledning">
+					description = <"Anledning att aktivitets- eller vårdsteget för det identifierade förfarandet genomfördes.">
+					comment = <"Till exempel: anledningen till att proceduren pausades eller avbryts.">
+				>
+				["at0034"] = <
+					text = <"X - Procedur planerad">
+					description = <"Detta vägsteg har upphört att gälla eftersom det felaktigt var associerat med \"initial\" status - använd det nya \"Procedur planerad\" (at0004) vägsteget som är korrekt associerat med \"planerat\" status. 
+">
+					comment = <"(Was: The procedure to be undertaken is planned.)(en)">
+				>
+				["at0035"] = <
+					text = <"X - Förfrågan om procedur skickad">
+					description = <"Detta vägsteg har upphört att gälla eftersom det felaktigt var associerat med \"initial\" status - använd det nya \"Procedur förfrågan skickad\" (at0007) vägsteget som är korrekt associerat med \"planerad\" status.">
+					comment = <"(Was: Request for procedure sent.)(en)">
+				>
+				["at0036"] = <
+					text = <"Procedur schemalagd">
+					description = <"Proceduren har blivit schemalagd (bokad)
+">
+				>
+				["at0038"] = <
+					text = <"Procedur uppskjuten">
+					description = <"Proceduren har skjutits upp
+">
+				>
+				["at0039"] = <
+					text = <"Procedur avbruten">
+					description = <"Det planerade förfarandet har avbrutits före det påbörjandes.">
+				>
+				["at0040"] = <
+					text = <"Procedur pausad">
+					description = <"Proceduren har pausats
+">
+				>
+				["at0041"] = <
+					text = <"Procedur avbruten">
+					description = <"Proceduren har blivit avbruten
+">
+				>
+				["at0043"] = <
+					text = <"Procedur avslutad">
+					description = <"Proceduren har utförts och alla tillhörande kliniska aktiviteter har slutförts.">
+				>
+				["at0047"] = <
+					text = <"Procedur utförd">
+					description = <"Proceduren, eller delproceduren i ett multikomponentförfarande, har utförts">
+				>
+				["at0048"] = <
+					text = <"Resultat">
+					description = <"Resultat av genomförd procedur
+">
+					comment = <"Kodning med en terminologi är att föredra, där det är möjligt.">
+				>
+				["at0049"] = <
+					text = <"Beskrivning">
+					description = <"Beskrivning av proceduren, anpassad till det aktuella steget.
+">
+					comment = <"Till exempel: beskrivning av utförandet och fyndet från proceduren, det avbrutna försöket eller avslutandet av proceduren.">
+				>
+				["at0053"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0054"] = <
+					text = <"Beställare ID">
+					description = <"Det lokala ID som tilldelats beställningen av vårdgivaren eller organisationen som begär tjänsten">
+					comment = <"Detta motsvarar Place Order Number i specifikationerna för HL7 v2">
+				>
+				["at0055"] = <
+					text = <"Beställare">
+					description = <"Detaljer om vårdgivaren eller organisationen som begär tjänsten.">
+				>
+				["at0056"] = <
+					text = <"Mottagare ID">
+					description = <"ID som tilldelats beställningen, av vårdgivaren eller organisationen som tar emot begäran om service. Detta kallas också Filler Order Identifier.">
+					comment = <"Detta motsvarar Filler Order Number i specifikationerna för HL7 v2.">
+				>
+				["at0057"] = <
+					text = <"Mottagare">
+					description = <"Detaljer om vårdgivaren eller organisationen som tar emot begäran om procedur.">
+				>
+				["at0058"] = <
+					text = <"Brådskandegrad">
+					description = <"Brådskandegrad för proceduren.">
+					comment = <"Kodning med en terminologi är att föredra, där det är möjligt.">
+				>
+				["at0060"] = <
+					text = <"Datum/tid avslut av procedur">
+					description = <"Datumet och/eller tid då hela proceduren, eller den sista komponenten i ett multikomponentförfarande, avslutades.">
+					comment = <"Kan endast användas i samband med steget \"Procedur utförd\" och i situationer där proceduren upprepas vid flera tillfällen innan den avslutas eller om det finns flera komponenter i hela proceduren. Detta kan vara detsamma som RM-tidsattributet för steget 'Procedur avslutad'.">
+				>
+				["at0061"] = <
+					text = <"Total duration">
+					description = <"Den totala tid som krävs för att utföra proceduren, vilket kan inkludera tid som tillbringats under den aktiva fasen av proceduren plus den tid under vilken proceduren pausades.">
+					comment = <"Kan endast användas i samband med steget 'Procedure avslutad'.">
+				>
+				["at0062"] = <
+					text = <"Multimedia">
+					description = <"Multimedia representation av en utförd procedur.">
+				>
+				["at0063"] = <
+					text = <"Kroppsplats">
+					description = <"Identifiering av kroppsplatsen för proceduren.">
+					comment = <"Förekomsten av detta dataelement är obegränsat för att möjliggöra kliniska scenarier som att ta bort flera hudskador på olika platser, men där alla andra attribut är identiska. Använd detta dataelement för att dokumentera enkla termer eller förkoordinerade anatomiska platser. Om kraven för dokumentation av den anatomiska platsen bestäms vid körning av applikationen eller kräver mer komplex modellering, till exempel relativa platser, använd CLUSTER.anatomical_location eller CLUSTER.relative_location inom öppningen 'Procedur detaljer' i denna arketyp. Om den anatomiska platsen ingår i 'Procedurnamn' via förkoordinerade koder blir detta dataelement överflödigt">
+				>
+				["at0064"] = <
+					text = <"Tilläggsinformaiton">
+					description = <"Ytterligare information som krävs för att fånga lokalt innehåll eller för att anpassa sig till andra referensmodeller/formalismer.">
+					comment = <"Till exempel: lokala informationskrav eller ytterligare metadata för att anpassning till FHIR eller CIMI.">
+				>
+				["at0065"] = <
+					text = <"Metod">
+					description = <"Identifiering av specifik metod eller teknik för proceduren.">
+					comment = <"Använd detta dataelement för att dokumentera enkla termer eller en berättande beskrivning. Om kraven för dokumentation av metoden kräver mer komplex modellering kan detta representeras av ytterligare arketyper inom öppningen \"Procedur detalj\" i denna arketyp. Om metoden ingår i 'Procedurnamn' via förkoordinerade koder blir detta dataelement överflödigt.">
+				>
+				["at0066"] = <
+					text = <"Schemalagt datum/tid">
+					description = <"Datum och/eller tid då proceduren är tänkt att utföras.">
+					comment = <"Endast för användning i samband med steget \"Procedur schemalagd\".">
+				>
+				["at0067"] = <
+					text = <"Typ av procedur">
+					description = <"Typ av procedur">
+					comment = <"Detta pragmatiska dataelement kan användas för att stödja en organisation inom användargränssnittet.">
+				>
+				["at0068"] = <
+					text = <"Procedur påbörjad">
+					description = <"Proceduren, eller delproceduren i ett flerkomponentförfarande, har påbörjats.">
+				>
+				["at0069"] = <
+					text = <"Svårigheter med procedur">
+					description = <"Svårigheter eller problem som uppstår under genomförandet av proceduren.">
+					comment = <"Exempel: Patienten var upprörd, otillräcklig tömning av magen före gastroskopi, en tumör i gallgångarna gjorde det omöjligt att passera genom.">
+				>
+				["at0070"] = <
+					text = <"Indikation">
+					description = <"Den kliniska eller processrelaterade orsaken till ingreppet.">
+					comment = <"Kodning av indikationen med en terminologi är att föredra, där det är möjligt. Detta dataelement tillåter flera förekomster. Till exempel: 'Misslyckad tarmberedning' eller 'Screening av tarmcancer'.">
 				>
 			>
 		>

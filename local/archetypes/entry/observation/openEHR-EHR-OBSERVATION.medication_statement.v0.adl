@@ -14,6 +14,14 @@ language
 				["email"] = <"Strauch.Natalia@mh-hannover.de">
 			>
 		>
+		["nb"] = <
+			language = <[ISO_639-1::nb]>
+			author = <
+				["name"] = <"Silje Ljosland Bakke">
+				["organisation"] = <"Helse Vest IKT AS">
+				["email"] = <"silje.ljosland.bakke@helse-vest-ikt.no">
+			>
+		>
 		["nl"] = <
 			language = <[ISO_639-1::nl]>
 			author = <
@@ -34,13 +42,23 @@ description
 	details = <
 		["de"] = <
 			language = <[ISO_639-1::de]>
-			purpose = <"Darstellung einer Schnappschussansicht über die Anwendung eines bestimmten Arzneimittels, einschließlich der aktuellen Anwendung, der früheren oder der geplanten Anwendung.">
-			use = <"Darstellung einer Schnappschussansicht über die Anwendung eines bestimmten Arzneimittels, einschließlich der aktuellen Anwendung, der früheren oder der geplanten Anwendung.
+			purpose = <"Darstellung einer Snapshot-Ansicht über die Anwendung eines bestimmten Arzneimittels, einschließlich der aktuellen Anwendung, der früheren oder der geplanten Anwendung.">
+			use = <"Darstellung einer Snapshot-Ansicht über die Anwendung eines bestimmten Arzneimittels, einschließlich der aktuellen Anwendung, der früheren oder der geplanten Anwendung.
 
 Dieser Archetyp wurde so konzipiert, dass er mit der FHIR MedicationStatement-Ressource übereinstimmt.">
-			keywords = <"Arzneimittel, Medikament, Medikationseintrag, Medikamentenverabreichung, Medikationsplan", ...>
-			misuse = <"Nicht zur Darstellung von Angaben zu einer Medikamentenverordnung verwenden - verwenden Sie zu diesem Zweck INSTRUCTION.medication_order.
+			keywords = <"Arzneimittel, Medikament, Medikationseintrag, Medikamentenverabreichung, Medikationsplan, Medikation", ...>
+			misuse = <"Nicht zur Darstellung von Angaben zu einer Verordnung von Medikation verwenden - verwenden Sie zu diesem Zweck INSTRUCTION.medication_order.
 Nicht zur Darstellung von Angaben zu bestimmten medikamentenbezogenen Aktivitäten wie Verabreichung oder Abgabe verwenden. Verwenden Sie zu diesem Zweck ACTION.medication.">
+		>
+		["nb"] = <
+			language = <[ISO_639-1::nb]>
+			purpose = <"For å registrere et øyeblikksbilde av bruken av et spesifisert legemiddel, inkludert nåværende bruk, tidligere bruke eller planlagt bruk.">
+			use = <"Brukes for å registrere et øyeblikksbilde av bruken av et spesifisert legemidde, inkludert nåværende bruk, tidligere bruke eller planlagt bruk.
+
+Arketypen er designet for å passe sammen med FHIR-ressursen Medication Statement.">
+			misuse = <"Skal ikke brukes for å registrere detaljer om en legemiddelordinering. Bruk arketypen INSTRUCTION.medication_order for dette formålet.
+
+Skal ikke brukes for å registrere detaljer om spesifikke legemiddelrelaterte aktiviteter, som administrering eller utdeling. Bruk arketypen ACTION.medication for dette formålet.">
 		>
 		["en"] = <
 			language = <[ISO_639-1::en]>
@@ -70,8 +88,8 @@ Niet te gebruiken voor het vastleggen van gegevens over specifieke medicatie ger
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"E3E6972A77585A13A46D95946127A9F0">
-		["build_uid"] = <"9ac7278e-2453-4f2c-99b5-e673b79d72d2">
+		["MD5-CAM-1.0.1"] = <"E84B94E646936168729DC2F2F6FE34F9">
+		["build_uid"] = <"27e55649-fcce-41fc-989f-344a449c688e">
 		["revision"] = <"0.0.1-alpha">
 	>
 
@@ -142,6 +160,11 @@ definition
 											archetype_id/value matches {/.*/}
 									}
 									ELEMENT[at0023] occurrences matches {0..1} matches {    -- Clinical indication
+										value matches {
+											DV_TEXT matches {*}
+										}
+									}
+									ELEMENT[at0031] occurrences matches {0..1} matches {    -- Therapeutic intent
 										value matches {
 											DV_TEXT matches {*}
 										}
@@ -332,13 +355,17 @@ ontology
 					description = <"The route by of administration of the medication into the body.">
 					comment = <"For example: 'oral', 'intravenous', or 'topical'. Coding of the route with a terminology is preferred, where possible. Multiple potential routes may be specified if the medication is planned or scheduled; only one is relevant if the medication has been administered.">
 				>
+				["at0031"] = <
+					text = <"Therapeutic intent">
+					description = <"">
+				>
 			>
 		>
 		["de"] = <
 			items = <
 				["at0000"] = <
 					text = <"Medikationseintrag">
-					description = <"Eine Schnappschussansicht über die Anwendung eines bestimmten Medikaments.">
+					description = <"Eine Snapshot-Ansicht über die Anwendung eines bestimmten Medikaments.">
 				>
 				["at0001"] = <
 					text = <"History">
@@ -362,18 +389,18 @@ ontology
 					comment = <"Zum Beispiel: Lokaler Informationsbedarf oder zusätzliche Metadaten zur Anpassung an FHIR-Ressourcen.">
 				>
 				["at0006"] = <
-					text = <"Arzneimittelname">
-					description = <"Name des Medikaments, des Impfstoffs oder eines anderen therapeutischen / verschreibungspflichtigen Mittels.">
+					text = <"Arzneimittel-Name">
+					description = <"Name des Medikaments, des Impfstoffs oder eines anderen therapeutischen / verschreibungsfähigen Mittels.">
 					comment = <"Es wird dringend empfohlen, das „Arzneimittel“ mit einer Terminologie zu codieren, die nach Möglichkeit Entscheidungsunterstützung auslösen kann. Das Ausmaß der Codierung kann vom einfachen generischen oder Handelsnamen des Medikamentes bis hin zu strukturierten Angaben über die tatsächlich zu verwendende Medikamentenpackung variieren. Die Freitexteingabe sollte nur verwendet werden, wenn keine geeignete Terminologie verfügbar ist.">
 				>
 				["at0007"] = <
-					text = <"Rezeptur">
-					description = <"Strukturierte Angaben zur Gesamtzubereitung einschließlich Stärke, Verabreichungsform und Inhaltsstoffe.">
-					comment = <"Verwenden Sie diesen SLOT, in dem die detaillierte Beschreibung des angeordneten Arzneimittels explizit angegeben werden muss. Zum Beispiel: Form, Stärke, Verdünnungsmittel oder Mischung von Wirkstoffen.">
+					text = <"Herstellungsdetails">
+					description = <"Strukturierte Angaben zur Gesamtzubereitung einschließlich Wirkstärke, Verabreichungsform und Inhaltsstoffe.">
+					comment = <"Verwenden Sie diesen SLOT, in dem die detaillierte Beschreibung des angeordneten Arzneimittels explizit angegeben werden muss. Zum Beispiel: Form, Wirkstärke, Verdünnungsmittel oder Mischung von Wirkstoffen.">
 				>
 				["at0008"] = <
 					text = <"Status">
-					description = <"Der Status der Anrwendung des Medikamnets.">
+					description = <"Der Status der Anwendung des Medikaments.">
 					comment = <"Zum Beispiel: Das Medikament wird immer noch aktiv eingenommen oder eine Antibiotikatherapie wurde abgeschlossen.">
 				>
 				["at0009"] = <
@@ -418,16 +445,16 @@ ontology
 					comment = <"Zum Beispiel: wegen Nebenwirkung abgebrochen; wegen anstehender Operation ausgesetzt.">
 				>
 				["at0019"] = <
-					text = <"Statusstartzeit">
+					text = <"Status Startzeit">
 					description = <"Der gültige Zeitpunkt für den Statusbeginn.">
 				>
 				["at0020"] = <
-					text = <"Statusdauer">
+					text = <"Status Dauer">
 					description = <"Die gültige Dauer für den Status.">
-					comment = <"Dieses Datenelement kann entweder mit der Statusstartzeit oder der Statusendzeit kombiniert werden, jedoch nicht mit beiden.">
+					comment = <"Dieses Datenelement kann entweder mit der Status Startzeit oder der Status Endzeit kombiniert werden, jedoch nicht mit beiden.">
 				>
 				["at0021"] = <
-					text = <"Statusendzeit">
+					text = <"Status Endzeit">
 					description = <"Der gültige Zeitpunkt für das Statusende.">
 				>
 				["at0022"] = <
@@ -436,7 +463,7 @@ ontology
 				>
 				["at0023"] = <
 					text = <"Klinische Indikation">
-					description = <"Der kliinische Grund für die Anwendung des Medikaments.">
+					description = <"Der klinische Grund für die Anwendung des Medikaments.">
 					comment = <"Zum Beispiel: \"Angina\". Die Codierung der klinischen Indikation mit einer Terminologie wird nach Möglichkeit bevorzugt. Dieses Datenelement kann mehrfach vorkommen.">
 				>
 				["at0024"] = <
@@ -464,9 +491,13 @@ ontology
 					description = <"Zusätzliche Kommentare über den Medikationseintrag, die nicht in anderen Feldern erfasst wurden.">
 				>
 				["at0030"] = <
-					text = <"*Route (en)">
-					description = <"*The route by of administration of the medication into the body. (en)">
-					comment = <"*For example: 'oral', 'intravenous', or 'topical'. Coding of the route with a terminology is preferred, where possible. Multiple potential routes may be specified if the medication is planned or scheduled; only one is relevant if the medication has been administered. (en)">
+					text = <"Verabreichungsweg">
+					description = <"Art der Anwendung des Arzneimittels am Körper.">
+					comment = <"Zum Beispiel: \"oral\", \"intravenös\" oder \"topisch\". Die Codierung des Verabreichungswegs mit einer Terminologie wird nach Möglichkeit bevorzugt. Es können mehrere mögliche Verabreichungswege angegeben werden, wenn das Medikament vorgesehen oder geplant ist. Wenn das Medikament verabreicht wurde, ist nur ein Verabreichungsweg relevant.">
+				>
+				["at0031"] = <
+					text = <"*Therapeutic intent (en)">
+					description = <"">
 				>
 			>
 		>
@@ -493,9 +524,10 @@ ontology
 					description = <"@ internal @">
 				>
 				["at0005"] = <
-					text = <"*Extension(en)">
+					text = <"Uitbreiding">
 					description = <"*Additional information required to extend the model with local content or to align with other reference models or formalisms.
 (en)">
+					comment = <"*For example: local information requirements; or additional metadata to align with FHIR.(en)">
 				>
 				["at0006"] = <
 					text = <"Medicamentnaam">
@@ -578,6 +610,139 @@ ontology
 					comment = <"*For example: 'Angina'. Coding of the clinical indication with a terminology is preferred, where possible. This data element allows multiple occurrences. (en)">
 				>
 				["at0024"] = <
+					text = <"Eerste keer voorgeschreven">
+					description = <"De datum/tijd waarop de medicatie voor het eerst werd voorgeschreven.">
+				>
+				["at0025"] = <
+					text = <"Recentst voorgeschreven">
+					description = <"De datum/tijd waarop de medicatie het meest recent werd voorgeschreven.">
+				>
+				["at0026"] = <
+					text = <"Recents toegediend">
+					description = <"De datum/tijd waarop de medicatie voor het laatst werd ingenomen door of toegediend aan een individu.">
+				>
+				["at0027"] = <
+					text = <"Recentste beoordeling">
+					description = <"De datum/tijd wanneer gebruik van de medicatie voor het laatst werd beoordeeld door een medicus of apotheker.">
+				>
+				["at0028"] = <
+					text = <"Gestaakt">
+					description = <"De datum/tijd waarop gebruik van de medicatie werd gestopt.">
+				>
+				["at0029"] = <
+					text = <"Opmerking">
+					description = <"Extra beschrijving over het medicatie gebruik dat niet past binnen andere velden.">
+				>
+				["at0030"] = <
+					text = <"*Route (en)">
+					description = <"*The route by of administration of the medication into the body. (en)">
+					comment = <"*For example: 'oral', 'intravenous', or 'topical'. Coding of the route with a terminology is preferred, where possible. Multiple potential routes may be specified if the medication is planned or scheduled; only one is relevant if the medication has been administered. (en)">
+				>
+				["at0031"] = <
+					text = <"*Therapeutic intent (en)">
+					description = <"">
+				>
+			>
+		>
+		["nb"] = <
+			items = <
+				["at0000"] = <
+					text = <"Legemiddelutsagn">
+					description = <"Et øyeblikksbilde av bruken av et spesifisert legemiddel.">
+				>
+				["at0001"] = <
+					text = <"History">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Uspesifisert hendelse">
+					description = <"Standard, uspesifisert tidspunkt eller tidsintervall som kan defineres mer eksplisitt i et templat eller i en applikasjon.">
+				>
+				["at0003"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0004"] = <
+					text = <"Item tree">
+					description = <"@ internal @">
+				>
+				["at0005"] = <
+					text = <"*Extension(en)">
+					description = <"*Additional information required to extend the model with local content or to align with other reference models or formalisms.(en)">
+				>
+				["at0006"] = <
+					text = <"Legemiddelnavn">
+					description = <"Navnet på legemiddelet, vaksinen eller andre terapeutiske eller ordinerbare produkter.">
+				>
+				["at0007"] = <
+					text = <"Legemiddeldetaljer">
+					description = <"Strukturerte detaljer om det overordnede legemiddelet, inkludert styrke, form og ingredienser.">
+				>
+				["at0008"] = <
+					text = <"Status">
+					description = <"Statusen for legemiddelet.">
+				>
+				["at0009"] = <
+					text = <"Planlagt">
+					description = <"*The medication is intended to be taken at an unspecified time in the future.(en)">
+				>
+				["at0010"] = <
+					text = <"Planlagt og tidsfestet">
+					description = <"*The medication is scheduled to be taken at a future date.(en)">
+				>
+				["at0011"] = <
+					text = <"Aktiv">
+					description = <"*The medication is currently being taken.(en)">
+				>
+				["at0012"] = <
+					text = <"Fullført">
+					description = <"*The medication is no longer being taken.(en)">
+				>
+				["at0013"] = <
+					text = <"Utsatt">
+					description = <"*The medication is planned to be taken but commencement has been temporarily delayed.(en)">
+				>
+				["at0014"] = <
+					text = <"Avbrutt">
+					description = <"*The medication was planned to be taken but cancelled before commencement.(en)">
+				>
+				["at0015"] = <
+					text = <"Satt på pause">
+					description = <"*The medication was commenced but use temporarily supended.(en)">
+				>
+				["at0016"] = <
+					text = <"Seponert">
+					description = <"*The medication was commenced but use was ceased.(en)">
+				>
+				["at0017"] = <
+					text = <"Ukjent">
+					description = <"*The status of the medication is not known.(en)">
+				>
+				["at0018"] = <
+					text = <"*Status reason(en)">
+					description = <"*Reason for the status.(en)">
+				>
+				["at0019"] = <
+					text = <"*Status start time(en)">
+					description = <"*The valid start date/time for the Status.(en)">
+				>
+				["at0020"] = <
+					text = <"*Status duration(en)">
+					description = <"*The valid duration for the Status.(en)">
+				>
+				["at0021"] = <
+					text = <"*Status end time(en)">
+					description = <"*The valid end date/time for the Status.(en)">
+				>
+				["at0022"] = <
+					text = <"*Structured dose and timing directions(en)">
+					description = <"*Details of structured dose and timing directions.(en)">
+				>
+				["at0023"] = <
+					text = <"*Clinical indication(en)">
+					description = <"*The clinical reason for use of the medication item.(en)">
+				>
+				["at0024"] = <
 					text = <"*First prescribed(en)">
 					description = <"*The date/time when a prescription for the medication was first issued.(en)">
 				>
@@ -602,9 +767,12 @@ ontology
 					description = <"*Additional narrative about the medication statement not captured in other fields.(en)">
 				>
 				["at0030"] = <
-					text = <"*Route (en)">
-					description = <"*The route by of administration of the medication into the body. (en)">
-					comment = <"*For example: 'oral', 'intravenous', or 'topical'. Coding of the route with a terminology is preferred, where possible. Multiple potential routes may be specified if the medication is planned or scheduled; only one is relevant if the medication has been administered. (en)">
+					text = <"Administrasjonsvei">
+					description = <"Veien legemiddelet administreres gjennom.">
+				>
+				["at0031"] = <
+					text = <"*Therapeutic intent(en)">
+					description = <"">
 				>
 			>
 		>

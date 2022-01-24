@@ -41,16 +41,32 @@ The SECTION.care_plan archetype is an example of a framework for clinical conten
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"BED61A471292F47EF1DECEBA79D0FFF5">
-		["build_uid"] = <"500b36b2-ba53-4dfa-8cf5-5113c9a1d577">
+		["MD5-CAM-1.0.1"] = <"611E29DA4F53EA8344AD9B2AA38E0F0E">
+		["build_uid"] = <"57054bbc-44c4-4228-907a-fc360c6a53db">
 		["revision"] = <"0.0.1-alpha">
 	>
 
 definition
-	COMPOSITION[at0000] matches {	-- Care plan
+	COMPOSITION[at0000] matches {    -- Care plan
 		category matches {
 			DV_CODED_TEXT matches {
-				defining_code matches {[openehr::431]}
+				defining_code matches {
+					[openehr::431]
+				}
+			}
+		}
+		context matches {
+			EVENT_CONTEXT[at0001] matches {    -- Event Context
+				other_context matches {
+					ITEM_TREE[at0002] matches {    -- Item tree
+						items cardinality matches {0..*; unordered} matches {
+							allow_archetype CLUSTER[at0004] occurrences matches {0..*} matches {    -- Extension
+								include
+									archetype_id/value matches {/.*/}
+							}
+						}
+					}
+				}
 			}
 		}
 	}
@@ -63,6 +79,19 @@ ontology
 				["at0000"] = <
 					text = <"Care plan">
 					description = <"A persistent and managed list of any combination of archetypes that will support the accurate recording of a Care plan.">
+				>
+				["at0001"] = <
+					text = <"Event Context">
+					description = <"*">
+				>
+				["at0002"] = <
+					text = <"Item tree">
+					description = <"@ internal @">
+				>
+				["at0004"] = <
+					text = <"Extension">
+					description = <"Additional information required to capture local context or to align with other reference models/formalisms.">
+					comment = <"For example: Local hospital departmental infomation or additional metadata to align with FHIR equivalents.">
 				>
 			>
 		>

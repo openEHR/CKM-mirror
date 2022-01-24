@@ -161,8 +161,8 @@ Queensland Government, Department of Health. Pregnancy Health Record. SW071 - v1
 		["original_namespace"] = <"openEHR Foundation">
 		["original_publisher"] = <"org.openehr">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"0A5FFDCEDB7278325526690D4BEE1EA5">
-		["build_uid"] = <"ae0d7fad-c332-4a99-a0d8-49fc2639f405">
+		["MD5-CAM-1.0.1"] = <"C340A0CA6430130BF06485999C4D54D4">
+		["build_uid"] = <"ab76d8a1-0182-4cee-99b4-a0fb7e7edd26">
 		["revision"] = <"0.0.1-alpha">
 	>
 
@@ -270,6 +270,20 @@ definition
 							ELEMENT[at0118] occurrences matches {0..1} matches {    -- Perineum
 								value matches {
 									DV_TEXT matches {*}
+									DV_CODED_TEXT matches {
+										defining_code matches {
+											[local::
+											at0153,    -- First degree vaginal tear
+											at0154,    -- Second degree vaginal tear
+											at0155,    -- Third degree vaginal tear
+											at0156]    -- Fourth degree vaginal tear
+										}
+									}
+								}
+							}
+							ELEMENT[at0157] occurrences matches {0..1} matches {    -- Episiotomy
+								value matches {
+									DV_BOOLEAN matches {*}
 								}
 							}
 							ELEMENT[at0119] occurrences matches {0..1} matches {    -- Blood Loss
@@ -286,16 +300,16 @@ definition
 							}
 							CLUSTER[at0028] occurrences matches {0..*} matches {    -- Per baby
 								items cardinality matches {1..*; unordered} matches {
-									ELEMENT[at0036] occurrences matches {0..1} matches {    -- Identification
-										value matches {
-											DV_TEXT matches {*}
-										}
-									}
 									ELEMENT[at0084] occurrences matches {0..1} matches {    -- Birth order
 										value matches {
 											DV_COUNT matches {
 												magnitude matches {|0..20|}
 											}
+										}
+									}
+									ELEMENT[at0036] occurrences matches {0..1} matches {    -- Identification
+										value matches {
+											DV_TEXT matches {*}
 										}
 									}
 									ELEMENT[at0040] occurrences matches {0..1} matches {    -- Mode of birth
@@ -304,6 +318,8 @@ definition
 												defining_code matches {
 													[local::
 													at0041,    -- Unassisted
+													at0147,    -- Assisted breech delivery
+													at0148,    -- Total breech extraction
 													at0042,    -- Vacuum extraction
 													at0132,    -- Vacuum extraction with rotation
 													at0043,    -- Lift-out forceps
@@ -328,6 +344,18 @@ definition
 													at0106,    -- Foot
 													at0107,    -- Arm
 													at0133]    -- Shoulder
+												}
+											}
+										}
+									}
+									ELEMENT[at0149] occurrences matches {0..1} matches {    -- Position
+										value matches {
+											DV_CODED_TEXT matches {
+												defining_code matches {
+													[local::
+													at0150,    -- Left occiput anterior/transverse
+													at0151,    -- Right occiput anterior/transverse
+													at0152]    -- Unknown
 												}
 											}
 										}
@@ -669,7 +697,7 @@ ontology
 				>
 				["at0118"] = <
 					text = <"Perineum">
-					description = <"Narrative description about the condition of the perineum after birth, including injuries and repairs.">
+					description = <"Coded or narrative description about the condition of the perineum after birth, including injuries and repairs.">
 				>
 				["at0119"] = <
 					text = <"Blood Loss">
@@ -719,6 +747,50 @@ ontology
 				["at0146"] = <
 					text = <"Pregnancy label">
 					description = <"">
+				>
+				["at0147"] = <
+					text = <"Assisted breech delivery">
+					description = <"Vaginal delivery assisted by maneuvers in the delivery of the remainder of the body, arms, and head.">
+				>
+				["at0148"] = <
+					text = <"Total breech extraction">
+					description = <"Vaginal delivery, by which the fetal feet are grasped, and the entire fetus is extracted.">
+				>
+				["at0149"] = <
+					text = <"Position">
+					description = <"">
+				>
+				["at0150"] = <
+					text = <"Left occiput anterior/transverse">
+					description = <"The baby's back was toward the left side of the uterus at onset of labour.">
+				>
+				["at0151"] = <
+					text = <"Right occiput anterior/transverse">
+					description = <"The baby's back was toward the right side of the uterus at onset of labour.">
+				>
+				["at0152"] = <
+					text = <"Unknown">
+					description = <"It is not known which side the baby's back was positioned by onset of labour.">
+				>
+				["at0153"] = <
+					text = <"First degree vaginal tear">
+					description = <"Involve just the skin of the vaginal opening and perineum.">
+				>
+				["at0154"] = <
+					text = <"Second degree vaginal tear">
+					description = <"Involve the skin and muscle of the perineum and might extend deep into the vagina.">
+				>
+				["at0155"] = <
+					text = <"Third degree vaginal tear">
+					description = <"Tear in the vaginal tissue, perineal skin, and perineal muscles that extends into the anal sphincter.">
+				>
+				["at0156"] = <
+					text = <"Fourth degree vaginal tear">
+					description = <"Extend through the anal sphincter and into the mucous membrane that lines the rectum.">
+				>
+				["at0157"] = <
+					text = <"Episiotomy">
+					description = <"Was an episiotomy performed?">
 				>
 			>
 		>
@@ -949,8 +1021,7 @@ ontology
 				>
 				["at0118"] = <
 					text = <"Períneo">
-					description = <"Descrição narrativa sobre a condição do períneo após o nascimento, incluindo lesões e reparos.
-">
+					description = <"*Coded or narrative description about the condition of the perineum after birth, including injuries and repairs. (en)">
 				>
 				["at0119"] = <
 					text = <"Perda sanguínea">
@@ -1000,6 +1071,50 @@ ontology
 				["at0146"] = <
 					text = <"*Pregnancy label (en)">
 					description = <"">
+				>
+				["at0147"] = <
+					text = <"*Assisted breech delivery (en)">
+					description = <"*Vaginal delivery assisted by maneuvers in the delivery of the remainder of the body, arms, and head. (en)">
+				>
+				["at0148"] = <
+					text = <"*Total breech extraction (en)">
+					description = <"*Vaginal delivery, by which the fetal feet are grasped, and the entire fetus is extracted. (en)">
+				>
+				["at0149"] = <
+					text = <"*Position (en)">
+					description = <"">
+				>
+				["at0150"] = <
+					text = <"*Left occiput anterior/transverse (en)">
+					description = <"*The baby's back was toward the left side of the uterus at onset of labour. (en)">
+				>
+				["at0151"] = <
+					text = <"*Right occiput anterior/transverse (en)">
+					description = <"*The baby's back was toward the right side of the uterus at onset of labour. (en)">
+				>
+				["at0152"] = <
+					text = <"*Unknown (en)">
+					description = <"*It is not known which side the baby's back was positioned by onset of labour. (en)">
+				>
+				["at0153"] = <
+					text = <"*First degree vaginal tear (en)">
+					description = <"*Involve just the skin of the vaginal opening and perineum. (en)">
+				>
+				["at0154"] = <
+					text = <"*Second degree vaginal tear (en)">
+					description = <"*Involve the skin and muscle of the perineum and might extend deep into the vagina. (en)">
+				>
+				["at0155"] = <
+					text = <"*Third degree vaginal tear (en)">
+					description = <"*Tear in the vaginal tissue, perineal skin, and perineal muscles that extends into the anal sphincter. (en)">
+				>
+				["at0156"] = <
+					text = <"*Fourth degree vaginal tear (en)">
+					description = <"*Extend through the anal sphincter and into the mucous membrane that lines the rectum. (en)">
+				>
+				["at0157"] = <
+					text = <"*Episiotomy (en)">
+					description = <"*Was an episiotomy performed? (en)">
 				>
 			>
 		>
@@ -1230,7 +1345,7 @@ ontology
 				>
 				["at0118"] = <
 					text = <"perineo">
-					description = <"Descripción narrativa acerca de la condición del perineo después del parto , incluyendo lesiones y reparaciones.">
+					description = <"*Coded or narrative description about the condition of the perineum after birth, including injuries and repairs. (en)">
 				>
 				["at0119"] = <
 					text = <"Sangrado">
@@ -1280,6 +1395,50 @@ ontology
 				["at0146"] = <
 					text = <"*Pregnancy label (en)">
 					description = <"">
+				>
+				["at0147"] = <
+					text = <"*Assisted breech delivery (en)">
+					description = <"*Vaginal delivery assisted by maneuvers in the delivery of the remainder of the body, arms, and head. (en)">
+				>
+				["at0148"] = <
+					text = <"*Total breech extraction (en)">
+					description = <"*Vaginal delivery, by which the fetal feet are grasped, and the entire fetus is extracted. (en)">
+				>
+				["at0149"] = <
+					text = <"*Position (en)">
+					description = <"">
+				>
+				["at0150"] = <
+					text = <"*Left occiput anterior/transverse (en)">
+					description = <"*The baby's back was toward the left side of the uterus at onset of labour. (en)">
+				>
+				["at0151"] = <
+					text = <"*Right occiput anterior/transverse (en)">
+					description = <"*The baby's back was toward the right side of the uterus at onset of labour. (en)">
+				>
+				["at0152"] = <
+					text = <"*Unknown (en)">
+					description = <"*It is not known which side the baby's back was positioned by onset of labour. (en)">
+				>
+				["at0153"] = <
+					text = <"*First degree vaginal tear (en)">
+					description = <"*Involve just the skin of the vaginal opening and perineum. (en)">
+				>
+				["at0154"] = <
+					text = <"*Second degree vaginal tear (en)">
+					description = <"*Involve the skin and muscle of the perineum and might extend deep into the vagina. (en)">
+				>
+				["at0155"] = <
+					text = <"*Third degree vaginal tear (en)">
+					description = <"*Tear in the vaginal tissue, perineal skin, and perineal muscles that extends into the anal sphincter. (en)">
+				>
+				["at0156"] = <
+					text = <"*Fourth degree vaginal tear (en)">
+					description = <"*Extend through the anal sphincter and into the mucous membrane that lines the rectum. (en)">
+				>
+				["at0157"] = <
+					text = <"*Episiotomy (en)">
+					description = <"*Was an episiotomy performed? (en)">
 				>
 			>
 		>
@@ -1507,7 +1666,7 @@ Dette dataelementet skal ikke brukes dersom \"Individuelt utfall\" er dokumenter
 				>
 				["at0118"] = <
 					text = <"*Perineum(en)">
-					description = <"*Narrative description about the condition of the perineum after birth, including injuries and repairs.(en)">
+					description = <"*Coded or narrative description about the condition of the perineum after birth, including injuries and repairs. (en)">
 				>
 				["at0119"] = <
 					text = <"*Blood Loss(en)">
@@ -1556,6 +1715,50 @@ Dette dataelementet skal ikke brukes dersom \"Individuelt utfall\" er dokumenter
 				["at0146"] = <
 					text = <"*Pregnancy label (en)">
 					description = <"">
+				>
+				["at0147"] = <
+					text = <"*Assisted breech delivery (en)">
+					description = <"*Vaginal delivery assisted by maneuvers in the delivery of the remainder of the body, arms, and head. (en)">
+				>
+				["at0148"] = <
+					text = <"*Total breech extraction (en)">
+					description = <"*Vaginal delivery, by which the fetal feet are grasped, and the entire fetus is extracted. (en)">
+				>
+				["at0149"] = <
+					text = <"*Position (en)">
+					description = <"">
+				>
+				["at0150"] = <
+					text = <"*Left occiput anterior/transverse (en)">
+					description = <"*The baby's back was toward the left side of the uterus at onset of labour. (en)">
+				>
+				["at0151"] = <
+					text = <"*Right occiput anterior/transverse (en)">
+					description = <"*The baby's back was toward the right side of the uterus at onset of labour. (en)">
+				>
+				["at0152"] = <
+					text = <"*Unknown (en)">
+					description = <"*It is not known which side the baby's back was positioned by onset of labour. (en)">
+				>
+				["at0153"] = <
+					text = <"*First degree vaginal tear (en)">
+					description = <"*Involve just the skin of the vaginal opening and perineum. (en)">
+				>
+				["at0154"] = <
+					text = <"*Second degree vaginal tear (en)">
+					description = <"*Involve the skin and muscle of the perineum and might extend deep into the vagina. (en)">
+				>
+				["at0155"] = <
+					text = <"*Third degree vaginal tear (en)">
+					description = <"*Tear in the vaginal tissue, perineal skin, and perineal muscles that extends into the anal sphincter. (en)">
+				>
+				["at0156"] = <
+					text = <"*Fourth degree vaginal tear (en)">
+					description = <"*Extend through the anal sphincter and into the mucous membrane that lines the rectum. (en)">
+				>
+				["at0157"] = <
+					text = <"*Episiotomy (en)">
+					description = <"*Was an episiotomy performed? (en)">
 				>
 			>
 		>

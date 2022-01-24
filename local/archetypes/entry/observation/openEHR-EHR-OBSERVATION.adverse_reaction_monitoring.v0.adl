@@ -1,0 +1,286 @@
+﻿archetype (adl_version=1.4; uid=61ca71e0-d609-4e75-879e-488b1a2f8ce4)
+	openEHR-EHR-OBSERVATION.adverse_reaction_monitoring.v0
+
+concept
+	[at0000]	-- Adverse reaction monitoring
+language
+	original_language = <[ISO_639-1::en]>
+	translations = <
+		["nb"] = <
+			language = <[ISO_639-1::nb]>
+			author = <
+				["name"] = <"Silje Ljosland Bakke">
+				["organisation"] = <"Helse Vest IKT AS">
+				["email"] = <"silje.ljosland.bakke@helse-vest-ikt.no">
+			>
+		>
+	>
+description
+	original_author = <
+		["name"] = <"Heather Leslie">
+		["organisation"] = <"Atomica Informatics">
+		["email"] = <"heather.leslie@atomicainformatics.com">
+		["date"] = <"2021-08-04">
+	>
+	details = <
+		["nb"] = <
+			language = <[ISO_639-1::nb]>
+			purpose = <"For å registrere informasjon om resultatet av monitorering etter administrering av en substans.">
+			use = <"Brukes for å registrere informasjon om resultatet av monitorering etter administrering av en substans.
+
+Denne arketypen er laget for å registrere hvorvidt individet hadde en reaksjon etter at en substans er administrert. Den omfatter detaljer om tiltak som er gjort for å minske risikoen ved eventuelle reaksjoner, som bruk av kortikosteroider eller innleggelse på intensivavdeling. Det kan registreres en oppsummering av eventuelle reaksjoner ved hjelp av arketypen CLUSTER.reaction_event_summary i SLOTet \"Oppsummering av reaksjonshendelse\".">
+			misuse = <"Skal ikke brukes for å registrere en tendens individet måtte ha for å få overfølsomhetsreaksjoner mot en spesifikk substans eller grupper/klasser av substanser. Bruk arketypen EVALUATION.adverse_reaction_risk til dette formålet.">
+		>
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To record information about the outcome of monitoring after administration of a substance.">
+			use = <"Use to record information about the outcome of monitoring after administration of a substance.
+
+This archetype has been designed to capture whether a reaction occurred after administration of an agent to an individual. It includes details about any mitigation efforts in the context of administration, such as corticosteroid cover, or ICU admission. Summary details about a reaction that occurred can be recorded using the CLUSTER.reaction_event_summary in the 'Reaction event summary' SLOT.">
+			misuse = <"Not to be used to record a propensity of the individual to have adverse reactions to specific substances or groups or classes of substances. Use the EVALUATION.adverse_reaction_risk archetype for this purpose.">
+			copyright = <"© openEHR Foundation">
+		>
+	>
+	lifecycle_state = <"in_development">
+	other_contributors = <>
+	other_details = <
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
+		["custodian_organisation"] = <"openEHR Foundation">
+		["original_namespace"] = <"org.openehr">
+		["original_publisher"] = <"openEHR Foundation">
+		["custodian_namespace"] = <"org.openehr">
+		["MD5-CAM-1.0.1"] = <"863452276E70A804284716AC864B3866">
+		["build_uid"] = <"b85824d7-936a-41e4-b765-facd90b826e4">
+		["revision"] = <"0.0.1-alpha">
+	>
+
+definition
+	OBSERVATION[at0000] matches {    -- Adverse reaction monitoring
+		data matches {
+			HISTORY[at0001] matches {    -- History
+				events cardinality matches {1..*; unordered} matches {
+					INTERVAL_EVENT[at0002] occurrences matches {0..*} matches {    -- Monitoring interval
+						data matches {
+							ITEM_TREE[at0003] matches {    -- Tree
+								items cardinality matches {0..*; unordered} matches {
+									ELEMENT[at0013] occurrences matches {0..1} matches {    -- Purpose
+										value matches {
+											DV_TEXT matches {*}
+										}
+									}
+									ELEMENT[at0004] matches {    -- Substance
+										value matches {
+											DV_TEXT matches {*}
+										}
+									}
+									ELEMENT[at0005] occurrences matches {0..1} matches {    -- Reaction?
+										value matches {
+											DV_CODED_TEXT matches {
+												defining_code matches {
+													[local::
+													at0006,    -- Yes
+													at0007,    -- No
+													at0015]    -- Indeterminate
+												}
+											}
+										}
+									}
+									allow_archetype CLUSTER[at0014] occurrences matches {0..*} matches {    -- Substance details
+										include
+											archetype_id/value matches {/openEHR-EHR-CLUSTER\.medication(-[a-zA-Z0-9_]+)*\.v1/}
+									}
+									allow_archetype CLUSTER[at0016] occurrences matches {0..1} matches {    -- Reaction event summary
+										include
+											archetype_id/value matches {/openEHR-EHR-CLUSTER\.adverse_reaction_event_summary(-[a-zA-Z0-9_]+)*\.v0|openEHR-EHR-CLUSTER\.adverse_reaction_event_summary\.v1/}
+									}
+									ELEMENT[at0008] occurrences matches {0..1} matches {    -- Comment
+										value matches {
+											DV_TEXT matches {*}
+										}
+									}
+								}
+							}
+						}
+						state matches {
+							ITEM_TREE[at0012] matches {    -- Item tree
+								items cardinality matches {0..*; unordered} matches {
+									ELEMENT[at0011] occurrences matches {0..1} matches {    -- Mitigation
+										value matches {
+											DV_TEXT matches {*}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		protocol matches {
+			ITEM_TREE[at0009] matches {    -- Item tree
+				items cardinality matches {0..*; unordered} matches {
+					allow_archetype CLUSTER[at0010] occurrences matches {0..*} matches {    -- Extension
+						include
+							archetype_id/value matches {/.*/}
+					}
+				}
+			}
+		}
+	}
+
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"Adverse reaction monitoring">
+					description = <"Information about the outcome of monitoring after administration of a substance.">
+				>
+				["at0001"] = <
+					text = <"History">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Monitoring interval">
+					description = <"The time from onset of monitoring to end of monitoring.">
+				>
+				["at0003"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0004"] = <
+					text = <"Substance">
+					description = <"Identification of a substance administered to the individual.">
+					comment = <"For example, an agent that has previously triggered an adverse reaction or a vaccination.">
+				>
+				["at0005"] = <
+					text = <"Reaction?">
+					description = <"Was there a reaction to the agent administered?">
+				>
+				["at0006"] = <
+					text = <"Yes">
+					description = <"The individual reacted.">
+				>
+				["at0007"] = <
+					text = <"No">
+					description = <"The individual did not react.">
+				>
+				["at0008"] = <
+					text = <"Comment">
+					description = <"Additional narrative about the monitoring, not captured in other fields.">
+				>
+				["at0009"] = <
+					text = <"Item tree">
+					description = <"@ internal @">
+				>
+				["at0010"] = <
+					text = <"Extension">
+					description = <"Additional information required to extend the model with local content or to align with other reference models or formalisms.">
+					comment = <"For example: local information requirements; or additional metadata to align with FHIR.">
+				>
+				["at0011"] = <
+					text = <"Mitigation">
+					description = <"Narrative description about any reaction mitigation factors applied before or during administration of the substance.">
+					comment = <"For example, that the substance was administered in ICU and under cover of high dose corticosteroids.">
+				>
+				["at0012"] = <
+					text = <"Item tree">
+					description = <"@ internal @">
+				>
+				["at0013"] = <
+					text = <"Purpose">
+					description = <"The reason why the reaction monitoring was carried out.">
+					comment = <"For example: vaccination, transfusion, chemotherapy, allergy desensitisation.">
+				>
+				["at0014"] = <
+					text = <"Substance details">
+					description = <"Structured details about the substance administered to the individual.">
+				>
+				["at0015"] = <
+					text = <"Indeterminate">
+					description = <"It cannot be determined whether the individual reacted or not.">
+				>
+				["at0016"] = <
+					text = <"Reaction event summary">
+					description = <"Summary details about the adverse reaction event.">
+				>
+			>
+		>
+		["nb"] = <
+			items = <
+				["at0000"] = <
+					text = <"Monitorering for overfølsomhetsreaksjoner">
+					description = <"Informasjon om resultatet av monitorering etter administrering av en substans.">
+				>
+				["at0001"] = <
+					text = <"History">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Monitoreringsintervall">
+					description = <"Tiden fra monitorering startes til monitorering avsluttes.">
+				>
+				["at0003"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0004"] = <
+					text = <"Substans">
+					description = <"Substansen som ble gitt til individet.">
+					comment = <"For eksempel en agens som tidligere har gitt en overfølsomhetsreaksjon, eller en vaksine.">
+				>
+				["at0005"] = <
+					text = <"Reaksjon?">
+					description = <"Skjedde det en reaksjon på den administrerte substansen?">
+				>
+				["at0006"] = <
+					text = <"Ja">
+					description = <"Individet reagerte.">
+				>
+				["at0007"] = <
+					text = <"Nei">
+					description = <"Individet reagerte ikke.">
+				>
+				["at0008"] = <
+					text = <"Kommentar">
+					description = <"Ytterligere fritekst om monitoreringen som ikke er fanget i andre felt.">
+				>
+				["at0009"] = <
+					text = <"Item tree">
+					description = <"@ internal @">
+				>
+				["at0010"] = <
+					text = <"Tilleggsinformasjon">
+					description = <"Ytterligere informasjon som trengs for å kunne registrere lokalt definert innhold eller for å tilpasse til andre referansemodeller/formalismer.">
+					comment = <"For eksempel lokale informasjonsbehov eller ytterligere metadata for å kunne tilpasse til tilsvarende konsepter i FHIR.">
+				>
+				["at0011"] = <
+					text = <"Skadebegrensning">
+					description = <"Fritekstbeskrivelse av tiltak som er gjort før eller under administreringen for å begrense skade.">
+					comment = <"For eksempel: Substansen ble administrert på intensivavdeling, eller under dekning av høydose kortikosteroider.">
+				>
+				["at0012"] = <
+					text = <"Item tree">
+					description = <"@ internal @">
+				>
+				["at0013"] = <
+					text = <"Formål">
+					description = <"Årsaken til at reaksjonsmonitorering ble utført.">
+					comment = <"For eksempel vaksinasjon, transfusjon, kjemoterapi, eller hyposensitivering.">
+				>
+				["at0014"] = <
+					text = <"Substansdetaljer">
+					description = <"Strukturerte detaljer om substansen som ble gitt til individet.">
+				>
+				["at0015"] = <
+					text = <"Ubestemmelig">
+					description = <"Det kan ikke påvises hvorvidt individet reagerte eller ikke.">
+				>
+				["at0016"] = <
+					text = <"Oppsummering av reaksjonen">
+					description = <"Oppsummerende detaljer om reaksjonen.">
+				>
+			>
+		>
+	>

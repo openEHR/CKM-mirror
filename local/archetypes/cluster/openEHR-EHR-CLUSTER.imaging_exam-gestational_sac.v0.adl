@@ -1,0 +1,245 @@
+﻿archetype (adl_version=1.4; uid=74c21b26-1c7a-47ef-b3cb-f5a2746d019f)
+	openEHR-EHR-CLUSTER.imaging_exam-gestational_sac.v0
+specialise
+	openEHR-EHR-CLUSTER.imaging_exam.v0
+
+concept
+	[at0000.1]	-- Imaging examination of a single gestational sac
+language
+	original_language = <[ISO_639-1::en]>
+description
+	original_author = <
+		["name"] = <"Heather Leslie">
+		["organisation"] = <"Atomica Informatics">
+		["email"] = <"heather.leslie@atomicainformatics.com">
+		["date"] = <"2021-11-24">
+	>
+	details = <
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To record a narrative description, structured details and clinical impression of the findings observed in an imaging examination targeting a single gestational sac.">
+			use = <"Use to record a narrative description, structured details and clinical impression of the findings observed in an imaging examination targeting a single gestational sac.
+
+This archetype has been designed to be nested in the 'Structured imaging findings' SLOT within the OBSERVATION.imaging_exam_result archetype, but can also be used within other ENTRY or CLUSTER archetypes, where clinically appropriate.
+
+Use to provide a framework in which CLUSTER archetypes can be nested in the 'Additional details' SLOT within this archetype to record additional nested levels of structured imaging findings for related body substructures or site-specified findings.">
+			misuse = <"Not to be used to record findings outside the specified body structure or region. Use other archetypes from the CLUSTER.imaging_exam family for this purpose.
+
+Not to be used to record details related to the overall findings, context or technical details related to a complete imaging examination test result. Use the OBERSERVATION.imaging_exam_result for this purpose. For example, comments on the study quality, differential diagnoses, and overall impression.">
+			copyright = <"© openEHR Foundation">
+		>
+	>
+	lifecycle_state = <"in_development">
+	other_contributors = <"Vebjørn Arntzen, Oslo University Hospital", "Liv Laugen, Oslo University Hospital", "Peter Fedorcsak, Oslo University Hospital">
+	other_details = <
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
+		["custodian_organisation"] = <"openEHR Foundation">
+		["references"] = <"Rodgers SK, Chang C, DeBardeleben JT, Horrow MM. Normal and Abnormal US Findings in Early First-Trimester Pregnancy: Review of the Society of Radiologists in Ultrasound 2012 Consensus Panel Recommendations. Radiographics. 2015 Nov-Dec;35(7):2135-48. doi: 10.1148/rg.2015150092. PMID: 26562242.">
+		["original_namespace"] = <"org.openehr">
+		["original_publisher"] = <"openEHR Foundation">
+		["custodian_namespace"] = <"org.openehr">
+		["MD5-CAM-1.0.1"] = <"D7A3A03E9B0FD55392D5FE26BA17410B">
+		["build_uid"] = <"ca9df56d-9a1e-479c-938f-7c3402b17425">
+		["ip_acknowledgements"] = <"This artefact includes content from SNOMED Clinical Terms® (SNOMED CT®) which is copyrighted material of the International Health Terminology Standards Development Organisation (IHTSDO). Where an implementation of this artefact makes use of SNOMED CT content, the implementer must have the appropriate SNOMED CT Affiliate license - for more information contact https://www.snomed.org/snomed-ct/get-snomed or info@snomed.org.">
+		["revision"] = <"0.0.1-alpha">
+	>
+
+definition
+	CLUSTER[at0000.1] matches {    -- Imaging examination of a single gestational sac
+		items cardinality matches {1..*; unordered} matches {
+			ELEMENT[at0001.1] matches {    -- Body structure
+				value matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {
+							[local::at0.1]    -- Gestational sac
+						}
+					}
+				}
+			}
+			ELEMENT[at0002] occurrences matches {0..1} matches {    -- Anatomical location
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			allow_archetype CLUSTER[at0003] occurrences matches {0..*} matches {    -- Structured anatomical location
+				include
+					archetype_id/value matches {/openEHR-EHR-CLUSTER\.anatomical_location(-[a-zA-Z0-9_]+)*\.v1|openEHR-EHR-CLUSTER\.anatomical_location_relative(-[a-zA-Z0-9_]+)*\.v2|openEHR-EHR-CLUSTER\.anatomical_location_circle(-[a-zA-Z0-9_]+)*\.v1/}
+			}
+			ELEMENT[at0004] occurrences matches {0..1} matches {    -- Imaging findings
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			allow_archetype CLUSTER[at0005] occurrences matches {0..*} matches {    -- SLOT: Additional details
+				include
+					archetype_id/value matches {/openEHR-EHR-CLUSTER\.imaging_finding(-[a-zA-Z0-9_]+)*\.v0|openEHR-EHR-CLUSTER\.imaging_exam-lymph_node(-[a-zA-Z0-9_]+)*\.v0|openEHR-EHR-CLUSTER\.imaging_exam-lymph_node_group(-[a-zA-Z0-9_]+)*\.v0|openEHR-EHR-CLUSTER\.imaging_exam-abnormality(-[a-zA-Z0-9_]+)*\.v0/}
+			}
+			ELEMENT[at0006] occurrences matches {0..1} matches {    -- Impression
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			ELEMENT[at0007] occurrences matches {0..1} matches {    -- Comment
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			ELEMENT[at0.2] occurrences matches {0..1} matches {    -- Mean Sac Diameter (MSD)
+				value matches {
+					C_DV_QUANTITY <
+						property = <[openehr::122]>
+						list = <
+							["1"] = <
+								units = <"mm">
+							>
+						>
+					>
+				}
+			}
+			ELEMENT[at0.3] occurrences matches {0..1} matches {    -- Yolk sac presence
+				value matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {
+							[local::
+							at0.7,    -- Present, single
+							at0.8,    -- Present, multiple
+							at0.9,    -- Absent
+							at0.10]    -- Indeterminate
+						}
+					}
+				}
+			}
+			ELEMENT[at0.4] occurrences matches {0..1} matches {    -- Yolk sac description
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			ELEMENT[at0.5] occurrences matches {0..1} matches {    -- Amnion presence
+				value matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {
+							[local::
+							at0.11,    -- Present, single
+							at0.12,    -- Present, multiple
+							at0.13,    -- Absent
+							at0.14]    -- Indeterminate
+						}
+					}
+				}
+			}
+			ELEMENT[at0.6] occurrences matches {0..1} matches {    -- Amnion description
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+		}
+	}
+
+
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000.1"] = <
+					text = <"Imaging examination of a single gestational sac">
+					description = <"Findings observed in an imaging examination targeting a single gestational sac, using radiographic techniques.">
+				>
+				["at0001.1"] = <
+					text = <"Body structure">
+					description = <"Identification of the body structure or region examined.">
+				>
+				["at0.1"] = <
+					text = <"Gestational sac">
+					description = <"A gestational sac was examined.">
+				>
+				["at0.2"] = <
+					text = <"Mean Sac Diameter (MSD)">
+					description = <"">
+				>
+				["at0.3"] = <
+					text = <"Yolk sac presence">
+					description = <"The presence or absence of a yolk sac.">
+				>
+				["at0.4"] = <
+					text = <"Yolk sac description">
+					description = <"Narrative description about the yolk sac.">
+				>
+				["at0.5"] = <
+					text = <"Amnion presence">
+					description = <"The presence or absence of an amnion.">
+				>
+				["at0.6"] = <
+					text = <"Amnion description">
+					description = <"Narrative description about the amnion.">
+				>
+				["at0.7"] = <
+					text = <"Present, single">
+					description = <"A single yolk sac can be observed.">
+				>
+				["at0.8"] = <
+					text = <"Present, multiple">
+					description = <"More than one yolk sac can be observed.">
+				>
+				["at0.9"] = <
+					text = <"Absent">
+					description = <"No yolk sac can be observed.">
+				>
+				["at0.10"] = <
+					text = <"Indeterminate">
+					description = <"It is not possible to determine if a yolk sac is present or absent.">
+				>
+				["at0.11"] = <
+					text = <"Present, single">
+					description = <"A single amnion can be observed.">
+				>
+				["at0.12"] = <
+					text = <"Present, multiple">
+					description = <"More than one amnion can be observed.">
+				>
+				["at0.13"] = <
+					text = <"Absent">
+					description = <"No amnion can be observed.">
+				>
+				["at0.14"] = <
+					text = <"Indeterminate">
+					description = <"It is not possible to determine if an amnion is present or absent.">
+				>
+				["at0000"] = <
+					text = <"Imaging examination">
+					description = <"Findings observed in an imaging examination targeting a specified structure or region, using radiographic techniques.">
+				>
+				["at0004"] = <
+					text = <"Imaging findings">
+					description = <"Narrative description of the imaging findings observed during this examination.">
+				>
+				["at0005"] = <
+					text = <"SLOT: Additional details">
+					description = <"Additional structured details about imaging findings for the identified body structure or region, or findings for related substructures.">
+				>
+				["at0007"] = <
+					text = <"Comment">
+					description = <"Additional narrative about the imaging findings, not captured in other fields.">
+				>
+				["at0001"] = <
+					text = <"Body structure">
+					description = <"Identification of the body structure or region examined.">
+				>
+				["at0003"] = <
+					text = <"Structured anatomical location">
+					description = <"Structured details about the anatomical location of the identified body structure.">
+					comment = <"If the anatomical location of the identified body structure is known or it has been identified in the 'Anatomical location' data element, this data element is redundant.">
+				>
+				["at0006"] = <
+					text = <"Impression">
+					description = <"Narrative concise, clinically relevant impression of all imaging findings for the identified body structure.">
+					comment = <"Also referred to as 'Opinion'. May include a comparison with previous studies of the identified body structure, where appropriate.">
+				>
+				["at0002"] = <
+					text = <"Anatomical location">
+					description = <"Simple body site for the identified structure.">
+					comment = <"If the anatomical location of the identified body structure is known, this data element is redundant.">
+				>
+			>
+		>
+	>

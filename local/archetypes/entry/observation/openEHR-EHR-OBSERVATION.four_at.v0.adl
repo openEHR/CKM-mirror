@@ -1,0 +1,326 @@
+﻿archetype (adl_version=1.4; uid=a328d71c-8563-4f6a-bedc-74a1e981a935)
+	openEHR-EHR-OBSERVATION.four_at.v0
+
+concept
+	[at0000]	-- 4 ‘A’s Test (4AT)
+language
+	original_language = <[ISO_639-1::en]>
+	translations = <
+		["nb"] = <
+			language = <[ISO_639-1::nb]>
+			author = <
+				["name"] = <"John Tore Valand">
+				["organisation"] = <"Haukeland Universitetssjukehus">
+				["email"] = <"john.tore.valand@helse-bergen.no">
+			>
+		>
+	>
+description
+	original_author = <
+		["name"] = <"John Tore Valand">
+		["organisation"] = <"Helse Bergen HF">
+		["date"] = <"2019-02-18">
+	>
+	details = <
+		["nb"] = <
+			language = <[ISO_639-1::nb]>
+			purpose = <"*To record the results for each component parameter and their total sum for the 4AT test. (en)">
+			use = <"*Use to record the results for each component parameter and their total sum for the 4AT test. (en)">
+			keywords = <"delirium", ...>
+			misuse = <"">
+		>
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To record the results for each component parameter and their total sum for the 4AT test.">
+			use = <"Use to record the results for each component parameter and their total sum for the 4AT test.">
+			keywords = <"delirium, assessment, alertness", ...>
+			misuse = <"">
+			copyright = <"© openEHR Foundation, Nasjonal IKT HF">
+		>
+	>
+	lifecycle_state = <"in_development">
+	other_contributors = <"Heather Leslie, Atomica Informatics, Australia", ...>
+	other_details = <
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
+		["custodian_organisation"] = <"openEHR Foundation">
+		["references"] = <"4AT Rapid Clinical Test For Delirium [Internet]. 2014 [cited 2021 Feb 11]. Available from: https://www.the4at.com/.
+
+Bellelli G, Morandi A, Davis DH, Mazzola P, Turco R, Gentile S, Ryan T, Cash H, Guerini F, Torpilliesi T, Del Santo F, Trabucchi M, Annoni G, MacLullich AM. Validation of the 4AT, a new instrument for rapid delirium screening: a study in 234 hospitalised older people. Age Ageing. 2014 Jul;43(4):496-502. doi: 10.1093/ageing/afu021. Epub 2014 Mar 2. Erratum in: Age Ageing. 2015 Jan;44(1):175. PMID: 24590568; PMCID: PMC4066613.">
+		["current_contact"] = <"John Tore Valand, john.tore.valand@helse-bergen.no">
+		["original_namespace"] = <"org.openehr">
+		["original_publisher"] = <"openEHR Foundation">
+		["custodian_namespace"] = <"org.openehr">
+		["MD5-CAM-1.0.1"] = <"3B061B4C2D55F1C035682CA5EB9EAF58">
+		["build_uid"] = <"40e84ca2-cc0f-441d-bb59-1b54e32d0c7c">
+		["revision"] = <"0.0.1-alpha">
+	>
+
+definition
+	OBSERVATION[at0000] matches {    -- 4 ‘A’s Test (4AT)
+		data matches {
+			HISTORY[at0001] matches {    -- History
+				events cardinality matches {0..*; unordered} matches {
+					EVENT[at0002] occurrences matches {0..*} matches {    -- Any event
+						data matches {
+							ITEM_TREE[at0003] matches {    -- ItemTree
+								items cardinality matches {0..*; unordered} matches {
+									ELEMENT[at0004] occurrences matches {0..1} matches {    -- Alertness
+										value matches {
+											0|[local::at0005],
+											0|[local::at0006],
+											4|[local::at0007]
+										}
+									}
+									ELEMENT[at0008] occurrences matches {0..1} matches {    -- AMT-4 score
+										value matches {
+											0|[local::at0009],
+											1|[local::at0010],
+											2|[local::at0011],
+											2|[local::at0022]
+										}
+									}
+									ELEMENT[at0012] occurrences matches {0..1} matches {    -- Attention
+										value matches {
+											0|[local::at0013],
+											1|[local::at0014],
+											2|[local::at0015]
+										}
+									}
+									ELEMENT[at0016] occurrences matches {0..1} matches {    -- Acute change or fluctuating course
+										value matches {
+											0|[local::at0017],
+											4|[local::at0018]
+										}
+									}
+									ELEMENT[at0019] occurrences matches {0..1} matches {    -- Total score
+										value matches {
+											DV_COUNT matches {
+												magnitude matches {|0..12|}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		protocol matches {
+			ITEM_TREE[at0020] matches {    -- ItemTree
+				items cardinality matches {0..*; unordered} matches {
+					allow_archetype CLUSTER[at0021] occurrences matches {0..*} matches {    -- Extension
+						include
+							archetype_id/value matches {/.*/}
+					}
+				}
+			}
+		}
+	}
+
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"4 ‘A’s Test (4AT)">
+					description = <"A screening tool used for rapid initial assessment of delirium and cognitive impairment.">
+				>
+				["at0001"] = <
+					text = <"History">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Any event">
+					description = <"Default, unspecified point in time or interval event which may be explicitly defined in a template or at run-time.">
+				>
+				["at0003"] = <
+					text = <"ItemTree">
+					description = <"@ internal @">
+				>
+				["at0004"] = <
+					text = <"Alertness">
+					description = <"">
+				>
+				["at0005"] = <
+					text = <"Normal">
+					description = <"Fully alert, but not agitated, throughout assessment.">
+				>
+				["at0007"] = <
+					text = <"Clearly abnormal">
+					description = <"">
+				>
+				["at0008"] = <
+					text = <"AMT-4 score">
+					description = <"Total score for the Abbreviated Mental Test 4 (AMT-4).">
+					comment = <"Usually comprising questions about: age, date of birth, place (name of the hospital or building), and current year.">
+				>
+				["at0009"] = <
+					text = <"No mistakes">
+					description = <"">
+				>
+				["at0010"] = <
+					text = <"1 mistake">
+					description = <"">
+				>
+				["at0011"] = <
+					text = <"2 or more mistakes">
+					description = <"">
+				>
+				["at0012"] = <
+					text = <"Attention">
+					description = <"">
+					comment = <"Usually assessed by instructing the individual to list months in reverse order, starting at December.">
+				>
+				["at0013"] = <
+					text = <"Achieves 7 months or more correctly">
+					description = <"">
+				>
+				["at0014"] = <
+					text = <"Starts but scores <7 months / refuses to start">
+					description = <"">
+				>
+				["at0015"] = <
+					text = <"Untestable">
+					description = <"Cannot start because unwell, drowsy, inattentive.">
+				>
+				["at0016"] = <
+					text = <"Acute change or fluctuating course">
+					description = <"Evidence of significant change or fluctuation in mental status arising over the preceding 2 weeks and still evident in previous 24 hrs.">
+					comment = <"For example: alteration in alertness, cognition, and other mental functions (such as paranoia, hallucinations).">
+				>
+				["at0017"] = <
+					text = <"No">
+					description = <"">
+				>
+				["at0018"] = <
+					text = <"Yes">
+					description = <"">
+				>
+				["at0020"] = <
+					text = <"ItemTree">
+					description = <"@ internal @">
+				>
+				["at0021"] = <
+					text = <"Extension">
+					description = <"Additional information required to extend the model with local content or to align with other reference models or formalisms.">
+					comment = <"For example: local information requirements; or additional metadata to align with FHIR.">
+				>
+				["at0019"] = <
+					text = <"Total score">
+					description = <"The total sum of each component parameter for the 4AT.">
+				>
+				["at0006"] = <
+					text = <"Mild sleepiness for <10 seconds after waking, then normal">
+					description = <"">
+				>
+				["at0022"] = <
+					text = <"Untestable">
+					description = <"">
+				>
+			>
+		>
+		["nb"] = <
+			items = <
+				["at0000"] = <
+					text = <"*4 ‘A’s Test (4AT) (en)">
+					description = <"*A screening tool used for rapid initial assessment of delirium and cognitive impairment. (en)">
+				>
+				["at0001"] = <
+					text = <"History">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"*Any event (en)">
+					description = <"*Default, unspecified point in time or interval event which may be explicitly defined in a template or at run-time. (en)">
+				>
+				["at0003"] = <
+					text = <"ItemTree">
+					description = <"@ internal @">
+				>
+				["at0004"] = <
+					text = <"*Alertness (en)">
+					description = <"">
+				>
+				["at0005"] = <
+					text = <"Normal (helt årvåken, ikke urolig ved undersøkelse) eller Lett søvnig <11 sekunder etter oppvåkning, deretter normal.">
+					description = <"*">
+				>
+				["at0007"] = <
+					text = <"Tydelig unormal(t)">
+					description = <"*">
+				>
+				["at0008"] = <
+					text = <"*AMT-4 score (en)">
+					description = <"*Total score for the Abbreviated Mental Test 4 (AMT-4). (en)">
+					comment = <"*Usually comprising questions about: age, date of birth, place (name of the hospital or building), and current year. (en)">
+				>
+				["at0009"] = <
+					text = <"Ingen feil">
+					description = <"*">
+				>
+				["at0010"] = <
+					text = <"1 feil">
+					description = <"*">
+				>
+				["at0011"] = <
+					text = <"2 feil eller flere/ikke testbar">
+					description = <"*">
+				>
+				["at0012"] = <
+					text = <"*Attention (en)">
+					description = <"Rekkefølgen av årets måneder baklens">
+					comment = <"*Usually assessed by instructing the individual to list months in reverse order, starting at December. (en)">
+				>
+				["at0013"] = <
+					text = <"Oppgir 7 måneder eller flere korrekt">
+					description = <"*">
+				>
+				["at0014"] = <
+					text = <"Begynner, men klarer <7 måneder/ avslår å begynne">
+					description = <"*">
+				>
+				["at0015"] = <
+					text = <"Ikke testbar (er uvel, døsig, uoppmerksom)">
+					description = <"*Cannot start because unwell, drowsy, inattentive. (en)">
+				>
+				["at0016"] = <
+					text = <"*Acute change or fluctuating course (en)">
+					description = <"*Evidence of significant change or fluctuation in mental status arising over the preceding 2 weeks and still evident in previous 24 hrs (en)">
+					comment = <"*For example: alteration in alertness, cognition, and other mental functions (such as paranoia, hallucinations).
+
+ (en)">
+				>
+				["at0017"] = <
+					text = <"Nei">
+					description = <"*">
+				>
+				["at0018"] = <
+					text = <"Ja">
+					description = <"*">
+				>
+				["at0020"] = <
+					text = <"ItemTree">
+					description = <"@ internal @">
+				>
+				["at0021"] = <
+					text = <"Tilleggsinformasjon">
+					description = <"*Additional information required to extend the model with local content or to align with other reference models or formalisms. (en)">
+					comment = <"*For example: local information requirements; or additional metadata to align with FHIR. (en)">
+				>
+				["at0019"] = <
+					text = <"*Total score (en)">
+					description = <"*The total sum of each component parameter for the 4AT. (en)">
+				>
+				["at0006"] = <
+					text = <"*Mild sleepiness for <11 seconds after waking, then normal(en)">
+					description = <"*">
+				>
+				["at0022"] = <
+					text = <"*Untestable (en)">
+					description = <"">
+				>
+			>
+		>
+	>
