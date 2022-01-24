@@ -59,50 +59,6 @@ Howto-instructions for Modellebibliotek-repo admins regarding how to move a file
 
 Local/regional setup?
 ----------------------
-If there is interest, then the chain can be: openEHR --> "modellbibliotek" (maybe later run by SFMI?) --> Your local region (e.g. Region Östergötland) 
-
-If you want a stable local (regional?) repository where you can control when updates should happen, then make a fork of this repository and use that fork in your tools instead of using this shared Swedish repository in your tools. 
-
-Using or forking this repository will give you access to both international assets and a copy of some Swedish local/regional/project-directories, possibly including work in progress (because you want to see what others are working on...).
-
---------------
-
-
-
-### Marand's online ADL-designer
-Please note the somewhat odd directory choices used for saving new and imported assets described above. Template files created in the tool are by default saved with a ".t.json"-file ending. They can also be exported to several formats.
-
-If you are using openEHRs online Archetype-designer https://tools.openehr.org/designer/#/ (by Better) and nobody in your organization has yet added this repo, then this setting should work:
-
-Repositories (top menu bar) --> New repository (button) --> Repository type: GitHub
-```
-  Repository name: Regione Nnnns fork of CKM-mirror (or whatever you want to call it)  
-  Owner: modellbibliotek
-  Repository: CKM-mirror
-  Branch: master
-```
-
-If you want to save files (and avoid some GitHub rate-limiting-related related "403" errors) you need to be logged in to github with a user account that has write permission to this repository, ideally before opening the ADL designer.
-
-### Local-file-based tools
-If you are using Ocean's Template designer or other local-file-based tools it should be possible to either 
-* download and unpack the zip-file of this repository, found under the green "Clone or download" button on the https://github.com/modellbibliotek/CKM-mirror page or
-* set up GIT client to keep in sync (this has a bit of learning curve...)
-
-Update policy & instructions
-----------------------------
-Without warning, we may do manual one-way updates from https://github.com/openEHR/CKM-mirror (that most often update the content of the '/local/archetypes' subdirectory tree). The direction is always _from_ the international CKM tool (automatically) to https://github.com/openEHR/CKM-mirror and from there (manually) to this fork https://github.com/modellbibliotek/CKM-mirror.
-
-If we find an error or want to contribute new content to the international repository, then the web-based tools at http://ckm.openehr.org should be used for submitting such content. Files in this fork will _not_ be synced back automatically to the international repository.
-
-Nowadays it is easy to use the "Fetch upstream" button in gitHub to update (recommended way). However, if needed, here are teh old howto-instructions for repository admins to update this repository to get the latest content from the international one: 
-* With command-line tools https://help.github.com/articles/syncing-a-fork/ or
-* Using the web: https://www.sitepoint.com/quick-tip-sync-your-fork-with-the-original-without-the-cli/
-
-Howto-instructions for admins regarding how to move a file using GitHub's web tools: https://help.github.com/articles/moving-a-file-to-a-new-location/
-
-Local/regional setup?
-----------------------
 If there is interest, then the chain can be: openEHR --> "modellbibliotek" (maybe later run by SKL or EHM?) --> Your local region (e.g. Region Östergötland) 
 
 If you want a stable local (regional?) repository where you can control when updates should happen, then make a fork of this repository and use that fork in your tools instead of using this shared Swedish repository in your tools. Working with branches is another way to maintain  stability in a project when the "master" often gets updated from the international "upstream" CKM-mirror.
