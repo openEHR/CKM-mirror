@@ -72,7 +72,7 @@ Using or forking this repository will give you access to both international asse
 ### Marand's online ADL-designer
 Please note the somewhat odd directory choices used for saving new and imported assets described above. Template files created in the tool are by default saved with a ".t.json"-file ending. They can also be exported to several formats.
 
-If you are using Marand's online ADL-designer https://ehrscape.marand.si/designerv2 and nobody in your organization has yet added this repo, then this setting should work:
+If you are using openEHRs online Archetype-designer https://tools.openehr.org/designer/#/ (by Better) and nobody in your organization has yet added this repo, then this setting should work:
 
 Repositories (top menu bar) --> New repository (button) --> Repository type: GitHub
 ```
@@ -95,7 +95,7 @@ Without warning, we may do manual one-way updates from https://github.com/openEH
 
 If we find an error or want to contribute new content to the international repository, then the web-based tools at http://ckm.openehr.org should be used for submitting such content. Files in this fork will _not_ be synced back automatically to the international repository.
 
-Howto-instructions for repository admins to update this repository to get the latest content from the international one: 
+Nowadays it is easy to use the "Fetch upstream" button in gitHub to update (recommended way). However, if needed, here are teh old howto-instructions for repository admins to update this repository to get the latest content from the international one: 
 * With command-line tools https://help.github.com/articles/syncing-a-fork/ or
 * Using the web: https://www.sitepoint.com/quick-tip-sync-your-fork-with-the-original-without-the-cli/
 
@@ -105,7 +105,7 @@ Local/regional setup?
 ----------------------
 If there is interest, then the chain can be: openEHR --> "modellbibliotek" (maybe later run by SKL or EHM?) --> Your local region (e.g. Region Östergötland) 
 
-If you want a stable local (regional?) repository where you can control when updates should happen, then make a fork of this repository and use that fork in your tools instead of using this shared Swedish repository in your tools. 
+If you want a stable local (regional?) repository where you can control when updates should happen, then make a fork of this repository and use that fork in your tools instead of using this shared Swedish repository in your tools. Working with branches is another way to maintain  stability in a project when the "master" often gets updated from the international "upstream" CKM-mirror.
 
 Using or forking this repository will give you access to both international assets and a copy of some Swedish local/regional/project-directories, possibly including work in progress (because you want to see what others are working on...).
 
