@@ -1,0 +1,251 @@
+﻿archetype (adl_version=1.4; uid=5401628b-c48b-4d89-a231-cd12c5532670)
+	openEHR-EHR-CLUSTER.imaging_study_details.v0
+
+concept
+	[at0000]	-- Imaging study details
+language
+	original_language = <[ISO_639-1::en]>
+description
+	original_author = <
+		["name"] = <"Heather Leslie">
+		["organisation"] = <"Atomica Informatics">
+		["email"] = <"heather.leslie@atomicainformatics.com">
+		["date"] = <"2022-01-25">
+	>
+	details = <
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To record details about specific images, including DICOM studies, series or instances.">
+			use = <"Use to record details about specific images, including DICOM studies, series or instances.
+
+This archetype has been designed to closely align with the FHIR Imaging Study resource where it is necessary to record details about studies and series as part of imaging result reporting. It is intended to be nested within the 'Study details' and 'Comparison image/s' SLOTs in the OBSERVATION.imaging_exam_result or other archetypes where clinically relevant. It is not intended to represent other aspects of the DICOM specification, especially those aspects related to the operation of a radiology information or source system.">
+			keywords = <"DICOM", "radiology">
+			misuse = <"">
+			copyright = <"© openEHR Foundation">
+		>
+	>
+	lifecycle_state = <"in_development">
+	other_contributors = <>
+	other_details = <
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
+		["custodian_organisation"] = <"openEHR Foundation">
+		["references"] = <"Digital imaging and Communications in Medicine (DICOM) [Internet]. Medical Imaging Technology Association (MITA); [cited 2022 Jan 25]. Available from: https://www.dicomstandard.org/current.
+
+HL7 FHIR Resource - DiagnosticReport v4.0.1 R4 [Internet]. Health Level Seven International; [accessed 2021 Aug 04]. Available from: https://www.hl7.org/fhir/diagnosticreport.html.
+
+HL7 FHIR Resource - ImagingStudy v4.0.1 R4 [Internet]. Health Level Seven International; [accessed 2021 Aug 04]. Available from: http://hl7.org/fhir/imagingstudy.html.">
+		["original_namespace"] = <"org.openehr">
+		["original_publisher"] = <"openEHR Foundation">
+		["custodian_namespace"] = <"org.openehr">
+		["MD5-CAM-1.0.1"] = <"E43916F57614CBB735ED69C1E69DB3E6">
+		["build_uid"] = <"935c479e-048a-48f0-9711-8217ec9e28a0">
+		["revision"] = <"0.0.1-alpha">
+	>
+
+definition
+	CLUSTER[at0000] matches {    -- Imaging study details
+		items cardinality matches {1..*; unordered} matches {
+			ELEMENT[at0001] occurrences matches {1..*} matches {    -- Study identifier
+				value matches {
+					DV_IDENTIFIER matches {*}
+				}
+			}
+			ELEMENT[at0002] matches {    -- Study status
+				value matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {
+							[local::
+							at0003,    -- Registered
+							at0004,    -- Available
+							at0005,    -- Cancelled
+							at0006]    -- Unknown
+						}
+					}
+				}
+			}
+			ELEMENT[at0014] occurrences matches {0..1} matches {    -- Study description
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			ELEMENT[at0007] occurrences matches {0..*} matches {    -- Modality
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			ELEMENT[at0008] occurrences matches {0..1} matches {    -- Study date
+				value matches {
+					DV_DATE_TIME matches {*}
+				}
+			}
+			ELEMENT[at0009] occurrences matches {0..*} matches {    -- Study end point
+				value matches {
+					DV_URI matches {*}
+					DV_TEXT matches {*}
+				}
+			}
+			ELEMENT[at0012] occurrences matches {0..1} matches {    -- Procedure reason
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			CLUSTER[at0015] occurrences matches {0..*} matches {    -- Imaging series details
+				items cardinality matches {1..*; unordered} matches {
+					ELEMENT[at0016] matches {    -- Series identifier
+						value matches {
+							DV_IDENTIFIER matches {*}
+						}
+					}
+					ELEMENT[at0017] occurrences matches {0..1} matches {    -- Series number
+						value matches {
+							DV_COUNT matches {*}
+						}
+					}
+					ELEMENT[at0018] occurrences matches {0..*} matches {    -- Modality
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0010] occurrences matches {0..1} matches {    -- Number of instances
+						value matches {
+							DV_COUNT matches {*}
+						}
+					}
+					ELEMENT[at0019] occurrences matches {0..1} matches {    -- Series end point
+						value matches {
+							DV_URI matches {*}
+							DV_TEXT matches {*}
+						}
+					}
+					allow_archetype CLUSTER[at0021] occurrences matches {0..*} matches {    -- Device
+						include
+							archetype_id/value matches {/.*/}
+					}
+				}
+			}
+			ELEMENT[at0013] occurrences matches {0..1} matches {    -- Technique
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			ELEMENT[at0011] occurrences matches {0..*} matches {    -- Procedure
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			allow_archetype CLUSTER[at0020] occurrences matches {0..*} matches {    -- Device
+				include
+					archetype_id/value matches {/.*/}
+			}
+		}
+	}
+
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"Imaging study details">
+					description = <"Details about specific images, including DICOM studies, series or instances.">
+				>
+				["at0001"] = <
+					text = <"Study identifier">
+					description = <"Unique identifier for the imaging study assigned by the radiology service.">
+					comment = <"Also known in FHIR as ImagingStudy.identifier.">
+				>
+				["at0002"] = <
+					text = <"Study status">
+					description = <"The current state of the Study.">
+					comment = <"Also known in FHIR as ImagingStudy.status.">
+				>
+				["at0003"] = <
+					text = <"Registered">
+					description = <"The existence of the imaging study is registered, but there is nothing yet available.">
+				>
+				["at0004"] = <
+					text = <"Available">
+					description = <"At least one instance has been associated with this imaging study.">
+				>
+				["at0005"] = <
+					text = <"Cancelled">
+					description = <"The imaging study is unavailable because the study was not started or not completed.">
+				>
+				["at0006"] = <
+					text = <"Unknown">
+					description = <"The status is not known by the radiology source system.">
+				>
+				["at0007"] = <
+					text = <"Modality">
+					description = <"The type of diagnostic equipment, or function or technique of that equipment, that originally acquired, the data used to create the image study.">
+					comment = <"Coding of the 'Modality' with a value set is recommended. For example, the DICOM CID 29 Acquisition Modality value set. This data element has multiple occurrences to allow specification of submodalities such as 'Doppler' as a form of 'Ultrasound'. Also known in FHIR as ImagingStudy.modality.">
+				>
+				["at0008"] = <
+					text = <"Study date">
+					description = <"Date and time the study started.">
+					comment = <"Also known in FHIR as ImagingStudy.started.">
+				>
+				["at0009"] = <
+					text = <"Study end point">
+					description = <"Location of where to query for imaging content and metadata (QIDO-RS, WADO-RS, or WADO-URI).">
+					comment = <"The network service providing access (e.g., query, view, or retrieval) for the study. Also known in FHIR as ImagingStudy.endpoint.">
+				>
+				["at0010"] = <
+					text = <"Number of instances">
+					description = <"The number of instances contained in the series.">
+					comment = <"Also known in FHIR as ImagingStudy.series.numberOfInstances.">
+				>
+				["at0011"] = <
+					text = <"Procedure">
+					description = <"Identification of the clinical procedure or management used as part of capturing the study.">
+					comment = <"Coding of the 'Procedure ' with a terminology is recommended. In implementations, RM links can be created from this data element to relevant ACTION.medication, ACTION.procedure or similar archetypes stored within the health record that document the actual clinical procedures and related activities carried out. Multiple occurrences allow for identification of one or more techniques. If the procedure needs to be recorded at the whole of result level, use the 'Procedure' data element within the OBSERVATION.imaging_exam_result archetype instead.">
+				>
+				["at0012"] = <
+					text = <"Procedure reason">
+					description = <"">
+				>
+				["at0013"] = <
+					text = <"Technique">
+					description = <"">
+					comment = <"Coding of the 'Technique' with a terminology is recommended. Multiple occurrences allow for identification of one or more techniques. If the technique needs to be recorded at the whole of result level, use the 'Technique' data element within the OBSERVATION.imaging_exam_result archetype instead.">
+				>
+				["at0014"] = <
+					text = <"Study description">
+					description = <"Institution-generated description or classification of the study (component) performed.">
+					comment = <"Also known in FHIR as ImagingStudy.description and DICOM as 'Study description'.">
+				>
+				["at0015"] = <
+					text = <"Imaging series details">
+					description = <"">
+				>
+				["at0016"] = <
+					text = <"Series identifier">
+					description = <"Unique identifier for the imaging study assigned by the radiology service.">
+					comment = <"Also known in FHIR as ImagingStudy.identifier.">
+				>
+				["at0017"] = <
+					text = <"Series number">
+					description = <"The numeric identifier of this series in the study.">
+					comment = <"Also known in FHIR as ImagingStudy.series.number.">
+				>
+				["at0018"] = <
+					text = <"Modality">
+					description = <"The type of diagnostic equipment, or function or technique of that equipment, that originally acquired, the data used to create the image series.">
+					comment = <"Coding of the 'Modality' with a value set is recommended. For example, the DICOM CID 29 Acquisition Modality value set. This data element has multiple occurrences to allow specification of submodalities such as 'Doppler' as a form of 'Ultrasound'. Also known in FHIR as ImagingStudy.series.modality.">
+				>
+				["at0019"] = <
+					text = <"Series end point">
+					description = <"Location of where to query for imaging content and metadata (QIDO-RS, WADO-RS, or WADO-URI).">
+					comment = <"The network service providing access (e.g., query, view, or retrieval) for the series. Also known in FHIR as ImagingStudy.series.endpoint.">
+				>
+				["at0020"] = <
+					text = <"Device">
+					description = <"Details about imaging device/s used to capture the study.">
+				>
+				["at0021"] = <
+					text = <"Device">
+					description = <"Details about imaging device/s used to capture the series.">
+				>
+			>
+		>
+	>
