@@ -7,6 +7,16 @@ concept
 	[at0000.1]	-- Imaging examination of a testicle
 language
 	original_language = <[ISO_639-1::en]>
+	translations = <
+		["nb"] = <
+			language = <[ISO_639-1::nb]>
+			author = <
+				["name"] = <"Peter Fedorcsak, Vebjørn Arntzen">
+				["organisation"] = <"University of Oslo, Oslo University Hospital">
+				["email"] = <"peterfe@uio.no, varntzen@ous-hf.no">
+			>
+		>
+	>
 description
 	original_author = <
 		["name"] = <"Heather Leslie">
@@ -15,6 +25,18 @@ description
 		["date"] = <"2021-11-24">
 	>
 	details = <
+		["nb"] = <
+			language = <[ISO_639-1::nb]>
+			purpose = <"For å registrere en fritekstbeskrivelse, strukturerte detaljer og klinisk tolkning av funn ved bildeundersøkelse av testikkel og bitestikkel.">
+			use = <"Brukes til å registrere fritekstbeskrivelse, strukturerte detaljer og klinisk tolkning av funn ved bildeundersøkelse av testikkel og bitestikkel. 
+
+Denne arketypen ble utviklet til bruk i SLOT'et \"Strukturerte funn\" i arketypen OBSERVATION.imaging_exam_result (Bildediagnostisk svar), men kan også brukes innen andre ENTRY- og CLUSTER-arketyper der det er klinisk passende.
+
+Brukes som et rammeverk hvor andre CLUSTER arketyper kan nøstes i SLOT'et \"Strukturerte detaljer\" for å registrere ytterligere strukturerte bildefunn for delstrukturer av testikkel og bitestikkel eller andre relevante funn.">
+			misuse = <"Skal ikke brukes til å registrere funn utenfor det spesifiserte organ eller kroppsdel. Bruk andre arketyper fra gruppen av CLUSTER.imaging_exam-arketyper for dette.
+
+Skal ikke brukes til å registrere overordnede undersøkelsesfunn, kontekst eller tekniske detaljer relatert til bildeundersøkelsen. Bruk arketypen OBSERVATION.imaging_exam_result (Bildediagnistisk svar) for å registrere for eksempel kommentar om undersøkelseskvalitet, differensialdiagnose og overordnet konklusjon.">
+		>
 		["en"] = <
 			language = <[ISO_639-1::en]>
 			purpose = <"To record a narrative description, structured details and clinical impression of the findings observed in an imaging examination targeting a testicle and epididymis.
@@ -38,8 +60,8 @@ Not to be used to record details related to the overall findings, context or tec
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"9EF35DDF1E0B756AE349864408C96702">
-		["build_uid"] = <"a7203761-3eda-443a-b6e3-be2823c3f721">
+		["MD5-CAM-1.0.1"] = <"2E7CB514F31B0F5C86AAF67E66239290">
+		["build_uid"] = <"32985629-907e-48c1-801f-22f07c528193">
 		["ip_acknowledgements"] = <"This artefact includes content from SNOMED Clinical Terms® (SNOMED CT®) which is copyrighted material of the International Health Terminology Standards Development Organisation (IHTSDO). Where an implementation of this artefact makes use of SNOMED CT content, the implementer must have the appropriate SNOMED CT Affiliate license - for more information contact https://www.snomed.org/snomed-ct/get-snomed or info@snomed.org.">
 		["revision"] = <"0.0.1-alpha">
 	>
@@ -68,6 +90,20 @@ definition
 					archetype_id/value matches {/openEHR-EHR-CLUSTER\.anatomical_location(-[a-zA-Z0-9_]+)*\.v1|openEHR-EHR-CLUSTER\.anatomical_location_relative(-[a-zA-Z0-9_]+)*\.v2|openEHR-EHR-CLUSTER\.anatomical_location_circle(-[a-zA-Z0-9_]+)*\.v1/}
 			}
 			ELEMENT[at0004] occurrences matches {0..1} matches {    -- Imaging findings
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			allow_archetype CLUSTER[at0005] occurrences matches {0..*} matches {    -- Additional details
+				include
+					archetype_id/value matches {/openEHR-EHR-CLUSTER\.imaging_finding(-[a-zA-Z0-9_]+)*\.v0|openEHR-EHR-CLUSTER\.imaging_exam-lymph_node(-[a-zA-Z0-9_]+)*\.v0|openEHR-EHR-CLUSTER\.imaging_exam-lymph_node_group(-[a-zA-Z0-9_]+)*\.v0|openEHR-EHR-CLUSTER\.imaging_exam-abnormality(-[a-zA-Z0-9_]+)*\.v0/}
+			}
+			ELEMENT[at0006] occurrences matches {0..1} matches {    -- Impression
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			ELEMENT[at0007] occurrences matches {0..1} matches {    -- Comment
 				value matches {
 					DV_TEXT matches {*}
 				}
@@ -148,23 +184,8 @@ definition
 					DV_TEXT matches {*}
 				}
 			}
-			allow_archetype CLUSTER[at0005] occurrences matches {0..*} matches {    -- SLOT: Additional details
-				include
-					archetype_id/value matches {/openEHR-EHR-CLUSTER\.imaging_finding(-[a-zA-Z0-9_]+)*\.v0|openEHR-EHR-CLUSTER\.imaging_exam-lymph_node(-[a-zA-Z0-9_]+)*\.v0|openEHR-EHR-CLUSTER\.imaging_exam-lymph_node_group(-[a-zA-Z0-9_]+)*\.v0|openEHR-EHR-CLUSTER\.imaging_exam-abnormality(-[a-zA-Z0-9_]+)*\.v0/}
-			}
-			ELEMENT[at0006] occurrences matches {0..1} matches {    -- Impression
-				value matches {
-					DV_TEXT matches {*}
-				}
-			}
-			ELEMENT[at0007] occurrences matches {0..1} matches {    -- Comment
-				value matches {
-					DV_TEXT matches {*}
-				}
-			}
 		}
 	}
-
 
 
 ontology
@@ -188,6 +209,30 @@ ontology
 					text = <"Right testicle">
 					description = <"The right testicle was examined.">
 				>
+				["at0005"] = <
+					text = <"Additional details">
+					description = <"Additional structured details about imaging findings for the identified body structure or region, or findings for related substructures.">
+				>
+				["at0.3"] = <
+					text = <"Length">
+					description = <"Measurement of the longest axis of the testicle.">
+				>
+				["at0.4"] = <
+					text = <"Width">
+					description = <"Measurement of the widest axis of the testicle, perpendicular to the length.">
+				>
+				["at0.5"] = <
+					text = <"Depth">
+					description = <"Measurement of the depth of the testicle, perpendicular to the length and width.">
+				>
+				["at0.6"] = <
+					text = <"Volume">
+					description = <"">
+				>
+				["at0.7"] = <
+					text = <"Doppler description">
+					description = <"Narrative description of findings on Doppler ultrasound.">
+				>
 				["at0000"] = <
 					text = <"Imaging examination">
 					description = <"Findings observed in an imaging examination targeting a specified structure or region, using radiographic techniques.">
@@ -195,10 +240,6 @@ ontology
 				["at0004"] = <
 					text = <"Imaging findings">
 					description = <"Narrative description of the imaging findings observed during this examination.">
-				>
-				["at0005"] = <
-					text = <"SLOT: Additional details">
-					description = <"Additional structured details about imaging findings for the identified body structure or region, or findings for related substructures.">
 				>
 				["at0007"] = <
 					text = <"Comment">
@@ -223,25 +264,80 @@ ontology
 					description = <"Simple body site for the identified structure.">
 					comment = <"If the anatomical location of the identified body structure is known, this data element is redundant.">
 				>
+			>
+		>
+		["nb"] = <
+			items = <
+				["at0.1"] = <
+					text = <"Venstre testikkel">
+					description = <"Undersøkelse av venstre testikkel.">
+				>
+				["at0.2"] = <
+					text = <"Høyre testikkel">
+					description = <"Undersøkelse av høyre testikkel.">
+				>
 				["at0.3"] = <
-					text = <"Length">
-					description = <"Measurement of the longest axis of the testicle.">
+					text = <"Lengde">
+					description = <"Testikkelens lengste akse.">
 				>
 				["at0.4"] = <
-					text = <"Width">
-					description = <"Measurement of the widest axis of the testicle, perpendicular to the length.">
+					text = <"Bredde">
+					description = <"Testikkelens bredeste akse, loddrett over den lengste aksen.">
 				>
 				["at0.5"] = <
-					text = <"Depth">
-					description = <"Measurement of the depth of the testicle, perpendicular to the length and width.">
+					text = <"Dybde">
+					description = <"Testikkelens dybde, loddrett over lengde og bredde.">
 				>
 				["at0.6"] = <
-					text = <"Volume">
-					description = <"">
+					text = <"Volum">
+					description = <"Testikkelens volum.">
 				>
 				["at0.7"] = <
-					text = <"Doppler description">
-					description = <"Narrative description of findings on Doppler ultrasound.">
+					text = <"Doppler beskrivelse">
+					description = <"Fritektstbeskrivelse av funn ved Doppler ultralydundersøkelse.">
+				>
+				["at0000"] = <
+					text = <"Bildeundersøkelse">
+					description = <"Funn ved bildeundersøkelse rettet mot en spesifikk struktur eller region med bruk av radiologiske metoder.">
+				>
+				["at0000.1"] = <
+					text = <"Bildeundersøkelse av testikkel og bitestikkel">
+					description = <"Funn ved bildeundersøkelse av testikkel og ipsilateral bitestikkel med bruk av radiologiske metoder.">
+				>
+				["at0001"] = <
+					text = <"Struktur">
+					description = <"Identifisering av strukturen i kroppen eller regionen som er undersøkt.">
+				>
+				["at0001.1"] = <
+					text = <"Struktur">
+					description = <"Navn av undersøkt struktur eller område på eller i kroppen.">
+				>
+				["at0002"] = <
+					text = <"Anatomisk lokalisasjon">
+					description = <"Enkel beskrivelse av den anatomiske lokaliseringen av strukturen i kroppen eller regionen.">
+					comment = <"Dersom den anatomiske lokaliseringen av den identifiserte strukturen i kroppen er kjent, er dette dataelementet overflødig.">
+				>
+				["at0003"] = <
+					text = <"Strukturert anatomisk lokalisasjon">
+					description = <"Strukturerte detaljer om den anatomiske lokaliseringen av strukturen i kroppen eller regionen.">
+					comment = <"Dersom den anatomiske lokaliseringen av den identifiserte strukturen i kroppen er kjent, eller er identifisert av dataelementet \"Anatomisk lokalisasjon\" er dette dataelementet overflødig.">
+				>
+				["at0004"] = <
+					text = <"Funn">
+					description = <"Fritekstlig beskrivelse av funnene på bilder tatt under denne undersøkelsen.">
+				>
+				["at0005"] = <
+					text = <"Strukturerte detaljer">
+					description = <"Ytterligere strukturerte detaljer om funn på bilder for den identifiserte strukturen i kroppen eller regionen, eller som er knyttet til delstrukturer av disse.">
+				>
+				["at0006"] = <
+					text = <"Svar">
+					description = <"Fritekstlig konsist, klinisk relevant inntrykk av alle radiologiske bildefunn for den identifiserte strukturen i kroppen.">
+					comment = <"Kan inkludere en sammenligning med tidligere undersøkelser av den identifiserte strukturen i kroppen, dersom det er hensiktsmessig.">
+				>
+				["at0007"] = <
+					text = <"Kommentar">
+					description = <"Ytterligere fritekstlig kommentar om funn ved radiologiske metoder og som ikke er fanget i andre felter.">
 				>
 			>
 		>
