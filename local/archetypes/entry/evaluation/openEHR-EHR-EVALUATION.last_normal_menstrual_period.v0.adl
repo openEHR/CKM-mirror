@@ -2,7 +2,7 @@
 	openEHR-EHR-EVALUATION.last_normal_menstrual_period.v0
 
 concept
-	[at0000]	-- Last normal menstrual period
+	[at0000]	-- Last menstrual period
 language
 	original_language = <[ISO_639-1::en]>
 	translations = <
@@ -25,8 +25,10 @@ description
 	details = <
 		["nb"] = <
 			language = <[ISO_639-1::nb]>
-			purpose = <"For å registrere detaljer om den siste normale menstruasjonsperioden individet opplevde.">
-			use = <"Brukes for å registrere detaljer om den siste normale menstruasjonsperioden individet opplevde.">
+			purpose = <"For å registrere detaljer om den første dagen i den siste menstruasjonsperioden individet opplevde.">
+			use = <"Brukes for å registrere detaljer om den første dagen i den siste menstruasjonsperioden individet opplevde.
+
+Bruk dataelementet \"Sikkerhet\" for å registrere sikkerhetsgraden for at datoen var korrekt. Ved registrering av startdatoen for siste menstruasjonsperiode er antagelsen at denne menstruasjonen var normal.">
 			keywords = <"menstruasjon, mensen, LNMP, LMP, LNP, DLMP", ...>
 			misuse = <"Brukes ikke for å registrere detaljer om menarke eller overgangsalder - bruk arketypen EVALUATION.menstruation_summary for dette formålet.
 
@@ -37,8 +39,10 @@ Brukes ikke for å registrere informasjon om typiske eller vanlige menstruasjons
 		>
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"To record the details about the last normal menstrual period experienced by the individual.">
-			use = <"Use to to record details about the last normal menstrual period experienced by the individual.">
+			purpose = <"To record the details about the first day of the most recent menstrual cycle for the individual.">
+			use = <"Use to record the details about the first day of the most recent menstrual cycle for the individual. 
+
+Use the data element 'Certainty' to record the level of certainty the date was correct. The assumption when recording the onset of the last menstrual cycle is that the menstruation was 'normal'.">
 			keywords = <"menstruation, menses, LNMP, LMP, LNP, DLMP", ...>
 			misuse = <"Not to be used to record information about menses or related symptoms, use the OBSERVATION.menstruation archetype for this purpose. 
 
@@ -49,24 +53,24 @@ Not to be used to record information about an individual's menstruation history 
 		>
 	>
 	lifecycle_state = <"in_development">
-	other_contributors = <>
+	other_contributors = <"Vebjørn Arntzen, Oslo University Hospital, Norway (openEHR Editor)", "Silje Ljosland Bakke, Helse Vest IKT AS, Norway (openEHR Editor)", "SB Bhattacharyya, Bhattacharyyas Clinical Records Research & Informatics LLP, India", "Peter Fedorcsak, Oslo universitetssykehus, Norway", "Heather Grain, Llewelyn Grain Informatics, Australia", "Mikkel Johan Gaup Grønmo, Forvaltningssenter EPJ, Helse-Nord, Norway (openEHR Editor)", "Evelyn Hovenga, EJSH Consulting, Australia", "Jörgen Kuylenstierna, eWeave AB, Sweden", "Liv Laugen, ​Oslo University Hospital, Norway, Norway (openEHR Editor)", "Heather Leslie, Atomica Informatics, Australia (openEHR Editor)", "Anna Moore, University of Cambridge, United Kingdom", "Lars Morgan Karlsen, Nordlandssykehuset Bodø, Norway", "Nyree Taylor, Ocean Health Systems, Australia", "John Tore Valand, Helse Bergen, Norway (openEHR Editor)", "Marit Alice Venheim, Helse Vest IKT, Norway (openEHR Editor)", "zhiping zhang, genecast, China">
 	other_details = <
 		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
 		["custodian_organisation"] = <"openEHR Foundation">
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"4B1412B9436D52A0500EFE4652592F20">
-		["build_uid"] = <"4f149cb6-2893-42bb-9fe3-4f1194d78eeb">
+		["MD5-CAM-1.0.1"] = <"0E498B5D7FC8F0410A8D8B365FC04EF3">
+		["build_uid"] = <"1ff858f4-37b4-4bb0-8241-f22699ad8fe9">
 		["revision"] = <"0.0.1-alpha">
 	>
 
 definition
-	EVALUATION[at0000] matches {    -- Last normal menstrual period
+	EVALUATION[at0000] matches {    -- Last menstrual period
 		data matches {
 			ITEM_TREE[at0001] matches {    -- Item tree
 				items cardinality matches {0..*; unordered} matches {
-					ELEMENT[at0002] occurrences matches {0..1} matches {    -- Date of onset (LNMP)
+					ELEMENT[at0002] matches {    -- Date of onset (LMP)
 						value matches {
 							DV_DATE matches {*}
 						}
@@ -74,6 +78,7 @@ definition
 					ELEMENT[at0009] occurrences matches {0..1} matches {    -- Certainty
 						value matches {
 							DV_TEXT matches {*}
+							DV_CODED_TEXT matches {*}
 						}
 					}
 					ELEMENT[at0007] occurrences matches {0..1} matches {    -- Description
@@ -107,23 +112,22 @@ definition
 	}
 
 
-
 ontology
 	term_definitions = <
 		["en"] = <
 			items = <
 				["at0000"] = <
-					text = <"Last normal menstrual period">
-					description = <"Information about the last normal menstrual period experienced by the individual.">
+					text = <"Last menstrual period">
+					description = <"Identification of the first day of the most recent menstrual cycle for the individual.">
 				>
 				["at0001"] = <
 					text = <"Item tree">
 					description = <"@ internal @">
 				>
 				["at0002"] = <
-					text = <"Date of onset (LNMP)">
+					text = <"Date of onset (LMP)">
 					description = <"Date of onset of menstrual bleeding.">
-					comment = <"Also known as 'LNMP'. Useful to persist for calculations including estimated date of confinement in pregnancy, or to distinguish the latest typical menstrual cycle when there is an irregular menstrual pattern.
+					comment = <"Also known as 'LMP'. Useful to persist for calculations including estimated date of delivery in pregnancy, or to distinguish the latest typical menstrual cycle when there is an irregular menstrual pattern.
 Can be a partial date, for example, only a year.">
 				>
 				["at0003"] = <
@@ -132,7 +136,7 @@ Can be a partial date, for example, only a year.">
 				>
 				["at0004"] = <
 					text = <"Last updated">
-					description = <"Date when the Last normal menstrual period was updated.">
+					description = <"Date when the Last menstrual period was updated.">
 				>
 				["at0006"] = <
 					text = <"Extension">
@@ -141,11 +145,11 @@ Can be a partial date, for example, only a year.">
 				>
 				["at0007"] = <
 					text = <"Description">
-					description = <"Narrative description about the last normal menstrual period.">
+					description = <"Narrative description about the last menstrual period.">
 				>
 				["at0008"] = <
 					text = <"Comment">
-					description = <"Additional narrative about the last normal menstrual period, not captured in other fields.">
+					description = <"Additional narrative about the last menstrual period, not captured in other fields.">
 				>
 				["at0009"] = <
 					text = <"Certainty">
@@ -157,18 +161,17 @@ Can be a partial date, for example, only a year.">
 		["nb"] = <
 			items = <
 				["at0000"] = <
-					text = <"Siste normale menstruasjonsperiode">
-					description = <"Informasjon om den siste normale menstruasjonsperioden individet opplevde.">
+					text = <"Siste menstruasjonsperiode">
+					description = <"Identifisering av den første dagen i den siste menstruasjonsperioden individet opplevde.">
 				>
 				["at0001"] = <
 					text = <"Item tree">
 					description = <"@ internal @">
 				>
 				["at0002"] = <
-					text = <"Startdato for siste menstruasjonsperiode">
+					text = <"Startdato">
 					description = <"Dato for første blødningsdag.">
-					comment = <"Også kjent som siste menstruasjons første dag. Nyttig å lagre for senere bruk i beregninger som estimert termindato under graviditet, eller for å skille den siste typiske menstruasjonssyklusen fra et uregelmessig menstruasjonsmønster.
-Kan være en delvis dato, for eksempel bare et årstall.">
+					comment = <"Også kjent som siste menstruasjons første dag. Nyttig å lagre for senere bruk i beregninger som estimert termindato under graviditet, eller for å skille den siste typiske menstruasjonssyklusen fra et uregelmessig menstruasjonsmønster. Kan være en delvis dato, for eksempel bare et årstall.">
 				>
 				["at0003"] = <
 					text = <"Item tree">
@@ -176,7 +179,7 @@ Kan være en delvis dato, for eksempel bare et årstall.">
 				>
 				["at0004"] = <
 					text = <"Sist oppdatert">
-					description = <"Dato for når Siste normale menstruasjonsperiode ble oppdatert.">
+					description = <"Dato for når Siste menstruasjonsperiode ble oppdatert.">
 				>
 				["at0006"] = <
 					text = <"Tilleggsinformasjon">
@@ -185,11 +188,11 @@ Kan være en delvis dato, for eksempel bare et årstall.">
 				>
 				["at0007"] = <
 					text = <"Beskrivelse av siste normale menstruasjonsperiode.">
-					description = <"Fritekstbeskrivelse av siste normale menstruasjonsperiode.">
+					description = <"Fritekstbeskrivelse av siste menstruasjonsperiode.">
 				>
 				["at0008"] = <
 					text = <"Kommentar">
-					description = <"Ytterligere fritekst om siste normale menstruasjonsperiode som ikke er omfattet av andre felt.">
+					description = <"Ytterligere fritekst om siste menstruasjonsperiode som ikke er omfattet av andre felt.">
 				>
 				["at0009"] = <
 					text = <"Sikkerhet">
