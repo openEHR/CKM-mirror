@@ -2,16 +2,16 @@
 	openEHR-EHR-CLUSTER.specimen_transport.v0
 
 concept
-	[at0000]	-- Specimen transport details
+	[at0000]	-- Specimen transportation
 language
 	original_language = <[ISO_639-1::en]>
 	translations = <
 		["nb"] = <
 			language = <[ISO_639-1::nb]>
 			author = <
-				["name"] = <"Liv Laugen, Vebjørn Arntzen">
+				["name"] = <"Liv Laugen">
 				["organisation"] = <"​Oslo University Hospital, Norway">
-				["email"] = <"liv.laugen@ous-hf.no, varntzen@ous-hf.no">
+				["email"] = <"liv.laugen@ous-hf.no">
 			>
 		>
 	>
@@ -25,47 +25,80 @@ description
 	details = <
 		["nb"] = <
 			language = <[ISO_639-1::nb]>
-			purpose = <"For å registrere detaljer om transporten av prøver eller prøvebeholder til eller mellom laboratorier.">
-			use = <"Brukes til å registrere detaljer om transport av prøver eller prøvebeholder til eller mellom laboratorier. Denne vil vanligvis settes inn i SLOT'et \"Transportdetaljer\" i arketypen \"Prøvemateriale\" (Specimen) eller i arketypen \"Prøvebeholder\" (Specimen container).">
-			keywords = <"prøve, transport, prøvemottak, prøvesending.", ...>
-			misuse = <"Skal ikke brukes for å beskrive transport av annet enn laboratorieprøver.">
+			purpose = <"For å registrere et sammendrag om transporten av et prøvemateriale eller prøvebeholder mellom to eller flere destinasjoner.">
+			use = <"Brukes for å registrere et sammendrag om kritiske deler av transportprosessen til et prøvemateriale eller en prøvebeholder mellom to eller flere steder, spesielt der dette er relevant for potensielle problemer med analysekvaliteten.
+
+Denne arketypen vil vanligvis bli satt inn i SLOT'et \"Transportdetaljer\" i arketypen CLUSTER.specimen (Prøvemateriale) eller i arketypen CLUSTER.specimen_container (Prøvebeholder). Hvis det er nødvendig å registrere detaljer om individuelle transportetapper i en flertrinns transportprosess, kan denne arketypen nøstes i SLOTet 'Transportsekvens' i denne arketypen.">
+			keywords = <"prøve, transport, prøvemottak, prøvesending, beholder", ...>
+			misuse = <"Skal ikke brukes for å beskrive transport av ikke biologisk prøvemateriale.
+">
 		>
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"To record details about the transport of specimens or specimen containers to or between laboratories.">
-			use = <"Use to record details about the transport of specimens or specimen containers to or between laboratories. Will generally be carried within the 'Transport details' SLOT in either CLUSTER.specimen or CLUSTER.specimen_container.">
-			keywords = <"specimen, transport, collection, delivery", ...>
-			misuse = <"Not to be used to describe the transport of non-specimens.">
+			purpose = <"To record a summary of the transportation process of a tissue specimen or specimen container between two or more sites.">
+			use = <"Use to record a summary of critical parts of the transportation process of a tissue specimen or a specimen container between two or more sites, particularly where this is relevant to potential issues with the quality of the specimen for analysis.
+
+This archetype is intended to be nested within the 'Transport details' slot in the CLUSTER.specimen archetype or CLUSTER.specimen_container archetype, where appropriate. If it is necessary to record details about individual component steps within a multistep transportation process, this archetype can also be nested in the 'Transportation step' SLOT within this archetype.">
+			keywords = <"specimen, transport, collection, delivery, container", ...>
+			misuse = <"Not to be used to describe the transport of non-biological material.">
 			copyright = <"© openEHR Foundation">
 		>
 	>
 	lifecycle_state = <"in_development">
-	other_contributors = <"Marand d.o.o", "Neranga Liyanaarachchi, Ministry of Health, Postgraduate Institute of Medicine, Sri Lanka">
+	other_contributors = <"Marand d.o.o", "Neranga Liyanaarachchi, Ministry of Health, Postgraduate Institute of Medicine, Sri Lanka", "Liv Laugen, Oslo University Hospital">
 	other_details = <
-		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
 		["custodian_organisation"] = <"openEHR Foundation">
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"7954B0F4A45AEAC98AD8F1A79D52ABD3">
-		["build_uid"] = <"e9906470-60a3-44f6-8bf1-fa778555af93">
+		["MD5-CAM-1.0.1"] = <"C25FB56CE6174631DE92E452192CD953">
+		["build_uid"] = <"e87a4258-b6c1-4e42-adea-6e5e351247c8">
 		["revision"] = <"0.0.1-alpha">
 	>
 
 definition
-	CLUSTER[at0000] matches {    -- Specimen transport details
+	CLUSTER[at0000] matches {    -- Specimen transportation
 		items cardinality matches {1..*; unordered} matches {
 			ELEMENT[at0001] occurrences matches {0..1} matches {    -- Transport status
 				value matches {
 					DV_TEXT matches {*}
 				}
 			}
-			ELEMENT[at0004] occurrences matches {0..1} matches {    -- Transport start date/time
+			ELEMENT[at0027] occurrences matches {0..1} matches {    -- Transport instruction
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			ELEMENT[at0010] occurrences matches {0..*} matches {    -- Transport description
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			ELEMENT[at0008] occurrences matches {0..1} matches {    -- Origin site
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			allow_archetype CLUSTER[at0023] occurrences matches {0..1} matches {    -- Origin site details
+				include
+					archetype_id/value matches {/openEHR-EHR-CLUSTER\.person(-[a-zA-Z0-9_]+)*\.v1|openEHR-EHR-CLUSTER\.organisation(-[a-zA-Z0-9_]+)*\.v1|openEHR-EHR-CLUSTER\.address(-[a-zA-Z0-9_]+)*\.v1/}
+			}
+			ELEMENT[at0004] occurrences matches {0..1} matches {    -- Departure date/time
 				value matches {
 					DV_DATE_TIME matches {*}
 				}
 			}
-			ELEMENT[at0007] occurrences matches {0..1} matches {    -- Transport end date/time
+			ELEMENT[at0009] occurrences matches {0..1} matches {    -- Delivery site
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			allow_archetype CLUSTER[at0022] occurrences matches {0..*} matches {    -- Delivery site details
+				include
+					archetype_id/value matches {/openEHR-EHR-CLUSTER\.person(-[a-zA-Z0-9_]+)*\.v1|openEHR-EHR-CLUSTER\.organisation(-[a-zA-Z0-9_]+)*\.v1|openEHR-EHR-CLUSTER\.address(-[a-zA-Z0-9_]+)*\.v1/}
+			}
+			ELEMENT[at0007] occurrences matches {0..1} matches {    -- Arrival date/time
 				value matches {
 					DV_DATE_TIME matches {*}
 				}
@@ -73,27 +106,30 @@ definition
 			ELEMENT[at0002] occurrences matches {0..*} matches {    -- Transporter identifier
 				value matches {
 					DV_IDENTIFIER matches {*}
-				}
-			}
-			ELEMENT[at0006] occurrences matches {0..1} matches {    -- Transporter description
-				value matches {
 					DV_TEXT matches {*}
 				}
 			}
-			ELEMENT[at0008] occurrences matches {0..1} matches {    -- Transport collection location
-				value matches {
-					DV_TEXT matches {*}
+			allow_archetype CLUSTER[at0017] occurrences matches {0..*} matches {    -- Transporter details
+				include
+					archetype_id/value matches {/openEHR-EHR-CLUSTER\.person(-[a-zA-Z0-9_]+)*\.v1|openEHR-EHR-CLUSTER\.organisation(-[a-zA-Z0-9_]+)*\.v1|openEHR-EHR-CLUSTER\.address(-[a-zA-Z0-9_]+)*\.v1/}
+			}
+			CLUSTER[at0025] occurrences matches {0..1} matches {    -- Transportation step
+				items cardinality matches {1..*; unordered} matches {
+					ELEMENT[at0015] occurrences matches {0..1} matches {    -- Transport sequence
+						value matches {
+							DV_COUNT matches {*}
+							DV_TEXT matches {*}
+						}
+					}
+					allow_archetype CLUSTER[at0026] occurrences matches {0..*} matches {    -- Transport step detail
+						include
+							archetype_id/value matches {/openEHR-EHR-CLUSTER\.specimen_transport\.v0/}
+					}
 				}
 			}
-			ELEMENT[at0009] occurrences matches {0..1} matches {    -- Transport delivery location
-				value matches {
-					DV_TEXT matches {*}
-				}
-			}
-			ELEMENT[at0010] occurrences matches {0..1} matches {    -- Transport handling
-				value matches {
-					DV_TEXT matches {*}
-				}
+			allow_archetype CLUSTER[at0024] occurrences matches {0..*} matches {    -- Additional details
+				include
+					archetype_id/value matches {/.*/}
 			}
 			ELEMENT[at0005] occurrences matches {0..1} matches {    -- Comment
 				value matches {
@@ -109,90 +145,158 @@ ontology
 		["en"] = <
 			items = <
 				["at0000"] = <
-					text = <"Specimen transport details">
-					description = <"Details about the transport of specimens or specimen containers to or between laboratories.">
+					text = <"Specimen transportation">
+					description = <"Summary of the transportation process of a tissue specimen or specimen container between two or more sites.">
 				>
 				["at0001"] = <
 					text = <"Transport status">
-					description = <"The status of the specimen or specimen container transport.">
+					description = <"The status of the transportation process for the specimen or the speciment container.">
+					comment = <"For example: planned, in transit, or completed.">
 				>
 				["at0002"] = <
 					text = <"Transporter identifier">
-					description = <"Identifier of person or agency responsible for transporting the specimen or specimen container to the lab.">
+					description = <"Identifier of person or agency responsible for transporting the specimen or specimen container.">
 				>
 				["at0004"] = <
-					text = <"Transport start date/time">
-					description = <"The date/time that transportation of the specimen or specimen container started.">
+					text = <"Departure date/time">
+					description = <"The date/time when the specimen or specimen container departed the site of origin.">
 				>
 				["at0005"] = <
 					text = <"Comment">
-					description = <"Any further comment about transportation of the specimen or specimen container.">
-				>
-				["at0006"] = <
-					text = <"Transporter description">
-					description = <"More detailed description of the transporter.">
+					description = <"Additional narrative about the transportation process not captured in other fields.">
 				>
 				["at0007"] = <
-					text = <"Transport end date/time">
-					description = <"The date/time that transportation of the specimen or specimen container ended.">
+					text = <"Arrival date/time">
+					description = <"The date/time when the specimen or the specimen container arrived at the delivery.">
 				>
 				["at0008"] = <
-					text = <"Transport collection location">
-					description = <"The place from where the specimen or specimen container should be collected.">
+					text = <"Origin site">
+					description = <"Narrative description about the site of transport origin.">
+					comment = <"This site may be the site of specimen collection or storage. ">
 				>
 				["at0009"] = <
-					text = <"Transport delivery location">
-					description = <"The place where the specimen or specimen container should be delivered.">
+					text = <"Delivery site">
+					description = <"Narrative description about the site of transport delivery.">
 				>
 				["at0010"] = <
-					text = <"Transport handling">
-					description = <"Description of how the transport of the specimen or specimen container was carried out.">
-					comment = <"For exsample: 'The specimen was preserved on ice', 'The specimen was transported in room temprature' or 'The specimen container was left several hours in the sun'.">
+					text = <"Transport description">
+					description = <"Narrative description about the actual transport process and handling of the specimen or specimen container.">
+					comment = <"Record only details that may affect the result of the analyses or durability for the specimen. For example: 'The specimen was preserved on ice', 'The specimen was transported in room temperature' or 'the specimen container was left several hour in the sun'.">
+				>
+				["at0015"] = <
+					text = <"Transport sequence">
+					description = <"The transport sequence/step number.">
+					comment = <"For example: 2 or step 2 of 3. If there is only one transport event or if this instance is the overview of all transports, then this data element is redundant.">
+				>
+				["at0017"] = <
+					text = <"Transporter details">
+					description = <"Structured details about the transporter.">
+				>
+				["at0022"] = <
+					text = <"Delivery site details">
+					description = <"Structured details about the the person and/or organisational recipient at delivery.">
+				>
+				["at0023"] = <
+					text = <"Origin site details">
+					description = <"Structured details about the person and/or organisation sending the specimen or specimen container.">
+					comment = <"For example: an address of an organisation.">
+				>
+				["at0024"] = <
+					text = <"Additional details">
+					description = <"Additional details about the transportation process.">
+				>
+				["at0025"] = <
+					text = <"Transportation step">
+					description = <"">
+				>
+				["at0026"] = <
+					text = <"Transport step detail">
+					description = <"Details about a single component step within a multistep transportation process.">
+				>
+				["at0027"] = <
+					text = <"Transport instruction">
+					description = <"Narrative description about the intended transport process for the specimen or specimen container.">
+					comment = <"For example: instructions about the need for temperature regulation.">
 				>
 			>
 		>
 		["nb"] = <
 			items = <
 				["at0000"] = <
-					text = <"Prøvetransportdetaljer">
-					description = <"Detaljer om transporten av prøven eller prøvebeholderen til, eller mellom laboratorier.">
+					text = <"Prøvetransport">
+					description = <"For å registrere et sammendrag om transporten av et prøvemateriale eller prøvebeholder mellom to eller flere destinasjoner.">
 				>
 				["at0001"] = <
 					text = <"Transportstatus">
-					description = <"Statusen til transporten av prøven eller prøvebeholderen.">
+					description = <"Statusen til transporten av prøven eller prøvebeholderen.
+">
+					comment = <"For eksempel: planlagt, under transport eller fullført,">
 				>
 				["at0002"] = <
-					text = <"Transportør-Id">
+					text = <"Transportør Id">
 					description = <"Identifikasjon til personen eller firmaet som er ansvarlig for å transportere prøven eller prøvebeholderen til laboratoriet.">
 				>
 				["at0004"] = <
-					text = <"Transport starttid">
-					description = <"Dato og klokkeslett da transporten av prøven eller prøvebeholderen startet.">
+					text = <"Transport start">
+					description = <"Datoen/klokkeslettet da prøven eller prøvebeholderen forlot opprinnelsesstedet/hentestedet.">
 				>
 				["at0005"] = <
 					text = <"Kommentar">
-					description = <"Ytterligere fritekst om transporten av prøven eller prøvebeholderen som ikke dekkes av andre felt.">
-				>
-				["at0006"] = <
-					text = <"Transportør beskrivelse">
-					description = <"Mer detaljert beskrivelse av den som transporterer prøven.">
+					description = <"Ytterligere fritekst om transporten som ikke dekkes av andre felt.">
 				>
 				["at0007"] = <
-					text = <"Transport sluttid">
-					description = <"Dato og klokkeslett da transporten av prøven eller prøvebeholderen ble avsluttet.">
+					text = <"Transport slutt">
+					description = <"Datoen/klokkeslettet da prøven eller prøvebeholderen ankom bestemmelsesstedet.">
 				>
 				["at0008"] = <
 					text = <"Hentested">
-					description = <"Stedet hvor prøven eller prøvebeholderen skal hentes.">
+					description = <"Fritekstbeskrivelse av lokasjonen transporten av prøven eller prøvebeholderen startet. ">
+					comment = <"Denne lokalisasjonen kan være stedet prøvematerialet ble hentet ut eller hvor det er lagret. ">
 				>
 				["at0009"] = <
 					text = <"Leveringssted">
-					description = <"Stedet hvor prøven eller prøvebeholderen skal leveres.">
+					description = <"Fritekstbeskrivelse om leveringsstedet til transport. ">
 				>
 				["at0010"] = <
-					text = <"Transporthåndtering">
-					description = <"Beskrivelse av hvordan transporten av prøven eller prøvebeholderen ble utført.">
-					comment = <"For eksempel: \"Prøven ble oppvevart på is\", \"Prøven ble transportert i romtemperatur\" eller \"Prøvebeholderen sto flere timer i solen\".">
+					text = <"Transportbeskrivelse">
+					description = <"Fritekstbeskrivelse om selve transportprosessen og behandlingen av prøvematerialet eller prøvebeholderen. ">
+					comment = <"Registrer kun detaljer som kan påvirke resultatet av analysene eller holdbarheten for prøven.
+Kommentar: For eksempel: \"Prøven ble oppbevart på is\", \"Prøven ble transportert i romtemperatur\" eller \"Prøvebeholderen sto flere timer i solen\".">
+				>
+				["at0015"] = <
+					text = <"Transportetappe">
+					description = <"Transportsekvens/trinn nummer.">
+					comment = <"For eksempel: 2 eller etappe 2 av 3. Hvis det kun er én transportetappe/sekvens eller hvis denne forekomsten er et sammendrag av alle transportetappene, så er dette dataelementet overflødig.">
+				>
+				["at0017"] = <
+					text = <"Transportør detaljer">
+					description = <"Strukturerte detaljer om transportøren.">
+				>
+				["at0022"] = <
+					text = <"Leveringssted detaljer">
+					description = <"Strukturerte detaljer om mottaker, person og/eller organisasjon, av prøvemateriale og prøvebeholder.">
+				>
+				["at0023"] = <
+					text = <"Hentested detaljer">
+					description = <"Strukturerte detaljer om personen og/eller organisasjonen som sender prøvematerialet eller prøvebeholderen. ">
+					comment = <"For eksempel: en adresse til en organisasjon. ">
+				>
+				["at0024"] = <
+					text = <"Ytterligere detaljer">
+					description = <"Ytterligere detaljer om transporten.">
+				>
+				["at0025"] = <
+					text = <"Transportsekvens">
+					description = <"">
+				>
+				["at0026"] = <
+					text = <"Transportetappe detaljer">
+					description = <"Detaljer om et enkelt trasnsportsekvens/etappe i en flertrinns transportprosess.">
+				>
+				["at0027"] = <
+					text = <"Transportinstruksjon">
+					description = <"Ytterligere fritekst om transporten av prøven eller prøvebeholderen som ikke dekkes av andre felt.">
+					comment = <"For eksempel: instruksjon om behov for temperaturregulering. ">
 				>
 			>
 		>
