@@ -2,7 +2,7 @@
 	openEHR-EHR-COMPOSITION.pregnancy_summary.v0
 
 concept
-	[at0000]	-- Pregnancy Summary
+	[at0000]	-- Pregnancy summary
 language
 	original_language = <[ISO_639-1::en]>
 description
@@ -15,45 +15,51 @@ description
 	details = <
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"To record a summary of all significant details for a single pregnancy.">
-			use = <"Use to record a summary of all significant details for a single pregnancy.
+			purpose = <"To record a collection of summary or persistent details about a single pregnancy.">
+			use = <"Use to record a collection of summary or persistent details about a single pregnancy. 
 
-Multiple Pregnancy Summary COMPOSITIONS may co-exist in a woman's health record - one per pregnancy.
+For example, this COMPOSITION may contain:
+- a single EVALUATION.pregnancy_summary that can evolve in detail and be updated throughout the pregnancy; and
+- a single instance of the EVALUATION.estimated_date_delivery that can also be updated throughout the pregnancy as more accurate information is available.
 
-The intent of this COMPOSITION is for use as a persistent summary, however it has been identified that for implementation the archetype also needs additional attributes related to the context of the event. As a result, the COMPOSITION has been temporarily modified as an EVENT COMPOSITION which allows addition of an Items SLOT into which additional context-related archetypes can be included. This new requirement for context-related attributes in the Persistent COMPOSITION has been requested as a future openEHR Reference Model update.">
-			misuse = <"">
+
+This COMPOSITION has been designed for use as a persistent episode, however event-based information for Antenatal visits, labour and delivery should be recorded using clinically appropriate EVENT-based COMPOSITIONs.">
+			misuse = <"Not to be used to record a summary of all significant pregnancy outcomes or clinical metrics - use the EVALUATION.obstetric_summary for this purpose.">
 			copyright = <"© Australian Digital Health Agency, openEHR Foundation">
 		>
 	>
 	lifecycle_state = <"in_development">
 	other_contributors = <"Heath Frankel, Ocean Informatics, Australia", ...>
 	other_details = <
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
 		["custodian_organisation"] = <"openEHR Foundation">
 		["references"] = <"Derived from: Pregnancy Summary, Draft archetype [Internet]. Australian Digital Health Agency (NEHTA), ADHA Clinical Knowledge Manager. Authored: 2013 Jun 14. Available at: http://dcm.nehta.org.au/ckm#showArchetype_1013.1.1317_1 (discontinued)">
 		["current_contact"] = <"Dr Heather Leslie, Atomica Informatics, Australia<heather.leslie@atomicainformatics.com>">
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"E4F5E320E2ACC07E235CB038B296768E">
-		["build_uid"] = <"a2e87e43-4073-4de8-8776-d8db1d0a2f0d">
+		["MD5-CAM-1.0.1"] = <"545BE872FFC24978414237B682F6C597">
+		["build_uid"] = <"48091737-bfcb-4d27-945f-34806e408d50">
 		["revision"] = <"0.0.1-alpha">
 	>
 
 definition
-	COMPOSITION[at0000] matches {	-- Pregnancy Summary
+	COMPOSITION[at0000] matches {    -- Pregnancy summary
 		category matches {
 			DV_CODED_TEXT matches {
-				defining_code matches {[openehr::433]}
+				defining_code matches {
+					[openehr::435]
+				}
 			}
 		}
 		context matches {
 			EVENT_CONTEXT matches {
 				other_context matches {
-					ITEM_TREE[at0004] matches {	-- Tree
+					ITEM_TREE[at0004] matches {    -- Tree
 						items cardinality matches {0..*; unordered} matches {
-							allow_archetype ITEM[at0006] occurrences matches {0..*} matches {	-- Items
+							allow_archetype CLUSTER[at0006] occurrences matches {0..*} matches {    -- Extension
 								include
-									archetype_id/value matches {/openEHR-EHR-CLUSTER\.document_entry_metadata(-[a-zA-Z0-9_]+)*\.v1/}
+									archetype_id/value matches {/openEHR-EHR-CLUSTER\.document_entry_metadata(-[a-zA-Z0-9_]+)*\.v0/}
 							}
 						}
 					}
@@ -61,9 +67,13 @@ definition
 			}
 		}
 		content cardinality matches {1..*; unordered} matches {
-			allow_archetype EVALUATION[at0003] occurrences matches {0..1} matches {	-- Pregnancy
+			allow_archetype ENTRY[at0003] occurrences matches {0..1} matches {    -- Pregnancy
 				include
 					archetype_id/value matches {/openEHR-EHR-EVALUATION\.pregnancy_summary(-[a-zA-Z0-9_]+)*\.v0/}
+			}
+			allow_archetype ENTRY[at0007] occurrences matches {0..*} matches {    -- Other details
+				include
+					archetype_id/value matches {/openEHR-EHR-EVALUATION\.estimated_date_delivery\.v0/}
 			}
 		}
 	}
@@ -74,8 +84,8 @@ ontology
 		["en"] = <
 			items = <
 				["at0000"] = <
-					text = <"Pregnancy Summary">
-					description = <"A summary of all significant details for a specific pregnancy.">
+					text = <"Pregnancy summary">
+					description = <"Summary or persistent details about a single pregnancy.">
 				>
 				["at0003"] = <
 					text = <"Pregnancy">
@@ -86,8 +96,13 @@ ontology
 					description = <"@ internal @">
 				>
 				["at0006"] = <
-					text = <"Items">
-					description = <"Additional COMPOSITION related data.">
+					text = <"Extension">
+					description = <"Additional information required to extend the model with local content or to align with other reference models or formalisms.">
+					comment = <"For example: local information requirements; or additional metadata to align with FHIR.">
+				>
+				["at0007"] = <
+					text = <"Other details">
+					description = <"">
 				>
 			>
 		>
