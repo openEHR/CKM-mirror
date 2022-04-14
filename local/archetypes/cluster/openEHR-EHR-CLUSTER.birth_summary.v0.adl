@@ -15,10 +15,13 @@ description
 	details = <
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"To record a persistent or summary record of a subset of details about the birth of an infant, that may be reused within both the mother's and infant's health record.">
-			use = <"Use to record a persistent or summary record of a subset of details about birth of an infant, that may be reused within both the mother's and infant's health record.
+			purpose = <"To record a subset of persistent or summary information about the pregnancy and birth of an infant, that may be used within both the mother's and infant's health record.">
+			use = <"Use to record a subset of persistent or summary information about the pregnancy and birth of an infant, usually recorded as part of a maternal health record or birth report, but also able to be shared and reused to provide context about the pregnancy and birth within the newborn's health record.
 
-This scope of this archetype has been designed so that parts of a mother's pregnancy/labour/delivery record can be reused and transferred to the health record for their newborn. Used within the context of EVALUATION.pregnancy_summary, the content of this archetype describes details about an infant born to the mother. However, if used within the context of EVALUATION.birth_details it usually records details about the individual's own birth.">
+This archetype has been designed to be nested:
+- in the 'Birth summary' SLOT within the EVALUATION.pregnancy_summary archetype, to capture details about an infant born to the mother; and
+- in the 'Birth summary' SLOT within the EVALUATION.birth_details archetype, to capture or reuse details about the birth of the individual.">
+			keywords = <"birth", "pregnancy", "infant", "newborn">
 			misuse = <"">
 			copyright = <"© openEHR Foundation">
 		>
@@ -31,8 +34,8 @@ This scope of this archetype has been designed so that parts of a mother's pregn
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"CC0AA6C514FF11A194FF2E189B4FF3C3">
-		["build_uid"] = <"76977f1a-5d08-4fdf-b7fd-fcdcd256f180">
+		["MD5-CAM-1.0.1"] = <"650E7B9060024D405F6CB7E430DC374C">
+		["build_uid"] = <"367d5596-94c7-428c-aec3-36d8cbf9128e">
 		["revision"] = <"0.0.1-alpha">
 	>
 
@@ -49,7 +52,14 @@ definition
 					DV_COUNT matches {*}
 				}
 			}
-			ELEMENT[at0004] occurrences matches {0..*} matches {    -- Gestation
+			ELEMENT[at0004] occurrences matches {0..1} matches {    -- Gestational age
+				value matches {
+					DV_DURATION matches {
+						value matches {PW/|P0W..P52W|}
+					}
+				}
+			}
+			ELEMENT[at0018] occurrences matches {0..1} matches {    -- Gestational maturity
 				value matches {
 					DV_DURATION matches {
 						value matches {PW/|P0W..P52W|}
@@ -76,7 +86,7 @@ definition
 					}
 				}
 			}
-			ELEMENT[at0017] occurrences matches {0..*} matches {    -- Apgar score
+			ELEMENT[at0017] occurrences matches {0..*} matches {    -- Apgar record
 				value matches {
 					DV_COUNT matches {*}
 					DV_TEXT matches {*}
@@ -92,25 +102,25 @@ ontology
 			items = <
 				["at0000"] = <
 					text = <"Birth summary">
-					description = <"Persistent or summary record of a subset of details about the birth of an infant, that may be reused within both the mother's and infant's health record.">
+					description = <"A subset of persistent or summary information about the pregnancy and birth of an infant, selected for utility of use within both the maternal and infant health records.">
 				>
 				["at0001"] = <
 					text = <"Description">
-					description = <"Narrative description of the pregnancy and birth of an individual.">
+					description = <"Narrative description of the newborn, including observed congenital abnormalities.">
 				>
 				["at0003"] = <
 					text = <"Birth order">
 					description = <"">
 				>
 				["at0004"] = <
-					text = <"Gestation">
-					description = <"Estimated gestation at birth.">
-					comment = <"Usually estimated by Naegele's rule or by ultrasound, and occasionally based on clinical examination of the newborn. If more than one estimation of gestation of the infant is to be recorded, this data element can be cloned and renamed for the purpose within a template.">
+					text = <"Gestational age">
+					description = <"The length of the pregnancy at the time of delivery of the infant.">
+					comment = <"The value for this data element will usually, but not always, be identical to the 'Pregnancy duration' data element within the EVALUATION.pregnancy_summary in the maternal record. It may also be derived using the 'Agreed date' data element within the EVALUATION.estimated_date_delivery archetype in the maternal record. Usually estimated by Naegele's rule or by ultrasound scan.">
 				>
 				["at0005"] = <
 					text = <"Mode of birth">
-					description = <"Method by which the baby was delivered.">
-					comment = <"Value set from AIHW.">
+					description = <"Method by which the newborn was delivered.">
+					comment = <"For example: vaginal; forceps rotation; or Caesarean Section.">
 				>
 				["at0006"] = <
 					text = <"Unassisted">
@@ -157,9 +167,14 @@ ontology
 					description = <"Surgical delivery by an approach in the upper uterine segment.">
 				>
 				["at0017"] = <
-					text = <"Apgar score">
-					description = <"The sum of the 5 scores for each Apgar component recorded after birth.">
-					comment = <"This data element may be recorded as narrative text or as a numerical score. As different countries record Apgar at different times, the timing of this data element has been left unspecified. However the data element allows 0..* occurrences to enable more than one Apgar score to be recorded. ">
+					text = <"Apgar record">
+					description = <"Description about Apgar scores recorded after birth.">
+					comment = <"This data element may be recorded as narrative text or as a numerical score. As different countries record Apgar at different times, the timing of this data element has been left unspecified. However the data element allows 0..* occurrences to enable recording a score for one or more timed Apgar scores to be recorded. These scores can be copied or derived from the 'Total' data element within the OBSERVATION.apgar archetype recorded within the maternal health record. ">
+				>
+				["at0018"] = <
+					text = <"Gestational maturity">
+					description = <"The postnatal gestation estimated by physical examination and/or neuromuscular assessment of newborn.">
+					comment = <"Usually estimated by physical examination and/or neuromuscular assessment of the newborn.">
 				>
 			>
 		>
