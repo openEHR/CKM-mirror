@@ -4,9 +4,19 @@ specialise
 	openEHR-EHR-EVALUATION.biospecimen_summary.v0
 
 concept
-	[at0000.1]	-- Oocyte summary
+	[at0000.1]	-- Biospecimen summary - oocyte
 language
 	original_language = <[ISO_639-1::en]>
+	translations = <
+		["nb"] = <
+			language = <[ISO_639-1::nb]>
+			author = <
+				["name"] = <"Liv Laugen, Peter Fedorcsak">
+				["organisation"] = <"​Oslo University Hospital, Norway, University of Oslo">
+				["email"] = <"liv.laugen@ous-hf.no, peterfe@uio.no">
+			>
+		>
+	>
 description
 	original_author = <
 		["name"] = <"Heather Leslie">
@@ -15,6 +25,19 @@ description
 		["date"] = <"2022-02-09">
 	>
 	details = <
+		["nb"] = <
+			language = <[ISO_639-1::nb]>
+			purpose = <"For å registrere et sammendrag eller vedvarende registrering om en eller flere uthentede oocytter.">
+			use = <"Brukes til å registrere sammendrag eller persistent registrering av en eller flere uthentet oocytter.
+
+Denne arketypen er designet for å registrere detaljer om innsamling (prøvetakning), lagring, håndtering, bruk eller destruering av oocytter, spesielt ved assistert befruktning.
+
+Detaljer om den biologiske prøven, inkludert tidspunkt for prøvetakning/innsamling, kan registreres ved å bruke arketypen CLUSTER.specimen (Prøvemateriale) i 'Prøvematerialdetaljer'-SLOTet.
+
+Detaljer om lagring av den biologiske prøven kan registreres ved å bruke CLUSTER.specimen_container (Prøvebeholder) og CLUSTER.biobank (Biologisk lager/biobank) i 'Lagringsdetaljer'-SLOTet.">
+			keywords = <"ivf", "assistert reproduksjon", "ovarie", "vev", "oocytt", "bioprøve">
+			misuse = <"">
+		>
 		["en"] = <
 			language = <[ISO_639-1::en]>
 			purpose = <"To record a summary or persistent record about one or more harvested oocytes.">
@@ -39,14 +62,14 @@ Details about the location of the biospecimen can be recorded using the CLUSTER.
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"8F4EF8EAADD3EDEE15944F5F02737880">
-		["build_uid"] = <"572012a4-87ec-4140-bb5a-b87e9790dc8f">
+		["MD5-CAM-1.0.1"] = <"7E461C93EA455F4445314C38D2FBBA6A">
+		["build_uid"] = <"2e9f8662-d0c0-4b8f-94ae-90461e29de23">
 		["ip_acknowledgements"] = <"This artefact includes content from SNOMED Clinical Terms® (SNOMED CT®) which is copyrighted material of the International Health Terminology Standards Development Organisation (IHTSDO). Where an implementation of this artefact makes use of SNOMED CT content, the implementer must have the appropriate SNOMED CT Affiliate license - for more information contact https://www.snomed.org/snomed-ct/get-snomed or info@snomed.org.">
 		["revision"] = <"0.0.1-alpha">
 	>
 
 definition
-	EVALUATION[at0000.1] matches {    -- Oocyte summary
+	EVALUATION[at0000.1] matches {    -- Biospecimen summary - oocyte
 		data matches {
 			ITEM_TREE[at0001] matches {    -- Item tree
 				items cardinality matches {0..*; unordered} matches {
@@ -70,19 +93,6 @@ definition
 					}
 					ELEMENT[at0004] occurrences matches {0..1} matches {    -- Description
 						value matches {
-							DV_TEXT matches {*}
-						}
-					}
-					ELEMENT[at0.3] occurrences matches {0..1} matches {    -- Maturation stage
-						value matches {
-							DV_CODED_TEXT matches {
-								defining_code matches {
-									[local::
-									at0.4,    -- Immature
-									at0.5,    -- Maturing
-									at0.6]    -- Mature
-								}
-							}
 							DV_TEXT matches {*}
 						}
 					}
@@ -129,6 +139,19 @@ definition
 							DV_TEXT matches {*}
 						}
 					}
+					ELEMENT[at0.3] occurrences matches {0..1} matches {    -- Oocyte maturation stage
+						value matches {
+							DV_CODED_TEXT matches {
+								defining_code matches {
+									[local::
+									at0.4,    -- Metaphase 2
+									at0.5,    -- Meiosis 1
+									at0.6]    -- Germinal vesicle
+								}
+							}
+							DV_TEXT matches {*}
+						}
+					}
 				}
 			}
 		}
@@ -156,30 +179,28 @@ ontology
 		["en"] = <
 			items = <
 				["at0000.1"] = <
-					text = <"Oocyte summary">
+					text = <"Biospecimen summary - oocyte">
 					description = <"Summary or persistent information about one or more harvested oocytes.">
-					comment = <"For example: a harvested oocyte, a sperm sample or tissue graft.">
 				>
 				["at0.3"] = <
-					text = <"Maturation stage">
-					description = <"The stage of maturation of the oocyte/s.">
+					text = <"Oocyte maturation stage">
+					description = <"Nuclear maturity of oocyte after removal of the cumulus-corona cell mass.">
 				>
 				["at0.4"] = <
-					text = <"Immature">
-					description = <"An oocyte at prophase of meiosis I (i.e. an oocyte at the germinal vesicle (GV) stage).">
+					text = <"Metaphase 2">
+					description = <"Ooocyte in the metaphase 2 (M2) of the meiotic cell division.">
 				>
 				["at0.5"] = <
-					text = <"Maturing">
-					description = <"An oocyte that has progressed from prophase I but has not completed telophase I, thus does not exhibit the first polar body.">
+					text = <"Meiosis 1">
+					description = <"Ooocyte in meiosis 1.">
 				>
 				["at0.6"] = <
-					text = <"Mature">
-					description = <"An oocyte at metaphase of meiosis II, exhibiting the first polar body and with the ability to become fertilized.">
+					text = <"Germinal vesicle">
+					description = <"Ooocyte still displaying an intact nucleus, the germinal vesicle (GV), in prophase 1 of meiosis.">
 				>
 				["at0003.1"] = <
 					text = <"Biospecimen type">
 					description = <"The type of cell or tissue collected.">
-					comment = <"For example: skin (for grafting); semen (for storage or donation).">
 				>
 				["at0.1"] = <
 					text = <"Oocyte">
@@ -265,6 +286,119 @@ ontology
 				["at0016"] = <
 					text = <"Comment">
 					description = <"Additional narrative about the biospecimen, not captured in other fields.">
+				>
+			>
+		>
+		["nb"] = <
+			items = <
+				["at0.1"] = <
+					text = <"Oocytt">
+					description = <"Den kvinnelige kjønnscellen.">
+				>
+				["at0.2"] = <
+					text = <"Ovarievev">
+					description = <"Vev fra eggstokken.">
+				>
+				["at0.3"] = <
+					text = <"Modenhet av oocytt">
+					description = <"Kjernens status i oocytten etter fjerning av cumulus-corona radiata celler.">
+				>
+				["at0.4"] = <
+					text = <"Metafase 2">
+					description = <"Oocytt i metafase 2 (M2) av den meiotiske celledelingen.">
+				>
+				["at0.5"] = <
+					text = <"Meiose 1">
+					description = <"Oocytt i meiose 1.">
+				>
+				["at0.6"] = <
+					text = <"Germinal vesikkel">
+					description = <"Oocytt med en intakt kjerne, germinal vesikkel (GV), i profase 1 av den meiotiske celledelingen.">
+				>
+				["at0000.1"] = <
+					text = <"Biologisk prøve sammendrag - oocytt">
+					description = <"Sammendrag eller persistent informasjon om en eller flere uthentede oocytter.">
+				>
+				["at0003.1"] = <
+					text = <"Biologisk prøvetype">
+					description = <"Type av celler eller vev som er innsamlet/høstet.">
+				>
+				["at0010"] = <
+					text = <"Brukt/destruert">
+					description = <"Den endelige disponeringen av bioprøven.">
+					comment = <"Vanligvis involverer dette at biologiske prøven er brukt, donert eller destruert.">
+				>
+				["at0011"] = <
+					text = <"Brukt/destruert dato">
+					description = <"Dato og tid da den biologiske prøven ble brukt/destruert.">
+				>
+				["at0000"] = <
+					text = <"Biologisk prøve sammendrag">
+					description = <"Sammendrag eller persistent informasjon om en eller flere celler eller vev som er innhentet vha. prøvetakning eller høsting.">
+					comment = <"For eksempel en innhøstet oocytt, en sædprøve eller vevsgraft.">
+				>
+				["at0001"] = <
+					text = <"Item tree">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Biologisk prøve ID">
+					description = <"En unik identifikator for det biologiske prøvematerialet.">
+					comment = <"For eksempel: SEC-ID (The Single European Code) for vev og celleprodukter, brukt i blant annet reproduksjonsmedisinsk behandling.">
+				>
+				["at0003"] = <
+					text = <"Biologisk prøvetype">
+					description = <"Type av celler eller vev som er innsamlet/høstet.">
+					comment = <"For eksempel: hud (for transplantasjon); sæd (for lagring og donasjon).">
+				>
+				["at0004"] = <
+					text = <"Beskrivelse">
+					description = <"Fritekstbeskrivelse av den biologiske prøven.">
+					comment = <"For eksempel, informasjon om hvordan prøven ble tatt.">
+				>
+				["at0005"] = <
+					text = <"Behandling">
+					description = <"Fritekstbeskrivelse av håndteringen av den biologiske prøven før konservering, inkludert klinisk behandling.">
+					comment = <"Det er mulig å koble dette dataelementet til en ACTION.procedure i den elektroniske pasientjournalen for å registrere spesifikke detaljer om den kliniske prosedyren og tidspunkt den ble utført.">
+				>
+				["at0006"] = <
+					text = <"Konserveringsdato">
+					description = <"Dato og tid da den biologiske prøven ble preservert/konservert">
+				>
+				["at0007"] = <
+					text = <"Type konservering">
+					description = <"Teknikken som ble brukt til å preservere/konservere den biologiske prøven.">
+				>
+				["at0008"] = <
+					text = <"Prøvematerialdetaljer">
+					description = <"Detaljer om den biologiske prøven.">
+					comment = <"For eksempel: prøvetakningsdato og tid.">
+				>
+				["at0009"] = <
+					text = <"Lagringsdetaljer">
+					description = <"Detaljer om lagringen av den biologiske prøven.">
+					comment = <"For eksempel: detaljer om prøvebeholderen og biobanken hvor den biologiske prøven er lagret.">
+				>
+				["at0012"] = <
+					text = <"Utløpsdato">
+					description = <"Dato for holdbarheten til den biologiske prøven.">
+				>
+				["at0013"] = <
+					text = <"Item tree">
+					description = <"@ internal @">
+				>
+				["at0014"] = <
+					text = <"Sist oppdatert">
+					description = <"Datoen da det sammendraget for det biologiske prøvematerialet sist ble oppdatert.">
+				>
+				["at0015"] = <
+					text = <"Utvidelse">
+					description = <"Tilleggsinformasjon som kan være nødvendig for å dokumentere lokal kontekst, eller for å tilpasse til andre referansemodeller/formalismer.">
+					comment = <"For eksempel: lokal informasjon eller ytterligere metadata for tilpasning til FHIR eller CIMI.">
+				>
+				["at0016"] = <
+					text = <"Kommentar">
+					description = <"Ytterligere kommentarer om det biologiske materialet/biobanken som ikke passer i andre felter.">
 				>
 			>
 		>

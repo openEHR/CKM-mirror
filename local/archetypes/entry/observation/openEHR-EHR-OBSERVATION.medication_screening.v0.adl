@@ -42,90 +42,142 @@ description
 	details = <
 		["de"] = <
 			language = <[ISO_639-1::de]>
-			purpose = <"*To record responses to an individual- or self-reported questionnaire screening for use of any specified medication or a grouping or class of medication. (en)">
-			use = <"*Use to record responses to an individual- or self-reported questionnaire screening for use of any specified medication or a grouping or class of medication.
+			purpose = <"*To create a framework for recording answers to pre-defined screening questions about the use of a any medication. (en)">
+			use = <"*Use to create a framework for recording answers to pre-defined screening questions about the use of a any specified medication or grouping (including classes) of medications.
+
+Examples of medications, groupings and classes of medications are 'alendronic acid', 'anti osteoporosis medications' and 'bisphosphonates', respectively.
 
 Common use cases include, but are not limited to:
-- Systematic questioning in any consultation; or
-- Specific questioning related to patterns of medication usage or identification of concurrent conditions.
+- Systematic questioning in any consultation related to patterns of medication usage , for example:
+--- Do you use paracetamol? Yes, No, Unknown.
+--- Have you been using any anticoagulants the last four weeks? Yes, No, Unknown.
+- Specific questioning related to disease surveillance.
 
-In order to record the response at a specific point in time or within an interval of time, use the EVENT RM attribute.
+The semantics of this archetype are intentionally loose, and querying this archetype would normally only be useful or safe within the context of each specific questionnaire. In a template, each data element would usually be renamed to the specific question asked. Where value sets have been proposed for common use cases, these can be adapted for local use by using the 'text' choice to match each specific use case.
 
-This archetype has been designed to be used as a screening tool or to record simple questionnaire-format data for use in situations such as a disease registry. If the screening process identifies a medication in use or used in the past and it is intended that the details are to be recorded and persisted as part of an ongoing health record, any further specific details about the medication should be recorded using one of the ACTION.medication EVALUATION.medication_summary or OBSERVATION.medication_statement archetypes. (en)">
+In use cases where it's important to differentiate the time context of a question in the persisted data, the reference model EVENT structure can be used to record this difference. For questions specifically about the point in time of recording, use a point in time EVENT, for example \"Do you use paracetamol now?\". In contrast, for questions specifically about a period of time, use the interval event, for example, \"Have you you used any analgetics in the past 4 weeks?\".
+
+The source of the information in a questionnaire response may vary in different contexts but can be specifically identified using the 'Information provider' element in the Reference Model.
+
+This archetype has been designed to be used as a screening tool or to record simple questionnaire-format data for use in situations such as a disease registry. If the screening process identifies the presence of a medication and it is intended that the details are to be recorded and persisted as part of an ongoing health record, any further specific details about the medication should be recorded using a relevant medication archetype. (en)">
+			keywords = <"*class (en)", ...>
 			misuse = <"*Not to be used for recording an order for a medication to be administered or consumed - use INSTRUCTION.medication_order for this purpose.
 
 Not to be used for recording the administration, dispensing or consumption of a medication - use ACTION.medication for this purpose.
 
-Not to be used for recording a summary of use of a medication over the lifetime of the individual - use EVALUATION.medication_summary for this purpose. (en)">
+Not to be used for recording a summary of use of a medication over the lifetime of the individual - use EVALUATION.medication_summary for this purpose.
+
+Not to be used to record a detailed snapshot view about the actual use of a single specified medication - use OBSERVATION.medication_statement for this purpose.
+
+Not to be used to record details about the positive absence of a specific medication or grouping of medication for persistence in a health record. Use EVALUATION.exclusion_specific for this purpose. (en)">
 			copyright = <"© openEHR Foundation, Nasjonal IKT HF">
 		>
 		["nb"] = <
 			language = <[ISO_639-1::nb]>
-			purpose = <"For å dokumentere responsen gitt i et selvregistreringsskjema eller undersøkelsesskjema om et individs bruk av et legemiddel eller legemiddelklasse.">
-			use = <"Brukes for å dokumentere responsen gitt i et selvregistreringsskjema eller undersøkelsesskjema om et individs bruk av et legemiddel eller legemiddelklasse.
+			purpose = <"For å lage et rammeverk for registrering av svar på forhåndsdefinerte spørsmål om bruken av et hvilken som helst legemiddel eller gruppe av legemidler.">
+			use = <"Brukes for å lage et rammeverk for registrering av svar på forhåndsdefinerte spørsmål om bruken av et hvilket som helst legemiddel, eller grupper (inkludert klasser) av legemidler.
+
+Eksempler på legemidler, grupper og klasser av legemidler er \"alendronsyre\", \"osteoporosemedisin\" and \"bisfosfonater\".
 
 Vanlige bruksområder inkluderer, men er ikke begrenset til:
-- Systematisk bruk av selvregistrering- eller undersøkelsesskjema ved konsultasjoner.
-- Spesifikk spørring relatert til bruksmønstre eller identifisering av samtidige forhold. 
+- Systematiske spørsmål ved konsultasjoner, for eksempel:
+--- Bruker du paracetamol? Ja, Nei, Ukjent.
+--- Har du brukt noen blodfortynnende medisiner de siste 4 ukene? Ja, Nei, Ukjent.
+- Spesifikke spørsmål relatert til overvåkning av sykdommer.
 
-For å registrere det spesifikke tidspunktet, eller tidsintervallet responsen ble gitt, bruk referansemodellens EVENT RM attributt.
+Semantikken til denne arketypen er med vilje løst definert, og spørringer etter data i denne arketypen vil normalt bare være nyttig eller trygt innenfor konteksten av hvert spesifikke templat. I et templat vil hvert dataelement vanligvis døpes om til det spesifikke spørsmålet. Der det er foreslått verdisett for vanlige brukstilfeller, kan disse tilpasses for lokal bruk ved å bruke 'tekst'-datatypen for å matche hvert enkelt brukstilfelle.
 
-Denne arketypen er laget for bruk som et screeningverktøy for å registrere enkle data i et spørreskjema/undersøkelsesskjema, som for eksempel til et sykdomsregister. Dersom det i screeningsprosessen blir identifisert at et legemiddel er tilstede, og som bør være en del av den løpende journalen, kan dette registreres i arketypene ACTION.medication (Legemiddelhåndtering) EVALUATION.medication_summary (Legemiddelsammendrag) eller OBSERVATION.medication_statement.">
+I tilfeller der det er viktig å skille tid i konteksten av spørsmål i de persisterte dataene, kan referansemodellens EVENT-struktur brukes for å registrere denne variasjonen. For spørsmål som spesifikt handler om tidspunktet ved registrering, bruk tidspunkt (point in time) EVENT. For eksempel: \"Bruker du paracetamol nå?\". Spørsmål som spesifikt omhandler en tidsperiode, bruk et intervall (interval) EVENT. For eksempel: \"Har du brukt noen smertestillende medisin de siste 4 ukene?\".
+
+Kilden til informasjonen i et spørreskjema kan variere i ulike kontekster, men kan identifiseres spesifikt ved å benytte \"Information provider\" elementet i openEHR referansemodellen.
+
+Denne arketypen er laget for å bli brukt i et spørreskjema eller for å registrere enkle strukturerte data til for eksempel et sykdomsregister. Dersom det i spørreskjemaet identifiseres at et legemiddel er tilstede, anbefales det at det at spesifikke detaljer om legemiddelet registreres og lagres i pasientjournalen i en egnet legemiddelarketype, for eksempel arketypen OBSERVATION.medication_statement for å registrere et detaljert øyeblikksbilde om bruken av et enkelt spesifisert legemiddel.">
+			keywords = <"klasse, spørreskjema", ...>
 			misuse = <"Brukes ikke for å dokumentere forordningen av et legemiddel - bruk arketypen INSTRUCTION.medication_order (Legemiddelordinering) til dette formålet.
 
 Brukes ikke for å dokumentere administreringen av et legemiddel - bruk arketypen ACTION.medication (Legemiddelhåndtering) til dette formålet.
 
-Brukes ikke for å registrere et sammendrag om all bruk av ett spesifisert legemiddel over et individs livstid, bruk arketypen EVALUATION.medication_summary (Legemiddelsammendrag) til dette formålet.">
+Brukes ikke for å registrere et sammendrag om all bruk av ett spesifisert legemiddel over et individs livstid, bruk arketypen EVALUATION.medication_summary (Legemiddelsammendrag) til dette formålet.
+
+Brukes ikke for å registrere et detaljert øyeblikksbilde om bruken av et enkelt spesifisert legemiddel, utenfor konteksten av kartleggingen. Bruk arketypen OBSERVATION.medication_statement for dette formålet.
+
+Brukes ikke for å registrere detaljer om etablert fravær av et spesifikt legemiddel eller gruppe av legemidler i pasientjournalen, utenfor konteksten av kartleggingen. Bruk arketypen EVALUATION.exclusion_specific for dette formålet.">
 			copyright = <"© openEHR Foundation, Nasjonal IKT HF, openEHR Foundation, openEHR Foundation">
 		>
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"To record responses to an individual- or self-reported questionnaire screening for use of any specified medication or a grouping or class of medication.">
-			use = <"Use to record responses to an individual- or self-reported questionnaire screening for use of any specified medication or a grouping or class of medication.
+			purpose = <"To create a framework for recording answers to pre-defined screening questions about the use of any specified medication or grouping of medications.">
+			use = <"Use to create a framework for recording answers to pre-defined screening questions about the use of any specified medication or grouping (including classes) of medications.
+
+Examples of medications, groupings and classes of medications are 'alendronic acid', 'anti osteoporosis medications' and 'bisphosphonates', respectively.
 
 Common use cases include, but are not limited to:
-- Systematic questioning in any consultation; or
-- Specific questioning related to patterns of medication usage or identification of concurrent conditions.
+- Systematic questioning in any consultation related to patterns of medication usage , for example:
+--- Do you use paracetamol? Yes, No, Unknown.
+--- Have you been using any anticoagulants the last four weeks? Yes, No, Unknown.
+- Specific questioning related to disease surveillance.
 
-In order to record the response at a specific point in time or within an interval of time, use the EVENT RM attribute.
+The semantics of this archetype are intentionally loose, and querying this archetype would normally only be useful or safe within the context of each specific template. In a template, each data element would usually be renamed to the specific question asked. Where value sets have been proposed for common use cases, these can be adapted for local use by using the 'text' choice to match each specific use case.
 
-This archetype has been designed to be used as a screening tool or to record simple questionnaire-format data for use in situations such as a disease registry. If the screening process identifies a medication in use or used in the past and it is intended that the details are to be recorded and persisted as part of an ongoing health record, any further specific details about the medication should be recorded using one of the ACTION.medication EVALUATION.medication_summary or OBSERVATION.medication_statement archetypes.">
+In use cases where it's important to differentiate the time context of a question in the persisted data, the reference model EVENT structure can be used to record this difference. For questions specifically about the point in time of recording, use a point in time EVENT, for example \"Do you use paracetamol now?\". In contrast, for questions specifically about a period of time, use the interval event, for example, \"Have you you used any analgetics in the past 4 weeks?\".
+
+The source of the information in a questionnaire response may vary in different contexts but can be specifically identified using the 'Information provider' element in the Reference Model.
+
+This archetype has been designed to be used as a screening tool or to record simple questionnaire-format data for use in situations such as a disease registry. If the screening questionnaire identifies the presence of a medication it is recommended that clinical system record and persist the specific details about the medication using a relevant medication archetype, for example the OBSERVATION.medication_statement to record a detailed snapshot view about the actual use of a single specified medication.">
+			keywords = <"class", ...>
 			misuse = <"Not to be used for recording an order for a medication to be administered or consumed - use INSTRUCTION.medication_order for this purpose.
 
 Not to be used for recording the administration, dispensing or consumption of a medication - use ACTION.medication for this purpose.
 
-Not to be used for recording a summary of use of a medication over the lifetime of the individual - use EVALUATION.medication_summary for this purpose.">
+Not to be used for recording a summary of use of a medication over the lifetime of the individual - use EVALUATION.medication_summary for this purpose.
+
+Not to be used to record a detailed snapshot view about the actual use of a single specified medication, outside of a screening context. - use OBSERVATION.medication_statement for this purpose.
+
+Not to be used to record details about the positive absence of a specific medication or grouping of medication, outside of a screening context. Use EVALUATION.exclusion_specific for this purpose.">
 			copyright = <"© openEHR Foundation, Nasjonal IKT HF">
 		>
 		["nl"] = <
 			language = <[ISO_639-1::nl]>
-			purpose = <"*To record responses to an individual- or self-reported questionnaire screening for use of any specified medication or a grouping or class of medication. (en)">
-			use = <"*Use to record responses to an individual- or self-reported questionnaire screening for use of any specified medication or a grouping or class of medication.
+			purpose = <"*To create a framework for recording answers to pre-defined screening questions about the use of a any medication. (en)">
+			use = <"*Use to create a framework for recording answers to pre-defined screening questions about the use of a any specified medication or grouping (including classes) of medications.
+
+Examples of medications, groupings and classes of medications are 'alendronic acid', 'anti osteoporosis medications' and 'bisphosphonates', respectively.
 
 Common use cases include, but are not limited to:
-- Systematic questioning in any consultation; or
-- Specific questioning related to patterns of medication usage or identification of concurrent conditions.
+- Systematic questioning in any consultation related to patterns of medication usage , for example:
+--- Do you use paracetamol? Yes, No, Unknown.
+--- Have you been using any anticoagulants the last four weeks? Yes, No, Unknown.
+- Specific questioning related to disease surveillance.
 
-In order to record the response at a specific point in time or within an interval of time, use the EVENT RM attribute.
+The semantics of this archetype are intentionally loose, and querying this archetype would normally only be useful or safe within the context of each specific questionnaire. In a template, each data element would usually be renamed to the specific question asked. Where value sets have been proposed for common use cases, these can be adapted for local use by using the 'text' choice to match each specific use case.
 
-This archetype has been designed to be used as a screening tool or to record simple questionnaire-format data for use in situations such as a disease registry. If the screening process identifies a medication in use or used in the past and it is intended that the details are to be recorded and persisted as part of an ongoing health record, any further specific details about the medication should be recorded using one of the ACTION.medication EVALUATION.medication_summary or OBSERVATION.medication_statement archetypes. (en)">
+In use cases where it's important to differentiate the time context of a question in the persisted data, the reference model EVENT structure can be used to record this difference. For questions specifically about the point in time of recording, use a point in time EVENT, for example \"Do you use paracetamol now?\". In contrast, for questions specifically about a period of time, use the interval event, for example, \"Have you you used any analgetics in the past 4 weeks?\".
+
+The source of the information in a questionnaire response may vary in different contexts but can be specifically identified using the 'Information provider' element in the Reference Model.
+
+This archetype has been designed to be used as a screening tool or to record simple questionnaire-format data for use in situations such as a disease registry. If the screening process identifies the presence of a medication and it is intended that the details are to be recorded and persisted as part of an ongoing health record, any further specific details about the medication should be recorded using a relevant medication archetype. (en)">
+			keywords = <"*class (en)", ...>
 			misuse = <"*Not to be used for recording an order for a medication to be administered or consumed - use INSTRUCTION.medication_order for this purpose.
 
 Not to be used for recording the administration, dispensing or consumption of a medication - use ACTION.medication for this purpose.
 
-Not to be used for recording a summary of use of a medication over the lifetime of the individual - use EVALUATION.medication_summary for this purpose. (en)">
+Not to be used for recording a summary of use of a medication over the lifetime of the individual - use EVALUATION.medication_summary for this purpose.
+
+Not to be used to record a detailed snapshot view about the actual use of a single specified medication - use OBSERVATION.medication_statement for this purpose.
+
+Not to be used to record details about the positive absence of a specific medication or grouping of medication for persistence in a health record. Use EVALUATION.exclusion_specific for this purpose. (en)">
 		>
 	>
 	lifecycle_state = <"in_development">
-	other_contributors = <"Heather Leslie, Atomica Informatics, Australia (openEHR Editor)", "Silje Ljosland Bakke, Helse Vest IKT, Norway", "Marit Alice Venheim, Helse Vest IKT, Norway", "John Tore Valand, Helse Vest IKT, Norway">
+	other_contributors = <"Vebjørn Arntzen, Oslo University Hospital, Norway (openEHR Editor)", "Silje Ljosland Bakke, Helse Vest IKT AS, Norway (openEHR Editor)", "SB Bhattacharyya, Bhattacharyyas Clinical Records Research & Informatics LLP, India", "Yexuan Cheng, 浙江大学, China", "Are Edvardsen, SKDE, Helse Nord RHF, Norway", "Alexander Eikrem-Lüthi, Lovisenberg Diakonale Sykehus, Norway", "Kåre Flø, DIPS ASA, Norway", "Grant Forrest, Lunaria Ltd, United Kingdom", "Anca Heyd, DIPS ASA, Norway", "Joost Holslag, Nedap, Netherlands", "Evelyn Hovenga, EJSH Consulting, Australia", "Mikkel Johan Gaup Grønmo, Forvaltningssenter EPJ, Helse Nord RHF, Norway (Nasjonal IKT redaktør)", "Liv Laugen, ​Oslo University Hospital, Norway, Norway", "Heather Leslie, Atomica Informatics, Australia (openEHR Editor)", "Mikael Nyström, Cambio Healthcare Systems AB, Sweden", "Andre Smitt-Ingebretsen, Sørlandet sykehus HF, Norway", "Norwegian Review Summary, Nasjonal IKT HF, Norway", "John Tore Valand, Helse Bergen, Norway (openEHR Editor)", "Marit Alice Venheim, Helse Vest IKT, Norway (openEHR Editor)">
 	other_details = <
 		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
 		["custodian_organisation"] = <"openEHR Foundation">
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"8DED1E4F49D5F0F0DCA4CDCF7B02B1D4">
-		["build_uid"] = <"58973b2e-75bb-493c-92c0-200582a0fa43">
+		["MD5-CAM-1.0.1"] = <"91B0588C1417E6167DEF5BBD47DC6150">
+		["build_uid"] = <"8f8132d8-96a3-4c72-9e95-3beabc6f0fe9">
 		["revision"] = <"0.0.1-alpha">
 	>
 
@@ -143,7 +195,7 @@ definition
 											DV_TEXT matches {*}
 										}
 									}
-									ELEMENT[at0027] occurrences matches {0..1} matches {    -- Any usage?
+									ELEMENT[at0027] occurrences matches {0..*} matches {    -- Any usage?
 										value matches {
 											DV_CODED_TEXT matches {
 												defining_code matches {
@@ -157,7 +209,12 @@ definition
 											DV_TEXT matches {*}
 										}
 									}
-									CLUSTER[at0026] occurrences matches {0..*} matches {    -- Specific medication or grouping
+									ELEMENT[at0043] occurrences matches {0..1} matches {    -- Description
+										value matches {
+											DV_TEXT matches {*}
+										}
+									}
+									CLUSTER[at0026] occurrences matches {0..*} matches {    -- Specific medication
 										items cardinality matches {1..*; unordered} matches {
 											ELEMENT[at0021] matches {    -- Medication name
 												value matches {
@@ -178,18 +235,22 @@ definition
 													DV_TEXT matches {*}
 												}
 											}
-											ELEMENT[at0002] occurrences matches {0..1} matches {    -- Duration of use
+											ELEMENT[at0003] occurrences matches {0..1} matches {    -- Latest dose
+												value matches {
+													DV_DATE_TIME matches {*}
+													DV_TEXT matches {*}
+												}
+											}
+											ELEMENT[at0002] occurrences matches {0..*} matches {    -- Onset of use
 												value matches {
 													DV_DURATION matches {*}
 													DV_INTERVAL<DV_DURATION> matches {*}
-												}
-											}
-											ELEMENT[at0003] occurrences matches {0..1} matches {    -- Last dose
-												value matches {
+													DV_TEXT matches {*}
 													DV_DATE_TIME matches {*}
+													DV_INTERVAL<DV_DATE_TIME> matches {*}
 												}
 											}
-											allow_archetype CLUSTER[at0041] occurrences matches {0..*} matches {    -- Screening details
+											allow_archetype CLUSTER[at0041] occurrences matches {0..*} matches {    -- Additional details
 												include
 													archetype_id/value matches {/openEHR-EHR-CLUSTER\.timing_daily\.v1|openEHR-EHR-CLUSTER\.medication\.v1/}
 											}
@@ -199,6 +260,10 @@ definition
 												}
 											}
 										}
+									}
+									allow_archetype CLUSTER[at0042] occurrences matches {0..*} matches {    -- Additional details
+										include
+											archetype_id/value matches {/.*/}
 									}
 								}
 							}
@@ -226,18 +291,22 @@ ontology
 			items = <
 				["at0000"] = <
 					text = <"Medication screening questionnaire">
-					description = <"An individual- or self-reported questionnaire screening for use of any specified medication or a grouping or class of medication.">
+					description = <"Answers to pre-defined screening questions about the use of any specified medication or grouping of medications.">
+					comment = <"The answers may be self-reported.">
 				>
 				["at0001"] = <
 					text = <"Tree">
 					description = <"@ internal @">
 				>
 				["at0002"] = <
-					text = <"Duration of use">
-					description = <"The duration of use of the class or grouping of medications.">
+					text = <"Onset of use">
+					description = <"The onset or duration of use of the medication or grouping of medications.">
+					comment = <"The 'Duration of use' data element is deliberately loosely modelled to support the myriad of ways that it can be used in questionnaires to capture the duration of use of a medication. The specific and intended semantics can be further clarified in a template. 
+
+For example: Date/time for the date when the individual started using a medication. Interval of date/time for a period of time eg. between 1940 and 1942. Text for descriptions like 'Immediately after the operation', or 'Up to one week ago', 'Up to two weeks ago', 'Three weeks ago'. Duration for the individual's age at the onset of duration OR the length of time during which the individual has been using the medication. Interval of Duration for the approximate age of the individual at the time of onset.">
 				>
 				["at0003"] = <
-					text = <"Last dose">
+					text = <"Latest dose">
 					description = <"The date and/or time of administation of the most recent dose of the medication or group of medications.">
 					comment = <"Can be a partial date, for example, only a year.">
 				>
@@ -253,7 +322,8 @@ ontology
 				["at0021"] = <
 					text = <"Medication name">
 					description = <"Name of medication or grouping of medication.">
-					comment = <"For example: 'oxycodone'; 'narcotic analgesics'; or 'painkillers'.">
+					comment = <"For example: 'alendronic acid', 'anti osteoporosis medications' or 'bisphosphonates'.
+Coding of the 'Medication name' with a terminology is preferred, where possible.">
 				>
 				["at0022"] = <
 					text = <"Event Series">
@@ -265,20 +335,20 @@ ontology
 				>
 				["at0024"] = <
 					text = <"Usage?">
-					description = <"Is the individual using the medication?">
+					description = <"Presence of use of a specific medication or group of medications related to the screening purpose.">
 				>
 				["at0025"] = <
 					text = <"Comment">
-					description = <"Additional narrative about the specified medication or grouping, not captured in other fields.">
+					description = <"Additional narrative about the use of the specific medication or grouping of medications not captured in other fields.">
 				>
 				["at0026"] = <
-					text = <"Specific medication or grouping">
-					description = <"Screening details about a specified medication or grouping of medications.">
-					comment = <"Use separate instances of this CLUSTER to differentiate between specific medications, groupings, or classes of medication.">
+					text = <"Specific medication">
+					description = <"Details about a specified medication or grouping of medications related to the screening purpose.">
+					comment = <"Use separate instances of this CLUSTER to differentiate between specific medications or groupings of medication.">
 				>
 				["at0027"] = <
 					text = <"Any usage?">
-					description = <"Is the individual using any medication?">
+					description = <"Presence of use of medications related to the screening purpose.">
 				>
 				["at0028"] = <
 					text = <"Currently used">
@@ -314,32 +384,42 @@ ontology
 				>
 				["at0040"] = <
 					text = <"Screening purpose">
-					description = <"The reason for overall screening.">
-					comment = <"For example: screening for previous use of a class lof medications, such as bisphosphonates.">
+					description = <"The context or reason for screening.">
+					comment = <"This data element is intended to provide collection context for the question/answer groups when queried at a later date. It is not expected that this data element will be exposed to the individual, but only stored in data. For example: pre-admission screening, the name of the actual questionnaire or screening for previous use of a class of medications, such as bisphosphonates.">
 				>
 				["at0041"] = <
-					text = <"Screening details">
-					description = <"Additional details or questions about the specific medication or grouping.">
+					text = <"Additional details">
+					description = <"Structured details or questions about the specific medication or grouping of medications.">
+				>
+				["at0042"] = <
+					text = <"Additional details">
+					description = <"Structured details or questions about the screening for medications.">
+				>
+				["at0043"] = <
+					text = <"Description">
+					description = <"Narrative description about the use of any medications.">
 				>
 			>
 		>
 		["nb"] = <
 			items = <
 				["at0000"] = <
-					text = <"Kartlegging av legemiddelbruk">
-					description = <"En individuell eller selvrapportert kartlegging av et individs bruk av et legemiddel eller legemiddelklasse i et spørreskjema.">
+					text = <"Spørreskjema om legemidler">
+					description = <"Svar på forhåndsdefinerte spørsmål om bruken av et hvilken som helst legemiddel eller gruppe av legemidler.">
+					comment = <"Svarene kan være selvrapporterte.">
 				>
 				["at0001"] = <
 					text = <"Tree">
 					description = <"@ internal @">
 				>
 				["at0002"] = <
-					text = <"Varighet">
-					description = <"Varighet på bruken av legemiddelet eller legemiddelklassen.">
+					text = <"Debut">
+					description = <"Tidsrommet da legemiddelet eller gruppen av legemidler ble tatt i bruk.">
+					comment = <"Dataelementet \"Debut\" er løst modellert for å støtte ulike måter spørsmål om tidsrom for debut av et problem eller diagnose stilles i et spørreskjema. Den spesifikke og tiltenkte semantikken defineres i et templat. For eksempel: Dato/klokkeslett brukes for dato for når legemiddelet først ble tatt i bruk. Intervall av dato/ klokkeslett brukes for å sette en tidsperiode, for eksempel mellom 1940 og 1942. Tekst brukes for spørsmålstillinger som \"Rett etter en operasjon\", \"For en uke siden\", \"Opp til to uker siden\", \"Tre uker siden. Varighet brukes for å registrere individets alder ved debut. Intervall av varighet får å registrere tilnærmet alder ved debut.">
 				>
 				["at0003"] = <
 					text = <"Siste dose">
-					description = <"Dato og/eller klokkeslett for administreringen av den siste dosen av legemiddelet eller legemiddelklassen.">
+					description = <"Dato og/eller klokkeslett for administreringen av den siste dosen av legemiddelet eller gruppen av legemidler.">
 					comment = <"Kan være en deldato, for eksempel kun årstall.">
 				>
 				["at0005"] = <
@@ -353,8 +433,9 @@ ontology
 				>
 				["at0021"] = <
 					text = <"Legemiddelnavn">
-					description = <"Navnet på legemiddelet eller legemiddelklassen.">
-					comment = <"For eksempel: \"oxycodon\", \"narkotiske analgetika\" eller \"smertestillende\".">
+					description = <"Navnet på legemiddelet eller gruppen av legemidler.">
+					comment = <"For eksempel: \"alendronsyre\", \"osteoporosemedisin\" and \"bisfosfonater\".
+Koding av legemiddelnavnet med en terminologi foretrekkes, der det er mulig.">
 				>
 				["at0022"] = <
 					text = <"*HISTORY (en)">
@@ -366,36 +447,36 @@ ontology
 				>
 				["at0024"] = <
 					text = <"Bruk?">
-					description = <"Bruker individet legemiddelet?">
+					description = <"Tilstedeværelse av ett spesifisert legemiddel; eller gruppe av legemidler relatert til kartleggingsformålet.">
 				>
 				["at0025"] = <
 					text = <"Kommentar">
-					description = <"Ytterligere fritekst om det spesifikke legemiddelet eller legemiddelklassen som ikke er omfattet av andre felt.">
+					description = <"Ytterligere fritekst om bruken av det spesifikke legemiddelet eller gruppen av legemidler som ikke er omfattet av andre felt.">
 				>
 				["at0026"] = <
-					text = <"Spesifikt legemiddel eller legemiddelklasse">
-					description = <"Detaljer om et spesifikt legemiddel eller legemiddelklasse.">
-					comment = <"Bruk separate instanser av dette clusteret for å skille mellom spesifikke legemidler eller legemiddelklasser.">
+					text = <"Spesifikt legemiddel">
+					description = <"Detaljer om et spesifikt legemiddel eller grupper av legemidler relatert til kartleggingsformålet.">
+					comment = <"Bruk separate instanser av dette clusteret for å skille mellom spesifikke legemidler eller grupper av legemidler.">
 				>
 				["at0027"] = <
 					text = <"Bruk?">
-					description = <"Bruker individet noen legemidler i det hele tatt?">
+					description = <"Tilstedeværelse av bruk av legemidler relatert til kartleggingsformålet.">
 				>
 				["at0028"] = <
 					text = <"Nåværende bruk">
-					description = <"Individet bruker for tiden et eller flere legemidler.">
+					description = <"Individet bruker for tiden ett eller flere legemidler.">
 				>
 				["at0029"] = <
 					text = <"Aldri brukt">
 					description = <"Individet har aldri brukt noe legemiddel.">
 				>
 				["at0030"] = <
-					text = <"Ukjent">
+					text = <"Usikker">
 					description = <"Det er ikke kjent hvorvidt individet bruker eller har brukt noe legemiddel.">
 				>
 				["at0031"] = <
 					text = <"Tidligere bruk">
-					description = <"Individet har tidligere brukt et eller flere legemidler, men bruker for tiden ikke noen legemidler.">
+					description = <"Individet har tidligere brukt ett eller flere legemidler, men bruker for tiden ikke noen legemidler.">
 				>
 				["at0036"] = <
 					text = <"Nåværende bruk">
@@ -410,17 +491,26 @@ ontology
 					description = <"Individet har tidligere brukt det spesifikke legemiddelet, men bruker det for tiden ikke.">
 				>
 				["at0039"] = <
-					text = <"Ukjent">
+					text = <"Usikker">
 					description = <"Det er ikke kjent hvorvidt individet bruker eller har brukt det spesifikke legemiddelet.">
 				>
 				["at0040"] = <
-					text = <"Registreringsformål">
-					description = <"Årsaken til registreringen.">
-					comment = <"For eksempel: Screening for tidligere bruk av en legemiddelklasse, som bisfosfonater.">
+					text = <"Kartleggingsformål">
+					description = <"Konteksten eller årsaken for kartleggingen.">
+					comment = <"Dette dataelementet er ment for å sette en kontekst for spørsmålene om man senere ønsker å gjøre spørringer på dataene. Det er ikke forventet at dette dataelementet skal være synlig for en bruker av skjemaet, men kun tilgjengelig i de lagrede dataene. 
+For eksempel: \"Pre operativ screening\" eller navnet på det faktiske spørreskjemaet eller screening for tidligere bruk av en legemiddelklasse, som bisfosfonater.">
 				>
 				["at0041"] = <
-					text = <"Screening detaljer">
-					description = <"Ytterligere detaljer eller spørsmål om det spesifikke legemiddelet eller legemiddelklassen.">
+					text = <"Ytterligere detaljer">
+					description = <"Strukturerte detaljer eller spørsmål om bruken av det spesifikke legemiddelet eller gruppen av legemidler.">
+				>
+				["at0042"] = <
+					text = <"Ytterligere detaljer">
+					description = <"Strukturerte detaljer eller spørsmål om kartleggingen av legemidler.">
+				>
+				["at0043"] = <
+					text = <"Beskrivelse">
+					description = <"Fritekstbeskrivelse om tilstedeværelse av bruk av et hvilket som helst legemiddel.">
 				>
 			>
 		>
@@ -428,18 +518,22 @@ ontology
 			items = <
 				["at0000"] = <
 					text = <"Fragebogen zum Medikamenten-Screening">
-					description = <"*An individual- or self-reported questionnaire screening for use of any specified medication or a grouping or class of medication. (en)">
+					description = <"*Answers to pre-defined screening questions about the use of any medication. (en)">
+					comment = <"*The answers may be self-reported. (en)">
 				>
 				["at0001"] = <
 					text = <"Tree">
 					description = <"@ internal @">
 				>
 				["at0002"] = <
-					text = <"*Duration of use (en)">
+					text = <"*Latest dose (en)">
 					description = <"*The duration of use of the class or grouping of medications. (en)">
+					comment = <"*The 'Duration of use' data element is deliberately loosely modelled to support the myriad of ways that it can be used in questionnaires to capture the duration of use of a medication. The specific and intended semantics can be further clarified in a template. 
+
+For example: Date/time for the date when the individual started using a medication. Interval of date/time for a period of time eg. between 1940 and 1942. Text for descriptions like 'Immediately after the operation', or 'Up to one week ago', 'Up to two weeks ago', 'Three weeks ago'. Duration for the individual's age at the onset of duration OR the length of time during which the individual has been using the medication. Interval of Duration for the approximate age of the individual at the time of onset. (en)">
 				>
 				["at0003"] = <
-					text = <"*Last dose (en)">
+					text = <"*Previous dose (en)">
 					description = <"*The date and/or time of administation of the most recent dose of the medication or group of medications. (en)">
 					comment = <"*Can be a partial date, for example, only a year. (en)">
 				>
@@ -455,7 +549,8 @@ ontology
 				["at0021"] = <
 					text = <"Name des Medikaments">
 					description = <"*Name of medication or grouping of medication. (en)">
-					comment = <"*For example: 'oxycodone'; 'narcotic analgesics'; or 'painkillers'. (en)">
+					comment = <"*For example: 'alendronic acid', 'anti osteoporosis medications' or 'bisphosphonates'.
+Coding of the 'Medication name' with a terminology is preferred, where possible. (en)">
 				>
 				["at0022"] = <
 					text = <"Event Series">
@@ -467,20 +562,20 @@ ontology
 				>
 				["at0024"] = <
 					text = <"*Usage? (en)">
-					description = <"*Is the individual using the medication? (en)">
+					description = <"*Presence of use of a specific medication or group of medications related to the screening purpose. (en)">
 				>
 				["at0025"] = <
 					text = <"Kommentar">
-					description = <"*Additional narrative about the specified medication or grouping, not captured in other fields. (en)">
+					description = <"*Additional narrative about the specific medication, grouping or class of medications. not captured in other fields. (en)">
 				>
 				["at0026"] = <
-					text = <"*Specific medication or grouping (en)">
-					description = <"*Screening details about a specified medication or grouping of medications. (en)">
+					text = <"*Specific medication (en)">
+					description = <"*Details about a specified medication, grouping or class of medications related to the screening purpose. (en)">
 					comment = <"*Use separate instances of this CLUSTER to differentiate between specific medications, groupings, or classes of medication. (en)">
 				>
 				["at0027"] = <
 					text = <"*Any usage? (en)">
-					description = <"Wendet die Person irgendein Medikament an?">
+					description = <"*Presence of use of medications related to the screening purpose. (en)">
 				>
 				["at0028"] = <
 					text = <"Aktuelle Anwendung">
@@ -516,12 +611,21 @@ ontology
 				>
 				["at0040"] = <
 					text = <"Zweck des Screenings">
-					description = <"Der Grund für das gesamte Screening.">
-					comment = <"Zum Beispiel: Screening auf vorausgegangene Anwendung einer Medikamentengruppe wie Bisphosphonaten.">
+					description = <"*The context or reason for screening. (en)">
+					comment = <"*This data element is intended to provide collection context for the question/answer groups when queried at a later date. It is not expected that this data element will be exposed to the individual, but only stored in data. For example: pre-admission screening or the name of the actual questionnaire.
+For example: screening for previous use of a class of medications, such as bisphosphonates. (en)">
 				>
 				["at0041"] = <
-					text = <"*Screening details (en)">
-					description = <"*Additional details or questions about the specific medication or grouping. (en)">
+					text = <"*Additional details (en)">
+					description = <"*Structured details or questions about the specific medication, grouping or class of medications. (en)">
+				>
+				["at0042"] = <
+					text = <"*Additional details (en)">
+					description = <"*Structured details or questions about the screening for medications. (en)">
+				>
+				["at0043"] = <
+					text = <"*Description (en)">
+					description = <"*Narrative description  about the use of any medications. (en)">
 				>
 			>
 		>
@@ -529,18 +633,22 @@ ontology
 			items = <
 				["at0000"] = <
 					text = <"Medicatiegebruik screening vragenlijst">
-					description = <"*An individual- or self-reported questionnaire screening for use of any specified medication or a grouping or class of medication. (en)">
+					description = <"*Answers to pre-defined screening questions about the use of any medication. (en)">
+					comment = <"*The answers may be self-reported. (en)">
 				>
 				["at0001"] = <
 					text = <"Tree">
 					description = <"@ internal @">
 				>
 				["at0002"] = <
-					text = <"*Duration of use (en)">
+					text = <"*Latest dose (en)">
 					description = <"*The duration of use of the class or grouping of medications. (en)">
+					comment = <"*The 'Duration of use' data element is deliberately loosely modelled to support the myriad of ways that it can be used in questionnaires to capture the duration of use of a medication. The specific and intended semantics can be further clarified in a template. 
+
+For example: Date/time for the date when the individual started using a medication. Interval of date/time for a period of time eg. between 1940 and 1942. Text for descriptions like 'Immediately after the operation', or 'Up to one week ago', 'Up to two weeks ago', 'Three weeks ago'. Duration for the individual's age at the onset of duration OR the length of time during which the individual has been using the medication. Interval of Duration for the approximate age of the individual at the time of onset. (en)">
 				>
 				["at0003"] = <
-					text = <"*Last dose (en)">
+					text = <"*Previous dose (en)">
 					description = <"*The date and/or time of administation of the most recent dose of the medication or group of medications. (en)">
 					comment = <"*Can be a partial date, for example, only a year. (en)">
 				>
@@ -556,7 +664,8 @@ ontology
 				["at0021"] = <
 					text = <"Medicatie naam">
 					description = <"*Name of medication or grouping of medication. (en)">
-					comment = <"*For example: 'oxycodone'; 'narcotic analgesics'; or 'painkillers'. (en)">
+					comment = <"*For example: 'alendronic acid', 'anti osteoporosis medications' or 'bisphosphonates'.
+Coding of the 'Medication name' with a terminology is preferred, where possible. (en)">
 				>
 				["at0022"] = <
 					text = <"Event Series">
@@ -568,20 +677,20 @@ ontology
 				>
 				["at0024"] = <
 					text = <"*Usage? (en)">
-					description = <"*Is the individual using the medication? (en)">
+					description = <"*Presence of use of a specific medication or group of medications related to the screening purpose. (en)">
 				>
 				["at0025"] = <
 					text = <"Commentaar">
-					description = <"*Additional narrative about the specified medication or grouping, not captured in other fields. (en)">
+					description = <"*Additional narrative about the specific medication, grouping or class of medications. not captured in other fields. (en)">
 				>
 				["at0026"] = <
-					text = <"*Specific medication or grouping (en)">
-					description = <"*Screening details about a specified medication or grouping of medications. (en)">
+					text = <"*Specific medication (en)">
+					description = <"*Details about a specified medication, grouping or class of medications related to the screening purpose. (en)">
 					comment = <"*Use separate instances of this CLUSTER to differentiate between specific medications, groupings, or classes of medication. (en)">
 				>
 				["at0027"] = <
 					text = <"*Any usage? (en)">
-					description = <"Gebruikt het individu enige medicatie?">
+					description = <"*Presence of use of medications related to the screening purpose. (en)">
 				>
 				["at0028"] = <
 					text = <"Huidig gebruik">
@@ -617,12 +726,21 @@ ontology
 				>
 				["at0040"] = <
 					text = <"Doel van screening">
-					description = <"De reden voor het uitvoeren van de screening.">
-					comment = <"Bijvoorbeeld: screening voor gebruik van een klasse medicatie in het verleden, zoals bisphosphonaten.">
+					description = <"*The context or reason for screening. (en)">
+					comment = <"*This data element is intended to provide collection context for the question/answer groups when queried at a later date. It is not expected that this data element will be exposed to the individual, but only stored in data. For example: pre-admission screening or the name of the actual questionnaire.
+For example: screening for previous use of a class of medications, such as bisphosphonates. (en)">
 				>
 				["at0041"] = <
-					text = <"*Screening details (en)">
-					description = <"*Additional details or questions about the specific medication or grouping. (en)">
+					text = <"*Additional details (en)">
+					description = <"*Structured details or questions about the specific medication, grouping or class of medications. (en)">
+				>
+				["at0042"] = <
+					text = <"*Additional details (en)">
+					description = <"*Structured details or questions about the screening for medications. (en)">
+				>
+				["at0043"] = <
+					text = <"*Description (en)">
+					description = <"*Narrative description  about the use of any medications. (en)">
 				>
 			>
 		>
