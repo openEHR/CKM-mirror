@@ -1,0 +1,247 @@
+﻿archetype (adl_version=1.4; uid=719163ee-6283-4340-837e-8384beae5064)
+	openEHR-EHR-EVALUATION.social_network.v0
+
+concept
+	[at0000]	-- Social network
+language
+	original_language = <[ISO_639-1::en]>
+	translations = <
+		["nb"] = <
+			language = <[ISO_639-1::nb]>
+			author = <
+				["name"] = <"Vebjørn Arntzen, John Tore Valand">
+				["organisation"] = <"Oslo University Hospital, Helse Vest IKT AS">
+				["email"] = <"varntzen@ous-hf.no, john.tore.valand@helse-vest-ikt.no">
+			>
+		>
+		["fr"] = <
+			language = <[ISO_639-1::fr]>
+			author = <
+				["name"] = <"Vanessa Pereira">
+				["organisation"] = <"Better - Pathfinder">
+				["email"] = <"vanessapereira@protonmail.com">
+			>
+		>
+	>
+description
+	original_author = <
+		["name"] = <"Heather Leslie">
+		["organisation"] = <"Atomica Informatics">
+		["email"] = <"heather.leslie@atomicainformatics.com">
+		["date"] = <"2018-05-29">
+	>
+	details = <
+		["nb"] = <
+			language = <[ISO_639-1::nb]>
+			purpose = <"For å registrere informasjon om mennesker som hører sammen med individet gjennom sosial interaksjon og personlige forbindelser.">
+			use = <"Brukes for å registrere informasjon om mennesker som hører sammen med individet gjennom sosial interaksjon og personlige forbindelser.">
+			keywords = <"partner", "forbindelse", "slektskap", "familie", "støtte", "ekteskap", "ekteskaplig", "gift", "enslig", "singel", "enke", "enkemann", "skilt", "ugift", "venn", "nabo", "samboer">
+			misuse = <"Brukes ikke brukes for å registrere detaljer om leverandører av helsetjenester eller omsorgsteam.">
+		>
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To record information about the people who are connected to the individual through social interactions and personal relationships.">
+			use = <"Use to record information about the people who are connected to the individual through social interactions and personal relationships.">
+			keywords = <"partner, partnership, relationship, family, support, marital, married, defacto, marriage, single, widowed, widow, widower, divorced, unmarried, friend, neighbour", ...>
+			misuse = <"Not to be used to record details about health care providers or care teams.">
+			copyright = <"© openEHR Foundation">
+		>
+		["fr"] = <
+			language = <[ISO_639-1::fr]>
+			purpose = <"*To record information about the people who are connected to the individual through social interactions and personal relationships. (en)">
+			use = <"*Use to record information about the people who are connected to the individual through social interactions and personal relationships. (en)">
+			keywords = <"*partner, partnership, relationship, family, support, marital, married, defacto, marriage, single, widowed, widow, widower, divorced, unmarried, friend, neighbour (en)", ...>
+			misuse = <"*Not to be used to record details about health care providers or care teams. (en)">
+		>
+	>
+	lifecycle_state = <"in_development">
+	other_contributors = <"John Tore Valand, Helse Bergen, Norway", "Vebjørn Arntzen, Oslo University Hospital, Norway", "Silje Ljosland Bakke, Nasjonal IKT HF, Norway", "Nyree Taylor, Ocean Informatics, Australia">
+	other_details = <
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
+		["custodian_organisation"] = <"openEHR Foundation">
+		["current_contact"] = <"Heather Leslie, Atomica Informatics<heather.leslie@atomicainformatics.com>">
+		["original_namespace"] = <"org.openehr">
+		["original_publisher"] = <"openEHR Foundation">
+		["custodian_namespace"] = <"org.openehr">
+		["MD5-CAM-1.0.1"] = <"7212EE0623F6FA5E333541C06EB4EE88">
+		["build_uid"] = <"f7d75e0a-fe63-42f3-866d-045eaa161d96">
+		["revision"] = <"0.0.1-alpha">
+	>
+
+definition
+	EVALUATION[at0000] matches {    -- Social network
+		data matches {
+			ITEM_TREE[at0001] matches {    -- Tree
+				items cardinality matches {0..*; unordered} matches {
+					ELEMENT[at0015] occurrences matches {0..1} matches {    -- Description
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0002] occurrences matches {0..1} matches {    -- Partnership status
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					allow_archetype CLUSTER[at0016] occurrences matches {0..*} matches {    -- Network
+						include
+							archetype_id/value matches {/openEHR-EHR-CLUSTER\.person(-[a-zA-Z0-9_]+)*\.v1|openEHR-EHR-CLUSTER\.organisation(-[a-zA-Z0-9_]+)*\.v1/}
+					}
+					allow_archetype CLUSTER[at0017] occurrences matches {0..*} matches {    -- Additional details
+						include
+							archetype_id/value matches {/.*/}
+					}
+				}
+			}
+		}
+		protocol matches {
+			ITEM_TREE[at0010] matches {    -- Tree
+				items cardinality matches {0..*; unordered} matches {
+					ELEMENT[at0011] occurrences matches {0..1} matches {    -- Last updated
+						value matches {
+							DV_DATE_TIME matches {*}
+						}
+					}
+					allow_archetype CLUSTER[at0012] occurrences matches {0..*} matches {    -- Extension
+						include
+							archetype_id/value matches {/.*/}
+					}
+				}
+			}
+		}
+	}
+
+
+
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"Social network">
+					description = <"Group of individuals connected by social interactions and personal relationships.">
+				>
+				["at0001"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Partnership status">
+					description = <"Single word or phrase that describes an individual's relationship with a life partner.">
+					comment = <"Coding of the partnership status with a terminology is preferred, where possible. For example: a 'marital status' value set including never married or single; married; divorced; or widowed. Also known as 'civil status', 'union status', or 'relationship status'.">
+				>
+				["at0010"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0011"] = <
+					text = <"Last updated">
+					description = <"Date when the summary was updated.">
+				>
+				["at0012"] = <
+					text = <"Extension">
+					description = <"Additional information required to extend the model with local content or to align with otnetwork
+her reference models or formalisms.">
+					comment = <"For example: local information requirements; or additional metadata to align with FHIR.">
+				>
+				["at0015"] = <
+					text = <"Description">
+					description = <"Narrative description about the social network and connections for the individual.">
+				>
+				["at0016"] = <
+					text = <"Network">
+					description = <"Structured details about people or community organisations who are connected to the individual.">
+				>
+				["at0017"] = <
+					text = <"Additional details">
+					description = <"Additional structured details about the social network.">
+				>
+			>
+		>
+		["fr"] = <
+			items = <
+				["at0000"] = <
+					text = <"*Social network (en)">
+					description = <"*Group of individuals connected by social interactions and personal relationships. (en)">
+				>
+				["at0001"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"*Partnership status (en)">
+					description = <"*Single word or phrase that describes an individual's relationship with a life partner. (en)">
+					comment = <"*Coding of the partnership status with a terminology is preferred, where possible. For example: a 'marital status' value set including never married or single; married; divorced; or widowed. Also known as 'civil status', 'union status', or 'partnership status'. (en)">
+				>
+				["at0010"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0011"] = <
+					text = <"Dernière mise à jour">
+					description = <"Date de la mise à jour du résumé.">
+				>
+				["at0012"] = <
+					text = <"Extension">
+					description = <"*Additional information required to extend the model with local content or to align with otnetwork
+her reference models or formalisms. (en)">
+					comment = <"*For example: local information requirements; or additional metadata to align with FHIR. (en)">
+				>
+				["at0015"] = <
+					text = <"*Description (en)">
+					description = <"*Narrative description about the social network and connections for the individual. (en)">
+				>
+				["at0016"] = <
+					text = <"*Network (en)">
+					description = <"*Structured details about people or community organisations who are connected to the individual. (en)">
+				>
+				["at0017"] = <
+					text = <"*Additional details (en)">
+					description = <"*Additional structured details about the social network. (en)">
+				>
+			>
+		>
+		["nb"] = <
+			items = <
+				["at0000"] = <
+					text = <"Sosialt nettverk">
+					description = <"Gruppe av individer som er knyttet sammen ved sosial interaksjon og personlige forbindelser.">
+				>
+				["at0001"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Sivilstand">
+					description = <"Enkelt ord eller frase som beskriver et individs forhold til en livspartner.">
+					comment = <"Det anbefales å kode sivilstatus med en terminologi dersom mulig. For eksempel Ugift, Gift, Registrert partner, Samboer, Skilt, Enke, Enkemann, Enslig.">
+				>
+				["at0010"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0011"] = <
+					text = <"Sist oppdatert">
+					description = <"Datoen da \"Sosialt nettverk\" sist ble oppdatert.">
+				>
+				["at0012"] = <
+					text = <"Tilleggsinformasjon">
+					description = <"Ytterligere informasjon som trengs for å kunne registrere lokalt definert innhold eller for å tilpasse til andre referansemodeller/formalismer.">
+					comment = <"For eksempel lokale informasjonsbehov eller ytterligere metadata for å kunne tilpasse til tilsvarende konsepter i FHIR.">
+				>
+				["at0015"] = <
+					text = <"Beskrivelse">
+					description = <"Fritekstbeskrivelse om det sosiale nettverket og tilknytninger for individet.">
+				>
+				["at0016"] = <
+					text = <"Nettverk">
+					description = <"Strukturerte detaljer om mennesker eller organisasjoner som har en forbindelse med individet.">
+				>
+				["at0017"] = <
+					text = <"Ytterligere detaljer">
+					description = <"Ytterligere strukturerte detaljer om det sosiale nettverket.">
+				>
+			>
+		>
+	>

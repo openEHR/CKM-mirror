@@ -1,0 +1,322 @@
+﻿archetype (adl_version=1.4; uid=9f8451ff-900f-4c6f-96b6-c84524d5fc00)
+	openEHR-EHR-EVALUATION.biospecimen_summary.v0
+
+concept
+	[at0000]	-- Biospecimen summary
+language
+	original_language = <[ISO_639-1::en]>
+	translations = <
+		["nb"] = <
+			language = <[ISO_639-1::nb]>
+			author = <
+				["name"] = <"Liv Laugen">
+				["organisation"] = <"​Oslo University Hospital, Norway">
+				["email"] = <"liv.laugen@ous-hf.no">
+			>
+		>
+	>
+description
+	original_author = <
+		["name"] = <"Heather Leslie">
+		["organisation"] = <"Atomica Informatics">
+		["email"] = <"heather.leslie@atomicainformatics.com">
+		["date"] = <"2022-01-25">
+	>
+	details = <
+		["nb"] = <
+			language = <[ISO_639-1::nb]>
+			purpose = <"For å registrere et sammendrag eller vedvarende registrering om et biologisk prøvemateriale (biologisk prøve eller bioprøve).">
+			use = <"Brukes til å registrere sammendrag eller persistent registrering av et biologisk prøvemateriale (biologisk prøve/bioprøve), fra tidspunktet for innsamling eller prøvetakning til bruk/destruering av materialet.
+
+Denne arketypen er designet for å registrere detaljer om innsamling (prøvetakning), lagring, håndtering, bruk eller destruering av humane celler eller vev. Bruk inkluderer:
+- oocytter, zygoter, embryoer eller sæd ved assistert reproduksjon; og
+- autolog hudtransplantasjon. 
+
+Detaljer om den biologiske prøven, inkludert tidspunkt for prøvetakning/innsamling, kan registreres ved å bruke arketypen CLUSTER.specimen (Prøvemateriale) i 'Prøvematerialdetaljer'-SLOTet.
+
+Detaljer om lagring av den biologiske prøven kan registreres ved å bruke CLUSTER.specimen_container (Prøvebeholder) og CLUSTER.biobank (Biologisk lager/biobank) i 'Lagringsdetaljer'-SLOTet.">
+			keywords = <"ivf", "assistert reproduksjon", "sperm", "sæd", "testikler", "overier", "oocytt", "zygot", "embryo", "blastocytt", "bioprøve">
+			misuse = <"Skal ikke brukes til å registrere blodgivning/donasjon. Bruk arketyper spesielt laget til dette formålet.">
+		>
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To record a summary or persistent record about a single biospecimen or biosample.">
+			use = <"Use to record summary or persistent record about a single biospecimen or biosample, from the time of collection or harvesting to disposition.
+
+This archetype is intended to support tracking the collection, storage, use or disposition of human cells or tissue. Use cases include:
+- oocytes, zygotes, embryos, or semen in assisted reproduction; and
+- autologous skin graft.
+
+Details about the biospecimen, including collection information, can be recorded using the CLUSTER.specimen in the 'Specimen details' SLOT.
+
+Details about the location of the biospecimen can be recorded using the CLUSTER.specimen_container and CLUSTER.biobank in the 'Storage details' SLOT.">
+			keywords = <"assisted reproduction", "sperm", "testicular", "ovarian", "tissue", "oocyte", "zygote", "embryo", "blastocyst">
+			misuse = <"Not to be used to record blood donation. Use purpose-specific archetypes for this purpose.">
+			copyright = <"© openEHR Foundation">
+		>
+	>
+	lifecycle_state = <"in_development">
+	other_contributors = <"Vebjørn Arntzen, Oslo University Hospital, Norway (openEHR Editor)", "Peter Fedorcsak, University of Oslo, Norway (openEHR Editor)", "Liv Laugen, ​Oslo University Hospital, Norway, Norway (openEHR Editor)", "Heather Leslie, Atomica Informatics, Australia (openEHR Editor)">
+	other_details = <
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
+		["custodian_organisation"] = <"openEHR Foundation">
+		["references"] = <"Ashford, P., et al., Standard terminology for reproductive tissue and cell products for use in ART. Human Reproduction Open, 2019. 2019(2): p. hoz005.">
+		["original_namespace"] = <"org.openehr">
+		["original_publisher"] = <"openEHR Foundation">
+		["custodian_namespace"] = <"org.openehr">
+		["MD5-CAM-1.0.1"] = <"396566E4A774F70AEFF62D03C04610EC">
+		["build_uid"] = <"4fd34bb3-48f6-4dd8-874e-d149369f3e5d">
+		["revision"] = <"0.0.1-alpha">
+	>
+
+definition
+	EVALUATION[at0000] matches {    -- Biospecimen summary
+		data matches {
+			ITEM_TREE[at0001] matches {    -- Item tree
+				items cardinality matches {0..*; unordered} matches {
+					ELEMENT[at0002] occurrences matches {0..*} matches {    -- Biospecimen ID
+						value matches {
+							DV_IDENTIFIER matches {*}
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0003] matches {    -- Biospecimen type
+						value matches {
+							DV_CODED_TEXT matches {*}
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0004] occurrences matches {0..1} matches {    -- Description
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0005] occurrences matches {0..1} matches {    -- Treatment
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0006] occurrences matches {0..1} matches {    -- Date of preservation
+						value matches {
+							DV_DATE_TIME matches {*}
+						}
+					}
+					ELEMENT[at0007] occurrences matches {0..1} matches {    -- Type of preservation
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					allow_archetype CLUSTER[at0008] occurrences matches {0..*} matches {    -- Specimen details
+						include
+							archetype_id/value matches {/openEHR-EHR-CLUSTER\.specimen(-[a-zA-Z0-9_]+)*\.v2|openEHR-EHR-CLUSTER\.specimen(-[a-zA-Z0-9_]+)*\.v1/}
+					}
+					allow_archetype CLUSTER[at0009] occurrences matches {0..*} matches {    -- Storage details
+						include
+							archetype_id/value matches {/openEHR-EHR-CLUSTER\.biobank_storage(-[a-zA-Z0-9_]+)*\.v0|openEHR-EHR-CLUSTER\.biobank_storage(-[a-zA-Z0-9_]+)*\.v1|openEHR-EHR-CLUSTER\.specimen_container(-[a-zA-Z0-9_]+)*\.v0|openEHR-EHR-CLUSTER\.specimen_container(-[a-zA-Z0-9_]+)*\.v1/}
+					}
+					ELEMENT[at0010] occurrences matches {0..1} matches {    -- Disposition
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0011] occurrences matches {0..1} matches {    -- Date of disposition
+						value matches {
+							DV_DATE_TIME matches {*}
+						}
+					}
+					ELEMENT[at0012] occurrences matches {0..1} matches {    -- Expiry date
+						value matches {
+							DV_DATE_TIME matches {*}
+						}
+					}
+					ELEMENT[at0016] occurrences matches {0..1} matches {    -- Comment
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+				}
+			}
+		}
+		protocol matches {
+			ITEM_TREE[at0013] matches {    -- Item tree
+				items cardinality matches {0..*; unordered} matches {
+					ELEMENT[at0014] occurrences matches {0..1} matches {    -- Last updated
+						value matches {
+							DV_DATE_TIME matches {*}
+						}
+					}
+					allow_archetype CLUSTER[at0015] occurrences matches {0..*} matches {    -- Extension
+						include
+							archetype_id/value matches {/.*/}
+					}
+				}
+			}
+		}
+	}
+
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"Biospecimen summary">
+					description = <"Summary or persistent information about one or more cells or a tissue sample collected or harvested.">
+					comment = <"For example: a harvested oocyte, a sperm sample or tissue graft.">
+				>
+				["at0001"] = <
+					text = <"Item tree">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Biospecimen ID">
+					description = <"Unique identifier for the biospecimen.">
+					comment = <"For example: SEC-ID (The Single European Code) for tissues and cell products, used in, among other things, reproductive medicine treatment.">
+				>
+				["at0003"] = <
+					text = <"Biospecimen type">
+					description = <"The type of cell or tissue collected.">
+					comment = <"For example: skin (for grafting); semen (for storage or donation).">
+				>
+				["at0007"] = <
+					text = <"Type of preservation">
+					description = <"The technique used to preserve the biospecimen.">
+				>
+				["at0006"] = <
+					text = <"Date of preservation">
+					description = <"The date/time when the biospecimen was preserved.">
+				>
+				["at0010"] = <
+					text = <"Disposition">
+					description = <"The final disposition of the biospecimen.">
+					comment = <"Usually this involves use, donation or disposal.">
+				>
+				["at0011"] = <
+					text = <"Date of disposition">
+					description = <"The date/time when the biospecimen was .">
+				>
+				["at0012"] = <
+					text = <"Expiry date">
+					description = <"The date beyond the biospecimen is not to be used.">
+				>
+				["at0013"] = <
+					text = <"Item tree">
+					description = <"@ internal @">
+				>
+				["at0014"] = <
+					text = <"Last updated">
+					description = <"The date this biospecimen summary was last updated.">
+				>
+				["at0015"] = <
+					text = <"Extension">
+					description = <"Additional information required to extend the model with local content or to align with other reference models or formalisms.">
+					comment = <"For example: local information requirements; or additional metadata to align with FHIR.">
+				>
+				["at0004"] = <
+					text = <"Description">
+					description = <"Narrative description about the biospecimen.">
+					comment = <"For example, information about how it was collected.">
+				>
+				["at0009"] = <
+					text = <"Storage details">
+					description = <"Details about the storage of the biospecimen.">
+					comment = <"For example: details about the container and biobank where the biospecimen is stored.">
+				>
+				["at0005"] = <
+					text = <"Treatment">
+					description = <"Narrative description about the management of the biospecimen prior to preservation, including clinical treatments.">
+					comment = <"It is possible to link from this data element to an ACTION.procedure within the health record to record the specific details about the clinical procedure/s and timing.">
+				>
+				["at0008"] = <
+					text = <"Specimen details">
+					description = <"Details about the biospecimen.">
+					comment = <"For example: date & time of collection.">
+				>
+				["at0016"] = <
+					text = <"Comment">
+					description = <"Additional narrative about the biospecimen, not captured in other fields.">
+				>
+			>
+		>
+		["nb"] = <
+			items = <
+				["at0000"] = <
+					text = <"Biologisk prøve sammendrag">
+					description = <"Sammendrag eller persistent informasjon om en eller flere celler eller vev som er innhentet vha. prøvetakning eller høsting.">
+					comment = <"For eksempel en innhøstet oocytt, en sædprøve eller vevsgraft.">
+				>
+				["at0001"] = <
+					text = <"Item tree">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Biologisk prøve ID">
+					description = <"En unik identifikator for det biologiske prøvematerialet.">
+					comment = <"For eksempel: SEC-ID (The Single European Code) for vev og celleprodukter, brukt i blant annet i reproduksjonsmedisinsk behandling.">
+				>
+				["at0003"] = <
+					text = <"Biologisk prøvetype">
+					description = <"Type av celler eller vev som er innsamlet/høstet.">
+					comment = <"For eksempel: hud (for transplantasjon); sæd (for lagring og donasjon).">
+				>
+				["at0004"] = <
+					text = <"Beskrivelse">
+					description = <"Fritekstbeskrivelse av den biologiske prøven.">
+					comment = <"For eksempel, informasjon om hvordan prøven ble tatt.">
+				>
+				["at0005"] = <
+					text = <"Behandling">
+					description = <"Fritekstbeskrivelse av håndteringen av den biologiske prøven før konservering, inkludert klinisk behandling.">
+					comment = <"Det er mulig å koble dette dataelementet til en ACTION.procedure i den elektroniske pasientjournalen for å registrere spesifikke detaljer om den kliniske prosedyren og tidspunkt den ble utført.">
+				>
+				["at0006"] = <
+					text = <"Konserveringsdato">
+					description = <"Dato og tid da den biologiske prøven ble preservert/konservert">
+				>
+				["at0007"] = <
+					text = <"Type konservering">
+					description = <"Teknikken som ble brukt til å preservere/konservere den biologiske prøven.">
+				>
+				["at0008"] = <
+					text = <"Prøvematerialdetaljer">
+					description = <"Detaljer om den biologiske prøven.">
+					comment = <"For eksempel: prøvetakningsdato og tid.">
+				>
+				["at0009"] = <
+					text = <"Lagringsdetaljer">
+					description = <"Detaljer om lagringen av den biologiske prøven.">
+					comment = <"For eksempel: detaljer om prøvebeholderen og biobanken hvor den biologiske prøven er lagret.">
+				>
+				["at0010"] = <
+					text = <"Avslutning/disponering">
+					description = <"Den endelige avslutningen/disponeringen av bioprøven.">
+					comment = <"Vanligvis involverer dette at den biologiske prøven er brukt, donert eller destruert.">
+				>
+				["at0011"] = <
+					text = <"Avslutning/disponering dato">
+					description = <"Dato og tid da den biologiske prøven ble disponert (brukt, donert, destruert).">
+				>
+				["at0012"] = <
+					text = <"Utløpsdato">
+					description = <"Dato for holdbarheten til den biologiske prøven.">
+				>
+				["at0013"] = <
+					text = <"Item tree">
+					description = <"@ internal @">
+				>
+				["at0014"] = <
+					text = <"Sist oppdatert">
+					description = <"Datoen da det sammendraget for det biologiske prøvematerialet sist ble oppdatert.">
+				>
+				["at0015"] = <
+					text = <"Utvidelse">
+					description = <"Tilleggsinformasjon som kan være nødvendig for å dokumentere lokal kontekst, eller for å tilpasse til andre referansemodeller/formalismer.">
+					comment = <"For eksempel: lokal informasjon eller ytterligere metadata for tilpasning til FHIR eller CIMI.">
+				>
+				["at0016"] = <
+					text = <"Kommentar">
+					description = <"Ytterligere kommentarer om det biologiske materialet/biobanken som ikke passer i andre felter.">
+				>
+			>
+		>
+	>

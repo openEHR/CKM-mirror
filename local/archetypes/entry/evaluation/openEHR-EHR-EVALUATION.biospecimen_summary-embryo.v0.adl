@@ -1,0 +1,512 @@
+﻿archetype (adl_version=1.4; uid=fe3d6c4b-1676-4810-9d66-3f387ed3697c)
+	openEHR-EHR-EVALUATION.biospecimen_summary-embryo.v0
+specialise
+	openEHR-EHR-EVALUATION.biospecimen_summary.v0
+
+concept
+	[at0000.1]	-- Biospecimen summary - embryo
+language
+	original_language = <[ISO_639-1::en]>
+	translations = <
+		["nb"] = <
+			language = <[ISO_639-1::nb]>
+			author = <
+				["name"] = <"Liv Laugen, Peter Fedorcsak">
+				["organisation"] = <"​Oslo University Hospital, Norway, University of Oslo">
+				["email"] = <"liv.laugen@ous-hf.no, peterfe@uio.no">
+			>
+		>
+	>
+description
+	original_author = <
+		["name"] = <"Heather Leslie">
+		["organisation"] = <"Atomica Informatics">
+		["email"] = <"heather.leslie@atomicainformatics.com">
+		["date"] = <"2022-02-09">
+	>
+	details = <
+		["nb"] = <
+			language = <[ISO_639-1::nb]>
+			purpose = <"For å registrere et sammendrag eller vedvarende registrering om en eller flere zygoter eller embryoer.">
+			use = <"Brukes for å registrere et sammendrag eller vedvarende registrering om en eller flere zygoter eller embryoer.
+
+Denne arketypen er designet for å registrere detaljer om innsamling (prøvetakning), lagring, håndtering, bruk eller destruering av zygoter eller embryoer ved assistert befruktning.
+
+Detaljer om den biologiske prøven, inkludert tidspunkt for prøvetakning/innsamling, kan registreres ved å bruke arketypen CLUSTER.specimen (Prøvemateriale) i 'Prøvematerialdetaljer'-SLOTet.
+
+Detaljer om lagring av prøven kan registreres ved å bruke CLUSTER.specimen_container (Prøvebeholder) og CLUSTER.biobank (Biologisk lager/biobank) i 'Lagringsdetaljer'-SLOTet.
+">
+			keywords = <"ivf", "assistert reproduksjon", "zygote", "embryo", "morula", "blastocyst", "bioprøve">
+			misuse = <"">
+		>
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To record a summary or persistent record about one or more zygotes or embryos.">
+			use = <"Use to record summary or persistent record about one or more zygotes or embryos.
+
+This archetype has been designed to track the collection, storage, management, use or disposition of zygotes or embryos in assisted reproduction treatment.
+
+Details about the biospecimen, including collection information, can be recorded using the CLUSTER.specimen in the 'Specimen details' SLOT.
+
+Details about the location of the biospecimen can be recorded using the CLUSTER.specimen_container and CLUSTER.biobank in the 'Storage details' SLOT.">
+			keywords = <"assisted reproduction", "zygote", "embryo", "blastocyst">
+			misuse = <"">
+			copyright = <"© openEHR Foundation">
+		>
+	>
+	lifecycle_state = <"in_development">
+	other_contributors = <"Vebjørn Arntzen, Oslo University Hospital, Norway (openEHR Editor)", "Peter Fedorcsak, University of Oslo, Norway (openEHR Editor)", "Liv Laugen, ​Oslo University Hospital, Norway, Norway (openEHR Editor)", "Heather Leslie, Atomica Informatics, Australia (openEHR Editor)">
+	other_details = <
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
+		["custodian_organisation"] = <"openEHR Foundation">
+		["references"] = <"Ashford, P., et al., Standard terminology for reproductive tissue and cell products for use in ART. Human Reproduction Open, 2019. 2019(2): p. hoz005.">
+		["original_namespace"] = <"org.openehr">
+		["original_publisher"] = <"openEHR Foundation">
+		["custodian_namespace"] = <"org.openehr">
+		["MD5-CAM-1.0.1"] = <"0FE57C725536BB094C1C1D4572C678E6">
+		["build_uid"] = <"63c70326-994f-4737-9625-296dfbe957a3">
+		["ip_acknowledgements"] = <"This artefact includes content from SNOMED Clinical Terms® (SNOMED CT®) which is copyrighted material of the International Health Terminology Standards Development Organisation (IHTSDO). Where an implementation of this artefact makes use of SNOMED CT content, the implementer must have the appropriate SNOMED CT Affiliate license - for more information contact https://www.snomed.org/snomed-ct/get-snomed or info@snomed.org.">
+		["revision"] = <"0.0.1-alpha">
+	>
+
+definition
+	EVALUATION[at0000.1] matches {    -- Biospecimen summary - embryo
+		data matches {
+			ITEM_TREE[at0001] matches {    -- Item tree
+				items cardinality matches {0..*; unordered} matches {
+					ELEMENT[at0002] occurrences matches {0..*} matches {    -- Biospecimen ID
+						value matches {
+							DV_IDENTIFIER matches {*}
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0003.1] matches {    -- Biospecimen type
+						value matches {
+							DV_CODED_TEXT matches {
+								defining_code matches {
+									[local::
+									at0.1,    -- Zygote
+									at0.2]    -- Embryo
+								}
+							}
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0004] occurrences matches {0..1} matches {    -- Description
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0005] occurrences matches {0..1} matches {    -- Treatment
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0006] occurrences matches {0..1} matches {    -- Date of preservation
+						value matches {
+							DV_DATE_TIME matches {*}
+						}
+					}
+					ELEMENT[at0007] occurrences matches {0..1} matches {    -- Type of preservation
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					allow_archetype CLUSTER[at0008] occurrences matches {0..*} matches {    -- Specimen details
+						include
+							archetype_id/value matches {/openEHR-EHR-CLUSTER\.specimen(-[a-zA-Z0-9_]+)*\.v2|openEHR-EHR-CLUSTER\.specimen(-[a-zA-Z0-9_]+)*\.v1/}
+					}
+					allow_archetype CLUSTER[at0009] occurrences matches {0..*} matches {    -- Storage details
+						include
+							archetype_id/value matches {/openEHR-EHR-CLUSTER\.biobank_storage(-[a-zA-Z0-9_]+)*\.v0|openEHR-EHR-CLUSTER\.biobank_storage(-[a-zA-Z0-9_]+)*\.v1|openEHR-EHR-CLUSTER\.specimen_container(-[a-zA-Z0-9_]+)*\.v0|openEHR-EHR-CLUSTER\.specimen_container(-[a-zA-Z0-9_]+)*\.v1/}
+					}
+					ELEMENT[at0010] occurrences matches {0..1} matches {    -- Disposition
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0011] occurrences matches {0..1} matches {    -- Date of disposition
+						value matches {
+							DV_DATE_TIME matches {*}
+						}
+					}
+					ELEMENT[at0012] occurrences matches {0..1} matches {    -- Expiry date
+						value matches {
+							DV_DATE_TIME matches {*}
+						}
+					}
+					ELEMENT[at0016] occurrences matches {0..1} matches {    -- Comment
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0.3] occurrences matches {0..1} matches {    -- Embryo development stage
+						value matches {
+							DV_CODED_TEXT matches {
+								defining_code matches {
+									[local::
+									at0.5,    -- Cleavage stage
+									at0.6,    -- Morula stage
+									at0.7,    -- Blastocyst stage
+									at0.4]    -- Unknown
+								}
+							}
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0.8] occurrences matches {0..1} matches {    -- Embryo preservation day
+						value matches {
+							DV_CODED_TEXT matches {
+								defining_code matches {
+									[local::
+									at0.9,    -- Day 1
+									at0.10,    -- Day 2
+									at0.11,    -- Day 3
+									at0.12,    -- Day 4
+									at0.13,    -- Day 5
+									at0.14,    -- Day 6
+									at0.15,    -- Day 7
+									at0.16]    -- Unknown
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		protocol matches {
+			ITEM_TREE[at0013] matches {    -- Item tree
+				items cardinality matches {0..*; unordered} matches {
+					ELEMENT[at0014] occurrences matches {0..1} matches {    -- Last updated
+						value matches {
+							DV_DATE_TIME matches {*}
+						}
+					}
+					allow_archetype CLUSTER[at0015] occurrences matches {0..*} matches {    -- Extension
+						include
+							archetype_id/value matches {/.*/}
+					}
+				}
+			}
+		}
+	}
+
+
+ontology
+	terminologies_available = <"SNOMED-CT", ...>
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000.1"] = <
+					text = <"Biospecimen summary - embryo">
+					description = <"Summary or persistent information about one or more zygotes or embryos.">
+				>
+				["at0003.1"] = <
+					text = <"Biospecimen type">
+					description = <"The type of cell or tissue collected.">
+				>
+				["at0.1"] = <
+					text = <"Zygote">
+					description = <"A single cell resulting from fertilization of a mature oocyte by a spermatozoon and before completion of the first mitotic division.">
+				>
+				["at0.2"] = <
+					text = <"Embryo">
+					description = <"The biological organism resulting from the development of the zygote, until eight completed weeks after fertilization, equivalent to 10 weeks of gestational age.">
+				>
+				["at0.3"] = <
+					text = <"Embryo development stage">
+					description = <"The stage of development of the embryo.">
+				>
+				["at0.4"] = <
+					text = <"Unknown">
+					description = <"No information about the embryo development stage is provided or not applicable.">
+				>
+				["at0.5"] = <
+					text = <"Cleavage stage">
+					description = <"Embryo beginning at the two cell stage and up to, but not including, the morula stage.">
+				>
+				["at0.6"] = <
+					text = <"Morula stage">
+					description = <"Embryo after completion of compaction, typically 4 days after insemination or ICSI.">
+				>
+				["at0.7"] = <
+					text = <"Blastocyst stage">
+					description = <"Embryo at the blastocyst stage, containing a fluid filled central cavity, an outer layer of cells and an inner group of cells. Typically occurs at day 5–6 after insemination.">
+				>
+				["at0.8"] = <
+					text = <"Embryo preservation day">
+					description = <"The number of calendar days following insemination on which the embryo was preserved.">
+				>
+				["at0.9"] = <
+					text = <"Day 1">
+					description = <"Embryo preserved on day 1 after insemination.">
+				>
+				["at0.10"] = <
+					text = <"Day 2">
+					description = <"Embryo preserved on day 2 after insemination.">
+				>
+				["at0.11"] = <
+					text = <"Day 3">
+					description = <"Embryo preserved on day 3 after insemination.">
+				>
+				["at0.12"] = <
+					text = <"Day 4">
+					description = <"Embryo preserved on day 4 after insemination.">
+				>
+				["at0.13"] = <
+					text = <"Day 5">
+					description = <"Embryo preserved on day 5 after insemination.">
+				>
+				["at0.14"] = <
+					text = <"Day 6">
+					description = <"Embryo preserved on day 6 after insemination.">
+				>
+				["at0.15"] = <
+					text = <"Day 7">
+					description = <"Embryo preserved on day 7 after insemination.">
+				>
+				["at0.16"] = <
+					text = <"Unknown">
+					description = <"No information about the embryo preservation day is provided or not applicable.">
+				>
+				["at0000"] = <
+					text = <"Biospecimen summary">
+					description = <"Summary or persistent information about one or more cells or a tissue sample collected or harvested.">
+					comment = <"For example: a harvested oocyte, a sperm sample or tissue graft.">
+				>
+				["at0001"] = <
+					text = <"Item tree">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Biospecimen ID">
+					description = <"Unique identifier for the biospecimen.">
+					comment = <"For example: SEC ID in Europe for assisted reproduction treatments.">
+				>
+				["at0003"] = <
+					text = <"Biospecimen type">
+					description = <"The type of cell or tissue collected.">
+					comment = <"For example: skin (for grafting); semen (for storage or donation).">
+				>
+				["at0007"] = <
+					text = <"Type of preservation">
+					description = <"The technique used to preserve the biospecimen.">
+				>
+				["at0006"] = <
+					text = <"Date of preservation">
+					description = <"The date/time when the biospecimen was preserved.">
+				>
+				["at0010"] = <
+					text = <"Disposition">
+					description = <"The final disposition of the biospecimen.">
+					comment = <"Usually this involves use, donation or disposal.">
+				>
+				["at0011"] = <
+					text = <"Date of disposition">
+					description = <"The date/time when the biospecimen was preserved.">
+				>
+				["at0012"] = <
+					text = <"Expiry date">
+					description = <"The date beyond the biospecimen is not to be used.">
+				>
+				["at0013"] = <
+					text = <"Item tree">
+					description = <"@ internal @">
+				>
+				["at0014"] = <
+					text = <"Last updated">
+					description = <"The date this biospecimen summary was last updated.">
+				>
+				["at0015"] = <
+					text = <"Extension">
+					description = <"Additional information required to extend the model with local content or to align with other reference models or formalisms.">
+					comment = <"For example: local information requirements; or additional metadata to align with FHIR.">
+				>
+				["at0004"] = <
+					text = <"Description">
+					description = <"Narrative description about the biospecimen.">
+					comment = <"For example, information about how it was collected.">
+				>
+				["at0009"] = <
+					text = <"Storage details">
+					description = <"Details about the storage of the biospecimen.">
+					comment = <"For example: details about the container and biobank where the biospecimen is stored.">
+				>
+				["at0005"] = <
+					text = <"Treatment">
+					description = <"Narrative description about the management of the biospecimen prior to preservation, including clinical treatments.">
+					comment = <"It is possible to link from this data element to an ACTION.procedure within the health record to record the specific details about the clinical procedure/s and timing.">
+				>
+				["at0008"] = <
+					text = <"Specimen details">
+					description = <"Details about the biospecimen.">
+					comment = <"For example: date & time of collection.">
+				>
+				["at0016"] = <
+					text = <"Comment">
+					description = <"Additional narrative about the biospecimen, not captured in other fields.">
+				>
+			>
+		>
+		["nb"] = <
+			items = <
+				["at0.1"] = <
+					text = <"Zygote">
+					description = <"En enkelt celle som er et resultat av befruktning av en moden oocytt av en sædcelle, og før fullføring av den første mitotiske deling.">
+				>
+				["at0.10"] = <
+					text = <"Dag 2">
+					description = <"Embryo på dag 2 etter inseminering.">
+				>
+				["at0.11"] = <
+					text = <"Dag 3">
+					description = <"Embryo på dag 3 etter inseminering.">
+				>
+				["at0.12"] = <
+					text = <"Dag 4">
+					description = <"Embryo på dag 4 etter inseminering.">
+				>
+				["at0.13"] = <
+					text = <"Dag 5">
+					description = <"Embryo på dag 5 etter inseminering.">
+				>
+				["at0.14"] = <
+					text = <"Dag 6">
+					description = <"Embryo på dag 6 etter inseminering.">
+				>
+				["at0.15"] = <
+					text = <"Dag 7">
+					description = <"Embryo på dag 7 etter inseminering.">
+				>
+				["at0.16"] = <
+					text = <"Ukjent">
+					description = <"Ingen informasjon om dag etter inseminering er gitt, eller det er ikke aktuelt.">
+				>
+				["at0.2"] = <
+					text = <"Embryo">
+					description = <"Den biologiske organismen som følge av utviklingen av zygoten, inntil åtte uker etter befruktning, tilsvarende 10 ukers gestasjon (graviditet).">
+				>
+				["at0.3"] = <
+					text = <"Embryo utviklingsstadie">
+					description = <"Utviklingsstadiet til embryoet.">
+				>
+				["at0.4"] = <
+					text = <"Ukjent">
+					description = <"Ingen informasjon om embryo utviklingsstadie er gitt, eller det er ikke aktuelt.">
+				>
+				["at0.5"] = <
+					text = <"Delingsstadie">
+					description = <"Embryoutvikling mellom to-cellestadium og opp til, men ikke inkludert, morulastadiet.">
+				>
+				["at0.6"] = <
+					text = <"Morula">
+					description = <"Embryo under kompaktering, typisk 4 dager etter inseminasjon eller ICSI.">
+				>
+				["at0.7"] = <
+					text = <"Blastocyst">
+					description = <"Embryo på blastocyststadiet inneholder et væskefylt hulrom, et ytre lag med celler og en indre gruppe celler, vanligvis på dag 5–6 etter inseminering.">
+				>
+				["at0.8"] = <
+					text = <"Embryo dag">
+					description = <"Nummer på dagen etter inseminering.">
+				>
+				["at0.9"] = <
+					text = <"Dag 1">
+					description = <"Embryo på dag 1 etter inseminering.">
+				>
+				["at0000"] = <
+					text = <"Biologisk prøve sammendrag">
+					description = <"Sammendrag eller persistent informasjon om en eller flere celler eller vev som er innhentet vha. prøvetakning eller høsting.">
+					comment = <"For eksempel en innhøstet oocytt, en sædprøve eller vevsgraft.">
+				>
+				["at0000.1"] = <
+					text = <"Biologisk prøve sammendrag - embryo">
+					description = <"Sammendrag eller persistent informasjon om en eller flere zygoter eller embryoer.">
+				>
+				["at0001"] = <
+					text = <"Item tree">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Biologisk prøve ID">
+					description = <"En unik identifikator for det biologiske prøvematerialet.">
+					comment = <"For eksempel: SEC-ID (The Single European Code) for vev og celleprodukter, brukt i blant annet reproduksjonsmedisinsk behandling.">
+				>
+				["at0003"] = <
+					text = <"Biologisk prøvetype">
+					description = <"Type av celler eller vev som er innsamlet/høstet.">
+					comment = <"For eksempel: hud (for transplantasjon); sæd (for lagring og donasjon).">
+				>
+				["at0003.1"] = <
+					text = <"Biologisk prøvetype">
+					description = <"Type av celler eller vev som er innsamlet/høstet.">
+				>
+				["at0004"] = <
+					text = <"Beskrivelse">
+					description = <"Fritekstbeskrivelse av den biologiske prøven.">
+					comment = <"For eksempel, informasjon om hvordan prøven ble tatt.">
+				>
+				["at0005"] = <
+					text = <"Behandling">
+					description = <"Fritekstbeskrivelse av håndteringen av den biologiske prøven før konservering, inkludert klinisk behandling.">
+					comment = <"Det er mulig å koble dette dataelementet til en ACTION.procedure i den elektroniske pasientjournalen for å registrere spesifikke detaljer om den kliniske prosedyren og tidspunkt den ble utført.">
+				>
+				["at0006"] = <
+					text = <"Konserveringsdato">
+					description = <"Dato og tid da den biologiske prøven ble preservert/konservert">
+				>
+				["at0007"] = <
+					text = <"Type konservering">
+					description = <"Teknikken som ble brukt til å preservere/konservere den biologiske prøven.">
+				>
+				["at0008"] = <
+					text = <"Prøvematerialdetaljer">
+					description = <"Detaljer om den biologiske prøven.">
+					comment = <"For eksempel: prøvetakningsdato og tid.">
+				>
+				["at0009"] = <
+					text = <"Lagringsdetaljer">
+					description = <"Detaljer om lagringen av den biologiske prøven.">
+					comment = <"For eksempel: detaljer om prøvebeholderen og biobanken hvor den biologiske prøven er lagret.">
+				>
+				["at0010"] = <
+					text = <"Avslutning/disponering">
+					description = <"Den endelige avslutningen/disponeringen av bioprøven.">
+					comment = <"Vanligvis involverer dette at biologiske prøven er brukt, donert eller destruert.">
+				>
+				["at0011"] = <
+					text = <"Avslutning/disponering dato">
+					description = <"Dato og tid da den biologiske prøven ble disponert (brukt, donert, destruert).">
+				>
+				["at0012"] = <
+					text = <"Utløpsdato">
+					description = <"Dato for holdbarheten til den biologiske prøven.">
+				>
+				["at0013"] = <
+					text = <"Item tree">
+					description = <"@ internal @">
+				>
+				["at0014"] = <
+					text = <"Sist oppdatert">
+					description = <"Datoen da det sammendraget for det biologiske prøvematerialet sist ble oppdatert.">
+				>
+				["at0015"] = <
+					text = <"Utvidelse">
+					description = <"Tilleggsinformasjon som kan være nødvendig for å dokumentere lokal kontekst, eller for å tilpasse til andre referansemodeller/formalismer.">
+					comment = <"For eksempel: lokal informasjon eller ytterligere metadata for tilpasning til FHIR eller CIMI.">
+				>
+				["at0016"] = <
+					text = <"Kommentar">
+					description = <"Ytterligere kommentarer om det biologiske materialet/biobanken som ikke passer i andre felter.">
+				>
+			>
+		>
+	>
+	term_bindings = <
+		["SNOMED-CT"] = <
+			items = <
+				["at0.1"] = <[SNOMED-CT::57323001]>
+				["at0.2"] = <[SNOMED-CT::57991002]>
+			>
+		>
+	>

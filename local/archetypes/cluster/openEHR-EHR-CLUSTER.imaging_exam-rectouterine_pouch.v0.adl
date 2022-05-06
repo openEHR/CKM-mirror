@@ -1,0 +1,348 @@
+﻿archetype (adl_version=1.4; uid=764a9216-3a50-4276-8f39-676bca93b7b4)
+	openEHR-EHR-CLUSTER.imaging_exam-rectouterine_pouch.v0
+specialise
+	openEHR-EHR-CLUSTER.imaging_exam.v0
+
+concept
+	[at0000.1]	-- Imaging examination of the rectouterine pouch
+language
+	original_language = <[ISO_639-1::en]>
+	translations = <
+		["nb"] = <
+			language = <[ISO_639-1::nb]>
+			author = <
+				["name"] = <"Peter Fedorcsak">
+				["organisation"] = <"University of Oslo">
+				["email"] = <"peterfe@uio.no">
+			>
+		>
+	>
+description
+	original_author = <
+		["name"] = <"Heather Leslie">
+		["organisation"] = <"Atomica Informatics">
+		["email"] = <"heather.leslie@atomicainformatics.com">
+		["date"] = <"2021-11-24">
+	>
+	details = <
+		["nb"] = <
+			language = <[ISO_639-1::nb]>
+			purpose = <"For å registrere en fritekstbeskrivelse, strukturerte detaljer og klinisk tolkning av observerte funn ved bildeundersøkelse av Douglas' grop.">
+			use = <"Brukes til å registrere en fritekstbeskrivelse, strukturerte detaljer og klinisk tolkning av observerte funn ved bildeundersøkelse av Douglas' grop.
+
+Denne arketypen ble utviklet til bruk i SLOT'et \"Strukturerte funn\" i arketypen OBSERVATION.imaging_exam_result (Bildediagnostisk svar), men kan også brukes innen andre ENTRY- og CLUSTER-arketyper der det er klinisk passende.
+
+Brukes som et rammeverk hvor andre CLUSTER arketyper kan nøstes i SLOT'et \"Strukturerte detaljer\" for å registrere ytterligere strukturerte billedfunn for delstrukturer eller andre relevante funn.
+">
+			keywords = <"recto-vaginal", "Douglas", "grop", "rom", "fossa">
+			misuse = <"Skal ikke brukes til å registrere funn utenfor det spesifiserte organ eller kroppsdel. Bruk andre arketyper fra gruppen av CLUSTER.imaging_exam-arketyper for dette.
+
+Skal ikke brukes til å registrere overordnede undersøkelsesfunn, kontekst eller tekniske detaljer relatert til bildeundersøkelsen. Bruk arketypen OBSERVATION.imaging_exam_result (Bildediagnostisk svar) for å registrere for eksempel kommentar om undersøkelseskvalitet, differensialdiagnose og overordnet konklusjon.">
+		>
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To record a narrative description, structured details and clinical impression of the findings observed in an imaging examination targeting the rectouterine pouch.">
+			use = <"Use to record a narrative description, structured details and clinical impression of the findings observed in an imaging examination targeting the rectouterine pouch.
+
+This archetype has been specifically designed to be nested in the 'Structured imaging findings' SLOT within the OBSERVATION.imaging_exam_result archetype, but can also be used within other ENTRY or CLUSTER archetypes, where clinically appropriate.
+
+Use to provide a framework in which CLUSTER archetypes can be nested in the 'Additional details' SLOT within this archetype to record additional nested levels of structured imaging findings for related body substructures or site-specified findings.">
+			keywords = <"Rectovaginal, Douglas, pouch", ...>
+			misuse = <"Not to be used to record findings outside the specified body structure or region. Use other archetypes from the CLUSTER.imaging_exam family for this purpose.
+
+Not to be used to record details related to the overall findings, context or technical details related to a complete imaging examination test result. Use the OBERSERVATION.imaging_exam_result for this purpose. For example, comments on the study quality, differential diagnoses, and overall impression.">
+			copyright = <"© openEHR Foundation">
+		>
+	>
+	lifecycle_state = <"in_development">
+	other_contributors = <"Vebjørn Arntzen, Oslo University Hospital", "Liv Laugen, Oslo University Hospital", "Peter Fedorcsak, Oslo University Hospital">
+	other_details = <
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
+		["custodian_organisation"] = <"openEHR Foundation">
+		["original_namespace"] = <"org.openehr">
+		["original_publisher"] = <"openEHR Foundation">
+		["custodian_namespace"] = <"org.openehr">
+		["MD5-CAM-1.0.1"] = <"A4CCB2BE68F5D9F3B9364CA9B1E2C0E7">
+		["build_uid"] = <"2791d612-dfca-480f-a0ea-adcb5392263e">
+		["ip_acknowledgements"] = <"This artefact includes content from SNOMED Clinical Terms® (SNOMED CT®) which is copyrighted material of the International Health Terminology Standards Development Organisation (IHTSDO). Where an implementation of this artefact makes use of SNOMED CT content, the implementer must have the appropriate SNOMED CT Affiliate license - for more information contact https://www.snomed.org/snomed-ct/get-snomed or info@snomed.org.">
+		["revision"] = <"0.0.1-alpha">
+	>
+
+definition
+	CLUSTER[at0000.1] matches {    -- Imaging examination of the rectouterine pouch
+		items cardinality matches {1..*; unordered} matches {
+			ELEMENT[at0001.1] matches {    -- Body structure
+				value matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {
+							[local::at0.1]    -- Rectouterine pouch
+						}
+					}
+				}
+			}
+			ELEMENT[at0002] occurrences matches {0..1} matches {    -- Anatomical location
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			allow_archetype CLUSTER[at0003] occurrences matches {0..*} matches {    -- Structured anatomical location
+				include
+					archetype_id/value matches {/openEHR-EHR-CLUSTER\.anatomical_location(-[a-zA-Z0-9_]+)*\.v1|openEHR-EHR-CLUSTER\.anatomical_location_relative(-[a-zA-Z0-9_]+)*\.v2|openEHR-EHR-CLUSTER\.anatomical_location_circle(-[a-zA-Z0-9_]+)*\.v1/}
+			}
+			ELEMENT[at0004] occurrences matches {0..1} matches {    -- Imaging findings
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			allow_archetype CLUSTER[at0005] occurrences matches {0..*} matches {    -- SLOT: Additional details
+				include
+					archetype_id/value matches {/openEHR-EHR-CLUSTER\.imaging_finding(-[a-zA-Z0-9_]+)*\.v0|openEHR-EHR-CLUSTER\.imaging_exam-lymph_node(-[a-zA-Z0-9_]+)*\.v0|openEHR-EHR-CLUSTER\.imaging_exam-lymph_node_group(-[a-zA-Z0-9_]+)*\.v0|openEHR-EHR-CLUSTER\.imaging_exam-abnormality(-[a-zA-Z0-9_]+)*\.v0/}
+			}
+			ELEMENT[at0006] occurrences matches {0..1} matches {    -- Impression
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			ELEMENT[at0007] occurrences matches {0..1} matches {    -- Comment
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			ELEMENT[at0.2] occurrences matches {0..1} matches {    -- Free fluid presence
+				value matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {
+							[local::
+							at0.3,    -- Present
+							at0.4]    -- Absent
+						}
+					}
+				}
+			}
+			ELEMENT[at0.5] occurrences matches {0..1} matches {    -- Amount of free fluid
+				value matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {
+							[local::
+							at0.6,    -- Small
+							at0.7,    -- Medium
+							at0.8]    -- Large
+						}
+					}
+					C_DV_QUANTITY <
+						property = <[openehr::129]>
+						list = <
+							["1"] = <
+								units = <"L">
+								magnitude = <|>=0.0|>
+								precision = <|2|>
+							>
+							["2"] = <
+								units = <"mL">
+								magnitude = <|>=0.0|>
+								precision = <|2|>
+							>
+						>
+					>
+				}
+			}
+			ELEMENT[at0.9] occurrences matches {0..3} matches {    -- Diameter
+				value matches {
+					C_DV_QUANTITY <
+						property = <[openehr::122]>
+						list = <
+							["1"] = <
+								units = <"mm">
+								magnitude = <|>=0.0|>
+								precision = <|0|>
+							>
+							["2"] = <
+								units = <"cm">
+								magnitude = <|>=0.0|>
+								precision = <|0|>
+							>
+						>
+					>
+				}
+			}
+		}
+	}
+
+
+
+ontology
+	terminologies_available = <"SNOMED-CT", ...>
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000.1"] = <
+					text = <"Imaging examination of the rectouterine pouch">
+					description = <"Findings observed in an imaging examination targeting the rectouterine pouch, using radiographic techniques.">
+				>
+				["at0001.1"] = <
+					text = <"Body structure">
+					description = <"Identification of the body structure or region examined.">
+				>
+				["at0.1"] = <
+					text = <"Rectouterine pouch">
+					description = <"The rectouterine pouch was examined.">
+				>
+				["at0.2"] = <
+					text = <"Free fluid presence">
+					description = <"">
+				>
+				["at0.3"] = <
+					text = <"Present">
+					description = <"Free fluid is observed in the rectouterine pouch.">
+				>
+				["at0.4"] = <
+					text = <"Absent">
+					description = <"No free fluid is observed in the rectouterine pouch.">
+				>
+				["at0.5"] = <
+					text = <"Amount of free fluid">
+					description = <"The amount of fluid observed.">
+				>
+				["at0.6"] = <
+					text = <"Small">
+					description = <"">
+				>
+				["at0.7"] = <
+					text = <"Medium">
+					description = <"">
+				>
+				["at0.8"] = <
+					text = <"Large">
+					description = <"">
+				>
+				["at0000"] = <
+					text = <"Imaging examination">
+					description = <"Findings observed in an imaging examination targeting a specified structure or region, using radiographic techniques.">
+				>
+				["at0004"] = <
+					text = <"Imaging findings">
+					description = <"Narrative description of the imaging findings observed during this examination.">
+				>
+				["at0005"] = <
+					text = <"SLOT: Additional details">
+					description = <"Additional structured details about imaging findings for the identified body structure or region, or findings for related substructures.">
+				>
+				["at0007"] = <
+					text = <"Comment">
+					description = <"Additional narrative about the imaging findings, not captured in other fields.">
+				>
+				["at0001"] = <
+					text = <"Body structure">
+					description = <"Identification of the body structure or region examined.">
+				>
+				["at0003"] = <
+					text = <"Structured anatomical location">
+					description = <"Structured details about the anatomical location of the identified body structure.">
+					comment = <"If the anatomical location of the identified body structure is known or it has been identified in the 'Anatomical location' data element, this data element is redundant.">
+				>
+				["at0006"] = <
+					text = <"Impression">
+					description = <"Narrative concise, clinically relevant impression of all imaging findings for the identified body structure.">
+					comment = <"Also referred to as 'Opinion'. May include a comparison with previous studies of the identified body structure, where appropriate.">
+				>
+				["at0002"] = <
+					text = <"Anatomical location">
+					description = <"Simple body site for the identified structure.">
+					comment = <"If the anatomical location of the identified body structure is known, this data element is redundant.">
+				>
+				["at0.9"] = <
+					text = <"Diameter">
+					description = <"A measured diameter of the recto-uterine pouch.">
+					comment = <"This data element has 3 occurrences to allow for measurements in 3 different axes.">
+				>
+			>
+		>
+		["nb"] = <
+			items = <
+				["at0.1"] = <
+					text = <"Fossa Douglasii">
+					description = <"Undersøkelse av fossa Douglasii.">
+				>
+				["at0.2"] = <
+					text = <"Tilstedeværelse av fri væske">
+					description = <"">
+				>
+				["at0.3"] = <
+					text = <"Tilstede">
+					description = <"Fri væske er sett i fossa Douglasii.">
+				>
+				["at0.4"] = <
+					text = <"Ikke tilstede">
+					description = <"Ingen fri væske er sett i fossa Douglasii.">
+				>
+				["at0.5"] = <
+					text = <"Mengde fri væske">
+					description = <"Mengden av fri væske sett.">
+				>
+				["at0.6"] = <
+					text = <"Liten">
+					description = <"">
+				>
+				["at0.7"] = <
+					text = <"Middels">
+					description = <"">
+				>
+				["at0.8"] = <
+					text = <"Stor">
+					description = <"">
+				>
+				["at0.9"] = <
+					text = <"Diameter">
+					description = <"Målt diameter av fri væske i fossa Douglasii.">
+					comment = <"Elementet har 3 forekomster for å tillate registrering av målinger i 3 retninger.">
+				>
+				["at0000"] = <
+					text = <"*Imaging examination(en)">
+					description = <"*Findings observed in an imaging examination targeting a specified structure or region, using radiographic techniques.(en)">
+				>
+				["at0000.1"] = <
+					text = <"Bildeundersøkelse av fossa Douglasii">
+					description = <"Funn ved bildeundersøkelse av Douglas' grop med bruk av radiologiske metoder.">
+				>
+				["at0001"] = <
+					text = <"*Body structure(en)">
+					description = <"*Identification of the body structure or region examined.(en)">
+				>
+				["at0001.1"] = <
+					text = <"Struktur">
+					description = <"Navn av undersøkt struktur eller område på eller i kroppen.">
+				>
+				["at0002"] = <
+					text = <"*Anatomical location(en)">
+					description = <"*Simple body site for the identified structure.(en)">
+				>
+				["at0003"] = <
+					text = <"*Structured anatomical location(en)">
+					description = <"*Structured details about the anatomical location of the identified body structure.(en)">
+				>
+				["at0004"] = <
+					text = <"*Imaging findings(en)">
+					description = <"*Narrative description of the imaging findings observed during this examination.(en)">
+				>
+				["at0005"] = <
+					text = <"*SLOT: Additional details(en)">
+					description = <"*Additional structured details about imaging findings for the identified body structure or region, or findings for related substructures.(en)">
+				>
+				["at0006"] = <
+					text = <"*Impression(en)">
+					description = <"*Narrative concise, clinically relevant impression of all imaging findings for the identified body structure.(en)">
+				>
+				["at0007"] = <
+					text = <"*Comment(en)">
+					description = <"*Additional narrative about the imaging findings, not captured in other fields.(en)">
+				>
+			>
+		>
+	>
+	term_bindings = <
+		["SNOMED-CT"] = <
+			items = <
+				["at0.1"] = <[SNOMED-CT::53843000]>
+			>
+		>
+	>

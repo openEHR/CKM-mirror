@@ -32,16 +32,32 @@ description
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"BB749FF36B7F0B2E03E05195C1EEB2B6">
-		["build_uid"] = <"11259227-8aa5-4088-9008-d4eb15435f99">
+		["MD5-CAM-1.0.1"] = <"FCB72DE957EA4A694775C316C704BDA1">
+		["build_uid"] = <"a6cf3eeb-61a6-46e0-aa76-c5c385ef5c88">
 		["revision"] = <"0.0.1-alpha">
 	>
 
 definition
-	COMPOSITION[at0000] matches {	-- Therapeutic precautions
+	COMPOSITION[at0000] matches {    -- Therapeutic precautions
 		category matches {
 			DV_CODED_TEXT matches {
-				defining_code matches {[openehr::431]}
+				defining_code matches {
+					[openehr::431]
+				}
+			}
+		}
+		context matches {
+			EVENT_CONTEXT[at0001] matches {    -- Event Context
+				other_context matches {
+					ITEM_TREE[at0002] matches {    -- Item tree
+						items cardinality matches {0..*; unordered} matches {
+							allow_archetype CLUSTER[at0003] occurrences matches {0..*} matches {    -- Extension
+								include
+									archetype_id/value matches {/.*/}
+							}
+						}
+					}
+				}
 			}
 		}
 	}
@@ -54,6 +70,19 @@ ontology
 				["at0000"] = <
 					text = <"Therapeutic precautions">
 					description = <"Persistent data relating to issues that may influence or preclude the administration of one or more therapies or interventions.">
+				>
+				["at0001"] = <
+					text = <"Event Context">
+					description = <"">
+				>
+				["at0002"] = <
+					text = <"Item tree">
+					description = <"@ internal @">
+				>
+				["at0003"] = <
+					text = <"Extension">
+					description = <"Additional information required to extend the model with local content or to align with other reference models or formalisms.">
+					comment = <"For example: local information requirements; or additional metadata to align with FHIR.">
 				>
 			>
 		>
