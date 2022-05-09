@@ -98,7 +98,7 @@ Not to be used to record photographs or videos  within the health record. Use th
 
 Denne arketypen har blitt laget med fokus på svarrapportering av funn og tolkning en enkelt bildediagnostisk undersøkelse (tilsvarende en enkelt \"DICOM Study\"). Referanser til DICOM-relaterte attributter er inkludert, men fokuset er på representasjonen av en klinisk rapport fra en bildeundersøkelse og ikke på å representere DICOM-relaterte attributter som kan forventes i et radiologiinformasjonssystem (RIS/PACS). Spesifikke detaljer om DICOM-serien kan registreres ved å nøste arketypen CLUSTER.imaging_study_details i SLOT'et \"Detaljer om undersøkelsesserier\".
 
-Detaljerte funn som er gjort ved en bildediagnostisk undersøkelse som er rettet mot en spesifikk struktur eller region i kroppen, kan registreres ved å nøste CLUSTER.imaging_exam (Radiologisvar - definert organ/kroppsdel) eller en av de spesialiserte CLUSTER.imaging_exam arketypene i SLOT'et \"Strukturerte funn\" i denne arketypen. Det er tenkt at det over tid vil det bli utviklet slike spesialiseringer som hver for seg omhandler funn fra alle modaliteter.
+Detaljerte funn som er gjort ved en bildediagnostisk undersøkelse som er rettet mot en spesifikk struktur eller region i kroppen, kan registreres ved å nøste CLUSTER.imaging_exam (Bildediagnostisk undersøkelse - kroppsstruktur) eller en av de spesialiserte CLUSTER.imaging_exam arketypene i SLOT'et \"Strukturerte funn\" i denne arketypen. Det er tenkt at det over tid vil det bli utviklet slike spesialiseringer som hver for seg omhandler funn fra alle modaliteter.
 
 Hvis den bildediagnostiske undersøkelsen er en del av en mer kompleks prosedyre, som en kirurgisk operasjon som utføres under bildeveiledning, skal de radiologiske funn og observasjoner bli registrert i denne arketypen. Strukturerte detaljer om den kirurgiske prosedyren og administrasjon av medikasjon eller kontrast bør registreres i henholdsvis ACTION.procedure (Prosedyre) og/eller ACTION.medication (Legemiddelhåndtering). I dette tilfelle anbefales det at alle relaterte arketyper, som detaljer om prosedyren eller administrasjon av medikasjon/kontrast bør samles i det samme templatet.
 
@@ -162,8 +162,8 @@ RSNA.org: Proposed Standard Radiology Report Headings. Radiological Society of N
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"62039BCE94DBEC7F023ABB19CB5AE883">
-		["build_uid"] = <"9185c718-557c-4821-8da7-d934ab94277c">
+		["MD5-CAM-1.0.1"] = <"3000111A65330B728A9EA1D778051DAA">
+		["build_uid"] = <"fed687b6-4241-4869-8e9a-8f826dfad8a5">
 		["revision"] = <"0.0.1-alpha">
 	>
 
@@ -497,7 +497,7 @@ ontology
 				["at0020"] = <
 					text = <"Imaging diagnosis">
 					description = <"Single word, phrase or brief description representing the likely condition or diagnosis.">
-					comment = <"This data element has multiple occurrences to allow for more than one diagnoses. Coding with a terminology such as SNOMED CT is preferred, where possible. This data element should be considered mutually exclusive to 'Differential diagnoses' - only one of 'Differential diagnoses' OR 'Imaging diagnosis' should be present in the each Imaging examination result. Equivalent to DiagnosticReport.conclusionCode in FHIR.">
+					comment = <"This data element has multiple occurrences to allow for more than one differential diagnosis. Coding with a terminology such as SNOMED CT is preferred, where possible. This data element should be considered as mutually exclusive to \"Imaging differential diagnosis\", ie only either \"Imaging diagnosis\" or \"Imaging differential diagnosis\" in each instance of the archetype \"Imaging examination result.\" Equivalent to DiagnosticReport.conclusionCode in FHIR.">
 				>
 				["at0021"] = <
 					text = <"Overall impression">
@@ -590,7 +590,7 @@ ontology
 				["at0058"] = <
 					text = <"Imaging differential diagnosis">
 					description = <"Single word, phrase or brief description representing a possible condition or diagnosis.">
-					comment = <"This data element has multiple occurrences to allow for more than one differential diagnoses. Coding with a terminology such as SNOMED CT is preferred, where possible. This data element should be considered mutually exclusive to 'Imaging diagnosis' - only one of 'Differential diagnoses' OR 'Imaging diagnosis' should be present in each Imaging examination result.">
+					comment = <"This data element has multiple occurrences to allow for more than one differential diagnosis. Coding with a terminology such as SNOMED CT is preferred, where possible. This data element should be considered as mutually exclusive to \"Imaging diagnosis\", ie only either \"Imaging diagnosis\" or \"Imaging differential diagnosis\" in each instance of the archetype \"Imaging examination result.\"">
 				>
 				["at0059"] = <
 					text = <"Recommendation">
@@ -803,7 +803,7 @@ ontology
 				["at0020"] = <
 					text = <"Bildediagnostisk diagnose">
 					description = <"Enkeltord, setning eller kort beskrivelse som uttrykker en den sannsynlige tilstand eller diagnose.">
-					comment = <"Dette dataelementet er repeterbart for å tillate flere enn en diagnose. Det er anbefalt å bruke en terminologi dersom mulig, for eksempel SNOMED CT. Dataelementet bør være gjensidig utelukkende for \"Bildediagnostisk diffensialdiagnose\", bare ENTEN \"Bildediagnostisk differensialdiagnose\" ELLER \"Bildediagnostisk diagnose\" bør forekomme i hvert Bildediagnostisk svar. Tilsvarer DiagnosticReport.conclusionCode in FHIR.">
+					comment = <"Dette dataelementet er repeterbart for å tillate flere enn én diagnose. Det er anbefalt å bruke en terminologi dersom mulig, for eksempel SNOMED CT. Dette dataelementet bør oppfattes som gjensidig utelukkende til \"Bildediagnostisk differensialdiagnose\", altså bare enten \"Bildediagnostisk diagnose\" eller \"Bildediagnostisk differensialdiagnose\" i hver instans av arketypen \"Bildediagnostisk svar\". Tilsvarer DiagnosticReport.conclusionCode in FHIR.">
 				>
 				["at0021"] = <
 					text = <"Resymé">
@@ -880,7 +880,7 @@ ontology
 				>
 				["at0055"] = <
 					text = <"Kroppsdel">
-					description = <"Enkel beskrivelse av sted eller region på eller i kroppen som var målet for undersøkelsen.">
+					description = <"En beskrivelse av den anatomisk regionen, organet, eller organsystemet som var målet for undersøkelsen.">
 					comment = <"Hvis målområde er spesifisert av en kode i undersøkelsesnavnet, er dette feltet ikke nødvendig. Det er anbefalt å kode \"Kroppsdel\" med en terminologi, som SNOMED CT. Kroppsdelen er vanligvis ekvivalent til FHIR ImagingStudy.series.bodySite.">
 				>
 				["at0056"] = <
@@ -896,7 +896,7 @@ ontology
 				["at0058"] = <
 					text = <"Bildediagnostisk differensialdiagnose">
 					description = <"Enkeltord, setning eller kort beskrivelse som uttrykker en mulig tilstand eller diagnose.">
-					comment = <"Dette dataelementet er repeterbart for å tillate flere enn en differensialdiagnose. Det er anbefalt å bruke en terminologi dersom mulig, for eksempel SNOMED CT. Dataelementet bør være gjensidig utelukkende for \"Bildediagnostisk diagnose\", bare ENTEN \"Bildediagnostisk differensialdiagnose\" ELLER \"Bildediagnostisk diagnose\" bør forekomme i hvert Bildediagnostisk svar.">
+					comment = <"Dette dataelementet er repeterbart for å tillate flere enn én differensialdiagnose. Det er anbefalt å bruke en terminologi dersom mulig, for eksempel SNOMED CT. Dette dataelementet bør oppfattes som gjensidig utelukkende til \"Bildediagnostisk diagnose\", altså bare enten \"Bildediagnostisk diagnose\" eller \"Bildediagnostisk differensialdiagnose\" i hver instans av arketypen \"Bildediagnostisk svar\".">
 				>
 				["at0059"] = <
 					text = <"Anbefaling">
@@ -919,8 +919,8 @@ ontology
 					comment = <"Det anbefales å kode undersøkelseskvalitet med et verdi- eller kodesett, for eksempel \"Utmerket\", \"God\", \"Bra\", \"Dårlig\" og \"Ikke diagnostiserbar\", eller \"Adekvat\", \"Suboptimal\" og \"Inadekvat\".">
 				>
 				["at0065"] = <
-					text = <"Detaljer om undersøkelsesserier">
-					description = <"Detaljer om en bildediagnostisk serie som er inkludert i denne resultatrapporten.">
+					text = <"Detaljer om bildeserie/r">
+					description = <"Detaljer om en eller flere bildediagnostisk serier som er inkludert i denne resultatrapporten.">
 				>
 				["at0067"] = <
 					text = <"Detaljer om sammenlignende serier">
@@ -940,9 +940,9 @@ ontology
 					description = <"Dato og/eller tid \"Overordnet resultatstatus\" ble gitt. (Tidspunkt for siste statusendring).">
 				>
 				["at0072"] = <
-					text = <"Overordnet resultatstatus">
+					text = <"Status på undersøkelsesresultatet">
 					description = <"Den overordnede statusen for hele undersøkelsesresultatet.">
-					comment = <"Verdisetettet her er samordnet med FHIR Diagnostic report status, med unntak av koden\"Entered in error\" som bare er relevant i et meldingsorientert paradigme. Andre lokale koder eller termer kan brukes ved å bruke datatypen \"Fri eller kodet tekst\". I de fleste tilfellene er det bare passende å bruke en statuskode. Dataelementet er imidlertid åpent for flere forekomster for å understøtte bruksområdene der statuser for forskjellige aspekter av resultatet er delt opp i flere elementer. Et eksempel på dette er de norske standard svarrapport av medisinske tjenester v1.4 (HIS 80822:2014), der status for undersøkelsesresultat (Tjenestetype) og status/steg i arbeidsflyt håndteres separat.
+					comment = <"Verdisetettet her er samordnet med FHIR Diagnostic report status, med unntak av koden \"Entered in error\" som bare er relevant i et meldingsorientert paradigme. Andre lokale koder eller termer kan brukes ved å bruke datatypen \"Fri eller kodet tekst\". I de fleste tilfellene er det bare passende å bruke en statuskode. Dataelementet er imidlertid åpent for flere forekomster for å understøtte bruksområdene der statuser for forskjellige aspekter av resultatet er delt opp i flere elementer. Et eksempel på dette er de norske standard svarrapport av medisinske tjenester v1.4 (HIS 80822:2014), der status for undersøkelsesresultat (Tjenestetype) og status/steg i arbeidsflyt håndteres separat.
 
 Dette elementet tilsvarer FHIR Diagnostic report status.">
 				>
@@ -998,7 +998,7 @@ Dette elementet tilsvarer FHIR Diagnostic report status.">
 				>
 				["at0091"] = <
 					text = <"Modalitet">
-					description = <"Typen bildedannende utstyr som er brukt, prosess eller metode som opprinnelig innhentet eller produserte dataene som ble brukt til å lage bildene i studien.">
+					description = <"Typen bildedannende utstyr, prosess eller metode som opprinnelig innhentet eller produserte dataene som ble brukt til å lage bildene i studien.">
 					comment = <"For eksempel: \"Rtg\", \"CT\", \"Ultralyd\", \"UL\", \"MR\", \"Bentetthetsmåling\", \"Tomografi\", \"Mammografi\", \"Nukleærmedisin\", \"PET\", \"Angiografi\" og \"Fluoroskopi\". 
 Dette dataelementet kan være overflødig hvis modaliteten er tydelig representert i 'Undersøkelsesnavnet'. Alternativt kan det også være mulig å autofylle 'Modalitet' fra et kodet 'Undersøkelsesnavn'. Koding av 'Modalitet' med et verdisett anbefales. For eksempel er verdien i kodeverket \"DICOM CID 29 Acquisition Modality\". Vanligvis tilsvarer dette ImagingStudy.modality i FHIR og Modality (0008, 0060) i DICOM.">
 				>
@@ -1111,7 +1111,7 @@ Dette dataelementet kan være overflødig hvis modaliteten er tydelig represente
 				["at0020"] = <
 					text = <"Bildgebende Diagnose">
 					description = <"Eine einzelne Wortangabe, eine Phrase oder eine kurze Beschreibung, die einen wahrscheinlichen Zustand oder eine wahrscheinliche Diagnose darstellt.">
-					comment = <"*This data element has multiple occurrences to allow for more than one diagnoses. Coding with a terminology such as SNOMED CT is preferred, where possible. This data element should be considered mutually exclusive to 'Differential diagnoses' - only one of 'Differential diagnoses' OR 'Imaging diagnosis' should be present in the each Imaging examination result. Equivalent to DiagnosticReport.conclusionCode in FHIR. (en)">
+					comment = <"*This data element has multiple occurrences to allow for more than one differential diagnosis. Coding with a terminology such as SNOMED CT is preferred, where possible. This data element should be considered as mutually exclusive to \"Imaging differential diagnosis\", ie only either \"Imaging diagnosis\" or \"Imaging differential diagnosis\" in each instance of the archetype \"Imaging examination result.\" Equivalent to DiagnosticReport.conclusionCode in FHIR. (en)">
 				>
 				["at0021"] = <
 					text = <"Schlussfolgerung">
@@ -1204,7 +1204,7 @@ Dette dataelementet kan være overflødig hvis modaliteten er tydelig represente
 				["at0058"] = <
 					text = <"Bildgebende Differentialdiagnose">
 					description = <"Eine einzelne Wortangabe, eine Phrase oder eine kurze Beschreibung, die einen möglichen Zustand oder eine mögliche Diagnose darstellt.">
-					comment = <"*This data element has multiple occurrences to allow for more than one differential diagnoses. Coding with a terminology such as SNOMED CT is preferred, where possible. This data element should be considered mutually exclusive to 'Imaging diagnosis' - only one of 'Differential diagnoses' OR 'Imaging diagnosis' should be present in each Imaging examination result. (en)">
+					comment = <"*This data element has multiple occurrences to allow for more than one differential diagnosis. Coding with a terminology such as SNOMED CT is preferred, where possible. This data element should be considered as mutually exclusive to \"Imaging diagnosis\", ie only either \"Imaging diagnosis\" or \"Imaging differential diagnosis\" in each instance of the archetype \"Imaging examination result.\" (en)">
 				>
 				["at0059"] = <
 					text = <"Empfehlung">
@@ -1417,7 +1417,7 @@ Dette dataelementet kan være overflødig hvis modaliteten er tydelig represente
 				["at0020"] = <
 					text = <"Diagnos">
 					description = <"Enstaka ord, fras eller kort beskrivning som representerar det troliga tillståndet eller diagnosen.">
-					comment = <"*This data element has multiple occurrences to allow for more than one diagnoses. Coding with a terminology such as SNOMED CT is preferred, where possible. This data element should be considered mutually exclusive to 'Differential diagnoses' - only one of 'Differential diagnoses' OR 'Imaging diagnosis' should be present in the each Imaging examination result. Equivalent to DiagnosticReport.conclusionCode in FHIR. (en)">
+					comment = <"*This data element has multiple occurrences to allow for more than one differential diagnosis. Coding with a terminology such as SNOMED CT is preferred, where possible. This data element should be considered as mutually exclusive to \"Imaging differential diagnosis\", ie only either \"Imaging diagnosis\" or \"Imaging differential diagnosis\" in each instance of the archetype \"Imaging examination result.\" Equivalent to DiagnosticReport.conclusionCode in FHIR. (en)">
 				>
 				["at0021"] = <
 					text = <"Slutsats">
@@ -1512,7 +1512,7 @@ Dette dataelementet kan være overflødig hvis modaliteten er tydelig represente
 				["at0058"] = <
 					text = <"Differentialdiagnos">
 					description = <"Enstaka ord, fras eller kort beskrivning som representerar ett möjligt tillstånd eller en diagnos.">
-					comment = <"*This data element has multiple occurrences to allow for more than one differential diagnoses. Coding with a terminology such as SNOMED CT is preferred, where possible. This data element should be considered mutually exclusive to 'Imaging diagnosis' - only one of 'Differential diagnoses' OR 'Imaging diagnosis' should be present in each Imaging examination result. (en)">
+					comment = <"*This data element has multiple occurrences to allow for more than one differential diagnosis. Coding with a terminology such as SNOMED CT is preferred, where possible. This data element should be considered as mutually exclusive to \"Imaging diagnosis\", ie only either \"Imaging diagnosis\" or \"Imaging differential diagnosis\" in each instance of the archetype \"Imaging examination result.\" (en)">
 				>
 				["at0059"] = <
 					text = <"Rekommendation">
