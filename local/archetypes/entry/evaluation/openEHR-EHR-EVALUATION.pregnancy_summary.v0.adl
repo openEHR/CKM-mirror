@@ -65,6 +65,7 @@ Brukes ikke for å dokumentere detaljert informasjon om kvinnens menstruasjonssy
 Brukes ikke for å dokumentere detaljert informasjon om spedbarns måltider/mating - en seperat arketype vil bli brukt til dette formålet.
 
 Brukes ikke for å dokumentere en generell sammenfattet menstruasjonshistorikk eller menstruasjonsdagbok - seperate arketyper vil bli brukt til dette formålet.">
+			copyright = <"*© openEHR Foundation (en)">
 		>
 		["pt-br"] = <
 			language = <[ISO_639-1::pt-br]>
@@ -90,6 +91,7 @@ Não deve ser usado para gravar informações detalhadas sobre o ciclo menstrual
 Não deve ser usado para registrar informações detalhadas sobre a alimentação infantil - um arquétipo separado deverá ser utilizado.
 
 Não deve ser usado para registrar um resumo ou um diário da história menstrual (geral ou diária) - um arquétipo separado deverá ser utilizado.">
+			copyright = <"*© openEHR Foundation (en)">
 		>
 		["en"] = <
 			language = <[ISO_639-1::en]>
@@ -115,7 +117,7 @@ Not to be used to record detailed information about a woman's Menstrual Cycle - 
 Not to be used to record detailed information about infant feeding - a separate archetype will be used.
 
 Not to be used to record a general menstrual history summary or diary - separate archetypes will be used.">
-			copyright = <"© openEHR Foundation, National E-Health Transition Authority">
+			copyright = <"© openEHR Foundation">
 		>
 		["es-co"] = <
 			language = <[ISO_639-1::es-co]>
@@ -142,6 +144,7 @@ No debe utilizarse para registrar información detallada acerca de la alimentaci
 
 No debe utilizarse para registrar un resumen general de la historia menstrual o un diario - se utilizarán arquetipos distintos.
 ">
+			copyright = <"*© openEHR Foundation (en)">
 		>
 	>
 	lifecycle_state = <"in_development">
@@ -160,8 +163,8 @@ Queensland Government, Department of Health. Pregnancy Health Record. SW071 - v1
 		["original_namespace"] = <"openEHR Foundation">
 		["original_publisher"] = <"org.openehr">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"B22FD815241DBC29154FC3A8C539D0CE">
-		["build_uid"] = <"318c28ed-1d48-40ae-8a7f-e2b58ef5619b">
+		["MD5-CAM-1.0.1"] = <"3BED19DCE29584318031705070002ECB">
+		["build_uid"] = <"2c72c911-454f-4fdd-a69c-644c2ae5597b">
 		["revision"] = <"0.0.1-alpha">
 	>
 
@@ -283,9 +286,13 @@ definition
 							>
 						}
 					}
+					allow_archetype CLUSTER[at0172] occurrences matches {0..*} matches {    -- Place of outcome
+						include
+							archetype_id/value matches {/openEHR-EHR-CLUSTER\.address(-[a-zA-Z0-9_]+)*\.v1/}
+					}
 					allow_archetype CLUSTER[at0161] occurrences matches {0..*} matches {    -- Additional details
 						include
-							archetype_id/value matches {/.*/}
+							archetype_id/value matches {/openEHR-EHR-CLUSTER\.exam-placenta(-[a-zA-Z0-9_]+)*\.v0/}
 					}
 					CLUSTER[at0065] occurrences matches {0..*} matches {    -- Maternal complication
 						items cardinality matches {1..*; unordered} matches {
@@ -306,7 +313,7 @@ definition
 							}
 						}
 					}
-					CLUSTER[at0028] occurrences matches {0..*} matches {    -- Per newborn
+					CLUSTER[at0028] occurrences matches {0..*} matches {    -- Per infant
 						items cardinality matches {1..*; unordered} matches {
 							ELEMENT[at0036] occurrences matches {0..1} matches {    -- Label/name
 								value matches {
@@ -335,9 +342,9 @@ definition
 									}
 								}
 							}
-							allow_archetype CLUSTER[at0160] occurrences matches {0..*} matches {    -- Birth summary
+							allow_archetype CLUSTER[at0160] occurrences matches {0..*} matches {    -- Birth detail
 								include
-									archetype_id/value matches {/openEHR-EHR-CLUSTER\.birth_summary(-[a-zA-Z0-9_]+)*\.v0/}
+									archetype_id/value matches {/openEHR-EHR-CLUSTER\.birth_detail(-[a-zA-Z0-9_]+)*\.v0/}
 							}
 							ELEMENT[at0045] occurrences matches {0..1} matches {    -- Presenting part
 								value matches {
@@ -389,6 +396,33 @@ definition
 							ELEMENT[at0109] occurrences matches {0..1} matches {    -- Feeding
 								value matches {
 									DV_TEXT matches {*}
+								}
+							}
+							ELEMENT[at0165] occurrences matches {0..1} matches {    -- Neonatal outcome
+								value matches {
+									DV_TEXT matches {*}
+									DV_CODED_TEXT matches {
+										defining_code matches {
+											[local::
+											at0168,    -- Live
+											at0169]    -- Deceased
+										}
+									}
+								}
+							}
+							ELEMENT[at0170] occurrences matches {0..1} matches {    -- Neonatal summary
+								value matches {
+									DV_TEXT matches {*}
+								}
+							}
+							ELEMENT[at0167] occurrences matches {0..1} matches {    -- Date/time of neonatal death
+								value matches {
+									DV_DATE_TIME matches {*}
+								}
+							}
+							ELEMENT[at0166] occurrences matches {0..1} matches {    -- Age at neonatal death
+								value matches {
+									DV_DURATION matches {*}
 								}
 							}
 							CLUSTER[at0061] occurrences matches {0..*} matches {    -- Newborn complication
@@ -471,38 +505,38 @@ ontology
 					comment = <"Coding of the 'Augmentation Method' with a terminology is desirable, where possible.">
 				>
 				["at0028"] = <
-					text = <"Per newborn">
-					description = <"Information about an single newborn infant.">
+					text = <"Per infant">
+					description = <"Information about a single fetus or newborn infant.">
 					comment = <"These data elements may be used to record details about live births or stillborn infants.">
 				>
 				["at0029"] = <
 					text = <"Date/time of delivery">
-					description = <"Date and time of delivery for the newborn.">
+					description = <"Date and time of delivery for the infant.">
 					comment = <"This data element may be used to populate the newborn's health record using the 'Date of birth' data element within the EVALUATION.birth_details archetype.">
 				>
 				["at0036"] = <
 					text = <"Label/name">
-					description = <"Identification of the newborn.">
+					description = <"Identification of the infant.">
 					comment = <"Identification might be by the name of the neonate or a label given to a non-viable fetus.">
 				>
 				["at0037"] = <
 					text = <"Assigned sex">
-					description = <"Sex of the newborn assigned at, or near delivery, by direct observation of external genitalia.">
+					description = <"Sex of the infant  by direct observation of external genitalia.">
 					comment = <"Coding with a terminology is preferred, where possible. For example: Male; female; intersex; indeterminate. Indeterminate is to be used in the situation where the infant has ambiguous external genitalia. This data element may be used to populate the newborn health record using the 'Sex assigned at birth' data element within the EVALUATION.gender archetype.">
 				>
 				["at0038"] = <
 					text = <"Weight">
-					description = <"Weight of the newborn at delivery.">
+					description = <"Weight of the infant at delivery.">
 					comment = <"This data element may be used to populate the newborn health record using both the 'Weight' data element and 'Birth' EVENT within the OBSERVATION.body_weight archetype.">
 				>
 				["at0045"] = <
 					text = <"Presenting part">
-					description = <"Presenting part of the newborn at delivery.">
+					description = <"Presenting part of the infant at delivery.">
 					comment = <"The clinical context for recording this data element is only presentation at delivery, not at any other phase of labour.">
 				>
 				["at0046"] = <
 					text = <"Vertex">
-					description = <"The vertext is the presenting part.">
+					description = <"The vertex is the presenting part.">
 				>
 				["at0047"] = <
 					text = <"Breech">
@@ -600,7 +634,7 @@ ontology
 				>
 				["at0109"] = <
 					text = <"Feeding">
-					description = <"Narrative description about feeding of the newborn.">
+					description = <"Narrative description about feeding of the infant.">
 				>
 				["at0112"] = <
 					text = <"No labour">
@@ -636,7 +670,7 @@ ontology
 				>
 				["at0149"] = <
 					text = <"Position">
-					description = <"Position of the newborn at delivery.">
+					description = <"Position of the infant at delivery.">
 				>
 				["at0150"] = <
 					text = <"Left occiput anterior/transverse">
@@ -681,7 +715,7 @@ ontology
 					comment = <"Also known as 'Gestation at birth' for pregnancies resulting in viable outcomes.">
 				>
 				["at0160"] = <
-					text = <"Birth summary">
+					text = <"Birth detail">
 					description = <"A subset of persistent or summary information about the pregnancy and birth of an infant, selected for utility of use within both the maternal and infant health records.">
 				>
 				["at0161"] = <
@@ -691,13 +725,42 @@ ontology
 				>
 				["at0163"] = <
 					text = <"Delivery outcome">
-					description = <"Description of the outcome delivery per newborn infant.">
+					description = <"Description of the delivery outcome delivery per infant.">
 					comment = <"Coding of the 'Delivery outcome' with an external terminology is recommended. For example: 'Live birth'; 'Stillbirth'; or 'Neonatal death'. This data element is redundant if 'Pregnancy outcome' has been recorded. Please note - in some existing situations the possible value sets for 'Delivery outcome' and 'Pregnancy outcome' may overlap, and it may be necessary for the user interface in an application to present a merged value set.">
 				>
 				["at0164"] = <
 					text = <"Extension">
 					description = <"Additional information required to capture local content or to align with other reference models/formalisms.">
 					comment = <"For example: local information requirements or additional metadata to align with FHIR. ">
+				>
+				["at0165"] = <
+					text = <"Neonatal outcome">
+					description = <"Description of the outcome at the end of the neonatal period per newborn infant.">
+				>
+				["at0166"] = <
+					text = <"Age at neonatal death">
+					description = <"The age of the infant if they died during the neonatal  period.">
+				>
+				["at0167"] = <
+					text = <"Date/time of neonatal death">
+					description = <"">
+				>
+				["at0168"] = <
+					text = <"Live">
+					description = <"The infant survived the neonatal period.">
+				>
+				["at0169"] = <
+					text = <"Deceased">
+					description = <"The infant did not survive the neonatal period.">
+				>
+				["at0170"] = <
+					text = <"Neonatal summary">
+					description = <"Narrative description about issues, concerns about the infant or events occurring during the neonatal period.">
+				>
+				["at0172"] = <
+					text = <"Place of outcome">
+					description = <"Place or address where the pregnancy was delivered or an other outcome of the pregnancy was treated or managed.">
+					comment = <"For example: this data element will be renamed to 'Place of delivery' for a pregnancy that ends in the delivery of one or more newborns.">
 				>
 			>
 		>
@@ -737,38 +800,38 @@ ontology
 					comment = <"Codificação do \"Condução do trabalho de parto\" com uma terminologia é desejável, sempre que possível.">
 				>
 				["at0028"] = <
-					text = <"*Per newborn (en)">
-					description = <"*Information about an single newborn infant. (en)">
+					text = <"*Per infant (en)">
+					description = <"*Information about a single fetus or newborn infant. (en)">
 					comment = <"*These data elements may be used to record details about live births or stillborn infants. (en)">
 				>
 				["at0029"] = <
 					text = <"*Date/time of delivery (en)">
-					description = <"*Date and time of delivery for the newborn. (en)">
+					description = <"*Date and time of delivery for the infant. (en)">
 					comment = <"*This data element may be used to populate the newborn's health record using the 'Date of birth' data element within the EVALUATION.birth_details archetype. (en)">
 				>
 				["at0036"] = <
 					text = <"*Label/name (en)">
-					description = <"*Identification of the newborn. (en)">
+					description = <"*Identification of the infant. (en)">
 					comment = <"*Identification might be by the name of the neonate or a label given to a non-viable fetus. (en)">
 				>
 				["at0037"] = <
 					text = <"*Assigned sex (en)">
-					description = <"*Sex of the newborn assigned at, or near delivery, by direct observation of external genitalia. (en)">
+					description = <"*Sex of the infant  by direct observation of external genitalia. (en)">
 					comment = <"*Coding with a terminology is preferred, where possible. For example: Male; female; intersex; indeterminate. Indeterminate is to be used in the situation where the infant has ambiguous external genitalia. This data element may be used to populate the newborn health record using the 'Sex assigned at birth' data element within the EVALUATION.gender archetype. (en)">
 				>
 				["at0038"] = <
 					text = <"*Weight (en)">
-					description = <"*Weight of the newborn at delivery. (en)">
+					description = <"*Weight of the infant at delivery. (en)">
 					comment = <"*This data element may be used to populate the newborn health record using both the 'Weight' data element and 'Birth' EVENT within the OBSERVATION.body_weight archetype. (en)">
 				>
 				["at0045"] = <
 					text = <"*Presenting part(en)">
-					description = <"*Presenting part of the newborn at delivery. (en)">
+					description = <"*Presenting part of the infant at delivery. (en)">
 					comment = <"*The clinical context for recording this data element is only presentation at delivery, not at any other phase of labour. (en)">
 				>
 				["at0046"] = <
 					text = <"Vértice">
-					description = <"O vértice é a parte que se apresenta.">
+					description = <"*The vertex is the presenting part. (en)">
 				>
 				["at0047"] = <
 					text = <"Nádegas">
@@ -866,7 +929,7 @@ ontology
 				>
 				["at0109"] = <
 					text = <"Alimentação">
-					description = <"*Narrative description about feeding of the newborn. (en)">
+					description = <"*Narrative description about feeding of the infant. (en)">
 				>
 				["at0112"] = <
 					text = <"Não há trabalho de parto">
@@ -902,7 +965,7 @@ ontology
 				>
 				["at0149"] = <
 					text = <"*Position (en)">
-					description = <"*Position of the newborn at delivery. (en)">
+					description = <"*Position of the infant at delivery. (en)">
 				>
 				["at0150"] = <
 					text = <"*Left occiput anterior/transverse (en)">
@@ -947,7 +1010,7 @@ ontology
 					comment = <"*Also known as 'Gestation at birth' for pregnancies resulting in viable outcomes. (en)">
 				>
 				["at0160"] = <
-					text = <"*Birth summary (en)">
+					text = <"*Birth detail (en)">
 					description = <"*A subset of persistent or summary information about the pregnancy and birth of an infant, selected for utility of use within both the maternal and infant health records. (en)">
 				>
 				["at0161"] = <
@@ -957,13 +1020,42 @@ ontology
 				>
 				["at0163"] = <
 					text = <"*Delivery outcome (en)">
-					description = <"*Description of the outcome delivery per newborn infant. (en)">
+					description = <"*Description of the delivery outcome delivery per infant. (en)">
 					comment = <"*Coding of the 'Delivery outcome' with an external terminology is recommended. For example: 'Live birth'; 'Stillbirth'; or 'Neonatal death'. This data element is redundant if 'Pregnancy outcome' has been recorded. Please note - in some existing situations the possible value sets for 'Delivery outcome' and 'Pregnancy outcome' may overlap, and it may be necessary for the user interface in an application to present a merged value set. (en)">
 				>
 				["at0164"] = <
 					text = <"*Extension (en)">
 					description = <"*Additional information required to capture local content or to align with other reference models/formalisms. (en)">
 					comment = <"*For example: local information requirements or additional metadata to align with FHIR.  (en)">
+				>
+				["at0165"] = <
+					text = <"*Neonatal outcome (en)">
+					description = <"*Description of the outcome at the end of the neonatal period per newborn infant. (en)">
+				>
+				["at0166"] = <
+					text = <"*Age at neonatal death (en)">
+					description = <"*The age of the infant if they died during the neonatal  period. (en)">
+				>
+				["at0167"] = <
+					text = <"*Date/time of neonatal death (en)">
+					description = <"">
+				>
+				["at0168"] = <
+					text = <"*Live (en)">
+					description = <"*The infant survived the neonatal period. (en)">
+				>
+				["at0169"] = <
+					text = <"*Deceased (en)">
+					description = <"*The infant did not survive the neonatal period. (en)">
+				>
+				["at0170"] = <
+					text = <"*Neonatal summary (en)">
+					description = <"*Narrative description about issues, concerns about the infant or events occurring during the neonatal period. (en)">
+				>
+				["at0172"] = <
+					text = <"*Place of outcome (en)">
+					description = <"*Place or address where the pregnancy was delivered or an other outcome of the pregnancy was treated or managed. (en)">
+					comment = <"*For example: this data element will be renamed to 'Place of delivery' for a pregnancy that ends in the delivery of one or more newborns. (en)">
 				>
 			>
 		>
@@ -1003,38 +1095,38 @@ ontology
 					comment = <"Siempre que sea posible, Se recomienda el uso de una terminología para codificar el Método de aumento del parto .">
 				>
 				["at0028"] = <
-					text = <"*Per newborn (en)">
-					description = <"*Information about an single newborn infant. (en)">
+					text = <"*Per infant (en)">
+					description = <"*Information about a single fetus or newborn infant. (en)">
 					comment = <"*These data elements may be used to record details about live births or stillborn infants. (en)">
 				>
 				["at0029"] = <
 					text = <"*Date/time of delivery (en)">
-					description = <"*Date and time of delivery for the newborn. (en)">
+					description = <"*Date and time of delivery for the infant. (en)">
 					comment = <"*This data element may be used to populate the newborn's health record using the 'Date of birth' data element within the EVALUATION.birth_details archetype. (en)">
 				>
 				["at0036"] = <
 					text = <"*Label/name (en)">
-					description = <"*Identification of the newborn. (en)">
+					description = <"*Identification of the infant. (en)">
 					comment = <"*Identification might be by the name of the neonate or a label given to a non-viable fetus. (en)">
 				>
 				["at0037"] = <
 					text = <"*Assigned sex (en)">
-					description = <"*Sex of the newborn assigned at, or near delivery, by direct observation of external genitalia. (en)">
+					description = <"*Sex of the infant  by direct observation of external genitalia. (en)">
 					comment = <"*Coding with a terminology is preferred, where possible. For example: Male; female; intersex; indeterminate. Indeterminate is to be used in the situation where the infant has ambiguous external genitalia. This data element may be used to populate the newborn health record using the 'Sex assigned at birth' data element within the EVALUATION.gender archetype. (en)">
 				>
 				["at0038"] = <
 					text = <"*Weight (en)">
-					description = <"*Weight of the newborn at delivery. (en)">
+					description = <"*Weight of the infant at delivery. (en)">
 					comment = <"*This data element may be used to populate the newborn health record using both the 'Weight' data element and 'Birth' EVENT within the OBSERVATION.body_weight archetype. (en)">
 				>
 				["at0045"] = <
 					text = <"*Presenting part(en)">
-					description = <"*Presenting part of the newborn at delivery. (en)">
+					description = <"*Presenting part of the infant at delivery. (en)">
 					comment = <"*The clinical context for recording this data element is only presentation at delivery, not at any other phase of labour. (en)">
 				>
 				["at0046"] = <
 					text = <"Vertical">
-					description = <"Presentacion Vertical">
+					description = <"*The vertex is the presenting part. (en)">
 				>
 				["at0047"] = <
 					text = <"Nalgas">
@@ -1132,7 +1224,7 @@ ontology
 				>
 				["at0109"] = <
 					text = <"Alimentación">
-					description = <"*Narrative description about feeding of the newborn. (en)">
+					description = <"*Narrative description about feeding of the infant. (en)">
 				>
 				["at0112"] = <
 					text = <"No trabajo de PArto">
@@ -1168,7 +1260,7 @@ ontology
 				>
 				["at0149"] = <
 					text = <"*Position (en)">
-					description = <"*Position of the newborn at delivery. (en)">
+					description = <"*Position of the infant at delivery. (en)">
 				>
 				["at0150"] = <
 					text = <"*Left occiput anterior/transverse (en)">
@@ -1213,7 +1305,7 @@ ontology
 					comment = <"*Also known as 'Gestation at birth' for pregnancies resulting in viable outcomes. (en)">
 				>
 				["at0160"] = <
-					text = <"*Birth summary (en)">
+					text = <"*Birth detail (en)">
 					description = <"*A subset of persistent or summary information about the pregnancy and birth of an infant, selected for utility of use within both the maternal and infant health records. (en)">
 				>
 				["at0161"] = <
@@ -1223,13 +1315,42 @@ ontology
 				>
 				["at0163"] = <
 					text = <"*Delivery outcome (en)">
-					description = <"*Description of the outcome delivery per newborn infant. (en)">
+					description = <"*Description of the delivery outcome delivery per infant. (en)">
 					comment = <"*Coding of the 'Delivery outcome' with an external terminology is recommended. For example: 'Live birth'; 'Stillbirth'; or 'Neonatal death'. This data element is redundant if 'Pregnancy outcome' has been recorded. Please note - in some existing situations the possible value sets for 'Delivery outcome' and 'Pregnancy outcome' may overlap, and it may be necessary for the user interface in an application to present a merged value set. (en)">
 				>
 				["at0164"] = <
 					text = <"*Extension (en)">
 					description = <"*Additional information required to capture local content or to align with other reference models/formalisms. (en)">
 					comment = <"*For example: local information requirements or additional metadata to align with FHIR.  (en)">
+				>
+				["at0165"] = <
+					text = <"*Neonatal outcome (en)">
+					description = <"*Description of the outcome at the end of the neonatal period per newborn infant. (en)">
+				>
+				["at0166"] = <
+					text = <"*Age at neonatal death (en)">
+					description = <"*The age of the infant if they died during the neonatal  period. (en)">
+				>
+				["at0167"] = <
+					text = <"*Date/time of neonatal death (en)">
+					description = <"">
+				>
+				["at0168"] = <
+					text = <"*Live (en)">
+					description = <"*The infant survived the neonatal period. (en)">
+				>
+				["at0169"] = <
+					text = <"*Deceased (en)">
+					description = <"*The infant did not survive the neonatal period. (en)">
+				>
+				["at0170"] = <
+					text = <"*Neonatal summary (en)">
+					description = <"*Narrative description about issues, concerns about the infant or events occurring during the neonatal period. (en)">
+				>
+				["at0172"] = <
+					text = <"*Place of outcome (en)">
+					description = <"*Place or address where the pregnancy was delivered or an other outcome of the pregnancy was treated or managed. (en)">
+					comment = <"*For example: this data element will be renamed to 'Place of delivery' for a pregnancy that ends in the delivery of one or more newborns. (en)">
 				>
 			>
 		>
@@ -1269,38 +1390,38 @@ ontology
 					comment = <"Koding av \"Riestimmulerende metode\" med en ønsket terminologi, hvor det er mulig.">
 				>
 				["at0028"] = <
-					text = <"Per nyfødt">
-					description = <"Informasjon om et single nyfødt barn.">
+					text = <"*Per infant (en)">
+					description = <"*Information about a single fetus or newborn infant. (en)">
 					comment = <"Disse dataelementene kan brukes til å registrere detaljer om levedefødte eller dødfødte barn.">
 				>
 				["at0029"] = <
 					text = <"Fødselstidspunkt">
-					description = <"Dato og tid for fødselen.">
+					description = <"*Date and time of delivery for the infant. (en)">
 					comment = <"Dette dataelementet kan bli brukt til å befolke den nyfødtes helsejournal ved å bruke dataelementet \"Fødselsdato\" i arketypen EVALUATION.birth_details (Fødselsdetaljer).">
 				>
 				["at0036"] = <
 					text = <"Navn (label)">
-					description = <"Identifikasjonen til den nyfødte.">
+					description = <"*Identification of the infant. (en)">
 					comment = <"Identifikasjonen kan være navnet til det nyfødte barnet, eller en type identifikasjon gitt til ikke levedyktige foster.">
 				>
 				["at0037"] = <
 					text = <"Tilordnet kjønn">
-					description = <"Kjønnet til den nyfødte tilordnet ved eller tett opptil fødsel, ved direkte observasjon av ytre genetalia.">
+					description = <"*Sex of the infant  by direct observation of external genitalia. (en)">
 					comment = <"Kodet med en terminologi er foretrukket, om det er mulig. For eksemplel: Gutt, Jente, Uavklart kjønn. Uavklart kjønn brukes når det ikke er mulig å avgjøre om det er en gutt eller en jente ved å undersøke de ytre kjønnsorganene. Dette dataelementet kan bli brukt til å befolke den nyfødtes helsejournal ved å bruke dataelementet \"Tilordnet kjønn ved fødsel\" i arketypen EVALUATION.gender (Kjønn).">
 				>
 				["at0038"] = <
 					text = <"Vekt">
-					description = <"Fødselsvekten til den nyøfdte.">
+					description = <"*Weight of the infant at delivery. (en)">
 					comment = <"Dette dataelementet kan bli brukt til å befolke den nyfødtes helsejournal ved å bruke dataelementet \"Vekt\" og \"Fødsel\" Hendelse i arketypen EVALUATION.body_weight (Kroppsvekt).">
 				>
 				["at0045"] = <
 					text = <"Ledende del">
-					description = <"Ledende del ved forløsning av barnet.">
+					description = <"*Presenting part of the infant at delivery. (en)">
 					comment = <"Den kliniske konteksten for å registrere dette dataelementet er kun ved forløsning, ikke ved andre tidspunkt i fødselsforløpet.">
 				>
 				["at0046"] = <
 					text = <"Hodet">
-					description = <"Ledende del er hodet.">
+					description = <"*The vertex is the presenting part. (en)">
 				>
 				["at0047"] = <
 					text = <"Sete">
@@ -1398,7 +1519,7 @@ ontology
 				>
 				["at0109"] = <
 					text = <"Ernæring">
-					description = <"Fritekstbeskrivelse av det nyfødte barnets inntak av mat.">
+					description = <"*Narrative description about feeding of the infant. (en)">
 				>
 				["at0112"] = <
 					text = <"Ingen fødsel">
@@ -1434,7 +1555,7 @@ ontology
 				>
 				["at0149"] = <
 					text = <"Leie">
-					description = <"Leie til barnet ved fødsel.">
+					description = <"*Position of the infant at delivery. (en)">
 				>
 				["at0150"] = <
 					text = <"Venstre occiput anterior/transvers">
@@ -1482,7 +1603,7 @@ ontology
 					comment = <"Også kjent som \"Gestasjonsalder ved fødsel\" for svangerskap som ender i fødsel.">
 				>
 				["at0160"] = <
-					text = <"Fødselssammendrag">
+					text = <"*Birth detail (en)">
 					description = <"En valgt undergruppe av vedvarende eller oppsummerende informasjon om svangerskapet og fødselen til et spedbarn for bruk i både den maternelle og spedbarnets helsejournal.">
 				>
 				["at0161"] = <
@@ -1492,13 +1613,42 @@ ontology
 				>
 				["at0163"] = <
 					text = <"Fødselsutfall">
-					description = <"Beskrivelse av fødselsutfallet per nyfødt barn.">
+					description = <"*Description of the delivery outcome delivery per infant. (en)">
 					comment = <"Det er anbefalt å kode \"Fødselsutfall\" med en ekstern en terminologi. For eksempel: \"Levende født\", \"Dødfødsel\", \"Neonatal død\". Dette dataelementet er overflødig dersom \"Graviditetsutfall\" har blitt registrert. Vær oppmerksom på - i noen situasjoner kan de mulige verdisettene for 'Graviditetsutfall' og 'Fødselsutfall' overlappe, og det kan være nødvendig for brukergrensesnittet å presentere et sammenslått verdisett i en applikasjon.">
 				>
 				["at0164"] = <
 					text = <"Tilleggsinformasjon">
 					description = <"Ytterligere informasjon som trengs for å kunne registrere lokalt definert innhold eller for å tilpasse til andre referansemodeller/formalismer.">
 					comment = <"For eksempel lokale informasjonsbehov eller ytterligere metadata for å kunne tilpasse til tilsvarende konsepter i FHIR.">
+				>
+				["at0165"] = <
+					text = <"*Neonatal outcome (en)">
+					description = <"*Description of the outcome at the end of the neonatal period per newborn infant. (en)">
+				>
+				["at0166"] = <
+					text = <"*Age at neonatal death (en)">
+					description = <"*The age of the infant if they died during the neonatal  period. (en)">
+				>
+				["at0167"] = <
+					text = <"*Date/time of neonatal death (en)">
+					description = <"">
+				>
+				["at0168"] = <
+					text = <"*Live (en)">
+					description = <"*The infant survived the neonatal period. (en)">
+				>
+				["at0169"] = <
+					text = <"*Deceased (en)">
+					description = <"*The infant did not survive the neonatal period. (en)">
+				>
+				["at0170"] = <
+					text = <"*Neonatal summary (en)">
+					description = <"*Narrative description about issues, concerns about the infant or events occurring during the neonatal period. (en)">
+				>
+				["at0172"] = <
+					text = <"*Place of outcome (en)">
+					description = <"*Place or address where the pregnancy was delivered or an other outcome of the pregnancy was treated or managed. (en)">
+					comment = <"*For example: this data element will be renamed to 'Place of delivery' for a pregnancy that ends in the delivery of one or more newborns. (en)">
 				>
 			>
 		>
