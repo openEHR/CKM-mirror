@@ -30,8 +30,8 @@ description
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"CACE76CB6CD95523A1BD062BE8EEB999">
-		["build_uid"] = <"b3803285-01f5-464e-a38d-d9939b58d2c8">
+		["MD5-CAM-1.0.1"] = <"185C0C51BDDE9D2DD821DCFDAA2FE107">
+		["build_uid"] = <"78c176e2-24b5-4a3f-8a9f-1713d99807a3">
 		["revision"] = <"0.0.1-alpha">
 	>
 
@@ -40,7 +40,7 @@ definition
 		data matches {
 			ITEM_TREE[at0001] matches {    -- Item tree
 				items cardinality matches {0..*; unordered} matches {
-					ELEMENT[at0004] occurrences matches {0..1} matches {    -- Date of birth
+					ELEMENT[at0004] occurrences matches {0..1} matches {    -- Date/time of birth (DOB)
 						value matches {
 							DV_DATE matches {*}
 						}
@@ -73,9 +73,18 @@ definition
 							DV_TEXT matches {*}
 						}
 					}
-					allow_archetype CLUSTER[at0008] occurrences matches {0..*} matches {    -- Birth detail
+					allow_archetype CLUSTER[at0008] occurrences matches {0..*} matches {    -- Birth details
 						include
 							archetype_id/value matches {/openEHR-EHR-CLUSTER\.birth_detail(-[a-zA-Z0-9_]+)*\.v0/}
+					}
+					allow_archetype CLUSTER[at0013] occurrences matches {0..*} matches {    -- Additional details
+						include
+							archetype_id/value matches {/.*/}
+					}
+					ELEMENT[at0014] occurrences matches {0..1} matches {    -- Comment
+						value matches {
+							DV_TEXT matches {*}
+						}
 					}
 				}
 			}
@@ -96,7 +105,6 @@ definition
 			}
 		}
 	}
-
 
 
 ontology
@@ -120,7 +128,7 @@ ontology
 					description = <"Additional details about possible alternative dates of birth.">
 				>
 				["at0004"] = <
-					text = <"Date of birth">
+					text = <"Date/time of birth (DOB)">
 					description = <"The date/time of birth of the individual.">
 					comment = <"May also be used to record the assumed or agreed date/time of birth for operational purposes, if the actual date/time is not formally recorded. Possible alternatives for the date/time of birth of the individual can be recorded using the CLUSTER.DOB_alternative archetype 'Date of birth details' SLOT.">
 				>
@@ -140,7 +148,7 @@ ontology
 					comment = <"Coding of the 'birth plurality' term is recommended. For example: singleton; twins; triplets; or quadruplets.The definition of 'stillbirth' may vary in different locations. ">
 				>
 				["at0008"] = <
-					text = <"Birth detail">
+					text = <"Birth details">
 					description = <"A subset of persistent or summary information about the pregnancy and birth of an infant, selected for utility of use within both the maternal and infant health records.">
 				>
 				["at0009"] = <
@@ -149,7 +157,7 @@ ontology
 				>
 				["at0010"] = <
 					text = <"Last updated">
-					description = <"The date/time the birth details were last updated.">
+					description = <"The date when the birth summary was last updated.">
 				>
 				["at0011"] = <
 					text = <"Extension">
@@ -159,6 +167,14 @@ ontology
 					text = <"Place of birth">
 					description = <"Simple representation of the place of birth.">
 					comment = <"This data element provides the opportunity for simple detail about the place of birth, such as the city, region, town, or suburb within the identified 'Country of birth'. For example: Kingston (Jamaica); Manhattan (USA); or Box Hill (Australia).">
+				>
+				["at0013"] = <
+					text = <"Additional details">
+					description = <"Additional structured details related to the birth.">
+				>
+				["at0014"] = <
+					text = <"Comment">
+					description = <"Additional narrative about the birth not captured in other fields.">
 				>
 			>
 		>
