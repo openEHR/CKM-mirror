@@ -61,8 +61,8 @@ US Standard Certificate of Death [Internet]. Atlanta; Centre for Disease Control
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"BFA99B2488EA0C386BB96946369D7B68">
-		["build_uid"] = <"a95e6a48-108d-4a8d-aada-6acecb43efbb">
+		["MD5-CAM-1.0.1"] = <"C4F55AC2763C4A082D162D29B1EF9510">
+		["build_uid"] = <"c927cc6d-4f0c-4bc3-8de0-6fe4f17bb83b">
 		["revision"] = <"0.0.1-alpha">
 	>
 
@@ -71,11 +71,15 @@ definition
 		data matches {
 			ITEM_TREE[at0001] matches {    -- Item tree
 				items cardinality matches {0..*; unordered} matches {
-					ELEMENT[at0092] occurrences matches {0..1} matches {    -- Administrative date/time of death
+					ELEMENT[at0092] occurrences matches {0..1} matches {    -- Date/time of death
 						value matches {
 							DV_DATE_TIME matches {*}
 							DV_INTERVAL<DV_DATE_TIME> matches {*}
 						}
+					}
+					allow_archetype CLUSTER[at0104] occurrences matches {0..*} matches {    -- DOD alternatives
+						include
+							archetype_id/value matches {/openEHR-EHR-CLUSTER\.dod_alternative\.v0/}
 					}
 					ELEMENT[at0010] occurrences matches {0..1} matches {    -- Manner of death
 						value matches {
@@ -99,14 +103,14 @@ definition
 							DV_TEXT matches {*}
 						}
 					}
-					allow_archetype CLUSTER[at0100] occurrences matches {0..*} matches {    -- Place of death
-						include
-							archetype_id/value matches {/openEHR-EHR-CLUSTER\.address\.v1|openEHR-EHR-CLUSTER\.organisation\.v1/}
-					}
 					ELEMENT[at0021] occurrences matches {0..1} matches {    -- Place category
 						value matches {
 							DV_TEXT matches {*}
 						}
+					}
+					allow_archetype CLUSTER[at0100] occurrences matches {0..*} matches {    -- Place of death
+						include
+							archetype_id/value matches {/openEHR-EHR-CLUSTER\.address(-[a-zA-Z0-9_]+)*\.v1|openEHR-EHR-CLUSTER\.organisation(-[a-zA-Z0-9_]+)*\.v1/}
 					}
 					ELEMENT[at0054] occurrences matches {0..1} matches {    -- Age at death
 						value matches {
@@ -122,13 +126,9 @@ definition
 							}
 						}
 					}
-					allow_archetype CLUSTER[at0042] occurrences matches {0..*} matches {    -- Additional death details
+					allow_archetype CLUSTER[at0042] occurrences matches {0..*} matches {    -- Additional details
 						include
 							archetype_id/value matches {/.*/}
-					}
-					allow_archetype CLUSTER[at0104] occurrences matches {0..*} matches {    -- DOD alternative
-						include
-							archetype_id/value matches {/openEHR-EHR-CLUSTER\.dod_alternative\.v0/}
 					}
 					ELEMENT[at0105] occurrences matches {0..1} matches {    -- Comment
 						value matches {
@@ -146,14 +146,14 @@ definition
 							DV_TEXT matches {*}
 						}
 					}
-					allow_archetype CLUSTER[at0102] occurrences matches {0..*} matches {    -- Extension
-						include
-							archetype_id/value matches {/.*/}
-					}
 					ELEMENT[at0101] occurrences matches {0..1} matches {    -- Last updated
 						value matches {
 							DV_DATE_TIME matches {*}
 						}
+					}
+					allow_archetype CLUSTER[at0102] occurrences matches {0..*} matches {    -- Extension
+						include
+							archetype_id/value matches {/.*/}
 					}
 				}
 			}
@@ -217,19 +217,19 @@ ontology
 For example:  home; or ICU.">
 				>
 				["at0042"] = <
-					text = <"Additional death details">
-					description = <"Additional details about death.">
+					text = <"Additional details">
+					description = <"Additional structured details related to the death.">
 				>
 				["at0044"] = <
 					text = <"Gestation at death">
-					description = <"Number of completed weeks of gestation of the fetus at the time of death.">
+					description = <"Number of completed weeks of gestation of the fetus at the time of fetal death.">
 				>
 				["at0054"] = <
 					text = <"Age at death">
 					description = <"The age of the individual at the time of death.">
 				>
 				["at0092"] = <
-					text = <"Administrative date/time of death">
+					text = <"Date/time of death">
 					description = <"Date and or time of death.">
 					comment = <"For example: based on findings pertaining to examination of the corpse and the pathologist's reconstruction of time of death based on post-mortem changes, temperature, etc.">
 				>
@@ -243,7 +243,7 @@ For example:  home; or ICU.">
 				>
 				["at0101"] = <
 					text = <"Last updated">
-					description = <"The date death details was last updated.">
+					description = <"The date when the death summary was last updated.">
 				>
 				["at0102"] = <
 					text = <"Extension">
@@ -256,13 +256,13 @@ For example:  home; or ICU.">
 					comment = <"For example: Where there were multiple sources or word of mouth (considering credibility/reliability).">
 				>
 				["at0104"] = <
-					text = <"DOD alternative">
-					description = <"Alternate date/time of death.">
-					comment = <"For example: Conflicting information about date/time of death from multiple sources with varying degree of certainty.">
+					text = <"DOD alternatives">
+					description = <"Additional details about possible alternative dates of death.">
+					comment = <"For example: Capturing information about conflicting dates and/or times of death from multiple sources with varying degree of certainty.">
 				>
 				["at0105"] = <
 					text = <"Comment">
-					description = <"Additional narrative about death details not captured in other fields.">
+					description = <"Additional narrative about the death, not captured in other fields.">
 					comment = <"For example: Recording the degree of certainty for place of death.">
 				>
 			>
@@ -321,19 +321,19 @@ For example:  home; or ICU.">
 For eksempel: hjemme; eller Intensivpost.">
 				>
 				["at0042"] = <
-					text = <"Ytterligere detaljer om død">
-					description = <"Ytterligere detaljer om død.">
+					text = <"*Additional details (en)">
+					description = <"*Additional structured details related to the death. (en)">
 				>
 				["at0044"] = <
 					text = <"Gestasjon ved død">
-					description = <"Antall fullførte gestasjonsuker for fosteret på dødstidspunktet.">
+					description = <"*Number of completed weeks of gestation of the fetus at the time of fetal death. (en)">
 				>
 				["at0054"] = <
 					text = <"Alder ved død">
 					description = <"Individets alder ved dødstidspunktet.">
 				>
 				["at0092"] = <
-					text = <"Administrativt dødsfalltidspunkt">
+					text = <"*Date/time of death (en)">
 					description = <"Dato og eventuelt tidspunkt for dødsfall.">
 					comment = <"For eksempel: basert på funn ved undersøkelse av levning og patologens rekonstruksjon av dødsfalltidspunkt basert på endringer etter død, temperatur, etc.">
 				>
@@ -347,7 +347,7 @@ For eksempel: hjemme; eller Intensivpost.">
 				>
 				["at0101"] = <
 					text = <"Sist oppdatert">
-					description = <"Dato når dødsdetaljer sist ble oppdatert.">
+					description = <"*The date when the death summary was last updated. (en)">
 				>
 				["at0102"] = <
 					text = <"Tilleggsinformasjon">
@@ -360,13 +360,13 @@ For eksempel: hjemme; eller Intensivpost.">
 					comment = <"For eksempel: Ved multiple kilder eller annenhåndsinformasjon (med tanke på troverdighet/pålitelighet)">
 				>
 				["at0104"] = <
-					text = <"Dødsfalltidspunkt alternativ">
-					description = <"Alternativ dødsfalltidspunkt.">
-					comment = <"For eksempel: Flere kilder med motstridende informasjon om dødstidspunkt som har varierende grad av visshet.">
+					text = <"*DOD alternatives (en)">
+					description = <"*Additional details about possible alternative dates of death. (en)">
+					comment = <"*For example: Capturing information about conflicting dates and/or times of death from multiple sources with varying degree of certainty. (en)">
 				>
 				["at0105"] = <
 					text = <"Kommentar">
-					description = <"Ytterligere fritekst om dødsdetaljer som ikke er fanget opp i andre felt.">
+					description = <"*Additional narrative about the death, not captured in other fields. (en)">
 					comment = <"For eksempel: Registrering av grad av visshet for dødssted.">
 				>
 			>
