@@ -25,22 +25,22 @@ description
 	details = <
 		["nb"] = <
 			language = <[ISO_639-1::nb]>
-			purpose = <"*To record summary information about the death of an individual, except for the cause of death. (en)">
-			use = <"*Use to record summary information about the death of an individual, except for the cause of death.
+			purpose = <"*To record summary information about the death of an individual, excluding details about the cause(s) of death. (en)">
+			use = <"*Use to record summary information about the death of an individual, excluding details about the cause(s) of death.
 
 While the content of the EVALUATION.cause_of death is explicitly constrained to record the formal conclusions about the cause of death of an individual, this archetype is designed to carry other details related to the death, including but not limited to the timing and location of death. (en)">
 			keywords = <"sertifikat", "medisinsk sertifikat", "dødsårsak", "død", "mccd", "dato for død", "dødstidspunkt", "rapport", "embetsmann">
-			misuse = <"Skal ikke brukes for å registrere informasjon om den formelle dødsårsaken - bruk EVALUATION.cause_of_death for dette formålet.">
+			misuse = <"*Not to be used to record information about the formal cause(s) of death - use EVALUATION.cause_of_death for this purpose. (en)">
 			copyright = <"© openEHR Foundation">
 		>
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"To record summary information about the death of an individual, except for the cause of death.">
-			use = <"Use to record summary information about the death of an individual, except for the cause of death.
+			purpose = <"To record summary information about the death of an individual, excluding details about the cause(s) of death.">
+			use = <"Use to record summary information about the death of an individual, excluding details about the cause(s) of death.
 
 While the content of the EVALUATION.cause_of death is explicitly constrained to record the formal conclusions about the cause of death of an individual, this archetype is designed to carry other details related to the death, including but not limited to the timing and location of death.">
 			keywords = <"certificate", "Medical Certificate", "Cause of Death", "Death", "MCCD", "date of death", "time of death", "medical examiner", "report", "coroner">
-			misuse = <"Not to be used to record information about the formal cause of death - use EVALUATION.cause_of_death for this purpose.">
+			misuse = <"Not to be used to record information about the formal cause(s) of death - use EVALUATION.cause_of_death for this purpose.">
 			copyright = <"© openEHR Foundation">
 		>
 	>
@@ -61,8 +61,8 @@ US Standard Certificate of Death [Internet]. Atlanta; Centre for Disease Control
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"A66B978D2D534CB0A563C8F373B30425">
-		["build_uid"] = <"ccacc3a1-f6c2-475a-a330-edf80c450372">
+		["MD5-CAM-1.0.1"] = <"B7EF5B1865DEDC8C300CE39B60E25FA9">
+		["build_uid"] = <"7131d016-2d05-456f-b5fd-b403fcc7f42e">
 		["revision"] = <"0.0.1-alpha">
 	>
 
@@ -108,7 +108,17 @@ definition
 							DV_TEXT matches {*}
 						}
 					}
-					allow_archetype CLUSTER[at0100] occurrences matches {0..*} matches {    -- Place of death
+					ELEMENT[at0108] occurrences matches {0..1} matches {    -- Place subcategory
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0109] occurrences matches {0..*} matches {    -- Place of death
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					allow_archetype CLUSTER[at0100] occurrences matches {0..*} matches {    -- Structured place of death
 						include
 							archetype_id/value matches {/openEHR-EHR-CLUSTER\.address(-[a-zA-Z0-9_]+)*\.v1|openEHR-EHR-CLUSTER\.organisation(-[a-zA-Z0-9_]+)*\.v1/}
 					}
@@ -124,6 +134,11 @@ definition
 							DV_DURATION matches {
 								value matches {PWD/|P0D..P50W|}
 							}
+						}
+					}
+					ELEMENT[at0106] occurrences matches {0..1} matches {    -- Days post partum
+						value matches {
+							DV_DURATION matches {*}
 						}
 					}
 					allow_archetype CLUSTER[at0042] occurrences matches {0..*} matches {    -- Additional details
@@ -167,7 +182,7 @@ ontology
 			items = <
 				["at0000"] = <
 					text = <"Death summary">
-					description = <"Summary information about the death of an individual, except for the cause of death.">
+					description = <"Summary information about the death of an individual, excluding details about the cause(s) of death.">
 				>
 				["at0001"] = <
 					text = <"Item tree">
@@ -212,9 +227,9 @@ ontology
 				>
 				["at0021"] = <
 					text = <"Place category">
-					description = <"Category of the place where the individual died.">
-					comment = <"It is strongly recommended that 'Place category'  be coded with an external terminology. For example: Snomed CT, ICD-10.
-For example:  home; or ICU.">
+					description = <"The subcategory of the place where the individual died.">
+					comment = <"It is strongly recommended that 'Place category' be coded with an external terminology. For example: SNOMED CT or ICD-10.
+For example: hospital; or home.">
 				>
 				["at0042"] = <
 					text = <"Additional details">
@@ -238,8 +253,8 @@ For example:  home; or ICU.">
 					description = <"Narrative description about the context or setting of the death.">
 				>
 				["at0100"] = <
-					text = <"Place of death">
-					description = <"Place or address where the individual died.">
+					text = <"Structured place of death">
+					description = <"Structured details about the organisation or specific address where the individual died.">
 				>
 				["at0101"] = <
 					text = <"Last updated">
@@ -265,13 +280,28 @@ For example:  home; or ICU.">
 					description = <"Additional narrative about the death, not captured in other fields.">
 					comment = <"For example: Recording the degree of certainty for place of death.">
 				>
+				["at0106"] = <
+					text = <"Days post partum">
+					description = <"The number of days between the end of a pregnancy and death.">
+				>
+				["at0108"] = <
+					text = <"Place subcategory">
+					description = <"Subcategory of the place where the individual died.">
+					comment = <"It is strongly recommended that 'Place subcategory' be coded with an external terminology. For example: SNOMED CT or ICD-10.
+For example, within the context of a hospital: ICU; ward; or operating theatre.">
+				>
+				["at0109"] = <
+					text = <"Place of death">
+					description = <"Simpe identification or name of the place where the individual died.">
+					comment = <"This data element has multiple occurrences to allow for more than one level of detail about the place of death. For example: the name of the hospital where the patient died; and the specific place within the hospital, such as 'Ward 6North'.">
+				>
 			>
 		>
 		["nb"] = <
 			items = <
 				["at0000"] = <
 					text = <"*Death summary (en)">
-					description = <"*Summary information about the death of an individual, except for the cause of death. (en)">
+					description = <"*Summary information about the death of an individual, excluding details about the cause(s) of death. (en)">
 				>
 				["at0001"] = <
 					text = <"Item tree">
@@ -316,9 +346,9 @@ For example:  home; or ICU.">
 				>
 				["at0021"] = <
 					text = <"Stedskategori">
-					description = <"Stedskategori hvor individet døde.">
-					comment = <"Det anbefales på det sterkeste å kode \"Stedskategori\" med en ekstern terminologi. For eksempel: Snomed CT eller ICD-10.
-For eksempel: hjemme; eller Intensivpost.">
+					description = <"*The subcategory of the place where the individual died. (en)">
+					comment = <"*It is strongly recommended that 'Place category' be coded with an external terminology. For example: SNOMED CT or ICD-10.
+For example: hospital; or home. (en)">
 				>
 				["at0042"] = <
 					text = <"*Additional details (en)">
@@ -342,8 +372,8 @@ For eksempel: hjemme; eller Intensivpost.">
 					description = <"Fritekstlig beskrivelse om konteksten eller settingen rundt dødsfallet.">
 				>
 				["at0100"] = <
-					text = <"Dødssted">
-					description = <"Sted eller addresse hvor individet døde.">
+					text = <"*Structured place of death (en)">
+					description = <"*Structured details about the organisation or specific address where the individual died. (en)">
 				>
 				["at0101"] = <
 					text = <"Sist oppdatert">
@@ -368,6 +398,21 @@ For eksempel: hjemme; eller Intensivpost.">
 					text = <"Kommentar">
 					description = <"*Additional narrative about the death, not captured in other fields. (en)">
 					comment = <"For eksempel: Registrering av grad av visshet for dødssted.">
+				>
+				["at0106"] = <
+					text = <"*Days post partum (en)">
+					description = <"*The number of days between the end of a pregnancy and death. (en)">
+				>
+				["at0108"] = <
+					text = <"*Place subcategory (en)">
+					description = <"*Subcategory of the place where the individual died. (en)">
+					comment = <"*It is strongly recommended that 'Place subcategory' be coded with an external terminology. For example: SNOMED CT or ICD-10.
+For example, within the context of a hospital: ICU; ward; or operating theatre. (en)">
+				>
+				["at0109"] = <
+					text = <"*Place of death (en)">
+					description = <"*Simpe identification or name of the place where the individual died. (en)">
+					comment = <"*This data element has multiple occurrences to allow for more than one level of detail about the place of death. For example: the name of the hospital where the patient died; and the specific place within the hospital, such as 'Ward 6North'. (en)">
 				>
 			>
 		>
