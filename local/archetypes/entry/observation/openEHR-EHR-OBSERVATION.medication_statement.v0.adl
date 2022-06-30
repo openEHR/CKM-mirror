@@ -14,14 +14,6 @@ language
 				["email"] = <"Strauch.Natalia@mh-hannover.de">
 			>
 		>
-		["nb"] = <
-			language = <[ISO_639-1::nb]>
-			author = <
-				["name"] = <"Silje Ljosland Bakke">
-				["organisation"] = <"Helse Vest IKT AS">
-				["email"] = <"silje.ljosland.bakke@helse-vest-ikt.no">
-			>
-		>
 		["nl"] = <
 			language = <[ISO_639-1::nl]>
 			author = <
@@ -49,16 +41,6 @@ Dieser Archetyp wurde so konzipiert, dass er mit der FHIR MedicationStatement-Re
 			keywords = <"Arzneimittel, Medikament, Medikationseintrag, Medikamentenverabreichung, Medikationsplan, Medikation", ...>
 			misuse = <"Nicht zur Darstellung von Angaben zu einer Verordnung von Medikation verwenden - verwenden Sie zu diesem Zweck INSTRUCTION.medication_order.
 Nicht zur Darstellung von Angaben zu bestimmten medikamentenbezogenen Aktivitäten wie Verabreichung oder Abgabe verwenden. Verwenden Sie zu diesem Zweck ACTION.medication.">
-		>
-		["nb"] = <
-			language = <[ISO_639-1::nb]>
-			purpose = <"For å registrere et øyeblikksbilde av bruken av et spesifisert legemiddel, inkludert nåværende bruk, tidligere bruke eller planlagt bruk.">
-			use = <"Brukes for å registrere et øyeblikksbilde av bruken av et spesifisert legemidde, inkludert nåværende bruk, tidligere bruke eller planlagt bruk.
-
-Arketypen er designet for å passe sammen med FHIR-ressursen Medication Statement.">
-			misuse = <"Skal ikke brukes for å registrere detaljer om en legemiddelordinering. Bruk arketypen INSTRUCTION.medication_order for dette formålet.
-
-Skal ikke brukes for å registrere detaljer om spesifikke legemiddelrelaterte aktiviteter, som administrering eller utdeling. Bruk arketypen ACTION.medication for dette formålet.">
 		>
 		["en"] = <
 			language = <[ISO_639-1::en]>
@@ -88,8 +70,8 @@ Niet te gebruiken voor het vastleggen van gegevens over specifieke medicatie ger
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"E84B94E646936168729DC2F2F6FE34F9">
-		["build_uid"] = <"27e55649-fcce-41fc-989f-344a449c688e">
+		["MD5-CAM-1.0.1"] = <"AD45B7F31ED2F5D00490FA210BA3AEFC">
+		["build_uid"] = <"503e397d-d1e2-418b-8823-fb9881b35999">
 		["revision"] = <"0.0.1-alpha">
 	>
 
@@ -110,11 +92,6 @@ definition
 									allow_archetype CLUSTER[at0007] occurrences matches {0..*} matches {    -- Preparation details
 										include
 											archetype_id/value matches {/.*/}
-									}
-									ELEMENT[at0030] occurrences matches {0..*} matches {    -- Route
-										value matches {
-											DV_TEXT matches {*}
-										}
 									}
 									ELEMENT[at0008] occurrences matches {0..1} matches {    -- Status
 										value matches {
@@ -155,16 +132,31 @@ definition
 											DV_DATE_TIME matches {*}
 										}
 									}
-									allow_archetype CLUSTER[at0022] occurrences matches {0..*} matches {    -- Structured dose and timing directions
-										include
-											archetype_id/value matches {/.*/}
+									ELEMENT[at0031] occurrences matches {0..1} matches {    -- Therapeutic intent
+										value matches {
+											DV_TEXT matches {*}
+										}
+									}
+									ELEMENT[at0032] occurrences matches {0..1} matches {    -- Description
+										value matches {
+											DV_TEXT matches {*}
+										}
 									}
 									ELEMENT[at0023] occurrences matches {0..1} matches {    -- Clinical indication
 										value matches {
 											DV_TEXT matches {*}
 										}
 									}
-									ELEMENT[at0031] occurrences matches {0..1} matches {    -- Therapeutic intent
+									ELEMENT[at0033] occurrences matches {0..2} matches {    -- Dose and timing
+										value matches {
+											DV_TEXT matches {*}
+										}
+									}
+									allow_archetype CLUSTER[at0022] occurrences matches {0..*} matches {    -- Structured dose and timing
+										include
+											archetype_id/value matches {/.*/}
+									}
+									ELEMENT[at0030] occurrences matches {0..*} matches {    -- Route
 										value matches {
 											DV_TEXT matches {*}
 										}
@@ -177,6 +169,11 @@ definition
 									ELEMENT[at0025] occurrences matches {0..1} matches {    -- Last prescribed
 										value matches {
 											DV_DATE_TIME matches {*}
+										}
+									}
+									ELEMENT[at0034] occurrences matches {0..1} matches {    -- Duration of use
+										value matches {
+											DV_DURATION matches {*}
 										}
 									}
 									ELEMENT[at0026] occurrences matches {0..1} matches {    -- Last administered
@@ -318,7 +315,7 @@ ontology
 					comment = <"Use this SLOT where the detailed description of the ordered item needs to be explicitly stated. For example: the form, strength, any diluents or mixture of ingredients.">
 				>
 				["at0022"] = <
-					text = <"Structured dose and timing directions">
+					text = <"Structured dose and timing">
 					description = <"Details of structured dose and timing directions.">
 				>
 				["at0018"] = <
@@ -359,13 +356,26 @@ ontology
 					text = <"Therapeutic intent">
 					description = <"">
 				>
+				["at0032"] = <
+					text = <"Description">
+					description = <"Narrative description about the use of the identified medication item.">
+				>
+				["at0033"] = <
+					text = <"Dose and timing">
+					description = <"Simple, narrative description about the dose and timing of the medication">
+					comment = <"This data element has two occurrences if there needs to be separate descriptions of dose from timing.">
+				>
+				["at0034"] = <
+					text = <"Duration of use">
+					description = <"The duration of use for a medication that is no longer active.">
+				>
 			>
 		>
 		["de"] = <
 			items = <
 				["at0000"] = <
 					text = <"Medikationseintrag">
-					description = <"Eine Snapshot-Ansicht über die Anwendung eines bestimmten Medikaments.">
+					description = <"*A snapshot view about the use of a specified medication. (en)">
 				>
 				["at0001"] = <
 					text = <"History">
@@ -458,7 +468,7 @@ ontology
 					description = <"Der gültige Zeitpunkt für das Statusende.">
 				>
 				["at0022"] = <
-					text = <"Strukturierte Dosis- und Zeitangaben">
+					text = <"*Structured dose and timing (en)">
 					description = <"Details zu strukturierten Dosis- und Zeitangaben.">
 				>
 				["at0023"] = <
@@ -499,13 +509,26 @@ ontology
 					text = <"*Therapeutic intent (en)">
 					description = <"">
 				>
+				["at0032"] = <
+					text = <"*Description (en)">
+					description = <"*Narrative description about the use of the identified medication item. (en)">
+				>
+				["at0033"] = <
+					text = <"*Dose and timing (en)">
+					description = <"*Simple, narrative description about the dose and timing of the medication (en)">
+					comment = <"*This data element has two occurrences if there needs to be separate descriptions of dose from timing. (en)">
+				>
+				["at0034"] = <
+					text = <"*Duration of use (en)">
+					description = <"*The duration of use for a medication that is no longer active. (en)">
+				>
 			>
 		>
 		["nl"] = <
 			items = <
 				["at0000"] = <
 					text = <"Medicatie gebruik">
-					description = <"Een momentopname van het gebruik van specifieke medicamenten.">
+					description = <"*A snapshot view about the use of a specified medication. (en)">
 				>
 				["at0001"] = <
 					text = <"History">
@@ -600,7 +623,7 @@ ontology
 					description = <"De datum/tijd waarop de status niet meer geldt.">
 				>
 				["at0022"] = <
-					text = <"Gestructureerde dosis en plannings instructies">
+					text = <"*Structured dose and timing (en)">
 					description = <"Gegevens over gestructureerde dosis en plannings instructies.
 ">
 				>
@@ -642,137 +665,18 @@ ontology
 					text = <"*Therapeutic intent (en)">
 					description = <"">
 				>
-			>
-		>
-		["nb"] = <
-			items = <
-				["at0000"] = <
-					text = <"Legemiddelutsagn">
-					description = <"Et øyeblikksbilde av bruken av et spesifisert legemiddel.">
+				["at0032"] = <
+					text = <"*Description (en)">
+					description = <"*Narrative description about the use of the identified medication item. (en)">
 				>
-				["at0001"] = <
-					text = <"History">
-					description = <"@ internal @">
+				["at0033"] = <
+					text = <"*Dose and timing (en)">
+					description = <"*Simple, narrative description about the dose and timing of the medication (en)">
+					comment = <"*This data element has two occurrences if there needs to be separate descriptions of dose from timing. (en)">
 				>
-				["at0002"] = <
-					text = <"Uspesifisert hendelse">
-					description = <"Standard, uspesifisert tidspunkt eller tidsintervall som kan defineres mer eksplisitt i et templat eller i en applikasjon.">
-				>
-				["at0003"] = <
-					text = <"Tree">
-					description = <"@ internal @">
-				>
-				["at0004"] = <
-					text = <"Item tree">
-					description = <"@ internal @">
-				>
-				["at0005"] = <
-					text = <"*Extension(en)">
-					description = <"*Additional information required to extend the model with local content or to align with other reference models or formalisms.(en)">
-				>
-				["at0006"] = <
-					text = <"Legemiddelnavn">
-					description = <"Navnet på legemiddelet, vaksinen eller andre terapeutiske eller ordinerbare produkter.">
-				>
-				["at0007"] = <
-					text = <"Legemiddeldetaljer">
-					description = <"Strukturerte detaljer om det overordnede legemiddelet, inkludert styrke, form og ingredienser.">
-				>
-				["at0008"] = <
-					text = <"Status">
-					description = <"Statusen for legemiddelet.">
-				>
-				["at0009"] = <
-					text = <"Planlagt">
-					description = <"*The medication is intended to be taken at an unspecified time in the future.(en)">
-				>
-				["at0010"] = <
-					text = <"Planlagt og tidsfestet">
-					description = <"*The medication is scheduled to be taken at a future date.(en)">
-				>
-				["at0011"] = <
-					text = <"Aktiv">
-					description = <"*The medication is currently being taken.(en)">
-				>
-				["at0012"] = <
-					text = <"Fullført">
-					description = <"*The medication is no longer being taken.(en)">
-				>
-				["at0013"] = <
-					text = <"Utsatt">
-					description = <"*The medication is planned to be taken but commencement has been temporarily delayed.(en)">
-				>
-				["at0014"] = <
-					text = <"Avbrutt">
-					description = <"*The medication was planned to be taken but cancelled before commencement.(en)">
-				>
-				["at0015"] = <
-					text = <"Satt på pause">
-					description = <"*The medication was commenced but use temporarily supended.(en)">
-				>
-				["at0016"] = <
-					text = <"Seponert">
-					description = <"*The medication was commenced but use was ceased.(en)">
-				>
-				["at0017"] = <
-					text = <"Ukjent">
-					description = <"*The status of the medication is not known.(en)">
-				>
-				["at0018"] = <
-					text = <"*Status reason(en)">
-					description = <"*Reason for the status.(en)">
-				>
-				["at0019"] = <
-					text = <"*Status start time(en)">
-					description = <"*The valid start date/time for the Status.(en)">
-				>
-				["at0020"] = <
-					text = <"*Status duration(en)">
-					description = <"*The valid duration for the Status.(en)">
-				>
-				["at0021"] = <
-					text = <"*Status end time(en)">
-					description = <"*The valid end date/time for the Status.(en)">
-				>
-				["at0022"] = <
-					text = <"*Structured dose and timing directions(en)">
-					description = <"*Details of structured dose and timing directions.(en)">
-				>
-				["at0023"] = <
-					text = <"*Clinical indication(en)">
-					description = <"*The clinical reason for use of the medication item.(en)">
-				>
-				["at0024"] = <
-					text = <"*First prescribed(en)">
-					description = <"*The date/time when a prescription for the medication was first issued.(en)">
-				>
-				["at0025"] = <
-					text = <"*Last prescribed(en)">
-					description = <"*The date/time when a prescription for the medication was last issued.(en)">
-				>
-				["at0026"] = <
-					text = <"*Last administered(en)">
-					description = <"*The date/time when the medication was last taken by or administered to the individual.(en)">
-				>
-				["at0027"] = <
-					text = <"*Last reviewed(en)">
-					description = <"*The date/time when usage of the medication was last reviewed by a clinician or phamacist.(en)">
-				>
-				["at0028"] = <
-					text = <"*Discontinued(en)">
-					description = <"*The date/time when use of the medication was ceased.(en)">
-				>
-				["at0029"] = <
-					text = <"*Comment(en)">
-					description = <"*Additional narrative about the medication statement not captured in other fields.(en)">
-				>
-				["at0030"] = <
-					text = <"Administrasjonsvei">
-					description = <"Veien legemiddelet administreres gjennom.">
-				>
-				["at0031"] = <
-					text = <"*Therapeutic intent(en)">
-					description = <"">
+				["at0034"] = <
+					text = <"*Duration of use (en)">
+					description = <"*The duration of use for a medication that is no longer active. (en)">
 				>
 			>
 		>
