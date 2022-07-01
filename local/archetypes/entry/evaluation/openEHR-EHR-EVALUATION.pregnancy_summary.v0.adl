@@ -65,7 +65,7 @@ Brukes ikke for å dokumentere detaljert informasjon om kvinnens menstruasjonssy
 Brukes ikke for å dokumentere detaljert informasjon om spedbarns måltider/mating - en seperat arketype vil bli brukt til dette formålet.
 
 Brukes ikke for å dokumentere en generell sammenfattet menstruasjonshistorikk eller menstruasjonsdagbok - seperate arketyper vil bli brukt til dette formålet.">
-			copyright = <"*© openEHR Foundation (en)">
+			copyright = <"© openEHR Foundation">
 		>
 		["pt-br"] = <
 			language = <[ISO_639-1::pt-br]>
@@ -91,7 +91,7 @@ Não deve ser usado para gravar informações detalhadas sobre o ciclo menstrual
 Não deve ser usado para registrar informações detalhadas sobre a alimentação infantil - um arquétipo separado deverá ser utilizado.
 
 Não deve ser usado para registrar um resumo ou um diário da história menstrual (geral ou diária) - um arquétipo separado deverá ser utilizado.">
-			copyright = <"*© openEHR Foundation (en)">
+			copyright = <"© openEHR Foundation">
 		>
 		["en"] = <
 			language = <[ISO_639-1::en]>
@@ -144,7 +144,7 @@ No debe utilizarse para registrar información detallada acerca de la alimentaci
 
 No debe utilizarse para registrar un resumen general de la historia menstrual o un diario - se utilizarán arquetipos distintos.
 ">
-			copyright = <"*© openEHR Foundation (en)">
+			copyright = <"© openEHR Foundation">
 		>
 	>
 	lifecycle_state = <"in_development">
@@ -163,8 +163,8 @@ Queensland Government, Department of Health. Pregnancy Health Record. SW071 - v1
 		["original_namespace"] = <"openEHR Foundation">
 		["original_publisher"] = <"org.openehr">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"3BED19DCE29584318031705070002ECB">
-		["build_uid"] = <"2c72c911-454f-4fdd-a69c-644c2ae5597b">
+		["MD5-CAM-1.0.1"] = <"A5D62D8D2F4BF5E0BDE8FAFAF0E32F3F">
+		["build_uid"] = <"c07c8159-4d8b-4bee-86d3-c127189eb71c">
 		["revision"] = <"0.0.1-alpha">
 	>
 
@@ -185,11 +185,6 @@ definition
 							DV_BOOLEAN matches {*}
 						}
 					}
-					ELEMENT[at0094] occurrences matches {0..1} matches {    -- Pregnancy outcome
-						value matches {
-							DV_TEXT matches {*}
-						}
-					}
 					ELEMENT[at0083] occurrences matches {0..1} matches {    -- Pregnancy synopsis
 						value matches {
 							DV_TEXT matches {*}
@@ -207,17 +202,27 @@ definition
 							DV_TEXT matches {*}
 						}
 					}
-					ELEMENT[at0007] occurrences matches {0..1} matches {    -- Number of fetuses
+					ELEMENT[at0094] occurrences matches {0..1} matches {    -- Pregnancy outcome
 						value matches {
-							DV_COUNT matches {
-								magnitude matches {|>=0|}
-							}
+							DV_TEXT matches {*}
 						}
 					}
 					ELEMENT[at0159] occurrences matches {0..1} matches {    -- Pregnancy duration
 						value matches {
 							DV_DURATION matches {
 								value matches {PWD/|P0D..P52W|}
+							}
+						}
+					}
+					ELEMENT[at0174] occurrences matches {0..1} matches {    -- Pregnancy end date
+						value matches {
+							DV_DATE_TIME matches {*}
+						}
+					}
+					ELEMENT[at0007] occurrences matches {0..1} matches {    -- Number of fetuses
+						value matches {
+							DV_COUNT matches {
+								magnitude matches {|>=0|}
 							}
 						}
 					}
@@ -286,7 +291,17 @@ definition
 							>
 						}
 					}
-					allow_archetype CLUSTER[at0172] occurrences matches {0..*} matches {    -- Place of outcome
+					ELEMENT[at0173] occurrences matches {0..1} matches {    -- Place category
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0175] occurrences matches {0..1} matches {    -- Place of outcome
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					allow_archetype CLUSTER[at0172] occurrences matches {0..*} matches {    -- Structured place of outcome
 						include
 							archetype_id/value matches {/openEHR-EHR-CLUSTER\.address(-[a-zA-Z0-9_]+)*\.v1/}
 					}
@@ -374,7 +389,7 @@ definition
 									}
 								}
 							}
-							ELEMENT[at0038] occurrences matches {0..1} matches {    -- Weight
+							ELEMENT[at0038] occurrences matches {0..1} matches {    -- Birthweight
 								value matches {
 									C_DV_QUANTITY <
 										property = <[openehr::124]>
@@ -525,7 +540,7 @@ ontology
 					comment = <"Coding with a terminology is preferred, where possible. For example: Male; female; intersex; indeterminate. Indeterminate is to be used in the situation where the infant has ambiguous external genitalia. This data element may be used to populate the newborn health record using the 'Sex assigned at birth' data element within the EVALUATION.gender archetype.">
 				>
 				["at0038"] = <
-					text = <"Weight">
+					text = <"Birthweight">
 					description = <"Weight of the infant at delivery.">
 					comment = <"This data element may be used to populate the newborn health record using both the 'Weight' data element and 'Birth' EVENT within the OBSERVATION.body_weight archetype.">
 				>
@@ -711,7 +726,7 @@ ontology
 				>
 				["at0159"] = <
 					text = <"Pregnancy duration">
-					description = <"The length of the pregnancy until the pregnancy has ended.">
+					description = <"The gestation when the pregnancy has ended.">
 					comment = <"Also known as 'Gestation at birth' for pregnancies resulting in viable outcomes.">
 				>
 				["at0160"] = <
@@ -758,9 +773,24 @@ ontology
 					description = <"Narrative description about issues, concerns about the infant or events occurring during the neonatal period.">
 				>
 				["at0172"] = <
-					text = <"Place of outcome">
-					description = <"Place or address where the pregnancy was delivered or an other outcome of the pregnancy was treated or managed.">
+					text = <"Structured place of outcome">
+					description = <"Structured details about the  location where the pregnancy was delivered or an alternative outcome of the pregnancy was treated or managed.">
 					comment = <"For example: this data element will be renamed to 'Place of delivery' for a pregnancy that ends in the delivery of one or more newborns.">
+				>
+				["at0173"] = <
+					text = <"Place category">
+					description = <"Category of the place where the individual died.">
+					comment = <"It is strongly recommended that 'Place category' be coded with an external terminology. For example: hospital; birthing clinic; or home.">
+				>
+				["at0174"] = <
+					text = <"Pregnancy end date">
+					description = <"The date and/or time marking the end of the pregnancy.">
+					comment = <"This data element may be renamed in a template, depending on the pregnancy outcome. For example: date of delivery for a live birth or stillbirth; date of miscarriage; or date of termination.">
+				>
+				["at0175"] = <
+					text = <"Place of outcome">
+					description = <"Simple details about the  location where the pregnancy was delivered or an alternative outcome of the pregnancy was treated or managed.">
+					comment = <"For example: the name of the hospital or clinic.">
 				>
 			>
 		>
@@ -820,7 +850,7 @@ ontology
 					comment = <"*Coding with a terminology is preferred, where possible. For example: Male; female; intersex; indeterminate. Indeterminate is to be used in the situation where the infant has ambiguous external genitalia. This data element may be used to populate the newborn health record using the 'Sex assigned at birth' data element within the EVALUATION.gender archetype. (en)">
 				>
 				["at0038"] = <
-					text = <"*Weight (en)">
+					text = <"*Birthweight (en)">
 					description = <"*Weight of the infant at delivery. (en)">
 					comment = <"*This data element may be used to populate the newborn health record using both the 'Weight' data element and 'Birth' EVENT within the OBSERVATION.body_weight archetype. (en)">
 				>
@@ -1006,7 +1036,7 @@ ontology
 				>
 				["at0159"] = <
 					text = <"*Pregnancy duration (en)">
-					description = <"*The length of the pregnancy until the pregnancy has ended. (en)">
+					description = <"*The gestation when the pregnancy has ended. (en)">
 					comment = <"*Also known as 'Gestation at birth' for pregnancies resulting in viable outcomes. (en)">
 				>
 				["at0160"] = <
@@ -1053,9 +1083,24 @@ ontology
 					description = <"*Narrative description about issues, concerns about the infant or events occurring during the neonatal period. (en)">
 				>
 				["at0172"] = <
-					text = <"*Place of outcome (en)">
-					description = <"*Place or address where the pregnancy was delivered or an other outcome of the pregnancy was treated or managed. (en)">
+					text = <"*Structured place of outcome (en)">
+					description = <"*Structured details about the  location where the pregnancy was delivered or an alternative outcome of the pregnancy was treated or managed. (en)">
 					comment = <"*For example: this data element will be renamed to 'Place of delivery' for a pregnancy that ends in the delivery of one or more newborns. (en)">
+				>
+				["at0173"] = <
+					text = <"*Place category (en)">
+					description = <"*Category of the place where the individual died. (en)">
+					comment = <"*It is strongly recommended that 'Place category' be coded with an external terminology. For example: hospital; birthing clinic; or home. (en)">
+				>
+				["at0174"] = <
+					text = <"*Pregnancy end date (en)">
+					description = <"*The date and/or time marking the end of the pregnancy. (en)">
+					comment = <"*This data element may be renamed in a template, depending on the pregnancy outcome. For example: date of delivery for a live birth or stillbirth; date of miscarriage; or date of termination. (en)">
+				>
+				["at0175"] = <
+					text = <"*Place of outcome (en)">
+					description = <"*Simple details about the  location where the pregnancy was delivered or an alternative outcome of the pregnancy was treated or managed. (en)">
+					comment = <"*For example: the name of the hospital or clinic. (en)">
 				>
 			>
 		>
@@ -1115,7 +1160,7 @@ ontology
 					comment = <"*Coding with a terminology is preferred, where possible. For example: Male; female; intersex; indeterminate. Indeterminate is to be used in the situation where the infant has ambiguous external genitalia. This data element may be used to populate the newborn health record using the 'Sex assigned at birth' data element within the EVALUATION.gender archetype. (en)">
 				>
 				["at0038"] = <
-					text = <"*Weight (en)">
+					text = <"*Birthweight (en)">
 					description = <"*Weight of the infant at delivery. (en)">
 					comment = <"*This data element may be used to populate the newborn health record using both the 'Weight' data element and 'Birth' EVENT within the OBSERVATION.body_weight archetype. (en)">
 				>
@@ -1301,7 +1346,7 @@ ontology
 				>
 				["at0159"] = <
 					text = <"*Pregnancy duration (en)">
-					description = <"*The length of the pregnancy until the pregnancy has ended. (en)">
+					description = <"*The gestation when the pregnancy has ended. (en)">
 					comment = <"*Also known as 'Gestation at birth' for pregnancies resulting in viable outcomes. (en)">
 				>
 				["at0160"] = <
@@ -1348,9 +1393,24 @@ ontology
 					description = <"*Narrative description about issues, concerns about the infant or events occurring during the neonatal period. (en)">
 				>
 				["at0172"] = <
-					text = <"*Place of outcome (en)">
-					description = <"*Place or address where the pregnancy was delivered or an other outcome of the pregnancy was treated or managed. (en)">
+					text = <"*Structured place of outcome (en)">
+					description = <"*Structured details about the  location where the pregnancy was delivered or an alternative outcome of the pregnancy was treated or managed. (en)">
 					comment = <"*For example: this data element will be renamed to 'Place of delivery' for a pregnancy that ends in the delivery of one or more newborns. (en)">
+				>
+				["at0173"] = <
+					text = <"*Place category (en)">
+					description = <"*Category of the place where the individual died. (en)">
+					comment = <"*It is strongly recommended that 'Place category' be coded with an external terminology. For example: hospital; birthing clinic; or home. (en)">
+				>
+				["at0174"] = <
+					text = <"*Pregnancy end date (en)">
+					description = <"*The date and/or time marking the end of the pregnancy. (en)">
+					comment = <"*This data element may be renamed in a template, depending on the pregnancy outcome. For example: date of delivery for a live birth or stillbirth; date of miscarriage; or date of termination. (en)">
+				>
+				["at0175"] = <
+					text = <"*Place of outcome (en)">
+					description = <"*Simple details about the  location where the pregnancy was delivered or an alternative outcome of the pregnancy was treated or managed. (en)">
+					comment = <"*For example: the name of the hospital or clinic. (en)">
 				>
 			>
 		>
@@ -1410,7 +1470,7 @@ ontology
 					comment = <"Kodet med en terminologi er foretrukket, om det er mulig. For eksemplel: Gutt, Jente, Uavklart kjønn. Uavklart kjønn brukes når det ikke er mulig å avgjøre om det er en gutt eller en jente ved å undersøke de ytre kjønnsorganene. Dette dataelementet kan bli brukt til å befolke den nyfødtes helsejournal ved å bruke dataelementet \"Tilordnet kjønn ved fødsel\" i arketypen EVALUATION.gender (Kjønn).">
 				>
 				["at0038"] = <
-					text = <"Vekt">
+					text = <"*Birthweight (en)">
 					description = <"*Weight of the infant at delivery. (en)">
 					comment = <"Dette dataelementet kan bli brukt til å befolke den nyfødtes helsejournal ved å bruke dataelementet \"Vekt\" og \"Fødsel\" Hendelse i arketypen EVALUATION.body_weight (Kroppsvekt).">
 				>
@@ -1599,7 +1659,7 @@ ontology
 				>
 				["at0159"] = <
 					text = <"Graviditetens varighet">
-					description = <"Svangerskapets varighet inntil det er avsluttet.">
+					description = <"*The gestation when the pregnancy has ended. (en)">
 					comment = <"Også kjent som \"Gestasjonsalder ved fødsel\" for svangerskap som ender i fødsel.">
 				>
 				["at0160"] = <
@@ -1646,9 +1706,24 @@ ontology
 					description = <"*Narrative description about issues, concerns about the infant or events occurring during the neonatal period. (en)">
 				>
 				["at0172"] = <
-					text = <"*Place of outcome (en)">
-					description = <"*Place or address where the pregnancy was delivered or an other outcome of the pregnancy was treated or managed. (en)">
+					text = <"*Structured place of outcome (en)">
+					description = <"*Structured details about the  location where the pregnancy was delivered or an alternative outcome of the pregnancy was treated or managed. (en)">
 					comment = <"*For example: this data element will be renamed to 'Place of delivery' for a pregnancy that ends in the delivery of one or more newborns. (en)">
+				>
+				["at0173"] = <
+					text = <"*Place category (en)">
+					description = <"*Category of the place where the individual died. (en)">
+					comment = <"*It is strongly recommended that 'Place category' be coded with an external terminology. For example: hospital; birthing clinic; or home. (en)">
+				>
+				["at0174"] = <
+					text = <"*Pregnancy end date (en)">
+					description = <"*The date and/or time marking the end of the pregnancy. (en)">
+					comment = <"*This data element may be renamed in a template, depending on the pregnancy outcome. For example: date of delivery for a live birth or stillbirth; date of miscarriage; or date of termination. (en)">
+				>
+				["at0175"] = <
+					text = <"*Place of outcome (en)">
+					description = <"*Simple details about the  location where the pregnancy was delivered or an alternative outcome of the pregnancy was treated or managed. (en)">
+					comment = <"*For example: the name of the hospital or clinic. (en)">
 				>
 			>
 		>
