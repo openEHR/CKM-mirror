@@ -76,8 +76,8 @@ US Standard Certificate of Death [Internet]. Atlanta; Centre for Disease Control
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"9AB73EF759FABEF2FC101D6CE93B836A">
-		["build_uid"] = <"be55c8d6-fe5f-41c2-b8af-a0bf7a4a3005">
+		["MD5-CAM-1.0.1"] = <"55134B6546AAE1BB8257FA7FA8395585">
+		["build_uid"] = <"f88a43b9-f2a0-456e-af98-0a6167775663">
 		["revision"] = <"0.0.1-alpha">
 	>
 
@@ -116,9 +116,9 @@ definition
 							DV_TEXT matches {*}
 						}
 					}
-					CLUSTER[at0003] occurrences matches {0..*} matches {    -- Intermediate cause(s)
+					CLUSTER[at0003] occurrences matches {0..*} matches {    -- Antecedent cause(s)
 						items cardinality matches {1..*; unordered} matches {
-							ELEMENT[at0004] matches {    -- Intermediate cause
+							ELEMENT[at0004] matches {    -- Cause
 								value matches {
 									DV_TEXT matches {*}
 								}
@@ -157,31 +157,6 @@ definition
 									DV_DATE_TIME matches {*}
 								}
 							}
-						}
-					}
-					ELEMENT[at0022] occurrences matches {0..1} matches {    -- Underlying cause
-						value matches {
-							DV_TEXT matches {*}
-						}
-					}
-					ELEMENT[at0023] occurrences matches {0..1} matches {    -- Underlying time interval
-						value matches {
-							DV_DURATION matches {
-								value matches {|>=PT0S|}
-							}
-							DV_INTERVAL<DV_DURATION> matches {
-								lower matches {
-									DV_DURATION matches {
-										value matches {|>=PT0S|}
-									}
-								}
-								upper matches {
-									DV_DURATION matches {
-										value matches {|>=PT0S|}
-									}
-								}
-							}
-							DV_TEXT matches {*}
 						}
 					}
 					CLUSTER[at0020] occurrences matches {0..*} matches {    -- Contributing conditions
@@ -262,32 +237,32 @@ ontology
 				>
 				["at0002"] = <
 					text = <"Direct cause">
-					description = <"The disease, injury or condition that occurred immediately before death, or closest to the time of death.">
+					description = <"The disease, injury or condition that directly led to, or occurred closest to the time of death.">
 					comment = <"It is strongly recommended that 'Direct cause' be coded with an external terminology. 
 
-This data element is considered as Contributory cause A' within a death certificate recording a chain of events leading to death. For example:
+This data element may also be considered as the Cause labelled as 'A' within a death certificate recording a chain of events leading to death. For example:
 Cerebral haemorrhage (as 'Direct cause', A) 
-- 'due to' Metastasis of the brain (B);
-- 'due to' Breast cancer (as the underlying and earliest cause, C).">
+- 'due to' Metastasis of the brain ('Antecedent cause', B);
+- 'due to' Breast cancer (as the earliest 'Antecedent cause', C; or underlying cause).">
 				>
 				["at0003"] = <
-					text = <"Intermediate cause(s)">
-					description = <"Details about one or more antecedent diseases, injuries or conditions in the chain of events that led to the death, in 'due to' order and excluding the 'Underlying cause'.">
-					comment = <"In the following example, there would only need to be one instances of this 'Intermediate cause(s)' CLUSTER represented in a template':
-Cerebral haemorrhage (as 'Direct cause', A) 
-- 'due to' Metastasis of the brain (as 'Intermediate cause', B);
-- 'due to' Breast cancer (as the earliest 'Underlying cause').
-If there was more than one 'Intermediate cause', each would be represented as a separate instance of this CLUSTER, using unique order designations eg 'B', preceded by 'C' etc.">
+					text = <"Antecedent cause(s)">
+					description = <"Details about one or more diseases, injuries or conditions in the chain of events preceding death, recorded in order from most recent onset to the earliest onset.">
+					comment = <"In the following example, there would only need to be two instances of this 'Antecedent cause(s)' CLUSTER represented in a template:
+- Cerebral haemorrhage (as 'Direct cause', A) 
+- 'due to' Metastasis of the brain ('Antecedent cause', B);
+- 'due to' Breast cancer (as the earliest 'Antecedent cause', C; or underlying cause).
+If there is more than one 'Antecedent cause', each is represented as a separate instance of this CLUSTER.">
 				>
 				["at0004"] = <
-					text = <"Intermediate cause">
-					description = <"Identification of an antecedent disease, injury or condition that directly contributed to the 'Direct cause', excluding the 'Underlying cause'.">
-					comment = <"It is strongly recommended that 'Intermediate cause' be coded with an external terminology.">
+					text = <"Cause">
+					description = <"Identification of an antecedent disease, injury or condition that directly contributed to the 'Direct cause'.">
+					comment = <"It is strongly recommended that 'Cause' be coded with an external terminology.">
 				>
 				["at0005"] = <
 					text = <"Order">
-					description = <"Order of the onset of the 'Intermediate cause' in the sequence of events leading to death.">
-					comment = <"For example: the condition labelled 'B' is considered the closest cause directly contributing to the 'Direct cause'. A condition labelled as 'C' would be an earlier cause, contributing to the Intermediate cause labelled as 'B'.">
+					description = <"Order of onset of the identified 'Antecedent cause' in the chain of events leading to death.">
+					comment = <"The Cause labelled as 'B' is considered the cause that most closely preceded the 'Direct cause' and the Cause labelled as 'C' precedes 'B'. The Cause labelled as 'D' is considered the earliest Cause in the chain of events leading to death, and may also be known as the 'Underlying cause'.">
 				>
 				["at0006"] = <
 					text = <"B">
@@ -303,7 +278,7 @@ If there was more than one 'Intermediate cause', each would be represented as a 
 				>
 				["at0009"] = <
 					text = <"Time interval">
-					description = <"The time interval from onset of the identified 'Intermediate cause' to death.">
+					description = <"The time interval from onset of the identified 'Cause' to death.">
 				>
 				["at0015"] = <
 					text = <"Last updated">
@@ -324,12 +299,12 @@ If there was more than one 'Intermediate cause', each would be represented as a 
 				>
 				["at0017"] = <
 					text = <"Direct time interval">
-					description = <"Time interval from onset of the identified 'Direct cause' to death.">
+					description = <"The time interval from onset of the identified 'Direct cause' to death.">
 				>
 				["at0018"] = <
 					text = <"Condition name">
 					description = <"Other significant condition(s) contributing, but not resulting in the underlying cause of death.">
-					comment = <"It is strongly recommended that 'Other condition' be coded with an external terminology. For example: Snomed CT, ICD-10.">
+					comment = <"It is strongly recommended that 'Other condition' be coded with an external terminology.">
 				>
 				["at0019"] = <
 					text = <"Description">
@@ -342,15 +317,6 @@ If there was more than one 'Intermediate cause', each would be represented as a 
 				["at0021"] = <
 					text = <"Time interval">
 					description = <"The time interval from onset of the identified disease, injury or condition to death.">
-				>
-				["at0022"] = <
-					text = <"Underlying cause">
-					description = <"The underlying or originating disease, injury or condition that started the chain of events leading to death.">
-					comment = <"It is strongly recommended that 'Underlying cause' be coded with an external terminology.">
-				>
-				["at0023"] = <
-					text = <"Underlying time interval">
-					description = <"Time interval from onset of the identified 'Underlying cause' to death.">
 				>
 			>
 		>
@@ -370,32 +336,32 @@ If there was more than one 'Intermediate cause', each would be represented as a 
 				>
 				["at0002"] = <
 					text = <"*Direct cause (en)">
-					description = <"*The disease, injury or condition that occurred immediately before death, or closest to the time of death. (en)">
+					description = <"*The disease, injury or condition that directly led to, or occurred closest to the time of death. (en)">
 					comment = <"*It is strongly recommended that 'Direct cause' be coded with an external terminology. 
 
-This data element is considered as Contributory cause A' within a death certificate recording a chain of events leading to death. For example:
+This data element may also be considered as the Cause labelled as 'A' within a death certificate recording a chain of events leading to death. For example:
 Cerebral haemorrhage (as 'Direct cause', A) 
-- 'due to' Metastasis of the brain (B);
-- 'due to' Breast cancer (as the underlying and earliest cause, C). (en)">
+- 'due to' Metastasis of the brain ('Antecedent cause', B);
+- 'due to' Breast cancer (as the earliest 'Antecedent cause', C; or underlying cause). (en)">
 				>
 				["at0003"] = <
-					text = <"*Intermediate cause(s) (en)">
-					description = <"*Details about one or more antecedent diseases, injuries or conditions in the chain of events that led to the death, in 'due to' order and excluding the 'Underlying cause'. (en)">
-					comment = <"*In the following example, there would only need to be one instances of this 'Intermediate cause(s)' CLUSTER represented in a template':
-Cerebral haemorrhage (as 'Direct cause', A) 
-- 'due to' Metastasis of the brain (as 'Intermediate cause', B);
-- 'due to' Breast cancer (as the earliest 'Underlying cause').
-If there was more than one 'Intermediate cause', each would be represented as a separate instance of this CLUSTER, using unique order designations eg 'B', preceded by 'C' etc. (en)">
+					text = <"*Antecedent cause(s) (en)">
+					description = <"*Details about one or more diseases, injuries or conditions in the chain of events preceding death, recorded in order from most recent onset to the earliest onset. (en)">
+					comment = <"*In the following example, there would only need to be two instances of this 'Antecedent cause(s)' CLUSTER represented in a template:
+- Cerebral haemorrhage (as 'Direct cause', A) 
+- 'due to' Metastasis of the brain ('Antecedent cause', B);
+- 'due to' Breast cancer (as the earliest 'Antecedent cause', C; or underlying cause).
+If there is more than one 'Antecedent cause', each is represented as a separate instance of this CLUSTER. (en)">
 				>
 				["at0004"] = <
-					text = <"*Intermediate cause (en)">
-					description = <"*Identification of an antecedent disease, injury or condition that directly contributed to the 'Direct cause', excluding the 'Underlying cause'. (en)">
-					comment = <"*It is strongly recommended that 'Intermediate cause' be coded with an external terminology. (en)">
+					text = <"*Cause (en)">
+					description = <"*Identification of an antecedent disease, injury or condition that directly contributed to the 'Direct cause'. (en)">
+					comment = <"*It is strongly recommended that 'Cause' be coded with an external terminology. (en)">
 				>
 				["at0005"] = <
 					text = <"Rekkefølge">
-					description = <"*Order of the onset of the 'Intermediate cause' in the sequence of events leading to death. (en)">
-					comment = <"*For example: the condition labelled 'B' is considered the closest cause directly contributing to the 'Direct cause'. A condition labelled as 'C' would be an earlier cause, contributing to the Intermediate cause labelled as 'B'. (en)">
+					description = <"*Order of onset of the identified 'Antecedent cause' in the chain of events leading to death. (en)">
+					comment = <"*The Cause labelled as 'B' is considered the cause that most closely preceded the 'Direct cause' and the Cause labelled as 'C' precedes 'B'. The Cause labelled as 'D' is considered the earliest Cause in the chain of events leading to death, and may also be known as the 'Underlying cause'. (en)">
 				>
 				["at0006"] = <
 					text = <"*B (en)">
@@ -411,7 +377,7 @@ If there was more than one 'Intermediate cause', each would be represented as a 
 				>
 				["at0009"] = <
 					text = <"*Time interval (en)">
-					description = <"*The time interval from onset of the identified 'Intermediate cause' to death. (en)">
+					description = <"*The time interval from onset of the identified 'Cause' to death. (en)">
 				>
 				["at0015"] = <
 					text = <"Sist oppdatert">
@@ -432,13 +398,12 @@ If there was more than one 'Intermediate cause', each would be represented as a 
 				>
 				["at0017"] = <
 					text = <"*Direct time interval (en)">
-					description = <"*Time interval from onset of the identified 'Direct cause' to death. (en)">
+					description = <"*The time interval from onset of the identified 'Direct cause' to death. (en)">
 				>
 				["at0018"] = <
 					text = <"*Condition name (en)">
 					description = <"*Other significant condition(s) contributing, but not resulting in the underlying cause of death. (en)">
-					comment = <"Det anbefales på det sterkeste å kode \"Medvirkende årsak\" med en ekstern terminologi. For eksempel:
-Snomed CT eller ICD-10.">
+					comment = <"*It is strongly recommended that 'Other condition' be coded with an external terminology. (en)">
 				>
 				["at0019"] = <
 					text = <"Beskrivelse">
@@ -451,15 +416,6 @@ Snomed CT eller ICD-10.">
 				["at0021"] = <
 					text = <"*Time interval (en)">
 					description = <"*The time interval from onset of the identified disease, injury or condition to death. (en)">
-				>
-				["at0022"] = <
-					text = <"*Underlying cause (en)">
-					description = <"*The underlying or originating disease, injury or condition that started the chain of events leading to death. (en)">
-					comment = <"*It is strongly recommended that 'Underlying cause' be coded with an external terminology. (en)">
-				>
-				["at0023"] = <
-					text = <"*Underlying time interval (en)">
-					description = <"*Time interval from onset of the identified 'Underlying cause' to death. (en)">
 				>
 			>
 		>
