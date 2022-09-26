@@ -46,6 +46,8 @@ This archetype is designed to be nested within the 'Additional details' SLOT in 
 
 Not to be used to record imaging examination findings for any body structure or region other than a pregnant uterus. Use other archetypes from the CLUSTER.imaging_exam family for this purpose.
 
+Not to be used to record the estimated gestational age. Use OBSERVATION.gestation for this purpose.
+
 Not to be used to record details related to the overall findings, context or technical details related to a complete imaging examination test result. Use the OBERSERVATION.imaging_exam_result for this purpose. For example, comments on the study quality, differential diagnoses, and overall impression. (en)">
 		>
 		["nb"] = <
@@ -59,6 +61,8 @@ This archetype is designed to be nested within the 'Additional details' SLOT in 
 			misuse = <"*Not to be used to record non pregnancy-related imaging examination findings for the uterus. Use other archetypes from the CLUSTER.imaging_exam-uterus for this purpose.
 
 Not to be used to record imaging examination findings for any body structure or region other than a pregnant uterus. Use other archetypes from the CLUSTER.imaging_exam family for this purpose.
+
+Not to be used to record the estimated gestational age. Use OBSERVATION.gestation for this purpose.
 
 Not to be used to record details related to the overall findings, context or technical details related to a complete imaging examination test result. Use the OBERSERVATION.imaging_exam_result for this purpose. For example, comments on the study quality, differential diagnoses, and overall impression. (en)">
 		>
@@ -74,6 +78,8 @@ This archetype is designed to be nested within the 'Additional details' SLOT in 
 
 Not to be used to record imaging examination findings for any body structure or region other than a pregnant uterus. Use other archetypes from the CLUSTER.imaging_exam family for this purpose.
 
+Not to be used to record the estimated gestational age. Use OBSERVATION.gestation for this purpose.
+
 Not to be used to record details related to the overall findings, context or technical details related to a complete imaging examination test result. Use the OBERSERVATION.imaging_exam_result for this purpose. For example, comments on the study quality, differential diagnoses, and overall impression.">
 			copyright = <"© openEHR Foundation">
 		>
@@ -86,8 +92,8 @@ Not to be used to record details related to the overall findings, context or tec
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"387A945AE1209A0982C2E4E85AF842EB">
-		["build_uid"] = <"77e977f7-5246-468d-b3d7-718b4ba36c76">
+		["MD5-CAM-1.0.1"] = <"533FFE9077144E44F0A15BCE4296DC2A">
+		["build_uid"] = <"7a0f5eb9-27b1-410b-9247-78835669a129">
 		["ip_acknowledgements"] = <"This artefact includes content from SNOMED Clinical Terms® (SNOMED CT®) which is copyrighted material of the International Health Terminology Standards Development Organisation (IHTSDO). Where an implementation of this artefact makes use of SNOMED CT content, the implementer must have the appropriate SNOMED CT Affiliate license - for more information contact https://www.snomed.org/snomed-ct/get-snomed or info@snomed.org.">
 		["revision"] = <"0.0.1-alpha">
 	>
@@ -114,6 +120,20 @@ definition
 					archetype_id/value matches {/openEHR-EHR-CLUSTER\.anatomical_location(-[a-zA-Z0-9_]+)*\.v1|openEHR-EHR-CLUSTER\.anatomical_location_relative(-[a-zA-Z0-9_]+)*\.v2|openEHR-EHR-CLUSTER\.anatomical_location_circle(-[a-zA-Z0-9_]+)*\.v1/}
 			}
 			ELEMENT[at0004] occurrences matches {0..1} matches {    -- Imaging findings
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			allow_archetype CLUSTER[at0005] occurrences matches {0..*} matches {    -- Additional details
+				include
+					archetype_id/value matches {/openEHR-EHR-CLUSTER\.imaging_exam-lymph_node(-[a-zA-Z0-9_]+)*\.v0|openEHR-EHR-CLUSTER\.imaging_exam-lymph_node_group(-[a-zA-Z0-9_]+)*\.v0|openEHR-EHR-CLUSTER\.imaging_exam-lesion-adnexal_mass(-[a-zA-Z0-9_]+)*\.v0|openEHR-EHR-CLUSTER\.imaging_exam-lesion(-[a-zA-Z0-9_]+)*\.v0/}
+			}
+			ELEMENT[at0006] occurrences matches {0..*} matches {    -- Impression
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			ELEMENT[at0007] occurrences matches {0..1} matches {    -- Comment
 				value matches {
 					DV_TEXT matches {*}
 				}
@@ -168,28 +188,9 @@ definition
 					}
 				}
 			}
-			ELEMENT[at0.13] occurrences matches {0..1} matches {    -- Gestational age
-				value matches {
-					DV_DURATION matches {*}
-				}
-			}
 			allow_archetype CLUSTER[at0.11] occurrences matches {0..*} matches {    -- Placental findings
 				include
 					archetype_id/value matches {/.*/}
-			}
-			allow_archetype CLUSTER[at0005] occurrences matches {0..*} matches {    -- Additional details
-				include
-					archetype_id/value matches {/openEHR-EHR-CLUSTER\.imaging_exam-lymph_node(-[a-zA-Z0-9_]+)*\.v0|openEHR-EHR-CLUSTER\.imaging_exam-lymph_node_group(-[a-zA-Z0-9_]+)*\.v0|openEHR-EHR-CLUSTER\.imaging_exam-lesion-adnexal_mass(-[a-zA-Z0-9_]+)*\.v0|openEHR-EHR-CLUSTER\.imaging_exam-lesion(-[a-zA-Z0-9_]+)*\.v0/}
-			}
-			ELEMENT[at0006] occurrences matches {0..*} matches {    -- Impression
-				value matches {
-					DV_TEXT matches {*}
-				}
-			}
-			ELEMENT[at0007] occurrences matches {0..1} matches {    -- Comment
-				value matches {
-					DV_TEXT matches {*}
-				}
 			}
 			allow_archetype CLUSTER[at0.12] occurrences matches {0..*} matches {    -- Foetal findings
 				include
@@ -200,7 +201,6 @@ definition
 
 
 ontology
-	terminologies_available = <"SNOMED-CT", ...>
 	term_definitions = <
 		["en"] = <
 			items = <
@@ -261,10 +261,21 @@ ontology
 					text = <"Foetal findings">
 					description = <"Structured details about a single foetus.">
 				>
-				["at0.13"] = <
-					text = <"Gestational age">
-					description = <"Estimation of gestational age.">
-					comment = <"The estimation may be based on varying fetal biometry measurements depending on the phase of pregnancy.">
+				["at0.14"] = <
+					text = <"Monoamnionic">
+					description = <"One amniotic sac is observed.">
+				>
+				["at0.15"] = <
+					text = <"Diamnionic">
+					description = <"Two amniotic sacs are observed.">
+				>
+				["at0.16"] = <
+					text = <"Monochorionic">
+					description = <"One chorion or placenta is observed.">
+				>
+				["at0.17"] = <
+					text = <"Dichorionic">
+					description = <"Two chorions or placentas are observed.">
 				>
 				["at0000"] = <
 					text = <"Imaging examination of a body structure">
@@ -301,22 +312,6 @@ ontology
 				["at0007"] = <
 					text = <"Comment">
 					description = <"Additional narrative about the imaging findings of the body structure, not captured in other fields.">
-				>
-				["at0.14"] = <
-					text = <"Monoamnionic">
-					description = <"One amniotic sac is observed.">
-				>
-				["at0.15"] = <
-					text = <"Diamnionic">
-					description = <"Two amniotic sacs are observed.">
-				>
-				["at0.16"] = <
-					text = <"Monochorionic">
-					description = <"One chorion or placenta is observed.">
-				>
-				["at0.17"] = <
-					text = <"Dichorionic">
-					description = <"Two chorions or placentas are observed.">
 				>
 			>
 		>
@@ -379,10 +374,21 @@ ontology
 					text = <"*Foetal findings (en)">
 					description = <"*Structured details about a single foetus. (en)">
 				>
-				["at0.13"] = <
-					text = <"*Gestational age (en)">
-					description = <"*Estimation of gestational age. (en)">
-					comment = <"*The estimation may be based on varying fetal biometry measurements depending on the phase of pregnancy. (en)">
+				["at0.14"] = <
+					text = <"*Monoamnionic (en)">
+					description = <"*One amniotic sac is observed. (en)">
+				>
+				["at0.15"] = <
+					text = <"*Diamnionic (en)">
+					description = <"*Two amniotic sacs are observed. (en)">
+				>
+				["at0.16"] = <
+					text = <"*Monochorionic (en)">
+					description = <"*One chorion or placenta is observed. (en)">
+				>
+				["at0.17"] = <
+					text = <"*Dichorionic (en)">
+					description = <"*Two chorions or placentas are observed. (en)">
 				>
 				["at0000"] = <
 					text = <"Bildediagnostisk undersøkelse - kroppsstruktur">
@@ -419,22 +425,6 @@ ontology
 				["at0007"] = <
 					text = <"Kommentar">
 					description = <"Ytterligere fritekst om funn eller observasjoner på bilder av kroppsstrukturen og som ikke er fanget i andre felt.">
-				>
-				["at0.14"] = <
-					text = <"*Monoamnionic (en)">
-					description = <"*One amniotic sac is observed. (en)">
-				>
-				["at0.15"] = <
-					text = <"*Diamnionic (en)">
-					description = <"*Two amniotic sacs are observed. (en)">
-				>
-				["at0.16"] = <
-					text = <"*Monochorionic (en)">
-					description = <"*One chorion or placenta is observed. (en)">
-				>
-				["at0.17"] = <
-					text = <"*Dichorionic (en)">
-					description = <"*Two chorions or placentas are observed. (en)">
 				>
 			>
 		>
@@ -497,10 +487,21 @@ ontology
 					text = <"*Foetal findings (en)">
 					description = <"*Structured details about a single foetus. (en)">
 				>
-				["at0.13"] = <
-					text = <"*Gestational age (en)">
-					description = <"*Estimation of gestational age. (en)">
-					comment = <"*The estimation may be based on varying fetal biometry measurements depending on the phase of pregnancy. (en)">
+				["at0.14"] = <
+					text = <"*Monoamnionic (en)">
+					description = <"*One amniotic sac is observed. (en)">
+				>
+				["at0.15"] = <
+					text = <"*Diamnionic (en)">
+					description = <"*Two amniotic sacs are observed. (en)">
+				>
+				["at0.16"] = <
+					text = <"*Monochorionic (en)">
+					description = <"*One chorion or placenta is observed. (en)">
+				>
+				["at0.17"] = <
+					text = <"*Dichorionic (en)">
+					description = <"*Two chorions or placentas are observed. (en)">
 				>
 				["at0000"] = <
 					text = <"Bildgebende Untersuchung einer Körperstruktur">
@@ -538,29 +539,6 @@ ontology
 					text = <"Kommentar">
 					description = <"Zusätzlicher Text über die bildgebenden Befunde der Körperstruktur, der in anderen Bereichen nicht erfasst wurde.">
 				>
-				["at0.14"] = <
-					text = <"*Monoamnionic (en)">
-					description = <"*One amniotic sac is observed. (en)">
-				>
-				["at0.15"] = <
-					text = <"*Diamnionic (en)">
-					description = <"*Two amniotic sacs are observed. (en)">
-				>
-				["at0.16"] = <
-					text = <"*Monochorionic (en)">
-					description = <"*One chorion or placenta is observed. (en)">
-				>
-				["at0.17"] = <
-					text = <"*Dichorionic (en)">
-					description = <"*Two chorions or placentas are observed. (en)">
-				>
-			>
-		>
-	>
-	term_bindings = <
-		["SNOMED-CT"] = <
-			items = <
-				["at0.1"] = <[SNOMED-CT::71252005]>
 			>
 		>
 	>
