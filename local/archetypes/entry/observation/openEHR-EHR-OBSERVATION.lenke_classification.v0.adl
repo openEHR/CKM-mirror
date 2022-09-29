@@ -1,0 +1,211 @@
+﻿archetype (adl_version=1.4; uid=0da346fc-d389-4f4c-b35a-efebf169940f)
+	openEHR-EHR-OBSERVATION.lenke_classification.v0
+
+concept
+	[at0000]	-- The Lenke classification system for AIS
+language
+	original_language = <[ISO_639-1::en]>
+description
+	original_author = <
+		["name"] = <"John Tore Valand">
+		["organisation"] = <"Helse Vest IKT AS">
+		["email"] = <"john.tore.valand@helse-vest-ikt.no">
+		["date"] = <"2022-06-17">
+	>
+	details = <
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To record the results for each component parameter and the classification for the Lenke classification system.">
+			use = <"Use to record the results for each component parameter and the classification for the Lenke classification system.">
+			keywords = <"scoliosis, orthopedics", ...>
+			misuse = <"">
+			copyright = <"© openEHR Foundation">
+		>
+	>
+	lifecycle_state = <"in_development">
+	other_contributors = <>
+	other_details = <
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
+		["custodian_organisation"] = <"openEHR Foundation">
+		["references"] = <"https://unn.no/documents/kvalitetsregistre/nasjonalt%20kvalitetsregister%20for%20ryggkirurgi/skjema/deformitet/090281_rygg_deformitet_skjema_2a.pdf
+
+https://surgeryreference.aofoundation.org/spine/deformities/adolescent-idiopathic-scoliosis/further-reading/lenke-classification#determination-of-sagittal-modifiers
+
+https://books.google.no/books?hl=no&lr=&id=lERmDwAAQBAJ&oi=fnd&pg=PA173&ots=I_D2DIdhnO&sig=9zdY0TdFixIS-uN2sPTLifWTQc8&redir_esc=y#v=onepage&q&f=false
+
+Lenke LG, Betz RR, Harms J, Bridwell KH, Clements DH, Lowe TG, Blanke K. Adolescent idiopathic scoliosis: a new classification to determine extent of spinal arthrodesis. J Bone Joint Surg Am. 2001;83:1169–1181.
+
+https://journals.lww.com/spinejournal/fulltext/2003/10151/the_lenke_classification_of_adolescent_idiopathic.15.aspx">
+		["original_namespace"] = <"org.openehr">
+		["original_publisher"] = <"openEHR Foundation">
+		["custodian_namespace"] = <"org.openehr">
+		["MD5-CAM-1.0.1"] = <"32D971E63C2335B6887159E0F9DAE55C">
+		["build_uid"] = <"279c0423-36db-4a20-a20f-323c10bd8280">
+		["revision"] = <"0.0.1-alpha">
+	>
+
+definition
+	OBSERVATION[at0000] matches {    -- The Lenke classification system for AIS
+		data matches {
+			HISTORY[at0001] matches {    -- History
+				events cardinality matches {1..*; unordered} matches {
+					EVENT[at0002] occurrences matches {0..*} matches {    -- Any event
+						data matches {
+							ITEM_TREE[at0003] matches {    -- Tree
+								items cardinality matches {0..*; unordered} matches {
+									ELEMENT[at0004] occurrences matches {0..1} matches {    -- Curve type
+										value matches {
+											1|[local::at0005],
+											2|[local::at0006],
+											3|[local::at0007],
+											4|[local::at0008],
+											5|[local::at0009],
+											6|[local::at0010]
+										}
+									}
+									ELEMENT[at0011] occurrences matches {0..1} matches {    -- Lumbar Spine Modifier
+										value matches {
+											DV_CODED_TEXT matches {
+												defining_code matches {
+													[local::
+													at0012,    -- A
+													at0013,    -- B
+													at0014]    -- C
+												}
+											}
+										}
+									}
+									ELEMENT[at0015] occurrences matches {0..1} matches {    -- Thoracic Sagittal Modifier
+										value matches {
+											DV_CODED_TEXT matches {
+												defining_code matches {
+													[local::
+													at0016,    -- - (Hypo)
+													at0017,    -- N (Normal)
+													at0018]    -- + (Hyper)
+												}
+											}
+										}
+									}
+									ELEMENT[at0019] occurrences matches {0..1} matches {    -- Curve classification
+										value matches {
+											DV_TEXT matches {*}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		protocol matches {
+			ITEM_TREE[at0021] matches {    -- Item tree
+				items cardinality matches {0..*; unordered} matches {
+					allow_archetype CLUSTER[at0020] occurrences matches {0..*} matches {    -- Extension
+						include
+							archetype_id/value matches {/.*/}
+					}
+				}
+			}
+		}
+	}
+
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"The Lenke classification system for AIS">
+					description = <"A system for classification of adolescent idiopathic scoliosis.">
+				>
+				["at0001"] = <
+					text = <"History">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Any event">
+					description = <"Default, unspecified point in time or interval event which may be explicitly defined in a template or at run-time.">
+				>
+				["at0003"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0004"] = <
+					text = <"Curve type">
+					description = <"Based on evaluation of each of the three major spinal column regions; Proximal Thoracic, Main Thoracic, and Thoracolumbar/Lumbar.">
+				>
+				["at0005"] = <
+					text = <"Main Thoracic">
+					description = <"">
+				>
+				["at0006"] = <
+					text = <"Double Thoracic">
+					description = <"">
+				>
+				["at0007"] = <
+					text = <"Double Major">
+					description = <"">
+				>
+				["at0008"] = <
+					text = <"Triple Major">
+					description = <"">
+				>
+				["at0009"] = <
+					text = <"Thoracolumbar/Lumbar">
+					description = <"">
+				>
+				["at0010"] = <
+					text = <"Thoracolumbar/Lumbar-Main Thoracic">
+					description = <"">
+				>
+				["at0011"] = <
+					text = <"Lumbar Spine Modifier">
+					description = <"Based on the position of the center sacral vertical line (CSVL) to the apex of the lumbar curve.">
+				>
+				["at0012"] = <
+					text = <"A">
+					description = <"Between pedicles">
+				>
+				["at0013"] = <
+					text = <"B">
+					description = <"Touches apical body(ies)">
+				>
+				["at0014"] = <
+					text = <"C">
+					description = <"Completly medial">
+				>
+				["at0015"] = <
+					text = <"Thoracic Sagittal Modifier">
+					description = <"Based on the T5–T12 sagittal Cobb measurement on the standing lateral radiograph.">
+				>
+				["at0016"] = <
+					text = <"- (Hypo)">
+					description = <"< 10°">
+				>
+				["at0017"] = <
+					text = <"N (Normal)">
+					description = <"10° - 40°">
+				>
+				["at0018"] = <
+					text = <"+ (Hyper)">
+					description = <"< 40°">
+				>
+				["at0019"] = <
+					text = <"Curve classification">
+					description = <"Curve type (1-6) + Lumbar Spine Modifier (A, B, C) + Thoracic saggital profile (-, N, +)">
+					comment = <"For example: 1B+">
+				>
+				["at0020"] = <
+					text = <"Extension">
+					description = <"Additional information required to capture local content or to align with other reference models/formalisms.">
+					comment = <"e.g. Local information requirements or additional metadata to align with FHIR or CIMI equivalents.">
+				>
+				["at0021"] = <
+					text = <"Item tree">
+					description = <"@ internal @">
+				>
+			>
+		>
+	>
