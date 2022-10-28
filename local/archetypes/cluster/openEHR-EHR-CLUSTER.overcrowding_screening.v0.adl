@@ -2,7 +2,7 @@
 	openEHR-EHR-CLUSTER.overcrowding_screening.v0
 
 concept
-	[at0000]	-- Overcrowding screening
+	[at0000]	-- Household crowding
 language
 	original_language = <[ISO_639-1::en]>
 	translations = <
@@ -33,21 +33,36 @@ description
 	details = <
 		["de"] = <
 			language = <[ISO_639-1::de]>
-			purpose = <"Zur Darstellung der Screening-Parameter, mit derer Hilfe festgestellt werden kann, wann ein Wohnraum für die Größe und Zusammensetzung der darin lebenden Hausgemeinschaft zu klein ist.">
-			use = <"Verwenden Sie diesen Archetyp, um Screening-Parameter darzustellen, mit deren Hilfe festgestellt werden kann, wann ein Wohnraum für die Größe und Zusammensetzung der darin lebenden Hausgemeinschaft zu klein ist.">
+			purpose = <"*To record parameters used to identify a mismatch between the number of available rooms in a dwelling and the composition of the household. (en)">
+			use = <"*Use to record parameters used to identify a mismatch between the number of available rooms in a dwelling and the composition of the household.
+
+The identification of crowding, or overcrowding, is complex and varies between jurisdictions. It is usually assessed based on the number of people sharing the dwelling, their ages, their relationship and their gender. See https://www.ncbi.nlm.nih.gov/books/NBK535289/table/ch3.tab2/ for a range of examples.
+
+This archetype has been designed to be nested within the EVALUATION.living_arrangement, the EVALUATION.housing_summary or the CLUSTER.housing_record archetypes. (en)">
+			keywords = <"*overcrowding (en)", ...>
 			misuse = <"">
 		>
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"To record screening parameters that help to identify when a dwelling is too small for the size and composition of the household living in it.">
-			use = <"Use to record screening parameters that help to identify when a dwelling is too small for the size and composition of the household living in it.">
+			purpose = <"To record parameters used to identify a mismatch between the number of available rooms in a dwelling and the composition of the household.">
+			use = <"Use to record parameters used to identify a mismatch between the number of available rooms in a dwelling and the composition of the household.
+
+The identification of crowding, or overcrowding, is complex and varies between jurisdictions. It is usually assessed based on the number of people sharing the dwelling, their ages, their relationship and their gender. See https://www.ncbi.nlm.nih.gov/books/NBK535289/table/ch3.tab2/ for a range of examples.
+
+This archetype has been designed to be nested within the EVALUATION.living_arrangement, the EVALUATION.housing_summary or the CLUSTER.housing_record archetypes.">
+			keywords = <"overcrowding", ...>
 			misuse = <"">
 			copyright = <"© openEHR Foundation">
 		>
 		["it"] = <
 			language = <[ISO_639-1::it]>
-			purpose = <"Registrare i parametri di screening che aiutano a identificare quando un'abitazione è troppo piccola per le dimensioni e la composizione della famiglia che la abita.">
-			use = <"Utilizzate per registrare i parametri di screening che aiutano a identificare quando un'abitazione è troppo piccola per le dimensioni e la composizione della famiglia che la abita.">
+			purpose = <"*To record parameters used to identify a mismatch between the number of available rooms in a dwelling and the composition of the household. (en)">
+			use = <"*Use to record parameters used to identify a mismatch between the number of available rooms in a dwelling and the composition of the household.
+
+The identification of crowding, or overcrowding, is complex and varies between jurisdictions. It is usually assessed based on the number of people sharing the dwelling, their ages, their relationship and their gender. See https://www.ncbi.nlm.nih.gov/books/NBK535289/table/ch3.tab2/ for a range of examples.
+
+This archetype has been designed to be nested within the EVALUATION.living_arrangement, the EVALUATION.housing_summary or the CLUSTER.housing_record archetypes. (en)">
+			keywords = <"*overcrowding (en)", ...>
 			misuse = <"">
 		>
 	>
@@ -56,25 +71,48 @@ description
 	other_details = <
 		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
 		["custodian_organisation"] = <"openEHR Foundation">
+		["references"] = <"WHO Housing and Health Guidelines. Geneva: World Health Organization; 2018. 3, Household crowding. Available from: https://www.ncbi.nlm.nih.gov/books/NBK535289/.">
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"CB033F5A65AD8D6F639DB1B7779CA9E8">
-		["build_uid"] = <"60ccda60-9114-44d9-ad4f-23622a841574">
+		["MD5-CAM-1.0.1"] = <"29D3EFABF55F6F22DF35F8577683A4D9">
+		["build_uid"] = <"d185e1d6-d61f-42ea-816f-b455396376de">
 		["revision"] = <"0.0.1-alpha">
 	>
 
 definition
-	CLUSTER[at0000] matches {    -- Overcrowding screening
+	CLUSTER[at0000] matches {    -- Household crowding
 		items cardinality matches {1..*; unordered} matches {
-			ELEMENT[at0001] occurrences matches {0..1} matches {    -- Persons per room
+			ELEMENT[at0004] occurrences matches {0..1} matches {    -- Description
 				value matches {
-					DV_COUNT matches {*}
+					DV_TEXT matches {*}
 				}
 			}
-			ELEMENT[at0002] occurrences matches {0..1} matches {    -- Persons per bedroom
+			ELEMENT[at0005] occurrences matches {0..1} matches {    -- Status
 				value matches {
-					DV_COUNT matches {*}
+					DV_CODED_TEXT matches {
+						defining_code matches {
+							[local::
+							at0006,    -- No crowding
+							at0007,    -- Crowding
+							at0008]    -- Severe crowding
+						}
+					}
+					DV_TEXT matches {*}
+				}
+			}
+			ELEMENT[at0003] occurrences matches {0..1} matches {    -- Number of rooms
+				value matches {
+					DV_COUNT matches {
+						magnitude matches {|>=0|}
+					}
+				}
+			}
+			ELEMENT[at0001] occurrences matches {0..1} matches {    -- Persons per room
+				value matches {
+					DV_COUNT matches {
+						magnitude matches {|>=0|}
+					}
 				}
 			}
 		}
@@ -86,48 +124,114 @@ ontology
 		["en"] = <
 			items = <
 				["at0000"] = <
-					text = <"Overcrowding screening">
-					description = <"Screening to identify when a dwelling is too small for the size and composition of the household living in it.">
+					text = <"Household crowding">
+					description = <"A mismatch between the number of available rooms in a dwelling and the composition of the household.">
 				>
 				["at0001"] = <
 					text = <"Persons per room">
-					description = <"Number of people per room in a dwelling.">
+					description = <"Number of household members per available room.">
+					comment = <"In most situations, this will be assessed as the number of household members per room that can be used for sleeping.">
 				>
-				["at0002"] = <
-					text = <"Persons per bedroom">
-					description = <"Number of people per bedroom in a dwelling.">
+				["at0003"] = <
+					text = <"Number of rooms">
+					description = <"Number of habitable rooms available to the household.">
+					comment = <"The definition of an available, or habitable, 'room' varies enormously. In some jurisdictions it refers to the number of available bedrooms, but often needs a broader definition. In most situations definitions exclude the kitchen, bathrooms, balconies, porches, foyers, hall-ways and half-rooms. In a shared dwelling containing more than one household, the number of rooms available to a household will be a subset of the total number of rooms within the dwelling.">
+				>
+				["at0004"] = <
+					text = <"Description">
+					description = <"Narrative description about household crowding.">
+				>
+				["at0005"] = <
+					text = <"Status">
+					description = <"Assessed crowding status.">
+				>
+				["at0006"] = <
+					text = <"No crowding">
+					description = <"The number of occupants is appropriate for the available dwelling space.">
+				>
+				["at0007"] = <
+					text = <"Crowding">
+					description = <"The number of occupants exceeds the available dwelling space. May also be known as 'Overcrowding'.">
+				>
+				["at0008"] = <
+					text = <"Severe crowding">
+					description = <"The number of occupants markedly exceeds the available dwelling space. May also be known as 'Critical overcrowding'.">
 				>
 			>
 		>
 		["de"] = <
 			items = <
 				["at0000"] = <
-					text = <"Überprüfung der Überbelegung">
-					description = <"Screening zur Festlegung, wann ein Wohnraum für die Größe und Zusammensetzung der darin lebenden Hausgemeinschaft zu klein ist.">
+					text = <"*Household crowding (en)">
+					description = <"*A mismatch between the number of available rooms in a dwelling and the composition of the household. (en)">
 				>
 				["at0001"] = <
 					text = <"Personen pro Zimmer">
-					description = <"Anzahl der Personen pro Zimmer in einer Wohnung/einem Haus.">
+					description = <"*Number of household members per available room. (en)">
+					comment = <"*In most situations, this will be assessed as the number of household members per room that can be used for sleeping. (en)">
 				>
-				["at0002"] = <
-					text = <"Personen pro Schlafzimmer">
-					description = <"Anzahl der Personen pro Schlafzimmer in einer Wohnung/einem Haus.">
+				["at0003"] = <
+					text = <"*Number of rooms (en)">
+					description = <"*Number of habitable rooms available to the household. (en)">
+					comment = <"*The definition of an available, or habitable, 'room' varies enormously. In some jurisdictions it refers to the number of available bedrooms, but often needs a broader definition. In most situations definitions exclude the kitchen, bathrooms, balconies, porches, foyers, hall-ways and half-rooms. In a shared dwelling containing more than one household, the number of rooms available to a household will be a subset of the total number of rooms within the dwelling. (en)">
+				>
+				["at0004"] = <
+					text = <"*Description (en)">
+					description = <"*Narrative description about household crowding. (en)">
+				>
+				["at0005"] = <
+					text = <"*Status (en)">
+					description = <"*Assessed crowding status. (en)">
+				>
+				["at0006"] = <
+					text = <"*No crowding (en)">
+					description = <"*The number of occupants is appropriate for the available dwelling space. (en)">
+				>
+				["at0007"] = <
+					text = <"*Crowding (en)">
+					description = <"*The number of occupants exceeds the available dwelling space. May also be known as 'Overcrowding'. (en)">
+				>
+				["at0008"] = <
+					text = <"*Severe crowding (en)">
+					description = <"*The number of occupants markedly exceeds the available dwelling space. May also be known as 'Critical overcrowding'. (en)">
 				>
 			>
 		>
 		["it"] = <
 			items = <
 				["at0000"] = <
-					text = <"Controllo del sovraffollamento">
-					description = <"Controllo per identificare quando un'abitazione è troppo piccola per le dimensioni e la composizione della famiglia che la abita.">
+					text = <"*Household crowding (en)">
+					description = <"*A mismatch between the number of available rooms in a dwelling and the composition of the household. (en)">
 				>
 				["at0001"] = <
 					text = <"Persone per stanza">
-					description = <"Numero di persone per stanza in un'abitazione.">
+					description = <"*Number of household members per available room. (en)">
+					comment = <"*In most situations, this will be assessed as the number of household members per room that can be used for sleeping. (en)">
 				>
-				["at0002"] = <
-					text = <"Persone per stanza da letto">
-					description = <"Numero di persone per stanza da letto in un'abitazione.">
+				["at0003"] = <
+					text = <"*Number of rooms (en)">
+					description = <"*Number of habitable rooms available to the household. (en)">
+					comment = <"*The definition of an available, or habitable, 'room' varies enormously. In some jurisdictions it refers to the number of available bedrooms, but often needs a broader definition. In most situations definitions exclude the kitchen, bathrooms, balconies, porches, foyers, hall-ways and half-rooms. In a shared dwelling containing more than one household, the number of rooms available to a household will be a subset of the total number of rooms within the dwelling. (en)">
+				>
+				["at0004"] = <
+					text = <"*Description (en)">
+					description = <"*Narrative description about household crowding. (en)">
+				>
+				["at0005"] = <
+					text = <"*Status (en)">
+					description = <"*Assessed crowding status. (en)">
+				>
+				["at0006"] = <
+					text = <"*No crowding (en)">
+					description = <"*The number of occupants is appropriate for the available dwelling space. (en)">
+				>
+				["at0007"] = <
+					text = <"*Crowding (en)">
+					description = <"*The number of occupants exceeds the available dwelling space. May also be known as 'Overcrowding'. (en)">
+				>
+				["at0008"] = <
+					text = <"*Severe crowding (en)">
+					description = <"*The number of occupants markedly exceeds the available dwelling space. May also be known as 'Critical overcrowding'. (en)">
 				>
 			>
 		>
