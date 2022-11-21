@@ -83,8 +83,8 @@ This archetype has been designed to be used as a screening tool or to record sim
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"26A08B6000CF5C752979B7851724F379">
-		["build_uid"] = <"5450658c-e367-4a88-8ad6-f3a78bea2d2d">
+		["MD5-CAM-1.0.1"] = <"4F12124DCBCBFECEFB41428A133BDC25">
+		["build_uid"] = <"8c1967bf-04e3-4f4e-aeae-1f6429d9c8c7">
 		["ip_acknowledgements"] = <"This artefact includes content from SNOMED Clinical Terms® (SNOMED CT®) which is copyrighted material of the International Health Terminology Standards Development Organisation (IHTSDO). Where an implementation of this artefact makes use of SNOMED CT content, the implementer must have the appropriate SNOMED CT Affiliate license - for more information contact http://www.snomed.org/snomed-ct/get-snomedct or info@snomed.org.">
 		["revision"] = <"0.0.1-alpha">
 	>
@@ -103,6 +103,11 @@ definition
 											DV_TEXT matches {*}
 										}
 									}
+									ELEMENT[at0020] occurrences matches {0..1} matches {    -- Name of agent
+										value matches {
+											DV_TEXT matches {*}
+										}
+									}
 									ELEMENT[at0005] occurrences matches {0..1} matches {    -- Any exposure?
 										value matches {
 											DV_CODED_TEXT matches {
@@ -114,6 +119,7 @@ definition
 												}
 											}
 											DV_TEXT matches {*}
+											DV_BOOLEAN matches {*}
 										}
 									}
 									CLUSTER[at0009] occurrences matches {0..*} matches {    -- Specific exposure
@@ -123,7 +129,7 @@ definition
 													DV_TEXT matches {*}
 												}
 											}
-											ELEMENT[at0011] occurrences matches {0..1} matches {    -- Exposure?
+											ELEMENT[at0011] occurrences matches {0..1} matches {    -- Potential exposure?
 												value matches {
 													DV_CODED_TEXT matches {
 														defining_code matches {
@@ -134,17 +140,21 @@ definition
 														}
 													}
 													DV_TEXT matches {*}
+													DV_BOOLEAN matches {*}
 												}
 											}
-											ELEMENT[at0015] occurrences matches {0..*} matches {    -- Date of exposure
+											ELEMENT[at0015] occurrences matches {0..*} matches {    -- Timing
 												value matches {
 													DV_DATE_TIME matches {*}
 													DV_INTERVAL<DV_DATE_TIME> matches {*}
+													DV_CODED_TEXT matches {*}
+													DV_DURATION matches {*}
+													DV_INTERVAL<DV_DURATION> matches {*}
 												}
 											}
-											allow_archetype CLUSTER[at0016] occurrences matches {0..*} matches {    -- Screening details
+											allow_archetype CLUSTER[at0016] occurrences matches {0..*} matches {    -- Additional details
 												include
-													archetype_id/value matches {/.*/}
+													archetype_id/value matches {/openEHR-EHR-CLUSTER\.person(-[a-zA-Z0-9_]+)*\.v1|openEHR-EHR-CLUSTER\.address(-[a-zA-Z0-9_]+)*\.v1|openEHR-EHR-CLUSTER\.organisation(-[a-zA-Z0-9_]+)*\.v1/}
 											}
 											ELEMENT[at0017] occurrences matches {0..1} matches {    -- Comment
 												value matches {
@@ -171,7 +181,6 @@ definition
 			}
 		}
 	}
-
 
 
 ontology
@@ -214,7 +223,7 @@ ontology
 					comment = <"For example: Travel to an 'at risk' location; exposure to infected body fluids; or worked as a dental technician. Coding of 'Exposure situation' with a terminology is preferred, where possible.">
 				>
 				["at0011"] = <
-					text = <"Exposure?">
+					text = <"Potential exposure?">
 					description = <"Presence of the exposure situation.">
 				>
 				["at0012"] = <
@@ -255,13 +264,18 @@ ontology
 					description = <"It is not known whether the individual has been exposed to the harmful agent.">
 				>
 				["at0016"] = <
-					text = <"Screening details">
-					description = <"Additional details or questions about the specific exposure event.">
+					text = <"Additional details">
+					description = <"Additional details about the specific exposure event, location or associated contacts.">
 				>
 				["at0015"] = <
-					text = <"Date of exposure">
+					text = <"Timing">
 					description = <"The date/s when the individual was exposed to the agent.">
 					comment = <"Can be a partial date, for example, only a year.">
+				>
+				["at0020"] = <
+					text = <"Name of agent">
+					description = <"Name of the chemical, physical or biological agent that has potential to cause harm to an individual on exposure.">
+					comment = <"For example: noise, cigarette smoke or a virus.">
 				>
 			>
 		>
@@ -302,7 +316,7 @@ ontology
 					comment = <"For eksempel: Reist til et \"utsatt\" sted; eksponering for infiserte kroppsvæsker; eller jobbet som tanntekniker. Koding av \"Eksponeringssituasjon\" med en terminologi er å foretrekke, der det er mulig.">
 				>
 				["at0011"] = <
-					text = <"Eksponering?">
+					text = <"*Potential exposure? (en)">
 					description = <"Tilstedeværelse av eksponeringsforhold.">
 				>
 				["at0012"] = <
@@ -343,13 +357,18 @@ ontology
 					description = <"*It is not known whether the individual has been exposed to the harmful agent. (en)">
 				>
 				["at0016"] = <
-					text = <"Screening detaljer">
-					description = <"Ytterligere detaljer eller spørsmål om eksponeringsforholdet.">
+					text = <"*Additional details (en)">
+					description = <"*Additional details about the specific exposure event, location or associated contacts. (en)">
 				>
 				["at0015"] = <
-					text = <"Eksponeringsdato">
+					text = <"*Timing (en)">
 					description = <"Dato(er) da individet ble eksponert for agensen.">
 					comment = <"Kan være en deldato, for eksempel kun et årstall.">
+				>
+				["at0020"] = <
+					text = <"*Name of agent (en)">
+					description = <"*Name of the chemical, physical or biological agent that has potential to cause harm to an individual on exposure. (en)">
+					comment = <"*For example: noise, cigarette smoke or a virus. (en)">
 				>
 			>
 		>
@@ -402,7 +421,7 @@ ontology
 					comment = <"Zum Beispiel: Reisen zu einem gefährdeten Ort; Exposition gegenüber infizierten Körperflüssigkeiten oder als Zahntechniker gearbeitet. Wenn möglich, wird die Codierung der Expositionssituation mit einer Terminologie bevorzugt.">
 				>
 				["at0011"] = <
-					text = <"Exposition?">
+					text = <"*Potential exposure? (en)">
 					description = <"Vorhandensein der Expositionssituation.">
 				>
 				["at0012"] = <
@@ -418,13 +437,13 @@ ontology
 					description = <"Es ist nicht bekannt, ob die betreffende Person exponiert wurde.">
 				>
 				["at0015"] = <
-					text = <"Datum der Exposition">
+					text = <"*Timing (en)">
 					description = <"Das Datum/die Daten, an dem/denen die Person dem Stoff ausgesetzt war.">
 					comment = <"Kann ein Zeitraum sein, zum Beispiel nur ein Jahr.">
 				>
 				["at0016"] = <
-					text = <"Details zum Screening">
-					description = <"Zusätzliche Details oder Fragen zu dem spezifischen Expositionsereignis.">
+					text = <"*Additional details (en)">
+					description = <"*Additional details about the specific exposure event, location or associated contacts. (en)">
 				>
 				["at0017"] = <
 					text = <"Kommentar">
@@ -438,6 +457,11 @@ ontology
 					text = <"Erweiterung">
 					description = <"Zusätzliche Informationen zur Erfassung lokaler Inhalte oder Anpassung an andere Referenzmodelle/Formalismen.">
 					comment = <"Zum Beispiel: Lokaler Informationsbedarf oder zusätzliche Metadaten zur Anpassung an FHIR-Ressourcen oder CIMI-Modelle.">
+				>
+				["at0020"] = <
+					text = <"*Name of agent (en)">
+					description = <"*Name of the chemical, physical or biological agent that has potential to cause harm to an individual on exposure. (en)">
+					comment = <"*For example: noise, cigarette smoke or a virus. (en)">
 				>
 			>
 		>
