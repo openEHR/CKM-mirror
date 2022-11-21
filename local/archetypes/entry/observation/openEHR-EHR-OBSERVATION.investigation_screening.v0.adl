@@ -1,0 +1,297 @@
+﻿archetype (adl_version=1.4; uid=2810fae8-aef1-4fb6-89ff-e5496a76ad82)
+	openEHR-EHR-OBSERVATION.investigation_screening.v0
+
+concept
+	[at0000]	-- Diagnostic investigation screening questionnaire
+language
+	original_language = <[ISO_639-1::en]>
+description
+	original_author = <
+		["name"] = <"Heather Leslie">
+		["organisation"] = <"Atomica Informatics">
+		["email"] = <"heather.leslie@atomicainformatics.com">
+		["date"] = <"2022-10-21">
+	>
+	details = <
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To create a framework for recording answers to pre-defined screening questions about the use of any specified diagnostic investigation or grouping of investigations.">
+			use = <"Use to create a framework for recording answers to pre-defined screening questions about the use of any specified diagnostic investigation or grouping of investigations.
+
+Common use cases include, but are not limited to:
+- Systematic questioning in any consultation related to patterns of investigation administration, for example:
+--- Have you ever had your cholesterol level tested? Yes, No, Unknown.
+--- Have you been tested for rubella antibodies? Yes, No, Unknown.
+--- Have you ever been screened for sickle cell disease? Yes, No, Unknown.
+- When was your last Chest X-ray?
+- When was your most recent INR test?
+
+The semantics of this archetype are intentionally loose, and querying this archetype would normally only be useful or safe within the context of each specific template. In a template, each data element would usually be renamed to the specific question asked. Where value sets have been proposed for common use cases, these can be adapted for local use by using the DV_TEXT or the DV_BOOLEAN datatypes choice to match each specific use case.
+
+The EVENT structure from the reference model can be used to specify whether the questions relate to a point in time or over a period of time. Use a separate instance of this archetype to distinguish between a questionnaire recording information about a medication that has been used at any time in the past and information about a medication used within a specified time interval - for example the difference between \"Have you ever had an INR test?\" compared to \"Have you had an INR test during the last four weeks?\".
+
+The source of the information in a questionnaire response may vary in different contexts but can be specifically identified using the 'Information provider' element in the Reference Model.
+
+This archetype has been designed to be used as a screening tool or to record simple questionnaire-format data for use in situations such as a disease registry. If the screening questionnaire identifies an investigation has been carried out, it is recommended that the clinical system record and persist the specific details about the investigation using a relevant archetype.">
+			keywords = <"investigation, screening, questionnaire, prevention, imaging, laboratory, pathology, blood, sample, sputum", ...>
+			misuse = <"Not to be used for recording an order for an investigation - use INSTRUCTION.service_request for this purpose.
+
+Not to be used for recording the progress of activities performed as part of an investigation - use ACTION.laboratory_test for this purpose.
+
+Not to be used to record formal diagnostic test results - use the OBSERVATION.laboratory_test_result or OBSERVATION.imaging_examination_result for this purpose.">
+			copyright = <"© openEHR Foundation">
+		>
+	>
+	lifecycle_state = <"in_development">
+	other_contributors = <"Vebjørn Arntzen, Oslo University Hospital, Norway (openEHR Editor)", "Astrid Askeland, Dips AS, Norway", "Silje Ljosland Bakke, Helse Vest IKT AS, Norway (openEHR Editor)", "SB Bhattacharyya, Bhattacharyyas Clinical Records Research & Informatics LLP, India", "Randi Brendberg, Helse Nord RHF, Norway", "Yexuan Cheng, 浙江大学, China", "Are Edvardsen, SKDE, Helse Nord RHF, Norway", "Alexander Eikrem-Lüthi, Lovisenberg Diakonale Sykehus, Norway", "Kåre Flø, DIPS ASA, Norway", "Grant Forrest, Lunaria Ltd, United Kingdom", "Anca Heyd, DIPS ASA, Norway", "Joost Holslag, Nedap, Netherlands", "Evelyn Hovenga, EJSH Consulting, Australia", "Mikkel Johan Gaup Grønmo, Regional forvaltning EPJ, Helse Nord, Norway", "Gunnar Jårvik, Helse Vest IKT AS, Norway", "Anjali Kulkarni, Karkinos, India", "Kanika Kuwelker, Helse Vest IKT, Norway", "Jörgen Kuylenstierna, eWeave AB, Sweden", "Liv Laugen, ​Oslo University Hospital, Norway, Norway", "Øygunn Leite Kallevik, Helse Bergen, Norway", "Heather Leslie, Atomica Informatics, Australia (openEHR Editor)", "Mikael Nyström, Cambio Healthcare Systems AB, Sweden", "Jussara Rotzsch, Hospital Alemão Oswaldo Cruz, Brazil", "Andre Smitt-Ingebretsen, Sørlandet sykehus HF, Norway", "Natalia Strauch, Medizinische Hochschule Hannover, Germany", "Norwegian Review Summary, Norwegian Public Hospitals, Norway", "John Tore Valand, Helse Bergen, Norway (openEHR Editor)", "Marit Alice Venheim, Helse Vest IKT, Norway (openEHR Editor)", "Ina Wille, Helse-Vest RHF, Norway">
+	other_details = <
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
+		["custodian_organisation"] = <"openEHR Foundation">
+		["original_namespace"] = <"org.openehr">
+		["original_publisher"] = <"openEHR Foundation">
+		["custodian_namespace"] = <"org.openehr">
+		["MD5-CAM-1.0.1"] = <"1C925727C1DA2B9D71045EC3551AC05A">
+		["build_uid"] = <"d9c49aaf-3c57-4287-97e6-499755d81691">
+		["ip_acknowledgements"] = <"This artefact includes content from SNOMED Clinical Terms® (SNOMED CT®) which is copyrighted material of the International Health Terminology Standards Development Organisation (IHTSDO). Where an implementation of this artefact makes use of SNOMED CT content, the implementer must have the appropriate SNOMED CT Affiliate license - for more information contact https://www.snomed.org/snomed-ct/get-snomed or info@snomed.org.">
+		["revision"] = <"0.0.1-alpha">
+	>
+
+definition
+	OBSERVATION[at0000] matches {    -- Diagnostic investigation screening questionnaire
+		data matches {
+			HISTORY[at0022] matches {    -- Event Series
+				events cardinality matches {0..*; unordered} matches {
+					EVENT[at0023] occurrences matches {0..*} matches {    -- Any event
+						data matches {
+							ITEM_TREE[at0001] matches {    -- Tree
+								items cardinality matches {0..*; unordered} matches {
+									ELEMENT[at0040] occurrences matches {0..1} matches {    -- Screening purpose
+										value matches {
+											DV_TEXT matches {*}
+										}
+									}
+									ELEMENT[at0027] occurrences matches {0..*} matches {    -- Any tests?
+										value matches {
+											DV_CODED_TEXT matches {
+												defining_code matches {
+													[local::
+													at0028,    -- Yes
+													at0029,    -- No
+													at0030]    -- Unknown
+												}
+											}
+											DV_TEXT matches {*}
+											DV_BOOLEAN matches {*}
+										}
+									}
+									ELEMENT[at0043] occurrences matches {0..1} matches {    -- Description
+										value matches {
+											DV_TEXT matches {*}
+										}
+									}
+									CLUSTER[at0026] occurrences matches {0..*} matches {    -- Specific investigation
+										items cardinality matches {1..*; unordered} matches {
+											ELEMENT[at0021] matches {    -- Test name
+												value matches {
+													DV_TEXT matches {*}
+												}
+											}
+											ELEMENT[at0024] occurrences matches {0..1} matches {    -- Carried out?
+												value matches {
+													DV_CODED_TEXT matches {
+														defining_code matches {
+															[local::
+															at0036,    -- Yes
+															at0037,    -- No
+															at0039]    -- Unknown
+														}
+													}
+													DV_TEXT matches {*}
+													DV_BOOLEAN matches {*}
+												}
+											}
+											ELEMENT[at0003] occurrences matches {0..1} matches {    -- Date
+												value matches {
+													DV_DATE_TIME matches {*}
+													DV_TEXT matches {*}
+												}
+											}
+											ELEMENT[at0002] occurrences matches {0..*} matches {    -- Result
+												value matches {
+													DV_CODED_TEXT matches {
+														defining_code matches {
+															[local::
+															at0044,    -- Positive
+															at0045]    -- Negative
+														}
+													}
+													DV_QUANTITY matches {*}
+													DV_TEXT matches {*}
+													DV_COUNT matches {*}
+												}
+											}
+											allow_archetype CLUSTER[at0041] occurrences matches {0..*} matches {    -- Additional details
+												include
+													archetype_id/value matches {/.*/}
+											}
+											ELEMENT[at0025] occurrences matches {0..1} matches {    -- Comment
+												value matches {
+													DV_TEXT matches {*}
+												}
+											}
+										}
+									}
+									allow_archetype CLUSTER[at0042] occurrences matches {0..*} matches {    -- Additional details
+										include
+											archetype_id/value matches {/.*/}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		protocol matches {
+			ITEM_TREE[at0005] matches {    -- Tree
+				items cardinality matches {0..*; unordered} matches {
+					allow_archetype CLUSTER[at0019] occurrences matches {0..*} matches {    -- Extension
+						include
+							archetype_id/value matches {/.*/}
+					}
+				}
+			}
+		}
+	}
+
+
+ontology
+	terminologies_available = <"SNOMED-CT", ...>
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"Diagnostic investigation screening questionnaire">
+					description = <"Series of questions and associated answers used to screen whether diagnostic investigations, either imaging examinations or laboratory tests, have been carried out.">
+					comment = <"The answers may be self-reported.">
+				>
+				["at0001"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Result">
+					description = <"The test result or findings of the screening investigation.">
+					comment = <"For example: positive/negative.">
+				>
+				["at0003"] = <
+					text = <"Date">
+					description = <"The date and/or time of the most recent test.">
+					comment = <"Can be a partial date, for example, only a year.">
+				>
+				["at0005"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0019"] = <
+					text = <"Extension">
+					description = <"Additional information required to extend the model with local content or to align with other reference models or formalisms.">
+					comment = <"For example: local information requirements; or additional metadata to align with FHIR.">
+				>
+				["at0021"] = <
+					text = <"Test name">
+					description = <"Name of the imaging examination or laboratory test or grouping.">
+					comment = <"For example: 'Urea and electrolytes', or 'HIV screening panel'.
+Coding of the 'Investigation name' with a terminology is preferred, where possible.">
+				>
+				["at0022"] = <
+					text = <"Event Series">
+					description = <"@ internal @">
+				>
+				["at0023"] = <
+					text = <"Any event">
+					description = <"Default, unspecified point in time or interval event which may be explicitly defined in a template or at run-time.">
+				>
+				["at0024"] = <
+					text = <"Carried out?">
+					description = <"Is there a history of the investigation being carried out?">
+					comment = <"In a template, the data element would usually be renamed to the specific question asked. The proposed value set can be adapted for local use by using the DV_TEXT or the DV_BOOLEAN datatypes choice to match each specific use case.">
+				>
+				["at0025"] = <
+					text = <"Comment">
+					description = <"">
+				>
+				["at0026"] = <
+					text = <"Specific investigation">
+					description = <"Details about a specified investigation or grouping of investigations relevant for the screening purpose.">
+					comment = <"Use separate instances of this CLUSTER to differentiate between specific investigations or groupings of investigations.">
+				>
+				["at0027"] = <
+					text = <"Any tests?">
+					description = <"Is there a history of any investigations related to the screening purpose?">
+					comment = <"In a template, the data element would usually be renamed to the specific question asked. The proposed value set can be adapted for local use by using the DV_TEXT or the DV_BOOLEAN datatypes choice to match each specific use case.">
+				>
+				["at0028"] = <
+					text = <"Yes">
+					description = <"">
+				>
+				["at0029"] = <
+					text = <"No">
+					description = <"">
+				>
+				["at0030"] = <
+					text = <"Unknown">
+					description = <"">
+				>
+				["at0036"] = <
+					text = <"Yes">
+					description = <"">
+				>
+				["at0037"] = <
+					text = <"No">
+					description = <"">
+				>
+				["at0039"] = <
+					text = <"Unknown">
+					description = <"">
+				>
+				["at0040"] = <
+					text = <"Screening purpose">
+					description = <"The context or reason for screening.">
+					comment = <"This data element is intended to provide collection context for the question/answer groups when queried at a later date. It is not expected that this data element will be exposed to the individual, but only stored in data. For example: pre-admission screening, the name of the actual questionnaire or screening for previous investigations.">
+				>
+				["at0041"] = <
+					text = <"Additional details">
+					description = <"Structured details or questions about the specific investigation or grouping of investigations.">
+				>
+				["at0042"] = <
+					text = <"Additional details">
+					description = <"Structured details or questions about investigation screening.">
+				>
+				["at0043"] = <
+					text = <"Description">
+					description = <"Narrative description about the history of administration of any investigations relevant for the screening purpose.">
+				>
+				["at0044"] = <
+					text = <"Positive">
+					description = <"The screening test result was positive.">
+				>
+				["at0045"] = <
+					text = <"Negative">
+					description = <"The screening test result was negative.">
+				>
+			>
+		>
+	>
+	term_bindings = <
+		["SNOMED-CT"] = <
+			items = <
+				["at0030"] = <[SNOMED-CT::261665006]>
+				["at0028"] = <[SNOMED-CT::373066001]>
+				["at0029"] = <[SNOMED-CT::373067005]>
+				["at0036"] = <[SNOMED-CT::373066001]>
+				["at0037"] = <[SNOMED-CT::373067005]>
+				["at0039"] = <[SNOMED-CT::261665006]>
+			>
+		>
+	>
