@@ -29,8 +29,8 @@ description
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"264307E6136CEA2B653075DF725D5D81">
-		["build_uid"] = <"2347ce09-ae11-479e-a614-0a081753d9d3">
+		["MD5-CAM-1.0.1"] = <"D454F34B96581F1AD76D93881CEDC3CC">
+		["build_uid"] = <"93ac6050-3ccf-4086-8362-88d8a2b8bf82">
 		["revision"] = <"0.0.1-alpha">
 	>
 
@@ -44,7 +44,7 @@ definition
 							DV_TEXT matches {*}
 						}
 					}
-					ELEMENT[at0002] occurrences matches {0..1} matches {    -- Final classification
+					ELEMENT[at0002] occurrences matches {0..1} matches {    -- Classification
 						value matches {
 							DV_CODED_TEXT matches {
 								defining_code matches {
@@ -57,20 +57,24 @@ definition
 							}
 							DV_TEXT matches {*}
 						}
+						name matches {
+							DV_CODED_TEXT matches {
+								defining_code matches {
+									[local::
+									at0024,    -- Initial classification
+									at0025]    -- Final classification
+								}
+							}
+						}
 					}
-					ELEMENT[at0008] occurrences matches {0..1} matches {    -- Basis for confirmation
+					ELEMENT[at0008] occurrences matches {0..1} matches {    -- Rationale for confirmation
 						value matches {
 							DV_TEXT matches {*}
 						}
 					}
-					ELEMENT[at0009] occurrences matches {0..1} matches {    -- Basis for exclusion
+					ELEMENT[at0009] occurrences matches {0..1} matches {    -- Rationale for exclusion
 						value matches {
 							DV_TEXT matches {*}
-						}
-					}
-					ELEMENT[at0010] occurrences matches {0..1} matches {    -- Classification date
-						value matches {
-							DV_DATE_TIME matches {*}
 						}
 					}
 					ELEMENT[at0011] occurrences matches {0..1} matches {    -- Infection source
@@ -78,7 +82,32 @@ definition
 							DV_TEXT matches {*}
 						}
 					}
-					ELEMENT[at0012] occurrences matches {0..1} matches {    -- Certainty of source
+					ELEMENT[at0012] occurrences matches {0..1} matches {    -- Source certainty
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0021] occurrences matches {0..1} matches {    -- Source country
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0022] occurrences matches {0..1} matches {    -- Case linkage?
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0023] occurrences matches {0..*} matches {    -- Linked contact
+						value matches {
+							DV_TEXT matches {*}
+							DV_IDENTIFIER matches {*}
+						}
+					}
+					allow_archetype CLUSTER[at0016] occurrences matches {0..*} matches {    -- Additional details
+						include
+							archetype_id/value matches {/openEHR-EHR-CLUSTER\.drug_resistance_profile(-[a-zA-Z0-9_]+)*\.v0|openEHR-EHR-CLUSTER\.clinical_evidence\.v1/}
+					}
+					ELEMENT[at0017] occurrences matches {0..1} matches {    -- Comment
 						value matches {
 							DV_TEXT matches {*}
 						}
@@ -117,8 +146,9 @@ ontology
 					description = <"@ internal @">
 				>
 				["at0002"] = <
-					text = <"Final classification">
-					description = <"Classification of the infectious disease as cause of the condition, after investigation.">
+					text = <"Classification">
+					description = <"Classification of the likelihood of the index infectious disease as cause of illness.">
+					comment = <"Run-time name constraints - 'Initial classification' is the classification made prior to commencing the investigation; 'Final classification' is the conclusion reached after the investigation.">
 				>
 				["at0003"] = <
 					text = <"Unconfirmed">
@@ -142,28 +172,24 @@ ontology
 					comment = <"This data element may be redundant if the index disease has been identified elsewhere within a template.">
 				>
 				["at0008"] = <
-					text = <"Basis for confirmation">
-					description = <"The basis on which a final classification of 'Confirmed' was made.">
+					text = <"Rationale for confirmation">
+					description = <"The rationale or evidence for confirming a case as causal.">
 					comment = <"For example: clinical diagnosis; laboratory test result; or epidemiological link.">
 				>
 				["at0009"] = <
-					text = <"Basis for exclusion">
-					description = <"The basis on which a final classification of 'Excluded' was made.">
-					comment = <"For example: laboratory test result; or alternative diagnosis made.">
-				>
-				["at0010"] = <
-					text = <"Classification date">
-					description = <"The date on which the final classification was made.">
+					text = <"Rationale for exclusion">
+					description = <"The rationale or evidence for exclusion or discarding of a case as not causal.">
+					comment = <"For example: laboratory test result; or alternate diagnosis made.">
 				>
 				["at0011"] = <
 					text = <"Infection source">
-					description = <"The most likely source or aetiology of infection.">
-					comment = <"For example: travel-related; direct contact with a family member; or vertical transmission.">
+					description = <"The most likely category for the source of infection.">
+					comment = <"For example: imported or travel-related; direct contact with a family member; vertical transmission; or unknown.">
 				>
 				["at0012"] = <
-					text = <"Certainty of source">
-					description = <"The likelihood of the identified source being the cause of infection.">
-					comment = <"For example: suspected; probably; confirmed.">
+					text = <"Source certainty">
+					description = <"The likelihood or level of certainty that the identified source is the cause of infection.">
+					comment = <"For example: suspected; probable; confirmed.">
 				>
 				["at0013"] = <
 					text = <"Item tree">
@@ -177,6 +203,34 @@ ontology
 				["at0015"] = <
 					text = <"Last updated">
 					description = <"The date when this infectious disease investigation classification was last updated.">
+				>
+				["at0016"] = <
+					text = <"Additional details">
+					description = <"">
+				>
+				["at0017"] = <
+					text = <"Comment">
+					description = <"Additional narrative about the classification, not captured in other fields.">
+				>
+				["at0021"] = <
+					text = <"Source country">
+					description = <"Country identified as the (likely or probable) source of the infection.">
+				>
+				["at0022"] = <
+					text = <"Case linkage?">
+					description = <"Was this case linked to another case?">
+				>
+				["at0023"] = <
+					text = <"Linked contact">
+					description = <"">
+				>
+				["at0024"] = <
+					text = <"Initial classification">
+					description = <"">
+				>
+				["at0025"] = <
+					text = <"Final classification">
+					description = <"">
 				>
 			>
 		>
