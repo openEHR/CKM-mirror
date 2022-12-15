@@ -6,6 +6,14 @@ concept
 language
 	original_language = <[ISO_639-1::en]>
 	translations = <
+		["sv"] = <
+			language = <[ISO_639-1::sv]>
+			author = <
+				["name"] = <"Therese Lindberg">
+				["organisation"] = <"Cambio CDS">
+				["email"] = <"therese.lindberg@cambio.se">
+			>
+		>
 		["nb"] = <
 			language = <[ISO_639-1::nb]>
 			author = <
@@ -23,6 +31,29 @@ description
 		["date"] = <"2017-03-22">
 	>
 	details = <
+		["sv"] = <
+			language = <[ISO_639-1::sv]>
+			purpose = <"Att registrera strukturerade detaljer i en komplex riktning för en beställd eller begärd tjänst.">
+			use = <"Används för att spela in strukturerade detaljer i en enda, komplex riktning för en beställd eller begärd tjänst.
+
+Den här arketypen har utformats för att kapslas in i ''Komplex timing'' -SLOT i INSTRUCTION.service_request-arketypen, men kan användas inom andra kliniskt relevanta arketyper, efter behov. Flera instanser av denna arketyp kan krävas för att representera en komplex beställning av tjänster, särskilt sådana med förändrad frekvens eller leveransmönster över tid.
+
+Varje tjänst ger detaljerad vägledning om en eller flera sekventiella aktiviteter, var och en innefattande ett belopp och en intradaglig timing, tillsammans med en övergripande riktningstid och detaljer om varje repetitivt mönster utanför en enda dag. Varje aktivitetspar gör det möjligt att beskriva ett komplext intradagligt mönster, till exempel 2 timmars omvårdnad på morgonen och en timme på kvällen.
+
+Varje tjänst kan gälla under en fast tidsperiod eller ett fast antal tjänster, som anges med hjälp av dataelementet 'Totalt belopp'.
+
+Det totala beloppet för hela tjänsteförfrågan registreras i INSTRUCTION.service_request.
+
+Till exempel:
+- \"Hjemsjukvårdshjälp i 2 timmar på morgonen och 1 timme på kvällen under en period av 6 veckor, följt av 1 timme på morgonen endast i ytterligare 6 veckor\".
+- ”Dialysblodprovspaket som ska genomföras: Den andra onsdagen i månaden januari, mars, maj, juli, september och november”.
+- ”INR dagligen i en vecka, veckovis i en månad, månadsvis i sex månader”. eller
+- \"Vital signalerar observationer var timme i fyra timmar, sedan varannan timme i 12 timmar\".
+
+Denna CLUSTER kan byta namn i template eller vid körning för att representera en specifik servicriktning som \"Första fyra timmarna efter operationen\".">
+			keywords = <"begäran", "service", "procedur", "undersökning", "behandling", "timing">
+			misuse = <"Inte utformad för att registrera information om en begäran eller beställning där en dosering krävs, till exempel medicinering eller transfusionsorder. Använd CLUSTER.therapeutic_direction för dessa ändamål.">
+		>
 		["nb"] = <
 			language = <[ISO_639-1::nb]>
 			purpose = <"For å registrere en detaljert beskrivelse av en kompleks anvisning for en rekvirert eller bestilt tjeneste.">
@@ -81,9 +112,9 @@ The CLUSTER can be renamed in template or at run-time to represent a specific se
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"16774E8E8F7935818FA62CC551A5D557">
-		["build_uid"] = <"0dbe7bba-5640-4dc5-9c31-c8119a8518ab">
-		["revision"] = <"1.0.0">
+		["MD5-CAM-1.0.1"] = <"0EE9628D2B91CB934A0F3D31546F727F">
+		["build_uid"] = <"40cda3d0-9891-468c-86a2-c9a024383b2a">
+		["revision"] = <"1.0.1">
 	>
 
 definition
@@ -282,6 +313,67 @@ I tilfeller med flere anvisninger spesifiserer \"Anvisningsrekkefølge\" i hvilk
 				["at0012"] = <
 					text = <"Ytterligere detaljer">
 					description = <"Ytterligere detaljer om anvisningen.">
+				>
+			>
+		>
+		["sv"] = <
+			items = <
+				["at0000"] = <
+					text = <"Tjänstriktning">
+					description = <"Strukturerade detaljer i en komplex riktning för en beställd eller begärd tjänst.">
+					comment = <"Till exempel: en sekvens av vitala tecken obervationer under de första 24 timmarna postoperativt; eller en begäran om hemvård på morgonen och kvällen, vilket gradvis minskar över en månad.">
+				>
+				["at0001"] = <
+					text = <"Riktningssekvens">
+					description = <"Den avsedda positionen för denna riktning inom den totala riktningssekvensen.">
+					comment = <"Till exempel: '' 1 '' 2 ',' 3 '.
+Där flera riktningar uttrycks gör \"Riktningssekvensen\" ordningen i vilken de ska köras explicita. Till exempel: (1) 4 gånger dagligen i 3 dagar, (2) 2 gånger dagligen i 4 dagar, (3) 1 gång dagligen i 7 dagar.">
+				>
+				["at0002"] = <
+					text = <"Riktningsbeskrivning">
+					description = <"Berättande beskrivning om riktningen.">
+					comment = <"Till exempel: \"07:00 varje måndag, 30 minuters varaktighet, de närmaste tre månaderna\".">
+				>
+				["at0003"] = <
+					text = <"Aktivitet">
+					description = <"En gruppering av ett belopp och tidpunkt för en del av en tjänstriktning.">
+					comment = <"Till exempel: begäran om hemsjukvård i två timmar på morgonen som en aktivitet och en timme på kvällen som en andra aktivitet.">
+				>
+				["at0004"] = <
+					text = <"Aktivitetssekvens">
+					description = <"Den avsedda sekventiella positionen för denna aktivitet inom alla aktiviteter för tjänstriktningen.">
+				>
+				["at0005"] = <
+					text = <"Mängd">
+					description = <"Mängden service som begärs som en del av en viss aktivitet.">
+					comment = <"Representeras antingen som antalet tjänster eller tjänstens längd.">
+				>
+				["at0006"] = <
+					text = <"Intradagstiming">
+					description = <"Strukturerade detaljer om tidpunkten för tjänsten inom en dag.">
+				>
+				["at0007"] = <
+					text = <"Riktningens varaktighet">
+					description = <"Hur länge denna riktning ska tillämpas.">
+					comment = <"Till exempel: \"i 7 dagar\", \"Obestämd\". Ett exempel på en uppsättning av flera riktningar, med varierande varaktighet kan vara '1 gång dagligen i 3 dagar, 2 gånger dagligen i 4 dagar, sedan 3 gånger obestämd'.">
+				>
+				["at0008"] = <
+					text = <"Obestämd">
+					description = <"Riktningen bör fortsätta på obestämd tid.">
+				>
+				["at0010"] = <
+					text = <"Upprepningstiming">
+					description = <"Strukturerade detaljer om upprepningsmönster för varje uppsättning intradagaktiviteter.">
+					comment = <"Till exempel: \"var tredje dag\", \"på torsdagar och söndagar\", \"3 dagar efter menstruationens början\". Denna SLOT är inte för tidsintervaller inom ett 24-timmarsintervall.">
+				>
+				["at0011"] = <
+					text = <"Totalsumma">
+					description = <"Det totala antalet tillgängliga tjänster eller timmar för alla aktiviteter i den här riktningen.">
+					comment = <"Exempel: 'Utför endast en gång' = 1; eller '30 timmar '.">
+				>
+				["at0012"] = <
+					text = <"Ytterligare detaljer">
+					description = <"Mer information om en beställd artikelriktning.">
 				>
 			>
 		>
