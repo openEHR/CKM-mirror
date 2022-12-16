@@ -25,8 +25,9 @@ language
 		["nb"] = <
 			language = <[ISO_639-1::nb]>
 			author = <
-				["name"] = <"Silje Ljosland Bakke">
-				["organisation"] = <"Nasjonal IKT HF, Norway">
+				["name"] = <"Silje Ljosland Bakke, Marit Alice Venheim">
+				["organisation"] = <"Nasjonal IKT HF, Norway, Helse Vest IKT">
+				["email"] = <"marit.alice.venheim@helse-vest-ikt.no">
 			>
 		>
 		["pt-br"] = <
@@ -210,67 +211,72 @@ In veel situaties zal het mogelijk zijn om de stappen die plaatsvinden als onder
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"11F691D9DF1D132FDB71A9FAEB730938">
-		["build_uid"] = <"052676ac-c2d6-4452-a32d-e9ee08f580d0">
-		["revision"] = <"1.0.5">
+		["MD5-CAM-1.0.1"] = <"79D648E436924566EA3804F0410EF242">
+		["build_uid"] = <"41deb16a-14d5-49a3-a32c-c506897e0620">
+		["revision"] = <"1.1.0">
 	>
 
 definition
-	INSTRUCTION[at0000] matches {	-- Service request
+	INSTRUCTION[at0000] matches {    -- Service request
 		activities cardinality matches {0..*; unordered} matches {
-			ACTIVITY[at0001] occurrences matches {1..*} matches {	-- Current Activity
+			ACTIVITY[at0001] occurrences matches {1..*} matches {    -- Current Activity
 				description matches {
-					ITEM_TREE[at0009] matches {	-- Tree
+					ITEM_TREE[at0009] matches {    -- Tree
 						items cardinality matches {1..*; unordered} matches {
-							ELEMENT[at0121] matches {	-- Service name
+							ELEMENT[at0121] matches {    -- Service name
 								value matches {
 									DV_TEXT matches {*}
 								}
 							}
-							ELEMENT[at0148] occurrences matches {0..1} matches {	-- Service type
+							ELEMENT[at0148] occurrences matches {0..1} matches {    -- Service type
 								value matches {
 									DV_TEXT matches {*}
 								}
 							}
-							ELEMENT[at0135] occurrences matches {0..1} matches {	-- Description
+							ELEMENT[at0135] occurrences matches {0..1} matches {    -- Description
 								value matches {
 									DV_TEXT matches {*}
 								}
 							}
-							ELEMENT[at0062] occurrences matches {0..*} matches {	-- Reason for request
+							ELEMENT[at0153] occurrences matches {0..*} matches {    -- Order detail
 								value matches {
 									DV_TEXT matches {*}
 								}
 							}
-							ELEMENT[at0064] occurrences matches {0..1} matches {	-- Reason description
+							ELEMENT[at0062] occurrences matches {0..*} matches {    -- Reason for request
 								value matches {
 									DV_TEXT matches {*}
 								}
 							}
-							ELEMENT[at0152] occurrences matches {0..*} matches {	-- Clinical indication
+							ELEMENT[at0064] occurrences matches {0..1} matches {    -- Reason description
 								value matches {
 									DV_TEXT matches {*}
 								}
 							}
-							ELEMENT[at0065] occurrences matches {0..*} matches {	-- Intent
+							ELEMENT[at0152] occurrences matches {0..*} matches {    -- Clinical indication
 								value matches {
 									DV_TEXT matches {*}
 								}
 							}
-							ELEMENT[at0068] occurrences matches {0..1} matches {	-- Urgency
+							ELEMENT[at0065] occurrences matches {0..*} matches {    -- Intent
+								value matches {
+									DV_TEXT matches {*}
+								}
+							}
+							ELEMENT[at0068] occurrences matches {0..1} matches {    -- Urgency
 								value matches {
 									DV_CODED_TEXT matches {
 										defining_code matches {
 											[local::
-											at0136, 	-- Emergency
-											at0137, 	-- Urgent
-											at0138]	-- Routine
+											at0136,    -- Emergency
+											at0137,    -- Urgent
+											at0138]    -- Routine
 										}
 									}
 									DV_TEXT matches {*}
 								}
 							}
-							ELEMENT[at0040] occurrences matches {0..1} matches {	-- Service due
+							ELEMENT[at0040] occurrences matches {0..1} matches {    -- Service due
 								value matches {
 									DV_DATE_TIME matches {*}
 									DV_INTERVAL<DV_DATE_TIME> matches {
@@ -284,52 +290,52 @@ definition
 									DV_TEXT matches {*}
 								}
 							}
-							allow_archetype CLUSTER[at0151] occurrences matches {0..*} matches {	-- Complex timing
+							allow_archetype CLUSTER[at0151] occurrences matches {0..*} matches {    -- Complex timing
 								include
 									archetype_id/value matches {/openEHR-EHR-CLUSTER\.service_direction(-[a-zA-Z0-9_]+)*\.v0/}
 							}
-							ELEMENT[at0145] occurrences matches {0..1} matches {	-- Service period start
+							ELEMENT[at0145] occurrences matches {0..1} matches {    -- Service period start
 								value matches {
 									DV_DATE_TIME matches {*}
 								}
 							}
-							ELEMENT[at0144] occurrences matches {0..1} matches {	-- Service period expiry
+							ELEMENT[at0144] occurrences matches {0..1} matches {    -- Service period expiry
 								value matches {
 									DV_DATE_TIME matches {*}
 								}
 							}
-							ELEMENT[at0147] occurrences matches {0..1} matches {	-- Indefinite?
+							ELEMENT[at0147] occurrences matches {0..1} matches {    -- Indefinite?
 								value matches {
 									DV_BOOLEAN matches {
-										value matches {True}
+										value matches {true}
 									}
 								}
 							}
-							allow_archetype CLUSTER[at0132] occurrences matches {0..*} matches {	-- Specific details
+							allow_archetype CLUSTER[at0132] occurrences matches {0..*} matches {    -- Specific details
 								include
 									archetype_id/value matches {/.*/}
 							}
-							allow_archetype CLUSTER[at0149] occurrences matches {0..*} matches {	-- Supporting information
+							allow_archetype CLUSTER[at0149] occurrences matches {0..*} matches {    -- Supporting information
 								include
 									archetype_id/value matches {/openEHR-EHR-CLUSTER\.multimedia(-[a-zA-Z0-9_]+)*\.v1|openEHR-EHR-CLUSTER\.multimedia(-[a-zA-Z0-9_]+)*\.v0/}
 							}
-							ELEMENT[at0076] occurrences matches {0..1} matches {	-- Supplementary information
+							ELEMENT[at0076] occurrences matches {0..1} matches {    -- Supplementary information
 								value matches {
 									DV_BOOLEAN matches {
-										value matches {True}
+										value matches {true}
 									}
 								}
 							}
-							ELEMENT[at0078] occurrences matches {0..1} matches {	-- Information description
+							ELEMENT[at0078] occurrences matches {0..1} matches {    -- Information description
 								value matches {
 									DV_TEXT matches {*}
 								}
 							}
-							allow_archetype CLUSTER[at0116] occurrences matches {0..*} matches {	-- Patient requirements
+							allow_archetype CLUSTER[at0116] occurrences matches {0..*} matches {    -- Patient requirements
 								include
 									archetype_id/value matches {/.*/}
 							}
-							ELEMENT[at0150] occurrences matches {0..1} matches {	-- Comment
+							ELEMENT[at0150] occurrences matches {0..1} matches {    -- Comment
 								value matches {
 									DV_TEXT matches {*}
 								}
@@ -340,38 +346,38 @@ definition
 			}
 		}
 		protocol matches {
-			ITEM_TREE[at0008] matches {	-- Tree
+			ITEM_TREE[at0008] matches {    -- Tree
 				items cardinality matches {1..*; unordered} matches {
-					ELEMENT[at0010] occurrences matches {0..1} matches {	-- Requester order identifier
+					ELEMENT[at0010] occurrences matches {0..1} matches {    -- Requester order identifier
 						value matches {
 							DV_TEXT matches {*}
 							DV_IDENTIFIER matches {*}
 						}
 					}
-					allow_archetype CLUSTER[at0141] occurrences matches {0..1} matches {	-- Requester
+					allow_archetype CLUSTER[at0141] occurrences matches {0..1} matches {    -- Requester
 						include
 							archetype_id/value matches {/.*/}
 					}
-					ELEMENT[at0011] occurrences matches {0..1} matches {	-- Receiver order identifier
+					ELEMENT[at0011] occurrences matches {0..1} matches {    -- Receiver order identifier
 						value matches {
 							DV_TEXT matches {*}
 							DV_IDENTIFIER matches {*}
 						}
 					}
-					allow_archetype CLUSTER[at0142] occurrences matches {0..1} matches {	-- Receiver
+					allow_archetype CLUSTER[at0142] occurrences matches {0..1} matches {    -- Receiver
 						include
 							archetype_id/value matches {/.*/}
 					}
-					ELEMENT[at0127] occurrences matches {0..1} matches {	-- Request status
+					ELEMENT[at0127] occurrences matches {0..1} matches {    -- Request status
 						value matches {
 							DV_TEXT matches {*}
 						}
 					}
-					allow_archetype CLUSTER[at0128] occurrences matches {0..*} matches {	-- Distribution list
+					allow_archetype CLUSTER[at0128] occurrences matches {0..*} matches {    -- Distribution list
 						include
 							archetype_id/value matches {/openEHR-EHR-CLUSTER\.distribution\.v1/}
 					}
-					allow_archetype CLUSTER[at0112] occurrences matches {0..*} matches {	-- Extension
+					allow_archetype CLUSTER[at0112] occurrences matches {0..*} matches {    -- Extension
 						include
 							archetype_id/value matches {/.*/}
 					}
@@ -536,6 +542,11 @@ ontology
 					description = <"The clinical reason for the ordered service.">
 					comment = <"Coding of the clinical indication with a terminology is preferred, where possible. This data element allows multiple occurrences. For example: 'Angina' or 'Type 1 Diabetes mellitus'.">
 				>
+				["at0153"] = <
+					text = <"Order detail">
+					description = <"Additional details and instructions about how the services are to be delivered.">
+					comment = <"Coding of the order detail with a terminology is preferred, where possible. This data element allows multiple occurrences. ">
+				>
 			>
 		>
 		["nb"] = <
@@ -691,6 +702,11 @@ ontology
 					description = <"Den kliniske årsaken for den forespurte tjenesten.">
 					comment = <"For eksempel \"angina\" eller \"diabetes mellitus type 1\". Koding av indikasjonen med et kodeverk er ønskelig, dersom tilgjengelig. Dette dataelementet tillater flere forekomster.">
 				>
+				["at0153"] = <
+					text = <"Ordredetaljer">
+					description = <"Tilleggsbeskrivelse og instrukser om hvordan tjenesten skal utføres.">
+					comment = <"Koding av ordredetaljer med et kodeverk er ønskelig, dersom tilgjengelig. Dette dataelementet tillater flere forekomster.">
+				>
 			>
 		>
 		["it"] = <
@@ -845,6 +861,11 @@ ontology
 					text = <"Indicazione clinica">
 					description = <"La motivazione clinica del servizio ordinato.">
 					comment = <"Si preferisce, ove possibile, la codifica dell'indicazione clinica con una terminologia. Questo dato consente più occorrenze. Ad esempio: 'Angina' o 'Diabete mellito di tipo 1'.">
+				>
+				["at0153"] = <
+					text = <"*Order detail (en)">
+					description = <"*Additional details and instructions about how the services are to be delivered. (en)">
+					comment = <"*Coding of the order detail with a terminology is preferred, where possible. This data element allows multiple occurrences.  (en)">
 				>
 			>
 		>
@@ -1007,6 +1028,11 @@ ontology
 					description = <"Der klinische Grund für die angeordnete Leistung.">
 					comment = <"Die Kodierung der klinischen Indikation mit einer Terminologie wird, wenn möglich, bevorzugt. Dieses Datenelement erlaubt mehrfaches Vorkommen. Zum Beispiel: 'Angina' oder 'Typ 1 Diabetes mellitus'.">
 				>
+				["at0153"] = <
+					text = <"*Order detail (en)">
+					description = <"*Additional details and instructions about how the services are to be delivered. (en)">
+					comment = <"*Coding of the order detail with a terminology is preferred, where possible. This data element allows multiple occurrences.  (en)">
+				>
 			>
 		>
 		["sv"] = <
@@ -1166,6 +1192,11 @@ Detta dataelement tillåter flera värden om så behövs och gör det möjligt f
 					description = <"Den kliniska anledningen till den efterfrågade tjänsten.">
 					comment = <"Kodning av den kliniska indikationen med en terminologi är att föredra, där det är möjligt. Detta dataelement tillåter flera förekomster. Till exempel: 'Angina' eller 'Type 1 Diabetes mellitus'.">
 				>
+				["at0153"] = <
+					text = <"*Order detail (en)">
+					description = <"*Additional details and instructions about how the services are to be delivered. (en)">
+					comment = <"*Coding of the order detail with a terminology is preferred, where possible. This data element allows multiple occurrences.  (en)">
+				>
 			>
 		>
 		["pt-br"] = <
@@ -1321,6 +1352,11 @@ Detta dataelement tillåter flera värden om så behövs och gör det möjligt f
 					description = <"A razão clínica para o serviço solicitado.">
 					comment = <"A codificação da indicação clínica com uma terminologia é preferida, quando possível. Este elemento de dados permite várias ocorrências. Por exemplo: 'Angina' ou 'Diabetes mellitus tipo 1'.">
 				>
+				["at0153"] = <
+					text = <"*Order detail (en)">
+					description = <"*Additional details and instructions about how the services are to be delivered. (en)">
+					comment = <"*Coding of the order detail with a terminology is preferred, where possible. This data element allows multiple occurrences.  (en)">
+				>
 			>
 		>
 		["nl"] = <
@@ -1475,6 +1511,11 @@ Detta dataelement tillåter flera värden om så behövs och gör det möjligt f
 					text = <"Klinische indicatie">
 					description = <"De klinische reden voor de bestelde service.">
 					comment = <"Waar mogelijk wordt de voorkeur gegeven aan codering van de klinische indicatie met een terminologie. Dit data-element laat meerdere gebeurtenissen toe. Bijvoorbeeld: 'Angina' of 'Type 1 Diabetes mellitus'.">
+				>
+				["at0153"] = <
+					text = <"*Order detail (en)">
+					description = <"*Additional details and instructions about how the services are to be delivered. (en)">
+					comment = <"*Coding of the order detail with a terminology is preferred, where possible. This data element allows multiple occurrences.  (en)">
 				>
 			>
 		>
