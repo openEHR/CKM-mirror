@@ -2,7 +2,7 @@
 	openEHR-EHR-COMPOSITION.health_certificate.v0
 
 concept
-	[at0000]	-- Certificate
+	[at0000]	-- Health certificate
 language
 	original_language = <[ISO_639-1::en]>
 	translations = <
@@ -42,6 +42,7 @@ Verwendungszwecke umfassen, sind aber nicht beschränkt auf:
 - Geburtsurkunde
 - Sterbeurkunde oder
 - Impfbescheinigung.">
+			keywords = <"*certificate,statement,death,sick leave,fitness,vaccination (en)", ...>
 			misuse = <"">
 		>
 		["nb"] = <
@@ -52,38 +53,44 @@ Verwendungszwecke umfassen, sind aber nicht beschränkt auf:
 - fødselsattest;
 - dødsattest; eller
 - vaksineattest eller vaksinestatus.">
+			keywords = <"*certificate,statement,death,sick leave,fitness,vaccination (en)", ...>
 			misuse = <"">
 			copyright = <"© openEHR Foundation">
 		>
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"To record a formal statement about aspects of an individual's state of health.">
-			use = <"Use to record a formal statement about aspects of an individual's state of health.
+			purpose = <"To record one or more statements about the health status or situation related to an individual.">
+			use = <"Use to record a formal assessment regarding the health status of an individual, usually asserted by the treating clinician and intended for sharing with third parties.
 
-Use cases include, but are not limited to:
-- medical certificate stating that the individual is not fit for work;
-- birth certificate;
-- death certificate; or
-- certificate of vaccination status.">
+Use cases asserted by a healthcare professional include, but are not limited to:
+- reduced capacity for work duties or hours;
+- death certificate - using the EVAL.cause_of_death archetype;
+- functional capacity;
+- fitness for driving, flying or diving activities; or
+- certificate of vaccination status.
+ 
+ Use cases asserted by an administrator include, but are not limited to:
+- attendance at a health facility.">
+			keywords = <"certificate,statement,death,sick leave,fitness,vaccination", ...>
 			misuse = <"">
 			copyright = <"© openEHR Foundation">
 		>
 	>
 	lifecycle_state = <"in_development">
-	other_contributors = <"Vebjørn Arntzen, Oslo University Hospital, Norway (openEHR Editor)", "Silje Ljosland Bakke, Helse Vest IKT AS, Norway (openEHR Editor)", "Hanne Marte Bårholm, Helse Vest IKT, Norway (openEHR Editor)", "Mikkel Johan Gaup Grønmo, Regional forvaltning EPJ, Helse Nord, Norway (openEHR Editor)", "Kanika Kuwelker, Helse Vest IKT, Norway (openEHR Editor)", "Liv Laugen, ​Oslo University Hospital, Norway, Norway (openEHR Editor)", "Heather Leslie, Atomica Informatics, Australia (openEHR Editor)", "Terje Sagmyr, Helse Vest IKT, Norway (openEHR Editor)", "John Tore Valand, Helse Bergen, Norway (openEHR Editor)", "Marit Alice Venheim, Helse Vest IKT, Norway (openEHR Editor)">
+	other_contributors = <"Vebjørn Arntzen, Oslo University Hospital, Norway (openEHR Editor)", "Silje Ljosland Bakke, Helse Vest IKT AS, Norway (openEHR Editor)", "SB Bhattacharyya, Bhattacharyyas Clinical Records Research & Informatics LLP, India", "Hanne Marte Bårholm, Helse Vest IKT, Norway (openEHR Editor)", "Richard Conings, Open Line, Netherlands", "Rosane Gotardo, Systema Ltda., Brazil", "Heather Grain, Llewelyn Grain Informatics, Australia", "Mikkel Johan Gaup Grønmo, Regional forvaltning EPJ, Helse Nord, Norway (openEHR Editor)", "Evelyn Hovenga, EJSH Consulting, Australia", "Kanika Kuwelker, Helse Vest IKT, Norway (openEHR Editor)", "Jörgen Kuylenstierna, eWeave AB, Sweden", "Liv Laugen, ​Oslo University Hospital, Norway, Norway (openEHR Editor)", "Heather Leslie, Atomica Informatics, Australia (openEHR Editor)", "Paul Miller, NES Digital Service, NHS Scotland, United Kingdom", "Arunakiry Natarajan, medondo, Germany", "Mikael Nyström, Cambio Healthcare Systems AB, Sweden", "Terje Sagmyr, Helse Vest IKT, Norway (openEHR Editor)", "Natalia Strauch, Medizinische Hochschule Hannover, Germany", "Norwegian Review Summary, Norwegian Public Hospitals, Norway", "Anders Thurin, VGR, Sweden", "John Tore Valand, Helse Bergen, Norway (openEHR Editor)", "Marit Alice Venheim, Helse Vest IKT, Norway (openEHR Editor)">
 	other_details = <
 		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
 		["custodian_organisation"] = <"openEHR Foundation">
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"15C5068911C1E6DB18EB1598A8C0D725">
-		["build_uid"] = <"ca21c51b-0932-4844-9bff-00796e5a7c24">
+		["MD5-CAM-1.0.1"] = <"A3AC22CA7D8A6EA9594E9125B0BA2571">
+		["build_uid"] = <"eff61ca3-ca0f-4594-94e2-ddefdbb899fa">
 		["revision"] = <"0.0.1-alpha">
 	>
 
 definition
-	COMPOSITION[at0000] matches {    -- Certificate
+	COMPOSITION[at0000] matches {    -- Health certificate
 		category matches {
 			DV_CODED_TEXT[at0001] matches {    -- Coded text
 				defining_code matches {
@@ -98,21 +105,21 @@ definition
 						items cardinality matches {0..*; unordered} matches {
 							allow_archetype CLUSTER[at0004] occurrences matches {0..*} matches {    -- Individual
 								include
-									archetype_id/value matches {/.*/}
+									archetype_id/value matches {/.*|openEHR-EHR-CLUSTER\.person\.v1/}
 							}
-							ELEMENT[at0006] occurrences matches {0..1} matches {    -- Certificate identifier
+							ELEMENT[at0006] occurrences matches {0..*} matches {    -- Certificate ID
 								value matches {
 									DV_IDENTIFIER matches {*}
+									DV_TEXT matches {*}
 								}
 							}
-							ELEMENT[at0007] occurrences matches {0..1} matches {    -- Valid date start
-								value matches {
-									DV_DATE_TIME matches {*}
-								}
+							allow_archetype CLUSTER[at0009] occurrences matches {0..*} matches {    -- Extension
+								include
+									archetype_id/value matches {/.*/}
 							}
-							ELEMENT[at0008] occurrences matches {0..1} matches {    -- Valid date end
+							ELEMENT[at0010] occurrences matches {0..1} matches {    -- Certificate type
 								value matches {
-									DV_DATE_TIME matches {*}
+									DV_TEXT matches {*}
 								}
 							}
 						}
@@ -123,15 +130,13 @@ definition
 	}
 
 
-
-
 ontology
 	term_definitions = <
 		["en"] = <
 			items = <
 				["at0000"] = <
-					text = <"Certificate">
-					description = <"Formal health-related statement asserted by a clinician about an individual.">
+					text = <"Health certificate">
+					description = <"A formal statement about the health status or situation related to an individual.">
 				>
 				["at0001"] = <
 					text = <"Coded text">
@@ -147,19 +152,22 @@ ontology
 				>
 				["at0004"] = <
 					text = <"Individual">
-					description = <"">
+					description = <"Identification of the subject of the certificate.">
+					comment = <"This SLOT identifies the subject of the certificate. In comprehensive openEHR EHRs this may be redundant if the formal demographics service or master patient index supplies details about the subject of the certificate. If the subject of the certificate is not the subject of care, this information may need to be entered manually, for example a parent of the child patient. In addition, when creating a screen layout or template for printing, a subset of the CLUSTER.person could be constrained to represent the precise details appropriate for the use case.">
 				>
 				["at0006"] = <
-					text = <"Certificate identifier">
-					description = <"Details about the certificate ID, issuer, type and assigner.">
+					text = <"Certificate ID">
+					description = <"Identification information about the certificate.">
 				>
-				["at0007"] = <
-					text = <"Valid date start">
-					description = <"The date when the validity of the certificate commences.">
+				["at0009"] = <
+					text = <"Extension">
+					description = <"Additional information required to capture local content or to align with other reference models/formalisms.">
+					comment = <"For example: local information requirements or additional metadata to align with FHIR.">
 				>
-				["at0008"] = <
-					text = <"Valid date end">
-					description = <"The date when the validity of the certificate ceases.">
+				["at0010"] = <
+					text = <"Certificate type">
+					description = <"Type of certificate.">
+					comment = <"For example: Vaccination status; Fitness for flying; Medical certificate.">
 				>
 			>
 		>
@@ -183,19 +191,22 @@ ontology
 				>
 				["at0004"] = <
 					text = <"Individ">
-					description = <"">
+					description = <"*Identification of the subject of the certificate. (en)">
+					comment = <"*This SLOT identifies the subject of the certificate. In comprehensive openEHR EHRs this may be redundant if the formal demographics service or master patient index supplies details about the subject of the certificate. If the subject of the certificate is not the subject of care, this information may need to be entered manually, for example a parent of the child patient. In addition, when creating a screen layout or template for printing, a subset of the CLUSTER.person could be constrained to represent the precise details appropriate for the use case. (en)">
 				>
 				["at0006"] = <
-					text = <"Attest identifikator">
-					description = <"Detaljer om attest ID, utsteder, type og tildeler.">
+					text = <"*Certificate ID (en)">
+					description = <"*Identification information about the certificate. (en)">
 				>
-				["at0007"] = <
-					text = <"Gyldig startdato">
-					description = <"Dato for når attestens gyldighet er gjeldende.">
+				["at0009"] = <
+					text = <"*Extension (en)">
+					description = <"*Additional information required to capture local content or to align with other reference models/formalisms. (en)">
+					comment = <"*For example: local information requirements or additional metadata to align with FHIR. (en)">
 				>
-				["at0008"] = <
-					text = <"Gyldig sluttdato">
-					description = <"Dato for når attestens gyldighet opphører.">
+				["at0010"] = <
+					text = <"*Certificate type (en)">
+					description = <"*Type of certificate. (en)">
+					comment = <"*For example: Vaccination status; Fitness for flying; Medical certificate. (en)">
 				>
 			>
 		>
@@ -219,19 +230,22 @@ ontology
 				>
 				["at0004"] = <
 					text = <"Person">
-					description = <"">
+					description = <"*Identification of the subject of the certificate. (en)">
+					comment = <"*This SLOT identifies the subject of the certificate. In comprehensive openEHR EHRs this may be redundant if the formal demographics service or master patient index supplies details about the subject of the certificate. If the subject of the certificate is not the subject of care, this information may need to be entered manually, for example a parent of the child patient. In addition, when creating a screen layout or template for printing, a subset of the CLUSTER.person could be constrained to represent the precise details appropriate for the use case. (en)">
 				>
 				["at0006"] = <
-					text = <"Zertifikats-ID">
-					description = <"Details zur Zertifikats-ID, zum Aussteller, Typ und zum Zuweiser.">
+					text = <"*Certificate ID (en)">
+					description = <"*Identification information about the certificate. (en)">
 				>
-				["at0007"] = <
-					text = <"Gültigkeitsdatum Beginn">
-					description = <"Das Datum, an dem die Gültigkeit des Zertifikats beginnt.">
+				["at0009"] = <
+					text = <"*Extension (en)">
+					description = <"*Additional information required to capture local content or to align with other reference models/formalisms. (en)">
+					comment = <"*For example: local information requirements or additional metadata to align with FHIR. (en)">
 				>
-				["at0008"] = <
-					text = <"Gültigkeitsdatum Ende">
-					description = <"Das Datum, an dem die Gültigkeit des Zertifikats endet.">
+				["at0010"] = <
+					text = <"*Certificate type (en)">
+					description = <"*Type of certificate. (en)">
+					comment = <"*For example: Vaccination status; Fitness for flying; Medical certificate. (en)">
 				>
 			>
 		>
