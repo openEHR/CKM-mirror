@@ -2,7 +2,7 @@
 	openEHR-EHR-CLUSTER.specimen_preparation.v0
 
 concept
-	[at0000]	-- Specimen preparation
+	[at0000]	-- Specimen_preparation
 language
 	original_language = <[ISO_639-1::en]>
 	translations = <
@@ -14,31 +14,48 @@ language
 				["email"] = <"sschuma9@uni-koeln.de">
 			>
 		>
+		["nb"] = <
+			language = <[ISO_639-1::nb]>
+			author = <
+				["name"] = <"Liv Laugen">
+				["organisation"] = <"​Oslo University Hospital, Norway">
+				["email"] = <"liv.laugen@ous-hf.no">
+			>
+		>
 	>
 description
 	original_author = <
-		["name"] = <"Dr Ian McNicoll">
-		["organisation"] = <"Ocean Informatics">
+		["name"] = <"Dr Ian McNicoll / Liv Laugen">
+		["organisation"] = <"Ocean Informatics / Oslo university hospital">
 		["email"] = <"ian.mcnicoll@oceaninformatics.com">
 		["date"] = <"2009-01-27">
 	>
 	details = <
 		["de"] = <
 			language = <[ISO_639-1::de]>
-			purpose = <"Zur detaillierten Erfassung der Aufbereitung einer Laborprobe.">
-			use = <"Wird normalerweise in dem Archetypen CLUSTER.specimen verwendet.
+			purpose = <"*To record details about a preparation/processing of a specimen to make a it sutible for further analysis, storage or preservation. (en)">
+			use = <"*Use to record details about a preparation/processing of a specimen to make a it sutible for further analysis, storage or preservation.
 
-Normalerweise wird die Aufbereitung einer Laborprobe von einem Labor-Informationssystem (LIS) intern durchgeführt. Dabei werden Informationen weder an den anfordernden Kliniker geschickt, noch in der Patientenakte gespeichert. Es gibt aber Ausnahmen, insbesondere in der Histopathologie, in denen Details zur Aufbereitung als kritisch für die Interpretation der Ergebnisse angesehen werden und in der Patientenakte festgehalten werden.">
-			keywords = <"Probe", "Labor", "Bioprobe", "Biomaterial", "Histopathologie", "Histologie", "Pathologie">
+This archetype is usually used within a CLUSTER.specimen archetype. In addition, it is possible to record fine details about each phase of a multi-step preparation process by nesting this archetype, one instance per step, within the 'Processing step' SLOT within this archetype. (en)">
+			keywords = <"*specimen (en)", "*laboratory (en)", "*sample (en)", "*histopathology (en)", "*histology (en)", "*pathology (en)", "*cytology (en)", "*filtration (en)", "*centrifugation (en)", "*staining (en)">
+			misuse = <"">
+		>
+		["nb"] = <
+			language = <[ISO_639-1::nb]>
+			purpose = <"For å registrere detaljer om preparering/behandling av et prøvemateriale for å gjøre den egnet for videre analyse, lagring eller konservering.">
+			use = <"Brukes for å registrere detaljer om preparering/behandling av et prøvemateriale for å gjøre den egnet for videre analyse, lagring eller konservering.
+
+Denne arketypen brukes vanligvis i en CLUSTER.specimen arketype. I tillegg er det mulig å registrere detaljer om alle individuelle prepareringstrinn i en flertrinns prepareringsprosess ved å nøste arketypen, en instans per prepareringstrinn, i SLOT'et 'prepareringstrinn' i denne arketypen.">
+			keywords = <"laboratorie", "histologi", "cytologi", "prøvebehandling", "farging", "fiksering", "støping", "filtrasjon", "sentrifugering">
 			misuse = <"">
 		>
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"To record details of laboratory specimen processing.">
-			use = <"Generally used within a CLUSTER.specimen archetype.
+			purpose = <"To record details about a preparation/processing of a specimen to make it suitable for further analysis, storage or preservation.">
+			use = <"Use to record details about a preparation/processing of a specimen to make it suitable for further analysis, storage or preservation.
 
-In general laboratory specimen processing are handled internally by a Laboratory Information system (LIS) and are not reported back to the requesting clinician or persisted in the patient record. However there are some circumstances, particularly in histopathology, where such details are regarded as being critical to interpretation of the results and are carried into the patient record.">
-			keywords = <"specimen", "laboratory", "sample", "histopathology", "histology", "pathology">
+This archetype is usually used within a CLUSTER.specimen archetype. In addition, it is possible to record fine details about each phase of a multi-step preparation process by nesting this archetype, one instance per step, within the 'Processing step' SLOT within this archetype.">
+			keywords = <"specimen", "laboratory", "sample", "histopathology", "histology", "pathology", "cytology", "filtration", "centrifugation", "staining">
 			misuse = <"">
 			copyright = <"© openEHR Foundation">
 		>
@@ -48,78 +65,73 @@ In general laboratory specimen processing are handled internally by a Laboratory
 	other_details = <
 		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
 		["custodian_organisation"] = <"openEHR Foundation">
-		["references"] = <"Digital Imaging and Communications in Medicine (DICOM) Supplement 122: Specimen Module and Revised Pathology SOP Classes
-DICOM Standards Committee, Working Groups 26, Pathology
-
-IHE Anatomic Pathology Technical Framework Volume 1 (PAT TF-1) Revision 1.2 – Trial Implementation
-November 24, 2008">
+		["references"] = <"">
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"C90F6FADFEB1D1C3AE7A8B590EF3C854">
-		["build_uid"] = <"6808a32e-cc47-42a3-aece-2f785436c2bd">
+		["MD5-CAM-1.0.1"] = <"A772F675FD712AA9A9D50E285AA094E8">
+		["build_uid"] = <"df84e623-13ae-41c6-8900-38aa6025af56">
 		["revision"] = <"0.0.1-alpha">
 	>
 
 definition
-	CLUSTER[at0000] matches {	-- Specimen preparation
+	CLUSTER[at0000] matches {    -- Specimen_preparation
 		items cardinality matches {1..*; unordered} matches {
-			ELEMENT[at0072] occurrences matches {0..1} matches {	-- Datetime of processing step
+			ELEMENT[at0094] occurrences matches {0..1} matches {    -- Processing name
+				value matches {
+					DV_CODED_TEXT matches {*}
+				}
+			}
+			ELEMENT[at0089] occurrences matches {0..1} matches {    -- Processing description
+				value matches {
+					DV_CODED_TEXT matches {*}
+				}
+			}
+			ELEMENT[at0090] occurrences matches {0..1} matches {    -- Processing status
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			ELEMENT[at0072] occurrences matches {0..1} matches {    -- Datetime of processing
 				value matches {
 					DV_DATE_TIME matches {*}
 				}
 			}
-			ELEMENT[at0071] occurrences matches {0..1} matches {	-- Processing step type
+			ELEMENT[at0074] occurrences matches {0..1} matches {    -- Processing methode
 				value matches {
-					DV_CODED_TEXT matches {
-						defining_code matches {
-							[local::
-							at0078, 	-- Specimen collection
-							at0079, 	-- Specimen receiving
-							at0080, 	-- Sampling of tissue specimen
-							at0081, 	-- Staining
-							at0082, 	-- Specimen processing
-							at0083]	-- Specimen storage
+					DV_TEXT matches {*}
+				}
+			}
+			ELEMENT[at0091] occurrences matches {0..*} matches {    -- Addative/s
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			allow_archetype CLUSTER[at0088] occurrences matches {0..*} matches {    -- Device details
+				include
+					archetype_id/value matches {/openEHR-EHR-CLUSTER\.device\.v1/}
+			}
+			CLUSTER[at0086] occurrences matches {0..*} matches {    -- Processing step
+				items cardinality matches {1..*; unordered} matches {
+					ELEMENT[at0071] occurrences matches {0..1} matches {    -- Processing step sequense
+						value matches {
+							DV_TEXT matches {*}
+							DV_COUNT matches {*}
 						}
+					}
+					allow_archetype CLUSTER[at0092] occurrences matches {0..*} matches {    -- Processing step details
+						include
+							archetype_id/value matches {/openEHR-EHR-CLUSTER\.specimen_preparation\.v0/}
 					}
 				}
 			}
-			ELEMENT[at0074] occurrences matches {0..1} matches {	-- Specimen processing type
-				value matches {
-					DV_TEXT matches {*}
-				}
-			}
-			ELEMENT[at0087] occurrences matches {0..1} matches {	-- Description
-				value matches {
-					DV_TEXT matches {*}
-				}
-			}
-			allow_archetype CLUSTER[at0088] occurrences matches {0..*} matches {	-- Device details
+			allow_archetype CLUSTER[at0093] occurrences matches {0..*} matches {    -- Additional details
 				include
 					archetype_id/value matches {/.*/}
 			}
-			CLUSTER[at0086] occurrences matches {0..1} matches {	-- Specific preparation
-				items cardinality matches {1; unordered} matches {
-					ELEMENT[at0073] occurrences matches {0..1} matches {	-- Sampling method
-						value matches {
-							DV_TEXT matches {*}
-						}
-					}
-					ELEMENT[at0084] occurrences matches {0..1} matches {	-- Staining method
-						value matches {
-							DV_TEXT matches {*}
-						}
-					}
-					ELEMENT[at0075] occurrences matches {0..1} matches {	-- Embedding medium
-						value matches {
-							DV_TEXT matches {*}
-						}
-					}
-					ELEMENT[at0076] occurrences matches {0..1} matches {	-- Fixative
-						value matches {
-							DV_TEXT matches {*}
-						}
-					}
+			ELEMENT[at0095] occurrences matches {0..1} matches {    -- Comment
+				value matches {
+					DV_CODED_TEXT matches {*}
 				}
 			}
 		}
@@ -131,144 +143,183 @@ ontology
 		["en"] = <
 			items = <
 				["at0000"] = <
-					text = <"Specimen preparation">
-					description = <"To record details of laboratory specimen processing.">
+					text = <"Specimen_preparation">
+					description = <"Details about the preparation/processing process of a specimen.">
 				>
 				["at0071"] = <
-					text = <"Processing step type">
-					description = <"A DICOM compatible code describing a single processing step.">
+					text = <"Processing step sequense">
+					description = <"The processing/preparing sequence/step number.">
+					comment = <"For example: 2 or step 2 of 3. 
+If there is only one processing step event or if this instance is the overview of all processing step, this data element is redundant.">
 				>
 				["at0072"] = <
-					text = <"Datetime of processing step">
-					description = <"The data and time that the processing step occured.">
-				>
-				["at0073"] = <
-					text = <"Sampling method">
-					description = <"The sampling method used. e.g dissection, block sampling.">
+					text = <"Datetime of processing">
+					description = <"The data and time that the processing/preparation of the specimen occurred.">
 				>
 				["at0074"] = <
-					text = <"Specimen processing type">
-					description = <"A physical process applied to the specimen e.g.  block embedding.">
-				>
-				["at0075"] = <
-					text = <"Embedding medium">
-					description = <"The medium within which the specimen is embedded e.g paraffin.">
-				>
-				["at0076"] = <
-					text = <"Fixative">
-					description = <"The fixative used.">
-				>
-				["at0078"] = <
-					text = <"Specimen collection">
-					description = <"The specimen has been collected.">
-				>
-				["at0079"] = <
-					text = <"Specimen receiving">
-					description = <"The specimen has been received.">
-				>
-				["at0080"] = <
-					text = <"Sampling of tissue specimen">
-					description = <"The specimen has been sampled.">
-				>
-				["at0081"] = <
-					text = <"Staining">
-					description = <"The specimen has been stained.">
-				>
-				["at0082"] = <
-					text = <"Specimen processing">
-					description = <"The specimen has been processed.">
-				>
-				["at0083"] = <
-					text = <"Specimen storage">
-					description = <"The specimen has been stored.">
-				>
-				["at0084"] = <
-					text = <"Staining method">
-					description = <"Stain used for a microscopy slide.">
+					text = <"Processing methode">
+					description = <"The technique or method that is used to process/prepare the specimen.">
+					comment = <"Coding of the method with a terminology is preferred, where possible.">
 				>
 				["at0086"] = <
-					text = <"Specific preparation">
-					description = <"Details of the specific preparation carried out during a single processing step.">
-				>
-				["at0087"] = <
-					text = <"Description">
-					description = <"A general description of the specimen prepartion.">
+					text = <"Processing step">
+					description = <"Details of the specific process/preparation carried out during a single processing step.">
 				>
 				["at0088"] = <
 					text = <"Device details">
-					description = <"Details of the device used in specimen preparation.">
+					description = <"Details of the device used in the specimen processing/preparation.">
+				>
+				["at0089"] = <
+					text = <"Processing description">
+					description = <"A general textual description of the specimen processing/preparation.">
+				>
+				["at0090"] = <
+					text = <"Processing status">
+					description = <"The status of the specimen processing/preparation.">
+				>
+				["at0091"] = <
+					text = <"Addative/s">
+					description = <"The substance used in the specimen processing/preparation.">
+					comment = <"For example: formalin when fixate a tissue specimen, or embryo culture media.">
+				>
+				["at0092"] = <
+					text = <"Processing step details">
+					description = <"Details about a single component step within a multistep processing/preparing process.">
+				>
+				["at0093"] = <
+					text = <"Additional details">
+					description = <"Additional details about the processing/preparing process.">
+				>
+				["at0094"] = <
+					text = <"Processing name">
+					description = <"The name of the specimen prosessing/preperation.">
+					comment = <"For example: fixation, dehydration, paraffin infiltration, staining, centrifugation, washing.">
+				>
+				["at0095"] = <
+					text = <"Comment">
+					description = <"Additional narrative about the processing/preparation process not captured in other fields.">
 				>
 			>
 		>
 		["de"] = <
 			items = <
 				["at0000"] = <
-					text = <"Probenverarbeitung">
-					description = <"Zur detaillierten Erfassung der Aufbereitung einer Laborprobe.">
+					text = <"*Specimen_preparation (en)">
+					description = <"*Details about the preparation/processing process of a specimen. (en)">
 				>
 				["at0071"] = <
-					text = <"Art des Aufbereitungsschrittes">
-					description = <"Ein DICOM-kompatibler Code, der einen einzelnen Aufbereitungsschritt beschreibt.">
+					text = <"*Processing step sequense (en)">
+					description = <"*The processing/preparing sequence/step number. (en)">
+					comment = <"*For example: 2 or step 2 of 3. 
+If there is only one processing step event or if this instance is the overview of all processing step, this data element is redundant. (en)">
 				>
 				["at0072"] = <
-					text = <"Datum und Zeit des Aufbereitungsschrittes">
-					description = <"Das Datum und die Zeit, zu der der Aufbereitungsschritt durchgeführt wurde.">
-				>
-				["at0073"] = <
-					text = <"Methode der Probenentnahme">
-					description = <"Die Methode, die zur Probenentnahme verwendet wurde (z. B. Schnittentnahme oder Blockentnahme).">
+					text = <"*Datetime of processing (en)">
+					description = <"*The data and time that the processing/preparation of the specimen occurred. (en)">
 				>
 				["at0074"] = <
-					text = <"Art der Probenaufbereitung">
-					description = <"Ein physikalischer Prozess, der auf die Probe angewendet wird (z.B. Block-Einbettung).">
-				>
-				["at0075"] = <
-					text = <"Einbettmedium">
-					description = <"Das Medium, in dem die Probe eingebettet ist (z. B. Paraffin).">
-				>
-				["at0076"] = <
-					text = <"Fixierungsmittel">
-					description = <"Das Mittel, das zur Probenfixierung verwendet wurde.">
-				>
-				["at0078"] = <
-					text = <"Probenentnahme">
-					description = <"Die Probe wurde entnommen.">
-				>
-				["at0079"] = <
-					text = <"Probenannahme">
-					description = <"Die Probe wurde entgegengenommen.">
-				>
-				["at0080"] = <
-					text = <"Probenentnahme aus der Gewebeprobe">
-					description = <"Die Gewebeprobe wurde entnommen.">
-				>
-				["at0081"] = <
-					text = <"Färbung">
-					description = <"Die Probe wurde eingefärbt.">
-				>
-				["at0082"] = <
-					text = <"Probenaufbereitung">
-					description = <"Die Probe wurde aufbereitet.">
-				>
-				["at0083"] = <
-					text = <"Probenlagerung">
-					description = <"Die Probe wurde eingelagert.">
-				>
-				["at0084"] = <
-					text = <"Färbungsmethode">
-					description = <"Die Färbung, die für ein mikroskopisches Präparat verwendet wurde.">
+					text = <"*Processing methode (en)">
+					description = <"*The technique or method that is used to process/prepare the specimen. (en)">
+					comment = <"*Coding of the metode with a terminology is preferred, where possible. (en)">
 				>
 				["at0086"] = <
-					text = <"Spezifische Verarbeitung">
-					description = <"Details zur spezifischen Verarbeitung während eines einzigen Aufbereitungsschritts.">
-				>
-				["at0087"] = <
-					text = <"Beschreibung">
-					description = <"Eine allgemeine Beschreibung der Probenverarbeitung.">
+					text = <"*Processing step (en)">
+					description = <"*Details of the specific process/preparation carried out during a single processing step. (en)">
 				>
 				["at0088"] = <
 					text = <"Gerätebeschreibung">
-					description = <"Detaillierte Angaben zu dem Gerät, welches zur Probenverarbeitung verwendet wurde.">
+					description = <"*Details of the device used in specimen processing/preparation. (en)">
+				>
+				["at0089"] = <
+					text = <"*Processing description (en)">
+					description = <"*A general textual description of the specimen processing/prepartion. (en)">
+				>
+				["at0090"] = <
+					text = <"*Processing status (en)">
+					description = <"*The status of the specimen processing/preparation. (en)">
+				>
+				["at0091"] = <
+					text = <"*Addative/s (en)">
+					description = <"*The substance used in the processing step. (en)">
+					comment = <"*For example: formalin when fixate a tissue specimen, or embryo culture media. (en)">
+				>
+				["at0092"] = <
+					text = <"*Processing step details (en)">
+					description = <"*Details about a single component step within a multistep processing/preparing process. (en)">
+				>
+				["at0093"] = <
+					text = <"*Additional details (en)">
+					description = <"*Additional details about the processing/preparing process. (en)">
+				>
+				["at0094"] = <
+					text = <"*Processing name (en)">
+					description = <"*The name of the specimen prosessing/preperation. (en)">
+					comment = <"*For example: fixation, dehydration, paraffin infiltration, staining, centrifugation, washing. (en)">
+				>
+				["at0095"] = <
+					text = <"*Comment (en)">
+					description = <"*Additional narrative about the processing/preparation process not captured in other fields. (en)">
+				>
+			>
+		>
+		["nb"] = <
+			items = <
+				["at0000"] = <
+					text = <"Prøvebehandling">
+					description = <"Detaljer om preparerings-/behandlingsprosessen til et prøvemateriale.">
+				>
+				["at0071"] = <
+					text = <"Prøvebehandlingstrinn">
+					description = <"Behandlings-/preparerings sekvensen/trinn nummeret.">
+					comment = <"For eksempel: 2 eller trinn 2 av 3. 
+Hvis det kun er ett trinn/sekvens eller hvis denne forekomsten er et sammendrag av alle behandlings-/prepareringstrinnene. er dette dataelementet overflødig.">
+				>
+				["at0072"] = <
+					text = <"Dato/tid for prøvebehandlingen">
+					description = <"Datoen og tidspunktet hvor prøvebehandlingen/-prepareringen tok sted.">
+				>
+				["at0074"] = <
+					text = <"Prøvebahandlingsmetode">
+					description = <"Teknikken eller metoden som er blitt brukt for å behandle/preparere prøvematerialet.">
+					comment = <"Koding av metoden med en terminologi foretrekkes, der det er mulig.">
+				>
+				["at0086"] = <
+					text = <"Prøvebehandlingssekvens">
+					description = <"Detaljer om den spesifikke prøvebehandlingen/-prepareringen som er utført i løpet av et enkelt behandlingstrinn.">
+				>
+				["at0088"] = <
+					text = <"Medisinske utstyret">
+					description = <"Detaljer om det medisinske utstyret som ble brukt i prøvebehandlingen/-prepareringen.">
+				>
+				["at0089"] = <
+					text = <"Prøvebehandlingsbeskrivelse">
+					description = <"En generell tekstlig beskrivelse av prøvebehandlingen/-prepareringen.">
+				>
+				["at0090"] = <
+					text = <"Prøvebehandlingsstatus">
+					description = <"Status for prøvebehandlingen/-prepareringen.">
+				>
+				["at0091"] = <
+					text = <"Tilsettningsstoff/er">
+					description = <"Stoffet som brukes i prøvebehandlingen/-prepareringen.">
+					comment = <"For eksempel: formalin ved fiksering av en vevsprøve, eller embryokulturmedier.">
+				>
+				["at0092"] = <
+					text = <"Prøvebehandlingstrinn detaljer">
+					description = <"*Details about a single component step within a multistep processing/preparing process.(en)">
+				>
+				["at0093"] = <
+					text = <"Ytterligere detaljer">
+					description = <"Ytterligere detaljer om prøvebehandlingen.">
+				>
+				["at0094"] = <
+					text = <"Prøvebahndlingsnavn">
+					description = <"Navnet på prøvebehandlingen/-prepareringen.">
+					comment = <"For eksempel: fiksering, dehydrering, parafinstøping, farging, sentrifugering, vasking.">
+				>
+				["at0095"] = <
+					text = <"Kommentar">
+					description = <"Ytterligere fritekst om prøvebehandlingen som ikke dekkes av andre felt.">
 				>
 			>
 		>
