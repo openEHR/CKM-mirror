@@ -31,8 +31,8 @@ Use a separate instance of this archetype to record the conclusion for each susp
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"EC89F81D31EAFF1F75D6B5ED082C1C89">
-		["build_uid"] = <"9796b166-be2c-4641-b5bf-6bb876fb38b5">
+		["MD5-CAM-1.0.1"] = <"A575B93CFCD6FAC374012E96A84F00F7">
+		["build_uid"] = <"28501c7b-1e07-4c50-b199-8e808ee6ebe3">
 		["revision"] = <"0.0.1-alpha">
 	>
 
@@ -46,39 +46,37 @@ definition
 							DV_TEXT matches {*}
 						}
 					}
-					ELEMENT[at0002] occurrences matches {0..1} matches {    -- Classification
+					ELEMENT[at0002] occurrences matches {0..1} matches {    -- Initial classification
 						value matches {
 							DV_CODED_TEXT matches {
 								defining_code matches {
 									[local::
 									at0035,    -- Suspected
 									at0003,    -- Probable
-									at0004,    -- Confirmed
-									at0005,    -- Excluded
-									at0006]    -- Inconclusive
+									at0004]    -- Not suspected
 								}
 							}
 							DV_TEXT matches {*}
 						}
-						name matches {
-							DV_CODED_TEXT matches {
-								defining_code matches {
-									[local::
-									at0024,    -- Initial classification
-									at0025]    -- Final classification
-								}
-							}
-						}
 					}
-					ELEMENT[at0008] occurrences matches {0..*} matches {    -- Reason category
+					ELEMENT[at0060] occurrences matches {0..1} matches {    -- Final classification
 						value matches {
 							DV_CODED_TEXT matches {
 								defining_code matches {
 									[local::
-									at0043,    -- Laboratory confirmed case
-									at0044]    -- Clinically confirmed case
+									at0061,    -- Pending
+									at0062,    -- Probable
+									at0063,    -- Laboratory confirmed
+									at0066,    -- Clinically confirmed
+									at0064,    -- Discarded
+									at0065]    -- Inconclusive
 								}
 							}
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0008] occurrences matches {0..*} matches {    -- Reason for classification
+						value matches {
 							DV_TEXT matches {*}
 						}
 					}
@@ -87,7 +85,23 @@ definition
 							DV_TEXT matches {*}
 						}
 					}
-					ELEMENT[at0011] occurrences matches {0..1} matches {    -- Source category
+					ELEMENT[at0054] occurrences matches {0..1} matches {    -- Epidemiological link
+						value matches {
+							DV_TEXT matches {*}
+							DV_CODED_TEXT matches {
+								defining_code matches {
+									[local::
+									at0055,    -- Animal to human transmission
+									at0056,    -- Exposure to a common source
+									at0057,    -- Exposure to contaminated food/drinking water
+									at0058,    -- Environmental exposure
+									at0059,    -- Laboratory exposure
+									at0067]    -- Human to human transmission
+								}
+							}
+						}
+					}
+					ELEMENT[at0011] occurrences matches {0..1} matches {    -- Aetiology category
 						value matches {
 							DV_TEXT matches {*}
 							DV_CODED_TEXT matches {
@@ -98,12 +112,12 @@ definition
 									at0047,    -- Endemic case
 									at0048,    -- Vaccine-associated case
 									at0049,    -- Congenital case
-									at0050]    -- Unknown case
+									at0050]    -- Unknown
 								}
 							}
 						}
 					}
-					ELEMENT[at0036] occurrences matches {0..1} matches {    -- Source description
+					ELEMENT[at0036] occurrences matches {0..1} matches {    -- Aetiology description
 						value matches {
 							DV_TEXT matches {*}
 						}
@@ -121,6 +135,19 @@ definition
 					ELEMENT[at0052] occurrences matches {0..1} matches {    -- Endemic source description
 						value matches {
 							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0068] occurrences matches {0..1} matches {    -- Contribution to patient death
+						value matches {
+							DV_TEXT matches {*}
+							DV_CODED_TEXT matches {
+								defining_code matches {
+									[local::
+									at0069,    -- Related
+									at0070,    -- Unrelated
+									at0071]    -- Unknown
+								}
+							}
 						}
 					}
 					allow_archetype CLUSTER[at0016] occurrences matches {0..*} matches {    -- Additional details
@@ -166,25 +193,17 @@ ontology
 					description = <"@ internal @">
 				>
 				["at0002"] = <
-					text = <"Classification">
-					description = <"Classification of the likelihood of the index infectious disease as cause of illness.">
-					comment = <"Run-time name constraints - 'Initial classification' is the classification made prior to commencing the investigation; 'Final classification' is the conclusion reached after the investigation.">
+					text = <"Initial classification">
+					description = <"Classification of the likelihood of the 'Index disease' as causal at the initiation of a case investigation.">
+					comment = <"Not to be used to record the 'Final classification' after completion of a case investigation.">
 				>
 				["at0003"] = <
 					text = <"Probable">
-					description = <"A case is 'Probable' when common, relevant symptoms and/or signs are exhibited and there is an epidemiological link. This classification is only ever temporary, until reclassification with 'Confirmed', 'Excluded/Discarded' or 'Inconclusive' after investigation.">
+					description = <"A case is 'Probable' when common, relevant symptoms and/or signs are exhibited and there is an epidemiological link.">
 				>
 				["at0004"] = <
-					text = <"Confirmed">
-					description = <"A case is 'Confirmed' when laboratory testing confirms the evidence of the disease and may fulfill clinical criteria.">
-				>
-				["at0005"] = <
-					text = <"Excluded">
-					description = <"A case is 'Excluded' or 'Discarded' after exclusion by adequate investigation or negative laboratory test results.">
-				>
-				["at0006"] = <
-					text = <"Inconclusive">
-					description = <"A case is 'Inconclusive' when it is not possible to determine if the index disease is the cause of the infection.">
+					text = <"Not suspected">
+					description = <"A case is 'Not suspected' if the clinical or laboratory findings do not meet the criteria to suspect disease.">
 				>
 				["at0007"] = <
 					text = <"Index disease">
@@ -192,9 +211,9 @@ ontology
 					comment = <"This data element may be redundant if the index disease has been identified elsewhere within a template.">
 				>
 				["at0008"] = <
-					text = <"Reason category">
+					text = <"Reason for classification">
 					description = <"The broad category of the reason for the classification.">
-					comment = <"For example: child of an infected mother, laboratory confirmed, or clinically confirmed.">
+					comment = <"For example: lost to follow-up, child of an infected mother.">
 				>
 				["at0009"] = <
 					text = <"Reason description">
@@ -202,8 +221,8 @@ ontology
 					comment = <"For example: description of clinical findings and/or conclusive laboratory test results; or alternate diagnosis made.">
 				>
 				["at0011"] = <
-					text = <"Source category">
-					description = <"The category for the source of a confirmed case.">
+					text = <"Aetiology category">
+					description = <"The category for the cause of infection.">
 					comment = <"For example: imported, import-related, endemic, vaccine-associated, congenital or unknown.">
 				>
 				["at0013"] = <
@@ -230,32 +249,15 @@ ontology
 				>
 				["at0021"] = <
 					text = <"Source country">
-					description = <"Country identified as the (likely or probable) source of an imported or import-related case.">
-				>
-				["at0024"] = <
-					text = <"Initial classification">
-					description = <"The initial classification before an investigation has commenced.">
-				>
-				["at0025"] = <
-					text = <"Final classification">
-					description = <"The final classification after an investigation has been completed.">
+					description = <"Country identified as the (likely or probable) source for an imported or import-related case.">
 				>
 				["at0035"] = <
 					text = <"Suspected">
-					description = <"A case may be 'Suspected' when common, relevant symptoms and/or signs are exhibited. This classification is only ever temporary, until reclassification with 'Confirmed', 'Discarded' or 'Inconclusive' after investigation..">
+					description = <"A case is 'Suspected' when common, relevant symptoms and/or signs are exhibited.">
 				>
 				["at0036"] = <
-					text = <"Source description">
-					description = <"Narrative description about the source of infection.">
-					comment = <"May include information about the degree of certainty.">
-				>
-				["at0043"] = <
-					text = <"Laboratory confirmed case">
-					description = <"A case that meets one or more laboratory criteria.">
-				>
-				["at0044"] = <
-					text = <"Clinically confirmed case">
-					description = <"A suspected case without adequate laboratory investigation.">
+					text = <"Aetiology description">
+					description = <"Narrative description about the cause of infection.">
 				>
 				["at0045"] = <
 					text = <"Imported case">
@@ -263,11 +265,11 @@ ontology
 				>
 				["at0046"] = <
 					text = <"Import-related case">
-					description = <"Exposure occurred locally but directly associated to an imported case.">
+					description = <"Exposure occurred locally, but is directly associated to an imported case.">
 				>
 				["at0047"] = <
 					text = <"Endemic case">
-					description = <"Exposure occurred locally as part of a chain of endemic transmission.">
+					description = <"Exposure occurred locally, as part of a chain of endemic transmission.">
 				>
 				["at0048"] = <
 					text = <"Vaccine-associated case">
@@ -278,8 +280,8 @@ ontology
 					description = <"Exposure occurred during pregnancy.">
 				>
 				["at0050"] = <
-					text = <"Unknown case">
-					description = <"Exposure source has not been identified.">
+					text = <"Unknown">
+					description = <"The exposure event has not been identified.">
 				>
 				["at0051"] = <
 					text = <"Endemic source category">
@@ -289,6 +291,79 @@ ontology
 				["at0052"] = <
 					text = <"Endemic source description">
 					description = <"Narrative description about the source of an endemic case.">
+				>
+				["at0054"] = <
+					text = <"Epidemiological link">
+					description = <"">
+				>
+				["at0055"] = <
+					text = <"Animal to human transmission">
+					description = <"">
+				>
+				["at0056"] = <
+					text = <"Exposure to a common source">
+					description = <"">
+				>
+				["at0057"] = <
+					text = <"Exposure to contaminated food/drinking water">
+					description = <"">
+				>
+				["at0058"] = <
+					text = <"Environmental exposure">
+					description = <"">
+				>
+				["at0059"] = <
+					text = <"Laboratory exposure">
+					description = <"">
+				>
+				["at0060"] = <
+					text = <"Final classification">
+					description = <"Classification of the likelihood of the 'Index disease' as causal after completion of a case investigation.">
+					comment = <"Not to be used to record the 'Initial classification' at the initiation of a case investigation.">
+				>
+				["at0061"] = <
+					text = <"Pending">
+					description = <"A case is 'Pending' at the completion of an adequate investigation when it is not possible to confirm or discard due to inadequate information, and further information is anticipated. It is usually a temporary classification.">
+				>
+				["at0062"] = <
+					text = <"Probable">
+					description = <"A case is 'Probable' at the completion of an adequate investigation when clinical evidence criteria are met and/or an epidemiological link has been identified, with laboratory test results suggesting causality rather than being conclusive.">
+				>
+				["at0063"] = <
+					text = <"Laboratory confirmed">
+					description = <"A case is 'Laboratory confirmed' at the completion of an adequate investigation when positive laboratory test results confirm the clinical evidence and/or epidemiological link.">
+				>
+				["at0064"] = <
+					text = <"Discarded">
+					description = <"A case is 'Discarded' or 'Excluded' at the completion of an adequate investigation due to negative laboratory test results that exclude causality.">
+				>
+				["at0065"] = <
+					text = <"Inconclusive">
+					description = <"A case is 'Inconclusive' at the completion of an adequate investigation when it is not possible to confirm or discard due to inadequate information, and no further information is anticipated. It is not a temporary classification.">
+				>
+				["at0066"] = <
+					text = <"Clinically confirmed">
+					description = <"A case is 'Clinically confirmed' at the completion of an adequate investigation on the basis of clinical evidence alone.">
+				>
+				["at0067"] = <
+					text = <"Human to human transmission">
+					description = <"">
+				>
+				["at0068"] = <
+					text = <"Contribution to patient death">
+					description = <"">
+				>
+				["at0069"] = <
+					text = <"Related">
+					description = <"The index disease was directly or indirectly related to the death of the infected individual.">
+				>
+				["at0070"] = <
+					text = <"Unrelated">
+					description = <"The index disease was not related to the death of the infected individual.">
+				>
+				["at0071"] = <
+					text = <"Unknown">
+					description = <"It is unknown if the index disease is related to the death of the individual or not.">
 				>
 			>
 		>
