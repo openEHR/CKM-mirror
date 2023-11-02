@@ -1,0 +1,302 @@
+﻿archetype (adl_version=1.4; uid=f27ee476-05ac-4a9c-8627-e1cd645fe93c)
+	openEHR-EHR-CLUSTER.range_of_motion.v0
+
+concept
+	[at0000]	-- Range of motion of a joint
+language
+	original_language = <[ISO_639-1::en]>
+description
+	original_author = <
+		["name"] = <"Hanne Marte Sandal Bårholm">
+		["organisation"] = <"Helse Vest IKT">
+		["email"] = <"hanne.marte.sandal.barholm@helse-vest-ikt.no">
+		["date"] = <"2023-11-01">
+	>
+	details = <
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To record the measurement of the possible amount of motion for a specified simple or compound movement around a joint.">
+			use = <"Use to record the measurement of the possible amount of motion for a specified simple or compound movement around a joint.
+			
+This archetype has been specifically designed to be used in the 'Examination findings' SLOT within the CLUSTER.exam or a specialisation of CLUSTER.exam for a specific joint, but can also be used within other ENTRY or CLUSTER archetypes where clinically appropriate.
+
+The examined joint is identified in the 'System or structure examined' element of the CLUSTER.exam archetype in which this archetype is nested.
+
+Common motions around a joint have been added to the DV_CODED_TEXT data type in the 'Movement' data element. As further joint movements are identified, these can be added to this list over time.">
+			keywords = <"ROM, AAROM, PROM, AROM, joint, movement, angle, motion, range", ...>
+			misuse = <"Not to be used to record specific, named tests related to joint range of motion, such as Thomas test or Ortolani's test. Use the CLUSTER.exam-hip_joint archetype for these purposes.">
+			copyright = <"© openEHR Foundation">
+		>
+	>
+	lifecycle_state = <"in_development">
+	other_contributors = <"Silje Ljosland Bakke, Helse Vest IKT, Norway", ...>
+	other_details = <
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
+		["custodian_organisation"] = <"openEHR Foundation">
+		["original_namespace"] = <"org.openehr">
+		["original_publisher"] = <"openEHR Foundation">
+		["custodian_namespace"] = <"org.openehr">
+		["MD5-CAM-1.0.1"] = <"CB931DE5BED9D4956DA8B9C838FFB6F0">
+		["build_uid"] = <"ae694c1f-3b67-4fe5-a913-7859641431c4">
+		["revision"] = <"0.0.1-alpha">
+	>
+
+definition
+	CLUSTER[at0000] occurrences matches {1..*} matches {    -- Range of motion of a joint
+		items cardinality matches {1..*; unordered} matches {
+			ELEMENT[at0002] occurrences matches {0..1} matches {    -- Movement
+				value matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {
+							[local::
+							at0003,    -- Abduction
+							at0004,    -- Adduction
+							at0005,    -- Extension
+							at0006,    -- Flexion
+							at0007,    -- Internal rotation
+							at0008,    -- External rotation
+							at0009,    -- Inversion
+							at0010,    -- Eversion
+							at0011,    -- Medial rotation
+							at0012,    -- Lateral rotation
+							at0013,    -- Dorsiflexion
+							at0014,    -- Plantar flexion
+							at0015,    -- Ulnar deviation
+							at0016,    -- Radial deviation
+							at0017,    -- Pronation
+							at0018,    -- Supination
+							at0019,    -- Reposition
+							at0020,    -- Opposition
+							at0021,    -- Radial abduction
+							at0022,    -- Palmar abduction
+							at0030,    -- Right lateral flexion
+							at0031,    -- Left lateral flexion
+							at0032,    -- Right rotation
+							at0033]    -- Left rotation
+						}
+					}
+					DV_TEXT matches {*}
+				}
+			}
+			ELEMENT[at0023] occurrences matches {0..1} matches {    -- Starting position
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			ELEMENT[at0024] occurrences matches {0..1} matches {    -- Mode of examination
+				value matches {
+					DV_CODED_TEXT matches {
+						defining_code matches {
+							[local::
+							at0025,    -- Active
+							at0034,    -- Active-assisted
+							at0026]    -- Passive
+						}
+					}
+					DV_TEXT matches {*}
+				}
+			}
+			ELEMENT[at0027] occurrences matches {0..1} matches {    -- Range of motion
+				value matches {
+					C_DV_QUANTITY <
+						property = <[openehr::497]>
+						list = <
+							["1"] = <
+								units = <"deg">
+								magnitude = <|-360.0..360.0|>
+							>
+						>
+					>
+					DV_INTERVAL<DV_QUANTITY> matches {
+						lower matches {
+							C_DV_QUANTITY <
+								property = <[openehr::497]>
+								list = <
+									["1"] = <
+										units = <"deg">
+										magnitude = <|-360.0..360.0|>
+									>
+								>
+							>
+						}
+						upper matches {
+							C_DV_QUANTITY <
+								property = <[openehr::497]>
+								list = <
+									["1"] = <
+										units = <"deg">
+										magnitude = <|-360.0..360.0|>
+									>
+								>
+							>
+						}
+					}
+				}
+			}
+			ELEMENT[at0035] occurrences matches {0..1} matches {    -- Reason for limitation
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			allow_archetype CLUSTER[at0028] occurrences matches {0..*} matches {    -- Additional details
+				include
+					archetype_id/value matches {/.*/}
+			}
+			ELEMENT[at0029] occurrences matches {0..1} matches {    -- Comment
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+		}
+	}
+
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"Range of motion of a joint">
+					description = <"Measurement of the possible amount of motion for a specified simple or compound movement around a joint.">
+				>
+				["at0002"] = <
+					text = <"Movement">
+					description = <"Identification of the movement being tested.">
+				>
+				["at0003"] = <
+					text = <"Abduction">
+					description = <"">
+				>
+				["at0004"] = <
+					text = <"Adduction">
+					description = <"">
+				>
+				["at0005"] = <
+					text = <"Extension">
+					description = <"">
+				>
+				["at0006"] = <
+					text = <"Flexion">
+					description = <"">
+				>
+				["at0007"] = <
+					text = <"Internal rotation">
+					description = <"">
+				>
+				["at0008"] = <
+					text = <"External rotation">
+					description = <"">
+				>
+				["at0009"] = <
+					text = <"Inversion">
+					description = <"">
+				>
+				["at0010"] = <
+					text = <"Eversion">
+					description = <"">
+				>
+				["at0011"] = <
+					text = <"Medial rotation">
+					description = <"">
+				>
+				["at0012"] = <
+					text = <"Lateral rotation">
+					description = <"">
+				>
+				["at0013"] = <
+					text = <"Dorsiflexion">
+					description = <"">
+				>
+				["at0014"] = <
+					text = <"Plantar flexion">
+					description = <"">
+				>
+				["at0015"] = <
+					text = <"Ulnar deviation">
+					description = <"">
+				>
+				["at0016"] = <
+					text = <"Radial deviation">
+					description = <"">
+				>
+				["at0017"] = <
+					text = <"Pronation">
+					description = <"">
+				>
+				["at0018"] = <
+					text = <"Supination">
+					description = <"">
+				>
+				["at0019"] = <
+					text = <"Reposition">
+					description = <"">
+				>
+				["at0020"] = <
+					text = <"Opposition">
+					description = <"">
+				>
+				["at0021"] = <
+					text = <"Radial abduction">
+					description = <"">
+				>
+				["at0022"] = <
+					text = <"Palmar abduction">
+					description = <"">
+				>
+				["at0023"] = <
+					text = <"Starting position">
+					description = <"Description of the joint's position when starting the examination.">
+					comment = <"For example: \"90 degrees flexion in hip and knee\" when examining internal rotation, or \"15 degrees of fixed flexion deformity\" when examining the flexion of the elbow.">
+				>
+				["at0024"] = <
+					text = <"Mode of examination">
+					description = <"Whether the examination is done actively or passively.">
+				>
+				["at0025"] = <
+					text = <"Active">
+					description = <"The movement is performed by the individual. Also known as AROM.">
+				>
+				["at0026"] = <
+					text = <"Passive">
+					description = <"The movement is performed by the examiner or a device. Also known as PROM.">
+				>
+				["at0027"] = <
+					text = <"Range of motion">
+					description = <"The extent of motion for an identified movement around a joint.">
+				>
+				["at0028"] = <
+					text = <"Additional details">
+					description = <"Additional structured details about the range of motion.">
+				>
+				["at0029"] = <
+					text = <"Comment">
+					description = <"Additional narrative about the range of motion findings, not captured in other fields.">
+				>
+				["at0030"] = <
+					text = <"Right lateral flexion">
+					description = <"">
+				>
+				["at0031"] = <
+					text = <"Left lateral flexion">
+					description = <"">
+				>
+				["at0032"] = <
+					text = <"Right rotation">
+					description = <"">
+				>
+				["at0033"] = <
+					text = <"Left rotation">
+					description = <"">
+				>
+				["at0034"] = <
+					text = <"Active-assisted">
+					description = <"The movement is partially assisted by the examiner or a device. Also known as AAROM.">
+				>
+				["at0035"] = <
+					text = <"Reason for limitation">
+					description = <"Description of the reason for restricted motion of a joint.">
+					comment = <"For example: \"pain\", \"swelling\" or \"contracture\".">
+				>
+			>
+		>
+	>
