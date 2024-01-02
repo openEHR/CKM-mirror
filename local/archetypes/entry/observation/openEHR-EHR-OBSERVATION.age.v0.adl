@@ -17,9 +17,9 @@ language
 		["nb"] = <
 			language = <[ISO_639-1::nb]>
 			author = <
-				["name"] = <"Silje Ljosland Bakke, Vebjørn Arntzen">
+				["name"] = <"Silje Ljosland Bakke, Vebjørn Arntzen, John Tore Valand">
 				["organisation"] = <"Helse Vest IKT AS, Oslo University Hospital">
-				["email"] = <"silje.ljosland.bakke@helse-vest-ikt.no, varntzen@ous-hf.no">
+				["email"] = <"silje.ljosland.bakke@helse-vest-ikt.no, varntzen@ous-hf.no, john.tore.valand@helse-vest-ikt.no">
 			>
 		>
 	>
@@ -34,27 +34,36 @@ description
 		["de"] = <
 			language = <[ISO_639-1::de]>
 			purpose = <"Zur Darstellung der Altersparameter einer Person zu einem bestimmten Zeitpunkt.">
-			use = <"Verwenden Sie diesen Archetyp, um die Altersparameter einer Person zu einem bestimmten Zeitpunkt darzustellen.
+			use = <"*Use to record parameters about the age of an individual at a specific point in time.
 
-Verwenden Sie diesen Archetyp innerhalb eines Templates zusammen mit anderen kontextbezogenen Archetypen. Beispiel: Verwendung mit dem Archetyp OBSERVATION.child_growth, um das korrigierte Alter eines Säuglings im Rahmen der Überwachung des Kinderwachstums darzustellen.">
+Use within a template alongside other contextually relevant archetypes. Including, but not limited to;
+- to record the adjusted age of an infant as part of monitoring child growth patterns or;
+- to record the actual age at the time of a physical examination or;
+- to record a category or range in which the individual first became aware of symptoms. (en)">
 			keywords = <"Alter, Chronologisches Alter, Korrigiertes alter, Altersklasse, Alterkategorie, Altersgruppe", ...>
-			misuse = <"">
+			misuse = <"*Not to be used to represent or replace formal identification management or for the purposes of maintaining an official demographic register or index. Use a formal Master Patient Index or Health Provider Index for this purpose, or archetypes based on the openEHR Demographic Information Model. (en)">
 		>
 		["nb"] = <
 			language = <[ISO_639-1::nb]>
 			purpose = <"For å registrere detaljer om alderen til et individ på et gitt tidspunkt.">
-			use = <"Bruk for å registrere detaljer om alderen til et individ på et gitt tidspunkt.
+			use = <"Brukes for å registrere parametere om alderen til et individ på et bestemt tidspunkt.
 
-Bruk i et templat sammen med andre relevante arketyper som passer med konteksten alderen skal registreres i. For eksempel sammen med arketyper for vekstkurve, for å registrere justert alder for premature.">
-			misuse = <"">
+Bruk i et templat sammen med andre relevante arketyper. For eksempel:
+- å registrere den justerte alderen til et spedbarn som en del av overvåking av barnets vekstmønster,
+- å registrere alderen på tidspunktet for en fysisk undersøkelse,
+- å registrere en tidskategori eller periode der personen først ble oppmerksom på symptomer.">
+			misuse = <"Skal ikke brukes til å vise individets nåværende alder i brukergrensesnittet i et elektronisk journalsystem. Bruk et formelt pasientregister eller arketyper basert på openEHR demografisk informasjonsmodell til dette formålet.">
 		>
 		["en"] = <
 			language = <[ISO_639-1::en]>
 			purpose = <"To record details about the age of an individual at a specific point in time.">
 			use = <"Use to record parameters about the age of an individual at a specific point in time.
 
-Use within a template alongside other contextually relevant archetypes. For example: use with OBSERVATION.child_growth to record the adjusted age of an infant as part of monitoring child growth patterns.">
-			misuse = <"">
+Use within a template alongside other contextually relevant archetypes. Including, but not limited to;
+- to record the adjusted age of an infant as part of monitoring child growth patterns or;
+- to record the actual age at the time of a physical examination or;
+- to record a category or range in which the individual first became aware of symptoms.">
+			misuse = <"Not to be used to display the individuals current age in the user interface of an electronic record system. Use a formal patient registry or archetypes based on the openEHR demographic information model for this purpose.">
 			copyright = <"© openEHR Foundation">
 		>
 	>
@@ -67,8 +76,8 @@ Use within a template alongside other contextually relevant archetypes. For exam
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"A9AA24874908E5DFC16BABE7C45F48A9">
-		["build_uid"] = <"e598f443-76e0-4e4e-8395-c9026325b0b9">
+		["MD5-CAM-1.0.1"] = <"1C1445387EA080C2000B6E414F31C58F">
+		["build_uid"] = <"2e5c2e43-7962-4751-abe4-21f21ccef25d">
 		["revision"] = <"0.0.1-alpha">
 	>
 
@@ -81,16 +90,46 @@ definition
 						data matches {
 							ITEM_TREE[at0003] matches {    -- Tree
 								items cardinality matches {0..*; unordered} matches {
-									ELEMENT[at0004] occurrences matches {0..1} matches {    -- Chronological age
+									ELEMENT[at0004] occurrences matches {0..*} matches {    -- Chronological age
 										value matches {
 											DV_DURATION matches {
-												value matches {|PT0S..P200Y|}
+												value matches {|PT0S..<P200Y|}
 											}
+											C_DV_QUANTITY <
+												property = <[openehr::128]>
+												list = <
+													["1"] = <
+														units = <"a">
+														magnitude = <|0.0..<200.0|>
+													>
+													["2"] = <
+														units = <"a_j">
+														magnitude = <|0.0..<200.0|>
+													>
+												>
+											>
+											DV_TEXT matches {*}
 										}
 									}
-									ELEMENT[at0005] occurrences matches {0..1} matches {    -- Adjusted age
+									ELEMENT[at0005] occurrences matches {0..*} matches {    -- Adjusted age
 										value matches {
-											DV_DURATION matches {*}
+											DV_DURATION matches {
+												value matches {|>-P1Y..<P10Y|}
+											}
+											C_DV_QUANTITY <
+												property = <[openehr::128]>
+												list = <
+													["1"] = <
+														units = <"a">
+														magnitude = <|>-1.0..<10.0|>
+													>
+													["2"] = <
+														units = <"a_j">
+														magnitude = <|>-1.0..<10.0|>
+													>
+												>
+											>
+											DV_TEXT matches {*}
 										}
 									}
 									ELEMENT[at0007] occurrences matches {0..1} matches {    -- Age category
@@ -146,11 +185,12 @@ ontology
 				["at0004"] = <
 					text = <"Chronological age">
 					description = <"Duration of time since birth.">
+					comment = <"In most use cases the DV_DURATION data type is used to record the Chronological age. The DV_QUANTITY data type is used for recording a decimal age in years or mean Julian years (365.25 days), and the DV_TEXT data type is used for recording a textual representation of the individual's age. For example: \"P3M2W\", \"0,2884615384615385 a_j\" or \"3 months 2 weeks\".">
 				>
 				["at0005"] = <
 					text = <"Adjusted age">
 					description = <"Chronological age of an infant, less the number of weeks or months they were born premature.">
-					comment = <"Also known as 'Corrected age'.">
+					comment = <"Also known as 'Corrected age'. In most use cases the DV_DURATION data type is used to record the Adjusted age. The DV_QUANTITY data type is used for recording a decimal age in years or mean Julian years (365.25 days), and the DV_TEXT data type is used for recording a textual representation of the individual's age. For example: \"P3M2W\", \"0,2884615384615385 a_j\" or \"3 months 2 weeks\".">
 				>
 				["at0006"] = <
 					text = <"Comment">
@@ -158,8 +198,8 @@ ontology
 				>
 				["at0007"] = <
 					text = <"Age category">
-					description = <"Duration of time since birth, expressed as a specified age range or grouping.">
-					comment = <"Categories for each specific use case will be defined within a template.">
+					description = <"Duration of time since birth, expressed as a text description of a specified age range or grouping.">
+					comment = <"For example: 'Age 10-20' or 'Teenager'. Categories for each specific use case will be defined within a template.">
 				>
 				["at0008"] = <
 					text = <"Item tree">
@@ -193,11 +233,12 @@ ontology
 				["at0004"] = <
 					text = <"Chronologisches Alter">
 					description = <"Zeitdauer seit der Geburt.">
+					comment = <"*In most use cases the Duration data type is used to record the Chronological age. The Quantity data type is used for recording a decimal age in years or mean Julian years (365.25 days), and the Text data type is used for recording a textual representation of the individual's age. For example: \"P3M2W\", \"0,2884615384615385 a_j\" or \"3 months 2 weeks\". (en)">
 				>
 				["at0005"] = <
 					text = <"Korrigiertes Alter">
 					description = <"Chronologisches Alter eines Säuglings, abzüglich der Anzahl der Wochen oder Monate, in denen es zu früh geboren wurde.">
-					comment = <"Auch als \"Korrigiertes Alter\" bekannt.">
+					comment = <"*Also known as 'Corrected age'. In most use cases the Duration data type is used to record the Adjusted age. The Quantity data type is used for recording a decimal age in years or mean Julian years (365.25 days), and the Text data type is used for recording a textual representation of the individual's age. For example: \"P3M2W\", \"0,2884615384615385 a_j\" or \"3 months 2 weeks\". (en)">
 				>
 				["at0006"] = <
 					text = <"Kommentar">
@@ -205,8 +246,8 @@ ontology
 				>
 				["at0007"] = <
 					text = <"Altersklasse">
-					description = <"Zeitdauer seit der Geburt, ausgedrückt als festgelegte Altersspanne oder Gruppierung.">
-					comment = <"Kategorien für jeden spezifischen Anwendungsfall werden in einem Template definiert.">
+					description = <"*Duration of time since birth, expressed as a text description of a specified age range or grouping. (en)">
+					comment = <"*For example:  'Age 10-20' or 'Teenager'. Categories for each specific use case will be defined within a template. (en)">
 				>
 				["at0008"] = <
 					text = <"*Item tree (en)">
@@ -230,8 +271,8 @@ ontology
 					description = <"@ internal @">
 				>
 				["at0002"] = <
-					text = <"Tidspunkt">
-					description = <"Standard uspesifisert tidspunkt som kan bli definert i templat eller ved run-time (kjøring i applikasjon).">
+					text = <"Uspesifisert tidspunkthendelse">
+					description = <"Uspesifisert tidspunkt som kan defineres mer eksplisitt i en templat eller i en applikasjon.">
 				>
 				["at0003"] = <
 					text = <"Tree">
@@ -240,11 +281,12 @@ ontology
 				["at0004"] = <
 					text = <"Kronologisk alder">
 					description = <"Varighet siden fødsel.">
+					comment = <"I de fleste tilfeller benyttes datatypen DV_DURATION for å registrere den kronologiske alderen. Datatypen DV_QUANTITY brukes til å registrere en alder med desimaler i år eller gjennomsnittlige julianske år (365,25 dager), datatypen DV_TEXT brukes til å registrere en tekstlig representasjon av individets alder. For eksempel: \"P3M2W\", \"0,2884615384615385 a_j\" eller \"3 måneder 2 uker\".">
 				>
 				["at0005"] = <
 					text = <"Justert alder">
 					description = <"Kronologisk alder for et spedbarn, minus antall uker eller måneder det ble født for tidlig.">
-					comment = <"Også kjent som \"Korrigert alder\".">
+					comment = <"I de fleste tilfeller benyttes datatypen DV_DURATION for å registrere justert alder. Datatypen DV_QUANTITY brukes til å registrere en alder med desimaler i år eller gjennomsnittlige julianske år (365,25 dager), datatypen DV_TEXT brukes til å registrere en tekstlig representasjon av individets alder. For eksempel: \"P3M2W\", \"0,2884615384615385 a_j\" eller \"3 måneder 2 uker\".">
 				>
 				["at0006"] = <
 					text = <"Kommentar">
@@ -252,8 +294,9 @@ ontology
 				>
 				["at0007"] = <
 					text = <"Alderskategori">
-					description = <"Varighet siden fødselen, uttrykt som et aldersspenn eller en betegnelse for en gruppe.">
-					comment = <"Kategorier vil bli definert i templat for hvert enkelt brukstilfelle.">
+					description = <"Varighet av tid siden fødselen, uttrykt som en tekstbeskrivelse av et spesifisert aldersintervall eller gruppering.
+">
+					comment = <"For exampel; \"10-20 år\" eller \"Tenåring. Kategorier vil bli definert i et templat for hvert enkelt brukstilfelle.">
 				>
 				["at0008"] = <
 					text = <"*Item tree (en)">
