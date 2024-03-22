@@ -2,7 +2,7 @@
 	openEHR-EHR-CLUSTER.pharmacogenetic_result.v0
 
 concept
-	[at0000]	-- Pharmacogenetic analyte result
+	[at0000]	-- Pharmacogenetic result
 language
 	original_language = <[ISO_639-1::en]>
 description
@@ -15,18 +15,24 @@ description
 	details = <
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"To record the details of the result of pharmacogenetic testing against a single gene, including the detected genotype, pharmacognetic phenotype, activity score to support prescribing decision support.">
-			use = <"The key use of this archetype is to record the results of pharmacogenetic testing to support clinical decision making, including digital prescribing decision support, commonly as part of a panel of similar results. It would commonly be carried inside the OBSERVATION.laboratory_test_result archetype, replacing , or perhaps alongside the CLUSTER.laboratory_analyte_result archetype, depending on exact laboratory reporting practice.
+			purpose = <"To record findings on pharmacogenetic testing for a single gene.">
+			use = <"Use to record findings on pharmacogenetic testing for a single gene. 
 
-Typically this testing is performed by testing for specific allele variations at a specific gene location, adding derived phenotypic information such as metaboliser status and activity score from which specific therapeutic implications may be drawn. 
+The primary intended use of this archetype is to support clinical decision making, including digital prescribing decision support, commonly as part of a panel of similar results. It would normally be carried within the CLUSTER.laboratory_analyte_result archetype.
 
-Although some laboratory reports incorporate those therapeutic recommendations, these are explicitly intended to be carried in separate Genomic Therapeutic implication archetype. The principal reason is that those implications will change over time as new research emerges.
+Typically this testing is performed by testing for specific allele variations at a specific gene location, adding derived phenotypic information such as metaboliser status and activity score from which specific therapeutic implications may be drawn.
 
-A further issue is that each individual result may only cover a partial set of all known testable alleles for a specific gene, which means that the the full genotype and related pharmacogenetic phenotype may need to updated as further testing is done.  Discussion is ongoing at to whether that 'cumulative result' is best derived dynamically from existing results , or whether a specific 'cumulative result' should be maintained as a separate record, probably as an Evaluation archetype, and updated as new individual results are obtained.
+Although some laboratory reports incorporate those therapeutic recommendations, these are explicitly intended to be carried in separate Genomic therapeutic implication archetype. The principal reason is that those implications will change over time as new research emerges.
 
-The design was heavily influenced by the HL7 FHIR Genomics Reporting Implementation Guide and CPIC(http://cpicpgx.org/) guidance on reporting and terminology bindings.">
-			keywords = <"pharmacogenetics, laboratory, enzyme, medication, pgx, CPIC, recommendation, genomics", ...>
-			misuse = <"This archetype is not intended to support other types of genomic analysis / beyond pharmacogenetics, such as molecular pathology reporting.">
+A further issue is that each individual result may only cover a partial set of all known testable alleles for a specific gene, which means that the the full genotype and related pharmacogenetic phenotype may need to updated as further testing is done. Discussion is ongoing as to whether that 'cumulative result' is best derived dynamically from existing results , or whether a specific 'cumulative result' should be maintained as a separate record.
+
+The design was heavily influenced by CPIC (http://cpicpgx.org/) guidance on reporting and terminology bindings.
+
+Pharmacogenetic laboratory reporting and messaging is highly variable, but we have taken account of emerging work in this field from the HL7 FHIR Genomics Reporting Implementation Guide.
+
+Pharmacogenetic reporting is generally recognised to be more clinically focused than other areas, such as cancer genomics, which are covered by the openEHR Genomics project archetypes. Through discussions with the primary authors of these archetypes, we have attempted to ensure maximal alignment and identified the appropriate use in the pharmacogenetic context.">
+			keywords = <"pharmacogenetics, laboratory, enzyme, medication, pgx, CPIC, genomics, pharmacogenomics, genotype", ...>
+			misuse = <"Not to be used for recording information about genomic variants beyond the scope of interactions between an identified gene and a medication. Use specific genomics archetypes for purposes other than pharmacogenetics.">
 			copyright = <"© openEHR Foundation">
 		>
 	>
@@ -35,25 +41,31 @@ The design was heavily influenced by the HL7 FHIR Genomics Reporting Implementat
 	other_details = <
 		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
 		["custodian_organisation"] = <"Apperta UK">
-		["references"] = <"HL7.FHIR.UV.GENOMICS-REPORTING\\Genomics Background - FHIR v4.0.1 \"HL7.FHIR.UV.GENOMICS-REPORTING\\Genomics Background - FHIR V4.0.1\". Build.Fhir.Org, 2023, http://build.fhir.org/ig/HL7/genomics-reporting/background.html. Accessed 7 Mar 2023.
+		["references"] = <"HL7 FHIR. Genomic Background. [Internet]. HL7 FHIR; 2024. Available from: http://build.fhir.org/ig/HL7/genomics-reporting/background.html.
 
-Dolin, R., Boxwala, A. and Shalaby, J. Dolin, R.H. et al. \"A Pharmacogenomics Clinical Decision Support Service Based On FHIR And CDS Hooks\". Methods Of Information In Medicine, vol 57, no. S 02, 2018, pp. e115-e123. Georg Thieme Verlag KG, doi:10.1055/s-0038-1676466. Accessed 7 Mar 2023.
+Dolin RH, Boxwala A, Shalaby J. A Pharmacogenomics Clinical Decision Support Service Based on FHIR and CDS Hooks. Methods Inf Med. 2018 Dec;57(S 02):e115-e123. doi: 10.1055/s-0038-1676466. Epub 2019 Jan 3. PubMed PMID: 30605914.
 
-Cpicpgx.Org, 2023, http://cpicpgx.org/wp-content/uploads/2016/02/CPIC-Term-Standardization-and-LOINC-151203.pdf. Accessed 22 May 2023.">
+Freimuth RR. CPIC Term Standardization: LOINC Codes. [Internet]. CPIC; 2015 December. Available from: https://cpicpgx.org/wp-content/uploads/2016/02/CPIC-Term-Standardization-and-LOINC-151203.pdf.
+
+McDermott JH, Wright S, Sharma V, Newman WG, Payne K, Wilson P. Characterizing pharmacogenetic programs using the consolidated framework for implementation research: A structured scoping review. Front Med (Lausanne). 2022;9:945352. doi: 10.3389/fmed.2022.945352. eCollection 2022. PubMed PMID: 36059837; PubMed Central PMCID: PMC9433561.
+
+Roosan D, Hwang A, Law AV, Chok J, Roosan MR. The inclusion of health data standards in the implementation of pharmacogenomics systems: a scoping review. Pharmacogenomics. 2020 Nov;21(16):1191-1202. doi: 10.2217/pgs-2020-0066. Epub 2020 Oct 30. Review. PubMed PMID: 33124487.
+
+Global Alliance for Genomics and Health. Variation Representation (VRS). [Internet]. Global Alliance for Genomics and Health; 2024. Available from: https://www.ga4gh.org/product/variation-representation/.">
 		["current_contact"] = <"Ian McNicoll (ian@freshehr.com>">
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR International">
 		["custodian_namespace"] = <"uk.org.clinicalmodels">
-		["MD5-CAM-1.0.1"] = <"006CF0F8455943084308F250B74E84D7">
-		["build_uid"] = <"5b9cd5a5-d583-400f-941c-b69fa9ace575">
+		["MD5-CAM-1.0.1"] = <"112688B395B83DBD5A9FFD327ACB5FA7">
+		["build_uid"] = <"9b8f4de3-aeab-4a6d-895b-81db6934534c">
 		["ip_acknowledgements"] = <"This artefact includes content from SNOMED Clinical Terms® (SNOMED CT®) which is copyrighted material of the International Health Terminology Standards Development Organisation (IHTSDO). Where an implementation of this artefact makes use of SNOMED CT content, the implementer must have the appropriate SNOMED CT Affiliate license - for more information contact https://www.snomed.org/snomed-ct/get-snomed or info@snomed.org.">
 		["revision"] = <"0.0.1-alpha">
 	>
 
 definition
-	CLUSTER[at0000] matches {    -- Pharmacogenetic analyte result
+	CLUSTER[at0000] matches {    -- Pharmacogenetic result
 		items cardinality matches {1..*; unordered} matches {
-			ELEMENT[at0003] occurrences matches {0..1} matches {    -- Gene name
+			ELEMENT[at0003] matches {    -- Gene symbol
 				value matches {
 					DV_TEXT matches {*}
 				}
@@ -94,7 +106,7 @@ definition
 						list = <
 							["1"] = <
 								units = <"1">
-								magnitude = <|>=0.0|>
+								magnitude = <|0.0..10.0|>
 							>
 						>
 					>
@@ -102,7 +114,7 @@ definition
 			}
 			CLUSTER[at0084] occurrences matches {0..*} matches {    -- Individual activity value
 				items cardinality matches {1..*; unordered} matches {
-					ELEMENT[at0086] occurrences matches {0..1} matches {    -- Allele
+					ELEMENT[at0086] occurrences matches {0..1} matches {    -- Allele haplotype
 						value matches {
 							DV_TEXT matches {*}
 						}
@@ -114,7 +126,7 @@ definition
 								list = <
 									["1"] = <
 										units = <"1">
-										magnitude = <|>=0.0|>
+										magnitude = <|0.0..10.0|>
 									>
 								>
 							>
@@ -122,28 +134,17 @@ definition
 					}
 				}
 			}
-			CLUSTER[at0075] occurrences matches {0..*} matches {    -- Per-allele tested
+			CLUSTER[at0097] occurrences matches {0..*} matches {    -- Per-allele tested
 				items cardinality matches {1..*; unordered} matches {
-					ELEMENT[at0078] occurrences matches {0..1} matches {    -- SNP rsNumber
-						value matches {
-							DV_CODED_TEXT matches {*}
-						}
-					}
-					ELEMENT[at0083] occurrences matches {0..1} matches {    -- Reference allele
-						value matches {
-							DV_TEXT matches {*}
-						}
-					}
-					ELEMENT[at0082] occurrences matches {0..1} matches {    -- Detected allele
-						value matches {
-							DV_TEXT matches {*}
-						}
-					}
-					allow_archetype CLUSTER[at0096] occurrences matches {0..*} matches {    -- Variant detail
+					allow_archetype CLUSTER[at0102] occurrences matches {0..1} matches {    -- SNP rsNumber
 						include
-							archetype_id/value matches {/.*|openEHR-EHR-CLUSTER\.simple_variant\.v0/}
+							archetype_id/value matches {/openEHR-EHR-CLUSTER\.knowledge_base_reference\.v1/}
 					}
 				}
+			}
+			allow_archetype CLUSTER[at0096] occurrences matches {0..1} matches {    -- Variant detail
+				include
+					archetype_id/value matches {/openEHR-EHR-CLUSTER\.genomic_variant_result\.v1/}
 			}
 		}
 	}
@@ -155,37 +156,29 @@ ontology
 		["en"] = <
 			items = <
 				["at0000"] = <
-					text = <"Pharmacogenetic analyte result">
-					description = <"Details of the result of pharmacogenetic testing against a single gene, including the detected genotype, pharmacognetic phenotype, activity score to support prescribing decision support.">
+					text = <"Pharmacogenetic result">
+					description = <"Findings on pharmacogenetic testing for a single gene.">
 				>
 				["at0003"] = <
-					text = <"Gene name">
-					description = <"A term which identifies the gene concerned.">
-					comment = <"Preferably this should be coded with terms from the HGNC nomenclature (HUGO Gene Nomenclature Committee).
+					text = <"Gene symbol">
+					description = <"The official gene symbol approved by the HGNC, which is a short abbreviated form of the gene name.">
+					comment = <"Coding with an external terminology is preferred, where possible.
 
-For example:
-'http://www.genenames.org::CYP2C9 | CYP2C9 |'
+Preferably this should be coded with terms from the HGNC (HUGO Gene Nomenclature Committee) nomenclature, using 'http://www.genenames.org' as the terminology identifier.
 
-See https://terminology.hl7.org/CodeSystem-v3-hgnc.json.html
-
-Note that CPIC currently recommends the use of LOINC-based  \"Phenotypic interpretation\" terms and not the Gene names, e.g. \"TPMT Gene Product Metabolic Activity Interpretation\".">
+For example: 'http://www.genenames.org::CYP2C9 | CYP2C9 |'.">
 				>
 				["at0004"] = <
 					text = <"Diplotype">
 					description = <"A textual representation of the diplotype, normally as string of characters, either as as gene change descriptors or star allele diplotypes.">
-					comment = <"For example: 
-'g.94938683A>G' (Gene changes)
-'*1/*36' (Star allele diplotype).">
+					comment = <"For example: 'g.94938683A>G' (Gene changes) or '*1/*36' (Star allele diplotype).">
 				>
 				["at0052"] = <
 					text = <"Phenotype">
 					description = <"The estimated pharmacological impact of the identified genotype.">
-					comment = <"The internal terms are based on CPIC phenotype recommendations - see https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5253119/ .
+					comment = <"The coded text values are based on CPIC phenotype recommendations - see https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5253119/.
 
-For example:
-'local::at0057 | Poor metaboliser |'
-
-These terms are bound to SNOMED CT and LOINC equivalents. The list is left open as other terms may be required.">
+It is possible to add other coded text values when they are required.">
 				>
 				["at0053"] = <
 					text = <"Normal metaboliser">
@@ -207,29 +200,10 @@ These terms are bound to SNOMED CT and LOINC equivalents. The list is left open 
 					text = <"Poor metaboliser">
 					description = <"The metaboliser status is poor.">
 				>
-				["at0075"] = <
-					text = <"Per-allele tested">
-					description = <"A list of the specific alleles tested by this pharmacogenetic test, as the specific alleles may vary between tests.">
-				>
-				["at0078"] = <
-					text = <"SNP rsNumber">
-					description = <"The rsNumber (rs ID) of the allele tested, based on the the dbSNP identifier using terminology ID 
-'http://terminology.hl7.org/NamingSystem/v3-dbSNP'.">
-					comment = <"For example: 'http://terminology.hl7.org/NamingSystem/v3-dbSNP::rs3918290 | rs3918290 |'.">
-				>
 				["at0080"] = <
 					text = <"Overall activity score">
 					description = <"An associated derived activity score, based on known association with specific genotypes and individual allele activity values, which is required to assess metaboliser status for some phenotypes.">
-				>
-				["at0082"] = <
-					text = <"Detected allele">
-					description = <"A text descriptor of the detected content of the tested allele.">
-					comment = <"For example: 'A/G'.">
-				>
-				["at0083"] = <
-					text = <"Reference allele">
-					description = <"A text descriptor of the expected reference content of the tested allele.">
-					comment = <"For example: 'A/A'.">
+					comment = <"For example: '0.5'.">
 				>
 				["at0084"] = <
 					text = <"Individual activity value">
@@ -241,8 +215,8 @@ These terms are bound to SNOMED CT and LOINC equivalents. The list is left open 
 					comment = <"For example: '0.5'.">
 				>
 				["at0086"] = <
-					text = <"Allele">
-					description = <"The allele descriptor associated with the activity value.">
+					text = <"Allele haplotype">
+					description = <"The allele haplotype descriptor associated with the activity value.">
 					comment = <"For example: '*36'.">
 				>
 				["at0087"] = <
@@ -284,6 +258,21 @@ These terms are bound to SNOMED CT and LOINC equivalents. The list is left open 
 				["at0096"] = <
 					text = <"Variant detail">
 					description = <"Details of variant findings.">
+				>
+				["at0097"] = <
+					text = <"Per-allele tested">
+					description = <"A list of the specific alleles tested by this pharmacogenetic test, as the specific alleles may vary between tests.">
+				>
+				["at0102"] = <
+					text = <"SNP rsNumber">
+					description = <"The rsNumber (rs ID) of the allele tested, based on the dbSNP identifier.">
+					comment = <"It is recommended to use the openEHR-EHR-CLUSTER.knowledge_base_reference.v1 archetype to carry the SNP rsNumber.
+
+For example:
+
+Knowledge base name: 'http://terminology.hl7.org/NamingSystem/v3-dbSNP'.
+
+Item name: 'rs3918290'.">
 				>
 			>
 		>
