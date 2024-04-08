@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<template xmlns="openEHR/v1/Template">
+<?xml version="1.0" encoding="UTF-8"?><template xmlns="openEHR/v1/Template">
     <id>b44cfdbd-ba1c-4eae-b45b-f8b022676b53</id>
     <name>Pharmacogenetic test result</name>
     <description>
@@ -34,7 +33,7 @@
             </item>
             <item>
                 <key>MD5-CAM-1.0.1</key>
-                <value>ada44e6c5502ab3530af7a7d7cc1b205</value>
+                <value>1e3bea3a50e73205ba0d6be71921b41c</value>
             </item>
             <item>
                 <key>PARENT:MD5-CAM-1.0.1</key>
@@ -42,7 +41,7 @@
             </item>
             <item>
                 <key>sem_ver</key>
-                <value>4.0.0</value>
+                <value>1.0.0-alpha.2</value>
             </item>
             <item>
                 <key>build_uid</key>
@@ -114,14 +113,9 @@
             </item>
         </items>
     </annotations>
-    <definition
-        archetype_id="openEHR-EHR-OBSERVATION.laboratory_test_result.v1"
-        concept_name="Laboratory test result"
-        name="Pharmacogenetic test result"
-        xmlns:tem="openEHR/v1/Template"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="tem:OBSERVATION">
+    <definition archetype_id="openEHR-EHR-OBSERVATION.laboratory_test_result.v1" concept_name="Laboratory test result" name="Pharmacogenetic test result" xmlns:tem="openEHR/v1/Template" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="tem:OBSERVATION">
         <Rule max="1" name="Point in time" path="/data[at0001]/events[at0002]"/>
-        <Rule default="Pharmacogenetics screening panel" path="/data[at0001]/events[at0002]/data[at0003]/items[at0005]"/>
+        <Rule default="Pharmacogenomic analysis basic associated observations panel - Blood or Tissue [78046-0]" path="/data[at0001]/events[at0002]/data[at0003]/items[at0005]"/>
         <Rule max="0" path="/data[at0001]/events[at0002]/data[at0003]/items[at0073]">
             <constraint xsi:type="tem:multipleConstraint">
                 <includedTypes>Coded_text</includedTypes>
@@ -129,6 +123,7 @@
             </constraint>
         </Rule>
         <Rule max="0" path="/data[at0001]/events[at0002]/data[at0003]/items[at0075]"/>
+        <Rule max="0" path="/data[at0001]/events[at0002]/data[at0003]/items[at0077]"/>
         <Rule name="Overall recommendation" path="/data[at0001]/events[at0002]/data[at0003]/items[at0057]"/>
         <Rule max="0" path="/data[at0001]/events[at0002]/data[at0003]/items[at0098]"/>
         <Rule max="0" path="/data[at0001]/events[at0002]/data[at0003]/items[at0101]"/>
@@ -154,10 +149,7 @@
             </constraint>
         </Rule>
         <Rule max="0" path="/protocol[at0004]/items[at0111]"/>
-        <Items
-            archetype_id="openEHR-EHR-CLUSTER.laboratory_test_analyte.v1"
-            max="1"
-            path="/data[at0001]/events[at0002]/data[at0003]/items[at0097]" xsi:type="tem:CLUSTER">
+        <Items archetype_id="openEHR-EHR-CLUSTER.laboratory_test_analyte.v1" max="1" path="/data[at0001]/events[at0002]/data[at0003]/items[at0097]" xsi:type="tem:CLUSTER">
             <Rule max="0" path="/items[at0027]"/>
             <Rule max="0" path="/items[at0001]"/>
             <Rule max="0" path="/items[at0004]"/>
@@ -177,12 +169,89 @@
                 </constraint>
             </Rule>
             <Rule max="0" path="/items[at0003]"/>
-            <Items
-                archetype_id="openEHR-EHR-CLUSTER.pharmacogenetic_analyte_result.v0"
-                max="1" path="/items[at0014]" xsi:type="tem:CLUSTER"/>
+            <Items archetype_id="openEHR-EHR-CLUSTER.pharmacogenetic_result.v0" max="1" path="/items[at0014]" xsi:type="tem:CLUSTER">
+                <Items archetype_id="openEHR-EHR-CLUSTER.knowledge_base_reference.v1" concept_name="Knowledge base reference" max="1" name="SNP rsNumber" path="/items[at0097]/items[at0102]" xsi:type="tem:CLUSTER">
+                    <Rule default="dbSNP" path="/items[at0001]"/>
+                    <Rule max="0" path="/items[at0006]"/>
+                    <Rule max="0" path="/items[at0008]"/>
+                    <Rule max="0" path="/items[at0002]"/>
+                    <Rule max="0" path="/items[at0007]"/>
+                    <Rule max="0" path="/items[at0003]"/>
+                    <Rule max="0" path="/items[at0004]"/>
+                </Items>
+                <Items archetype_id="openEHR-EHR-CLUSTER.genomic_variant_result.v1" concept_name="Genomic variant result" max="1" name="Variant detail" path="/items[at0096]" xsi:type="tem:CLUSTER">
+                    <Rule max="0" path="/items[at0101]"/>
+                    <Rule max="0" path="/items[at0008]"/>
+                    <Rule max="0" path="/items[at0023]"/>
+                    <Rule max="0" path="/items[at0024]"/>
+                    <Rule max="0" path="/items[at0060]">
+                        <constraint xsi:type="tem:countConstraint">
+                            <minMagnitude>0</minMagnitude>
+                            <includesMaximum>false</includesMaximum>
+                            <includesMinimum>true</includesMinimum>
+                        </constraint>
+                    </Rule>
+                    <Rule max="0" path="/items[at0028]">
+                        <constraint xsi:type="tem:countConstraint">
+                            <minMagnitude>0</minMagnitude>
+                            <includesMaximum>false</includesMaximum>
+                            <includesMinimum>true</includesMinimum>
+                        </constraint>
+                    </Rule>
+                    <Rule max="0" path="/items[at0047]">
+                        <constraint xsi:type="tem:quantityConstraint">
+                            <unitMagnitude>
+                                <unit>1</unit>
+                                <maxMagnitude>1.0</maxMagnitude>
+                                <minMagnitude>0.0</minMagnitude>
+                                <includesMaximum>true</includesMaximum>
+                                <includesMinimum>true</includesMinimum>
+                            </unitMagnitude>
+                        </constraint>
+                    </Rule>
+                    <Rule max="0" path="/items[at0029]"/>
+                    <Rule max="0" path="/items[at0061]"/>
+                    <Rule max="0" path="/items[at0067]">
+                        <constraint xsi:type="tem:quantityConstraint"/>
+                    </Rule>
+                    <Rule max="0" path="/items[at0068]">
+                        <constraint xsi:type="tem:quantityConstraint"/>
+                    </Rule>
+                    <Rule max="0" path="/items[at0039]"/>
+                    <Rule max="0" path="/items[at0040]">
+                        <constraint xsi:type="tem:multipleConstraint">
+                            <includedTypes>Coded_text</includedTypes>
+                            <includedTypes>Text</includedTypes>
+                        </constraint>
+                    </Rule>
+                    <Rule max="0" path="/items[at0041]">
+                        <constraint xsi:type="tem:countConstraint">
+                            <minMagnitude>0</minMagnitude>
+                            <includesMaximum>false</includesMaximum>
+                            <includesMinimum>true</includesMinimum>
+                        </constraint>
+                    </Rule>
+                    <Rule max="0" path="/items[at0069]"/>
+                    <Rule max="0" path="/items[at0070]">
+                        <constraint xsi:type="tem:multipleConstraint">
+                            <includedTypes>Identifier</includedTypes>
+                            <includedTypes>URI</includedTypes>
+                        </constraint>
+                    </Rule>
+                    <Items archetype_id="openEHR-EHR-CLUSTER.media_file.v1" concept_name="Media file" max="1" name="VRS attachment" path="/items[at0098]" xsi:type="tem:CLUSTER">
+                        <Rule default="G4AGH VRS file" path="/items[at0002]"/>
+                        <Rule max="0" path="/items[at0010]">
+                            <constraint xsi:type="tem:multipleConstraint">
+                                <includedTypes>Identifier</includedTypes>
+                                <includedTypes>Text</includedTypes>
+                            </constraint>
+                        </Rule>
+                        <Rule max="0" path="/items[at0005]"/>
+                    </Items>
+                </Items>
+            </Items>
         </Items>
-        <Items archetype_id="openEHR-EHR-CLUSTER.device.v1" max="1"
-            path="/protocol[at0004]/items[at0110]" xsi:type="tem:CLUSTER">
+        <Items archetype_id="openEHR-EHR-CLUSTER.device.v1" concept_name="Medical device" max="1" name="Testing device" path="/protocol[at0004]/items[at0110]" xsi:type="tem:CLUSTER">
             <Rule max="0" path="/items[at0002]"/>
             <Rule max="0" path="/items[at0021]"/>
             <Rule max="0" path="/items[at0004]"/>
@@ -197,27 +266,25 @@
             <Rule max="0" path="/items[at0008]"/>
         </Items>
     </definition>
-    <integrity_checks
-        archetype_id="openEHR-EHR-OBSERVATION.laboratory_test_result.v1"
-        xmlns:tem="openEHR/v1/Template"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="tem:ArchetypeIntegrity">
+    <integrity_checks archetype_id="openEHR-EHR-OBSERVATION.laboratory_test_result.v1" xmlns:tem="openEHR/v1/Template" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="tem:ArchetypeIntegrity">
         <digest id="MD5-CAM-1.0.1">D02DE57ACD4A04C1ADAE1F8B28197890</digest>
     </integrity_checks>
-    <integrity_checks
-        archetype_id="openEHR-EHR-CLUSTER.laboratory_test_analyte.v1"
-        xmlns:tem="openEHR/v1/Template"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="tem:ArchetypeIntegrity">
+    <integrity_checks archetype_id="openEHR-EHR-CLUSTER.laboratory_test_analyte.v1" xmlns:tem="openEHR/v1/Template" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="tem:ArchetypeIntegrity">
         <digest id="MD5-CAM-1.0.1">F0EBDC100A16A3A8BE1511BF3715C582</digest>
     </integrity_checks>
-    <integrity_checks
-        archetype_id="openEHR-EHR-CLUSTER.pharmacogenetic_analyte_result.v0"
-        xmlns:tem="openEHR/v1/Template"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="tem:ArchetypeIntegrity">
-        <digest id="MD5-CAM-1.0.1">3A006A158FDD5B208A9CBCE5E1BF0280</digest>
+    <integrity_checks archetype_id="openEHR-EHR-CLUSTER.pharmacogenetic_result.v0" xmlns:tem="openEHR/v1/Template" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="tem:ArchetypeIntegrity">
+        <digest id="MD5-CAM-1.0.1">112688B395B83DBD5A9FFD327ACB5FA7</digest>
     </integrity_checks>
-    <integrity_checks archetype_id="openEHR-EHR-CLUSTER.device.v1"
-        xmlns:tem="openEHR/v1/Template"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="tem:ArchetypeIntegrity">
+    <integrity_checks archetype_id="openEHR-EHR-CLUSTER.knowledge_base_reference.v1" xmlns:tem="openEHR/v1/Template" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="tem:ArchetypeIntegrity">
+        <digest id="MD5-CAM-1.0.1">F575F2A1D95C3F61355D0B99753647AD</digest>
+    </integrity_checks>
+    <integrity_checks archetype_id="openEHR-EHR-CLUSTER.genomic_variant_result.v1" xmlns:tem="openEHR/v1/Template" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="tem:ArchetypeIntegrity">
+        <digest id="MD5-CAM-1.0.1">8D6BEB38EDABF7F358821E8EA5B84DB9</digest>
+    </integrity_checks>
+    <integrity_checks archetype_id="openEHR-EHR-CLUSTER.media_file.v1" xmlns:tem="openEHR/v1/Template" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="tem:ArchetypeIntegrity">
+        <digest id="MD5-CAM-1.0.1">4F1513E139C5587C27C46E70882ECD97</digest>
+    </integrity_checks>
+    <integrity_checks archetype_id="openEHR-EHR-CLUSTER.device.v1" xmlns:tem="openEHR/v1/Template" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="tem:ArchetypeIntegrity">
         <digest id="MD5-CAM-1.0.1">EEC8640C1336806D602A1BC344D4F733</digest>
     </integrity_checks>
 </template>
