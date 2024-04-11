@@ -1,0 +1,268 @@
+﻿archetype (adl_version=1.4; uid=3a0aa802-df3c-44e7-bf78-3446943607fd)
+	openEHR-EHR-INSTRUCTION.clinical_pathway_order.v0
+
+concept
+	[at0000]	-- Clinical pathway order
+language
+	original_language = <[ISO_639-1::en]>
+	translations = <
+		["nb"] = <
+			language = <[ISO_639-1::nb]>
+			author = <
+				["name"] = <"Bjørn Næss">
+				["organisation"] = <"DIPS ASA ">
+				["email"] = <"bna@dips.no">
+			>
+		>
+	>
+description
+	original_author = <
+		["name"] = <"Bjørn Næss">
+		["organisation"] = <"DIPS ASA">
+		["email"] = <"bna@dips.no">
+		["date"] = <"2015-06-20">
+	>
+	details = <
+		["nb"] = <
+			language = <[ISO_639-1::nb]>
+			purpose = <"*To order a high level, standardised clinical pathway to guide the management of a problem or condition. (en)">
+			use = <"*Use to order a high level, standardised clinical pathway to guide the management of a problem or condition.
+
+This archetype has been designed to support the ordering of high level, standardised clinical pathways to be carried out. Examples include, but are not limited to:
+- Cancer care pathways outlining the major events of a cancer treatment, including the start and end of investigation, particularly significant multidisciplinary team (MDT) meetings, or the start of medical, radiation or surgical treatment.
+- Mental health and/or addiction care pathways outlining the major milestones of the treatment of mental health and/or addiction conditions.
+- Standardised high level pathways for any type of medical or surgical treatment, such as allergen immunotherapy (AIT) or elective hyperbaric oxygen therapy (HBOT). (en)">
+			keywords = <"pasientforløp", "pakkeforløp">
+			misuse = <"*Not to be used to record information about events carried out as part of the execution of the pathway. Use the ACTION.clinical_pathway archetype for this purpose.
+
+Not to be used to record orders for individualised protocols, care plans or guidelines. Use other appropriate archetypes for this purpose. (en)">
+			copyright = <"© Nasjonal IKT HF, openEHR Foundation">
+		>
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To order a high level, standardised clinical pathway to guide the management of a problem or condition.">
+			use = <"Use to order a high level, standardised clinical pathway to guide the management of a problem or condition.
+
+This archetype has been designed to support the ordering of high level, standardised clinical pathways to be carried out. Examples include, but are not limited to:
+- Cancer care pathways outlining the major events of a cancer treatment, including the start and end of investigation, particularly significant multidisciplinary team (MDT) meetings, or the start of medical, radiation or surgical treatment.
+- Mental health and/or addiction care pathways outlining the major milestones of the treatment of mental health and/or addiction conditions.
+- Standardised high level pathways for any type of medical or surgical treatment, such as allergen immunotherapy (AIT) or elective hyperbaric oxygen therapy (HBOT).">
+			misuse = <"Not to be used to record information about events carried out as part of the execution of the pathway. Use the ACTION.clinical_pathway archetype for this purpose.
+
+Not to be used to record orders for individualised protocols, care plans or guidelines. Use other appropriate archetypes for this purpose.">
+			copyright = <"© Nasjonal IKT HF, openEHR Foundation">
+		>
+	>
+	lifecycle_state = <"in_development">
+	other_contributors = <>
+	other_details = <
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
+		["custodian_organisation"] = <"openEHR Foundation">
+		["references"] = <"">
+		["current_contact"] = <"Bjørn Næss, DIPS ASA<bna@dips.no>">
+		["original_namespace"] = <"org.openehr">
+		["original_publisher"] = <"openEHR Foundation">
+		["custodian_namespace"] = <"org.openehr">
+		["MD5-CAM-1.0.1"] = <"6EAB29260AB35E27C82F5FCBB25B2838">
+		["build_uid"] = <"f473b32c-b2e5-40e7-ab6c-e8d370566642">
+		["revision"] = <"0.0.1-alpha">
+	>
+
+definition
+	INSTRUCTION[at0000] matches {    -- Clinical pathway order
+		activities cardinality matches {0..*; unordered} matches {
+			ACTIVITY[at0001] occurrences matches {0..1} matches {    -- Current Activity
+				description matches {
+					ITEM_TREE[at0002] matches {    -- Tree
+						items cardinality matches {0..*; unordered} matches {
+							ELEMENT[at0003] occurrences matches {0..1} matches {    -- Pathway name
+								value matches {
+									DV_TEXT matches {*}
+								}
+							}
+							ELEMENT[at0012] occurrences matches {0..1} matches {    -- Specific pathway
+								value matches {
+									DV_TEXT matches {*}
+								}
+							}
+							ELEMENT[at0005] occurrences matches {0..1} matches {    -- Description
+								value matches {
+									DV_TEXT matches {*}
+								}
+							}
+							ELEMENT[at0013] occurrences matches {0..1} matches {    -- Planned start date/time
+								value matches {
+									DV_DATE_TIME matches {*}
+								}
+							}
+							ELEMENT[at0011] occurrences matches {0..1} matches {    -- Externally initiated?
+								value matches {
+									DV_BOOLEAN matches {
+										value matches {true}
+									}
+								}
+							}
+							ELEMENT[at0004] occurrences matches {0..1} matches {    -- Initial start date/time
+								value matches {
+									DV_DATE_TIME matches {*}
+								}
+							}
+							allow_archetype CLUSTER[at0006] occurrences matches {0..*} matches {    -- Additional details
+							}
+							ELEMENT[at0014] occurrences matches {0..1} matches {    -- Comment
+								value matches {
+									DV_TEXT matches {*}
+								}
+							}
+						}
+					}
+				}
+				action_archetype_id matches {/openEHR-EHR-ACTION\.clinical_pathway(-[a-zA-Z0-9_]+)*\.v0|openEHR-EHR-ACTION\.clinical_pathway(-[a-zA-Z0-9_]+)*\.v1/}
+			}
+		}
+		protocol matches {
+			ITEM_TREE[at0007] matches {    -- Tree
+				items cardinality matches {0..*; unordered} matches {
+					allow_archetype CLUSTER[at0009] occurrences matches {0..*} matches {    -- Initiating organisation
+						include
+							archetype_id/value matches {/openEHR-EHR-CLUSTER\.organisation(-[a-zA-Z0-9_]+)*\.v1/}
+					}
+					allow_archetype CLUSTER[at0010] occurrences matches {0..*} matches {    -- Extension
+						include
+							archetype_id/value matches {/.*/}
+					}
+				}
+			}
+		}
+	}
+
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"Clinical pathway order">
+					description = <"Order for a high level, standardised clinical pathway to guide the management of a problem or condition.">
+				>
+				["at0001"] = <
+					text = <"Current Activity">
+					description = <"Current Activity">
+				>
+				["at0002"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0003"] = <
+					text = <"Pathway name">
+					description = <"The name of the clinical pathway.">
+				>
+				["at0004"] = <
+					text = <"Initial start date/time">
+					description = <"The start date and time of the pathway within an alternative organisation or health record.">
+					comment = <"Some pathways may have started before and outside of the current healthcare provider organisation and/or health record.">
+				>
+				["at0005"] = <
+					text = <"Description">
+					description = <"Narrative description of the clinical pathway.">
+				>
+				["at0006"] = <
+					text = <"Additional details">
+					description = <"Additional structured details about the clinical pathway.">
+				>
+				["at0007"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0009"] = <
+					text = <"Initiating organisation">
+					description = <"Details about the healthcare provider or organisation responsible for originally initiating the clinical pathway.">
+					comment = <"Most of the time this will be the author of the composition, but some clinical pathways have started outside of the current healthcare provider. ">
+				>
+				["at0010"] = <
+					text = <"Extension">
+					description = <"Additional information required to capture local content or to align with other reference models/formalisms.">
+				>
+				["at0011"] = <
+					text = <"Externally initiated?">
+					description = <"Was the clinical pathway initiated within an alternative organisation or health record?">
+				>
+				["at0012"] = <
+					text = <"Specific pathway">
+					description = <"Use to define a more specific definition of the clinical pathway.">
+					comment = <"For example, a pathway for a specific cancer type, where the 'Pathway name' is \"Cancer pathway\".">
+				>
+				["at0013"] = <
+					text = <"Planned start date/time">
+					description = <"">
+				>
+				["at0014"] = <
+					text = <"Comment">
+					description = <"Additional narrative about the pathway order not captured in other fields.">
+				>
+			>
+		>
+		["nb"] = <
+			items = <
+				["at0000"] = <
+					text = <"clinical_pathway_order">
+					description = <"*Order for a high level, standardised clinical pathway to guide the management of a problem or condition. (en)">
+				>
+				["at0001"] = <
+					text = <"Nåværende aktivitet">
+					description = <"Nåværende aktivitet">
+				>
+				["at0002"] = <
+					text = <"Tre">
+					description = <"*@ internal @(en)">
+				>
+				["at0003"] = <
+					text = <"Forløp">
+					description = <"Angir hvilket forløp som igangsettes">
+				>
+				["at0004"] = <
+					text = <"*Initial start date/time (en)">
+					description = <"*The start date and time of the pathway within an alternative organisation or health record. (en)">
+					comment = <"*Some pathways may have started before and outside of the current healthcare provider organisation and/or health record. (en)">
+				>
+				["at0005"] = <
+					text = <"Beskrivelse">
+					description = <"Nærmere beskrivelse av og om forløpet">
+				>
+				["at0006"] = <
+					text = <"Detaljer">
+					description = <"*Additional structured details about the clinical pathway. (en)">
+				>
+				["at0007"] = <
+					text = <"Tre">
+					description = <"*@ internal @(en)">
+				>
+				["at0009"] = <
+					text = <"*Initiating organisation (en)">
+					description = <"*Details about the healthcare provider or organisation responsible for originally initiating the clinical pathway. (en)">
+					comment = <"*Most of the time this will be the author of the composition, but some clinical pathways have started outside of the current healthcare provider.  (en)">
+				>
+				["at0010"] = <
+					text = <"Utvidelse">
+					description = <"Tilleggsinformasjon for å registrere lokalt innhold om bestillingen. ">
+				>
+				["at0011"] = <
+					text = <"*Externally initiated? (en)">
+					description = <"*Was the clinical pathway initiated within an alternative organisation or health record? (en)">
+				>
+				["at0012"] = <
+					text = <"*Specific pathway (en)">
+					description = <"Angir et mer spesifikt forløp. F.eks. kan forløp \"tykk-/endetarmskreft\" gjøes mer spesifikk gjennom behandlingslinjen Ca. Recti">
+					comment = <"*For example, a pathway for a specific cancer type, where the 'Pathway name' is \"Cancer pathway\". (en)">
+				>
+				["at0013"] = <
+					text = <"*Planned start date/time (en)">
+					description = <"">
+				>
+				["at0014"] = <
+					text = <"*Comment (en)">
+					description = <"*Additional narrative about the pathway order not captured in other fields. (en)">
+				>
+			>
+		>
+	>
