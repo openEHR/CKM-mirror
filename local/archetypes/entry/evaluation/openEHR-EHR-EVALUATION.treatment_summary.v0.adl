@@ -5,6 +5,16 @@ concept
 	[at0000]	-- Treatment summary
 language
 	original_language = <[ISO_639-1::en]>
+	translations = <
+		["nb"] = <
+			language = <[ISO_639-1::nb]>
+			author = <
+				["name"] = <"Liv Laugen">
+				["organisation"] = <"​Oslo University Hospital, Norway">
+				["email"] = <"liv.laugen@ous-hf.no">
+			>
+		>
+	>
 description
 	original_author = <
 		["name"] = <"Heather Leslie">
@@ -13,10 +23,18 @@ description
 		["date"] = <"2022-10-28">
 	>
 	details = <
+		["nb"] = <
+			language = <[ISO_639-1::nb]>
+			purpose = <"For å registrere en oppsummering eller vedvarende detaljer om et behandlingsforløp eller en protokoll for en identifisert medisinsk tilstand, som en infeksjonssykdom, kreft eller skade.">
+			use = <"Brukes for å registrere en oppsummering eller vedvarende detaljer om et behandlingsforløp eller en protokoll for en identifisert medisinsk tilstand, som en infeksjonssykdom, kreft eller skade.">
+			keywords = <"behandlingslinje, kreft", ...>
+			misuse = <"">
+		>
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"To record summary or persistent details about the outcome of a treatment course or protocol for an identified condition, such as an infectious disease or cancer, or injury.">
-			use = <"Use to record summary or persistent details about the outcome of a treatment course or protocol for an identified condition, such as an infectious disease or cancer, or injury.">
+			purpose = <"To record summary or persistent details about a treatment course or protocol for an identified condition, such as an infectious disease, cancer, or injury.">
+			use = <"Use to record summary or persistent details about the treatment course or protocol for an identified condition, such as an infectious disease, cancer, or injury.">
+			keywords = <"treatment line, cancer", ...>
 			misuse = <"">
 		>
 	>
@@ -28,8 +46,8 @@ description
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"40EAD2C6ADDDED57F41BF133CF4D9779">
-		["build_uid"] = <"29f0c1ca-26a0-4da1-8f60-e14d31b85ea0">
+		["MD5-CAM-1.0.1"] = <"CC080E7737BE69E3333F65CB2BFB07A9">
+		["build_uid"] = <"919896a7-5289-44f5-9d1e-b8051ac8a5da">
 		["revision"] = <"0.0.1-alpha">
 	>
 
@@ -53,7 +71,12 @@ definition
 							DV_TEXT matches {*}
 						}
 					}
-					ELEMENT[at0031] occurrences matches {0..*} matches {    -- Reason for treatment
+					ELEMENT[at0033] occurrences matches {0..*} matches {    -- Clinical indication
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0034] occurrences matches {0..*} matches {    -- Intent
 						value matches {
 							DV_TEXT matches {*}
 						}
@@ -64,6 +87,7 @@ definition
 								defining_code matches {
 									[local::
 									at0021,    -- Completed
+									at0052,    -- Partly completed
 									at0022,    -- Not completed
 									at0029]    -- Indeterminate
 								}
@@ -71,7 +95,60 @@ definition
 							DV_TEXT matches {*}
 						}
 					}
-					ELEMENT[at0004] occurrences matches {0..1} matches {    -- Date treatment completed
+					ELEMENT[at0032] occurrences matches {0..1} matches {    -- Date treatment started
+						value matches {
+							DV_DATE_TIME matches {*}
+						}
+					}
+					CLUSTER[at0036] occurrences matches {0..*} matches {    -- Additional treatment
+						items cardinality matches {1..*; unordered} matches {
+							ELEMENT[at0042] occurrences matches {0..1} matches {    -- Treatment name
+								value matches {
+									DV_TEXT matches {*}
+								}
+							}
+							ELEMENT[at0051] occurrences matches {0..1} matches {    -- Treatment order
+								value matches {
+									DV_TEXT matches {*}
+									DV_COUNT matches {*}
+								}
+							}
+							ELEMENT[at0043] occurrences matches {0..1} matches {    -- Description
+								value matches {
+									DV_TEXT matches {*}
+								}
+							}
+							ELEMENT[at0045] occurrences matches {0..1} matches {    -- Treatment status
+								value matches {
+									DV_CODED_TEXT matches {
+										defining_code matches {
+											[local::
+											at0046,    -- Completed
+											at0053,    -- Partly completed
+											at0047,    -- Not completed
+											at0048]    -- Indeterminate
+										}
+									}
+									DV_TEXT matches {*}
+								}
+							}
+							ELEMENT[at0049] occurrences matches {0..1} matches {    -- Date treatment started
+								value matches {
+									DV_DATE_TIME matches {*}
+								}
+							}
+							ELEMENT[at0050] occurrences matches {0..1} matches {    -- Date treatment stopped
+								value matches {
+									DV_DATE_TIME matches {*}
+								}
+							}
+							allow_archetype CLUSTER[at0041] occurrences matches {0..*} matches {    -- Additional details
+								include
+									archetype_id/value matches {/.*/}
+							}
+						}
+					}
+					ELEMENT[at0004] occurrences matches {0..1} matches {    -- Date treatment stopped
 						value matches {
 							DV_DATE_TIME matches {*}
 						}
@@ -96,11 +173,6 @@ definition
 					}
 					ELEMENT[at0027] occurrences matches {0..1} matches {    -- Reason for failed outcome
 						value matches {
-							DV_CODED_TEXT matches {*}
-						}
-					}
-					ELEMENT[at0026] occurrences matches {0..1} matches {    -- Reason for indeterminate outcome
-						value matches {
 							DV_TEXT matches {*}
 						}
 					}
@@ -111,30 +183,7 @@ definition
 					}
 					allow_archetype CLUSTER[at0019] occurrences matches {0..*} matches {    -- Additional details
 						include
-							archetype_id/value matches {/openEHR-EHR-CLUSTER\.clinical_evidence(-[a-zA-Z0-9_]+)*\.v1|openEHR-EHR-CLUSTER\.drug_resistance_profile(-[a-zA-Z0-9_]+)*\.v0/}
-					}
-					CLUSTER[at0013] occurrences matches {0..*} matches {    -- Issue
-						items cardinality matches {1..*; unordered} matches {
-							ELEMENT[at0012] occurrences matches {0..1} matches {    -- Issue name
-								value matches {
-									DV_TEXT matches {*}
-								}
-							}
-							ELEMENT[at0014] occurrences matches {0..1} matches {    -- Date identified
-								value matches {
-									DV_DATE_TIME matches {*}
-								}
-							}
-							allow_archetype CLUSTER[at0030] occurrences matches {0..*} matches {    -- Issue details
-								include
-									archetype_id/value matches {/openEHR-EHR-CLUSTER\.drug_resistance_profile(-[a-zA-Z0-9_]+)*\.v0/}
-							}
-							ELEMENT[at0015] occurrences matches {0..1} matches {    -- Comment
-								value matches {
-									DV_TEXT matches {*}
-								}
-							}
-						}
+							archetype_id/value matches {/.*/}
 					}
 					ELEMENT[at0016] occurrences matches {0..1} matches {    -- Comment
 						value matches {
@@ -168,7 +217,7 @@ ontology
 			items = <
 				["at0000"] = <
 					text = <"Treatment summary">
-					description = <"Summary or persistent details about the outcome of a treatment course or protocol for an identified condition.">
+					description = <"Summary or persistent details about a treatment course or protocol for an identified condition.">
 				>
 				["at0001"] = <
 					text = <"Item tree">
@@ -180,15 +229,15 @@ ontology
 				>
 				["at0003"] = <
 					text = <"Treatment name">
-					description = <"The name of the treatment or course of treatment.">
+					description = <"The name of the (main) treatment or course of treatment.">
 				>
 				["at0004"] = <
-					text = <"Date treatment completed">
-					description = <"The date when the treatment or course of treatment was completed.">
+					text = <"Date treatment stopped">
+					description = <"The date when the treatment or course of treatment was completed or stopped.">
 				>
 				["at0005"] = <
 					text = <"Treatment status">
-					description = <"Description about the status of the treatment course.">
+					description = <"Description about the status of the treatment or treatment course.">
 					comment = <"For example: completed or not completed.">
 				>
 				["at0006"] = <
@@ -208,23 +257,6 @@ ontology
 					description = <"The date when the individual last attended for treatment.">
 					comment = <"May be useful, for example, when the individual is lost to follow-up.">
 				>
-				["at0012"] = <
-					text = <"Issue name">
-					description = <"Name of the issue.">
-				>
-				["at0013"] = <
-					text = <"Issue">
-					description = <"Details about an issue that impacted the treatment outcome.">
-					comment = <"For example: drug resistance">
-				>
-				["at0014"] = <
-					text = <"Date identified">
-					description = <"Date when the issue was identified.">
-				>
-				["at0015"] = <
-					text = <"Comment">
-					description = <"Narrative description about the issue, not captured in other data elements.">
-				>
 				["at0016"] = <
 					text = <"Comment">
 					description = <"Narrative description about the overall treatment, not captured in other data elements.">
@@ -236,20 +268,20 @@ ontology
 				>
 				["at0018"] = <
 					text = <"Last updated">
-					description = <"The date and/or time when the Treatment outcome summary was last updated.">
+					description = <"The date this treatment summary was last updated.">
 				>
 				["at0019"] = <
 					text = <"Additional details">
-					description = <"Additional structured details about the treatment outcome.">
+					description = <"Additional structured details about the treatment.">
 					comment = <"For example: drug resistance profile; clinical evidence.">
 				>
 				["at0021"] = <
 					text = <"Completed">
-					description = <"The treatment course was completed.">
+					description = <"The treatment or treatment course was completed.">
 				>
 				["at0022"] = <
 					text = <"Not completed">
-					description = <"The treatment course was not completed.">
+					description = <"The treatment or treatment course was not completed.">
 				>
 				["at0023"] = <
 					text = <"Treatment successful">
@@ -263,11 +295,6 @@ ontology
 					text = <"Indeterminate">
 					description = <"It is not known if the treatment was successful or unsuccessful.">
 				>
-				["at0026"] = <
-					text = <"Reason for indeterminate outcome">
-					description = <"Reason for an indeterminate outcome.">
-					comment = <"For example: lost to follow-up; or not followed up.">
-				>
 				["at0027"] = <
 					text = <"Reason for failed outcome">
 					description = <"Reason for a failed treatment outcome.">
@@ -275,20 +302,257 @@ ontology
 				>
 				["at0028"] = <
 					text = <"Description">
-					description = <"Narrative description about the treatment outcome.">
+					description = <"Narrative description about the treatment.">
 				>
 				["at0029"] = <
 					text = <"Indeterminate">
-					description = <"It is not known if the treatment was completed or not.">
+					description = <"It is not known if the treatment or treatment course was completed or not.">
 				>
-				["at0030"] = <
-					text = <"Issue details">
-					description = <"Structured details about the issue.">
+				["at0032"] = <
+					text = <"Date treatment started">
+					description = <"The date when the treatment or course of treatment was started.">
 				>
-				["at0031"] = <
-					text = <"Reason for treatment">
-					description = <"The reason for treatment.">
-					comment = <"For example: palliation; relapse; second line treatment after initial failure.">
+				["at0033"] = <
+					text = <"Clinical indication">
+					description = <"The clinical reason for the treatment.">
+					comment = <"Coding of the clinical indication with a terminology is preferred, where possible. For example: 'Cancer treatment' 'Angina' or 'Type 1 Diabetes mellitus'. 
+This data element allows multiple occurrences to enable the user to record multiple responses, if required.">
+				>
+				["at0034"] = <
+					text = <"Intent">
+					description = <"Description of the intent for the treatment.">
+					comment = <"For example: Kurativ, palliative or preventiv intent.
+Coding of the 'Intent' with a coding system is desirable, if available. 
+This data element allows multiple occurrences to enable the user to record multiple responses, if required.">
+				>
+				["at0036"] = <
+					text = <"Additional treatment">
+					description = <"Internal cluster to support documentation of complex, multicomponent treatments.">
+					comment = <"For example: Chemotherapy before surgery in cancer treatment line (neoadjuvant chemotherapy).">
+				>
+				["at0041"] = <
+					text = <"Additional details">
+					description = <"Additional structured details about the treatment.">
+					comment = <"For example: drug resistance profile; clinical evidence.">
+				>
+				["at0042"] = <
+					text = <"Treatment name">
+					description = <"The name of the additional treatment or the additional course of treatment.">
+				>
+				["at0043"] = <
+					text = <"Description">
+					description = <"Narrative description about the additional treatment.">
+				>
+				["at0045"] = <
+					text = <"Treatment status">
+					description = <"Description about the status of the additional treatment course.">
+					comment = <"For example: completed or not completed.">
+				>
+				["at0046"] = <
+					text = <"Completed">
+					description = <"The treatment course was completed.">
+				>
+				["at0047"] = <
+					text = <"Not completed">
+					description = <"The treatment course was not completed.">
+				>
+				["at0048"] = <
+					text = <"Indeterminate">
+					description = <"It is not known if the treatment course was completed or not.">
+				>
+				["at0049"] = <
+					text = <"Date treatment started">
+					description = <"The date when the additional treatment or course of the additional treatment was started.">
+				>
+				["at0050"] = <
+					text = <"Date treatment stopped">
+					description = <"The date when the additional treatment or course of additional treatment was completed.">
+				>
+				["at0051"] = <
+					text = <"Treatment order">
+					description = <"Order of onset of the identified 'Additional treatment' in the sequence of treatments.">
+				>
+				["at0052"] = <
+					text = <"Partly completed">
+					description = <"The treatment or treatment course was partly completed.">
+				>
+				["at0053"] = <
+					text = <"Partly completed">
+					description = <"The treatment course was partly completed.">
+				>
+			>
+		>
+		["nb"] = <
+			items = <
+				["at0000"] = <
+					text = <"Behandlingsoppsummering">
+					description = <"Oppsummering eller vedvarende detaljer om et behandlingsforløp eller en protokoll for en identifisert medisinsk tilstand.">
+				>
+				["at0001"] = <
+					text = <"Item tree">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Item tree">
+					description = <"@ internal @">
+				>
+				["at0003"] = <
+					text = <"Behandlingsnavn">
+					description = <"Navnet til (hoved) behandlingen eller behandlingsforløpet.">
+				>
+				["at0004"] = <
+					text = <"Dato for behandlingsslutt">
+					description = <"Datoen da behandlingen eller behandlingsforløpet ble fullført eller stoppet.">
+				>
+				["at0005"] = <
+					text = <"Behandlingsstatus">
+					description = <"Beskrivelse av statusen til behandlingen eller behandlingsforløpet.">
+					comment = <"For eksempel: Fullført eller ikke fullført.">
+				>
+				["at0006"] = <
+					text = <"Grunnsykdom">
+					description = <"Navnet på grunnsykdom/primærsykdommen.">
+				>
+				["at0007"] = <
+					text = <"Årsak til ikke fullført">
+					description = <"Beskrivelse av årsaken for hvorfor ikke behandlingen eller behandlingsforløpet ble fullført.">
+				>
+				["at0008"] = <
+					text = <"Behandlingsutfall">
+					description = <"Kategori for behandlingsutfallet for individet.">
+				>
+				["at0010"] = <
+					text = <"Dato siste oppfølging">
+					description = <"Datoen da individet sist møtte opp til behandling.">
+					comment = <"Kan være nyttig, for eksempel når individet har falt ut fra oppfølgingslister.">
+				>
+				["at0016"] = <
+					text = <"Kommentar">
+					description = <"Ytterligere fritekst om den samlede behandlingen eller behandlingsforløpet som ikke er fanget i andre felt.">
+				>
+				["at0017"] = <
+					text = <"Tilleggsinformasjon">
+					description = <"Ytterligere informasjon som trengs for å kunne registrere lokalt definert innhold eller for å tilpasse til andre referansemodeller/formalismer.">
+					comment = <"For eksempel lokale informasjonsbehov eller ytterligere metadata for å kunne tilpasse til tilsvarende konsepter i FHIR.">
+				>
+				["at0018"] = <
+					text = <"Sist oppdatert">
+					description = <"Datoen da denne behandlingsoppsummeringen sist ble oppdatert.">
+				>
+				["at0019"] = <
+					text = <"Ytterligere detaljer">
+					description = <"Ytterligere strukturerte detaljer om behandlingen eller behandlingsforløpet.">
+					comment = <"For eksempel: legemiddelrestens, kliniske grunnlag.">
+				>
+				["at0021"] = <
+					text = <"Fullført">
+					description = <"Behandlingen eller behandlingsforløpet er fullført.
+
+**the treatment or treatment course.">
+				>
+				["at0022"] = <
+					text = <"Ikke fullført">
+					description = <"Behandlingen eller behandlingsforløpet er ikke fullført.
+
+**">
+				>
+				["at0023"] = <
+					text = <"Suksessfull behandling">
+					description = <"Individet anses som kurert; det finnes ingen pågående tegn på grunnsykdommen.">
+				>
+				["at0024"] = <
+					text = <"Behandlingen feilet">
+					description = <"Behandlingen var ikke vellykket; det finnes fortsatt tegn på grunnsykdommen.">
+				>
+				["at0025"] = <
+					text = <"Ubestmmelig">
+					description = <"Det er ikke kjent om behandlingen var vellykket eller mislykket.">
+				>
+				["at0027"] = <
+					text = <"Årsak til mislykket behandlingsutfall">
+					description = <"Årsaken til det mislykkede behandlingsutfallet.">
+					comment = <"For eksempel: resistens mot medikament.">
+				>
+				["at0028"] = <
+					text = <"Beskrivelse">
+					description = <"En fritekstbeskrivelse av behandlingen.">
+				>
+				["at0029"] = <
+					text = <"Ubestemt">
+					description = <"Det er ikke kjent om behandlingen eller behandlingsforløpet ble fullført eller ikke.">
+				>
+				["at0032"] = <
+					text = <"Behandlingsstart">
+					description = <"Datoen da behandlingen eller behandlingsforløpet ble startet.">
+				>
+				["at0033"] = <
+					text = <"Klinisk indikasjon">
+					description = <"Den kliniske årsaken / indikasjonen for behandlingen.">
+					comment = <"Koding av klinisk indikasjon med terminologi er foretrukket der det er mulig. For eksempel: \"Kreftbehandling\", \"Angina\" eller \"Type 1 Diabetes mellitus\". 
+Dette dataelementet tillater flere forekomster, slik at brukeren kan registrere flere svar om nødvendig.">
+				>
+				["at0034"] = <
+					text = <"Intensjon">
+					description = <"Beskrivelse av intensjonen med behandlingen">
+					comment = <"For eksempel: Kurativ, palliativ eller preventiv intensjon. Koding av \"Intensjon\" med en terminologi foretrekkes der det er mulig. 
+Dette dataelementet tillater flere forekomster, slik at brukeren kan registrere flere hensikter om nødvendig.">
+				>
+				["at0036"] = <
+					text = <"Tilleggsbehandling">
+					description = <"Internt cluster for å støtte dokumentasjon av en kompleks, multikomponent behandling.">
+					comment = <"For eksempel: Kjemoterapi før kirurgi i en kreftbehandling (neoadjuvant kjemoterapi).">
+				>
+				["at0041"] = <
+					text = <"Ytterligere detaljer">
+					description = <"Ytterligere strukturerte detaljer om tilleggsbehandlingen.">
+					comment = <"For eksempel: medikamentresistensprofil; klinisk grunnlag.">
+				>
+				["at0042"] = <
+					text = <"Behandlingsnavn">
+					description = <"Navnet på tilleggsbehandlingen eller det supplerende behandlingsforløpet.">
+				>
+				["at0043"] = <
+					text = <"Beskrivelse">
+					description = <"Freitekstbeskrivelse av tilleggsbehandlingen.">
+				>
+				["at0045"] = <
+					text = <"Behandlingsstatus">
+					description = <"Beskrivelse av statusen til tilleggsbehandlingen eller det supplerende behandlingsforløpet.">
+					comment = <"For eksempel: fullført eller ikke fullført.">
+				>
+				["at0046"] = <
+					text = <"Fullført">
+					description = <"Behandlingen eller behandlingsforløpet er fullført.">
+				>
+				["at0047"] = <
+					text = <"Ikke fullført">
+					description = <"Behandlingen eller behandlingsforløpet er ikke fullført.">
+				>
+				["at0048"] = <
+					text = <"Ukjent">
+					description = <"Det er ikke kjent om behandlingen eller behandlingsforløpet ble fullført eller ikke.">
+				>
+				["at0049"] = <
+					text = <"Dato for behandlingsstart">
+					description = <"Datoen når tilleggsbehandlingen eller den supplerende behandlingsforløpet ble startet.">
+				>
+				["at0050"] = <
+					text = <"Dato for behandlingsslutt">
+					description = <"Datoen når tilleggsbehandlingen eller den supplerende behandlingsforløpet ble fullført eller stoppet.">
+				>
+				["at0051"] = <
+					text = <"Behandlingsrekkefølge">
+					description = <"Rekkefølge for når den identifiserte \"tilleggbehandlingen\" startet i behandlingssekvensen.">
+				>
+				["at0052"] = <
+					text = <"Delvis fullført">
+					description = <"Behandlingen eller behandlingsforløpet er delvis fullført.
+
+**">
+				>
+				["at0053"] = <
+					text = <"Delvis fullført">
+					description = <"Behandlingen eller behandlingsforløpet er delvis fullført.">
 				>
 			>
 		>
