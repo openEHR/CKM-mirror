@@ -71,9 +71,9 @@ language
 		["es"] = <
 			language = <[ISO_639-1::es]>
 			author = <
-				["name"] = <"Pablo Pazos">
-				["organisation"] = <"CaboLabs">
-				["email"] = <"pablo.pazos@cabolabs.com">
+				["name"] = <"Pablo Pazos, Julio de Sosa">
+				["organisation"] = <"CaboLabs, Servei Català de la Salut">
+				["email"] = <"pablo.pazos@cabolabs.com, juliodesosa@catsalut.cat">
 				["pablo.pazos@cabolabs.com"] = <"pablo.pazos@cabolabs.com">
 			>
 			accreditation = <"Computer Engineer">
@@ -393,34 +393,61 @@ Not to be used to record a whole operation or procedure report - use a template 
 		>
 		["es"] = <
 			language = <[ISO_639-1::es]>
-			purpose = <"Para registrar información sobre las actividades requeridas para ejecutar un procedimiento, incluyendo planificación, coordinación, ejecución, suspensión, cancelación, documentación y finalización.">
+			purpose = <"Registrar información sobre las actividades necesarias para llevar a cabo un procedimiento, incluida la planificación, programación, ejecución, suspensión, cancelación, documentación y finalización.">
 			use = <"Se utiliza para registrar información sobre las actividades requeridas para llevar a cabo un procedimiento, incluyendo planificación, coordinación, ejecución, suspensión, cancelación, documentación y finalización. Esto se hace mediante el registro de los datos sobre actividades específicas, según la definición de los pasos de la vía clínica definida en el arquetipo.
 
-El alcance de este arquetipo abarca actividades para una amplia gama de procedimientos clínicos realizados para la evaluación, investigación, detección, diagnóstico,
-curativos, terapéuticos o fines paliativos. Los ejemplos van desde las actividades relativamente simples, como la inserción de una cánula intravenosa, hasta operaciones quirúrgicas complejas.">
-			keywords = <"procedimiento", "intervención", "terapia", "cirugía", "diagnóstico", "evaluación", "curación", "tratamiento">
-			misuse = <"No utilizar para registrar detalles acerca de la anestesia, para eso utilizar un arquetipo de ACTION separado.
-No utilizar para registrar detalles acerca de estudios por imágenes, para eso utilizar el arquetipo ACTION.imaging_exam.
-No utilizar para registrar detalles acerca de estudios de laboratorio, para eso utilizar el arquetipo ACTION.laboratory_test.
-No utilizar para registrar detalles acerca de educación brindada, para eso utilizar el arquetipo ACTION.health_education.
-No utilizar para registrar detalles acerca de actividades administrativas, para eso utilizar un arquetipo ADMIN separado.
-No utilizar para registrar detalles acerca de actividades relacionadas, como medicación administrada durante el procedimiento, o sobre imágenes que se utilizaron como guía durante el procedimiento, para esto utilizar arquetipos de ACTION separados, dentro de la misma plantilla.
-No utilizar para registrar detalles acerca del informe de la operación, para eso se debe utilizar una plantilla donde este arquetipo sea parte de la misma.">
+El alcance de este arquetipo abarca actividades para una amplia gama de procedimientos clínicos realizados con fines evaluativos, de investigación, cribado, diagnóstico, curativos, terapéuticos o paliativos. Los ejemplos van desde actividades relativamente sencillas, como la inserción de una cánula intravenosa, hasta operaciones quirúrgicas complejas.
+
+Se puede capturar información adicional estructurada y detallada sobre el procedimiento utilizando arquetipos específicos insertados en el slot \"Detalle del procedimiento\", cuando sea necesario.
+
+Los tiempos relacionados con un procedimiento pueden gestionarse de dos maneras:
+- Utilizando el modelo de referencia: el tiempo de realización de cualquier etapa del proceso utilizará el atributo de tiempo ACTION de cada etapa.
+- Elementos de datos arquetipados:
+--- el elemento de datos \"Fecha/hora prevista\" tiene por objeto registrar el momento preciso en que está previsto realizar el procedimiento. Nota: el atributo de hora ACTION correspondiente a la etapa Scheduled registrará la hora en la que el procedimiento se programó en un sistema, no la fecha/hora prevista en la que se pretende llevar a cabo el procedimiento; y
+--- la \"Fecha/hora de finalización\" tiene por objeto registrar la hora exacta en que finalizó el procedimiento. Puede utilizarse para documentar los procedimientos complejos con múltiples componentes. Nota: el atributo ACTION time correspondiente al \"Procedimiento realizado\" documentará la hora en que se inició cada componente realizado. Este elemento de datos \"Fecha/hora final\" registrará la fecha/hora del último componente activo del procedimiento. Esto permitirá calcular la duración completa del procedimiento activo.
+
+En el contexto de un Informe Quirúrgico, este arquetipo se utilizará para registrar únicamente lo que se hizo durante el procedimiento. Se utilizarán arquetipos separados para registrar los demás componentes necesarios del informe, incluida la toma de muestras de tejido, el uso de la guía por imagen, los resultados de la intervención, las instrucciones postoperatorias y los planes de seguimiento.
+
+En el contexto de una lista o resumen de problemas, este arquetipo puede utilizarse para representar los procedimientos que se han realizado. EVALUATION.problem_diagnosis se utilizará para representar los problemas y diagnósticos del paciente.
+
+En la práctica, muchos procedimientos (por ejemplo, en atención ambulatoria) tendrán lugar una sola vez y no se solicitarán con antelación. Los detalles sobre el procedimiento se añadirán en el apartado \"Procedimiento realizado\". En algunos casos se pedirá un procedimiento recurrente, y en esta situación los datos contra el apartado \"Procedimiento realizado\" se registrarán en cada ocasión, dejando la instrucción en estado activo. Cuando se registre la última incidencia, se registra la acción \"Procedimiento completado\", lo que indica que esta orden se encuentra ahora en estado completado.
+
+En otras situaciones, como la atención secundaria, puede existir una orden formal para un procedimiento utilizando el correspondiente arquetipo INSTRUCTION. Este arquetipo ACTION puede utilizarse para registrar el flujo de trabajo de cuándo y cómo se ha llevado a cabo la orden.
+
+El registro de información mediante este arquetipo ACTION indica que se ha producido algún tipo de actividad; normalmente será el procedimiento en sí, pero puede tratarse de un intento fallido u otra actividad, como el aplazamiento del procedimiento. Si existe una orden formal para el procedimiento, el estado de esta orden queda representado por la fase del proceso contra la que se registran los datos. Por ejemplo, utilizando este arquetipo, el estado de progreso de una orden de Gastroscopia puede registrarse mediante entradas separadas en las notas de progreso de la HCE en cada fase:
+- registrar la fecha/hora de inicio programada para la gastroscopia (Procedimiento programado); y
+- registrar que el procedimiento de gastroscopia se ha completado, incluyendo información sobre los detalles del procedimiento (Procedimiento completado).
+
+Tenga en cuenta que en el Modelo de Referencia openEHR existe un atributo \"Hora\", cuyo objetivo es registrar la fecha y hora en que se completó cada uno de los distintos apartados. Este es el atributo que debe utilizarse para registrar el inicio del procedimiento (utilizando el apartado \"Procedimiento realizado\") o el momento en que se interrumpió el procedimiento (utilizando el apartado \"Procedimiento interrumpido\").">
+			keywords = <"procedimiento", "intervención", "quirúrgico", "médico", "clínico", "terapéutico", "diagnóstico", "cura", "tratamiento", "evaluación", "investigación", "cribado", "paliativo", "terapia">
+			misuse = <"No debe utilizarse para registrar detalles acerca de la anestesia; para ello, utilizar un arquetipo ACTION distinto.
+
+No debe utilizarse para registrar detalles acerca de estudios por imagen; para ello, utilizar el arquetipo ACTION.imaging_exam.
+
+No debe utilizarse para registrar detalles acerca de estudios de laboratorio; para ello, utilizar el arquetipo ACTION.laboratory_test.
+
+No debe utilizarse para registrar datos acerca de la educación impartida; para ello, utilizar el arquetipo ACTION.health_education.
+
+No debe utilizarse para registrar detalles acerca de actividades administrativas; para ello, utilizar arquetipos ADMIN específicos.
+
+No debe utilizarse para registrar detalles acerca de actividades relacionadas, como el uso de secciones congeladas tomadas durante una operación, medicación administrada durante el procedimiento o al hacer uso de la guía por imagen durante el procedimiento; para ello, utilizar arquetipos ACTION por separado y específicos dentro de la misma plantilla.
+
+No debe utilizarse para registrar un informe de operación o procedimiento completo: utilizar una plantilla en la que este arquetipo sea sólo un componente del informe completo.">
 		>
 		["ca"] = <
 			language = <[ISO_639-1::ca]>
-			purpose = <"Registrar informació sobre les activitats requerides per dur a terme un procediment, incloent-hi planificació, coordinació, execució, suspensió, cancel·lació, documentació i finalització.">
-			use = <"S'utilitza per registrar informació sobre les activitats requerides per dur a terme un procediment, incloent-hi la planificació, programació, execució, suspensió, cancel·lació, documentació i finalització. Això es fa mitjançant el registre de dades sobre activitats específiques, segons allò definit pels passos de flux d'atenció del 'Procés' en aquest arquetip.
+			purpose = <"Registrar informació sobre les activitats necessàries per dur a terme un procediment, inclosa la planificació, la programació, l'execució, la suspensió, la cancel·lació, la documentació i la finalització.">
+			use = <"S'utilitza per registrar informació sobre les activitats requerides per dur a terme un procediment, incloent-hi planificació, coordinació, execució, suspensió, cancel·lació, documentació i finalització. Això es fa mitjançant el registre de les dades sobre activitats específiques, segons la definició de les diferents etapes/apartats definit a l'arquetip.
 
-L'abast d'aquest arquetip inclou activitats per a una àmplia gamma de procediments clínics realitzats amb finalitats d'avaluació, investigació, detecció, diagnòstic, curatius, terapèutics o pal·liatius. Els exemples van des d'activitats relativament simples, com ara la inserció d'una cànula intravenosa, fins a intervencions quirúrgiques complexes.
+L'abast d'aquest arquetip inclou activitats per a una àmplia gamma de procediments clínics realitzats amb fins avaluatius, de recerca, cribratge, diagnòstic, curatius, terapèutics o pal·liatius. Els exemples van des d'activitats relativament senzilles, com ara la inserció d'una cànula intravenosa, fins a operacions quirúrgiques complexes.
 
-Es pot capturar informació estructurada i detallada addicional sobre el procediment utilitzant arquetips específics inserits a l'slot 'Detalls del procediment', quan sigui necessari.
+Es pot capturar informació addicional estructurada i detallada sobre el procediment utilitzant arquetips específics inserits a l'slot \"Detall del procediment\", quan sigui necessari.
 
-Els temps relacionats amb un tràmit es poden gestionar de dues maneres:
-- Usant el model de referència: el temps per a la realització de qualsevol fase del procés utilitzarà l'atribut de temps d'ACTION per a cada fase.
+Els temps relacionats amb un procediment es poden gestionar de dues maneres:
+- Utilitzant el model de referència: el temps de realització de qualsevol etapa del procés utilitzarà l‟atribut de temps ACTION de cada etapa.
 - Elements de dades arquetipades:
---- l'element de dades 'Data/hora programada' té com a objectiu registrar l'hora exacta en què es planifica el procediment. Nota: l'atribut ACTION d'hora corresponent per a la fase del procés programada registrarà l'hora en què es va programar el procediment en un sistema, no la data/hora prevista en què es pretén fer el procediment; i
---- la 'Data/hora de fi definitiva' té com a objectiu registrar l'hora precisa en què va finalitzar el procediment. Es pot utilitzar per documentar procediments complexos amb múltiples components. Nota: l'atribut de temps ACTION corresponent per al 'Procediment realitzat' documentarà l'hora en què es va iniciar cada component realitzat. Aquest element de dades 'Data/hora de fi definitiva' registrarà la data/hora del component actiu final del procediment. Això permetrà calcular la durada total del procediment actiu.
+--- l'element de dades \"Data/hora prevista\" té per objecte registrar el moment precís en què està previst fer el procediment. Nota: l'atribut d'hora ACTION corresponent a l'etapa Scheduled registrarà l'hora en què el procediment es va programar en un sistema, no la data/hora prevista en què es vol dur a terme el procediment; i
+--- la \"Data/hora de finalització\" té per objecte registrar l'hora exacta en què va finalitzar el procediment. Es pot utilitzar per documentar els procediments complexos amb múltiples components. Nota: l'atribut ACTION time corresponent al \"Procediment realitzat\" documentarà l'hora en què es va iniciar cada component realitzat. Aquest element de dades \"Data/hora final\" registrarà la data/hora del darrer component actiu del procediment. Això permetrà calcular la durada completa del procediment actiu.
 
 En el context d'un informe quirúrgic, aquest arquetip s'utilitzarà per registrar únicament allò que es va fer durant el procediment. S'utilitzaran arquetips separats per registrar els altres components requerits de l'informe quirúrgic, inclosa la presa de mostres de teixit, l'ús de guia per imatges, les troballes de l'operació, les instruccions postoperatòries i els plans de seguiment.
 
@@ -436,19 +463,19 @@ Registrar informació utilitzant aquest arquetip de ACTION indica que realment h
 
 Cal tenir en compte que al model de referència d'openEHR hi ha un atribut de 'Temps', l'objectiu del qual és registrar la data i l'hora en què es va realitzar cada fase del procés de l'Acció. Aquest és l'atribut que s'utilitzarà per registrar l'inici del procediment (usant la fase 'Procediment realitzat') o el moment en què es va avortar el procediment (usant la fase 'Procediment avortat').">
 			keywords = <"procediment", "intervenció", "quirúrgic", "metge", "clínic", "terapèutic", "diagnòstic", "curar", "tractament", "avaluació", "investigació", "detecció", "pal·liatiu", "teràpia">
-			misuse = <"No utilitzeu per registrar detalls sobre l'anestèsia; per a això, utilitzeu un arquetip de ACTION per separat.
+			misuse = <"No s'ha de fer servir per registrar detalls sobre l'anestèsia; per fer-ho, utilitzar un arquetip ACTION diferent.
 
-No utilitzeu per registrar detalls sobre estudis per imatges; per això, utilitzeu l'arquetip ACTION.imaging_exam.
+No s'ha de fer servir per registrar detalls sobre estudis per imatge; per fer-ho, utilitzar l'arquetip ACTION.imaging_exam.
 
-No utilitzeu per registrar detalls sobre estudis de laboratori; per això, utilitzeu l'arquetip ACTION.laboratory_test.
+No s'ha de fer servir per registrar detalls sobre estudis de laboratori; per fer-ho, utilitzar l'arquetip ACTION.laboratory_test.
 
-No utilitzar per registrar detalls sobre educació brindada; per això, utilitzeu l'arquetip ACTION.health_education.
+No s'ha de fer servir per registrar dades sobre l'educació impartida; per fer-ho, utilitzar l'arquetip ACTION.health_education.
 
-No utilitzeu per registrar detalls sobre activitats administratives; per això, utilitzar un arquetip ADMIN per separat.
+No s'ha de fer servir per registrar detalls sobre activitats administratives; per això, utilitzar arquetips ADMIN específics.
 
-No utilitzar per registrar detalls sobre activitats relacionades, com ara medicació administrada durant el procediment, o sobre imatges que es van utilitzar com a guia durant el procediment; per a això, utilitzeu arquetips de ACTION separats, dins de la mateixa plantilla.
+No s'ha de fer servir per registrar detalls sobre activitats relacionades, com l'ús de seccions congelades preses durant una operació, medicació administrada durant el procediment o en fer ús de la guia per imatge durant el procediment; per això, utilitzar arquetips ACTION per separat i específics dins de la mateixa plantilla.
 
-No utilitzeu per registrar detalls sobre l'informe de l'operació; per a això, cal utilitzar una plantilla on aquest arquetip sigui part de la mateixa.">
+No s'ha de fer servir per registrar un informe d'operació o procediment complet: utilitzar una plantilla on aquest arquetip sigui només un component de l'informe complet.">
 		>
 	>
 	lifecycle_state = <"published">
@@ -460,9 +487,9 @@ No utilitzeu per registrar detalls sobre l'informe de l'operació; per a això, 
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"1D47B8E4DEB9C323DBCBE477A47C21FC">
-		["build_uid"] = <"3649a6a0-ba68-4859-8003-198a2aad133b">
-		["revision"] = <"1.4.4">
+		["MD5-CAM-1.0.1"] = <"0765D2B77A92846305BCBE95025B2FED">
+		["build_uid"] = <"c7fb782d-4a70-4b2b-8702-9e07c88063f0">
+		["revision"] = <"1.4.5">
 	>
 
 definition
@@ -1811,7 +1838,7 @@ ontology
 			items = <
 				["at0000"] = <
 					text = <"Procedimiento">
-					description = <"Una actividad clínica llevada a cabo para la detección, investigación, diagnóstico, curativos, terapéuticos, de evaluación o con fines paliativos.">
+					description = <"Actividad clínica llevada a cabo con fines de cribado, investigación, diagnóstico, curativos, terapéuticos, de evaluación o paliativos.">
 				>
 				["at0001"] = <
 					text = <"Tree">
@@ -1819,160 +1846,163 @@ ontology
 				>
 				["at0002"] = <
 					text = <"Nombre del procedimiento">
-					description = <"Nombre del procedimiento">
-					comment = <"*Coding of the specific procedure with a terminology is preferred, where possible.(en)">
+					description = <"Identificación del procedimiento por su nombre.">
+					comment = <"Siempre que sea posible, es preferible la codificación del procedimiento específico con una terminología.">
 				>
 				["at0003"] = <
-					text = <"Detalles">
-					description = <"Información estructurada de los detalles del procedimiento">
-					comment = <"*Use to capture detailed, structured information about anatomical location, method & technique, equipment used, devices implanted, results, findings etc.(en)">
+					text = <"Detalles del procedimiento">
+					description = <"Información estructurada sobre el procedimiento.">
+					comment = <"Se utiliza para recopilar información detallada y estructurada sobre la localización anatómica, el método y la técnica, el equipo utilizado, los dispositivos implantados, los resultados, los hallazgos, etc.">
 				>
 				["at0004"] = <
-					text = <"*Procedure planned (en)">
-					description = <"*">
+					text = <"Procedimiento planificado">
+					description = <"Se planifica el procedimiento a llevar a cabo.">
 				>
 				["at0005"] = <
-					text = <"Comentario">
-					description = <"Comentario narrativo adicional acerca de las actividades llevadas a cabo en la ejecución del procedimiento y que no son capturadas por otros campos">
+					text = <"Comentarios">
+					description = <"Información adicional sobre la actividad o etapa asistencial no recogida en otros campos.">
 				>
 				["at0006"] = <
 					text = <"Complicación">
-					description = <"Detalles de cualquier complicación surgida durante la ejecución del procedimiento">
-					comment = <"*Use this data element to record simple terms or precoordinated complications. If the requirements for recording complication are more complex then use of a specific CLUSTER archetype within the 'Procedure detail' SLOT in this archetype is advised and this data element becomes redundant. (en)">
+					description = <"Detalles sobre cualquier complicación derivada del procedimiento.">
+					comment = <"Utilice este elemento de datos para registrar términos sencillos o complicaciones precoordinadas. Si los requisitos para el registro de complicaciones son más complejos, se aconseja utilizar un arquetipo CLUSTER específico dentro del SLOT \"Detalles del procedimiento\" de este arquetipo. Ejemplos: Hematuria tras una biopsia renal, irritación tisular tras la inserción de un catéter intravenoso.">
 				>
 				["at0007"] = <
-					text = <"*Procedure request sent (en)">
-					description = <"*">
+					text = <"Solicitud de procedimiento enviada">
+					description = <"Solicitud de procedimiento enviada.">
 				>
 				["at0014"] = <
 					text = <"Motivo">
-					description = <"Motivo por el cual una actividad o paso de la vía clínica del arquetipo fue ejecutado como parte del procedimiento">
-					comment = <"Por ejemplo: motivo de cancelación o suspensión del procedimiento">
+					description = <"Motivo por el que se llevó a cabo la actividad o etapa asistencial para el procedimiento identificado.">
+					comment = <"Por ejemplo: motivo de la cancelación o suspensión del procedimiento.">
 				>
 				["at0034"] = <
-					text = <"Procedimiento planificado">
-					description = <"Está previsto que el procedimiento que se ha llevado a cabo.">
+					text = <"X - Procedimiento planificado">
+					description = <"Este apartado ha quedado obsoleto, ya que se asociaba incorrectamente con el estado \"inicial\". Utilice el nuevo apartado \"Procedimiento planificado\" (at0004), asociado correctamente con el estado \"planificado\".">
+					comment = <"(Obsoleto: Se planifica el procedimiento a llevar a cabo.)">
 				>
 				["at0035"] = <
-					text = <"Solicitud de procedimiento enviada">
-					description = <"Solicitud de procedimiento enviada">
+					text = <"X - Solicitud de procedimiento enviada">
+					description = <"Este apartado ha quedado obsoleto, ya que se asociaba incorrectamente con el estado \"inicial\". Utilice el nuevo apartado \"Solicitud de procedimiento enviada\" (at0004), asociado correctamente con el estado \"planificado\".">
+					comment = <"(Obsoleto: Solicitud de procedimiento enviada.)">
 				>
 				["at0036"] = <
-					text = <"Procedimiento coordinado">
-					description = <"Procedimiento coordinado">
+					text = <"Procedimiento programado">
+					description = <"Se ha programado el procedimiento.">
 				>
 				["at0038"] = <
 					text = <"Procedimiento pospuesto">
-					description = <"Procedimiento pospuesto">
+					description = <"El procedimiento se ha pospuesto.">
 				>
 				["at0039"] = <
 					text = <"Procedimiento cancelado">
-					description = <"Procedimiento cancelado antes de comenzar">
+					description = <"El procedimiento previsto se ha cancelado antes de comenzar.">
 				>
 				["at0040"] = <
 					text = <"Procedimiento suspendido">
-					description = <"Procedimiento suspendido">
+					description = <"Se ha suspendido el procedimiento.">
 				>
 				["at0041"] = <
 					text = <"Procedimiento interrumpido">
-					description = <"Procedimiento interrumpido">
+					description = <"Se ha interrumpido el procedimiento.">
 				>
 				["at0043"] = <
 					text = <"Procedimiento completado">
-					description = <"Procedimiento completado">
+					description = <"Se ha realizado el procedimiento y se han completado todas las actividades clínicas asociadas.">
 				>
 				["at0047"] = <
 					text = <"Procedimiento realizado">
-					description = <"Procedimiento realizado">
+					description = <"El procedimiento, o subprocedimiento en un procedimiento multicomponente, se ha realizado.">
 				>
 				["at0048"] = <
 					text = <"Resultado">
-					description = <"Resultado del procedimiento realizado">
-					comment = <"*Coding with a terminology is preferred, where possible.(en)">
+					description = <"Resultado del procedimiento realizado.">
+					comment = <"Siempre que sea posible, es preferible codificar con una terminología.">
 				>
 				["at0049"] = <
 					text = <"Descripción">
-					description = <"Descripción narrativa del procedimiento">
-					comment = <"*For example: description about the performance and findings from the the procedure, the aborted attempt or the cancellation of the procedure.(en)">
+					description = <"Descripción narrativa sobre el procedimiento, según corresponda a la fase del proceso.">
+					comment = <"Por ejemplo: descripción de la realización y los resultados del procedimiento, el intento interrumpido o la cancelación del procedimiento.">
 				>
 				["at0053"] = <
 					text = <"Tree">
 					description = <"@ internal @">
 				>
 				["at0054"] = <
-					text = <"*Requestor order identifier(en)">
-					description = <"*The local ID assigned to the order by the healthcare provider or organisation requesting the service.(en)">
-					comment = <"*This is equivalent to Placer Order Number in HL7 v2 specifications.(en)">
+					text = <"Identificador de orden del solicitante">
+					description = <"El ID local asignado a la orden por el proveedor sanitario o la organización que solicita el servicio.">
+					comment = <"Equivalente al Placer Order Number en las especificaciones HL7 v2.">
 				>
 				["at0055"] = <
 					text = <"Solicitante">
-					description = <"Detalles del proveedor de salud que solicita la realización del procedimiento">
+					description = <"Datos del profesional sanitario u organización que solicita el servicio.">
 				>
 				["at0056"] = <
-					text = <"*Receiver order identifier(en)">
-					description = <"*The ID assigned to the order by the healthcare provider or organisation receiving the request for service. This is also referred to as Filler Order Identifier.(en)">
-					comment = <"*This is equivalent to Filler Order Number in HL7 v2 specifications.(en)">
+					text = <"Identificador de orden del receptor">
+					description = <"El identificador asignado a la orden por el proveedor sanitario o la organización que recibe la solicitud de servicio. También se denomina Identificador de Orden de Cumplimentación.">
+					comment = <"Equivalente al Placer Order Number en las especificaciones HL7 v2.">
 				>
 				["at0057"] = <
 					text = <"Receptor">
-					description = <"Detalles sobre el profesional, departamento u organización que debe realizar el procedimiento">
+					description = <"Datos sobre el proveedor u organización sanitaria que recibe la solicitud de servicio.">
 				>
 				["at0058"] = <
 					text = <"Urgencia">
-					description = <"Urgencia del procedimiento">
-					comment = <"*Coding with a terminology is preferred, where possible.(en)">
+					description = <"Urgencia del procedimiento.">
+					comment = <"Siempre que sea posible, es preferible codificar con una terminología.">
 				>
 				["at0060"] = <
-					text = <"Fecha de finalización">
-					description = <"Fecha y hora cuando el procedimiento fue finalizado en su totalidad">
-					comment = <"*Only for use in association with the 'Procedure performed' pathway step, and in situations where the procedure is repeated on multiple occasions before being completed or there are multiple components to the whole procedure. This may be the same as the RM time attribute for the 'Procedure completed' pathway step.(en)">
+					text = <"Fecha/hora de finalización">
+					description = <"La fecha y/o la hora en que finalizó todo el procedimiento, o el último componente de un procedimiento multicomponente.">
+					comment = <"Sólo para su uso en asociación con la etapa \"Procedimiento realizado\", y en situaciones en las que el procedimiento se repite en varias ocasiones antes de completarse, o hay varios componentes en todo el procedimiento. Puede ser el mismo que el atributo de tiempo RM de la etapa \"Procedimiento completado\".">
 				>
 				["at0061"] = <
 					text = <"Duración">
-					description = <"Cantidad total de tiempo que tomó la ejecución del procedimiento.">
-					comment = <"*Only for use in association with the 'Procedure completed' pathway steps.(en)">
+					description = <"Cantidad total de tiempo empleado en completar el procedimiento, que puede incluir el tiempo empleado durante la fase activa del procedimiento más el tiempo durante el cual el procedimiento estuvo suspendido.">
+					comment = <"Sólo para su uso en asociación con la etapa \"Procedimiento completado\".">
 				>
 				["at0062"] = <
 					text = <"Multimedia">
-					description = <"Representación multimedia del procedimiento realizado">
+					description = <"Representación multimedia del procedimiento realizado.">
 				>
 				["at0063"] = <
 					text = <"Zona corporal">
 					description = <"Identificación de la zona del cuerpo para el procedimiento.">
-					comment = <"*Occurrences for this data element are unbounded to allow for clinical scenarios such as removing multiple skin lesions in different places, but where all of the other attributes are identical. Use this data element to record simple terms or precoordinated anatomical locations. If the requirements for recording the anatomical location are determined at run-time by the application or require more complex modelling such as relative locations then use the CLUSTER.anatomical_location or CLUSTER.relative_location within the 'Procedure detail' SLOT in this archetype. If the anatomical location is included in the 'Procedure name' via precoordinated codes, this data element becomes redundant.(en)">
+					comment = <"Las ocurrencias de este elemento de datos son ilimitadas para permitir escenarios clínicos como la extirpación de múltiples lesiones cutáneas en diferentes lugares, pero donde todos los demás atributos son idénticos. Utilice este elemento de datos para registrar términos sencillos o localizaciones anatómicas precoordinadas. Si los requisitos para registrar la localización anatómica se determinan en tiempo de ejecución por la aplicación o requieren un modelado más complejo, como localizaciones relativas, utilice CLUSTER.anatomical_location o CLUSTER.relative_location en el SLOT \"Detalles del procedimiento\" de este arquetipo. Si la localización anatómica se incluye en el \"Nombre del procedimiento\" mediante códigos precoordinados, este elemento de datos será redundante.">
 				>
 				["at0064"] = <
-					text = <"Extensión">
-					description = <"Información adicional requerida para capturar contenido local o alinear el arquetipo a otros modelos o formalismos">
-					comment = <"*For example: local information requirements or additional metadata to align with FHIR or CIMI equivalents.(en)">
+					text = <"Ampliación">
+					description = <"Información adicional necesaria para registrar contenido local o para alinearse con otros modelos/formalismos de referencia.">
+					comment = <"Por ejemplo: requisitos de información local o metadatos adicionales para alinearse con los equivalentes de FHIR o CIMI.">
 				>
 				["at0065"] = <
 					text = <"Método">
-					description = <"Identificación del método o técnica específica para el procedimiento">
-					comment = <"*Use this data element to record simple terms or a narrative description. If the requirements for recording the method require more complex modelling then this can be represented by additional archetypes within the 'Procedure detail' SLOT in this archetype. If the method is included in the 'Procedure name' via precoordinated codes, this data element becomes redundant.(en)">
+					description = <"Identificación del método o técnica específicos para el procedimiento.">
+					comment = <"Utilice este elemento de datos para registrar términos sencillos o una descripción narrativa. Si los requisitos para registrar el método requieren una modelización más compleja, ésta puede representarse mediante arquetipos adicionales dentro del SLOT \"Detalle del procedimiento\", de este arquetipo. Si el método se incluye en el \"Nombre del procedimiento\" mediante códigos precoordinados, este elemento de datos será redundante.">
 				>
 				["at0066"] = <
-					text = <"Fecha coordinada">
-					description = <"Fecha y hora en el cual se coordinó la realización del procedimiento">
-					comment = <"Utilizar solamente para el paso de Procedimiento coordinado de la vía clínica del arquetipo">
+					text = <"Fecha/hora programada">
+					description = <"Fecha y/u hora en que está previsto realizar el procedimiento.">
+					comment = <"Sólo para su uso en asociación con la etapa \"Procedimiento programado\".">
 				>
 				["at0067"] = <
-					text = <"*Procedure type(en)">
-					description = <"*The type of procedure.(en)">
-					comment = <"*This pragmatic data element may be used to support organisation within the user interface.(en)">
+					text = <"Tipo de procedimiento">
+					description = <"Tipo de procedimiento.">
+					comment = <"Este elemento de datos puede utilizarse para dar soporte a la organización dentro de la interfaz de usuario.">
 				>
 				["at0068"] = <
 					text = <"Procedimiento iniciado">
-					description = <"Procedimiento iniciado">
+					description = <"El procedimiento, o subprocedimiento en un procedimiento multicomponente, se ha iniciado.">
 				>
 				["at0069"] = <
-					text = <"*Procedural difficulty(en)">
-					description = <"*Difficulties or issues encountered during the procedure.(en)">
+					text = <"Dificultades del procedimiento">
+					description = <"Dificultades o problemas encontrados durante la realización del procedimiento.">
+					comment = <"Ejemplos: El paciente estaba agitado, vaciado insuficiente del estómago antes de la gastroscopia, un tumor en las vías biliares impedía el paso del endoscopio.">
 				>
 				["at0070"] = <
-					text = <"*Indication (en)">
-					description = <"*The clinical or process-related reason for the procedure. (en)">
-					comment = <"*Coding of the indication with a terminology is preferred, where possible. This data element allows multiple occurrences. For example: 'Failed bowel preparation' or 'Bowel cancer screening'. (en)">
+					text = <"Indicación">
+					description = <"El motivo, clínico o relacionado con el proceso, del procedimiento.">
+					comment = <"Siempre que sea posible, es preferible codificar la indicación con una terminología. Este elemento de datos permite múltiples ocurrencias. Por ejemplo: \"Preparación intestinal fallida\" o \"Cribado de cáncer de intestino\".">
 				>
 			>
 		>
@@ -2506,7 +2536,7 @@ Exempel: Hematuri efter njurbiopsi, vävnadsirritation efter införande av intra
 			items = <
 				["at0000"] = <
 					text = <"Procediment">
-					description = <"Una activitat clínica duta a terme per a la detecció, investigació, diagnòstic, cura, teràpia, avaluació o amb fins pal·liatius.">
+					description = <"Activitat clínica duta a terme amb fins de cribratge, investigació, diagnòstic, curatius, terapèutics, d'avaluació o pal·liatius.">
 				>
 				["at0001"] = <
 					text = <"Tree">
@@ -2515,64 +2545,64 @@ Exempel: Hematuri efter njurbiopsi, vävnadsirritation efter införande av intra
 				["at0002"] = <
 					text = <"Nom del procediment">
 					description = <"Identificació del procediment pel nom.">
-					comment = <"Sempre que sigui possible, es prefereix codificar el procediment específic amb una terminologia.">
+					comment = <"Sempre que sigui possible, és preferible la codificació del procediment específic amb una terminologia.">
 				>
 				["at0003"] = <
-					text = <"Detall del procediment">
+					text = <"Detalls del procediment">
 					description = <"Informació estructurada sobre el procediment.">
-					comment = <"Usat per capturar informació detallada i estructurada sobre la ubicació anatòmica, mètode i tècnica, equip utilitzat, dispositius implantats, resultats, troballes, etc.">
+					comment = <"S'utilitza per recopilar informació detallada i estructurada sobre la localització anatòmica, el mètode i la tècnica, l'equip utilitzat, els dispositius implantats, els resultats, les troballes, etc.">
 				>
 				["at0004"] = <
-					text = <"Procediment previst">
-					description = <"Es planifica el procediment que cal realitzar.">
+					text = <"Procediment planificat">
+					description = <"Es planifica el procediment que cal dur a terme.">
 				>
 				["at0005"] = <
 					text = <"Comentaris">
-					description = <"Narrativa addicional sobre l'activitat o la fase del procés assistencial no registrat en altres camps.">
+					description = <"Informació addicional sobre l'activitat o l'etapa assistencial no recollida en altres camps.">
 				>
 				["at0006"] = <
 					text = <"Complicació">
-					description = <"Detalls de qualsevol complicació sorgida durant lexecució del procediment.">
-					comment = <"Utilitzeu aquest element de dades per registrar termes senzills o complicacions precoordinades. Si els requisits per registrar complicacions són més complexos, aleshores es recomana l'ús d'un arquetip de tipus CLUSTER específic, dins del SLOT 'Detalls del procediment' d'aquest arquetip. Exemples: hematúria després d'una biòpsia de ronyó, irritació del teixit després de la inserció d'un catèter intravenós.">
+					description = <"Detalls sobre qualsevol complicació derivada del procediment.">
+					comment = <"Utilitzeu aquest element de dades per registrar termes senzills o complicacions precoordinades. Si els requisits per al registre de complicacions són més complexos, s'aconsella fer servir un arquetip CLUSTER específic dins del SLOT \"Detalls del procediment\" d'aquest arquetip. Exemples: Hematúria després d'una biòpsia renal, irritació tissular després de la inserció d'un catèter intravenós.">
 				>
 				["at0007"] = <
-					text = <"Sol·licitud de tràmit enviada">
-					description = <"Sol·licitud de tràmit enviada.">
+					text = <"Sol·licitud de procediment enviada">
+					description = <"Sol·licitud de procediment enviada.">
 				>
 				["at0014"] = <
 					text = <"Motiu">
-					description = <"Motiu pel qual es va realitzar l'activitat o fase del procés assistencial corresponent al procediment identificat.">
-					comment = <"Per exemple: el motiu de la cancel·lació o suspensió del procediment.">
+					description = <"Motiu pel qual es va dur a terme l'activitat o etapa assistencial per al procediment identificat.">
+					comment = <"Per exemple: motiu de la cancel·lació o suspensió del procediment.">
 				>
 				["at0034"] = <
-					text = <"X - Procediment previst">
-					description = <"Aquesta fase del procés ha quedat obsoleta perquè s'associà incorrectament amb l'estat \"inicial\". Utilitzeu la nova fase \"Procediment previst\" (at0004) que està correctament associat amb l'estat \"planificat\".">
-					comment = <"(Era: El procediment a realitzar està previst.)">
+					text = <"X - Procediment planificat">
+					description = <"Aquest apartat ha quedat obsolet, ja que s'associava incorrectament amb l'estat inicial. Utilitzeu el nou apartat \"Procediment planificat\" (at0004), associat correctament amb l'estat \"planificat\".">
+					comment = <"(Obsolet: Es planifica el procediment a dur a terme.)">
 				>
 				["at0035"] = <
-					text = <"X - Sol·licitud de tràmit enviada">
-					description = <"Aquesta fase del procés ha quedat obsoleta perquè s'ha associat incorrectament amb l'estat \"inicial\". Utilitzeu la nova fase \"Sol·licitud de procediment enviada\" (at0007) que està associada correctament amb l'estat \"planificat\".">
-					comment = <"(Era: Sol·licitud de tràmit enviada.)">
+					text = <"X - Sol·licitud de procediment enviada">
+					description = <"Aquest apartat ha quedat obsolet, ja que s'associava incorrectament amb l'estat inicial. Utilitzeu el nou apartat \"Sol·licitud de procediment enviada\" (at0004), associat correctament amb l'estat \"planificat\".">
+					comment = <"(Obsolet: Sol·licitud de procediment enviada.)">
 				>
 				["at0036"] = <
 					text = <"Procediment programat">
-					description = <"El procediment ha estat programat.">
+					description = <"El procediment s'ha programat.">
 				>
 				["at0038"] = <
 					text = <"Procediment posposat">
-					description = <"El procediment ha estat posposat.">
+					description = <"El procediment s'ha posposat.">
 				>
 				["at0039"] = <
 					text = <"Procediment cancel·lat">
-					description = <"El procediment previst ha estat cancel·lat abans del seu inici.">
+					description = <"S'ha cancel·lat el procediment previst abans de començar.">
 				>
 				["at0040"] = <
 					text = <"Procediment suspès">
-					description = <"El procediment ha estat suspès.">
+					description = <"El procediment s'ha suspès.">
 				>
 				["at0041"] = <
 					text = <"Procediment interromput">
-					description = <"El procediment ha estat interromput.">
+					description = <"El procediment s'ha interromput.">
 				>
 				["at0043"] = <
 					text = <"Procediment completat">
@@ -2580,54 +2610,54 @@ Exempel: Hematuri efter njurbiopsi, vävnadsirritation efter införande av intra
 				>
 				["at0047"] = <
 					text = <"Procediment realitzat">
-					description = <"S'ha realitzat el procediment o subprocediment en un procediment multicomponent.">
+					description = <"El procediment o subprocediment en un procediment multicomponent s'ha realitzat.">
 				>
 				["at0048"] = <
 					text = <"Resultat">
 					description = <"Resultat del procediment realitzat.">
-					comment = <"Sempre que sigui possible, es prefereix codificar amb una terminologia.">
+					comment = <"Sempre que sigui possible, és preferible codificar amb una terminologia.">
 				>
 				["at0049"] = <
 					text = <"Descripció">
 					description = <"Descripció narrativa del procediment, segons correspongui a la fase del procés.">
-					comment = <"Per exemple: descripció de la realització i resultats del procediment, de la interrupció o de la cancel·lació.">
+					comment = <"Per exemple: descripció de la realització i resultats del procediment, l'intent interromput o la cancel·lació del procediment.">
 				>
 				["at0053"] = <
 					text = <"Tree">
 					description = <"@ internal @">
 				>
 				["at0054"] = <
-					text = <"ID d'ordre del sol·licitant">
-					description = <"L'ID local assignat a l'ordre pel proveïdor d'atenció mèdica o organització que sol·licita el servei.">
-					comment = <"Equivalent al Placer Order Number (PON) a les especificacions HL7 v2.">
+					text = <"Identificador d'ordre del sol·licitant">
+					description = <"L'ID local assignat a l'ordre pel proveïdor sanitari o l'organització que sol·licita el servei.">
+					comment = <"Equivalent al Placer Order Number a les especificacions HL7 v2.">
 				>
 				["at0055"] = <
 					text = <"Sol·licitant">
-					description = <"Detalls del proveïdor d'atenció mèdica o organització que sol·licita el servei.">
+					description = <"Dades del professional sanitari o organització que sol·licita el servei.">
 				>
 				["at0056"] = <
-					text = <"ID d'ordre del receptor">
-					description = <"L'ID assignat a l'ordre pel proveïdor d'atenció mèdica o organització que rep la sol·licitud de servei. Això també es coneix com a Identificador d'ordre de farciment.">
-					comment = <"Equivalent al Filler Order Number (FON) a les especificacions HL7 v2.">
+					text = <"Identificador d'ordre del receptor">
+					description = <"L'identificador assignat a l'ordre pel proveïdor sanitari o organització que rep la sol·licitud de servei. També s'anomena identificador d'ordre d'emplenament.">
+					comment = <"Equivalent al Filler Order Number a les especificacions HL7 v2.">
 				>
 				["at0057"] = <
 					text = <"Receptor">
-					description = <"Detalls sobre el professional, departament o organització que ha de fer el procediment.">
+					description = <"Dades sobre el proveïdor o organització sanitària que rep la sol·licitud de servei.">
 				>
 				["at0058"] = <
 					text = <"Urgència">
 					description = <"Urgència del procediment.">
-					comment = <"Sempre que sigui possible, es prefereix codificar amb una terminologia.">
+					comment = <"Sempre que sigui possible, és preferible codificar amb una terminologia.">
 				>
 				["at0060"] = <
 					text = <"Data/hora de finalització">
 					description = <"Data i/o hora en què va finalitzar tot el procediment, o l'últim component d'un procediment multicomponent.">
-					comment = <"Només per a ús en associació amb la fase del procés \"Procediment realitzat\", i en situacions en què el procediment es repeteix en múltiples ocasions abans de completar-se o hi ha múltiples components a tot el procediment. Pot ser el mateix que l'atribut de temps de RM de la fase del procés 'Procediment completat'.">
+					comment = <"Només per al seu ús en associació amb l'etapa \"Procediment realitzat\", i en situacions en què el procediment es repeteix diverses vegades abans de completar-se, o hi ha diversos components en tot el procediment. Pot ser el mateix que l'atribut de temps RM de l'etapa \"Procediment completat\".">
 				>
 				["at0061"] = <
-					text = <"Durada total">
-					description = <"La quantitat total de temps necessari per completar el procediment, que pot incloure el temps transcorregut durant la fase activa del procediment més el temps durant el qual el procediment va estar suspès.">
-					comment = <"Només per a ús en associació amb la fase del procés 'Procediment completat'.">
+					text = <"Durada">
+					description = <"Quantitat total de temps emprat a completar el procediment, que pot incloure el temps emprat durant la fase activa del procediment més el temps durant el qual el procediment va estar suspès.">
+					comment = <"Només per a ús en associació amb l'etapa \"Procediment completat\".">
 				>
 				["at0062"] = <
 					text = <"Multimèdia">
@@ -2636,41 +2666,41 @@ Exempel: Hematuri efter njurbiopsi, vävnadsirritation efter införande av intra
 				["at0063"] = <
 					text = <"Zona corporal">
 					description = <"Identificació de la zona del cos per al procediment.">
-					comment = <"Les aparicions d'aquest element de dades són il·limitades per permetre escenaris clínics com l'eliminació de múltiples lesions cutànies a diferents llocs, però on tots els altres atributs són idèntics. Utilitzeu aquest element de dades per registrar termes simples o ubicacions anatòmiques precoordinades. Si els requisits per registrar la ubicació anatòmica els determina l'aplicació en temps d'execució o requereixen un modelatge més complex, com ara ubicacions relatives, utilitzeu CLUSTER.anatomical_location o CLUSTER.relative_location dins del SLOT 'Detalls del procediment' en aquest arquetip. Si la ubicació anatòmica s'inclou al 'Nom del procediment' mitjançant codis precoordinats, aquest element de dades es torna redundant.">
+					comment = <"Les ocurrències d'aquest element de dades són il·limitades per permetre escenaris clínics com l'extirpació de múltiples lesions cutànies a diferents llocs, però on tots els altres atributs són idèntics. Utilitzeu aquest element de dades per registrar termes senzills o localitzacions anatòmiques precoordinades. Si els requisits per registrar la localització anatòmica es determinen en temps d'execució per l'aplicació o requereixen un modelatge més complex, com ara localitzacions relatives, utilitzeu CLUSTER.anatomical_location o CLUSTER.relative_location al SLOT \"Detalls del procediment\" d'aquest arquetip. Si la localització anatòmica s'inclou al “Nom del procediment” mitjançant codis precoordinats, aquest element de dades serà redundant.">
 				>
 				["at0064"] = <
-					text = <"Extensió">
-					description = <"Informació addicional requerida per registrar contingut local o alinear l'arquetip a altres models o formalismes de referència.">
+					text = <"Ampliació">
+					description = <"Informació addicional necessària per registrar contingut local o per alinear-se amb altres models/formalismes de referència.">
 					comment = <"Per exemple: requisits d'informació local o metadades addicionals per alinear-se amb els equivalents de FHIR o CIMI.">
 				>
 				["at0065"] = <
 					text = <"Mètode">
-					description = <"Identificació del mètode o tècnica específica per al procediment.">
-					comment = <"Utilitzeu aquest element de dades per registrar termes simples o una descripció narrativa. Si els requisits per registrar el mètode requereixen un modelatge més complex, això es pot representar mitjançant arquetips addicionals dins del SLOT 'Detall del procediment' d'aquest arquetip. Si el mètode s'inclou al 'Nom del procediment' mitjançant codis precoordinats, aquest element de dades es torna redundant">
+					description = <"Identificació del mètode o tècnica específics per al procediment.">
+					comment = <"Utilitzeu aquest element de dades per registrar termes senzills o una descripció narrativa. Si els requisits per registrar el mètode requereixen una modelització més complexa, aquesta es pot representar mitjançant arquetips addicionals dins del SLOT \"Detall del procediment\" d'aquest arquetip. Si el mètode s'inclou al \"Nom del procediment\" mitjançant codis precoordinats, aquest element de dades serà redundant.">
 				>
 				["at0066"] = <
 					text = <"Data/hora programada">
-					description = <"Data i/o hora en què es pretén fer el procediment.">
-					comment = <"Només per al seu ús en associació amb la fase del procés 'Procediment programat'.">
+					description = <"Data i/o hora en què està previst fer el procediment.">
+					comment = <"Només per utilitzar-lo en associació amb l'etapa \"Procediment programat\".">
 				>
 				["at0067"] = <
 					text = <"Tipus de procediment">
 					description = <"Tipus de procediment.">
-					comment = <"Aquest element de dades pragmàtic es pot utilitzar per donar suport a l'organització dins la interfície d'usuari.">
+					comment = <"Aquest element de dades es pot utilitzar per donar suport a l'organització dins la interfície d'usuari.">
 				>
 				["at0068"] = <
 					text = <"Procediment iniciat">
-					description = <"S'ha iniciat el procediment o subprocediment en un procediment multicomponent.">
+					description = <"El procediment o subprocediment en un procediment multicomponent s'ha iniciat.">
 				>
 				["at0069"] = <
-					text = <"Dificultat procedimental">
+					text = <"Dificultats del procediment">
 					description = <"Dificultats o problemes trobats durant la realització del procediment.">
-					comment = <"Exemples: El pacient estava agitat, buidat de l'estómac insuficient prèvia gastroscòpia, un tumor als conductes biliars impossibilitava el pas de l'endoscopi.">
+					comment = <"Exemples: El pacient estava agitat, buidat insuficient de l'estómac abans de la gastroscòpia, un tumor a les vies biliars impedia el pas de l'endoscopi.">
 				>
 				["at0070"] = <
 					text = <"Indicació">
-					description = <"El motiu clínic o relacionat amb el procés del procediment.">
-					comment = <"Sempre que sigui possible, es prefereix codificar la indicació amb una terminologia. Aquest element de dades permet múltiples ocurrències. Per exemple: 'Preparació intestinal fallida' o 'Detecció de càncer d'intestí'.">
+					description = <"El motiu, clínic o relacionat amb el procés, del procediment.">
+					comment = <"Sempre que sigui possible, és preferible codificar la indicació amb una terminologia. Aquest element de dades permet múltiples ocurrències. Per exemple: \"Preparació intestinal fallida\" o \"Cribat de càncer d'intestí\".">
 				>
 			>
 		>
