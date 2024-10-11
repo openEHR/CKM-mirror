@@ -5,6 +5,17 @@ concept
 	[at0000]	-- Intravascular pressure
 language
 	original_language = <[ISO_639-1::en]>
+	translations = <
+		["ar-sy"] = <
+			language = <[ISO_639-1::ar-sy]>
+			author = <
+				["application"] = <"Adl Designer">
+			>
+			other_details = <
+				["notes"] = <"Generated automatically by Adl Designer">
+			>
+		>
+	>
 description
 	original_author = <
 		["name"] = <"Sam Heard">
@@ -13,14 +24,6 @@ description
 		["date"] = <"2006-06-28">
 	>
 	details = <
-		["ar-sy"] = <
-			language = <[ISO_639-1::ar-sy]>
-			purpose = <"قياس الضغط داخل الوعاء الدموي, سواء أكان وريدا أو شريانا أو رئويا أو قلبيا. و عادة ما يتم المزيد من التخصيص له بقياسات للضغط أكثر تحديدا مثل الضغط داخل الوريد الرقبي (الوداجي) و الضغط الوريدي المركزي.">
-			use = <"">
-			keywords = <"الضغط", "داخل الوعاء الدموي">
-			misuse = <"لا يستخدم لقياس ضغط الدم المجموعي. استخدم نموذج (ملاحظة. ضغط الدم) لذلك.">
-			copyright = <"© 2011 openEHR Foundation, openEHR Foundation">
-		>
 		["en"] = <
 			language = <[ISO_639-1::en]>
 			purpose = <"To record intravascular venous, arterial, pulmonary or cardiac pressure measurement.">
@@ -29,9 +32,17 @@ description
 			misuse = <"Not to be used for Systolic and Diastolic blood pressure. Use the OBSERVATION.blood_pressure for this purpose.">
 			copyright = <"© openEHR Foundation">
 		>
+		["ar-sy"] = <
+			language = <[ISO_639-1::ar-sy]>
+			purpose = <"قياس الضغط داخل الوعاء الدموي, سواء أكان وريدا أو شريانا أو رئويا أو قلبيا. و عادة ما يتم المزيد من التخصيص له بقياسات للضغط أكثر تحديدا مثل الضغط داخل الوريد الرقبي (الوداجي) و الضغط الوريدي المركزي.">
+			use = <"">
+			keywords = <"الضغط", "داخل الوعاء الدموي">
+			misuse = <"لا يستخدم لقياس ضغط الدم المجموعي. استخدم نموذج (ملاحظة. ضغط الدم) لذلك.">
+			copyright = <"© openEHR Foundation">
+		>
 	>
 	lifecycle_state = <"in_development">
-	other_contributors = <"Ian McNicoll, freshEHR Clinical Informatics, UK", ...>
+	other_contributors = <"Ian McNicoll, freshEHR Clinical Informatics, UK", "Heather Leslie, Atomica Informatics">
 	other_details = <
 		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
 		["custodian_organisation"] = <"openEHR Foundation">
@@ -39,36 +50,35 @@ description
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"667EDA5A0737A67F40B75DFAA28EB982">
-		["build_uid"] = <"4ac33691-2e19-4723-8ff2-ac43a2253b3a">
+		["MD5-CAM-1.0.1"] = <"EAA72ADEC132255935E5A7A41E9D96A5">
+		["build_uid"] = <"539ee8b2-c754-415e-b277-e11c0e35074d">
 		["revision"] = <"0.0.1-alpha">
 	>
 
 definition
-	OBSERVATION[at0000] matches {	-- Intravascular pressure
+	OBSERVATION[at0000] matches {    -- Intravascular pressure
 		data matches {
-			HISTORY[at0001] matches {	-- history
+			HISTORY[at0001] matches {    -- history
 				events cardinality matches {1..*; unordered} matches {
-					EVENT[at0002] occurrences matches {0..*} matches {	-- Any event
+					EVENT[at0002] occurrences matches {0..*} matches {    -- Any event
 						data matches {
-							ITEM_TREE[at0003] matches {	-- Tree
+							ITEM_TREE[at0003] matches {    -- Tree
 								items cardinality matches {1..*; ordered} matches {
-									ELEMENT[at0005] occurrences matches {0..1} matches {	-- Pressure
+									ELEMENT[at0005] occurrences matches {0..1} matches {    -- Pressure
 										value matches {
-											C_DV_QUANTITY <
-											>
+											DV_QUANTITY matches {*}
 										}
 									}
-									allow_archetype CLUSTER[at0033] occurrences matches {0..1} matches {	-- Multimedia representation
+									allow_archetype CLUSTER[at0033] occurrences matches {0..1} matches {    -- Multimedia representation
 										include
-											archetype_id/value matches {/openEHR-EHR-CLUSTER\.waveform(-[a-zA-Z0-9_]+)*\.v0|openEHR-EHR-CLUSTER\.multimedia(-[a-zA-Z0-9_]+)*\.v0/}
+											archetype_id/value matches {/openEHR-EHR-CLUSTER\.waveform(-[a-zA-Z0-9_]+)*\.v0|openEHR-EHR-CLUSTER\.media_file\.v1/}
 									}
-									ELEMENT[at0042] occurrences matches {0..*} matches {	-- Clinical interpretation
+									ELEMENT[at0042] occurrences matches {0..*} matches {    -- Clinical interpretation
 										value matches {
 											DV_TEXT matches {*}
 										}
 									}
-									ELEMENT[at0035] occurrences matches {0..1} matches {	-- Comment
+									ELEMENT[at0035] occurrences matches {0..1} matches {    -- Comment
 										value matches {
 											DV_TEXT matches {*}
 										}
@@ -77,28 +87,28 @@ definition
 							}
 						}
 						state matches {
-							ITEM_TREE[at0038] matches {	-- Tree
+							ITEM_TREE[at0038] matches {    -- Tree
 								items cardinality matches {0..*; unordered} matches {
-									ELEMENT[at0039] occurrences matches {0..1} matches {	-- Position
+									ELEMENT[at0039] occurrences matches {0..1} matches {    -- Position
 										value matches {
 											DV_TEXT matches {*}
 										}
 									}
-									ELEMENT[at0040] occurrences matches {0..1} matches {	-- Confounding factors
+									ELEMENT[at0040] occurrences matches {0..1} matches {    -- Confounding factors
 										value matches {
 											DV_TEXT matches {*}
 										}
 									}
-									ELEMENT[at0007] occurrences matches {0..1} matches {	-- Phase of heart cycle
+									ELEMENT[at0007] occurrences matches {0..1} matches {    -- Phase of heart cycle
 										value matches {
 											DV_CODED_TEXT matches {
 												defining_code matches {
 													[local::
-													at0008, 	-- Systolic
-													at0009, 	-- Diastolic
-													at0023, 	-- Pre-systolic
-													at0024, 	-- Pre-diastolic
-													at0027]	-- Whole cycle
+													at0008,    -- Systolic
+													at0009,    -- Diastolic
+													at0023,    -- Pre-systolic
+													at0024,    -- Pre-diastolic
+													at0027]    -- Whole cycle
 												}
 											}
 										}
@@ -107,46 +117,48 @@ definition
 							}
 						}
 					}
-					INTERVAL_EVENT[at0004] occurrences matches {0..*} matches {	-- Average over heart cycle
+					INTERVAL_EVENT[at0004] occurrences matches {0..*} matches {    -- Average over heart cycle
 						math_function matches {
 							DV_CODED_TEXT matches {
-								defining_code matches {[openehr::146]}
+								defining_code matches {
+									[openehr::146]
+								}
 							}
 						}
 						data matches {
-							use_node ITEM_TREE /data[at0001]/events[at0002]/data[at0003]	-- /data[history]/events[Any event]/data[Tree]
+							use_node ITEM_TREE /data[at0001]/events[at0002]/data[at0003]
 						}
 						state matches {
-							use_node ITEM_TREE /data[at0001]/events[at0002]/state[at0038]	-- /data[history]/events[Any event]/state[Tree]
+							use_node ITEM_TREE /data[at0001]/events[at0002]/state[at0038]
 						}
 					}
 				}
 			}
 		}
 		protocol matches {
-			ITEM_TREE[at0021] matches {	-- Tree
+			ITEM_TREE[at0021] matches {    -- Tree
 				items cardinality matches {0..*; unordered} matches {
-					ELEMENT[at0044] occurrences matches {0..1} matches {	-- Method
+					ELEMENT[at0044] occurrences matches {0..1} matches {    -- Method
 						value matches {
 							DV_TEXT matches {*}
 						}
 					}
-					ELEMENT[at0043] occurrences matches {0..1} matches {	-- Location of measurement
+					ELEMENT[at0043] occurrences matches {0..1} matches {    -- Location of measurement
 						value matches {
 							DV_TEXT matches {*}
 						}
 					}
-					allow_archetype CLUSTER[at0036] occurrences matches {0..1} matches {	-- Structured measurement location
+					allow_archetype CLUSTER[at0036] occurrences matches {0..1} matches {    -- Structured measurement location
 						include
-							archetype_id/value matches {/openEHR-EHR-CLUSTER\.anatomical_location(-[a-zA-Z0-9_]+)*\.v1|openEHR-EHR-CLUSTER\.anatomical_location_relative(-[a-zA-Z0-9_]+)*\.v1/}
+							archetype_id/value matches {/openEHR-EHR-CLUSTER\.anatomical_location(-[a-zA-Z0-9_]+)*\.v1|openEHR-EHR-CLUSTER\.anatomical_location_relative\.v2/}
 						exclude
 							archetype_id/value matches {/.*/}
 					}
-					allow_archetype CLUSTER[at0030] occurrences matches {0..*} matches {	-- Device
+					allow_archetype CLUSTER[at0030] occurrences matches {0..*} matches {    -- Device
 						include
 							archetype_id/value matches {/openEHR-EHR-CLUSTER\.device(-[a-zA-Z0-9_]+)*\.v1/}
 					}
-					allow_archetype CLUSTER[at0041] occurrences matches {0..*} matches {	-- Extension
+					allow_archetype CLUSTER[at0041] occurrences matches {0..*} matches {    -- Extension
 						include
 							archetype_id/value matches {/.*/}
 					}
@@ -256,6 +268,107 @@ ontology
 				["at0044"] = <
 					text = <"Method">
 					description = <"Description about how the intravascular pressure was measured.">
+				>
+			>
+		>
+		["ar-sy"] = <
+			items = <
+				["at0000"] = <
+					text = <"*Intravascular pressure(en)">
+					description = <"*The measured pressure in a specific location, blood vessel or heart cavity, at a specific phase of the heart or an average over the heart cycle.(en)">
+				>
+				["at0001"] = <
+					text = <"history">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"*Any event(en)">
+					description = <"*Default, unspecified point in time or interval event which may be explicitly defined in a template or at run-time.(en)">
+				>
+				["at0003"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0004"] = <
+					text = <"*Average over heart cycle(en)">
+					description = <"*The average over one heart cycle.(en)">
+				>
+				["at0005"] = <
+					text = <"*Pressure(en)">
+					description = <"*The measured intravascular pressure.(en)">
+				>
+				["at0007"] = <
+					text = <"*Phase of heart cycle(en)">
+					description = <"*The phase of the heart cycle at the time of the measurement.(en)">
+				>
+				["at0008"] = <
+					text = <"*Systolic(en)">
+					description = <"*During contraction of the heart.(en)">
+				>
+				["at0009"] = <
+					text = <"*Diastolic(en)">
+					description = <"*During relaxation of the heart.(en)">
+				>
+				["at0021"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0023"] = <
+					text = <"*Pre-systolic(en)">
+					description = <"*Phase of the heart immediately prior to contraction of the heart.(en)">
+				>
+				["at0024"] = <
+					text = <"*Pre-diastolic(en)">
+					description = <"*The phase of the heart immediately prior to filling of the ventricle.(en)">
+				>
+				["at0027"] = <
+					text = <"*Whole cycle(en)">
+					description = <"*The pressure measueerd is over the whole heart cycle.(en)">
+				>
+				["at0030"] = <
+					text = <"*Device(en)">
+					description = <"*Details about the device used to record the measurement.(en)">
+				>
+				["at0033"] = <
+					text = <"*Multimedia representation(en)">
+					description = <"*Digital image, video, wave form or diagram representing the findings.(en)">
+				>
+				["at0035"] = <
+					text = <"*Comment(en)">
+					description = <"*Additional narrative about the intravascular pressure measurement not captured in other fields.(en)">
+				>
+				["at0036"] = <
+					text = <"*Structured measurement location(en)">
+					description = <"*Structured anatomical location of where the measurement was taken.(en)">
+				>
+				["at0038"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0039"] = <
+					text = <"*Position(en)">
+					description = <"*Position of patient during measurement.(en)">
+				>
+				["at0040"] = <
+					text = <"*Confounding factors(en)">
+					description = <"*Comment on and record other incidental factors that may be contributing to the intravascular pressure measurement.(en)">
+				>
+				["at0041"] = <
+					text = <"*Extension(en)">
+					description = <"*Additional information required to capture local content or to align with other reference models/formalisms.(en)">
+					comment = <"*For example: local information requirements or additional metadata to align with FHIR or CIMI equivalents.(en)">
+				>
+				["at0042"] = <
+					text = <"*Clinical interpretation(en)">
+					description = <"*Single word, phrase or brief description that represents the clinical meaning and significance of the intravascular pressure.(en)">
+				>
+				["at0043"] = <
+					text = <"*Location of measurement(en)">
+					description = <"*Simple body site where blood pressure was measured.(en)">
+				>
+				["at0044"] = <
+					text = <"*Method(en)">
+					description = <"*Description about how the intravascular pressure was measured.(en)">
 				>
 			>
 		>
