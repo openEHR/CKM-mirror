@@ -2,7 +2,7 @@
 	openEHR-EHR-CLUSTER.modified_nih_criteria_gist.v0
 
 concept
-	[at0000]	-- modified_nih_criteria_gist
+	[at0000]	-- GIST risk assessment (Modified NIH criteria)
 language
 	original_language = <[ISO_639-1::en]>
 	translations = <
@@ -22,19 +22,24 @@ description
 	details = <
 		["nb"] = <
 			language = <[ISO_639-1::nb]>
-			purpose = <"For å registrere risiko for tilbakefall etter kirurgi for GIST ved å bruke modifiserte NIH-kriterier.">
-			use = <"For å registrere risiko for tilbakefall etter kirurgi for GIST ved å bruke modifiserte NIH-kriterier.">
+			purpose = <"For å registrere risikovurdering for tilbakefall etter kirurgi for GIST i henhold til modifiserte NIH-kriterier.">
+			use = <"Brukes for å registrere risikovurdering for tilbakefall etter kirurgi for GIST i henhold til modifiserte NIH-kriterier.
+
+Arketypen er utviklet for å brukes i en ENTRY-arketype som vil gi den kliniske eller patologiske konteksten for registreringen. For eksempel: I SLOTet \"Spesifikke detaljer\" i arketypen Problem/diagnose (EVALUATION.problem_diagnosis), i en relevant patologirelatert CLUSTER-arketype som igjen nøstes i arketypen Laboratorieresultat (OBSERVATION.laboratory_test_result). Dette gir også mulighet for å registrere kroppssted.
+
+Denne arketypen inneholder kun ett dataelement for å registrere risikovurderingen. Dataelementer for å registrere parameterne \"Diameter\", \"Mitosetall\" og \"Lokasjon\" som utgjør grunnlaget for risikovurderingen, vil bli registrert ved hjelp av andre relevante arketyper.">
 			keywords = <"gastrointestinal stromal tumor, GIST, sarkom, kreft, neoplasme, onkologi, malignitet", ...>
 			misuse = <"">
 			copyright = <"© openEHR Foundation">
 		>
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"To record the risk of recurrence after surgery for GIST using the Modified NIH Criteria.">
-			use = <"Use to record the risk of recurrence after surgery for GIST using the Modified NIH Criteria.
+			purpose = <"To record an assessment of risk of recurrence after surgery for GIST based on the Modified NIH Criteria.">
+			use = <"Use to record an assessment of risk of recurrence after surgery for GIST based on the Modified NIH Criteria.
 
-This archetype has been specifically designed to be used in the 'Examination detail' SLOT within the OBSERVATION.imaging_exam_result to record the overall PI-RADS. It can also be used within CLUSTER.imaging_exam-prostate or CLUSTER.imaging_exam, with a specific `Body site’ such as “left hemisphere of prostate”, to record the PI-RADS specifically for an identified part of the prostate. Finally, it can be used within the CLUSTER.imaging_exam_anomaly, to record the PI-RADS of a specific lesion. It can also be used within other ENTRY or CLUSTER archetypes, where clinically appropriate.
-Problem/diagnosis, lab result">
+The archetype is designed to be used in an ENTRY archetype that will provide the clinical or pathological context. For example: In the \"Specific Details\" SLOT in the EVALUATION.problem_diagnose (Problem/Diagnosis) archetype, or nested in a relevant pathology-related CLUSTER archetype which is again nested in the laboratory response archetype (OBSERVATION.laboratory_test_result). This will also allow for documentation of body site. 
+
+This archetype only contains a data element to record the risk assessment. Data elements pertaining to the parameters \"Diameter\", \"Mitotic count\", and \"Location\" that are the basis for the risk assessment will be recorded using other relevant archetypes.">
 			keywords = <"gastrointestinal stromal tumour, GIST, sarcoma, cancer, neoplasm, oncology, malignancy", ...>
 			misuse = <"">
 			copyright = <"© openEHR Foundation">
@@ -49,69 +54,20 @@ Problem/diagnosis, lab result">
 
 Joensuu H. Risk stratification of patients diagnosed with gastrointestinal stromal tumor. Hum Pathol. 2008 Oct;39(10):1411-9. doi: 10.1016/j.humpath.2008.06.025. PubMed PMID: 18774375.
 
-Cree IA, Tan PH, Travis WD, Wesseling P, Yagi Y, White VA, Lokuhetty D, Scolyer RA. Counting mitoses: SI(ze) matters!. Mod Pathol. 2021 Sep;34(9):1651-1657. doi: 10.1038/s41379-021-00825-7. Epub 2021 Jun 2. Review. PubMed PMID: 34079071; PubMed Central PMCID: PMC8376633.
+Jones RL. Practical aspects of risk assessment in gastrointestinal stromal tumors. J Gastrointest Cancer. 2014 Sep;45(3):262-7. doi: 10.1007/s12029-014-9615-x. Review. PubMed PMID: 24802226; PubMed Central PMCID: PMC4126997.
 
 Norwegian translation: Helsedirektoratet. Nasjonalt handlingsprogram med retningslinjer for diagnostikk, behandling og oppfølging av sarkom. [revised 2022 February]. [Internet]. 2022 February. Available from: https://www.helsedirektoratet.no/retningslinjer/sarkomer-handlingsprogram">
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"811CF9D2611CDCE046C7F928F4B1A2E5">
-		["build_uid"] = <"8d83a6ff-5a55-4c3d-9c23-d23c370ff38d">
+		["MD5-CAM-1.0.1"] = <"502D76CD5819A86CF97D789EB68C96CF">
+		["build_uid"] = <"e8117e72-02c7-4fcd-8d4e-399d1945a981">
 		["revision"] = <"0.0.1-alpha">
 	>
 
 definition
-	CLUSTER[at0000] matches {    -- modified_nih_criteria_gist
+	CLUSTER[at0000] matches {    -- GIST risk assessment (Modified NIH criteria)
 		items cardinality matches {1..*; unordered} matches {
-			ELEMENT[at0001] occurrences matches {0..1} matches {    -- Tumour size
-				value matches {
-					C_DV_QUANTITY <
-						property = <[openehr::122]>
-						list = <
-							["1"] = <
-								units = <"cm">
-								magnitude = <|>=0.0|>
-							>
-						>
-					>
-				}
-			}
-			ELEMENT[at0002] occurrences matches {0..1} matches {    -- Mitotic index
-				value matches {
-					C_DV_QUANTITY <
-						property = <[openehr::122]>
-						list = <
-							["1"] = <
-								units = <"{mitoses}/5.mm2">
-								magnitude = <|>=0.0|>
-								precision = <|0|>
-							>
-						>
-					>
-				}
-			}
-			ELEMENT[at0003] occurrences matches {0..1} matches {    -- Primary tumour site
-				value matches {
-					DV_CODED_TEXT matches {
-						defining_code matches {
-							[local::
-							at0017,    -- Gastric
-							at0018]    -- Non-gastric
-						}
-					}
-				}
-			}
-			ELEMENT[at0030] occurrences matches {0..1} matches {    -- Tumour rupture
-				value matches {
-					DV_CODED_TEXT matches {
-						defining_code matches {
-							[local::
-							at0031,    -- Yes
-							at0032]    -- No
-						}
-					}
-				}
-			}
 			ELEMENT[at0004] occurrences matches {0..1} matches {    -- Risk category
 				value matches {
 					DV_CODED_TEXT matches {
@@ -134,32 +90,12 @@ ontology
 		["en"] = <
 			items = <
 				["at0000"] = <
-					text = <"modified_nih_criteria_gist">
-					description = <"A framework for estimating the risk of recurrence after surgery using the Modified NIH Criteria for GIST (gastrointestinal stromal tumour).">
+					text = <"GIST risk assessment (Modified NIH criteria)">
+					description = <"An assessment of the recurrence risk after surgery based on the Modified NIH Criteria for GIST (gastrointestinal stromal tumour).">
 					comment = <"NIH - National Institutes of Health.">
-				>
-				["at0001"] = <
-					text = <"Tumour size">
-					description = <"">
-				>
-				["at0002"] = <
-					text = <"Mitotic index">
-					description = <"">
-				>
-				["at0003"] = <
-					text = <"Primary tumour site">
-					description = <"">
 				>
 				["at0004"] = <
 					text = <"Risk category">
-					description = <"">
-				>
-				["at0017"] = <
-					text = <"Gastric">
-					description = <"">
-				>
-				["at0018"] = <
-					text = <"Non-gastric">
 					description = <"">
 				>
 				["at0021"] = <
@@ -178,48 +114,17 @@ ontology
 					text = <"High risk">
 					description = <"">
 				>
-				["at0030"] = <
-					text = <"Tumour rupture">
-					description = <"">
-				>
-				["at0031"] = <
-					text = <"Yes">
-					description = <"">
-				>
-				["at0032"] = <
-					text = <"No">
-					description = <"">
-				>
 			>
 		>
 		["nb"] = <
 			items = <
 				["at0000"] = <
-					text = <"modified_nih_criteria_gist">
-					description = <"Et rammeverk for å estimere risikoen for tilbakefall etter kirurgi i henhold til modifiserte NIH-kriterier (National Institutes of Health) for GIST (gastrointestinal stromal tumor).">
-				>
-				["at0001"] = <
-					text = <"Tumormål">
-					description = <"">
-				>
-				["at0002"] = <
-					text = <"Mitosetall">
-					description = <"">
-				>
-				["at0003"] = <
-					text = <"Primært utgangspunkt">
-					description = <"">
+					text = <"GIST riskovurdering (Modified NIH criteria)">
+					description = <"En vurdering av risikoen for tilbakefall etter kirurgi i henhold til modifiserte NIH-kriterier for GIST (gastrointestinal stromal tumor).">
+					comment = <"NIH - National Institutes of Health.">
 				>
 				["at0004"] = <
 					text = <"Risikokategori">
-					description = <"">
-				>
-				["at0017"] = <
-					text = <"Ventrikkel">
-					description = <"">
-				>
-				["at0018"] = <
-					text = <"Alle untatt ventrikkel">
 					description = <"">
 				>
 				["at0021"] = <
@@ -236,18 +141,6 @@ ontology
 				>
 				["at0024"] = <
 					text = <"Høy risiko">
-					description = <"">
-				>
-				["at0030"] = <
-					text = <"Tumorruptur">
-					description = <"">
-				>
-				["at0031"] = <
-					text = <"Ja">
-					description = <"">
-				>
-				["at0032"] = <
-					text = <"Nei">
 					description = <"">
 				>
 			>
