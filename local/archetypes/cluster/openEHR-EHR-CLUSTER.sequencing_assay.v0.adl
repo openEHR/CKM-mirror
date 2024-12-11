@@ -4,14 +4,22 @@
 concept
 	[at0000]	-- Sequencing assay
 language
-	original_language = <[ISO_639-1::de]>
+	original_language = <[ISO_639-1::en]>
 	translations = <
-		["en"] = <
-			language = <[ISO_639-1::en]>
+		["de"] = <
+			language = <[ISO_639-1::de]>
 			author = <
 				["name"] = <"Aurelie Tomczak">
-				["organisation"] = <"Institute of Pathology, University Hospital Heidelberg">
-				["email"] = <"au.tomczak@yahoo.com">
+				["organisation"] = <"Institute of Pathology, University Hospital Heidelberg, Uniklinikum Heidelberg">
+				["email"] = <"au.tomczak@yahoo.com, aurelie.tomczak@med.uni-heidelberg.de">
+			>
+		>
+		["nb"] = <
+			language = <[ISO_639-1::nb]>
+			author = <
+				["name"] = <"Liv Laugen, Vebjørn Arntzen">
+				["organisation"] = <"​Oslo University Hospital, Norway">
+				["email"] = <"liv.laugen@ous-hf.no, varntzen@ous-hf.no">
 			>
 		>
 	>
@@ -26,15 +34,28 @@ description
 		["de"] = <
 			language = <[ISO_639-1::de]>
 			purpose = <"Zur detaillierten Darstellung der Sequenzierungsanalyse an einer Probe inklusive der Aufzählung aller untersuchten Gene bei einer Panelsequenzierung.">
-			use = <"Eine oder mehrere Instanzen dieses Archetyps können im SLOT \"Testdaten\" in \"OBSERVATION.laboratory_test_result\" verschachtelt sein.">
+			use = <"Zur detaillierten Darstellung der Sequenzierungsanalyse an einer Probe inklusive der Aufzählung aller untersuchten Gene bei einer Panelsequenzierung.
+
+Eine oder mehrere Instanzen dieses Archetyps können im SLOT \"Testdaten\" in \"OBSERVATION.laboratory_test_result\" verschachtelt sein.">
 			keywords = <"Sequenzierung", "Genomics", "Assay", "Panel", "Pathologie", "Sequenzierungsanalyse", "Panelsequenzierung", "Gene", "Probe">
 			misuse = <"Dient nur zur Dokumentation des Analyseprotokolls, nicht jedoch zur Dokumentation der Ergebnisse der Sequenzanalyse. Die Ergebnisse werden mit dem Archetyp 'Genetische Variante' dokumentiert.">
 			copyright = <"© HiGHmed, openEHR Foundation">
 		>
+		["nb"] = <
+			language = <[ISO_639-1::nb]>
+			purpose = <"For å registrere detaljer om en gensekvensanalyse / genanalyse, inkludert en liste over alle testede gener dersom en genpaneltest ble utført.">
+			use = <"Bruk for å registrere detaljer om en gensekvensanalyse /genanalyse, inkludert en liste over alle testede gener hvis en genpaneltest ble utført.
+
+En eller flere forekomster av denne arketypen kan nøstes i SLOTet \"Undersøkelsesdetaljer\" i arketypen \"OBSERVATION.laboratory_test_result\" (Laboratorieresultat).">
+			keywords = <"Sekvensere", "Genomikk", "Assay", "Panel", "Patologi", "Sekvenseringsanalyse", "Panelsekvensering", "Gen", "DNA", "Probe", "Nuklotid", "Nestegenerasjonssekvensering">
+			misuse = <"Skal ikke brukes til å registrere resultatet av en gensekvensanalyse / genanalyse, men kun til å dokumentere protokollen / metoden brukt. For å registrere resultatet på genanalysen bruk arkeypen CLUSTER.genomic_variant_result (Genetisk variant resultat).">
+		>
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"To record details of the performed sequencing analysis including a list of all tested genes if panel sequencing was performed. ">
-			use = <"One or more instances of this archetype may be nested within the 'Testing details' SLOT in the OBSERVATION.laboratory_test_result. ">
+			purpose = <"To record details of the performed sequencing analysis including a list of all tested genes if panel sequencing was performed.">
+			use = <"Use to record details of the performed sequencing analysis including a list of all tested genes if panel sequencing was performed.
+
+One or more instances of this archetype may be nested within the 'Testing details' SLOT in the OBSERVATION.laboratory_test_result.">
 			keywords = <"Sequencing", "Genomics", "Panel", "Assay", "Pathology", "Sequencing analysis", "Panel sequencing", "Gene", "Specimen">
 			misuse = <"Used only to document the analysis protocol but not to document the results of the sequence analysis. The results are documented with the archetype 'genetic variant'.">
 			copyright = <"© HiGHmed, openEHR Foundation">
@@ -48,15 +69,15 @@ description
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"4085C8FA38395506EC96B4C63D2A7F75">
-		["build_uid"] = <"98cd2b21-d06a-41f2-8462-1b95e2f8e617">
+		["MD5-CAM-1.0.1"] = <"9B3D1743DC734C308CC6923B05E0F26B">
+		["build_uid"] = <"953ae6df-de07-4969-a3fe-5ef081772fc9">
 		["revision"] = <"0.0.1-alpha">
 	>
 
 definition
 	CLUSTER[at0000] occurrences matches {0..*} matches {    -- Sequencing assay
 		items cardinality matches {1..*; unordered} matches {
-			ELEMENT[at0001] occurrences matches {0..1} matches {    -- Sequenzierungstechnologie
+			ELEMENT[at0001] occurrences matches {0..1} matches {    -- Sequencing technology
 				value matches {
 					DV_CODED_TEXT matches {
 						defining_code matches {
@@ -69,17 +90,25 @@ definition
 							at0015,    -- Sanger sequencing
 							at0016,    -- Fragment analysis
 							at0017,    -- Methylation assay
-							at0018]    -- Sonstiges
+							at0018]    -- Miscellaneous
 						}
 					}
 					DV_TEXT matches {*}
 				}
 			}
-			allow_archetype CLUSTER[at0036] occurrences matches {0..*} matches {    -- Sequenzierungs- oder Analysegerät
+			allow_archetype CLUSTER[at0036] occurrences matches {0..*} matches {    -- Sequencing or analysis device
 				include
 					archetype_id/value matches {/openEHR-EHR-CLUSTER\.device(-[a-zA-Z0-9_]+)*\.v1/}
 			}
-			ELEMENT[at0002] occurrences matches {0..1} matches {    -- Kit Name
+			allow_archetype CLUSTER[at0039] occurrences matches {0..1} matches {    -- Bioinformatic analysis workflow
+				include
+					archetype_id/value matches {/openEHR-EHR-CLUSTER\.knowledge_base_reference(-[a-zA-Z0-9_]+)*\.v1|openEHR-EHR-CLUSTER\.device(-[a-zA-Z0-9_]+)*\.v1/}
+			}
+			allow_archetype CLUSTER[at0038] matches {    -- Reference genome
+				include
+					archetype_id/value matches {/openEHR-EHR-CLUSTER\.reference_sequence(-[a-zA-Z0-9_]+)*\.v1/}
+			}
+			ELEMENT[at0002] occurrences matches {0..1} matches {    -- Kit name
 				value matches {
 					DV_TEXT matches {*}
 					DV_CODED_TEXT matches {
@@ -89,7 +118,7 @@ definition
 					}
 				}
 			}
-			ELEMENT[at0003] occurrences matches {0..1} matches {    -- Nukleinsäure
+			ELEMENT[at0003] occurrences matches {0..1} matches {    -- Nucleic acid
 				value matches {
 					DV_TEXT matches {*}
 					DV_CODED_TEXT matches {
@@ -102,34 +131,27 @@ definition
 					}
 				}
 			}
-			ELEMENT[at0020] occurrences matches {0..1} matches {    -- Tumorzellgehalt
-				value matches {
-					DV_COUNT matches {
-						magnitude matches {|0..100|}
-					}
-				}
-			}
-			CLUSTER[at0006] occurrences matches {0..*} matches {    -- Getestete Gene
+			CLUSTER[at0006] occurrences matches {0..*} matches {    -- Tested Genes
 				items cardinality matches {1..*; unordered} matches {
-					ELEMENT[at0007] matches {    -- Gensymbol
+					ELEMENT[at0007] matches {    -- Gene symbol
 						value matches {
 							DV_TEXT matches {*}
 						}
 					}
-					ELEMENT[at0008] occurrences matches {0..1} matches {    -- Genname
+					ELEMENT[at0008] occurrences matches {0..1} matches {    -- Gene name
 						value matches {
 							DV_TEXT matches {*}
 						}
 					}
-					allow_archetype CLUSTER[at0025] occurrences matches {0..*} matches {    -- Referenzsequenz des Gens
+					allow_archetype CLUSTER[at0025] occurrences matches {0..*} matches {    -- Gene reference sequence
 						include
 							archetype_id/value matches {/openEHR-EHR-CLUSTER\.reference_sequence(-[a-zA-Z0-9_]+)*\.v1/}
 					}
 				}
 			}
-			CLUSTER[at0030] occurrences matches {0..*} matches {    -- Getestete Region
+			CLUSTER[at0030] occurrences matches {0..*} matches {    -- Tested Region
 				items cardinality matches {1..*; unordered} matches {
-					ELEMENT[at0031] occurrences matches {0..1} matches {    -- Chromosomale Lokalisation
+					ELEMENT[at0031] occurrences matches {0..1} matches {    -- Chromosomal location
 						value matches {
 							DV_TEXT matches {*}
 							DV_CODED_TEXT matches {*}
@@ -145,25 +167,23 @@ definition
 							DV_COUNT matches {*}
 						}
 					}
-					allow_archetype CLUSTER[at0035] occurrences matches {0..*} matches {    -- Referenzsequenz der Region
+					allow_archetype CLUSTER[at0035] occurrences matches {0..*} matches {    -- Reference sequence of region
 						include
 							archetype_id/value matches {/openEHR-EHR-CLUSTER\.reference_sequence(-[a-zA-Z0-9_]+)*\.v1/}
 					}
 				}
 			}
-			allow_archetype CLUSTER[at0026] occurrences matches {0..*} matches {    -- Erweiterungen
+			allow_archetype CLUSTER[at0026] occurrences matches {0..*} matches {    -- Extensions
 				include
 					archetype_id/value matches {/.*/}
 			}
-			ELEMENT[at0037] occurrences matches {0..1} matches {    -- Kommentar
+			ELEMENT[at0037] occurrences matches {0..1} matches {    -- Comment
 				value matches {
 					DV_TEXT matches {*}
 				}
 			}
 		}
 	}
-
-
 
 
 ontology
@@ -201,59 +221,55 @@ ontology
 				>
 				["at0010"] = <
 					text = <"NGS (hybrid-capture)">
-					description = <"*">
+					description = <"">
 				>
 				["at0011"] = <
 					text = <"NGS (amplicon)">
-					description = <"*">
+					description = <"">
 				>
 				["at0012"] = <
 					text = <"Genome sequencing">
-					description = <"*">
+					description = <"">
 				>
 				["at0013"] = <
 					text = <"Array-CGH">
-					description = <"*">
+					description = <"">
 				>
 				["at0014"] = <
 					text = <"MLPA">
-					description = <"*">
+					description = <"">
 				>
 				["at0015"] = <
 					text = <"Sanger sequencing">
-					description = <"*">
+					description = <"">
 				>
 				["at0016"] = <
 					text = <"Fragment analysis">
-					description = <"*">
+					description = <"">
 				>
 				["at0017"] = <
 					text = <"Methylation assay">
-					description = <"*">
+					description = <"">
 				>
 				["at0018"] = <
 					text = <"Sonstiges">
-					description = <"*">
-				>
-				["at0020"] = <
-					text = <"Tumorzellgehalt">
-					description = <"Angabe des Tumorzellgehalt in Prozent.">
+					description = <"">
 				>
 				["at0021"] = <
 					text = <"Oncomine Comprehensive Panel V3">
-					description = <"*">
+					description = <"">
 				>
 				["at0022"] = <
 					text = <"DNA">
-					description = <"*">
+					description = <"">
 				>
 				["at0023"] = <
 					text = <"RNA">
-					description = <"*">
+					description = <"">
 				>
 				["at0024"] = <
 					text = <"cf-DNA">
-					description = <"*">
+					description = <"">
 				>
 				["at0025"] = <
 					text = <"Referenzsequenz des Gens">
@@ -286,11 +302,25 @@ ontology
 				["at0036"] = <
 					text = <"Sequenzierungs- oder Analysegerät">
 					description = <"Zur Dokumentation von Geräten und Methoden, die zur Sequenzierung oder Ergebnisauswertung genutzt werden.">
-					comment = <"e.g.: Sequencing device, alignment method, variant caller  ">
+					comment = <"z.B. Sequenierungsgerät, Alignmentmethode, Variant caller.">
 				>
 				["at0037"] = <
 					text = <"Kommentar">
 					description = <"Kommentar zum Sequenzierungsassay, der nicht in anderen Feldern erfasst wurde.">
+				>
+				["at0038"] = <
+					text = <"Referenzgenom">
+					description = <"Strukturierte Details zur spezifischen Version der human sequence assembly, die für die Annotation verwendet wird.">
+					comment = <"Beispiel: 'GCF_000001405.38'.
+
+Source name: 'NCBI'.
+Accession number: 'GCF_000001405'.
+Version number: 'GCF_000001405.38'.
+URL: 'https://www.ncbi.nlm.nih.gov/assembly/GCF_000001405.38/'.">
+				>
+				["at0039"] = <
+					text = <"Bioinformatic analysis workflow">
+					description = <"Strukturierte Details zum bioinformatischen Analyseworkflow oder zum verwendeten Protokoll.">
 				>
 			>
 		>
@@ -298,7 +328,7 @@ ontology
 			items = <
 				["at0000"] = <
 					text = <"Sequencing assay">
-					description = <"To record details of the sequencing analysis including a list of all tested genes if panel sequencing was performed. ">
+					description = <"To record details of the sequencing analysis including a list of all tested genes if panel sequencing was performed.">
 				>
 				["at0001"] = <
 					text = <"Sequencing technology">
@@ -317,68 +347,64 @@ ontology
 					description = <"List of all tested genes, if panel sequencing was performed.">
 				>
 				["at0007"] = <
-					text = <"Gen symbol">
+					text = <"Gene symbol">
 					description = <"The official gene symbol approved by the HGNC, which is a short abbreviated form of the gene name.">
 				>
 				["at0008"] = <
-					text = <"Gen name">
+					text = <"Gene name">
 					description = <"The full gene name approved by the HGNC that convey the character or function of the gene.">
 				>
 				["at0010"] = <
 					text = <"NGS (hybrid-capture)">
-					description = <"*">
+					description = <"">
 				>
 				["at0011"] = <
 					text = <"NGS (amplicon)">
-					description = <"*">
+					description = <"">
 				>
 				["at0012"] = <
 					text = <"Genome sequencing">
-					description = <"*">
+					description = <"">
 				>
 				["at0013"] = <
 					text = <"Array-CGH">
-					description = <"*">
+					description = <"">
 				>
 				["at0014"] = <
 					text = <"MLPA">
-					description = <"*">
+					description = <"">
 				>
 				["at0015"] = <
 					text = <"Sanger sequencing">
-					description = <"*">
+					description = <"">
 				>
 				["at0016"] = <
 					text = <"Fragment analysis">
-					description = <"*">
+					description = <"">
 				>
 				["at0017"] = <
 					text = <"Methylation assay">
-					description = <"*">
+					description = <"">
 				>
 				["at0018"] = <
 					text = <"Miscellaneous">
-					description = <"*">
-				>
-				["at0020"] = <
-					text = <"Tumor cell percentage">
-					description = <"To record the tumor cell content in percent.">
+					description = <"">
 				>
 				["at0021"] = <
 					text = <"Oncomine Comprehensive Panel V3">
-					description = <"*">
+					description = <"">
 				>
 				["at0022"] = <
 					text = <"DNA">
-					description = <"*">
+					description = <"">
 				>
 				["at0023"] = <
 					text = <"RNA">
-					description = <"*">
+					description = <"">
 				>
 				["at0024"] = <
 					text = <"cf-DNA">
-					description = <"*">
+					description = <"">
 				>
 				["at0025"] = <
 					text = <"Gene reference sequence">
@@ -410,12 +436,161 @@ ontology
 				>
 				["at0036"] = <
 					text = <"Sequencing or analysis device">
-					description = <"Used to specify devices and tools used for the sequencing analysis or result annotation. ">
-					comment = <"e.g. Sequencing device, alignment method, variant caller">
+					description = <"Used to specify devices and tools used for the sequencing analysis or result annotation.">
+					comment = <"e.g. Sequencing device, alignment method, variant caller.">
 				>
 				["at0037"] = <
 					text = <"Comment">
 					description = <"Comment on the sequencing assay that was not captured in other fields.">
+				>
+				["at0038"] = <
+					text = <"Reference genome">
+					description = <"Structured details about the specific version of the human sequence assembly used for annotation.">
+					comment = <"For example: 'GCF_000001405.38'.
+
+Source name: 'NCBI'.
+Accession number: 'GCF_000001405'.
+Version number: 'GCF_000001405.38'.
+URL: 'https://www.ncbi.nlm.nih.gov/assembly/GCF_000001405.38/'.">
+				>
+				["at0039"] = <
+					text = <"Bioinformatic analysis workflow">
+					description = <"Structured details about the bioinformatic analysis workflow or the protocol that is used.">
+				>
+			>
+		>
+		["nb"] = <
+			items = <
+				["at0000"] = <
+					text = <"Gensekvensanalyse/genanalyse">
+					description = <"For å beskrive detaljene i den utførte gensekvensanalyse / genanalyse, inkludert en liste over alle testede gener, hvis genpaneltesting ble utført.">
+				>
+				["at0001"] = <
+					text = <"Gensekvensanalysemetode / Gentestmetode / sekvenseringsmetode">
+					description = <"Teknologi brukt til gensekvensanalysen.">
+				>
+				["at0002"] = <
+					text = <"Navn på Kit">
+					description = <"Navnet på kitet som ble brukt til eksperimentet.">
+				>
+				["at0003"] = <
+					text = <"Nukleinsyre">
+					description = <"Type nukleinsyre som er brukt til sekvensanalysen, f.eks. DNA, RNA eller cf-DNA.">
+				>
+				["at0006"] = <
+					text = <"Testede gener">
+					description = <"Liste over alle gener som ble testet hvis det ble utført en genpaneltest.">
+				>
+				["at0007"] = <
+					text = <"Gensymbol">
+					description = <"Det offisielle gensymbolet godkjent av HGNC, som er en kortform for gennavnet.">
+				>
+				["at0008"] = <
+					text = <"Gennavn">
+					description = <"Det fulle HGNC-godkjente gennamet som gjenspeiler karakteren eller funksjonen til genet.">
+				>
+				["at0010"] = <
+					text = <"NGS (hybridisering)">
+					description = <"">
+				>
+				["at0011"] = <
+					text = <"NGS (amplifisering)">
+					description = <"">
+				>
+				["at0012"] = <
+					text = <"Genomsekvensering">
+					description = <"">
+				>
+				["at0013"] = <
+					text = <"*Array-CGH / ACGH">
+					description = <"">
+				>
+				["at0014"] = <
+					text = <"MLPA">
+					description = <"">
+				>
+				["at0015"] = <
+					text = <"Sangersekvensering">
+					description = <"">
+				>
+				["at0016"] = <
+					text = <"*FISH?">
+					description = <"">
+				>
+				["at0017"] = <
+					text = <"Metylering analyse">
+					description = <"">
+				>
+				["at0018"] = <
+					text = <"Diverse">
+					description = <"">
+				>
+				["at0021"] = <
+					text = <"Oncomine Comprehensive Panel V3">
+					description = <"">
+				>
+				["at0022"] = <
+					text = <"DNA">
+					description = <"">
+				>
+				["at0023"] = <
+					text = <"RNA">
+					description = <"">
+				>
+				["at0024"] = <
+					text = <"cfDNA">
+					description = <"">
+				>
+				["at0025"] = <
+					text = <"Referansesekvens for genet">
+					description = <"Strukturerte detaljer om referansesekvensen til genet.">
+				>
+				["at0026"] = <
+					text = <"Tilleggsinformasjon">
+					description = <"Ytterligere informasjon som ikke er registrert andre steder.">
+				>
+				["at0030"] = <
+					text = <"Testet genregion">
+					description = <"Liste over alle de testede regionene hvis det ble utført en genpaneltest.">
+				>
+				["at0031"] = <
+					text = <"Kromosomal lokalisasjon">
+					description = <"Lokalisasjonen til kromosomet i den testede regionen.">
+				>
+				["at0032"] = <
+					text = <"Start">
+					description = <"Startposisjon for det testede området.">
+				>
+				["at0033"] = <
+					text = <"Slutt">
+					description = <"Sluttposisjonen til det testede området.">
+				>
+				["at0035"] = <
+					text = <"Referansesekvens for regionen">
+					description = <"Strukturerte detaljer om referansesekvensen til regionen.">
+				>
+				["at0036"] = <
+					text = <"Sekvensering eller analyse instrument">
+					description = <"Bruk for å spesifisere enheter og verktøy som brukes til sekvenseringsanalyse eller resultatkommentar.">
+					comment = <"For eksempel sekvensieringsinstrument, justeringsmetode, variant identifiserer (variant caller).">
+				>
+				["at0037"] = <
+					text = <"Kommentar">
+					description = <"Ytterligere fritekst om analyseresultatet som ikke fanges opp av andre elementer.">
+				>
+				["at0038"] = <
+					text = <"Referansegenom">
+					description = <"* Strukturerte detaljer om den spesifikke versjonen av XXXXXXXXX som er brukt for kommentar.">
+					comment = <"*For eksempel:
+
+Navn på kilde: 'NCBI'.
+Accession number: 'GCF_000001405'.
+Versjonsnummer: 'GCF_000001405.38'.
+URL: 'https://www.ncbi.nlm.nih.gov/assembly/GCF_000001405.38/'.">
+				>
+				["at0039"] = <
+					text = <"Bioinformatisk analyseprosess">
+					description = <"Strukturerte detaljer om den bioinformatiske analyseprosessen eller protokollen som er brukt.">
 				>
 			>
 		>
