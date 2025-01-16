@@ -1,0 +1,533 @@
+﻿archetype (adl_version=1.4; uid=1a296f82-89b1-4a68-a7f0-0228d521daa4)
+	openEHR-EHR-OBSERVATION.categorical_loudness_scaling.v0
+
+concept
+	[at0000]	-- Categorical loudness scaling
+language
+	original_language = <[ISO_639-1::en]>
+description
+	original_author = <
+		["name"] = <"Lena Schell-Majoor">
+		["organisation"] = <"University of Oldenburg, Cluster of Excellence Hearing4all">
+		["email"] = <"lena.schell-majoor@uni-oldenburg.de">
+		["date"] = <"2023-03-23">
+	>
+	details = <
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To record responses to loudness scaling tests and calculate respective individual loudness growth functions.">
+			use = <"Use to record responses to loudness scaling tests and calculate respective individual loudness growth functions with or without using hearing aids.">
+			keywords = <"hearing, audiology", ...>
+			misuse = <"Not to be used to record any other auditory assessment than categorical loudness scaling.
+Use the specific archetypes for these purposes.">
+			copyright = <"© openEHR Foundation, HiGHmed, Hearing4all">
+		>
+	>
+	lifecycle_state = <"in_development">
+	other_contributors = <"Mareike Buhl, Birger Kollmeier, Antje Wulff", ...>
+	other_details = <
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
+		["custodian_organisation"] = <"HiGHmed">
+		["references"] = <"Brand, T., & Hohmann, V. (2002). An adaptive procedure for categorical loudness scaling. The Journal of the Acoustical Society of America, 112(4), 1597-1604.
+
+Hellbrück, J., & Moser, L. M. (1986). Psychophysical measurements of inner ear processes with category scaling of loudness. ORL, 48(2), 135-136.">
+		["original_namespace"] = <"org.highmed">
+		["original_publisher"] = <"HiGHmed">
+		["custodian_namespace"] = <"org.highmed">
+		["MD5-CAM-1.0.1"] = <"558B6AE03CE5B398EB1DDBAD55678291">
+		["build_uid"] = <"f4ae852e-c5a7-4775-802d-47e58ca7a55a">
+		["revision"] = <"0.0.1-alpha">
+	>
+
+definition
+	OBSERVATION[at0000] matches {    -- Categorical loudness scaling
+		data matches {
+			HISTORY[at0001] matches {    -- History
+				events cardinality matches {1..*; unordered} matches {
+					EVENT[at0002] occurrences matches {0..*} matches {    -- Any event
+						data matches {
+							ITEM_TREE[at0003] matches {    -- Tree
+								items cardinality matches {0..*; unordered} matches {
+									CLUSTER[at0035] occurrences matches {0..*} matches {    -- Response
+										items cardinality matches {1..*; unordered} matches {
+											ELEMENT[at0110] matches {    -- Level
+												value matches {
+													C_DV_QUANTITY <
+														property = <[openehr::123]>
+														list = <
+															["1"] = <
+																units = <"dB[SPL]">
+																magnitude = <|-50.0..200.0|>
+																precision = <|0|>
+															>
+															["2"] = <
+																units = <"dB[SPL]{HL}">
+																magnitude = <|-50.0..200.0|>
+																precision = <|0|>
+															>
+														>
+													>
+												}
+											}
+											ELEMENT[at0111] matches {    -- Category
+												value matches {
+													C_DV_QUANTITY <
+														property = <[openehr::755]>
+														list = <
+															["1"] = <
+																units = <"[arb'U]{CU}">
+																magnitude = <|0.0..100.0|>
+																precision = <|0|>
+															>
+														>
+													>
+												}
+											}
+										}
+									}
+									CLUSTER[at0101] occurrences matches {0..1} matches {    -- Fitted parameters
+										items cardinality matches {1..*; unordered} matches {
+											ELEMENT[at0103] occurrences matches {1..*} matches {    -- Slope value
+												value matches {
+													C_DV_QUANTITY <
+														property = <[openehr::755]>
+														list = <
+															["1"] = <
+																units = <"[arb'U]{CU}/dB">
+																magnitude = <|0.0..100.0|>
+																precision = <|0|>
+															>
+														>
+													>
+												}
+											}
+											CLUSTER[at0136] occurrences matches {1..*} matches {    -- Level parameter
+												items cardinality matches {1..*; unordered} matches {
+													ELEMENT[at0137] matches {    -- Level
+														value matches {
+															C_DV_QUANTITY <
+																property = <[openehr::123]>
+																list = <
+																	["1"] = <
+																		units = <"dB[SPL]">
+																		magnitude = <|-50.0..200.0|>
+																		precision = <|0|>
+																	>
+																	["2"] = <
+																		units = <"dB[SPL]{HL}">
+																		magnitude = <|-50.0..200.0|>
+																		precision = <|0|>
+																	>
+																>
+															>
+														}
+													}
+													ELEMENT[at0138] matches {    -- Category
+														value matches {
+															C_DV_QUANTITY <
+																property = <[openehr::755]>
+																list = <
+																	["1"] = <
+																		units = <"[arb'U]{CU}">
+																		magnitude = <|0.0..100.0|>
+																		precision = <|0|>
+																	>
+																>
+															>
+														}
+													}
+												}
+											}
+											ELEMENT[at0139] occurrences matches {0..1} matches {    -- Name of fit
+												value matches {
+													DV_TEXT matches {*}
+												}
+											}
+											ELEMENT[at0140] occurrences matches {0..1} matches {    -- Additional description of fit
+												value matches {
+													DV_TEXT matches {*}
+												}
+											}
+										}
+									}
+									ELEMENT[at0133] occurrences matches {0..1} matches {    -- Comment
+										value matches {
+											DV_TEXT matches {*}
+										}
+									}
+								}
+							}
+						}
+						state matches {
+							ITEM_TREE[at0119] matches {    -- Item tree
+								items cardinality matches {0..*; unordered} matches {
+									CLUSTER[at0142] occurrences matches {0..2} matches {    -- Hearing device during test
+										items cardinality matches {1..*; unordered} matches {
+											allow_archetype CLUSTER[at0083] matches {    -- Hearing device
+												include
+													archetype_id/value matches {/openEHR-EHR-CLUSTER\.device\.v1/}
+											}
+											ELEMENT[at0143] matches {    -- Side of hearing device
+												value matches {
+													DV_CODED_TEXT matches {
+														defining_code matches {
+															[local::
+															at0145,    -- Left
+															at0146]    -- Right
+														}
+													}
+												}
+											}
+											ELEMENT[at0144] occurrences matches {0..1} matches {    -- Additional information
+												value matches {
+													DV_TEXT matches {*}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		protocol matches {
+			ITEM_TREE[at0060] matches {    -- Item tree
+				items cardinality matches {0..*; unordered} matches {
+					ELEMENT[at0027] matches {    -- Tested side
+						value matches {
+							DV_CODED_TEXT matches {
+								defining_code matches {
+									[local::
+									at0028,    -- Right ear
+									at0029,    -- Left ear
+									at0030]    -- Binaural
+								}
+							}
+						}
+					}
+					ELEMENT[at0095] occurrences matches {0..1} matches {    -- Scaling method
+						value matches {
+							DV_CODED_TEXT matches {
+								defining_code matches {
+									[local::
+									at0096,    -- Adaptive Categorical Loudness Scaling (ACALOS)
+									at0097]    -- Würzburger Hörfeldskalierung
+								}
+							}
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0128] occurrences matches {0..1} matches {    -- Presentation method
+						value matches {
+							DV_CODED_TEXT matches {
+								defining_code matches {
+									[local::
+									at0129,    -- Loudspeaker
+									at0130,    -- Insert earphone
+									at0131]    -- Headphone
+								}
+							}
+							DV_TEXT matches {*}
+						}
+					}
+					allow_archetype CLUSTER[at0082] occurrences matches {0..1} matches {    -- Presentation method details
+						include
+							archetype_id/value matches {/openEHR-EHR-CLUSTER\.device(-[a-zA-Z0-9_]+)*\.v1/}
+					}
+					ELEMENT[at0075] occurrences matches {0..1} matches {    -- Type of test stimulus
+						value matches {
+							DV_CODED_TEXT matches {
+								defining_code matches {
+									[local::
+									at0076,    -- Tone burst
+									at0077,    -- Click
+									at0078,    -- Warble tone
+									at0079,    -- Pure tone
+									at0080,    -- Narrowband noise
+									at0081,    -- Pulsed pure tone
+									at0127,    -- Broadband noise
+									at0135]    -- Natural sound
+								}
+							}
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0036] occurrences matches {0..1} matches {    -- Frequency of test stimulus
+						value matches {
+							C_DV_QUANTITY <
+								property = <[openehr::382]>
+								list = <
+									["1"] = <
+										units = <"Hz">
+										magnitude = <|0.0..30000.0|>
+										precision = <|0|>
+									>
+									["2"] = <
+										units = <"kHz">
+										magnitude = <|0.0..30.0|>
+										precision = <|3|>
+									>
+								>
+							>
+						}
+					}
+					ELEMENT[at0134] occurrences matches {0..1} matches {    -- Name of test stimulus
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0069] occurrences matches {0..1} matches {    -- Test environment
+						value matches {
+							DV_CODED_TEXT matches {
+								defining_code matches {
+									[local::
+									at0070,    -- Sound treated room
+									at0071,    -- Non-sound treated room
+									at0126]    -- Free-field
+								}
+							}
+							DV_TEXT matches {*}
+						}
+					}
+					allow_archetype CLUSTER[at0147] occurrences matches {0..*} matches {    -- Test environment details
+						include
+							archetype_id/value matches {/openEHR-EHR-CLUSTER\.device\.v1/}
+					}
+					allow_archetype CLUSTER[at0061] occurrences matches {0..1} matches {    -- Extension
+						include
+							archetype_id/value matches {/.*/}
+					}
+				}
+			}
+		}
+	}
+
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"Categorical loudness scaling">
+					description = <"Psychophysical measurement describing suprathreshold loudness perception.">
+				>
+				["at0001"] = <
+					text = <"History">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Any event">
+					description = <"Default, unspecified point in time or interval event which may be explicitly defined in a template or at run-time.">
+				>
+				["at0003"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0027"] = <
+					text = <"Tested side">
+					description = <"Identification of the ear(s) to which the test stimulus is being presented.">
+				>
+				["at0028"] = <
+					text = <"Right ear">
+					description = <"The test stimuli were presented to the right ear only.">
+				>
+				["at0029"] = <
+					text = <"Left ear">
+					description = <"The test stimuli were presented to the left ear only.">
+				>
+				["at0030"] = <
+					text = <"Binaural">
+					description = <"The test stimuli were presented to both ears simultaneously in a soundfield.">
+				>
+				["at0035"] = <
+					text = <"Response">
+					description = <"The reported loudness category for a given stimulus level.">
+				>
+				["at0036"] = <
+					text = <"Frequency of test stimulus">
+					description = <"Frequency of stimulus tested if applicable.">
+					comment = <"Needs to correspond to 'Type of test stimulus', for example frequency for pure tones or as a center frequency for narrowband noises.">
+				>
+				["at0060"] = <
+					text = <"Item tree">
+					description = <"@ internal @">
+				>
+				["at0061"] = <
+					text = <"Extension">
+					description = <"Additional information required to extend the model with local content or to align with other reference models or formalisms.">
+					comment = <"For example: local information requirements; or additional metadata to align with FHIR.">
+				>
+				["at0069"] = <
+					text = <"Test environment">
+					description = <"The environment in which the audiometric test is administered.">
+					comment = <"This data element is commonly used in industry hearing programs.">
+				>
+				["at0070"] = <
+					text = <"Sound treated room">
+					description = <"Test environment that has been treated acoustically.">
+				>
+				["at0071"] = <
+					text = <"Non-sound treated room">
+					description = <"Test environment that has not been treated acoustically.">
+				>
+				["at0075"] = <
+					text = <"Type of test stimulus">
+					description = <"Identification of the stimulus used in the categorical loudness scaling procedure.">
+					comment = <"If the type of stimulus is broadband, use 'Name of test stimulus' for further specification.
+If the type of noise is a tone or a narrowband noise, use 'Frequency of test stimulus' for further specification.">
+				>
+				["at0076"] = <
+					text = <"Tone burst">
+					description = <"The test stimulus is a tone burst.">
+				>
+				["at0077"] = <
+					text = <"Click">
+					description = <"The test stimulus is a click.">
+				>
+				["at0078"] = <
+					text = <"Warble tone">
+					description = <"The test stimulus is a frequency modulated tone.">
+				>
+				["at0079"] = <
+					text = <"Pure tone">
+					description = <"The test stimulus is a pure tone.">
+				>
+				["at0080"] = <
+					text = <"Narrowband noise">
+					description = <"The test stimulus is a narrow band noise centred on the specified frequency.">
+				>
+				["at0081"] = <
+					text = <"Pulsed pure tone">
+					description = <"The test stimulus is a pulsed pure tone.">
+				>
+				["at0082"] = <
+					text = <"Presentation method details">
+					description = <"Details of device used to present test stimulus as specified in 'Presentation method'.">
+					comment = <"For example type of headphone or speaker.">
+				>
+				["at0083"] = <
+					text = <"Hearing device">
+					description = <"Details of the hearing device used.">
+					comment = <"For example: hearing aid or cochlea implant as type of device.">
+				>
+				["at0095"] = <
+					text = <"Scaling method">
+					description = <"Choice of scaling method.">
+				>
+				["at0096"] = <
+					text = <"Adaptive Categorical Loudness Scaling (ACALOS)">
+					description = <"Method by Brand & Hohmann 2002.">
+				>
+				["at0097"] = <
+					text = <"Würzburger Hörfeldskalierung">
+					description = <"Method by Hellbrück & Moser 1985.">
+				>
+				["at0101"] = <
+					text = <"Fitted parameters">
+					description = <"The reported loudness category for a given stimulus level.">
+				>
+				["at0103"] = <
+					text = <"Slope value">
+					description = <"Slope values for lower and upper section of fitted loudness growth function.">
+				>
+				["at0110"] = <
+					text = <"Level">
+					description = <"The level of the stimulus.">
+				>
+				["at0111"] = <
+					text = <"Category">
+					description = <"The reported loudness category for a given stimulus level.">
+				>
+				["at0119"] = <
+					text = <"Item tree">
+					description = <"@ internal @">
+				>
+				["at0126"] = <
+					text = <"Free-field">
+					description = <"Room with free-field characteristics.">
+				>
+				["at0127"] = <
+					text = <"Broadband noise">
+					description = <"The test stimulus is a broad band noise.">
+				>
+				["at0128"] = <
+					text = <"Presentation method">
+					description = <"The method used to present the test stimulus.">
+				>
+				["at0129"] = <
+					text = <"Loudspeaker">
+					description = <"The stimulus is presented via a loudspeaker located at least one metre away from the subject.">
+				>
+				["at0130"] = <
+					text = <"Insert earphone">
+					description = <"The stimulus is presented via insert earphones.">
+				>
+				["at0131"] = <
+					text = <"Headphone">
+					description = <"The stimulus is presented via external headphones - either circumaural or supraaural.">
+				>
+				["at0133"] = <
+					text = <"Comment">
+					description = <"Additional narrative about the measurement of categorical loudness scaling not captured in other fields.">
+				>
+				["at0134"] = <
+					text = <"Name of test stimulus">
+					description = <"Further specification of test stimulus if applicable.">
+					comment = <"Needs to correspond to 'Type of test stimulus'. For example free text description or specific name like IFNoise or Icra1.">
+				>
+				["at0135"] = <
+					text = <"Natural sound">
+					description = <"The test stimulus is a natural/recorded sound.">
+				>
+				["at0136"] = <
+					text = <"Level parameter">
+					description = <"Combination of level and category of fitted loudness growth function, e.g. levels for 2.5, 25 and 50 CU.">
+					comment = <"Number of points should allow to reproduce the fitted loudness growth function.">
+				>
+				["at0137"] = <
+					text = <"Level">
+					description = <"The level of the stimulus for the corresponding CU value of fitted loudness growth function.">
+				>
+				["at0138"] = <
+					text = <"Category">
+					description = <"The  loudness category for a given stimulus level of the fitted loudness growth function.">
+				>
+				["at0139"] = <
+					text = <"Name of fit">
+					description = <"Name of the applied procedure to fit the loudness function to the data. Include a literature reference if applicable.">
+				>
+				["at0140"] = <
+					text = <"Additional description of fit">
+					description = <"Add any additional information to describe the fit, e.g. the equation of the function with fitted parameters.">
+				>
+				["at0142"] = <
+					text = <"Hearing device during test">
+					description = <"">
+				>
+				["at0143"] = <
+					text = <"Side of hearing device">
+					description = <"Identification of the side where the hearing device is worn during the test.">
+				>
+				["at0144"] = <
+					text = <"Additional information">
+					description = <"Additional information about the hearing device that is not captured in \"Hearing device\" or \"Side of hearing device\".">
+					comment = <"For example information about hearing aid settings.">
+				>
+				["at0145"] = <
+					text = <"Left">
+					description = <"The hearing device is worn at the left side.">
+				>
+				["at0146"] = <
+					text = <"Right">
+					description = <"The hearing device is worn at the right side.">
+				>
+				["at0147"] = <
+					text = <"Test environment details">
+					description = <"Additional details of 'Test environment'.">
+					comment = <"For example specific audiometric booth or a free text description treatment.">
+				>
+			>
+		>
+	>
