@@ -1,0 +1,277 @@
+﻿archetype (adl_version=1.4; uid=eede47de-8deb-4e0e-b226-a8e9eee360ab)
+	openEHR-EHR-OBSERVATION.adverse_reaction_screening.v0
+
+concept
+	[at0000]	-- Adverse reaction screening questionnaire
+language
+	original_language = <[ISO_639-1::en]>
+description
+	original_author = <
+		["name"] = <"Heather Leslie">
+		["organisation"] = <"Atomica Informatics">
+		["email"] = <"heather.leslie@atomicainformatics.com">
+		["date"] = <"2023-06-26">
+	>
+	details = <
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To create a framework for recording answers to pre-defined screening questions about adverse reactions.">
+			use = <"Use to create a framework for recording answers to pre-defined screening questions about past adverse reactions. 
+
+This archeype has deliberately been loosely modelled to be inclusive of the broadest range of adverse reactions, including but not limited to allergies, sensitivities, intolerances and side effects which warrant avoiding exposure to the identified substance.
+
+Common use cases include, but are not limited to:
+- Systematic questioning in any consultation, for example:
+--- Allergy to penicilin? Yes, No, Unknown.
+--- Reaction to sticking plasters? Yes, No, Unknown.
+
+The semantics of this archetype are intentionally loose, and querying this archetype would normally only be useful or safe within the context of each specific template. In a template, each data element would usually be renamed to the specific question asked. Where value sets have been proposed for common use cases, these can be adapted for local use by using the DV_TEXT or the DV_BOOLEAN datatypes choice to match each specific use case.
+
+The EVENT structure from the reference model can be used to specify whether the questions relate to point in time or over a period of time. Use a separate instance of this archetype to distinguish between a questionnaire recording information about a procedure that has been performed at any time in the past and information about a procedure performed within a specified time interval - for example the difference between \"Do you have influenza?\" compared to \"Have you had influenza in the past 4 weeks?\"
+
+The source of the information in a questionnaire response may vary in different contexts but can be specifically identified using the 'Information provider' element in the Reference Model.
+
+This archetype has been designed to be used as a screening tool or to record simple questionnaire-format data for use in situations such as a disease registry. If the screening questionnaire identifies the presence of a adverse reaction, it is recommended that clinical system record and persist the specific details about the adverse reaction (such as the date of clinical recognition) using the EVALUATION.adverse_reaction_risk archetype.">
+			keywords = <"Condition, state, illness, syndrome, questionnaire, screening, issue", ...>
+			misuse = <"Not to be used to record details about the presence or absence of a adverse reaction, outside of a screening context. Use EVALUATION.problem_diagnosis or EVALUATION.exclusion_specific for these purposes.
+
+Not to be used to to create a framework for recording answers to pre-defined screening questions about procedures that has been carried out in the past. Use the OBSERVATION.procedure_screening for this purpose.
+
+Not to be used to to create a framework for recording answers to pre-defined screening questions about adverse reactions, use an appropriate archetype for this purpose.
+
+Not to be used to record details about a simple selection list where a question may be recorded as either \"present\" or \"indeterminate\". Use OBSERVATION.selection_list for this purpose.">
+			copyright = <"© openEHR Foundation">
+		>
+	>
+	lifecycle_state = <"in_development">
+	other_contributors = <>
+	other_details = <
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
+		["custodian_organisation"] = <"openEHR Foundation">
+		["original_namespace"] = <"org.openehr">
+		["original_publisher"] = <"openEHR Foundation">
+		["custodian_namespace"] = <"org.openehr">
+		["MD5-CAM-1.0.1"] = <"2360217D920C86E2D6A4CB4ACECAD6D0">
+		["build_uid"] = <"e96b3bab-6857-467d-8de4-8b8b95d397e4">
+		["ip_acknowledgements"] = <"This artefact includes content from SNOMED Clinical Terms® (SNOMED CT®) which is copyrighted material of the International Health Terminology Standards Development Organisation (IHTSDO). Where an implementation of this artefact makes use of SNOMED CT content, the implementer must have the appropriate SNOMED CT Affiliate license - for more information contact http://www.snomed.org/snomed-ct/get-snomedct or info@snomed.org.">
+		["revision"] = <"0.0.1-alpha">
+	>
+
+definition
+	OBSERVATION[at0000] matches {    -- Adverse reaction screening questionnaire
+		data matches {
+			HISTORY[at0001] matches {    -- History
+				events cardinality matches {0..*; unordered} matches {
+					EVENT[at0002] occurrences matches {0..*} matches {    -- Any event
+						data matches {
+							ITEM_TREE[at0003] matches {    -- Tree
+								items cardinality matches {0..*; unordered} matches {
+									ELEMENT[at0034] occurrences matches {0..1} matches {    -- Screening purpose
+										value matches {
+											DV_TEXT matches {*}
+										}
+									}
+									ELEMENT[at0028] occurrences matches {0..*} matches {    -- Any adverse reactions?
+										value matches {
+											DV_CODED_TEXT matches {
+												defining_code matches {
+													[local::
+													at0031,    -- Yes
+													at0032,    -- No
+													at0033]    -- Unknown
+												}
+											}
+											DV_TEXT matches {*}
+											DV_BOOLEAN matches {*}
+										}
+									}
+									ELEMENT[at0043] occurrences matches {0..1} matches {    -- Description
+										value matches {
+											DV_TEXT matches {*}
+										}
+									}
+									CLUSTER[at0022] occurrences matches {0..*} matches {    -- Specific adverse reaction
+										items cardinality matches {1..*; unordered} matches {
+											ELEMENT[at0004] matches {    -- Substance name
+												value matches {
+													DV_TEXT matches {*}
+												}
+											}
+											ELEMENT[at0005] occurrences matches {0..1} matches {    -- Presence?
+												value matches {
+													DV_CODED_TEXT matches {
+														defining_code matches {
+															[local::
+															at0023,    -- Yes
+															at0024,    -- No
+															at0027]    -- Unknown
+														}
+													}
+													DV_TEXT matches {*}
+													DV_BOOLEAN matches {*}
+												}
+											}
+											ELEMENT[at0040] occurrences matches {0..*} matches {    -- Onset
+												value matches {
+													DV_TEXT matches {*}
+													DV_INTERVAL<DV_DURATION> matches {*}
+													DV_DURATION matches {*}
+													DV_DATE_TIME matches {*}
+													DV_INTERVAL<DV_DATE_TIME> matches {*}
+												}
+											}
+											allow_archetype CLUSTER[at0039] occurrences matches {0..*} matches {    -- Additional details
+												include
+													archetype_id/value matches {/openEHR-EHR-CLUSTER\.organisation\.v1/}
+											}
+											ELEMENT[at0025] occurrences matches {0..1} matches {    -- Comment
+												value matches {
+													DV_TEXT matches {*}
+												}
+											}
+										}
+									}
+									allow_archetype CLUSTER[at0042] occurrences matches {0..*} matches {    -- Additional details
+										include
+											archetype_id/value matches {/.*/}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		protocol matches {
+			ITEM_TREE[at0007] matches {    -- Item tree
+				items cardinality matches {0..*; unordered} matches {
+					allow_archetype CLUSTER[at0021] occurrences matches {0..*} matches {    -- Extension
+						include
+							archetype_id/value matches {/.*/}
+					}
+				}
+			}
+		}
+	}
+
+
+ontology
+	terminologies_available = <"SNOMED-CT", ...>
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"Adverse reaction screening questionnaire">
+					description = <"Series of questions and associated answers used to screen for adverse reactions.">
+					comment = <"The answers may be self-reported.">
+				>
+				["at0001"] = <
+					text = <"History">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Any event">
+					description = <"Default, unspecified point in time or interval event which may be explicitly defined in a template or at run-time.">
+				>
+				["at0003"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0004"] = <
+					text = <"Substance name">
+					description = <"Identification of an adverse reaction, or grouping of adverse reactions, by name.">
+					comment = <"Coding of the 'Adverse reaction name' with a terminology is preferred, where possible.">
+				>
+				["at0005"] = <
+					text = <"Presence?">
+					description = <"Is there a history of the specific adverse reaction related to the screening purpose?">
+					comment = <"In a template, the data element would usually be renamed to the specific question asked. The proposed value set can be adapted for local use by using the DV_TEXT or the DV_BOOLEAN datatypes choice to match each specific use case.">
+				>
+				["at0007"] = <
+					text = <"Item tree">
+					description = <"@ internal @">
+				>
+				["at0021"] = <
+					text = <"Extension">
+					description = <"Additional information required to extend the model with local content or to align with other reference models or formalisms.">
+					comment = <"For example: local information requirements; or additional metadata to align with FHIR.">
+				>
+				["at0022"] = <
+					text = <"Specific adverse reaction">
+					description = <"Details about a specific adverse reaction or grouping of adverse reactions to an identified substance, relevant for the screening purpose.">
+				>
+				["at0023"] = <
+					text = <"Yes">
+					description = <"">
+				>
+				["at0024"] = <
+					text = <"No">
+					description = <"">
+				>
+				["at0025"] = <
+					text = <"Comment">
+					description = <"Additional narrative about the specific adverse reaction question, not captured in other fields.">
+				>
+				["at0027"] = <
+					text = <"Unknown">
+					description = <"">
+				>
+				["at0028"] = <
+					text = <"Any adverse reactions?">
+					description = <"Is there a history of any adverse reactions relevant for the screening purpose?">
+					comment = <"In a template, the data element would usually be renamed to the specific question asked. The proposed value set can be adapted for local use by using the DV_TEXT or the DV_BOOLEAN datatypes choice to match each specific use case.">
+				>
+				["at0031"] = <
+					text = <"Yes">
+					description = <"">
+				>
+				["at0032"] = <
+					text = <"No">
+					description = <"">
+				>
+				["at0033"] = <
+					text = <"Unknown">
+					description = <"">
+				>
+				["at0034"] = <
+					text = <"Screening purpose">
+					description = <"The context or reason for screening.">
+					comment = <"This data element is intended to provide collection context for the question/answer groups when queried at a later date. It is not expected that this data element will be exposed to the individual, but only stored in data.
+For example: pre-admission screening or the name of the actual questionnaire.">
+				>
+				["at0039"] = <
+					text = <"Additional details">
+					description = <"Structured details or questions about the specific adverse reaction.">
+					comment = <"For example; hospital where treated.">
+				>
+				["at0040"] = <
+					text = <"Onset">
+					description = <"Timing of the initial recognition of the adverse reaction.">
+					comment = <"The 'Onset' data element is deliberately loosely modelled to support the myriad of ways that it can be used in questionnaires to capture the onset or the timing of an adverse reaction. The specific and intended semantics can be further clarified in a template. 
+
+For example:
+Date/time for the date of diagnosis. Interval of date/time for a period of time eg. between 1940 and 1942. Text for descriptions like 'Immediately after the operation', or 'Up to one week ago', 'Up to two weeks ago', 'Three weeks ago'. Duration for the individual's age at the onset. Interval of Duration for the approximate age of the individual at the time of onset.">
+				>
+				["at0042"] = <
+					text = <"Additional details">
+					description = <"Structured details or questions about screening for adverse reactions.">
+				>
+				["at0043"] = <
+					text = <"Description">
+					description = <"Narrative description about the history of any adverse reactions relevant for the screening purpose.">
+				>
+			>
+		>
+	>
+	term_bindings = <
+		["SNOMED-CT"] = <
+			items = <
+				["at0023"] = <[SNOMED-CT::373066001]>
+				["at0024"] = <[SNOMED-CT::373067005]>
+				["at0031"] = <[SNOMED-CT::373066001]>
+				["at0032"] = <[SNOMED-CT::373067005]>
+				["at0027"] = <[SNOMED-CT::261665006]>
+				["at0033"] = <[SNOMED-CT::261665006]>
+			>
+		>
+	>
