@@ -107,8 +107,8 @@ Not to be used to record details related to the overall findings, context or tec
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"1F889FF8969DAC4F06D75F875EC8B756">
-		["build_uid"] = <"429dcb82-2d40-4344-a99f-0f2477bd07c7">
+		["MD5-CAM-1.0.1"] = <"B5ECCD7560C85A5F1ED4FEEB3388A128">
+		["build_uid"] = <"fee56c3f-54f5-4fb2-9f83-f1367d9d22a0">
 		["ip_acknowledgements"] = <"This artefact includes content from SNOMED Clinical Terms® (SNOMED CT®) which is copyrighted material of the International Health Terminology Standards Development Organisation (IHTSDO). Where an implementation of this artefact makes use of SNOMED CT content, the implementer must have the appropriate SNOMED CT Affiliate license - for more information contact https://www.snomed.org/snomed-ct/get-snomed or info@snomed.org.">
 		["revision"] = <"0.0.1-alpha">
 	>
@@ -130,10 +130,6 @@ definition
 					DV_TEXT matches {*}
 				}
 			}
-			allow_archetype CLUSTER[at0005] occurrences matches {0..*} matches {    -- Additional details
-				include
-					archetype_id/value matches {/openEHR-EHR-CLUSTER\.imaging_exam-lymph_node(-[a-zA-Z0-9_]+)*\.v0|openEHR-EHR-CLUSTER\.imaging_exam-lymph_node_group(-[a-zA-Z0-9_]+)*\.v0|openEHR-EHR-CLUSTER\.imaging_exam-anomaly(-[a-zA-Z0-9_]+)*\.v0/}
-			}
 			ELEMENT[at0006] occurrences matches {0..*} matches {    -- Impression
 				value matches {
 					DV_TEXT matches {*}
@@ -149,39 +145,14 @@ definition
 					DV_TEXT matches {*}
 				}
 			}
-			ELEMENT[at0037] occurrences matches {0..*} matches {    -- Dimension
-				value matches {
-					C_DV_QUANTITY <
-						property = <[openehr::122]>
-						list = <
-							["1"] = <
-								units = <"mm">
-								magnitude = <|>=0.0|>
-							>
-							["2"] = <
-								units = <"cm">
-								magnitude = <|>=0.0|>
-							>
-						>
-					>
-				}
-				name matches {
-					DV_CODED_TEXT matches {
-						defining_code matches {
-							[local::
-							at0026,    -- Length
-							at0027,    -- Width
-							at0028,    -- Height
-							at0029,    -- Depth
-							at0051]    -- Diameter
-						}
-					}
-				}
-			}
 			ELEMENT[at0038] occurrences matches {0..1} matches {    -- Shape
 				value matches {
 					DV_TEXT matches {*}
 				}
+			}
+			allow_archetype CLUSTER[at0052] occurrences matches {0..*} matches {    -- Physical properties
+				include
+					archetype_id/value matches {/.*/}
 			}
 			ELEMENT[at0039] occurrences matches {0..1} matches {    -- Texture
 				value matches {
@@ -225,6 +196,10 @@ definition
 					DV_TEXT matches {*}
 				}
 			}
+			allow_archetype CLUSTER[at0005] occurrences matches {0..*} matches {    -- Additional details
+				include
+					archetype_id/value matches {/openEHR-EHR-CLUSTER\.imaging_exam-lymph_node(-[a-zA-Z0-9_]+)*\.v0|openEHR-EHR-CLUSTER\.imaging_exam-lymph_node_group(-[a-zA-Z0-9_]+)*\.v0|openEHR-EHR-CLUSTER\.imaging_exam-anomaly(-[a-zA-Z0-9_]+)*\.v0/}
+			}
 		}
 	}
 
@@ -262,26 +237,6 @@ ontology
 				["at0044"] = <
 					text = <"Vascularisation description">
 					description = <"Description about the blood flow related to to the anomaly.">
-				>
-				["at0026"] = <
-					text = <"Length">
-					description = <"The measured length of the longest edge or aspect of the anomaly.">
-				>
-				["at0027"] = <
-					text = <"Width">
-					description = <"The measured length of widest aspect of the anomaly, usually perpendicular to the length or the measured length of the second side of two sides.">
-				>
-				["at0028"] = <
-					text = <"Height">
-					description = <"The measured length of the vertical aspect of the anomaly, from the base to the top.">
-				>
-				["at0029"] = <
-					text = <"Depth">
-					description = <"The measured length of the third aspect of the anomaly, usually perpendicular to the length and width or measurement of the vertical aspect of the anomaly from the surface to the base. May also known as thickness.">
-				>
-				["at0051"] = <
-					text = <"Diameter">
-					description = <"The measured length of the anomaly from edge to edge, usually of an approximately round or oval anomaly, passing through its centre.">
 				>
 				["at0002"] = <
 					text = <"Body site">
@@ -324,12 +279,6 @@ ontology
 					description = <"The type of anomaly.">
 					comment = <"Coding of the anomaly with an external terminology is preferred, where possible. For example, a cyst or nodule.">
 				>
-				["at0037"] = <
-					text = <"Dimension">
-					description = <"A measured dimension of the anomaly.">
-					comment = <"This data element has unlimited occurrences to allow for measurements in 2 or more axes.
-If there is no clear orientation of the anomaly, for example length vs width vs height, use multiple occurrences to allow recording of the length of 2 or more axes without any specific orientation, for example 3 x 4 x 5 mm.">
-				>
 				["at0038"] = <
 					text = <"Shape">
 					description = <"The contour or silhouette of the anomaly.">
@@ -343,6 +292,10 @@ If there is no clear orientation of the anomaly, for example length vs width vs 
 					text = <"Effect">
 					description = <"Description about the effect of the anomaly on surrounding structures.">
 					comment = <"For example: presence of an echo shadow behind the anomaly or that it is distorting adjacent structures.">
+				>
+				["at0052"] = <
+					text = <"Physical properties">
+					description = <"A physical properties of the anomaly.">
 				>
 			>
 		>
@@ -388,22 +341,6 @@ If there is no clear orientation of the anomaly, for example length vs width vs 
 					text = <"Fraværende">
 					description = <"Forkalkning er ikke tilstede.">
 				>
-				["at0026"] = <
-					text = <"Lengde">
-					description = <"Den målte lengden av aspektene eller den lengste kanten av anomalien.">
-				>
-				["at0027"] = <
-					text = <"Bredde">
-					description = <"Den målte lengden av det bredeste aspektet av anomalien, vanligvis vinkelrett til lengden, eller den målte lengden av den andre av to sider.">
-				>
-				["at0028"] = <
-					text = <"Høyde">
-					description = <"Den målte lengden av det vertikale aspektet av anomalien, fra basen til toppen.">
-				>
-				["at0029"] = <
-					text = <"Dybde">
-					description = <"Den målte lengden av det tredje aspektet av anomalien, vanligvis vinkelrett på lengden og bredden, eller målingen av det vertikale aspektet fra overflaten til basen. Kan også omtales som tykkelse.">
-				>
 				["at0032"] = <
 					text = <"Ubestemmelig">
 					description = <"Det er ikke mulig å avgjøre om forkalkning er tilstede eller fraværende.">
@@ -417,12 +354,6 @@ If there is no clear orientation of the anomaly, for example length vs width vs 
 					text = <"Type">
 					description = <"Type anomali.">
 					comment = <"Det bør om mulig benyttes ekstern terminologi for å kode anomalien. For eksempel en cyste eller en knute.">
-				>
-				["at0037"] = <
-					text = <"Dimensjon">
-					description = <"Den målte størrelsen av anomalien.">
-					comment = <"Dette dataelementet tillater et ubegrenset antall forekomster for å gjøre det mulig å registrere målinger i to eller flere akser.
-Hvis det ikke er noen klar orientering av anomalien, for eksempel lengde vs bredde vs høyde, bruk flere forekomster for å registrere to eller flere akser uten noen spesifikk orientering. For eksempel 3 x 4 x 5 mm.">
 				>
 				["at0038"] = <
 					text = <"Form">
@@ -455,9 +386,9 @@ Hvis det ikke er noen klar orientering av anomalien, for eksempel lengde vs bred
 					text = <"Beskrivelse av blodforsyning">
 					description = <"Beskrivelse av vaskulariseringen relatert til anomalien.">
 				>
-				["at0051"] = <
-					text = <"Diameter">
-					description = <"Den målte lengden av anomalien fra kant til kant gjennom sentrum, vanligvis på en tilnærmet rund eller oval anomali.">
+				["at0052"] = <
+					text = <"Fysiske egenskaper">
+					description = <"Fysiske egenskaper til en anomali.">
 				>
 			>
 		>
@@ -487,26 +418,6 @@ Hvis det ikke er noen klar orientering av anomalien, for eksempel lengde vs bred
 				["at0044"] = <
 					text = <"Beschreibung der Vaskularisierung.">
 					description = <"*Description about the blood flow related to to the anomaly. (en)">
-				>
-				["at0026"] = <
-					text = <"Länge">
-					description = <"Die gemessene Länge der längsten Kante oder Seite der Anomalie.">
-				>
-				["at0027"] = <
-					text = <"Breite">
-					description = <"Die gemessene Länge der breitesten Seite der Anomalie, normalerweise senkrecht zur Länge oder der gemessenen Länge der zweiten Seite bei zwei Seiten.">
-				>
-				["at0028"] = <
-					text = <"Höhe">
-					description = <"Die gemessene Länge der vertikalen Seite der Anomalie von der Basis bis zur Spitze.">
-				>
-				["at0029"] = <
-					text = <"Tiefe">
-					description = <"Die gemessene Länge des dritten Aspekts der Anomalie, normalerweise senkrecht zur Länge und Breite oder Messung der vertikalen Seite der Anomalie von der Oberfläche bis zur Basis. Auch bekannt als Dicke.">
-				>
-				["at0051"] = <
-					text = <"Durchmesser">
-					description = <"Gemessene Linie von Seite zu Seite einer annähernd runden oder ovalen Anomalie, die durch Mittelpunkt der Anomalie verläuft.">
 				>
 				["at0000"] = <
 					text = <"Bildgebende Untersuchung einer Anomalie">
@@ -554,12 +465,6 @@ Hvis det ikke er noen klar orientering av anomalien, for eksempel lengde vs bred
 					description = <"*The type of anomaly.(en)">
 					comment = <"*Coding of the anomaly with an external terminology is preferred, where possible. For example, a cyst or nodule.(en)">
 				>
-				["at0037"] = <
-					text = <"*Dimension(en)">
-					description = <"*A measured dimension of the anomaly.(en)">
-					comment = <"*This data element has unlimited occurrences to allow for measurements in 2 or more axes.
-If there is no clear orientation of the anomaly, for example length vs width vs height, use multiple occurrences to allow recording of the length of 2 or more axes without any specific orientation, for example 3 x 4 x 5 mm.(en)">
-				>
 				["at0038"] = <
 					text = <"*Shape(en)">
 					description = <"*The contour or silhouette of the anomaly.(en)">
@@ -573,6 +478,10 @@ If there is no clear orientation of the anomaly, for example length vs width vs 
 					text = <"*Effect">
 					description = <"*Description about the effect of the anomaly on surrounding structures.(en)">
 					comment = <"*For example: presence of an echo shadow behind the anomaly or that it is distorting adjacent structures.(en)">
+				>
+				["at0052"] = <
+					text = <"*Physical properties (en)">
+					description = <"*A physical properties of the anomaly. (en)">
 				>
 			>
 		>
