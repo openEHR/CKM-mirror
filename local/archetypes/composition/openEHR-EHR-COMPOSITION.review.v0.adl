@@ -6,6 +6,22 @@ concept
 language
 	original_language = <[ISO_639-1::en]>
 	translations = <
+		["pt-pt"] = <
+			language = <[ISO_639-1::pt-pt]>
+			author = <
+				["name"] = <"Hugo Silva">
+				["organisation"] = <"University of Minho">
+				["email"] = <"pg50416@uminho.pt">
+			>
+		>
+		["sv"] = <
+			language = <[ISO_639-1::sv]>
+			author = <
+				["name"] = <"Oscar Karlsson">
+				["organisation"] = <"Karolinska Universitetssjukhuset">
+				["email"] = <"oscar.karlsson@regionstockholm.se">
+			>
+		>
 		["nb"] = <
 			language = <[ISO_639-1::nb]>
 			author = <
@@ -24,6 +40,21 @@ description
 		["date"] = <"2012-12-11">
 	>
 	details = <
+		["pt-pt"] = <
+			language = <[ISO_639-1::pt-pt]>
+			purpose = <"Registar os detalhes de uma análise formal da situação clínica de um sujeito ou de qualquer aspeto específico dos seus cuidados clínicos.">
+			use = <"Utilize para registar os detalhes de uma análise formal da situação clínica de um sujeito ou de qualquer aspeto específico dos seus cuidados clínicos. Por exemplo: utilizar para registar avaliações de Medicamentos; ou revisões do Coordenador de Caso.">
+			keywords = <"análise", "avaliação", "medicina", "clínico", "caso", "ficheiro">
+			misuse = <"">
+		>
+		["sv"] = <
+			language = <[ISO_639-1::sv]>
+			purpose = <"Att dokumentera innehållet och detaljerna kring en formell granskning av en persons kliniska situation eller en specifik aspekt av den kliniska vården.">
+			use = <"Används för att dokumentera en formell granskning av en persons kliniska situation eller en specifik aspekt av den kliniska vården.
+Exempelvis för att dokumentera läkemedelsgranskningar eller vårdplaneringsmöten (t.ex. utförda av en patientansvarig sjuksköterska eller samordnare).">
+			keywords = <"granskning", "bedömning", "medicin", "klinisk", "patientfall">
+			misuse = <"">
+		>
 		["nb"] = <
 			language = <[ISO_639-1::nb]>
 			purpose = <"For å registrere detaljer om en formell vurdering av den kliniske situasjonen eller andre aspekter ved den klinisk omsorgen hos et individ.">
@@ -44,14 +75,14 @@ For eksempel: brukes for å registrere Gjennomgang av legemiddelliste; eller Koo
 	lifecycle_state = <"in_development">
 	other_contributors = <>
 	other_details = <
-		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/.">
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
 		["custodian_organisation"] = <"openEHR Foundation">
 		["current_contact"] = <"Heather Leslie, Atomica Informatics, heather.leslie@atomicainformatics.com">
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"A2631943AE15E5BAAE0662A49DAD80C0">
-		["build_uid"] = <"6867e943-e741-45a7-88cd-6f9a4662a77e">
+		["MD5-CAM-1.0.1"] = <"9E9AD0113DE83544546232ED3177269D">
+		["build_uid"] = <"7ff516cf-9afa-4c2e-8010-08912ecf6219">
 		["revision"] = <"0.0.1-alpha">
 	>
 
@@ -65,7 +96,18 @@ definition
 			}
 		}
 		context matches {
-			EVENT_CONTEXT[at0001] matches {*}    -- Event Context
+			EVENT_CONTEXT[at0001] matches {    -- Event Context
+				other_context matches {
+					ITEM_TREE[at0002] matches {    -- Item tree
+						items cardinality matches {0..*; unordered} matches {
+							allow_archetype CLUSTER[at0003] occurrences matches {0..*} matches {    -- Extension
+								include
+									archetype_id/value matches {/.*/}
+							}
+						}
+					}
+				}
+			}
 		}
 	}
 
@@ -80,7 +122,16 @@ ontology
 				>
 				["at0001"] = <
 					text = <"Event Context">
-					description = <"*">
+					description = <"">
+				>
+				["at0002"] = <
+					text = <"Item tree">
+					description = <"@ internal @">
+				>
+				["at0003"] = <
+					text = <"Extension">
+					description = <"Additional information required to extend the model with local content or to align with other reference models or formalisms.">
+					comment = <"For example: local information requirements; or additional metadata to align with FHIR.">
 				>
 			>
 		>
@@ -92,7 +143,58 @@ ontology
 				>
 				["at0001"] = <
 					text = <"Hendelseskontekst">
-					description = <"*">
+					description = <"">
+				>
+				["at0002"] = <
+					text = <"*Item tree (en)">
+					description = <"@ internal @">
+				>
+				["at0003"] = <
+					text = <"*Extension (en)">
+					description = <"*Additional information required to extend the model with local content or to align with other reference models or formalisms. (en)">
+					comment = <"*For example: local information requirements; or additional metadata to align with FHIR. (en)">
+				>
+			>
+		>
+		["pt-pt"] = <
+			items = <
+				["at0000"] = <
+					text = <"Análise">
+					description = <"Composição para registo dos detalhes de uma análise formal da situação clínica de um sujeito ou de qualquer aspeto específico dos seus cuidados clínicos.">
+				>
+				["at0001"] = <
+					text = <"Contexto do Evento">
+					description = <"">
+				>
+				["at0002"] = <
+					text = <"*Item tree (en)">
+					description = <"@ internal @">
+				>
+				["at0003"] = <
+					text = <"*Extension (en)">
+					description = <"*Additional information required to extend the model with local content or to align with other reference models or formalisms. (en)">
+					comment = <"*For example: local information requirements; or additional metadata to align with FHIR. (en)">
+				>
+			>
+		>
+		["sv"] = <
+			items = <
+				["at0000"] = <
+					text = <"Granskning">
+					description = <"Composition för dokumentation av en formell granskning av patientens kliniska situation eller någon specifik aspekt av den kliniska vården.">
+				>
+				["at0001"] = <
+					text = <"*Event Context(en)">
+					description = <"">
+				>
+				["at0002"] = <
+					text = <"*Item tree (en)">
+					description = <"@ internal @">
+				>
+				["at0003"] = <
+					text = <"*Extension (en)">
+					description = <"*Additional information required to extend the model with local content or to align with other reference models or formalisms. (en)">
+					comment = <"*For example: local information requirements; or additional metadata to align with FHIR. (en)">
 				>
 			>
 		>
