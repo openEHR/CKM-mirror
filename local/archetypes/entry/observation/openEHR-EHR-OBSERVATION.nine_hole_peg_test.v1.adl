@@ -1,4 +1,4 @@
-﻿archetype (adl_version=1.4)
+﻿archetype (adl_version=1.4; uid=08672c31-44ef-3bf6-9c97-b5d75d75d615)
 	openEHR-EHR-OBSERVATION.nine_hole_peg_test.v1
 
 concept
@@ -6,6 +6,14 @@ concept
 language
 	original_language = <[ISO_639-1::de]>
 	translations = <
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			author = <
+				["name"] = <"Michael Braun">
+				["organisation"] = <"University Medical Center Freiburg, Germany">
+				["email"] = <"braun@imbi.uni-freiburg.de">
+			>
+		>
 		["zh-cn"] = <
 			language = <[ISO_639-1::zh-cn]>
 			author = <
@@ -14,14 +22,6 @@ language
 				["email"] = <"linforest@163.com">
 			>
 			accreditation = <"What goes here?">
-		>
-		["en"] = <
-			language = <[ISO_639-1::en]>
-			author = <
-				["name"] = <"Michael Braun">
-				["organisation"] = <"University Medical Center Freiburg, Germany">
-				["email"] = <"braun@imbi.uni-freiburg.de">
-			>
 		>
 	>
 description
@@ -62,59 +62,66 @@ This archetype covers variations of the test. According to Mathiowetz et al. (19
 			copyright = <"© openEHR Foundation">
 		>
 	>
-	lifecycle_state = <"Published">
+	lifecycle_state = <"published">
 	other_contributors = <"Sebastian Bischoff, gfnmediber GmbH, Germany", "Martin Boeker, University Medical Center Freiburg, Germany", "Alexander Brandt, gfnmediber GmbH, Germany", "Michael Braun, University Medical Center Freiburg, Germany (Editor)", "Sebastian Garde, Ocean Informatics, Germany", "Heather Leslie, Ocean Informatics, Australia", "Sebastian Mansow-Model, gfnmediber GmbH, Germany", "Catalina Martínez-Costa, Medical University of Graz, Austria", "Vyacheslav Mavrin, JSC Comsoft, Russia", "Ian McNicoll, Ocean Informatics, United Kingdom (Editor)">
 	other_details = <
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
+		["custodian_organisation"] = <"openEHR Foundation">
 		["references"] = <"Fischer JS, Jak AJ, Kniker JE, Rudick RA, Cutter G. Multiple Sclerosis Functional Composite (MSFC), Administration and Scoring Manual: National Multiple Sclerosis Society; 2001.
 Mathiowetz V, Weber K, Kashman N, Volland G. Adult Norms For The Nine Hole Peg Test Of Finger Dexterity. The Occupational Therapy Journal of Research 1985;(5):24–38.">
-		["MD5-CAM-1.0.1"] = <"36D0FB8781326F7D2D963CBEE3015F7F">
+		["original_namespace"] = <"org.openehr">
+		["original_publisher"] = <"openEHR Foundation">
+		["custodian_namespace"] = <"org.openehr">
+		["MD5-CAM-1.0.1"] = <"4D9986C5192F92E814B3822242049A7D">
+		["build_uid"] = <"eb8d3692-5c4a-43de-9c7e-cde39ba9a490">
+		["revision"] = <"1.0.0">
 	>
 
 definition
-	OBSERVATION[at0000] matches {	-- Nine Hole Peg Test
+	OBSERVATION[at0000] matches {    -- Nine Hole Peg Test
 		data matches {
-			HISTORY[at0001] matches {	-- Event Series
+			HISTORY[at0001] matches {    -- Event Series
 				events cardinality matches {1..*; unordered} matches {
-					POINT_EVENT[at0074] occurrences matches {0..1} matches {	-- Dominant Hand - Trial 1
+					POINT_EVENT[at0074] occurrences matches {0..*} matches {    -- Dominante Hand - Test 1
 						data matches {
-							ITEM_TREE[at0003] matches {	-- Tree
+							ITEM_TREE[at0003] matches {    -- Baum
 								items cardinality matches {0..*; unordered} matches {
-									ELEMENT[at0035] occurrences matches {0..1} matches {	-- Interim Time
+									ELEMENT[at0035] occurrences matches {0..1} matches {    -- Zwischenzeit
 										value matches {
 											DV_DURATION matches {
 												value matches {PTS/|PT0S..PT1000S|}
 											}
 										}
 									}
-									ELEMENT[at0017] occurrences matches {0..1} matches {	-- Total Time
+									ELEMENT[at0017] occurrences matches {0..1} matches {    -- Gesamtzeit
 										value matches {
 											DV_DURATION matches {
 												value matches {PTS/|PT0S..PT1000S|}
 											}
 										}
 									}
-									ELEMENT[at0050] occurrences matches {0..1} matches {	-- Number Of Pegs Placed
+									ELEMENT[at0050] occurrences matches {0..1} matches {    -- Anzahl platzierter Stecker
 										value matches {
 											DV_COUNT matches {
 												magnitude matches {|0..9|}
 											}
 										}
 									}
-									ELEMENT[at0051] occurrences matches {0..1} matches {	-- Number Of Pegs Returned
+									ELEMENT[at0051] occurrences matches {0..1} matches {    -- Anzahl zurückgelegter Stecker
 										value matches {
 											DV_COUNT matches {
 												magnitude matches {|0..9|}
 											}
 										}
 									}
-									ELEMENT[at0080] occurrences matches {0..1} matches {	-- Trial Not Completed?
+									ELEMENT[at0080] occurrences matches {0..1} matches {    -- Testlauf nicht beendet?
 										value matches {
 											DV_BOOLEAN matches {
-												value matches {True}
+												value matches {true}
 											}
 										}
 									}
-									ELEMENT[at0081] occurrences matches {0..*} matches {	-- Reason For Non-completion
+									ELEMENT[at0081] occurrences matches {0..*} matches {    -- Grund für Nichtbeenden
 										value matches {
 											DV_TEXT matches {*}
 										}
@@ -123,9 +130,9 @@ definition
 							}
 						}
 						state matches {
-							ITEM_TREE[at0004] matches {	-- Tree
+							ITEM_TREE[at0004] matches {    -- Baum
 								items cardinality matches {0..*; unordered} matches {
-									ELEMENT[at0064] occurrences matches {0..*} matches {	-- Confounding Factors
+									ELEMENT[at0064] occurrences matches {0..*} matches {    -- Begleitumstände
 										value matches {
 											DV_TEXT matches {*}
 										}
@@ -134,77 +141,73 @@ definition
 							}
 						}
 					}
-					POINT_EVENT[at0075] occurrences matches {0..1} matches {	-- Dominant Hand - Trial 2
+					POINT_EVENT[at0075] occurrences matches {0..*} matches {    -- Dominante Hand - Test 2
 						data matches {
-							use_node ITEM_TREE /data[at0001]/events[at0074]/data[at0003]	-- /data[Event Series]/events[Dominant Hand - Trial 1]/data[Tree]
+							use_node ITEM_TREE /data[at0001]/events[at0074]/data[at0003]
 						}
 						state matches {
-							use_node ITEM_TREE /data[at0001]/events[at0074]/state[at0004]	-- /data[Event Series]/events[Dominant Hand - Trial 1]/state[Tree]
+							use_node ITEM_TREE /data[at0001]/events[at0074]/state[at0004]
 						}
 					}
-					POINT_EVENT[at0076] occurrences matches {0..1} matches {	-- Non-dominant Hand - Trial 1
+					POINT_EVENT[at0076] occurrences matches {0..*} matches {    -- Nichtdominante Hand - Test 1
 						data matches {
-							use_node ITEM_TREE /data[at0001]/events[at0074]/data[at0003]	-- /data[Event Series]/events[Dominant Hand - Trial 1]/data[Tree]
+							use_node ITEM_TREE /data[at0001]/events[at0074]/data[at0003]
 						}
 						state matches {
-							use_node ITEM_TREE /data[at0001]/events[at0074]/state[at0004]	-- /data[Event Series]/events[Dominant Hand - Trial 1]/state[Tree]
+							use_node ITEM_TREE /data[at0001]/events[at0074]/state[at0004]
 						}
 					}
-					POINT_EVENT[at0077] occurrences matches {0..1} matches {	-- Non-dominant Hand - Trial 2
+					POINT_EVENT[at0077] occurrences matches {0..*} matches {    -- Nichtdominante Hand - Test 2
 						data matches {
-							use_node ITEM_TREE /data[at0001]/events[at0074]/data[at0003]	-- /data[Event Series]/events[Dominant Hand - Trial 1]/data[Tree]
+							use_node ITEM_TREE /data[at0001]/events[at0074]/data[at0003]
 						}
 						state matches {
-							use_node ITEM_TREE /data[at0001]/events[at0074]/state[at0004]	-- /data[Event Series]/events[Dominant Hand - Trial 1]/state[Tree]
+							use_node ITEM_TREE /data[at0001]/events[at0074]/state[at0004]
 						}
 					}
 				}
 			}
 		}
 		protocol matches {
-			ITEM_TREE[at0008] matches {	-- Tree
+			ITEM_TREE[at0008] matches {    -- Baum
 				items cardinality matches {0..*; unordered} matches {
-					ELEMENT[at0083] occurrences matches {0..1} matches {	-- Dominant Hand
+					ELEMENT[at0083] occurrences matches {0..1} matches {    -- Dominante Hand
 						value matches {
 							DV_CODED_TEXT matches {
 								defining_code matches {
 									[local::
-									at0085, 	-- Right hand dominant
-									at0086]	-- Left hand dominant
+									at0085,    -- Rechte Hand dominant
+									at0086]    -- Linke Hand dominant
 								}
 							}
 						}
 					}
-					ELEMENT[at0013] occurrences matches {0..1} matches {	-- Practice Trial For Dominant Hand?
+					ELEMENT[at0013] occurrences matches {0..1} matches {    -- Probelauf dominante Hand?
+						value matches {
+							DV_BOOLEAN matches {*}
+						}
+					}
+					ELEMENT[at0082] occurrences matches {0..1} matches {    -- Probelauf nichtdominante Hand?
+						value matches {
+							DV_BOOLEAN matches {*}
+						}
+					}
+					ELEMENT[at0087] occurrences matches {0..1} matches {    -- Mehr als zwei Anläufe?
 						value matches {
 							DV_BOOLEAN matches {
-								value matches {True, False}
+								value matches {true}
 							}
 						}
 					}
-					ELEMENT[at0082] occurrences matches {0..1} matches {	-- Practice Trial For Non-dominant Hand?
-						value matches {
-							DV_BOOLEAN matches {
-								value matches {True, False}
-							}
-						}
-					}
-					ELEMENT[at0087] occurrences matches {0..1} matches {	-- More Than Two Attempts?
-						value matches {
-							DV_BOOLEAN matches {
-								value matches {True}
-							}
-						}
-					}
-					ELEMENT[at0088] occurrences matches {0..*} matches {	-- Reason For More Than Two Attempts
+					ELEMENT[at0088] occurrences matches {0..*} matches {    -- Grund für mehr als zwei Anläufe
 						value matches {
 							DV_TEXT matches {*}
 						}
 					}
-					ELEMENT[at0084] occurrences matches {0..1} matches {	-- Pegs Placed But Not Returned
+					ELEMENT[at0084] occurrences matches {0..1} matches {    -- Stecker platziert aber nicht zurückgelegt
 						value matches {
 							DV_BOOLEAN matches {
-								value matches {True}
+								value matches {true}
 							}
 						}
 					}
