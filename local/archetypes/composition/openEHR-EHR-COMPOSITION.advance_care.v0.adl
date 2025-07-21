@@ -39,13 +39,13 @@ Not to be used to carry archetypes that are related to care plans related to man
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"B08FF6569A530B3E5FC70322F07E93B4">
-		["build_uid"] = <"d7a7f022-0f34-467d-b6e7-9c97caac407b">
+		["MD5-CAM-1.0.1"] = <"25A207093B9E4A32A7F2A9463F5D434F">
+		["build_uid"] = <"6fb8d70b-2a61-4dca-957b-665b5cffaba6">
 		["revision"] = <"0.0.1-alpha">
 	>
 
 definition
-	COMPOSITION[at0000] matches {    -- Advance care plan
+	COMPOSITION[at0000] matches {    -- Advance care
 		category matches {
 			DV_CODED_TEXT[at0001] matches {    -- Coded text
 				defining_code matches {
@@ -54,7 +54,18 @@ definition
 			}
 		}
 		context matches {
-			EVENT_CONTEXT[at0002] matches {*}    -- Event Context
+			EVENT_CONTEXT[at0002] matches {    -- Event Context
+				other_context matches {
+					ITEM_TREE[at0003] matches {    -- Item tree
+						items cardinality matches {0..*; unordered} matches {
+							allow_archetype CLUSTER[at0004] occurrences matches {0..*} matches {    -- Extension
+								include
+									archetype_id/value matches {/.*/}
+							}
+						}
+					}
+				}
+			}
 		}
 	}
 
@@ -74,6 +85,15 @@ ontology
 				["at0002"] = <
 					text = <"Event Context">
 					description = <"">
+				>
+				["at0003"] = <
+					text = <"Item tree">
+					description = <"@ internal @">
+				>
+				["at0004"] = <
+					text = <"Extension">
+					description = <"Additional information required to extend the model with local content or to align with other reference models or formalisms.">
+					comment = <"For example: local information requirements; or additional metadata to align with FHIR.">
 				>
 			>
 		>
