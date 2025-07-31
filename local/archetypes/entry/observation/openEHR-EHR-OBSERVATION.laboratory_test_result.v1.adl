@@ -22,6 +22,17 @@ language
 				["email"] = <"linda.aulin@sll.se, linda.aulin@regionstockholm.se, asa.skagerhult@regionostergotland.se, linda.aulin-lundeqvist@regionstockholm.se">
 			>
 		>
+		["fi"] = <
+			language = <[ISO_639-1::fi]>
+			author = <
+				["name"] = <"Riikka Lahtela">
+				["organisation"] = <"Istekki">
+				["email"] = <"riikka.lahtela@istekki.fi">
+			>
+			other_details = <
+				["other_contributors"] = <"Henri Huttunen, UNA Oy, Finland; Heidi Koikkalainen, FreshEHR">
+			>
+		>
 		["nb"] = <
 			language = <[ISO_639-1::nb]>
 			author = <
@@ -157,6 +168,32 @@ Om laboratoriet ändrar analyser eller lägger till analyser som uppföljning ka
 			misuse = <"Bör inte användas för att lagra en obduktionsrapport eller rättsmedicinsk undersökningsrapport, även om analysresultat för vissa provmaterial som tagits vid en obduktion kan representeras i denna arketyp. För att skapa den verkliga obduktions- eller kriminaltekniska rapporten måste man använda specialiserade arketyper.
 
 Denna arketyp är lämplig för att representera allmänna laboratoriesvar men är inte avsedd för sammanfattande rapporter, där specialiserade arketyper bör användas istället.">
+		>
+		["fi"] = <
+			language = <[ISO_639-1::fi]>
+			purpose = <"*To record the result, including findings and the laboratory's interpretation, of an investigation performed on specimens collected from an individual or related to that individual.(en)">
+			use = <"*Use to record the result, including findings and the laboratory's interpretation, of an investigation performed on specimens collected from an individual or related to that individual. This is typically done in a laboratory, but may be done in other environments such as at the point of care.
+
+This archetype is intended to cover the result of a single ordered investigation where the specimen(s) are collected as a single procedure, and may include multiple analyte results or other components. Examples of this could include 'Full blood count', which would yield a separate analyte result for the count of each type of blood cell, or 'kidney biopsy non-neoplastic', which would yield findings from microscopy, immunohistochemistry and electron microscopy.
+
+This archetype has been designed to be a framework that will usually be extended with CLUSTER archetypes to enable appropriate recording of specific laboratory test result patterns. This includes, but is not limited to, tests for biochemistry, haematology, immunology and transfusion services etc and specific patterns for the unique requirements for microbiology and anatomical pathology. If the ordered tests or investigations do not commonly belong together in a named group or panel, each test result would normally be represented using separate instances of this archetype. There is, however, considerable variation in actual reporting/messaging practice and this archetype/related archetypes are designed to handle such variation.
+
+This archetype supports multiple approaches to recording of specimen, reflecting current practice which varies enormously. A Laboratory test result has a high degree of alignment to an HL7 FHIR Diagnostic Report resource.
+
+It is anticipated that one or more instances of this archetype, or archetype family, will be sent back to a requesting clinician within a laboratory report document comprising COMPOSITION.report_result archetype, or similar, and other relevant ENTRY archetypes.
+
+The recording of confounding factors may be inconsistent, often depending on the analysing laboratory and on clinical information sent by the requester. In the State section of the archetype there is a simple 'Confounding factors' data element that is optional and can be repeated as one way to record a variety of simple factors that need to be made explicit as they may influence interpretation of the results. If the confounding factors are more complex, it may be appropriate to create a local/shared CLUSTER archetype that can be nested in the 'Confounding factors details' SLOT. 
+Note 1: Known or required pre-conditions, such as 'fasting' or 'Day 1 of menstrual cycle', should be reported in the 'Sampling conditions' data element in the CLUSTER.specimen archetype, nested within this OBSERVATION archetype.
+Note 2: Known issues with specimen collection or handling, such as 'sample haemolysed' or 'prolonged use of tourniquet' should be reported within 'Specimen quality' in the CLUSTER.specimen archetype, nested within this OBSERVATION archetype.
+
+Where 'reflex tests' are performed by the laboratory, these may be handled as per US/FHIR guidance (see https://www.hl7.org/fhir/2015may/uslabreport-guide.html) or other local policy. For example, one of the following ...
+1. Record the reflex test results additional 'Test findings' within the same 'openEHR-EHR-OBSERVATION.laboratory_test_result'
+2. Record the reflex test results as 'Test findings' within a new 'openEHR-EHR-OBSERVATION.laboratory_test_result' but refer to the original lab test request via 'Test request details'.
+3. Record the reflex test results as 'Test findings' within a new 'openEHR-EHR-OBSERVATION.laboratory_test_result' but reference a new lab test request as well as the original lab test request via 'Test request details'.(en)">
+			keywords = <"*lab(en)", "*pathology(en)", "*biochemistry(en)", "*haematology(en)", "*microbiology(en)", "*immunology(en)", "*laboratory(en)", "*anatomical(en)", "*chemical(en)", "*clinical(en)", "*immunopathology(en)", "*cytology(en)", "*histopathology(en)", "*test(en)", "*biopsy(en)", "*specimen(en)", "*forensic(en)", "*genetic(en)", "*laboratory medicine(en)", "*results(en)", "*analysis(en)">
+			misuse = <"*Not to be used to record an Autopsy or a Forensic report, although tests on some specimens that are taken in such situations may be represented using this archetype. For these, additional or specialised archetypes will be required to represent the data.
+
+This archetype is suitable for representation of general laboratory test results, but not intended to cover full synoptic reports. For these, additional specialising archetypes are required to represent the data.(en)">
 		>
 		["nb"] = <
 			language = <[ISO_639-1::nb]>
@@ -390,9 +427,9 @@ Hl7 FHIR Diagnostic Report resource: HL7 fhir; Available from http://www.hl7.org
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"AB458098681E9505986ADFCEC7FEC742">
-		["build_uid"] = <"0dbb47f7-fb53-4622-9a90-7b91c3778c3b">
-		["revision"] = <"1.2.5">
+		["MD5-CAM-1.0.1"] = <"D3349E2FABD85E3B719F744107B6AEDF">
+		["build_uid"] = <"93315513-f363-43cb-92c0-7a2d1e804694">
+		["revision"] = <"1.2.6">
 	>
 
 definition
@@ -2778,6 +2815,211 @@ Sempre que sigui possible, és desitjable codificar amb una terminologia.">
 					text = <"Diagnòstic de prova estructurat">
 					description = <"Un diagnòstic estructurat o complex per a la prova de laboratori.">
 					comment = <"Per exemple: Diagnòstics anatomopatològics que consten de diversos eixos diferents, com ara la morfologia, l'etiologia i la funció.">
+				>
+			>
+		>
+		["fi"] = <
+			items = <
+				["at0000"] = <
+					text = <"Laboratoriokokeen tulos">
+					description = <"*The result, including findings and the laboratory's interpretation, of an investigation performed on specimens collected from an individual or related to that individual.(en)">
+				>
+				["at0001"] = <
+					text = <"Event Series">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Mikä tahansa tapahtuma">
+					description = <"*Default, unspecified point in time or interval event which may be explicitly defined in a template or at run-time.(en)">
+				>
+				["at0003"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0004"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0005"] = <
+					text = <"Tutkimusnimi">
+					description = <"*Name of the laboratory investigation performed on the specimen(s).(en)">
+					comment = <"*A test result may be for a single analyte, or a group of items, including panel tests. It is strongly recommended that 'Test name' be coded with a terminology, for example LOINC or SNOMED CT. For example: 'Glucose', 'Urea and Electrolytes', 'Swab', 'Cortisol (am)', 'Potassium in perspiration' or 'Melanoma histopathology'. The name may sometimes include specimen type and patient state, for example 'Fasting blood glucose' or include other information, as 'Potassium (PNA blood gas)'.(en)">
+				>
+				["at0017"] = <
+					text = <"*Receiving laboratory(en)">
+					description = <"*Details of the laboratory which received the request and has overall responsibility to manage reporting of the test, even if other labs perform specific aspects.(en)">
+					comment = <"*This slot is intended to carry details of the laboratory which received the request and has overall responsibility to manage reporting of the test, even if other labs perform specific aspects.
+
+The receiving laboratory may either perform the test or refer it to another laboratory. Where a different laboratory is responsible for performing the testing on specific analytes, it would be expected that these details would be carried in the 'Analyte result detail' SLOT within the CLUSTER.laboratory_test_analyte archetype.
+
+(en)">
+				>
+				["at0035"] = <
+					text = <"*Distribution list(en)">
+					description = <"*Details of additional clinicians or organisations who require a copy of the test result.(en)">
+					comment = <"*The 'Distribution list' is for information-only, and that the primary recipient of the report is the person intended to act on the information.(en)">
+				>
+				["at0037"] = <
+					text = <"*Partial(en)">
+					description = <"*This is a partial (e.g. initial, interim or preliminary) Test Result: data in the Test Result may be incomplete or unverified.(en)">
+				>
+				["at0038"] = <
+					text = <"*Final(en)">
+					description = <"*The Test result is complete and verified by an authorised person.(en)">
+				>
+				["at0040"] = <
+					text = <"*Amended(en)">
+					description = <"*The result has been modified subsequent to being Final, and is complete and verified by the responsible pathologist, and result data has been changed.(en)">
+				>
+				["at0057"] = <
+					text = <"*Conclusion(en)">
+					description = <"*Narrative description of the key findings.(en)">
+					comment = <"*For example: 'Pattern suggests significant renal impairment'. The content of the conclusion will vary, depending on the investigation performed. This conclusion should be aligned with the coded 'Test diagnosis'.(en)">
+				>
+				["at0062"] = <
+					text = <"*Requester order identifier(en)">
+					description = <"*The local identifier assigned by the requesting clinical system.(en)">
+					comment = <"*Equivalent to the HL7 Placer Order Identifier.(en)">
+				>
+				["at0063"] = <
+					text = <"*Receiver order identifier(en)">
+					description = <"*The local identifier assigned to the test order by the order filler, usually by the Laboratory Information System (LIS).(en)">
+					comment = <"*Assigning an identifier to a request by the Laboratory lnformation System (LIS) enables tracking progress of the request and enables linking results to requests. It also provides a reference to assist with enquiries and it is usually equivalent to the HL7 Filler Order Identifier.(en)">
+				>
+				["at0065"] = <
+					text = <"*Specimen detail(en)">
+					description = <"*Details about the physical substance that has been analysed.(en)">
+					comment = <"*If the specimen type is sufficiently specified with a code in the Test name, then this additional data is not required. Linking results to specific specimens may be recorded using 'Specimen identifier' elements in both the CLUSTER.specimen and the various results CLUSTER archetypes.(en)">
+				>
+				["at0068"] = <
+					text = <"*Laboratory internal identifier(en)">
+					description = <"*A local identifier assigned by the receiving Laboratory Information System (LIS) to track the test process.(en)">
+					comment = <"*This identifier is an internal tracking number assigned by the LIS, and it not intended to be the name of the test.(en)">
+				>
+				["at0073"] = <
+					text = <"*Overall test status(en)">
+					description = <"*The status of the laboratory test result as a whole.(en)">
+					comment = <"*The values have been specifically chosen to match those in the HL7 FHIR Diagnostic report, historically derived from HL7v2 practice. Other local codes/terms can be used via the Text 'choice'.
+
+This element is multiple occurrence to cater for the use cases where statuses for different aspects of the result have been split into several elements.(en)">
+				>
+				["at0074"] = <
+					text = <"*Cancelled(en)">
+					description = <"*The result is unavailable because the test was not started or not completed (also sometimes called 'aborted').(en)">
+				>
+				["at0075"] = <
+					text = <"*Overall test status timestamp(en)">
+					description = <"*The date and/or time that ‘Overall test status’ was issued.(en)">
+				>
+				["at0077"] = <
+					text = <"*Diagnostic service category(en)">
+					description = <"*The diagnostic service or discipline that is responsible for the laboratory test result.(en)">
+					comment = <"*This is intended to be a general categorisation and not to capture the organisational name of the laboratory. For example: anatomical pathology, immunology and transfusion medicine, medical microbiology, clinical pharmacology, medical genetics, medical biochemistry. Alternatively more granular sub categories or sub disciplines, such as endocrinology, haematology, and allergology services, may be used. This may assist clinicians in filtering between categories of results. Coding with a terminology is desirable, where possible.(en)">
+				>
+				["at0090"] = <
+					text = <"*Requester(en)">
+					description = <"*Details of the clinician or organisation requesting the laboratory test result.(en)">
+				>
+				["at0094"] = <
+					text = <"*Test request details(en)">
+					description = <"*Details about the test request.(en)">
+					comment = <"*In most situations there is one test request and a single corresponding test result, however this repeating cluster allows for the situation where there may be multiple test requests reported using a single test result.
+
+As an example: 'a clinician asks for blood glucose in one request and Urea/electrolytes in a second request, but the lab analyser does both and the lab wishes to report these together'.(en)">
+				>
+				["at0097"] = <
+					text = <"Tutkimustulos">
+					description = <"*Results of the test performed on the specimen(s).(en)">
+					comment = <"*This SLOT may carry an individual analyte, a group, panel or battery of multiple analytes, or a more complex and specific structure.(en)">
+				>
+				["at0098"] = <
+					text = <"*Test diagnosis(en)">
+					description = <"*Single word, phrase or brief description that represents the clinical meaning and significance of the laboratory test result.(en)">
+					comment = <"*For example: 'Severe hepatic impairment', 'Salmonella contamination'. Coding of the diagnosis with a terminology is strongly recommended, where possible. This diagnosis should be aligned with the narrative in the 'Conclusion'.(en)">
+				>
+				["at0100"] = <
+					text = <"*Clinical information provided(en)">
+					description = <"*Description of clinical information available at the time of interpretation of results.(en)">
+					comment = <"*This data element may include a link to the original clinical information provided in the test request.(en)">
+				>
+				["at0101"] = <
+					text = <"Kommentti">
+					description = <"*Additional narrative about the test result not captured in other fields.(en)">
+				>
+				["at0106"] = <
+					text = <"*Original test requested name(en)">
+					description = <"*Name of the original laboratory test requested.(en)">
+					comment = <"*This data element is to be used when the test requested differs from the test actually performed by the laboratory.(en)">
+				>
+				["at0107"] = <
+					text = <"*Registered(en)">
+					description = <"*The existence of the test is registered in the Laboratory Information System, but there is nothing yet available.(en)">
+				>
+				["at0110"] = <
+					text = <"*Testing details(en)">
+					description = <"*Structured details about the method of analysis, device or interpretation used.(en)">
+					comment = <"*For example: 'details of ELISA/nephelometry'.(en)">
+				>
+				["at0111"] = <
+					text = <"*Point-of-care test(en)">
+					description = <"*This indicates whether the test was performed directly at Point-of-Care (POCT) as opposed to a formal result from a laboratory or other service delivery organisation.(en)">
+					comment = <"*True if the test was performed directly at Point-of-Care (POCT).(en)">
+				>
+				["at0112"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0113"] = <
+					text = <"Haittaavat tekijät">
+					description = <"*Issues or circumstances that impact on the accurate interpretation of the measurement or test result.(en)">
+					comment = <"*'Confounding factors' should be reserved for uncontrolled/unplanned issues of patient state/physiology that might affect interpretation, for example 'recent exercise' or 'recent tobacco smoking'.
+
+Known or required preconditions, such as 'fasting' should be carried in the 'Sampling conditions' element within the CLUSTER.specimen archetype . In some cases preconditions are captured as part of the test name, for example 'Fasting blood glucose'.
+
+Known issues with specimen collection or handling, such as 'prolonged use of tourniquet' or 'sample haemolysed', should be carried in the 'Specimen quality' elements within CLUSTER.specimen archetype.
+
+Coding with a terminology is desirable, where possible.(en)">
+				>
+				["at0114"] = <
+					text = <"*Structured confounding factors(en)">
+					description = <"*Details of issues or circumstances that impact on the accurate interpretation of the measurement or test result.(en)">
+					comment = <"*For example: Last Normal Menstrual Period (LNMP).(en)">
+				>
+				["at0115"] = <
+					text = <"*Corrected(en)">
+					description = <"*The result has been modified subsequent to being Final, and is complete and verified by the responsible pathologist. This is a sub-category of 'Amended'.(en)">
+				>
+				["at0116"] = <
+					text = <"*Entered in error(en)">
+					description = <"*The Test Result has been withdrawn following previous Final release.(en)">
+				>
+				["at0117"] = <
+					text = <"*Extension(en)">
+					description = <"*Additional information required to capture local content or to align with other reference models/formalisms.(en)">
+					comment = <"*For example: local information requirements or additional metadata to align with FHIR or CIMI equivalents.(en)">
+				>
+				["at0118"] = <
+					text = <"*Multimedia representation(en)">
+					description = <"*Digital image, video or diagram representing the test result.(en)">
+					comment = <"*Multiple formats are allowed but they should represent equivalent clinical content.(en)">
+				>
+				["at0119"] = <
+					text = <"*Appended(en)">
+					description = <"*Subsequent to being final, the report has been modified by adding new content. The existing content is unchanged. This is a sub-category of 'Amended'.(en)">
+				>
+				["at0120"] = <
+					text = <"*Preliminary(en)">
+					description = <"*Verified early results are available, but not all results are final. This is a sub-category of 'Partial'.(en)">
+				>
+				["at0121"] = <
+					text = <"*Test method(en)">
+					description = <"*Description about the method used to perform the test.(en)">
+					comment = <"*Coding with a terminology is desirable, where possible.(en)">
+				>
+				["at0122"] = <
+					text = <"*Structured test diagnosis(en)">
+					description = <"*A structured or complex diagnosis for the laboratory test.(en)">
+					comment = <"*For example: Anatomical pathology diagnoses consisting of several different axes such as morphology, etiology and function.(en)">
 				>
 			>
 		>
