@@ -66,7 +66,7 @@ language
 			language = <[ISO_639-1::zh-cn]>
 			author = <
 				["name"] = <"Lin Zhang">
-				["organisation"] = <"N/A">
+				["organisation"] = <"Freelancer">
 				["email"] = <"linforest@163.com">
 			>
 			accreditation = <"N/A">
@@ -313,26 +313,32 @@ Questo archetipo è adatto per la rappresentazione dei risultati generali dei te
 		>
 		["zh-cn"] = <
 			language = <[ISO_639-1::zh-cn]>
-			purpose = <"用于记录针对组织和体液等标本所进行的病理学实验室检验项目的发现/所见和解释。这通常是由实验室来完成，但也可能会是在其他环境下完成的，如床旁。">
-			use = <"用于记录任何病理学实验室检验结果，包括作为某个组合型操作项目或手术的组成部分而进行的针对某种标本的某一检验项目所获得的结果。
+			purpose = <"旨在记录对于从个人身上所采集的标本或者与该个人相关的标本进行的检验结果，包括结果所见/发现和实验室的解释。">
+			use = <"旨在用于记录对于从个人身上所采集的标本或者与该个人相关的标本进行检验的结果，包括结果所见/发现和实验室的解释。通常会在实验室中完成此项工作，但也可能会在其他环境下完成，如床旁一线。
 
-可以采用模板或专用原始型来表达多种分析物的组套。
+本原始型旨在涵盖医嘱/申请所开立的单个检验项目的结果，其中采用的是单项操作所采集的标本（一份或多份），并且还可能包括多项分析物结果或若干其他的成分/组成部分。此类的例子可能包括“全血细胞计数”，其中会分别产生关于每种类型血细胞计数的，单独的分析物结果；又如“非肿瘤肾活检”，其中可能会产生显微镜检查、免疫组织化学检查和电子显微镜检查的结果。
 
-对于那些需要额外报告内容的，诸如组织病理学或微生物学之类较为复杂的检验项目，则应当采用专用的原始型来表达。
+本原始型在设计上已经成为一种框架，通常会借助于群簇型原始型（CLUSTER）对其加以扩展，以便能够恰当地记录特定的实验室检验结果模式。其中包括但不仅限于生物化学、血液学、免疫学和输血服务等方面的检验项目，以及针对微生物学和解剖病理学方面独特要求的特定模式。如果医嘱/申请所开立的检验项目通常并不属于具名的组合或组套，正常情况下则利用本原始型的单独实例来表达每项检验结果。不过，实际的报告/消息传递实践存在着相当大的差异，而本原始型及其相关的原始型则正是旨在应对此类的变化。
 
-实验室检验报告与HL7 FHIR 诊断报告资源DiagnosticReport之间具有高度的一致性。
+本原始型可支持多种的标本记录方法，反映了当前差异巨大的实践。实验室检验结果与 HL7 FHIR 诊断报告资源高度一致。
 
-在完整的基于组合式文档的报告的背景下，通常会作为一个构成要素，回报给申请医生。">
-			keywords = <"实验室", "医学实验室", "临床实验室", "中心实验室", "检验科", "化验室", "化验科", "病理学", "检验医学", "检验", "医学检验", "临床检验医学", "临床检验", "生物化学", "生化", "血液学", "微生物学", "免疫学", "解剖学", "化学", "临床", "免疫病理学", "细胞学", "组织病理学", "试验", "试验项目", "检验项目", "化验项目", "报告项目", "活组织检查", "活检", "标本", "样本", "样品", "试样", "法医学", "遗传学">
-			misuse = <"并非旨在用于报告非病理学检验结果，如影像学诊断、心电图或呼吸功能试验。
+预计一般会将本原始型或原始型家族的一个或多个实例包含在由组合式文书型报告结果原始型（COMPOSITION.report_result）或类似的原始型以及若干其他相关的条目型原始型（ENTRY）所构成的实验室检验报告文档之中，回报给作为申请方的临床医生。
 
-并非旨在用于表达完整的累积型报告。当前这一实验室检验结果原始型表达的仅仅是，累积型检验项目报告之中通常被视为纵列的结果集合之一。累积型报告是一种视图，是利用由多个观测指标OBSERVATION原始型所表示的结果构建而成。
+混杂因素的记录可能会缺乏一致性，且通常取决于分析实验室，以及申请方所发送的临床信息。在本原始型的状态（State） 之中，有一个简单的可选型混杂因素数据元“Confounding factors”，可以将其重复用作记录各种需要予以明确的简单因素的一种方式，因为这些因素可能会影响对于结果的解释。如果混杂因素较为复杂，则可能适合创建一个可以嵌套在混杂因素详细信息槽位“Confounding factors details”之中的本地/共享性群簇型原始型。
 
-并非旨在用于记录活组织检查报告，尽管可以采用此原始型来表示，针对活组织检查时所采集标本进行的检验项目。
+注 1：对于已知或必需的前提条件，如“禁食”或“月经周期的第1天”，应当将其嵌套在这个观察型原始型之中的群簇型标本原始型（CLUSTER.specimen）里的采样条件数据元“Sampling conditions”中加以报告。
 
-此原始型适合于表达一般性的病理学检验结果，但并未打算涵盖完整的提要式报告。对于此类报告，则需要采用额外的特化性原始型来表达相应的数据。
+注 2：对于标本采集或处理方面的已知问题，如“标本溶血”或“止血带使用时间过长”，应当将其嵌套在这个观察型原始型之中的群簇型标本原始型（CLUSTER.specimen）里的标本质量数据元“Specimen quality”中加以报告。
 
-此原始型在设计上已经支持临床病理学，但可能并不适合于其他种类的病理学用途。">
+如果实验室进行的是“伺机追加型检验项目”（reflex tests），则可以根据美国基于 FHIR 的检验报告指南（参见 https://www.hl7.org/fhir/2015may/uslabreport-guide.html）或其他当地政策来进行处理，如下列情况之一：
+
+1. 在同一个观察型实验室检验结果原始型“openEHR-EHR-OBSERVATION.laboratory_test_result”当中将若干的伺机追加型检验项目结果记录为额外的“检验结果所见/发现”
+2. 将若干的伺机追加型检验项目结果记录为新的观察型实验室检验结果原始型“openEHR-EHR-OBSERVATION.laboratory_test_result”之中的“检验结果所见/发现”，而同时又利用检验项目申请详情槽位“Test request details”来引用原始的实验室检验申请。
+3. 将若干的伺机追加型检验项目结果记录为新的观察型实验室检验结果原始型“openEHR-EHR-OBSERVATION.laboratory_test_result”之中的“检验结果所见/发现”，而同时又利用检验项目申请详情槽位“Test request details”来引用新的实验室检验项目申请以及原始的实验室检验申请。">
+			keywords = <"实验室", "医学实验室", "临床实验室", "中心实验室", "检验科", "化验室", "化验科", "病理学", "检验医学", "检验", "医学检验", "临床检验医学", "临床检验", "生物化学", "生化", "血液学", "微生物学", "免疫学", "解剖学", "化学", "临床", "免疫病理学", "细胞学", "组织病理学", "试验", "试验项目", "检验项目", "化验项目", "报告项目", "活组织检查", "活检", "标本", "样本", "样品", "试样", "法医学", "遗传学", "结果", "分析">
+			misuse = <"并非旨在用于记录尸检或法医报告，尽管在这种情况下可以采用本原始型来表达针对某些标本的检验项目。对于此类的项目，将需要额外的或专门的原始型来表达相应的数据。
+
+本原始型适用于表示一般实验室检验结果，但并非旨在用于涵盖/表达完整的概要报告（synoptic report）。对于此类的情况，将需要额外的或专门的原始型来表达相应的数据。">
 		>
 		["nl"] = <
 			language = <[ISO_639-1::nl]>
@@ -427,9 +433,9 @@ Hl7 FHIR Diagnostic Report resource: HL7 fhir; Available from http://www.hl7.org
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"D3349E2FABD85E3B719F744107B6AEDF">
-		["build_uid"] = <"93315513-f363-43cb-92c0-7a2d1e804694">
-		["revision"] = <"1.2.6">
+		["MD5-CAM-1.0.1"] = <"BBF73E0FED520D54F220CBFE141E0A5A">
+		["build_uid"] = <"846d3cd5-37e5-43a4-aabe-1989a08a0418">
+		["revision"] = <"1.2.7">
 	>
 
 definition
@@ -1217,8 +1223,8 @@ Koding med en terminologi er ønskelig, der det er mulig.">
 		["zh-cn"] = <
 			items = <
 				["at0000"] = <
-					text = <"*Laboratory test result(en)">
-					description = <"*The result, including findings and interpretation, of a laboratory investigation performed on specimens from individuals or related materials(en)">
+					text = <"实验室检验结果">
+					description = <"旨在用于记录对于从个人身上所采集的标本或者与该个人相关的标本进行检验的结果，包括结果所见/发现和实验室的解释。">
 				>
 				["at0001"] = <
 					text = <"Event Series">
@@ -1237,153 +1243,153 @@ Koding med en terminologi er ønskelig, der det er mulig.">
 					description = <"@ internal @">
 				>
 				["at0005"] = <
-					text = <"*Test name(en)">
-					description = <"*Name of the laboratory investigation performed on the specimen(s). (en)">
-					comment = <"*A test result may be for a single analyte, or a group of items, including panel tests. It is strongly recommended that 'Test name' be coded with a terminology, for example LOINC or SNOMED CT. For example: 'Glucose', 'Urea and Electrolytes', 'Swab', 'Cortisol (am)', 'Potassium in perspiration' or 'Melanoma histopathology'. The name may sometimes include specimen type and patient state, for example 'Fasting blood glucose' or include other information, as 'Potassium (PNA blood gas)'. (en)">
+					text = <"检验项目名称">
+					description = <"针对标本所进行的实验室检验项目的名称。">
+					comment = <"检验结果可能代表的是单独一种分析物或者是一组项目/分析物，包括成套的检验项目（组套检验项目）。强烈建议采用特定的术语标准（如 LOINC 或 SNOMED CT）对“检验项目名称”加以编码。例如：“葡萄糖”、“尿素和电解质”、“拭子”、“皮质醇 （上午）”、“汗液钾离子”或“黑色素瘤组织病理学”。检验项目名称之中有时可能会包括标本类型和患者状态，如“空腹血糖”，或者是包括其他的信息，如“钾（PNA 血气）”。">
 				>
 				["at0017"] = <
-					text = <"*Receiving laboratory(en)">
-					description = <"*Details of the laboratory which received the request and has overall responsibility to manage reporting of the test, even if other labs perform specific aspects.(en)">
-					comment = <"*This slot is intended to carry details of the laboratory which received the request and has overall responsibility to manage reporting of the test, even if other labs perform specific aspects.
+					text = <"接收方实验室">
+					description = <"关于当时接收了相应的检验申请并整体负责管理当前检验项目的报告工作的实验室的详情，即使其他实验室执行其中的特定方面。">
+					comment = <"此槽位旨在记录关于当时接收了相应的检验申请并整体负责管理当前检验项目的报告工作的实验室的详情，即使其他实验室执行其中的特定方面。
 
-The receiving laboratory may either perform the test or refer it to another laboratory. Where a different laboratory is responsible for performing the testing on specific analytes, it would be expected that these details would be carried in the 'Analyte result detail' SLOT within the CLUSTER.laboratory_test_analyte archetype.
-
- (en)">
+接收方实验室可能会自身来执行当前的检验项目，或者也可能将其转交给其他的实验室。如果其他实验室负责检测特定的分析物，则应当期望这些详情包含在群簇型实验室检验项目分析物原始型（CLUSTER.laboratory_test_analyte）里的分析物结果详情槽位“Analyte result detail”之中。">
 				>
 				["at0035"] = <
-					text = <"*Distribution list(en)">
-					description = <"*Details of additional clinicians or organisations who require a copy of the test result.(en)">
-					comment = <"*The 'Distribution list' is for information-only, and that the primary recipient of the report is the person intended to act on the information.(en)">
+					text = <"分发列表">
+					description = <"其他那些要求获得当前实验室检验结果的临床医生或组织机构。">
+					comment = <"“分发列表”仅供参考，报告的首要接收方则是意在依据当前的实验室检验结果采取行动的人员。">
 				>
 				["at0037"] = <
 					text = <"部分">
-					description = <"当前属于部分的（比如，初步的、暂时的或初级的）检验结果：检验结果之中的数据可能不完整或者未经核对。">
+					description = <"当前还属于部分的（比如，初始的、暂时的或初步的）检验结果：检验结果之中的数据可能不完整或者未经核对。">
 				>
 				["at0038"] = <
 					text = <"最终">
 					description = <"检验结果完整且经过授权人员的核对或者说审核。">
 				>
 				["at0040"] = <
-					text = <"*Amended(en)">
-					description = <"*The result has been modified subsequent to being Final, and is complete and verified by the responsible pathologist, and result data has been changed.(en)">
+					text = <"经过修正">
+					description = <"结果在达到最终状态之后已被修改，是完整的结果，经过了负责的病理学工作人员的核对，且已经更改了结果数据。">
 				>
 				["at0057"] = <
-					text = <"*Conclusion(en)">
-					description = <"*Narrative description of the key findings. (en)">
-					comment = <"*For example: 'Pattern suggests significant renal impairment'. The content of the conclusion will vary, depending on the investigation performed. This conclusion should be aligned with the coded 'Test diagnosis'. (en)">
+					text = <"结论">
+					description = <"关于关键所见/发现的文字叙述型描述。">
+					comment = <"例如：“[所观察到的]模式表明存在显著的肾脏损害”。结论的内容会根据所进行的检查而有所不同。此项结论应当与编码型的检验项目诊断数据元“Test diagnosis”保持一致。">
 					fhir_mapping = <"*DiagnosticReport.conclusion(en)">
 				>
 				["at0062"] = <
 					text = <"申请方医嘱标识符">
-					description = <"医嘱申请方赋予当前检验项目医嘱的本地标识符。">
+					description = <"申请方临床系统所赋予当前检验项目医嘱/申请的本地标识符。">
 					comment = <"等价于HL7申请方医嘱标识符（ Placer Order Identifier）。">
 				>
 				["at0063"] = <
 					text = <"接收方医嘱标识符">
-					description = <"医嘱执行方赋予当前检验项目医嘱的本地标识符。其中，医嘱执行方通常为实验室信息系统（ Laboratory Information System，LIS）。">
-					comment = <"实验室信息系统（ Laboratory Information System，LIS）为申请赋予标识符，便于实现对于申请进展情况的跟踪以及结果与相应申请的链接。同时，这也是有助于查询的一种参考信息，且通常等价于HL7执行方医嘱标识符（Filler Order Identifier）。">
+					description = <"医嘱执行方赋予当前检验项目医嘱/申请的本地标识符。其中，医嘱执行方通常为实验室信息系统（ Laboratory Information System，LIS）。">
+					comment = <"实验室信息系统（ Laboratory Information System，LIS）为检验项目医嘱/申请赋予标识符，将便于实现对于申请进展情况的跟踪以及结果与相应医嘱/申请的链接。同时，这也是有助于查询的一种参考信息（reference），且通常等价于HL7执行方医嘱标识符（Filler Order Identifier）。">
 				>
 				["at0065"] = <
-					text = <"*Specimen detail(en)">
-					description = <"*Details about the physical substance that has been analysed, in the situation where all results in this test are derived from the same specimen.(en)">
-					comment = <"*If the specimen type is sufficiently specified with a code in the Test name, then this additional data is not required. If there are multiple specimens, these may be represented per 'Result group'.(en)">
+					text = <"标本详情">
+					description = <"关于所已经分析的物质的详情。">
+					comment = <"如果利用检验项目名称之中的代码可以充分明确相应的标本类型，则不需要此项附加的数据。可以采用群簇型标本原始型（CLUSTER.specimen）和各种的群簇型结果原始型之中的标本标识符元素“Specimen identifier”元素来记录关于将结果链接到特定标本的信息。">
 				>
 				["at0068"] = <
-					text = <"*Laboratory internal identifier(en)">
-					description = <"*A local identifier assigned by the receiving Laboratory Information System (LIS) to track the test process. (en)">
-					comment = <"*This identifier is an internal tracking number assigned by the LIS, and it not intended to be the name of the test. (en)">
+					text = <"实验室内部标识符">
+					description = <"接收方实验室信息系统（Laboratory Information System，LIS）所分配的本地标识符，用于跟踪检验过程。">
+					comment = <"该标识符属于是实验室信息系统（Laboratory Information System，LIS）所分配的内部追踪编号，但并非旨在作为检验项目的名称。">
 				>
 				["at0073"] = <
-					text = <"*Overall test status(en)">
-					description = <"*The status of the laboratory test result as a whole.(en)">
-					comment = <"*The values have been specifically chosen to match those in the HL7 FHIR Diagnostic report, historically derived from HL7v2 practice. Other local codes/terms can be used via the Text 'choice'.
+					text = <"检验项目总体状态">
+					description = <"当前的实验室检验项目作为整体的状态">
+					comment = <"这些编码型取值是经过专门挑选的，以与 HL7 FHIR 诊断报告资源之中的取值相匹配，而在历史上这些取值源自 HL7v2 实践。另外，可以借助于文本型选项“choice”来使用其他的本地代码/术语。
 
-This element is multiple occurrence to cater for the use cases where statuses for different aspects of the result have been split into several elements. (en)">
+本数据元可以多次出现，以适应那些将结果不同方面的状态拆分成多个数据元的用例。">
 				>
 				["at0074"] = <
 					text = <"已撤销">
 					description = <"当前结果不可用，因为该检验项目并未开始或者并未完成（有时又称为“取消”、“已中止”或“已放弃”）。">
 				>
 				["at0075"] = <
-					text = <"*Overall test status timestamp(en)">
-					description = <"*The date and/or time that ‘Overall test status’ was issued.(en)">
+					text = <"检验项目总体状态时间戳">
+					description = <"发布检验项目总体状态时的日期和/或时间。">
 				>
 				["at0077"] = <
-					text = <"*Diagnostic service category(en)">
-					description = <"*The diagnostic service or discipline that is responsible for the laboratory test result. (en)">
-					comment = <"*This is intended to be a general categorisation and not to capture the organisational name of the laboratory. For example: anatomical pathology, immunology and transfusion medicine, medical microbiology, clinical pharmacology, medical genetics, medical biochemistry. Alternatively more granular sub categories or sub disciplines, such as endocrinology, haematology, and allergology services, may be used. This may assist clinicians in filtering between categories of results. Coding with a terminology is desirable, where possible.  (en)">
+					text = <"诊断服务类别">
+					description = <"负责当前实验室检验结果的诊断服务或学科。">
+					comment = <"本数据元旨在进行一般的分类，而并非旨在记录实验室的组织结构名称。例如：解剖病理学、免疫学、输血医学、医学微生物学、临床药理学、医学遗传学、医学生物化学。或者，还可以采用粒度更精细的子类别或子学科，如内分泌学、血液学和变态反应学服务。此项数据可能有助于临床医生在结果类别之间进行筛选。最好尽可能采用特定的术语标准加以编码。">
 				>
 				["at0090"] = <
 					text = <"申请方">
 					description = <"关于申请当前实验室检验项目（结果）的临床医生或组织机构的详情。">
 				>
 				["at0094"] = <
-					text = <"*Test request details(en)">
-					description = <"*Details about the test request.(en)">
-					comment = <"*In most situations there is one test request and a single corresponding test result, however this repeating cluster allows for the situation where there may be multiple test requests reported using a single test result. As an example: 'a clinician asks for blood glucose in one request and Urea/electrolytes in a second request, but the lab analyser does both and the lab wishes to report these together'.(en)">
+					text = <"检验申请详情">
+					description = <"关于检验申请的详情。">
+					comment = <"在大多数情况下，每份检验请求分别会有相应的单独一项检验结果。不过，这个可重复的群簇允许存在检验结果只有一份[报告]而报告所针对的却是多份检验请求的情况。
+
+例如：医生在一份申请当中要求检测血糖，而在另一份申请中则要求检测尿素/电解质，而实验室分的析仪则会同时处理这两份申请，并且实验室希望将二者一并加以报告。">
 				>
 				["at0097"] = <
-					text = <"*Test result (en)">
-					description = <"*Results of the test performed on the specimen(s). (en)">
-					comment = <"*This SLOT may carry an individual analyte, a group, panel or battery of multiple analytes, or a more complex and specific structure. (en)">
+					text = <"检验结果">
+					description = <"针对标本所进行的检验项目的结果。">
+					comment = <"此槽位之中可以包含的是单个的分析物、多个分析物所构成的组合或组套，或者是更为复杂的特定结构。">
 				>
 				["at0098"] = <
-					text = <"*Test diagnosis(en)">
-					description = <"*Single word, phrase or brief description that represents the clinical meaning and significance of the laboratory test result. (en)">
-					comment = <"*For example: 'Severe hepatic impairment', 'Salmonella contamination'. Coding of the diagnosis with a terminology is strongly recommended, where possible. This diagnosis should be aligned with the narrative in the 'Conclusion'. (en)">
+					text = <"检验项目诊断">
+					description = <"代表实验室测试结果的临床含义和意义/重要性的单词、短语或简短描述。">
+					comment = <"例如：“严重肝脏损害”、“沙门菌污染”。强烈建议尽可能采用特定的术语标准对此项诊断加以编码。此项诊断应当与结论数据元“Conclusion”之中的文字叙述保持一致。">
 				>
 				["at0100"] = <
-					text = <"*Clinical information provided(en)">
-					description = <"*Description of clinical information available at the time of interpretation of results.(en)">
-					comment = <"*This data element may include a link to the original clinical information provided in the test request.(en)">
+					text = <"已提供的临床信息">
+					description = <"关于解释结果时可用的临床信息的描述。">
+					comment = <"本数据元之中可以包含指向相应检验项目申请之中所提供的原始临床信息的链接。">
 					fhir_mapping = <"*DiagnosticReport.requestDetail.clinicalNotes(en)">
 				>
 				["at0101"] = <
-					text = <"*Comment(en)">
-					description = <"*Additional narrative about the test result not captured in other fields.(en)">
+					text = <"注释">
+					description = <"关于其他字段之中并未采集/记录的，关于当前检验结果的其他文字叙述型内容。">
 				>
 				["at0106"] = <
-					text = <"*Original test requested name(en)">
-					description = <"*Name of the original laboratory test requested. (en)">
-					comment = <"*This data element is to be used when the test requested differs from the test actually performed by the laboratory. (en)">
+					text = <"原始申请检验项目名称">
+					description = <"所申请的原始实验室检验项目的名称。">
+					comment = <"当所申请的检验项目与实验室实际执行的检验项目不同时，应当会用到本数据元。">
 				>
 				["at0107"] = <
 					text = <"已登记">
-					description = <"表示当前检验项目的存在情况已在实验室信息系统之中进行了登记，但目前尚无任何可用信息。">
+					description = <"表示当前检验项目的存在情况已在实验室信息系统之中进行了登记，但目前尚无任何可用的信息。">
 				>
 				["at0110"] = <
-					text = <"*Testing details (en)">
-					description = <"*Structured details about the method of analysis, device or interpretation used.(en)">
-					comment = <"*For example: 'details of ELISA/nephelometry'.(en)">
+					text = <"检验详情">
+					description = <"关于所采用的分析方法、仪器设备或解释的结构化详情。">
+					comment = <"例如：关于ELISA/散射比浊法的详情。">
 				>
 				["at0111"] = <
-					text = <"*Point-of-care test(en)">
-					description = <"*This indicates whether the test was performed directly at Point-of-Care (POCT) as opposed to a formal result from a laboratory or other service delivery organisation.(en)">
-					comment = <"*True if the test was performed directly at Point-of-Care (POCT).(en)">
+					text = <"床旁检验项目">
+					description = <"此项数据元旨在表明当前的检验项目究竟是床旁（Point-of-Care，POCT）直接进行的检验项目，而不是实验室或其他服务机构/部门/科室所提供的正式结果。">
+					comment = <"如果当前的检验项目是在是床旁（Point-of-Care，POCT）直接进行的，则取值为真（True）。">
 				>
 				["at0112"] = <
 					text = <"Tree">
 					description = <"@ internal @">
 				>
 				["at0113"] = <
-					text = <"*Confounding factors(en)">
-					description = <"*Issues or circumstances that impact on the accurate interpretation of the measurement or test result.(en)">
-					comment = <"*'Confounding factors' should be reserved for uncontrolled/unplanned issues of patient state/physiology that might affect interpretation, for example 'recent exercise' or 'recent tobacco smoking'.
+					text = <"混杂因素">
+					description = <"影响当前监测/测量结果或检验结果准确解释的问题或情况。">
+					comment = <"应当将混杂因素数据元“”保留用于那些可能影响结果解释的，患者状态/生理[机能]的未加控制/意外的问题，如 '近期的锻炼' 或 '近期的吸烟'。
 
-Known or required preconditions, such as 'fasting' should be carried in the 'Sampling conditions' element within the CLUSTER.specimen archetype . In some cases preconditions are captured as part of the test name, for example 'Fasting blood glucose'.
+对于已知或所需的前提条件，如“禁食”，应当采用群簇型标本原始型（CLUSTER.specimen）之中的采样条件数据元'Sampling conditions' 来加以记录。在某些情况下，可能会将前提条件作为检验项目名称的一部分来加以记录，如 '空腹血糖'。
 
-Known issues with specimen collection or handling, such as 'prolonged use of tourniquet' or 'sample haemolysed', should be carried in the 'Specimen quality' elements within CLUSTER.specimen archetype.
+对于标本采集或处理方面的已知问题，如“止血带使用时间过长”或“标本溶血”，应当采用群簇型标本原始型（CLUSTER.specimen）之中的标本质量数据元'Sampling conditions'元素来加以记录。
 
-Coding with a terminology is desirable, where possible.  (en)">
+最好尽可能采用特定的术语标准来加以编码。">
 				>
 				["at0114"] = <
-					text = <"*Structured confounding factors (en)">
-					description = <"可能会改变对于当前实验室检验项目的解释的，关于当前患者状态的详情。">
-					comment = <"*For example: Last Normal Menstrual Period (LNMP). (en)">
+					text = <"结构化混杂因素">
+					description = <"关于那些影响检测/测量结果或检验结果准确解释的问题或情况的详情。">
+					comment = <"例如：最后一次正常的月经周期 (Last Normal Menstrual Period，LNMP)。">
 				>
 				["at0115"] = <
-					text = <"*Corrected(en)">
-					description = <"*The result has been modified subsequent to being Final, and is complete and verified by the responsible pathologist. This is a sub-category of 'Amended'.(en)">
+					text = <"经过更正">
+					description = <"结果在达到最终状态之后已被修改，是完整的结果，经过了负责的病理学工作人员的核对。这是“经过修正”类别的一个子类别。">
 				>
 				["at0116"] = <
 					text = <"错误录入">
@@ -1391,31 +1397,32 @@ Coding with a terminology is desirable, where possible.  (en)">
 				>
 				["at0117"] = <
 					text = <"扩展">
-					description = <"允许进行扩展的槽位，用于支持本地化或与其他标准/参考模型之间进行协调统一。">
+					description = <"采集本地内容或者实现与其他参考模型/形式化体系之间进行协调统一所额外需的其他信息。">
+					comment = <"例如：旨在实现与FHIR或CIMI等效项进行协调统一的，本地信息需求或额外的元数据。">
 				>
 				["at0118"] = <
-					text = <"*Multimedia representation(en)">
-					description = <"*Digital image, video or diagram representing the test result.(en)">
-					comment = <"*Multiple formats are allowed but they should represent equivalent clinical content.(en)">
+					text = <"多媒体表现">
+					description = <"表现当前检验结果的数字图像、视频或图表。">
+					comment = <"允许采用多种的格式，但它们应当都表现的是等价的临床内容。">
 					fhir_mapping = <"*DiagnosticReport.presentedForm(en)">
 				>
 				["at0119"] = <
-					text = <"*Appended(en)">
-					description = <"*Subsequent to being final, the report has been modified by adding new content. The existing content is unchanged. This is a sub-category of 'Amended'.(en)">
+					text = <"经过追加">
+					description = <"在达到最终状态之后，因为添加新的内容而造成报告的修改。已有的内容并未发生变更。这是“经过修正”类别的一个子类别。">
 				>
 				["at0120"] = <
-					text = <"*Preliminary(en)">
-					description = <"*Verified early results are available, but not all results are final. This is a sub-category of 'Partial'.(en)">
+					text = <"初步">
+					description = <"已有经过核对的早期/初步结果可用，但并非所有的结果都属于是最终结果。这是“部分”类别的一个子类别。">
 				>
 				["at0121"] = <
-					text = <"*Test method (en)">
-					description = <"*">
-					comment = <"*Coding with a terminology is desirable, where possible.  (en)">
+					text = <"检验方法">
+					description = <"关于进行当前检验项目时所采用的方法的描述。">
+					comment = <"最好尽可能采用特定的术语标准来加以编码。">
 				>
 				["at0122"] = <
-					text = <"*Structured test diagnosis (en)">
-					description = <"*A structured or complex diagnosis for the laboratory test. (en)">
-					comment = <"*For example: Anatomical pathology diagnoses consisting of several different axes such as morphology, etiology and function. (en)">
+					text = <"结构化检验项目诊断">
+					description = <"当前实验室检验项目的结构化诊断或复杂诊断。">
+					comment = <"例如：由多个不同的轴（如形态学、病因学和功能）所组成的解剖病理学诊断。">
 				>
 			>
 		>
