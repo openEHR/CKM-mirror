@@ -30,6 +30,14 @@ language
 				["email"] = <"ana.andrade@coreconsulting.com.br">
 			>
 		>
+		["zh-cn"] = <
+			language = <[ISO_639-1::zh-cn]>
+			author = <
+				["name"] = <"Lin Zhang">
+				["organisation"] = <"Freelancer">
+				["email"] = <"linforest@163.com">
+			>
+		>
 		["nl"] = <
 			language = <[ISO_639-1::nl]>
 			author = <
@@ -184,6 +192,40 @@ Please note that in the openEHR Reference Model there is a 'Time' attribute, whi
 			misuse = <"Not to be used to record data about activities carried out for activities that require a purpose built ACTION archetype because they have very specific data recording or pathway step requirements. For example: ACTION.procedure or ACTION.health_education.">
 			copyright = <"© openEHR Foundation, Northern Territory Department of Health (Australia)">
 		>
+		["zh-cn"] = <
+			language = <[ISO_639-1::zh-cn]>
+			purpose = <"旨在用于记录关于临床医务人员、组织机构或代理机构/服务机构所提供的，简单的，与健康相关的服务或活动的详情。">
+			use = <"旨在用于记录关于临床医务人员、组织机构或代理机构/服务机构所提供的，简单的，与健康相关的服务或活动的详情。其中包括追踪从计划编制/规划、排程/排期、提供/交付服务直至完成的整个过程的进展情况，以及相对于既定照护服务/诊疗路径的偏差/偏离情况（如服务延期或取消）。为此，实现的方式就是，在本原始型当中，记录特定活动的相关数据元，并将这些数据元均描述为“路径”（Pathway）照护服务/诊疗流程步骤。
+
+本原始型的适用范围有意涵盖了各类临床服务的活动，旨在作为适用于所有非复杂用例的通用原始型。示例包括但不限于：
+- 患者为接受预防性照护/诊疗服务，自行提出的牙科健康检查转诊；
+- 患者因肌肉骨骼劳损接受治疗而前往物理治疗师处的一系列就诊；
+- 转诊：由请求方健康医疗服务提供者（如初级保健/基层临床医务人员）将患者转诊至接收方健康医疗服务提供者（如专科医生），以便让患者获得特定的服务、建议或照护/诊疗服务。
+
+如需记录有关该服务的更多结构化详情，可在“服务详情”（Service detail）插槽中插入专用原始型。
+
+仅可采取下列两种方式来使用本原始型：
+- 作为关于所提供服务的完整记录；
+- 作为主要记录所请求服务的状态的框架，同时利用单独的观察类原始型（OBSERVATION）来记录所提供服务的实际观察（检验/检查）结果，如观察类听力筛查结果原始型（OBSERVATION.hearing_screening_result）。
+
+可以采取下列两种方式之一来管理那些与服务[项目]管理相关的时间：
+- 利用参考模型：任何路径步骤的执行时间均会采用各步骤的行动类（ACTION）时间属性。
+- 原始型化数据元：“所排程的日期/时间”（Scheduled date/time）数据元旨在用于记录当时预定执行此项服务的时间。注：“已排程”（Scheduled）路径步骤相应的行动类时间属性，将记录的是当时将此项临床活动排程到系统当中的时间，而并非预定开展/执行此项活动的预定日期/时间。
+
+在实际工作中，部分的服务（如门诊照护/诊疗过程中）为即时开展，仅会发生一次，无需提前下达医嘱。关于此类服务的详情，将会在“服务已完成”（Service completed）路径步骤下录入相关的数据。在某些情况下，会下达关于重复型服务的医嘱，而此时，对于此类服务的每次重复，将会在“服务已提供”（Service delivered）路径步骤下记录相关的数据，并保持服务医嘱处于有效状态。当记录最后一次的服务提供情况时，则记录的是“服务已完成”行动，以表明此项服务医嘱已处于已完成状态。
+
+在其他的情况下（如二级照护/诊疗服务），可能会利用相应的指令类请求原始型（INSTRUCTION.request）来表达针对特定服务的正式医嘱。随后，则可以利用这一行动类原始型来记录关于开展/执行此项医嘱的时间和方式等工作流信息。
+
+采用这一行动类原始型来记录信息，表明已实际发生某项活动；此项活动通常为相应的服务提供过程本身，但也可能是一次失败的尝试，或者是其他的活动（如服务提供的延期）。若此项服务存在正式的医嘱，则会采用相应的“路径”步骤来表达该项医嘱的状态。例如，在每个“路径”步骤当中，可以在电子健康档案（EHR）病程/进展记录里，采用单独的条目来记录转诊请求的进展状态：
+- 记录转诊的已排程的开始日期/时间（“服务已排程”）；
+- 记录转诊已完成，并且有可能包括所提供服务的相关信息（“服务已完成”）。
+
+当活动遵循的是“计划中（Planned）> 已排程（Scheduled）> 进行中（Active）> 已完成（Completed）”的常规状态流程时，通常无需记录“原因”（Reason）；该原因字段通常用于记录偏离常规诊疗/照护服务路径的原因。
+
+请注意，在openEHR参考模型当中，存在“时间”（Time）属性，旨在用于记录相应“行动”（Action）之中每个路径步骤的执行日期和时间。而且，服务开始时间（需采用“服务已提供”路径步骤）或服务中止时间（需采用“服务已中止”路径步骤）也都将采用该属性来记录。">
+			keywords = <"服务", "服务项目", "转诊", "转诊介绍", "转介", "推荐", "推介", "就诊", "就医", "访视", "就医", "就医过程", "接触", "健康医疗服务接触">
+			misuse = <"并非旨在用于记录关于所开展/执行的那些需要采用专用行动类原始型的活动的数据，因为此类活动有着非常特殊的数据记录要求或路径步骤要求。例如：行动类操作原始型（ACTION.procedure）或行动类健康宣教原始型（ACTION.health_education）。">
+		>
 		["nl"] = <
 			language = <[ISO_639-1::nl]>
 			purpose = <"Om gegevens vast te leggen over een eenvoudige gezondheidsgerelateerde dienst of activiteit geleverd door een arts, organisatie of instantie.">
@@ -229,9 +271,9 @@ Let op dat er in het openEHR Referentiemodel een attribuut 'Tijd' is, dat bedoel
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"AD593E18455631079CCA895C6A3612C5">
-		["build_uid"] = <"f596dd3a-2cba-4dec-9d40-ecfefe33b142">
-		["revision"] = <"1.0.1">
+		["MD5-CAM-1.0.1"] = <"28A339B53A791927A01656049C8E89B3">
+		["build_uid"] = <"6b50c451-85c1-4b7b-a439-8ca51f87ffe0">
+		["revision"] = <"1.0.2">
 	>
 
 definition
@@ -1182,6 +1224,140 @@ ontology
 				["at0036"] = <
 					text = <"Extra details">
 					description = <"Extra gestructureerde details over de service.">
+				>
+			>
+		>
+		["zh-cn"] = <
+			items = <
+				["at0000"] = <
+					text = <"服务">
+					description = <"临床医务人员、组织机构或代理机构/服务机构所提供的，简单的，与健康相关的服务或活动。">
+				>
+				["at0001"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"服务已编制计划">
+					description = <"目前已经为针对健康医疗服务提供者提出的服务请求编制了计划。">
+				>
+				["at0003"] = <
+					text = <"服务已排程">
+					description = <"目前已经为此项服务安排了预约。">
+				>
+				["at0004"] = <
+					text = <"服务已执行">
+					description = <"目前已经开展/执行此项服务（或一系列定期重复服务之中的某次单项服务）。">
+				>
+				["at0005"] = <
+					text = <"服务活动已完成">
+					description = <"所有的服务活动目前均已完成。">
+				>
+				["at0006"] = <
+					text = <"服务已终止">
+					description = <"在完成此项服务之前已停止了相应的转诊介绍。">
+				>
+				["at0008"] = <
+					text = <"服务已延期">
+					description = <"所计划的服务已推迟。">
+				>
+				["at0009"] = <
+					text = <"服务已取消">
+					description = <"所计划的服务在开始前已被取消。">
+				>
+				["at0010"] = <
+					text = <"服务已暂停">
+					description = <"目前已经中止了此项尚未完成的服务。">
+				>
+				["at0011"] = <
+					text = <"服务名称">
+					description = <"对所执行临床服务的标识。">
+					comment = <"例如：“肉瘤多学科团队（MDT）会诊” 或 “物理治疗转诊”。尽可能优先采用指定的术语标准对具体的服务名称加以编码。">
+				>
+				["at0012"] = <
+					text = <"原因">
+					description = <"关于当时开展/执行针对所标识服务的活动或诊疗/照护服务路径步骤的原因。">
+					comment = <"例如：关于取消或暂停此项服务的原因。并不一定要为预期的每个路径步骤记录相应的原因。本数据元旨在记录偏离典型服务提供流程的原因，例如：因 “患者发烧” 导致服务 “延期”，或系列服务之中的某次已排程的服务因 “患者改变主意” 而 遭到“取消”。注：可以利用指令类服务请求原始型（INSTRUCTION.service_request）来记录触发服务提供流程的临床适应证/指征。">
+				>
+				["at0013"] = <
+					text = <"描述">
+					description = <"针对（对应）路径步骤的服务文字说明（根据需要撰写）。">
+				>
+				["at0014"] = <
+					text = <"服务类型">
+					description = <"所执行服务的类型。">
+					comment = <"例如：“多学科团队（MDT）会诊” 或 “转诊”。">
+				>
+				["at0015"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0016"] = <
+					text = <"请求方标识符">
+					description = <"请求此项服务的健康医疗服务提供者或机构为其医嘱所分配的本地标识符。">
+					comment = <"该标识符等同于健康医疗服务互操作型资源规范（FHIR）之中的 “申请方/委托方标识符”（Placer Identifier）。">
+				>
+				["at0017"] = <
+					text = <"请求方">
+					description = <"关于请求此项服务的健康医疗服务提供者或机构的相关详情。">
+				>
+				["at0018"] = <
+					text = <"服务提供方标识符">
+					description = <"提供此项服务的机构为其医嘱所分配的标识符。">
+					comment = <"该标识符等同于健康医疗服务互操作型资源规范（FHIR）之中的 “执行方标识符”（Filler Identifier）。">
+				>
+				["at0019"] = <
+					text = <"接收方">
+					description = <"关于接收此项服务请求的健康医疗服务提供者或机构的相关详情。">
+				>
+				["at0021"] = <
+					text = <"序号">
+					description = <"此项指定临床服务的序号。">
+					comment = <"仅仅旨在与 “服务已提供” 路径步骤联合运用。例如：记录本次为所计划序列之中的第 3 次物理治疗预约。">
+				>
+				["at0023"] = <
+					text = <"服务已过期">
+					description = <"在转诊流程/服务节段（referral episode）完成之前相应的转诊介绍已失效。">
+				>
+				["at0025"] = <
+					text = <"所排程的日期/时间">
+					description = <"预定执行此项服务的日期和/或时间。">
+					comment = <"仅仅旨在与 “服务已排程” 路径步骤联合运用。">
+				>
+				["at0026"] = <
+					text = <"服务请求已发送">
+					description = <"目前已经发送了服务请求。">
+				>
+				["at0027"] = <
+					text = <"服务详情">
+					description = <"关于服务的结构化信息。">
+					comment = <"用于记录此项服务特定方面的结构化详情。">
+				>
+				["at0028"] = <
+					text = <"注释">
+					description = <"未在其他字段中记录的、与相关活动或诊疗路径步骤有关的补充文字说明。">
+				>
+				["at0029"] = <
+					text = <"多媒体表现形式">
+					description = <"用于呈现此项服务的数字图像、视频、图表或其他媒体资料。">
+				>
+				["at0031"] = <
+					text = <"扩展">
+					description = <"采集本地内容或者实现与其他参考模型/形式化体系之间进行协调统一所额外需的其他信息。">
+					comment = <"例如：旨在满足本地信息需求或实现与FHIR或CIMI等效项进行协调统一的额外元数据。">
+				>
+				["at0032"] = <
+					text = <"所计划的日期/时间">
+					description = <"预定执行服务的预计日期和/或时间。">
+					comment = <"所计划的日期 / 时间可表示为具体日期/时间、日期/时间区间、自计划编制之时起的持续时长或持续时长区间，或自由文本型/编码型文本。仅可结合 “服务计划中” 路径步骤使用。">
+				>
+				["at0035"] = <
+					text = <"服务请求已接收">
+					description = <"相应的服务提供者已收到服务请求。">
+				>
+				["at0036"] = <
+					text = <"其他详情">
+					description = <"关于此项服务的其他结构化详情。">
 				>
 			>
 		>
