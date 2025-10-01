@@ -82,8 +82,8 @@ Not to be used to record details related to the overall findings, context or tec
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"915D1052A6610583E40512607A7CF909">
-		["build_uid"] = <"c5cf36d5-4ba2-4317-9a4a-2c45c8af134e">
+		["MD5-CAM-1.0.1"] = <"FEF372C7B70BFE3BCCC6D632CDAE971D">
+		["build_uid"] = <"f71c68b4-0dca-4b62-b868-a1e649a3465d">
 		["ip_acknowledgements"] = <"This artefact includes content from SNOMED Clinical Terms® (SNOMED CT®) which is copyrighted material of the International Health Terminology Standards Development Organisation (IHTSDO). Where an implementation of this artefact makes use of SNOMED CT content, the implementer must have the appropriate SNOMED CT Affiliate license - for more information contact https://www.snomed.org/snomed-ct/get-snomed or info@snomed.org.">
 		["revision"] = <"0.0.1-alpha">
 	>
@@ -114,6 +114,20 @@ definition
 					DV_TEXT matches {*}
 				}
 			}
+			allow_archetype CLUSTER[at0005] occurrences matches {0..*} matches {    -- Additional details
+				include
+					archetype_id/value matches {/openEHR-EHR-CLUSTER\.imaging_exam-lymph_node(-[a-zA-Z0-9_]+)*\.v0|openEHR-EHR-CLUSTER\.imaging_exam-lymph_node_group(-[a-zA-Z0-9_]+)*\.v0|openEHR-EHR-CLUSTER\.imaging_exam-lesion(-[a-zA-Z0-9_]+)*\.v0/}
+			}
+			ELEMENT[at0006] occurrences matches {0..*} matches {    -- Impression
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			ELEMENT[at0007] occurrences matches {0..1} matches {    -- Comment
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
 			allow_archetype CLUSTER[at0.3] occurrences matches {0..*} matches {    -- Umbilical cord findings
 				include
 					archetype_id/value matches {/openEHR-EHR-CLUSTER\.imaging_exam-umbilical_cord(-[a-zA-Z0-9_]+)*\.v0/}
@@ -133,20 +147,6 @@ definition
 							>
 						>
 					>
-				}
-			}
-			allow_archetype CLUSTER[at0005] occurrences matches {0..*} matches {    -- Additional details
-				include
-					archetype_id/value matches {/openEHR-EHR-CLUSTER\.imaging_exam-lymph_node(-[a-zA-Z0-9_]+)*\.v0|openEHR-EHR-CLUSTER\.imaging_exam-lymph_node_group(-[a-zA-Z0-9_]+)*\.v0|openEHR-EHR-CLUSTER\.imaging_exam-lesion-adnexal_mass(-[a-zA-Z0-9_]+)*\.v0|openEHR-EHR-CLUSTER\.imaging_exam-lesion(-[a-zA-Z0-9_]+)*\.v0/}
-			}
-			ELEMENT[at0006] occurrences matches {0..*} matches {    -- Impression
-				value matches {
-					DV_TEXT matches {*}
-				}
-			}
-			ELEMENT[at0007] occurrences matches {0..1} matches {    -- Comment
-				value matches {
-					DV_TEXT matches {*}
 				}
 			}
 		}
@@ -170,6 +170,22 @@ ontology
 				["at0.1"] = <
 					text = <"Placenta">
 					description = <"">
+				>
+				["at0002.1"] = <
+					text = <"Placental site">
+					description = <"Identification of the area of the uterus where the placenta/placental mass is located.">
+				>
+				["at0003.1"] = <
+					text = <"Structured placental site">
+					description = <"Structured details about the area of the uterus where the placenta/placental mass is located.">
+				>
+				["at0.2"] = <
+					text = <"Thickness">
+					description = <"Measured thickness of the placenta.">
+				>
+				["at0.3"] = <
+					text = <"Umbilical cord findings">
+					description = <"Structured details about a single umbilical cord.">
 				>
 				["at0000"] = <
 					text = <"Imaging examination of a body structure">
@@ -207,22 +223,6 @@ ontology
 					text = <"Comment">
 					description = <"Additional narrative about the imaging findings of the body structure, not captured in other fields.">
 				>
-				["at0002.1"] = <
-					text = <"Placental site">
-					description = <"Identification of the area of the uterus where the placenta/placental mass is located.">
-				>
-				["at0003.1"] = <
-					text = <"Structured placental site">
-					description = <"Structured details about the area of the uterus where the placenta/placental mass is located.">
-				>
-				["at0.2"] = <
-					text = <"Thickness">
-					description = <"Measured thickness of the placenta.">
-				>
-				["at0.3"] = <
-					text = <"Umbilical cord findings">
-					description = <"Structured details about a single umbilical cord.">
-				>
 			>
 		>
 		["nb"] = <
@@ -240,14 +240,30 @@ ontology
 					description = <"Navn av undersøkt struktur eller område på eller i kroppen.">
 					comment = <"*If the body structure has been fully identified in this 'Body structure' element, then the 'Body site' data element and 'Structured body site' SLOT becomes redundant. (en)">
 				>
-				["at0000"] = <
-					text = <"Bildediagnostisk undersøkelse - kroppsstruktur">
-					description = <"Funn eller observasjoner ved radiologisk undersøkelse av et definert organ eller en kroppsdel.">
-				>
 				["at0001"] = <
 					text = <"Kroppsstruktur">
 					description = <"Identifisering av organet eller kroppsdelen som svaret gjelder.">
-					comment = <"*For example: 'Liver', 'Right ankle' or 'Lymph node group'. Coding of the body structure with an appropriate terminology, such as SNOMED CT, is recommended. If the body structure has been fully identified in this 'Body structure' element, then the 'Body site' data element and 'Structured body site' SLOT become redundant. (en)">
+					comment = <"For eksempel \"Lever\", \"Høyre ankel\" eller \"Lymfeknutegruppe\". Det er anbefalt å kode kroppsstruktur med en passende terminologi, som SNOMED CT. Dersom den aktuelle strukturen i kroppen er fullt ut angitt i dette \"Kroppsstruktur\"-elementet er det ikke nødvendig å bruke \"Anatomisk lokalisasjon\" eller \"Strukturert anatomisk lokalisasjon\".">
+				>
+				["at0002.1"] = <
+					text = <"*Placental site (en)">
+					description = <"*Identification of the area of the uterus where the placenta/placental mass is located. (en)">
+				>
+				["at0003.1"] = <
+					text = <"*Structured placental site (en)">
+					description = <"*Structured details about the area of the uterus where the placenta/placental mass is located. (en)">
+				>
+				["at0.2"] = <
+					text = <"*Thickness (en)">
+					description = <"*Measured thickness of the placenta. (en)">
+				>
+				["at0.3"] = <
+					text = <"*Umbilical cord findings (en)">
+					description = <"*Structured details about a single umbilical cord. (en)">
+				>
+				["at0000"] = <
+					text = <"Bildediagnostisk undersøkelse - kroppsstruktur">
+					description = <"Funn eller observasjoner ved radiologisk undersøkelse av et definert organ eller en kroppsdel.">
 				>
 				["at0002"] = <
 					text = <"Anatomisk lokalisasjon">
@@ -276,22 +292,6 @@ ontology
 					text = <"Kommentar">
 					description = <"Ytterligere fritekst om funn eller observasjoner på bilder av kroppsstrukturen og som ikke er fanget i andre felt.">
 				>
-				["at0002.1"] = <
-					text = <"*Placental site (en)">
-					description = <"*Identification of the area of the uterus where the placenta/placental mass is located. (en)">
-				>
-				["at0003.1"] = <
-					text = <"*Structured placental site (en)">
-					description = <"*Structured details about the area of the uterus where the placenta/placental mass is located. (en)">
-				>
-				["at0.2"] = <
-					text = <"*Thickness (en)">
-					description = <"*Measured thickness of the placenta. (en)">
-				>
-				["at0.3"] = <
-					text = <"*Umbilical cord findings (en)">
-					description = <"*Structured details about a single umbilical cord. (en)">
-				>
 			>
 		>
 		["de"] = <
@@ -309,14 +309,30 @@ ontology
 					text = <"*Placenta (en)">
 					description = <"">
 				>
-				["at0000"] = <
-					text = <"Bildgebende Untersuchung einer Körperstruktur">
-					description = <"Befunde zur radiologischen Untersuchung einer bestimmten Körperstruktur oder -region.">
-				>
 				["at0001"] = <
 					text = <"Körperstruktur">
 					description = <"Identifizierung der untersuchten Körperstruktur oder Region.">
-					comment = <"*For example: 'Liver', 'Right ankle' or 'Lymph node group'. Coding of the body structure with an appropriate terminology, such as SNOMED CT, is recommended. If the body structure has been fully identified in this 'Body structure' element, then the 'Body site' data element and 'Structured body site' SLOT become redundant. (en)">
+					comment = <"Zum Beispiel: „Leber“, „Rechter Knöchel“ oder „Lymphknotengruppe“. Es wird empfohlen, die Körperstruktur mit einer geeigneten Terminologie, wie SNOMED CT, zu kodieren. Wenn die Körperstruktur in diesem Element „Körperstruktur“ vollständig identifiziert wurde, dann werden das Datenelement „Körperstelle“ und der SLOT „Strukturierte Körperstelle“ überflüssig.">
+				>
+				["at0002.1"] = <
+					text = <"*Placental site (en)">
+					description = <"*Identification of the area of the uterus where the placenta/placental mass is located. (en)">
+				>
+				["at0003.1"] = <
+					text = <"*Structured placental site (en)">
+					description = <"*Structured details about the area of the uterus where the placenta/placental mass is located. (en)">
+				>
+				["at0.2"] = <
+					text = <"*Thickness (en)">
+					description = <"*Measured thickness of the placenta. (en)">
+				>
+				["at0.3"] = <
+					text = <"*Umbilical cord findings (en)">
+					description = <"*Structured details about a single umbilical cord. (en)">
+				>
+				["at0000"] = <
+					text = <"Bildgebende Untersuchung einer Körperstruktur">
+					description = <"Befunde zur radiologischen Untersuchung einer bestimmten Körperstruktur oder -region.">
 				>
 				["at0002"] = <
 					text = <"Körperstelle">
@@ -344,22 +360,6 @@ ontology
 				["at0007"] = <
 					text = <"Kommentar">
 					description = <"Zusätzlicher Text über die bildgebenden Befunde der Körperstruktur, der in anderen Bereichen nicht erfasst wurde.">
-				>
-				["at0002.1"] = <
-					text = <"*Placental site (en)">
-					description = <"*Identification of the area of the uterus where the placenta/placental mass is located. (en)">
-				>
-				["at0003.1"] = <
-					text = <"*Structured placental site (en)">
-					description = <"*Structured details about the area of the uterus where the placenta/placental mass is located. (en)">
-				>
-				["at0.2"] = <
-					text = <"*Thickness (en)">
-					description = <"*Measured thickness of the placenta. (en)">
-				>
-				["at0.3"] = <
-					text = <"*Umbilical cord findings (en)">
-					description = <"*Structured details about a single umbilical cord. (en)">
 				>
 			>
 		>
