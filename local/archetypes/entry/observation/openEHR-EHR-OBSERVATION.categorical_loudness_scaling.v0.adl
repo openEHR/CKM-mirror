@@ -15,8 +15,8 @@ description
 	details = <
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"To record the loudness perception assessed by loudness scaling tests.">
-			use = <"Use to record responses to a loudness scaling measurement and/or the corresponding loudness perception curve with or without using hearing aids.">
+			purpose = <"To record the responses from a categorical loudness scaling assessment and the derived loudness perception curve.">
+			use = <"Use to record an individual's responses to a loudness scaling assessment and the corresponding loudness perception curve. Responses may be aided or unaided.">
 			keywords = <"hearing, audiology, categorial", ...>
 			misuse = <"Not to be used to record any other auditory assessment than categorical loudness scaling.
 Use the specific archetypes for these purposes.">
@@ -36,8 +36,8 @@ Hellbrück, J., & Moser, L. M. (1986). Psychophysical measurements of inner ear 
 		["original_namespace"] = <"org.highmed">
 		["original_publisher"] = <"HiGHmed">
 		["custodian_namespace"] = <"org.highmed">
-		["MD5-CAM-1.0.1"] = <"C46CD75145C8E65E86C75C0B6F030D00">
-		["build_uid"] = <"53a5be73-c19c-4737-a5ba-1c6c4eea6eba">
+		["MD5-CAM-1.0.1"] = <"1C909AB16D63B092427B94D5F29BB6EC">
+		["build_uid"] = <"fd9e3803-8c77-4288-b67c-005fe1cfd374">
 		["revision"] = <"0.0.1-alpha">
 	>
 
@@ -57,7 +57,7 @@ definition
 												list = <
 													["1"] = <
 														units = <"Hz">
-														magnitude = <|125.0..16000.0|>
+														magnitude = <|20.0..20000.0|>
 														precision = <|0|>
 													>
 													["2"] = <
@@ -69,7 +69,7 @@ definition
 											>
 										}
 									}
-									ELEMENT[at0027] matches {    -- Stimulated side
+									ELEMENT[at0027] matches {    -- Tested side
 										value matches {
 											DV_CODED_TEXT matches {
 												defining_code matches {
@@ -89,7 +89,7 @@ definition
 														property = <[openehr::123]>
 														list = <
 															["1"] = <
-																units = <"dB">
+																units = <"dB[SPL]{HL}">
 																magnitude = <|-50.0..200.0|>
 																precision = <|2|>
 															>
@@ -100,12 +100,12 @@ definition
 											ELEMENT[at0111] matches {    -- Response category
 												value matches {
 													C_DV_QUANTITY <
-														
+														property = <[openehr::755]>
 														list = <
 															["1"] = <
-																units = <"CU">
-																magnitude = <|0.0..100.0|>
-																precision = <|0|>
+																units = <"[arb'U]{CU}">
+																magnitude = <|0.0..1000.0|>
+																precision = <|1|>
 															>
 														>
 													>
@@ -125,12 +125,12 @@ definition
 													ELEMENT[at0138] matches {    -- Response category
 														value matches {
 															C_DV_QUANTITY <
-																
+																property = <[openehr::755]>
 																list = <
 																	["1"] = <
-																		units = <"CU">
-																		magnitude = <|0.0..100.0|>
-																		precision = <|0|>
+																		units = <"[arb'U]{CU}">
+																		magnitude = <|0.0..1000.0|>
+																		precision = <|2|>
 																	>
 																>
 															>
@@ -142,7 +142,7 @@ definition
 																property = <[openehr::123]>
 																list = <
 																	["1"] = <
-																		units = <"dB">
+																		units = <"dB[SPL]{HL}">
 																		magnitude = <|-50.0..200.0|>
 																		precision = <|0|>
 																	>
@@ -160,10 +160,10 @@ definition
 											ELEMENT[at0103] occurrences matches {0..1} matches {    -- Lower slope value
 												value matches {
 													C_DV_QUANTITY <
-														
+														property = <[openehr::755]>
 														list = <
 															["1"] = <
-																units = <"CU/dB">
+																units = <"[arb'U]{CU}/dB[SPL]{HL}">
 																magnitude = <|0.0..100.0|>
 																precision = <|0|>
 															>
@@ -174,15 +174,20 @@ definition
 											ELEMENT[at0149] occurrences matches {0..1} matches {    -- Upper slope value
 												value matches {
 													C_DV_QUANTITY <
-														
+														property = <[openehr::755]>
 														list = <
 															["1"] = <
-																units = <"CU/dB">
+																units = <"[arb'U]{CU}/dB[SPL]{HL}">
 																magnitude = <|0.0..100.0|>
 																precision = <|0|>
 															>
 														>
 													>
+												}
+											}
+											ELEMENT[at0150] occurrences matches {0..1} matches {    -- Curve comment
+												value matches {
+													DV_TEXT matches {*}
 												}
 											}
 										}
@@ -192,22 +197,9 @@ definition
 											DV_TEXT matches {*}
 										}
 									}
-									ELEMENT[at0150] occurrences matches {0..1} matches {    -- Curve comment
-										value matches {
-											DV_TEXT matches {*}
-										}
-									}
-									ELEMENT[at0154] occurrences matches {0..1} matches {    -- No test result
-										value matches {
-											DV_BOOLEAN matches {
-												value matches {true}
-											}
-										}
-									}
-									ELEMENT[at0155] occurrences matches {0..1} matches {    -- Reason for no test result
-										value matches {
-											DV_TEXT matches {*}
-										}
+									allow_archetype CLUSTER[at0157] occurrences matches {0..*} matches {    -- No test result
+										include
+											archetype_id/value matches {/openEHR-EHR-CLUSTER\.exclusion_exam\.v1/}
 									}
 								}
 							}
@@ -297,7 +289,8 @@ definition
 									at0080,    -- Narrowband noise
 									at0081,    -- Pulsed pure tone
 									at0127,    -- Broadband noise
-									at0135]    -- Natural sound
+									at0135,    -- Natural sound
+									at0156]    -- Low-noise narrowband noise
 								}
 							}
 							DV_TEXT matches {*}
@@ -325,10 +318,6 @@ definition
 						include
 							archetype_id/value matches {/openEHR-EHR-CLUSTER\.device\.v1/}
 					}
-					allow_archetype CLUSTER[at0061] occurrences matches {0..1} matches {    -- Extension
-						include
-							archetype_id/value matches {/.*/}
-					}
 				}
 			}
 		}
@@ -341,7 +330,7 @@ ontology
 			items = <
 				["at0000"] = <
 					text = <"Categorical loudness scaling">
-					description = <"A psychoacoustic method used to categorise and quantify an individual's perception of sound at various levels of loudness across the dynamic range of hearing.">
+					description = <"A psychophysical method used to assess an individual's perception of loudness to acoustic stimuli of varying levels.">
 				>
 				["at0001"] = <
 					text = <"History">
@@ -356,8 +345,8 @@ ontology
 					description = <"@ internal @">
 				>
 				["at0027"] = <
-					text = <"Stimulated side">
-					description = <"Identification of the ear(s) to which the test stimulus is being presented.">
+					text = <"Tested side">
+					description = <"Identification of the tested ear(s).">
 				>
 				["at0028"] = <
 					text = <"Right ear">
@@ -384,11 +373,6 @@ ontology
 				["at0060"] = <
 					text = <"Item tree">
 					description = <"@ internal @">
-				>
-				["at0061"] = <
-					text = <"Extension">
-					description = <"Additional information required to extend the model with local content or to align with other reference models or formalisms.">
-					comment = <"For example: local information requirements; or additional metadata to align with FHIR.">
 				>
 				["at0069"] = <
 					text = <"Test environment">
@@ -480,7 +464,7 @@ If the type of noise is a tone or a narrowband noise, use 'Frequency of test sti
 				>
 				["at0126"] = <
 					text = <"Free-field">
-					description = <"Room with free-field characteristics.">
+					description = <"Room with free-field characteristics, also called 'anechoic room'.">
 				>
 				["at0127"] = <
 					text = <"Broadband noise">
@@ -492,7 +476,7 @@ If the type of noise is a tone or a narrowband noise, use 'Frequency of test sti
 				>
 				["at0129"] = <
 					text = <"Loudspeaker">
-					description = <"The stimulus is presented via a loudspeaker located at least one metre away from the subject.">
+					description = <"The stimulus is presented via a loudspeaker.">
 				>
 				["at0130"] = <
 					text = <"Insert earphone">
@@ -573,6 +557,7 @@ If the type of noise is a tone or a narrowband noise, use 'Frequency of test sti
 				["at0150"] = <
 					text = <"Curve comment">
 					description = <"Additional narrative about the loudness perception curve not captured in other fields.">
+					comment = <"For example: other parameters used to describe the loudness curve.">
 				>
 				["at0151"] = <
 					text = <"Confounding factors">
@@ -587,15 +572,13 @@ If the type of noise is a tone or a narrowband noise, use 'Frequency of test sti
 					text = <"Direct streaming to sound processor">
 					description = <"The stimulus is directly streamed to the sound processor of a hearing device.">
 				>
-				["at0154"] = <
-					text = <"No test result">
-					description = <"No test result is available.">
-					comment = <"Record as True if no result is available.">
+				["at0156"] = <
+					text = <"Low-noise narrowband noise">
+					description = <"The test stimulus is a low-noise narrowband noise centred on the specified frequency.">
 				>
-				["at0155"] = <
-					text = <"Reason for no test result">
-					description = <"Reason why no result is available.">
-					comment = <"Coding with an external terminology is preferred, where possible. For example: patient was not cooperative; patient was not capable; ran out of time; maximum level reached.">
+				["at0157"] = <
+					text = <"No test result">
+					description = <"">
 				>
 			>
 		>
