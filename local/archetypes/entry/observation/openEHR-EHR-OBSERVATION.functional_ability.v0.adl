@@ -1,0 +1,272 @@
+﻿archetype (adl_version=1.4; uid=32272e1d-0486-4780-89cf-17f3ea8a9d87)
+	openEHR-EHR-OBSERVATION.functional_ability.v0
+
+concept
+	[at0000]	-- Functional ability
+language
+	original_language = <[ISO_639-1::en]>
+description
+	original_author = <
+		["name"] = <"Heather Leslie">
+		["organisation"] = <"Atomica Informatics">
+		["email"] = <"heather.leslie@atomicainformatics.com">
+		["date"] = <"2025-12-09">
+	>
+	details = <
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To record an assessment of an individual’s functional ability to perform an identified activity or task at a specific point in time.">
+			use = <"Use to record an assessment of an individual’s functional ability to perform a single identified activity or task at a specific point in time. This reflects the combined impact of impairments across physical, cognitive, sensory, psychological, and social domains, as well as relevant environmental factors.
+
+The scope of functional ability includes, but is not limited to:
+- Everyday functioning - assessment of an individual’s ability to perform common activities that underpin independent living and social participation. This may guide decisions about the need for clinical, social, or other supportive interventions.
+- Functional competence - assessment of an individual’s ability to perform specific activities that may underpin risk management, certification, licensing, or formal clearance decisions in regulated or safety-critical environments. These assessments provide supporting evidence but do not represent the outcome of regulatory, occupational, or legal determinations, such as fitness to drive or medical clearance for safe return to work.
+
+Functional ability may be assessed across a range of domains such as:
+- mobility, 
+- self-care, 
+- communication, 
+- domestic life, 
+- attending work or school, 
+- community participation,
+- recognised groupings of activities, such as personal activities of daily life (pADLs) or instrumental activities of daily life (iADLs), and
+- activities performed in regulated, occupational, or safety-critical contexts. 
+
+Activities may be:
+- simple or foundational actions that can be observed as discrete tasks, such as standing up from a chair, brushing hair, or gripping a cup.
+- complex or composite activities that require a sequence of simpler actions needed to complete a broader task, such as transferring from bed to chair, preparing a meal, managing medications or driving a car.
+
+Performance or assessed ability is often context dependent and may vary due to factors such as environment, fatigue, pain, availability of equipment, or presence of support. OBSERVATION archetypes are designed to allow multiple discrete clinical assessment events to be recorded within a single OBSERVATION instance in the clinical record, through repeating combinations of data and state. This enables a clinician to capture multiple variants of the same identified activity, each performed under different conditions and recorded as a separate assessment event within a single assessment record, reflecting the impact of those conditions on the individual’s ability and level of difficulty.">
+			keywords = <"ADL", "iADL", "pADL", "capacity", "ability", "activity", "daily", "living">
+			misuse = <"Not to be used to record a functional impairment. Use the EVALUATION.functional_impairment_summary archetype for this purpose.
+
+Not to be used to record assessments of functional independence. Use the EVALUATION.functional_independence_summary archetype for this purpose.
+
+Not to be used to record the outcome of a regulatory, occupational, or legal assessment for the purposes of certification, licensing, or clearance to perform a safety-critical activity or duty, such as fitness to drive or return-to-work clearance. The need for a specific archetype for this purpose is acknowledged but has not yet been developed. 
+
+Not to be used to record generalised summary statements about an individual’s overall functional ability. The need for a specific archetype for this purpose is acknowledged but has not yet been developed.">
+			copyright = <"© openEHR Foundation">
+		>
+	>
+	lifecycle_state = <"in_development">
+	other_contributors = <>
+	other_details = <
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
+		["custodian_organisation"] = <"openEHR Foundation">
+		["references"] = <"Functional ability, Draft data group. Sparked AU FHIR accelerator, Australian Clinical Data for Interoperability Release 3.
+
+World Health Organization. International classification of functioning, disability and health (ICF) [Internet]. Geneva: World Health Organization; 2001 [cited 2026 Jan 19]. Available from: https://www.who.int/standards/classifications/international-classification-of-functioning-disability-and-health">
+		["original_namespace"] = <"org.openehr">
+		["original_publisher"] = <"openEHR Foundation">
+		["custodian_namespace"] = <"org.openehr">
+		["MD5-CAM-1.0.1"] = <"44D706C95D795DB9E73C0C6D5A08C570">
+		["build_uid"] = <"57df0733-dd19-4ded-bc99-1e9cd9927a52">
+		["revision"] = <"0.0.1-alpha">
+	>
+
+definition
+	OBSERVATION[at0000] matches {    -- Functional ability
+		data matches {
+			HISTORY[at0001] matches {    -- History
+				events cardinality matches {1..*; unordered} matches {
+					EVENT[at0002] occurrences matches {0..*} matches {    -- Any event
+						data matches {
+							ITEM_TREE[at0003] matches {    -- Tree
+								items cardinality matches {0..*; unordered} matches {
+									ELEMENT[at0004] matches {    -- Activity name
+										value matches {
+											DV_TEXT matches {*}
+										}
+									}
+									ELEMENT[at0005] occurrences matches {0..1} matches {    -- Ability
+										value matches {
+											DV_CODED_TEXT matches {
+												defining_code matches {
+													[local::
+													at0017,    -- Able
+													at0018,    -- Partially able
+													at0019,    -- Unable
+													at0020,    -- Not applicable
+													at0021]    -- Unknown
+												}
+											}
+											DV_TEXT matches {*}
+										}
+									}
+									ELEMENT[at0006] occurrences matches {0..1} matches {    -- Clinical description
+										value matches {
+											DV_TEXT matches {*}
+										}
+									}
+									ELEMENT[at0007] occurrences matches {0..1} matches {    -- Difficulty level
+										value matches {
+											DV_TEXT matches {*}
+											DV_CODED_TEXT matches {
+												defining_code matches {
+													[local::
+													at0022,    -- No difficulty
+													at0023,    -- Mild difficulty
+													at0024,    -- Moderate difficulty
+													at0025,    -- Severe difficulty
+													at0026]    -- Unknown
+												}
+											}
+										}
+									}
+									ELEMENT[at0008] occurrences matches {0..1} matches {    -- Reason for difficulty
+										value matches {
+											DV_TEXT matches {*}
+										}
+									}
+									ELEMENT[at0010] occurrences matches {0..1} matches {    -- Comment
+										value matches {
+											DV_TEXT matches {*}
+										}
+									}
+								}
+							}
+						}
+						state matches {
+							ITEM_TREE[at0013] matches {    -- Item tree
+								items cardinality matches {0..*; unordered} matches {
+									ELEMENT[at0014] occurrences matches {0..1} matches {    -- Assessment conditions
+										value matches {
+											DV_TEXT matches {*}
+										}
+									}
+									allow_archetype CLUSTER[at0015] occurrences matches {0..*} matches {    -- Assistive device
+										include
+											archetype_id/value matches {/openEHR-EHR-CLUSTER\.device(-[a-zA-Z0-9_]+)*\.v1/}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		protocol matches {
+			ITEM_TREE[at0012] matches {    -- Item tree
+				items cardinality matches {0..*; unordered} matches {
+					allow_archetype CLUSTER[at0016] occurrences matches {0..*} matches {    -- Extension
+						include
+							archetype_id/value matches {/.*/}
+					}
+				}
+			}
+		}
+	}
+
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"Functional ability">
+					description = <"An assessment of an individual’s performance of an single activity at a specific point in time.">
+				>
+				["at0001"] = <
+					text = <"History">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Any event">
+					description = <"Default, unspecified point-in-time or interval event which may be explicitly defined in a template or at run-time.">
+				>
+				["at0003"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0004"] = <
+					text = <"Activity name">
+					description = <"The name of the activity or task.">
+					comment = <"Coding with an external terminology is recommended.  Free text entry should only be permitted if no appropriate coded value is available. For example: Mobility - Roll over in bed, Transfer bed to chair, Walking up stairs; Self-care - Brushing teeth, Putting on footwear, Menstrual care; Communication - Reading, Speaking, Writing; Domestic life - Shopping for food, Cleaning the kitchen, Washing clothes; Attending work or school - Use public transport, Seeking a job; 	Community participation - Play sport, Join a club, Attend the theatre.
+">
+				>
+				["at0005"] = <
+					text = <"Ability">
+					description = <"The assessed level of performance of the identified activity by the individual.">
+					comment = <"Coding with an external terminology is recommended.  Free text entry should only be permitted if no appropriate coded value is available.">
+				>
+				["at0006"] = <
+					text = <"Clinical description">
+					description = <"Narrative description about the individual's ability to perform the identified activity.">
+				>
+				["at0007"] = <
+					text = <"Difficulty level">
+					description = <"The observed degree of difficulty experienced by the individual when performing the identified activity.">
+				>
+				["at0008"] = <
+					text = <"Reason for difficulty">
+					description = <"Narrative description about the difficulty experienced by the individual when performing the activity.">
+				>
+				["at0010"] = <
+					text = <"Comment">
+					description = <"Additional narrative about the performance of the identified activity, not captured in other fields.">
+				>
+				["at0012"] = <
+					text = <"Item tree">
+					description = <"@ internal @">
+				>
+				["at0013"] = <
+					text = <"Item tree">
+					description = <"@ internal @">
+				>
+				["at0014"] = <
+					text = <"Assessment conditions">
+					description = <"Narrative description of the circumstances under which an assessment is performed, to support interpretation of the observed assessment results.">
+					comment = <"For example: describing the environment, method, or situation in which the assessment was carried out.">
+				>
+				["at0015"] = <
+					text = <"Assistive device">
+					description = <"Structured detail about one or more assistive devices used by the individual while performing the activity.">
+				>
+				["at0016"] = <
+					text = <"Extension">
+					description = <"Additional information required to extend the model with local content or to align with other reference models or formalisms.">
+					comment = <"For example: local information requirements; or additional metadata to align with FHIR.">
+				>
+				["at0017"] = <
+					text = <"Able">
+					description = <"The individual can perform the activity.">
+				>
+				["at0018"] = <
+					text = <"Partially able">
+					description = <"The individual can perform the activity to a limited extent.">
+				>
+				["at0019"] = <
+					text = <"Unable">
+					description = <"The individual cannot perform the activity.">
+				>
+				["at0020"] = <
+					text = <"Not applicable">
+					description = <"The activity is not relevant to the individual in the given context.">
+				>
+				["at0021"] = <
+					text = <"Unknown">
+					description = <"The individual’s level of performance of the identified activity is not known.">
+				>
+				["at0022"] = <
+					text = <"No difficulty">
+					description = <"The individual experiences no difficulty when performing the activity.">
+				>
+				["at0023"] = <
+					text = <"Mild difficulty">
+					description = <"The individual experiences a low degree of difficulty when performing the activity.">
+				>
+				["at0024"] = <
+					text = <"Moderate difficulty">
+					description = <"The individual experiences a significant degree of difficulty when performing the activity.">
+				>
+				["at0025"] = <
+					text = <"Severe difficulty">
+					description = <"The individual experiences a high difficulty when performing the activity.">
+				>
+				["at0026"] = <
+					text = <"Unknown">
+					description = <"The degree of difficulty experienced by the individual when performing the activity is not known.">
+				>
+			>
+		>
+	>
