@@ -1,0 +1,173 @@
+﻿archetype (adl_version=1.4; uid=7e84645f-10f8-47a9-a8ca-657ce93c8096)
+	openEHR-EHR-EVALUATION.limb_dominance.v0
+
+concept
+	[at0000]	-- Limb dominance
+language
+	original_language = <[ISO_639-1::en]>
+description
+	original_author = <
+		["name"] = <"Martin Milde">
+		["organisation"] = <"Helse Vest IKT">
+		["email"] = <"martin.milde@helse-vest-ikt.no">
+		["date"] = <"2026-01-09">
+	>
+	details = <
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To record a patient's natural preference for using a specific hand and/or foot for various motor tasks.">
+			use = <"Use to record a patient's natural preference for using a specific hand and/or foot for various motor tasks.">
+			keywords = <"handedness, footedness, right handed, left handed, right legged, left legged, laterality", ...>
+			misuse = <"Not to be used to record other aspects of human laterality, such as dominant eye or ear. A separate archetype is intended for this use case but was not available at the time of authoring or publication.">
+			copyright = <"© openEHR Foundation">
+		>
+	>
+	lifecycle_state = <"in_development">
+	other_contributors = <>
+	other_details = <
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
+		["custodian_organisation"] = <"openEHR Foundation">
+		["references"] = <"Papadatou-Pastou M, Ntolka E, Schmitz J, Martin M, Munafò MR, Ocklenburg S, Paracchini S. Human handedness: A meta-analysis. Psychol Bull. 2020 Jun;146(6):481-524. doi:10.1037/bul0000229. Epub 2020 Apr 2. PMID: 32237881.
+
+Oldfield RC. The assessment and analysis of handedness: the Edinburgh inventory. Neuropsychologia. 1971 Mar;9(1):97-113. doi:10.1016/0028-3932(71)90067-4. PMID: 5146491.">
+		["original_namespace"] = <"org.openehr">
+		["original_publisher"] = <"openEHR Foundation">
+		["custodian_namespace"] = <"org.openehr">
+		["MD5-CAM-1.0.1"] = <"5D23928AF297B7F1D426DA6A7A09EF85">
+		["build_uid"] = <"b83f9925-3643-4aad-af7d-1c80adb2c9b3">
+		["revision"] = <"0.0.1-alpha">
+	>
+
+definition
+	EVALUATION[at0000] matches {    -- Limb dominance
+		data matches {
+			ITEM_TREE[at0001] matches {    -- Item tree
+				items cardinality matches {0..*; unordered} matches {
+					ELEMENT[at0002] occurrences matches {0..1} matches {    -- Handedness
+						value matches {
+							DV_CODED_TEXT matches {
+								defining_code matches {
+									[local::
+									at0003,    -- Right Handed
+									at0004,    -- Left Handed
+									at0005,    -- Ambidextrous
+									at0006]    -- Cross Dominant
+								}
+							}
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0008] occurrences matches {0..1} matches {    -- Footedness
+						value matches {
+							DV_CODED_TEXT matches {
+								defining_code matches {
+									[local::
+									at0009,    -- Right Footed
+									at0010,    -- Left Footed
+									at0011,    -- Ambipedal
+									at0012]    -- Cross Dominant
+								}
+							}
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0016] occurrences matches {0..1} matches {    -- Assessment Method
+						value matches {
+							DV_TEXT matches {*}
+							DV_CODED_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0013] occurrences matches {0..1} matches {    -- Comment
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+				}
+			}
+		}
+		protocol matches {
+			ITEM_TREE[at0014] matches {    -- Item tree
+				items cardinality matches {0..*; unordered} matches {
+					allow_archetype CLUSTER[at0015] occurrences matches {0..*} matches {    -- Extension
+						include
+							archetype_id/value matches {/.*/}
+					}
+				}
+			}
+		}
+	}
+
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"Limb dominance">
+					description = <"Limb dominance is a patient's natural preference for a specific hand and/or foot for performing various motor tasks.">
+				>
+				["at0001"] = <
+					text = <"Item tree">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Handedness">
+					description = <"Which hand the individual typically uses for common tasks.">
+				>
+				["at0003"] = <
+					text = <"Right Handed">
+					description = <"The individual primarily uses their right hand.">
+				>
+				["at0004"] = <
+					text = <"Left Handed">
+					description = <"The individual primarily uses their left hand.">
+				>
+				["at0005"] = <
+					text = <"Ambidextrous">
+					description = <"The individual uses both hands equally.">
+				>
+				["at0006"] = <
+					text = <"Cross Dominant">
+					description = <"The individual uses different hands depending on the task, such as writing with their right, while using a hammer with their left.">
+				>
+				["at0008"] = <
+					text = <"Footedness">
+					description = <"Which foot the individual typically uses for common tasks.">
+				>
+				["at0009"] = <
+					text = <"Right Footed">
+					description = <"The individual primarily uses their right foot.">
+				>
+				["at0010"] = <
+					text = <"Left Footed">
+					description = <"The individual primarily uses their left foot.">
+				>
+				["at0011"] = <
+					text = <"Ambipedal">
+					description = <"The individual uses both feet equally.">
+				>
+				["at0012"] = <
+					text = <"Cross Dominant">
+					description = <"The individual uses different foot depending on the task, such as kicking with their right, while pushing off with their left.">
+				>
+				["at0013"] = <
+					text = <"Comment">
+					description = <"Additional narrative about the limb dominance, not captured in other fields.">
+				>
+				["at0014"] = <
+					text = <"Item tree">
+					description = <"@ internal @">
+				>
+				["at0015"] = <
+					text = <"Extension">
+					description = <"Additional information required to capture local context or to align with other reference models/formalisms.">
+					comment = <"For example: Local hospital departmental infomation or additional metadata to align with FHIR or CIMI equivalents.">
+				>
+				["at0016"] = <
+					text = <"Assessment Method">
+					description = <"The method used to acertain the patient's handedness/footedness.">
+					comment = <"For example: Edinburgh Handedness Inventory.">
+				>
+			>
+		>
+	>
