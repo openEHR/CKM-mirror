@@ -2,7 +2,7 @@
 	openEHR-EHR-OBSERVATION.hand_grip_strength.v0
 
 concept
-	[at0000]	-- Hand grip strength
+	[at0000]	-- Handgrip strength
 language
 	original_language = <[ISO_639-1::en]>
 	translations = <
@@ -24,16 +24,16 @@ description
 			language = <[ISO_639-1::nb]>
 			purpose = <"For å registrere et individs håndgrepsstyrke.">
 			use = <"Brukes for å registrere et individs håndgrepsstyrke.">
-			keywords = <"Gripestyrke, håndgrepsstyrke, muskelstyrke, styrke i overekstremitetene, dynamometer, skrøpelighet, sarkopeni, funksjonsstatus, fysisk funksjon, rehabilitering, fysioterapi, ergoterapi", ...>
-			misuse = <"Skal ikke brukes for å registrere generell muskelstyrke, styrke i andre muskelgrupper eller helkroppsstyrke, ikke-målt eller estimert håndstyrke, eller andre typer hånd- eller gripestyrke som nøkkelklypestyrke, fingertuppklypestyrke eller trepunktsklypestyrke.">
+			keywords = <"Gripestyrke, grepstyrke, håndgrepsstyrke, muskelstyrke, styrke i overekstremitetene, dynamometer, skrøpelighet, håndfunksjon, funksjonsstatus, fysisk funksjon, rehabilitering, fysioterapi, ergoterapi", ...>
+			misuse = <"Brukes ikke for å registrere estimert eller ikke‑målt håndgrepstyrke. Brukes ikke for å registrere andre gripestyrker som nøkkelklypestyrke, fingertuppklypestyrke eller trepunktsklypestyrke. Behovet for egne arketyper for disse formålene er anerkjent, men slike arketyper var ikke tilgjengelige da denne arketypen ble publisert.">
 			copyright = <"© openEHR Foundation">
 		>
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"To record the measured hand grip strength of an individual, typically using a hand dynamometer.">
-			use = <"Use to record the measured hand grip strength of an individual, typically using a hand dynamometer.">
-			keywords = <"grip strength, handgrip strength, muscle strength, upper limp strength, dynamometer, frailty, sarcopenia, functional status, physical performance, rehabilitation, physiotherapy, occupational therapy", ...>
-			misuse = <"Not to be used to record general muscle strength, strength of other muscle groups or whole-body strength, non-measured or estimated hand strength, or other types of hand or grip strength such as lateral pinch, tip pinch, or three-jaw chuck pinch.">
+			purpose = <"To record the measured handgrip strength of an individual, typically using a hand dynamometer.">
+			use = <"Use to record the measured handgrip strength of an individual, typically using a hand dynamometer.">
+			keywords = <"grip strength, grip, strength, handgrip strength, muscle strength, upper limp strength, dynamometer, frailty, functional status, hand function, physical performance, rehabilitation, physiotherapy, occupational therapy", ...>
+			misuse = <"Not to be used to record estimated or non‑measured handgrip strength. Not to be used to record other grip types such as lateral pinch, tip pinch, or three‑jaw chuck pinch. The need for a specific archetypes for these purposes is acknowledged but had not yet been developed at the time of the publication of this archetype.">
 		>
 	>
 	lifecycle_state = <"in_development">
@@ -45,20 +45,18 @@ description
 
 Lee SH, Gong HS. Measurement and Interpretation of Handgrip Strength for Research on Sarcopenia and Osteoporosis [Internet]. J Bone Metab. 2020 May;27(2):85–96. Available from: https://pubmed.ncbi.nlm.nih.gov/32572369/
 
-Peters MJ, van Nes SI, Vanhoutte EK, Bakkers M, van Doorn PA, Merkies IS, Faber CG. Revised normative values for grip strength with the Jamar dynamometer [Internet]. J Peripher Nerv Syst. 2011 Mar;16(1):47–50. Available from: https://pubmed.ncbi.nlm.nih.gov/21504502/
-
-">
+Peters MJ, van Nes SI, Vanhoutte EK, Bakkers M, van Doorn PA, Merkies IS, Faber CG. Revised normative values for grip strength with the Jamar dynamometer [Internet]. J Peripher Nerv Syst. 2011 Mar;16(1):47–50. Available from: https://pubmed.ncbi.nlm.nih.gov/21504502/">
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"7668828A049FB1FB35FB504756B257E7">
-		["build_uid"] = <"d11da075-b96b-4089-97ce-9c33d6d27e1a">
+		["MD5-CAM-1.0.1"] = <"3039671E9F72571DB1A312EC5D2F470C">
+		["build_uid"] = <"1348f588-62fc-4cc0-9ae5-b7cdcf9beee7">
 		["ip_acknowledgements"] = <"This artefact includes content from SNOMED Clinical Terms® (SNOMED CT®) which is copyrighted material of the International Health Terminology Standards Development Organisation (IHTSDO). Where an implementation of this artefact makes use of SNOMED CT content, the implementer must have the appropriate SNOMED CT Affiliate license - for more information contact https://www.snomed.org/snomed-ct/get-snomed or info@snomed.org.">
 		["revision"] = <"0.0.1-alpha">
 	>
 
 definition
-	OBSERVATION[at0000] matches {    -- Hand grip strength
+	OBSERVATION[at0000] matches {    -- Handgrip strength
 		data matches {
 			HISTORY[at0001] matches {    -- History
 				events cardinality matches {1..*; unordered} matches {
@@ -88,9 +86,11 @@ definition
 													>
 													["2"] = <
 														units = <"[lbf_av]">
+														magnitude = <|>=0.0|>
 													>
 													["3"] = <
 														units = <"N">
+														magnitude = <|>=0.0|>
 													>
 												>
 											>
@@ -109,22 +109,6 @@ definition
 								items cardinality matches {0..*; unordered} matches {
 									ELEMENT[at0019] occurrences matches {0..1} matches {    -- Confounding factors
 										value matches {
-											DV_CODED_TEXT matches {*}
-											DV_TEXT matches {*}
-										}
-									}
-									ELEMENT[at0025] occurrences matches {0..1} matches {    -- Body position
-										value matches {
-											DV_CODED_TEXT matches {
-												defining_code matches {
-													[local::
-													at0026,    -- Standing
-													at0027,    -- Wheelchair sitting
-													at0028,    -- Semi-recumbant
-													at0029,    -- Supine
-													at0030]    -- Other
-												}
-											}
 											DV_TEXT matches {*}
 										}
 									}
@@ -168,7 +152,7 @@ definition
 		protocol matches {
 			ITEM_TREE[at0011] matches {    -- Item tree
 				items cardinality matches {0..*; unordered} matches {
-					ELEMENT[at0032] occurrences matches {0..1} matches {    -- Protocol
+					ELEMENT[at0032] occurrences matches {0..1} matches {    -- Measurement protocol
 						value matches {
 							DV_CODED_TEXT matches {
 								defining_code matches {
@@ -181,7 +165,26 @@ definition
 							DV_TEXT matches {*}
 						}
 					}
-					allow_archetype CLUSTER[at0010] occurrences matches {0..1} matches {    -- Device
+					ELEMENT[at0039] occurrences matches {0..1} matches {    -- Grip span
+						value matches {
+							C_DV_QUANTITY <
+								property = <[openehr::122]>
+								list = <
+									["1"] = <
+										units = <"cm">
+										magnitude = <|0.0..<100.0|>
+										precision = <|1|>
+									>
+									["2"] = <
+										units = <"mm">
+										magnitude = <|0.0..<1000.0|>
+									>
+								>
+							>
+							DV_TEXT matches {*}
+						}
+					}
+					allow_archetype CLUSTER[at0010] occurrences matches {0..1} matches {    -- Measuring device
 						include
 							archetype_id/value matches {/.*|openEHR-EHR-CLUSTER\.device(-[a-zA-Z0-9_]+)*\.v1/}
 					}
@@ -201,8 +204,8 @@ ontology
 		["en"] = <
 			items = <
 				["at0000"] = <
-					text = <"Hand grip strength">
-					description = <"Measurement of hand grip strength.">
+					text = <"Handgrip strength">
+					description = <"The maximum voluntary isometric force generated by the muscles of the hand and forearm during a gripping action, usually measured with a hand-held dynamometer.">
 				>
 				["at0001"] = <
 					text = <"History">
@@ -230,14 +233,14 @@ ontology
 				>
 				["at0007"] = <
 					text = <"Grip strength">
-					description = <"The maximum voluntary isometric force generated during a brief maximal squeeze of the selected hand.">
+					description = <"The measured maximum voluntary force produced during a handgrip.">
 				>
 				["at0008"] = <
 					text = <"Comment">
 					description = <"Additional narrative about the grip strength not captured in other fields.">
 				>
 				["at0010"] = <
-					text = <"Device">
+					text = <"Measuring device">
 					description = <"Details about the device used to measure the grip strength.">
 				>
 				["at0011"] = <
@@ -250,40 +253,17 @@ ontology
 				>
 				["at0019"] = <
 					text = <"Confounding factors">
-					description = <"Comment on and record other incidental factors that may be contributing to the hand grip strength measurement. For example pain, musculoskeletal conditions, fatigue, etc.">
+					description = <"Issues or factors that may impact on the measurement of grip strength, not captured in other fields.">
+					comment = <"For example: pain, musculoskeletal conditions, fatigue, or deviations from a measurement protocol.">
 				>
 				["at0024"] = <
 					text = <"Extension">
 					description = <"Additional information required to extend the model with local content or to align with other reference models or formalisms.">
 					comment = <"For example: local information requirements; or additional metadata to align with FHIR.">
 				>
-				["at0025"] = <
-					text = <"Body position">
-					description = <"The position of the individual at the time of measurement.">
-				>
-				["at0026"] = <
-					text = <"Standing">
-					description = <"Standing at the time of measurement.">
-				>
-				["at0027"] = <
-					text = <"Wheelchair sitting">
-					description = <"Seated in a wheelchair at the time of measurement.">
-				>
-				["at0028"] = <
-					text = <"Semi-recumbant">
-					description = <"Partially reclined at the time of measurement.">
-				>
-				["at0029"] = <
-					text = <"Supine">
-					description = <"Lying flat at the time of measurement.">
-				>
-				["at0030"] = <
-					text = <"Other">
-					description = <"A posture not covered by the predefined options, such as side-lying or other non-standard positions.">
-				>
 				["at0032"] = <
-					text = <"Protocol">
-					description = <"Specification of the protocol or standardized method used to measure grip strength during the assessment">
+					text = <"Measurement protocol">
+					description = <"Specification of the protocol or standardized method used to measure handgrip strength during the assessment.">
 				>
 				["at0034"] = <
 					text = <"NIHR Southampton Biomedial Research Centre">
@@ -291,11 +271,11 @@ ontology
 				>
 				["at0035"] = <
 					text = <"Maximum grip strength">
-					description = <"Maximum grip strength measured from a series of repeated assessments, recorded as the highest value achieved under standardized testing conditions.">
+					description = <"Maximum grip strength calculated from a series of measurements, recorded as the highest value achieved under standardised testing conditions.">
 				>
 				["at0036"] = <
 					text = <"Mean grip strength">
-					description = <"Average grip strength measured from a series of repeated assessments, recorded as the mean value achieved under standardized testing conditions.">
+					description = <"Mean grip strength calculated from a series of measurements, recorded as the mean value achieved under standardised testing conditions.">
 				>
 				["at0037"] = <
 					text = <"Jamar Standard Position (American Society of Hand Therapists)">
@@ -305,13 +285,18 @@ ontology
 					text = <"NIH Toolbox Grip Strength Test">
 					description = <"">
 				>
+				["at0039"] = <
+					text = <"Grip span">
+					description = <"The actual distance between the handles of the dynamometer at the time of measurement.">
+					comment = <"May be recorded as a continuous length in centimetres or millimeters, or as a coded manufacturer‑defined setting for instruments that do not provide a numerical distance.">
+				>
 			>
 		>
 		["nb"] = <
 			items = <
 				["at0000"] = <
 					text = <"Håndgrepsstyrke">
-					description = <"Måling av håndgrepsstyrke.">
+					description = <"Den maksimale viljestyrte isometriske kraften som genereres av musklene i hånd og underarm under et håndgrep, vanligvis målt med et håndholdt dynamometer.">
 				>
 				["at0001"] = <
 					text = <"History">
@@ -339,7 +324,7 @@ ontology
 				>
 				["at0007"] = <
 					text = <"Gripestyrke">
-					description = <"Den maksimale viljestyrte isometriske kraften som produseres under et kortvarig maksimalt grep med den valgte hånden.">
+					description = <"Den målte maksimale viljestyrte kraften som genereres ved et håndgrep.">
 				>
 				["at0008"] = <
 					text = <"Kommentar">
@@ -347,7 +332,7 @@ ontology
 				>
 				["at0010"] = <
 					text = <"Måleapparat">
-					description = <"Detaljer om utstyret som ble brukt til å måle gripestyrken.">
+					description = <"Detaljer om utstyret som ble brukt til å måle håndgrepsstyrken.">
 				>
 				["at0011"] = <
 					text = <"Item tree">
@@ -359,60 +344,42 @@ ontology
 				>
 				["at0019"] = <
 					text = <"Konfunderende faktorer">
-					description = <"Kommentar til og registrering av andre faktorer som kan påvirke målingen av håndgripsstyrke. For eksempel smerter, muskel- og skjelettlidelser, tretthet osv.">
+					description = <"Problemer eller faktorer som kan påvirke målingen av håndgrepsstyrke, som ikke fanges opp i andre felt.">
+					comment = <"For eksempel: smerte, muskel‑ og skjelettlidelser, tretthet eller avvik fra en måleprotokoll.">
 				>
 				["at0024"] = <
 					text = <"Tilleggsinformasjon">
 					description = <"Ytterligere informasjon som trengs for å kunne registrere lokalt definert innhold eller for å tilpasse til andre referansemodeller/formalismer.">
 					comment = <"For eksempel lokale informasjonsbehov eller ytterligere metadata for å kunne tilpasse til tilsvarende konsepter i FHIR eller CIMI.">
 				>
-				["at0025"] = <
-					text = <"Kroppsposisjon">
-					description = <"Individets posisjon ved tidspunktet for målingen.">
-				>
-				["at0026"] = <
-					text = <"Stående">
-					description = <"Stående ved måletidspunkt.">
-				>
-				["at0027"] = <
-					text = <"Sittende i rullestol">
-					description = <"Sittende i rullestol ved måletidspunktet.">
-				>
-				["at0028"] = <
-					text = <"Tilbakelent">
-					description = <"Delvis tilbakelent ved måletidspunktet.">
-				>
-				["at0029"] = <
-					text = <"Liggende">
-					description = <"Liggende flatt på ryggen ved måletidspunktet.">
-				>
-				["at0030"] = <
-					text = <"Annet">
-					description = <"Posisjon som ikke dekkes av de forhåndsdefinerte alternativene, for eksempel sideleie eller andre ikke-standardiserte stillinger.">
-				>
 				["at0032"] = <
-					text = <"Protokoll">
-					description = <"Spesifikasjon av protokollen eller den standardiserte metoden som ble brukt til å måle gripestyrke under vurderingen.">
+					text = <"Protokoll for måling">
+					description = <"Spesifikasjon av protokollen eller den standardiserte metoden som ble brukt til å måle håndgrepsstyrke under vurderingen.">
 				>
 				["at0034"] = <
-					text = <"*NIHR Southampton Biomedial Research Centre (en)">
+					text = <"NIHR Southampton Biomedial Research Centre">
 					description = <"">
 				>
 				["at0035"] = <
-					text = <"Maksimal gripestyrke">
-					description = <"Maksimal gripestyrke målt i en serie gjentatte vurderinger, registrert som den høyeste verdien oppnådd under standardiserte testbetingelser.">
+					text = <"Maksimal håndgrepsstyrke">
+					description = <"Maksimal gripe­styrke beregnet fra en serie målinger, registrert som den høyeste verdien oppnådd under standardiserte testforhold.">
 				>
 				["at0036"] = <
-					text = <"Gjennomsnittlig gripestyrke">
-					description = <"Gjennomsnittlig gripestyrke målt i en serie gjentatte vurderinger, registrert som middelverdien oppnådd under standardiserte testbetingelser.">
+					text = <"Gjennomsnittlig håndgrepsstyrke">
+					description = <"Gjennomsnittlig gripestyrke beregnet fra en serie målinger, registrert som gjennomsnittsverdien oppnådd under standardiserte testforhold.">
 				>
 				["at0037"] = <
-					text = <"*Jamar Standard Position (American Society of Hand Therapists) (en)">
+					text = <"Jamar Standard Position (American Society of Hand Therapists)">
 					description = <"">
 				>
 				["at0038"] = <
-					text = <"*NIH Toolbox Grip Strength Test (en)">
+					text = <"NIH Toolbox Grip Strength Test">
 					description = <"">
+				>
+				["at0039"] = <
+					text = <"Gripespenn">
+					description = <"Den faktiske avstanden mellom håndtakene på dynamometeret ved måletidspunktet.">
+					comment = <"Kan registreres som en kontinuerlig lengde i centimeter eller millimeter, eller som en kodet produsentdefinert innstilling for instrumenter som ikke angir en numerisk avstand.">
 				>
 			>
 		>
