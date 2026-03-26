@@ -15,18 +15,14 @@ description
 	details = <
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"To record an assessment of an individual’s functional ability to independently perform an identified activity or task at a specific point in time.">
-			use = <"Use to record an assessment of an individual’s ability to perform an activity independently at a specific point in time, reflecting the combined impact of impairments and contextual factors across physical, sensory, cognitive, emotional, or social domains. 
+			purpose = <"To record an assessment of an individual’s functional ability to perform an activity independently at a point in time.">
+			use = <"Use to record an assessment of an individual’s functional ability to perform an activity independently at a point in time, reflecting the impact of impairments and contextual qualifiers relevant at the time. Within this archetype, independence is defined using an ICF lens: an individual is considered independent when performing the activity without any assistance from another person, including when using personal tools or assistive devices such as a smartphone reminder, glasses, hearing aids, mobility aids, or a support animal.
 
 This archetype is one of a set of three related archetypes designed to represent different aspects of how an individual functions in everyday life. Together, these archetypes support a structured representation of functional ability, the underlying impairments that may contribute to functional limitations and the supports required to enable or assist an individual to perform an activity. The other archetypes are: 
 - EVALUATION.functional_impairment_summary and 
 - EVALUATION.functional_support_requirements. 
 
-The scope of this archetype is to support assessment of three complementary aspects of functional ability: whether the individual can perform the activity (ability), how difficult it is for them to do so (difficulty), and whether supervision, physical or cognitive help from another person is required (assistance).
-
-Within this archetype, ability is assessed based on the individual's independent performance of the activity. Independence is interpreted through an ICF lens: an individual is considered independent when performing an activity without supervision or assistance from another person, even when personal tools or assistive devices are used, such as a smartphone reminder, glasses, hearing aids, mobility aids, or a support animal. Ability, difficulty, and independence represent complementary but distinct aspects of functional performance. An individual may be able to perform an activity independently while experiencing substantial difficulty, which may indicate emerging functional decline or increased support requirements.
-
-Performance of an activity is often context dependent and may vary due to factors such as environment, fatigue, pain, or availability of assistive devices. Where an activity is performed under different conditions, such as with and without an assistive device, repeating pairs of state and data may be recorded in the same instance of the archetype. This allows multiple variants of the same activity to be captured during a single assessment, reflecting the impact of differing conditions on the individual’s ability and level of difficulty.
+ Performance of an activity is often context dependent and may vary due to factors such as environment, fatigue, pain, or availability of assistive devices. Where an activity is performed under different conditions, such as with and without an assistive device, repeating pairs of state and data may be recorded in the same instance of the archetype. This allows multiple variants of the same activity to be captured during a single assessment, reflecting the impact of differing conditions on the individual’s ability and level of difficulty.
 
 The scope of functional ability includes:
 - Everyday functioning - assessment of the individual’s ability to perform common activities that underpin independent living and social interaction. This may identify the need for supportive interventions.
@@ -46,9 +42,9 @@ Activities may be:
 - Simple or foundational actions that can be observed as discrete tasks, such as standing up from a chair, brushing hair, or gripping a cup.
 - Complex or composite activities that require a sequence of simpler actions to complete a broader task, such as transferring from bed to chair, preparing a meal, managing medications, or driving a car.">
 			keywords = <"ADL", "iADL", "pADL", "capacity", "ability", "activity", "daily", "living">
-			misuse = <"Not to be used to record a functional impairment. Use the EVALUATION.functional_impairment_summary archetype for this purpose.
+			misuse = <"Not to be used to record a loss or abnormality affecting a body function or body structure that limits an individual’s functional ability. Use the EVALUATION.functional_impairment_summary archetype for this purpose.
 
-Not to be used to record assessments of functional support requirements. Use the EVALUATION.functional_support_requirements archetype for this purpose.
+Not to be used to record assessments of the supports needed to enable or assist an individual in performing an activity. Use the EVALUATION.functional_support_requirements archetype for this purpose.
 
 Not to be used to record the outcome of a regulatory, occupational, or legal assessment for certification, licensing, or clearance to perform a safety-critical activity or duty, such as fitness to drive or return-to-work clearance. Assessments recorded using this archetype may provide supporting evidence for such determinations but do not represent the outcome of those decisions.
 
@@ -67,8 +63,8 @@ World Health Organization. International classification of functioning, disabili
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"30493D56B180154D46EC42D85532F404">
-		["build_uid"] = <"5dfb6b02-1b9f-40b1-b80e-16152189f32f">
+		["MD5-CAM-1.0.1"] = <"AB8DDD7C824D55544E3E280D04F4E5E6">
+		["build_uid"] = <"7a8278c5-aaad-4460-ace0-7e9298290a16">
 		["revision"] = <"0.0.1-alpha">
 	>
 
@@ -148,6 +144,11 @@ definition
 										include
 											archetype_id/value matches {/openEHR-EHR-CLUSTER\.device(-[a-zA-Z0-9_]+)*\.v1/}
 									}
+									ELEMENT[at0030] occurrences matches {0..1} matches {    -- Confounding factors
+										value matches {
+											DV_TEXT matches {*}
+										}
+									}
 								}
 							}
 						}
@@ -174,7 +175,7 @@ ontology
 			items = <
 				["at0000"] = <
 					text = <"Functional ability">
-					description = <"An assessment of an individual’s ability to perform an activity independently at a specific point in time.">
+					description = <"An assessment of an individual’s functional ability to perform an activity without assistance from another person at a point in time.">
 					comment = <"Throughout this archetype, the phrase ‘perform an activity’, or similar, refers to carrying out a single activity or a grouping of related activities, or participating in an everyday life situation.
 ">
 				>
@@ -197,7 +198,7 @@ ontology
 				>
 				["at0005"] = <
 					text = <"Ability level">
-					description = <"The assessed level at which the individual can perform the activity without supervision or assistance from another person.">
+					description = <"The assessed level at which the individual can perform the activity without assistance from another person.">
 					comment = <"An individual may be able to perform the activity independently while still experiencing substantial difficulty. The degree of difficulty experienced when performing the activity independently is recorded separately using the 'Difficulty level'. Coding with an external terminology is recommended.  Free text entry should only be permitted if no appropriate coded value is available. Note: Ability and difficulty represent complementary assessments of the individual's performance of the activity.">
 				>
 				["at0006"] = <
@@ -207,7 +208,7 @@ ontology
 				["at0007"] = <
 					text = <"Difficulty level">
 					description = <"The degree of difficulty experienced by the individual when performing the activity independently.">
-					comment = <"Difficulty may be present even when the individual is able to perform the activity completely independently and may indicate a need for increased functional support or adaptation. Coding with an external terminology is recommended.  Free text entry should only be permitted if no appropriate coded value is available.">
+					comment = <"Increased time or effort beyond what is expected for the individual to perform the activity may indicate difficulty, even when the activity is performed independently using assistive devices. Recording the level of difficulty helps identify the need for functional support or adaptation. Coding with an external terminology is recommended.  Free text entry should only be permitted if no appropriate coded value is available.">
 				>
 				["at0008"] = <
 					text = <"Reason for difficulty">
@@ -228,7 +229,7 @@ ontology
 				["at0014"] = <
 					text = <"Assessment conditions">
 					description = <"Narrative description of the circumstances under which an assessment is performed, to support interpretation of the observed assessment results.">
-					comment = <"For example: describing the environment, method, or situation in which the assessment was carried out.">
+					comment = <"For example: a quiet or noisy environment, or a defined protocol.">
 				>
 				["at0015"] = <
 					text = <"Assistive device details">
@@ -272,6 +273,11 @@ ontology
 					text = <"Assistive devices description">
 					description = <"Narrative description about the assistive devices in use.">
 					comment = <"For example: modified cutlery, a motorised wheelchair or a support animal.">
+				>
+				["at0030"] = <
+					text = <"Confounding factors">
+					description = <"Issues or contextual factors that may impact on functional ability, not captured in other fields.">
+					comment = <"For example: diurnal variation, recent exertion, medication effect, sleep status, mood, motivation, situational anxiety and social context.">
 				>
 			>
 		>
