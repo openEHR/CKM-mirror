@@ -166,7 +166,7 @@ Use to incorporate the narrative descriptions of alcohol consumption within exis
 Not to be used to record an assessment about alcohol dependence. Use specific archetypes for this purpose - for example OBSERVATION.audit.
 
 Not to be used to record administration of alcohol by other routes, such as inhalation.">
-			copyright = <"© openEHR Foundation, Australian Digital Health Agency, Nasjonal IKT (Norway)">
+			copyright = <"© openEHR Foundation, Australian Digital Health Agency, openEHR Norway">
 		>
 		["fr"] = <
 			language = <[ISO_639-1::fr]>
@@ -233,9 +233,9 @@ Niet te gebruiken voor het vastleggen van toediening van alcohol op andere wijze
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"F98919119C3453EF0E0A3286A90AA20C">
-		["build_uid"] = <"4a795c08-43bc-4fe1-b5a5-855b56b02425">
-		["revision"] = <"1.0.7">
+		["MD5-CAM-1.0.1"] = <"C83B63C1172C68A0B749BA3D22B6E27E">
+		["build_uid"] = <"5f2cbe93-bbdf-4f52-9b56-24f17db157e9">
+		["revision"] = <"1.1.0">
 	>
 
 definition
@@ -248,9 +248,9 @@ definition
 							DV_CODED_TEXT matches {
 								defining_code matches {
 									[local::
+									at0006,    -- Lifetime non-drinker
 									at0003,    -- Current drinker
-									at0005,    -- Former drinker
-									at0006]    -- Lifetime non-drinker
+									at0005]    -- Former drinker
 								}
 							}
 						}
@@ -282,7 +282,7 @@ definition
 									DV_CODED_TEXT matches {
 										defining_code matches {
 											[local::
-											at0061,    -- Current drinker
+											at0061,    -- Drinker
 											at0091]    -- Non-drinker
 										}
 									}
@@ -441,6 +441,30 @@ definition
 									>
 								}
 							}
+							ELEMENT[at0122] occurrences matches {0..1} matches {    -- Typical consumption (mass)
+								value matches {
+									C_DV_QUANTITY <
+										
+										list = <
+											["1"] = <
+												units = <"g/d">
+												magnitude = <|>=0.0|>
+												precision = <|2|>
+											>
+											["2"] = <
+												units = <"g/wk">
+												magnitude = <|>=0.0|>
+												precision = <|2|>
+											>
+											["3"] = <
+												units = <"g/mo">
+												magnitude = <|>=0.0|>
+												precision = <|2|>
+											>
+										>
+									>
+								}
+							}
 							CLUSTER[at0029] occurrences matches {0..*} matches {    -- Per type
 								name matches {
 									DV_TEXT matches {*}
@@ -492,9 +516,33 @@ definition
 											>
 										}
 									}
+									ELEMENT[at0127] occurrences matches {0..1} matches {    -- Typical consumption (mass)
+										value matches {
+											C_DV_QUANTITY <
+												
+												list = <
+													["1"] = <
+														units = <"g/d">
+														magnitude = <|>=0.0|>
+														precision = <|2|>
+													>
+													["2"] = <
+														units = <"g/wk">
+														magnitude = <|>=0.0|>
+														precision = <|2|>
+													>
+													["3"] = <
+														units = <"g/mo">
+														magnitude = <|>=0.0|>
+														precision = <|2|>
+													>
+												>
+											>
+										}
+									}
 									allow_archetype CLUSTER[at0077] occurrences matches {0..*} matches {    -- Type details
 										include
-											archetype_id/value matches {/.*/}
+											archetype_id/value matches {/.*|openEHR-EHR-CLUSTER\.alcohol_consumption\.v0/}
 									}
 									ELEMENT[at0069] occurrences matches {0..1} matches {    -- Comment
 										value matches {
@@ -517,7 +565,7 @@ definition
 							}
 							allow_archetype CLUSTER[at0026] occurrences matches {0..*} matches {    -- Episode details
 								include
-									archetype_id/value matches {/openEHR-EHR-CLUSTER\.cessation_attempts(-[a-zA-Z0-9_]+)*\.v1/}
+									archetype_id/value matches {/openEHR-EHR-CLUSTER\.cessation_attempts(-[a-zA-Z0-9_]+)*\.v1|openEHR-EHR-CLUSTER\.alcohol_consumption\.v0/}
 							}
 							ELEMENT[at0087] occurrences matches {0..1} matches {    -- Episode comment
 								value matches {
@@ -560,17 +608,17 @@ definition
 							DV_TEXT matches {*}
 						}
 					}
+					ELEMENT[at0079] occurrences matches {0..*} matches {    -- Lifetime non-drinker definition
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
 					ELEMENT[at0075] occurrences matches {0..*} matches {    -- Current drinker definition
 						value matches {
 							DV_TEXT matches {*}
 						}
 					}
 					ELEMENT[at0076] occurrences matches {0..*} matches {    -- Former drinker definition
-						value matches {
-							DV_TEXT matches {*}
-						}
-					}
-					ELEMENT[at0079] occurrences matches {0..*} matches {    -- Lifetime non-drinker definition
 						value matches {
 							DV_TEXT matches {*}
 						}
@@ -696,7 +744,7 @@ ontology
 					description = <"Narrative summary about alcohol consumption for the specified type of alcohol.">
 				>
 				["at0061"] = <
-					text = <"Current drinker">
+					text = <"Drinker">
 					description = <"Individual consumed alcohol during this period.">
 				>
 				["at0064"] = <
@@ -841,6 +889,14 @@ ontology
 					text = <"Fortified wine">
 					description = <"Wine with added spirits.">
 				>
+				["at0122"] = <
+					text = <"Typical consumption (mass)">
+					description = <"Estimate of number of pure grams alcohol consumed.">
+				>
+				["at0127"] = <
+					text = <"Typical consumption (mass)">
+					description = <"Estimate of number of grams of pure alcohol the specified type of alcoholic beverage consumed.">
+				>
 			>
 		>
 		["nb"] = <
@@ -854,11 +910,11 @@ ontology
 					description = <"@ internal @">
 				>
 				["at0003"] = <
-					text = <"Nåværende bruker">
+					text = <"Bruker">
 					description = <"Individet drikker alkohol.">
 				>
 				["at0005"] = <
-					text = <"Tidligere bruker">
+					text = <"Tidligere brukt">
 					description = <"Individet har drukket alkohol tidligere, men drikker ikke nå.">
 				>
 				["at0006"] = <
@@ -932,7 +988,7 @@ ontology
 					description = <"Oppsummering i fritekst om drikkeatferd for den spesifiserte typen alkoholholdig drikke.">
 				>
 				["at0061"] = <
-					text = <"Nåværende bruker">
+					text = <"Brukt">
 					description = <"Individet har inntatt alkohol i denne episoden.">
 				>
 				["at0064"] = <
@@ -953,20 +1009,20 @@ ontology
 					comment = <"For eksempel lokale informasjonsbehov eller ytterligere metadata for å kunne tilpasse til tilsvarende konsepter i FHIR eller CIMI.">
 				>
 				["at0075"] = <
-					text = <"Definisjon på \"Drikker\"">
-					description = <"Den anvendte definisjonen av verdien \"Drikker\" i dataelementet \"Overordnet status\" benyttet i denne arketypen.">
+					text = <"Definisjon på \"Nåværende bruker\"">
+					description = <"Den anvendte definisjonen av verdien \"Nåværende bruker\" i dataelementet \"Overordnet status\" benyttet i denne arketypen.">
 				>
 				["at0076"] = <
-					text = <"Definisjon på \"Drukket tidligere\"">
-					description = <"Den anvendte definisjonen av verdien \"Drukket tidligere\" i dataelementet \"Overordnet status\" benyttet i denne arketypen.">
+					text = <"Definisjon på \"Tidligere bruker\"">
+					description = <"Den anvendte definisjonen av verdien \"Tidligere bruker\" i dataelementet \"Overordnet status\" benyttet i denne arketypen.">
 				>
 				["at0077"] = <
 					text = <"Detaljer om typen">
 					description = <"Ytterligere strukturerte detaljer om den spesifiserte typen alkoholholdig drikke.">
 				>
 				["at0079"] = <
-					text = <"Definisjon på \"Aldri drukket\"">
-					description = <"Den anvendte definisjonen av verdien \"Aldri drukket\" i dataelementet \"Overordnet status\" benyttet i denne arketypen.">
+					text = <"Definisjon på \"Aldri brukt\"">
+					description = <"Den anvendte definisjonen av verdien \"Aldri brukt\" i dataelementet \"Overordnet status\" benyttet i denne arketypen.">
 				>
 				["at0080"] = <
 					text = <"Startet daglig alkoholbruk">
@@ -1010,7 +1066,7 @@ ontology
 					description = <"Utsagn om nåværende atferd og bruk for alle typer alkohol.">
 				>
 				["at0091"] = <
-					text = <"Aldri brukt">
+					text = <"Ikke brukt">
 					description = <"Individet har ikke drukket alkohol i løpet av denne episoden.">
 				>
 				["at0097"] = <
@@ -1076,6 +1132,14 @@ ontology
 				["at0121"] = <
 					text = <"Sterkvin">
 					description = <"Vin som er tilsatt brennevin. Tidligere kalt hetvin.">
+				>
+				["at0122"] = <
+					text = <"Typisk bruk (masse)">
+					description = <"Estimat på antall gram ren alkohol som ble drukket.">
+				>
+				["at0127"] = <
+					text = <"Typisk bruk (masse)">
+					description = <"Estimat på antall gram ren alkohol av den spesifiserte typen alkoholholdig drikke som ble drukket.">
 				>
 			>
 		>
@@ -1168,7 +1232,7 @@ ontology
 					description = <"Beskrivande sammanfattning om alkohol konsumtion för det specificerade typen av alkohol.">
 				>
 				["at0061"] = <
-					text = <"Dricker alkohol">
+					text = <"*Drinker (en)">
 					description = <"Individen har konsumerat alkohol under denna episod.">
 				>
 				["at0064"] = <
@@ -1313,6 +1377,14 @@ ontology
 					text = <"Starkvin">
 					description = <"Vin med tillsatt sprit, till exempel portvin, sherry, madeira och marsala.">
 				>
+				["at0122"] = <
+					text = <"*Typical consumption (mass) (en)">
+					description = <"*Estimate of number of pure grams alcohol consumed. (en)">
+				>
+				["at0127"] = <
+					text = <"*Typical consumption (mass) (en)">
+					description = <"*Estimate of number of grams of pure alcohol the specified type of alcoholic beverage consumed. (en)">
+				>
 			>
 		>
 		["de"] = <
@@ -1407,7 +1479,7 @@ ontology
 					description = <"Zusammenfassung des Alkoholkonsumverhaltens für die angegebene Art von Getränk.">
 				>
 				["at0061"] = <
-					text = <"Derzeitiger Trinker">
+					text = <"*Drinker (en)">
 					description = <"Die Person konsumierte Alkohol in dieser Episode.">
 				>
 				["at0064"] = <
@@ -1554,6 +1626,14 @@ ontology
 					text = <"Likörwein">
 					description = <"Wein mit hinzugefügten Spirituosen.">
 				>
+				["at0122"] = <
+					text = <"*Typical consumption (mass) (en)">
+					description = <"*Estimate of number of pure grams alcohol consumed. (en)">
+				>
+				["at0127"] = <
+					text = <"*Typical consumption (mass) (en)">
+					description = <"*Estimate of number of grams of pure alcohol the specified type of alcoholic beverage consumed. (en)">
+				>
 			>
 		>
 		["fr"] = <
@@ -1645,7 +1725,7 @@ ontology
 					description = <"Résumé narratif sur la consommation d'alcool pour le type d'alcool spécifié.">
 				>
 				["at0061"] = <
-					text = <"Buveur actuel">
+					text = <"*Drinker (en)">
 					description = <"L'individu a consommé de l'alcool pendant cette période.">
 				>
 				["at0064"] = <
@@ -1790,6 +1870,14 @@ ontology
 					text = <"Vin fortifié">
 					description = <"Vin additionné de spiritueux.">
 				>
+				["at0122"] = <
+					text = <"*Typical consumption (mass) (en)">
+					description = <"*Estimate of number of pure grams alcohol consumed. (en)">
+				>
+				["at0127"] = <
+					text = <"*Typical consumption (mass) (en)">
+					description = <"*Estimate of number of grams of pure alcohol the specified type of alcoholic beverage consumed. (en)">
+				>
 			>
 		>
 		["nl"] = <
@@ -1881,7 +1969,7 @@ ontology
 					description = <"Verhalende samenvatting over alcohol consumptie van het bepaalde type alcohol.">
 				>
 				["at0061"] = <
-					text = <"Huidige drinker">
+					text = <"*Drinker (en)">
 					description = <"Individu gebruikt alcohol tijdens deze periode.">
 				>
 				["at0064"] = <
@@ -2025,6 +2113,14 @@ ontology
 				["at0121"] = <
 					text = <"Versterkte wijn">
 					description = <"Wijn met toegevoegde gedestileerde drank.">
+				>
+				["at0122"] = <
+					text = <"*Typical consumption (mass) (en)">
+					description = <"*Estimate of number of pure grams alcohol consumed. (en)">
+				>
+				["at0127"] = <
+					text = <"*Typical consumption (mass) (en)">
+					description = <"*Estimate of number of grams of pure alcohol the specified type of alcoholic beverage consumed. (en)">
 				>
 			>
 		>
