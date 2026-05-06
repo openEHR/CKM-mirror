@@ -5,6 +5,16 @@ concept
 	[at0000]	-- Inpatient episode details
 language
 	original_language = <[ISO_639-1::en]>
+	translations = <
+		["nb"] = <
+			language = <[ISO_639-1::nb]>
+			author = <
+				["name"] = <"Martin Milde">
+				["organisation"] = <"Helse Vest IKT">
+				["email"] = <"martin.milde@helse-vest-ikt.no">
+			>
+		>
+	>
 description
 	original_author = <
 		["name"] = <"Heather Leslie">
@@ -13,11 +23,27 @@ description
 		["date"] = <"2022-06-13">
 	>
 	details = <
+		["nb"] = <
+			language = <[ISO_639-1::nb]>
+			purpose = <"For å registrere detaljer om en innleggelsesperiode ved en døgninstitusjon.">
+			use = <"Brukes til å registrere detaljer om en innleggelsesperiode ved en døgninstitusjon.
+
+I konteksten av dette arketypen tolkes utskrivelse i vid forstand, og inkluderer situasjoner som, avhengig av lokale regler, ikke alltid regnes som en utskrivelse. F.eks. død i institusjonen eller nyfødte som skrives ut fra behandling.">
+			keywords = <"innleggelse, utskrivning, overføring, besøk, opphold, sykehusinnleggelse, innlagt", ...>
+			misuse = <"Brukes ikke for å registrere detaljer om kontakter der pasienten ikke er innlagt i en døgninstitusjon.
+
+Skal ikke brukes til planlegging av fremtidige innleggelser. På tidspunktet for utarbeidelsen er det ennå ikke avklart hvilken arketype som bør brukes til dette formålet.">
+		>
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"To record simple details about an admission episode to an inpatient facility.">
-			use = <"Use to record simple details about an admission episode to an inpatient facility.">
-			misuse = <"">
+			purpose = <"To record details about an admission episode to an inpatient facility.">
+			use = <"Use to record details about an admission episode to an inpatient facility.
+
+Within the context of this archetype, discharge is interpreted broadly, and includes situations that, depending on local rules, may not be considered a discharge, such as death in the institution, or newborns released from care.">
+			keywords = <"admission, discharge, transfer, separation, visit, stay, hospitalization, inpatient", ...>
+			misuse = <"Not to be used to record details about encounters where the patient is not admitted to an inpatient facility.
+
+Not to be used for planning future admissions to an inpatient facility. At the time of authoring it is not yet determined which archetype should be used for this purpose.">
 			copyright = <"© openEHR Foundation">
 		>
 	>
@@ -26,42 +52,81 @@ description
 	other_details = <
 		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
 		["custodian_organisation"] = <"openEHR Foundation">
+		["references"] = <"">
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"0BB813D41759289EA065235640802EA9">
-		["build_uid"] = <"667d4891-b8b0-4b11-b074-3e2aae919876">
+		["MD5-CAM-1.0.1"] = <"B0966779418F44FFBF8D4BDE24288A2C">
+		["build_uid"] = <"750c2ca9-c48c-4366-8b8b-3ba08f030d99">
 		["revision"] = <"0.0.1-alpha">
 	>
 
 definition
 	CLUSTER[at0000] matches {    -- Inpatient episode details
 		items cardinality matches {1..*; unordered} matches {
-			ELEMENT[at0001] occurrences matches {0..*} matches {    -- Place of admission
+			ELEMENT[at0046] occurrences matches {0..1} matches {    -- Episode ID
+				value matches {
+					DV_IDENTIFIER matches {*}
+				}
+			}
+			allow_archetype CLUSTER[at0021] occurrences matches {0..1} matches {    -- Origin
+				include
+					archetype_id/value matches {/.*|openEHR-EHR-CLUSTER\.organisation\.v1|openEHR-EHR-CLUSTER\.address\.v1/}
+			}
+			ELEMENT[at0022] occurrences matches {0..1} matches {    -- Origin category
 				value matches {
 					DV_TEXT matches {*}
 				}
-			}
-			allow_archetype CLUSTER[at0002] occurrences matches {0..*} matches {    -- Structured place of admission
-				include
-					archetype_id/value matches {/.*/}
 			}
 			ELEMENT[at0003] occurrences matches {0..1} matches {    -- Reason for admission
 				value matches {
 					DV_TEXT matches {*}
 				}
 			}
-			ELEMENT[at0004] occurrences matches {0..1} matches {    -- Date of admission
+			ELEMENT[at0007] occurrences matches {0..1} matches {    -- Re-admission
+				value matches {
+					DV_TEXT matches {*}
+					DV_BOOLEAN matches {*}
+				}
+			}
+			ELEMENT[at0001] occurrences matches {0..1} matches {    -- Place of admission
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			allow_archetype CLUSTER[at0002] occurrences matches {0..1} matches {    -- Structured place of admission
+				include
+					archetype_id/value matches {/.*|openEHR-EHR-CLUSTER\.organisation\.v1|openEHR-EHR-CLUSTER\.address\.v1/}
+			}
+			ELEMENT[at0004] occurrences matches {0..1} matches {    -- Start
 				value matches {
 					DV_DATE_TIME matches {*}
 				}
 			}
-			ELEMENT[at0005] occurrences matches {0..1} matches {    -- Date of separation
+			allow_archetype CLUSTER[at0019] occurrences matches {0..*} matches {    -- Sub-episode
+				include
+					archetype_id/value matches {/.*|openEHR-EHR-CLUSTER\.inpatient_episode_details\.v0/}
+			}
+			allow_archetype CLUSTER[at0045] occurrences matches {0..1} matches {    -- Destination
+				include
+					archetype_id/value matches {/.*|openEHR-EHR-CLUSTER\.organisation\.v1|openEHR-EHR-CLUSTER\.address\.v1/}
+			}
+			ELEMENT[at0047] occurrences matches {0..1} matches {    -- Destination category
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			ELEMENT[at0005] occurrences matches {0..1} matches {    -- Stop
 				value matches {
 					DV_DATE_TIME matches {*}
 				}
 			}
-			ELEMENT[at0006] occurrences matches {0..1} matches {    -- Separation outcome
+			ELEMENT[at0006] occurrences matches {0..1} matches {    -- Episode outcome
+				value matches {
+					DV_TEXT matches {*}
+				}
+			}
+			ELEMENT[at0020] occurrences matches {0..*} matches {    -- Comment
 				value matches {
 					DV_TEXT matches {*}
 				}
@@ -81,7 +146,6 @@ ontology
 				["at0001"] = <
 					text = <"Place of admission">
 					description = <"The physical location where the patient has been admitted.">
-					comment = <"This data element has multiple occurrences to support more than one level of location to be recorded. For example, both the hospital and the ward.">
 				>
 				["at0002"] = <
 					text = <"Structured place of admission">
@@ -90,21 +154,126 @@ ontology
 				["at0003"] = <
 					text = <"Reason for admission">
 					description = <"The reason for admission.">
-					comment = <"For example: admission diagnosis.">
+					comment = <"For example: diagnosis, elective surgery, or childbirth.">
 				>
 				["at0004"] = <
-					text = <"Date of admission">
-					description = <"The date of admission to the inpatient facility.">
+					text = <"Start">
+					description = <"The date/date-time when the episode started.">
+					comment = <"For example: admitted to inpatient facility, transferred to different ward.">
 				>
 				["at0005"] = <
-					text = <"Date of separation">
-					description = <"The date of when the individual left to the inpatient facility.">
-					comment = <"For example: discharged home or to an aged care facility.">
+					text = <"Stop">
+					description = <"The date/date-time of when the episode ended.">
 				>
 				["at0006"] = <
-					text = <"Separation outcome">
-					description = <"The state of the individual as they left the facility.">
-					comment = <"For example: alive and well; dead.">
+					text = <"Episode outcome">
+					description = <"The state of the individual at the end of the episode.">
+					comment = <"For example: alive, no improvement, or deceased.">
+				>
+				["at0007"] = <
+					text = <"Re-admission">
+					description = <"Indicates that this encounter is directly related to a prior admission, often because the conditions addressed in a prior admission were not fully addressed.">
+				>
+				["at0019"] = <
+					text = <"Sub-episode">
+					description = <"Details about a sub-episode that consitutes part of the original episode.">
+					comment = <"This slot is intended to be used to add details about sub-episodes using nested instances of this archetype. Examples of sub-episodes can be transfers to different department or room/bed changes.">
+				>
+				["at0020"] = <
+					text = <"Comment">
+					description = <"Additional narrative about the inpatient episode not captured in other fields.">
+				>
+				["at0021"] = <
+					text = <"Origin">
+					description = <"The location/organization from which the patient was admitted from.">
+				>
+				["at0022"] = <
+					text = <"Origin category">
+					description = <"The type of location the patient was admitted from.">
+					comment = <"For example: home, nursing home, or accident site">
+				>
+				["at0045"] = <
+					text = <"Destination">
+					description = <"Location/organization to which the patient is discharged.">
+				>
+				["at0046"] = <
+					text = <"Episode ID">
+					description = <"An identifier for the episode.">
+				>
+				["at0047"] = <
+					text = <"Destination category">
+					description = <"The type of location the patient was discharged to.">
+					comment = <"For example: home, nursing home, or other healthcare facility">
+				>
+			>
+		>
+		["nb"] = <
+			items = <
+				["at0000"] = <
+					text = <"Innleggelsesdetaljer">
+					description = <"Detaljer om en innleggelsesepisode.">
+				>
+				["at0001"] = <
+					text = <"Innleggelsessted">
+					description = <"Det fysiske stedet der pasienten har blitt innlagt.">
+				>
+				["at0002"] = <
+					text = <"Strukturert innleggelsessted">
+					description = <"Strukturerte detaljer om innleggelsessted.">
+				>
+				["at0003"] = <
+					text = <"Årsak for innleggelse">
+					description = <"Årsaken for innleggelse.">
+					comment = <"For eksempel, diagnose, elektiv kirurgi, eller fødsel.">
+				>
+				["at0004"] = <
+					text = <"Start">
+					description = <"Dato/dato‑tidspunkt for når episoden startet.">
+					comment = <"For eksempel, innlagt i døgninstitusjon, overført til annen avdeling.">
+				>
+				["at0005"] = <
+					text = <"Stopp">
+					description = <"Dato/dato‑tidspunkt for når episoden sluttet.">
+				>
+				["at0006"] = <
+					text = <"Episodens utfall">
+					description = <"Personens tilstand ved slutten av episoden.">
+					comment = <"For eksempel, i live, ingen bedring, eller død.">
+				>
+				["at0007"] = <
+					text = <"Reinnleggelse">
+					description = <"Angir at denne kontakten er direkte knyttet til en tidligere innleggelse, ofte fordi tilstandene som ble behandlet ved forrige innleggelse ikke ble fullstendig ivaretatt.">
+				>
+				["at0019"] = <
+					text = <"Del-episode">
+					description = <"Detaljer om en del‑episode som utgjør en del av den opprinnelige episoden.">
+					comment = <"Dette SLOT-et er ment for å legge inn detaljer om del‑episoder ved bruk av nestede instanser av denne arketypen. Eksempler på del‑episoder kan være overføringer til annen avdeling eller endringer av rom/seng">
+				>
+				["at0020"] = <
+					text = <"Kommentar">
+					description = <"Tekstlig tilleggsinformasjon om innleggelsesepisoden som ikke er registrert i andre felt. ">
+				>
+				["at0021"] = <
+					text = <"Opphav">
+					description = <"Stedet/organisasjonen pasienten ble innlagt fra.">
+				>
+				["at0022"] = <
+					text = <"Opphavskategori">
+					description = <"Typen sted pasienten ble innlagt fra.">
+					comment = <"For eksempel, hjem, sykehjem, eller skadested.">
+				>
+				["at0045"] = <
+					text = <"Destinasjon">
+					description = <"Stedet/organisasjonen pasienten skrives ut til.">
+				>
+				["at0046"] = <
+					text = <"Episode ID">
+					description = <"En identifikator for episoden.">
+				>
+				["at0047"] = <
+					text = <"Destinasjonskategori">
+					description = <"Typen sted pasienten ble skrevet ut til.">
+					comment = <"For eksempel, hjem, sykehjem, eller annen helseinstitusjon.">
 				>
 			>
 		>
