@@ -1,0 +1,285 @@
+﻿archetype (adl_version=1.4; uid=4bce40ec-2b5e-40eb-86b4-c5fdf3951d04)
+	openEHR-EHR-EVALUATION.functional_support_requirements.v0
+
+concept
+	[at0000]	-- Functional support requirements
+language
+	original_language = <[ISO_639-1::en]>
+description
+	original_author = <
+		["name"] = <"Heather Leslie">
+		["organisation"] = <"Atomica Informatics">
+		["email"] = <"heather.leslie@atomicainformatics.com">
+		["date"] = <"2026-03-16">
+	>
+	details = <
+		["en"] = <
+			language = <[ISO_639-1::en]>
+			purpose = <"To record the supports required to enable or assist an individual in performing an activity.">
+			use = <"Use to record the supports required to enable or assist an individual when performing an identified activity. This information may be used to inform care planning, support provision, assessment of functional support needs, or service eligibility.
+
+This archetype is one of a set of three related archetypes designed to represent different aspects of how an individual functions in everyday life. Together, these archetypes support a structured representation of functional ability, the underlying impairments that may contribute to functional limitations, and the supports required to enable or assist an individual to perform an activity. The other archetypes are:
+- OBSERVATION.functional_ability
+- EVALUATION.functional_impairment_summary
+
+These supports may include, but are not limited to:
+- human assistance, including physical or cognitive assistance from one or more people
+- assistive devices, including medical devices and support animals
+- environmental conditions that may support successful performance of an activity, such as a quiet room.
+
+Everyday life activities that may require support include those from the following domain
+- mobility, 
+- self-care, 
+- communication, 
+- domestic life, 
+- attending work or school, 
+- community participation,
+- recognised groupings of activities, such as personal activities of daily living (pADLs) or instrumental activities of daily living (iADLs). 
+ 
+Activities may be:
+- simple or foundational actions that can be observed as discrete tasks, such as standing up from a chair, brushing hair, or gripping a cup
+- complex or composite activities that require a sequence of simpler actions to complete a broader task, such as transferring from bed to chair, preparing a meal, managing medications, or driving a car.">
+			misuse = <"Not to be used to record an assessment of an individual’s functional ability or difficulty when performing an activity. Use the OBSERVATION.functional_ability archetype for this purpose.
+
+Not to be used to record underlying impairments of body function or structure that contribute to functional limitations. Use EVALUATION.functional_impairment_summary for this purpose.
+
+Not to be used to record the outcome of a functional independence assessment or scoring system.
+Where a summary interpretation of independence is required, use EVALUATION.functional_independence_summary or an appropriate assessment instrument.
+
+Not to be used to record the interventions that were provided during a specific care event or intervention. Use an appropriate ACTION archetype to document interventions or services delivered as part of care provision.
+
+Not to be used to record structured detail about medical devices or support animals. Use the relevant CLUSTER archetypes referenced in the ''Assistive device details' SLOT within this archetype.">
+			copyright = <"© openEHR Foundation">
+		>
+	>
+	lifecycle_state = <"in_development">
+	other_contributors = <"Nyree Taylor, Sparked FHIR accelerator, Australia", ...>
+	other_details = <
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
+		["custodian_organisation"] = <"openEHR Foundation">
+		["references"] = <"Functional support requirements, Draft data group. Sparked AU FHIR accelerator, Australian Clinical Data for Interoperability.
+
+Granger CV, Hamilton BB, Linacre JM, Heinemann AW, Wright BD. Performance profiles of the functional independence measure. Am J Phys Med Rehabil. 1993 Apr;72(2):84-9.">
+		["original_namespace"] = <"org.openehr">
+		["original_publisher"] = <"openEHR Foundation">
+		["custodian_namespace"] = <"org.openehr">
+		["MD5-CAM-1.0.1"] = <"9EFC84126C7633E5C06DEB8F4ACAB202">
+		["build_uid"] = <"54403789-d902-45ef-8653-b82335fcc00f">
+		["revision"] = <"0.0.1-alpha">
+	>
+
+definition
+	EVALUATION[at0000] matches {    -- Functional support requirements
+		data matches {
+			ITEM_TREE[at0001] matches {    -- Item tree
+				items cardinality matches {0..*; unordered} matches {
+					ELEMENT[at0002] matches {    -- Activity name
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0003] occurrences matches {0..1} matches {    -- Support description
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0025] occurrences matches {0..1} matches {    -- Assistive devices description
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					allow_archetype CLUSTER[at0020] occurrences matches {0..*} matches {    -- Assistive device details
+						include
+							archetype_id/value matches {/.*/}
+					}
+					ELEMENT[at0005] occurrences matches {0..*} matches {    -- Assistance type
+						value matches {
+							DV_CODED_TEXT matches {
+								defining_code matches {
+									[local::
+									at0006,    -- None
+									at0007,    -- Supervision
+									at0008,    -- Task preparation
+									at0009,    -- Cognitive support
+									at0010]    -- Physical assistance
+								}
+							}
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0011] occurrences matches {0..1} matches {    -- Physical assistance type
+						value matches {
+							DV_CODED_TEXT matches {
+								defining_code matches {
+									[local::
+									at0012,    -- Standby assistance (guarding)
+									at0013,    -- Light physical contact (contact guarding)
+									at0014,    -- Minimal physical assistance
+									at0015,    -- Moderate physical assistance
+									at0016,    -- Maximal physical assistance
+									at0017]    -- Total physical assistance
+								}
+							}
+						}
+					}
+					ELEMENT[at0018] occurrences matches {0..1} matches {    -- Number of people
+						value matches {
+							DV_COUNT matches {*}
+						}
+					}
+					allow_archetype CLUSTER[at0019] occurrences matches {0..*} matches {    -- Support person details
+						include
+							archetype_id/value matches {/openEHR-EHR-CLUSTER\.person\.v1/}
+					}
+					allow_archetype CLUSTER[at0021] occurrences matches {0..*} matches {    -- Additional details
+						include
+							archetype_id/value matches {/.*/}
+					}
+					ELEMENT[at0022] occurrences matches {0..1} matches {    -- Comment
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+				}
+			}
+		}
+		protocol matches {
+			ITEM_TREE[at0004] matches {    -- Item tree
+				items cardinality matches {0..*; unordered} matches {
+					ELEMENT[at0023] occurrences matches {0..1} matches {    -- Last updated
+						value matches {
+							DV_DATE_TIME matches {*}
+						}
+					}
+					allow_archetype CLUSTER[at0024] occurrences matches {0..*} matches {    -- Extension
+						include
+							archetype_id/value matches {/.*/}
+					}
+				}
+			}
+		}
+	}
+
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"Functional support requirements">
+					description = <"Summary information about the supports needed to enable or assist an individual in performing an activity.">
+					comment = <"Throughout this archetype, the phrase ‘perform an activity’, or similar, refers to carrying out a single activity or a grouping of related activities, or participating in an everyday life situation.">
+				>
+				["at0001"] = <
+					text = <"Item tree">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Activity name">
+					description = <"The activity being supported.">
+					comment = <"Coding with an external terminology is recommended. Free text entry should only be permitted where no appropriate coded value is available. For example: Mobility – roll over in bed, transfer from bed to chair, walk upstairs; Self-care – brush teeth, put on footwear, menstrual care; Communication – read, speak, write; Domestic life – shop for food, clean the kitchen, wash clothes; Attending work or school – use public transport, seek a job; Community participation – play sport, join a club, attend the theatre.">
+				>
+				["at0003"] = <
+					text = <"Support description">
+					description = <"Narrative description of the supports required to enable or assist an individual in performing the identified activity.">
+					comment = <"Support is used as an umbrella concept that may include human assistance, assistive devices, or environmental conditions.">
+				>
+				["at0004"] = <
+					text = <"Item tree">
+					description = <"@ internal @">
+				>
+				["at0005"] = <
+					text = <"Assistance type">
+					description = <"The type of assistance required from one or more people to enable or assist the individual in performing the activity.">
+					comment = <"More than one 'Assistance type' may be recorded where applicable.">
+				>
+				["at0006"] = <
+					text = <"None">
+					description = <"No assistance from another person is required for the individual to independently perform the activity.">
+				>
+				["at0007"] = <
+					text = <"Supervision">
+					description = <"Monitoring of the activity by another person to ensure safety, typically from nearby or at a distance and without positioning for immediate physical intervention.">
+				>
+				["at0008"] = <
+					text = <"Task preparation">
+					description = <"Preparation of the environment or equipment by another person so the individual can perform the activity.">
+				>
+				["at0009"] = <
+					text = <"Cognitive support">
+					description = <"Guidance on how to plan or approach an activity, or cues given during the activity to support completion of the task.">
+				>
+				["at0010"] = <
+					text = <"Physical assistance">
+					description = <"Physical proximity or hands-on assistance from another person to support safe or effective performance of the activity.">
+				>
+				["at0011"] = <
+					text = <"Physical assistance type">
+					description = <"The intensity of human assistance required from one or more people to support safe or effective performance of an activity.">
+					comment = <"Physical assistance may relate to safety, balance, coordination, strength, or motor execution during the activity. The simultaneous use of assistive devices or environmental supports does not determine the 'Physical assistance type', although it may influence the number of people required to provide assistance.">
+				>
+				["at0012"] = <
+					text = <"Standby assistance (guarding)">
+					description = <"The individual performs the activity independently while one or more people remain within arm’s reach, positioned to provide immediate physical assistance if required for safety.">
+				>
+				["at0013"] = <
+					text = <"Light physical contact (contact guarding)">
+					description = <"The individual performs the activity independently while one or more people provide light physical contact for balance or stability only.">
+				>
+				["at0014"] = <
+					text = <"Minimal physical assistance">
+					description = <"The individual performs most of the activity while one or more people provide limited physical effort.">
+				>
+				["at0015"] = <
+					text = <"Moderate physical assistance">
+					description = <"The individual and one or more people contribute approximately equal physical effort to complete the activity.">
+				>
+				["at0016"] = <
+					text = <"Maximal physical assistance">
+					description = <"The individual performs only a small part of the activity while one or more people provide most of the physical effort.">
+				>
+				["at0017"] = <
+					text = <"Total physical assistance">
+					description = <"The individual is unable to perform the activity and one or more people provide all physical effort required.">
+				>
+				["at0018"] = <
+					text = <"Number of people">
+					description = <"The number of people required to provide human assistance when performing the activity.">
+					comment = <"The number of people required may vary depending on environmental conditions or the simultaneous use of assistive devices.">
+				>
+				["at0019"] = <
+					text = <"Support person details">
+					description = <"Structured details of one or more specific people or roles required to provide assistance when performing the activity.">
+					comment = <"This may include a named individual, relationship, or defined role, such as partner, family member, carer, therapist, or support worker.">
+				>
+				["at0020"] = <
+					text = <"Assistive device details">
+					description = <"Structured detail about one or more assistive devices used by the individual while performing the activity.">
+					comment = <"For example: modified cutlery, a motorised wheelchair or a support animal.">
+				>
+				["at0021"] = <
+					text = <"Additional details">
+					description = <"Additional structured detail about the functional support requirements for an activity.">
+				>
+				["at0022"] = <
+					text = <"Comment">
+					description = <"Additional narrative about the functional support requirements for an activity not captured in other fields.">
+				>
+				["at0023"] = <
+					text = <"Last updated">
+					description = <"The date when these functional support requirements were last updated.">
+				>
+				["at0024"] = <
+					text = <"Extension">
+					description = <"Additional information required to extend the model with local content or to align with other reference models or formalisms.			
+">
+					comment = <"For example: local information requirements; or additional metadata to align with FHIR.">
+				>
+				["at0025"] = <
+					text = <"Assistive devices description">
+					description = <"Narrative description about the assistive devices in use.">
+					comment = <"For example: modified cutlery, a motorised wheelchair or a support animal.">
+				>
+			>
+		>
+	>
