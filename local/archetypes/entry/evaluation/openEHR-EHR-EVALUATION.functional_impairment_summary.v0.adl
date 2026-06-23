@@ -15,17 +15,15 @@ description
 	details = <
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"To record summary information about a functional impairment affecting an individual to support clinical assessment and monitoring.">
-			use = <"Use to record summary information about an individual’s impairment affecting their ability to perform activities or participate in life situations.
+			purpose = <"To record summary information about a functional impairment that may affect an individual's ability to perform activities or participate in life situations.">
+			use = <"Use to record summary information about a functional impairment that may affect an individual's ability to perform activities or participate in life situations.
 
-This archetype is one of a set of three related archetypes designed to represent different aspects of how an individual functions in everyday life. Together, these archetypes support a structured representation of functional ability, the underlying impairments that may contribute to functional limitations and the supports required to enable or assist an individual to perform an activity. The other archetype are: 
+This archetype is one of a set of three related archetypes designed to represent different aspects of how an individual functions in everyday life. Together, these archetypes support structured representation of functional ability, impairments contributing to functional limitations, and the supports required to enable or assist an individual to perform an activity. The other archetypes are: 
 - OBSERVATION.functional_ability and 
-- EVALUATION.functional_support_requirements. 
-
-This archetype is one of a set of related archetypes designed to represent various aspects of how an individual functions in everyday life, including OBSERVATION.functional_ability and EVALUATION.functional_support_needs. ">
-			misuse = <"Not to be used to record an assessment of the range of supports required to optimise an individual's ability to perform an activity or participate in a social situation. Use the EVALUATION.support_requirements_summary archetype for this purpose.
+- EVALUATION.functional_support_requirements.">
+			misuse = <"Not to be used to record an assessment of the range of supports required to optimise an individual's ability to perform an activity or participate in a social situation. Use the EVALUATION.functional_support_requirements archetype for this purpose.
  
-Not to be used to record an assessment of functional ability. Use the OBSERVATION.functional_ability archetype for this purpose.  
+Not to be used to record an assessment of functional ability. Use the OBSERVATION.functional_ability archetype for this purpose.
  
 Not to be used to record information about a problem or formal diagnosis. Use the EVALUATION.problem_diagnosis archetype for this purpose.
  
@@ -38,15 +36,14 @@ Not to be used to record information about a symptom or physical sign. Use the C
 	other_details = <
 		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
 		["custodian_organisation"] = <"openEHR Foundation">
-		["references"] = <"Functional impairment summary, Draft data group. Sparked AU FHIR accelerator, Australian Clinical Data for Interoperability.
+		["references"] = <"Functional impairment summary, Proposed data group. Sparked AU FHIR accelerator, Australian Clinical Data for Interoperability.
 
-World Health Organization. International classification of functioning, disability and health (ICF) [Internet]. Geneva: World Health Organization; 2001 [cited 2026 Jan 19]. Available from: https://www.who.int/standards/classifications/international-classification-of-functioning-disability-and-health
-">
+World Health Organization. International classification of functioning, disability and health (ICF) [Internet]. Geneva: World Health Organization; 2001 [cited 2026 Jan 19]. Available from: https://www.who.int/standards/classifications/international-classification-of-functioning-disability-and-health">
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"C9B1557AC5412DD80A090E98846850F0">
-		["build_uid"] = <"0aefb213-c5b4-4c6e-a8e7-d17e0c53b235">
+		["MD5-CAM-1.0.1"] = <"DB58DF383EDDF3F87B3F6D222C50C403">
+		["build_uid"] = <"ef9420a0-2b10-4a61-b38f-20a188f9a385">
 		["revision"] = <"0.0.1-alpha">
 	>
 
@@ -125,14 +122,14 @@ definition
 		protocol matches {
 			ITEM_TREE[at0021] matches {    -- Item tree
 				items cardinality matches {0..*; unordered} matches {
-					allow_archetype CLUSTER[at0022] occurrences matches {0..*} matches {    -- Extension
-						include
-							archetype_id/value matches {/.*/}
-					}
 					ELEMENT[at0023] occurrences matches {0..1} matches {    -- Last updated
 						value matches {
 							DV_DATE_TIME matches {*}
 						}
+					}
+					allow_archetype CLUSTER[at0022] occurrences matches {0..*} matches {    -- Extension
+						include
+							archetype_id/value matches {/.*/}
 					}
 				}
 			}
@@ -146,7 +143,7 @@ ontology
 			items = <
 				["at0000"] = <
 					text = <"Functional impairment summary">
-					description = <"Summary information about a loss or abnormality affecting a body function or body structure that limits an individual’s ability to perform activities or participate in life situations.">
+					description = <"Summary information about a loss or limitation of a body function or body structure that may affect an individual's ability to perform activities or participate in life situations.">
 				>
 				["at0001"] = <
 					text = <"Item tree">
@@ -155,73 +152,76 @@ ontology
 				["at0002"] = <
 					text = <"Impairment name">
 					description = <"The name of the impairment.">
-					comment = <"For example: hand tremor or short-term memory loss.">
+					comment = <"For example: hand tremor or reduced short-term memory.">
 				>
 				["at0003"] = <
 					text = <"Severity">
 					description = <"The extent or magnitude of the impairment.">
+					comment = <"The value set is aligned with the ICF 'Extent or magnitude of impairment' qualifier scale. The value 'No impairment' may be recorded when a previously identified functional impairment has resolved or is no longer affecting function.">
 				>
 				["at0004"] = <
 					text = <"No impairment">
-					description = <"Normal body function with no detectable loss or abnormality (0–4%).">
+					description = <"None, absent, or negligible (0–4%).">
 				>
 				["at0005"] = <
 					text = <"Mild impairment">
-					description = <"A slight reduction in body function that is detectable but has minimal impact on the ability to perform activities (5–24%).">
+					description = <"Slight or low (5–24%).">
 				>
 				["at0006"] = <
 					text = <"Moderate impairment">
-					description = <"A clear reduction in body function that noticeably limits performance or efficiency but does not completely prevent the function (25–49%).">
+					description = <"Medium or fair (25–49%).">
 				>
 				["at0007"] = <
 					text = <"Severe impairment">
-					description = <"A major reduction in body function, with very limited remaining ability to perform the function (50–95%).">
+					description = <"High or extreme (50–95%).">
 				>
 				["at0008"] = <
 					text = <"Complete impairment">
-					description = <"Total loss or absence of the body function, with no meaningful residual capacity (96–100%).">
+					description = <"Total (96–100%).">
 				>
 				["at0009"] = <
 					text = <"Impact">
-					description = <"Narrative description about how the impairment affects the individual's ability to perform specific activities and participate in everyday life situations.">
+					description = <"Narrative description of how the impairment affects the individual's ability to perform specific activities and participate in everyday life situations.">
+					comment = <"For example: Requires written reminders and assistance to follow multi-step instructions and manage medications independently.">
 				>
 				["at0010"] = <
 					text = <"Trajectory">
-					description = <"The direction of change in the severity and impact of the impairment over time.">
+					description = <"The overall trend in the severity and impact of the impairment over time.">
 				>
 				["at0011"] = <
 					text = <"Stable">
-					description = <"The functional impairment is unchanged; no improvement or worsening noted over time.">
+					description = <"The overall trend in the severity or impact of the impairment over time is unchanged; no improvement or worsening noted over time.">
 				>
 				["at0012"] = <
 					text = <"Improving">
-					description = <"The severity or impact of the impairment is decreasing over time">
+					description = <"The severity or impact of the impairment is decreasing over time.">
 				>
 				["at0013"] = <
 					text = <"Worsening">
-					description = <"The severity or impact  of the impairment is increasing over time.">
+					description = <"The severity or impact of the impairment is increasing over time.">
 				>
 				["at0014"] = <
 					text = <"Fluctuating">
-					description = <"The severity or impact of the impairment varies over time, with periods of improvement and worsening">
+					description = <"The severity or impact of the impairment varies over time, with periods of improvement and worsening.">
 				>
 				["at0015"] = <
 					text = <"Unknown">
-					description = <"The direction of change in the impairment over time cannot be determined.">
+					description = <"The overall trend in the severity or impact of the impairment over time cannot be determined.">
 				>
 				["at0016"] = <
 					text = <"Date of onset">
-					description = <"The date on which the impairment first began.">
+					description = <"The date on which the impairment was first identified as affecting function.">
 					comment = <"Partial dates are permitted.">
 				>
 				["at0017"] = <
 					text = <"Date of resolution">
-					description = <"The date on which the impairment resolved or was no longer present.">
+					description = <"The date on which the impairment resolved or was no longer affecting function.">
 					comment = <"Partial dates are permitted.">
 				>
 				["at0018"] = <
 					text = <"Clinical description">
-					description = <"Narrative description about the impairment.">
+					description = <"Narrative description of the functional impairment, including relevant clinical characteristics.">
+					comment = <"For example: Short-term memory impairment affecting the ability to retain and recall recent information.">
 				>
 				["at0019"] = <
 					text = <"Additional details">
@@ -229,7 +229,7 @@ ontology
 				>
 				["at0020"] = <
 					text = <"Comment">
-					description = <"Additional narrative  about the functional impairment not captured in other fields. ">
+					description = <"Additional narrative about the functional impairment not captured in other fields.">
 				>
 				["at0021"] = <
 					text = <"Item tree">
