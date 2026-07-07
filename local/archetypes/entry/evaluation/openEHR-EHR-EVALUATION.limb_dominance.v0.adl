@@ -9,9 +9,9 @@ language
 		["nb"] = <
 			language = <[ISO_639-1::nb]>
 			author = <
-				["name"] = <"Martin Milde, Kanika Kuwelker, John Tore Valand">
+				["name"] = <"Martin Milde">
 				["organisation"] = <"Helse Vest IKT">
-				["email"] = <"martin.milde@helse-vest-ikt.no, kanika.kuwelker@helse-vest-ikt.no, john.tore.valand@helse-vest-ikt.no">
+				["email"] = <"martin.milde@helse-vest-ikt.no">
 			>
 		>
 	>
@@ -50,8 +50,8 @@ Oldfield RC. The assessment and analysis of handedness: the Edinburgh inventory.
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"6049A1EE205763D0CF6073D66990D48E">
-		["build_uid"] = <"60e91ef3-dd5f-4975-ade9-63ff508f4b74">
+		["MD5-CAM-1.0.1"] = <"43A6D973CEFE96F0333D610A5D28C180">
+		["build_uid"] = <"d3cde98c-4bb1-464d-9450-0d61c0c9dcda">
 		["revision"] = <"0.0.1-alpha">
 	>
 
@@ -60,22 +60,17 @@ definition
 		data matches {
 			ITEM_TREE[at0001] matches {    -- Item tree
 				items cardinality matches {0..*; unordered} matches {
-					ELEMENT[at0002] occurrences matches {0..1} matches {    -- Handedness
+					ELEMENT[at0002] occurrences matches {0..1} matches {    -- Dominant hand
 						value matches {
 							DV_CODED_TEXT matches {
 								defining_code matches {
 									[local::
-									at0003,    -- Right Handed
-									at0004,    -- Left Handed
+									at0003,    -- Right-handed
+									at0004,    -- Left-handed
 									at0005,    -- Ambidextrous
-									at0006]    -- Cross Dominant
+									at0006]    -- Mixed-handed
 								}
 							}
-							DV_TEXT matches {*}
-						}
-					}
-					ELEMENT[at0016] occurrences matches {0..1} matches {    -- Assessment method
-						value matches {
 							DV_TEXT matches {*}
 						}
 					}
@@ -90,6 +85,16 @@ definition
 		protocol matches {
 			ITEM_TREE[at0014] matches {    -- Item tree
 				items cardinality matches {0..*; unordered} matches {
+					ELEMENT[at0016] occurrences matches {0..1} matches {    -- Assessment method
+						value matches {
+							DV_TEXT matches {*}
+						}
+					}
+					ELEMENT[at0023] occurrences matches {0..1} matches {    -- Last updated
+						value matches {
+							DV_DATE_TIME matches {*}
+						}
+					}
 					allow_archetype CLUSTER[at0015] occurrences matches {0..*} matches {    -- Extension
 						include
 							archetype_id/value matches {/.*/}
@@ -113,15 +118,15 @@ ontology
 					description = <"@ internal @">
 				>
 				["at0002"] = <
-					text = <"Handedness">
+					text = <"Dominant hand">
 					description = <"Which hand the individual typically uses for common tasks.">
 				>
 				["at0003"] = <
-					text = <"Right Handed">
+					text = <"Right-handed">
 					description = <"The individual primarily uses their right hand.">
 				>
 				["at0004"] = <
-					text = <"Left Handed">
+					text = <"Left-handed">
 					description = <"The individual primarily uses their left hand.">
 				>
 				["at0005"] = <
@@ -129,12 +134,12 @@ ontology
 					description = <"The individual uses both hands equally.">
 				>
 				["at0006"] = <
-					text = <"Cross Dominant">
-					description = <"The individual uses different hands depending on the task, such as writing with their right, while using a hammer with their left.">
+					text = <"Mixed-handed">
+					description = <"The individual prefers different hands for different tasks, such as writing with the right hand and using a hammer with the left.">
 				>
 				["at0013"] = <
 					text = <"Comment">
-					description = <"Additional narrative about the hand dominance, not captured in other fields.">
+					description = <"Additional narrative about the dominant hand, not captured in other fields.">
 				>
 				["at0014"] = <
 					text = <"Item tree">
@@ -143,12 +148,16 @@ ontology
 				["at0015"] = <
 					text = <"Extension">
 					description = <"Additional information required to capture local context or to align with other reference models/formalisms.">
-					comment = <"For example: Local hospital departmental infomation or additional metadata to align with FHIR or CIMI equivalents.">
+					comment = <"For example, local information requirements; or additional metadata to align with FHIR.">
 				>
 				["at0016"] = <
 					text = <"Assessment method">
 					description = <"The method used to acertain the individual's handedness.">
-					comment = <"For example: Edinburgh Handedness Inventory.">
+					comment = <"For example, Edinburgh Handedness Inventory.">
+				>
+				["at0023"] = <
+					text = <"Last updated">
+					description = <"The date when the dominant hand was last updated.">
 				>
 			>
 		>
@@ -163,7 +172,7 @@ ontology
 					description = <"@ internal @">
 				>
 				["at0002"] = <
-					text = <"Hånddominans">
+					text = <"Dominant hånd">
 					description = <"Hvilken hånd individet vanligvis bruker for vanlige oppgaver.">
 				>
 				["at0003"] = <
@@ -175,8 +184,8 @@ ontology
 					description = <"Individet bruker hovedsakelig sin venstre hånd.">
 				>
 				["at0005"] = <
-					text = <"Ambidextrøs">
-					description = <"Individet bruker bruker begge hender like mye.">
+					text = <"Ambidekster">
+					description = <"Individet bruker bruker begge hender like mye. Også kalt kapphendt eller tvehendt.">
 				>
 				["at0006"] = <
 					text = <"Kryssdominant">
@@ -184,7 +193,7 @@ ontology
 				>
 				["at0013"] = <
 					text = <"Kommentar">
-					description = <"Ytterligere fritekst om hånddominans som ikke er registrert/omfattet i andre felter.">
+					description = <"Ytterligere fritekst om hånddominans som ikke er omfattet i andre felter.">
 				>
 				["at0014"] = <
 					text = <"Item tree">
@@ -192,13 +201,17 @@ ontology
 				>
 				["at0015"] = <
 					text = <"Tilleggsinformasjon">
-					description = <"Ytterligere informasjon som trengs for å kunne registrere lokalt definert innhold eller for å tilpasse til andre referansemodeller eller formalismer.">
-					comment = <"For eksempel: lokale informasjonsbehov eller ytterligere metadata for å kunne tilpasse til tilsvarende konsepter i FHIR.">
+					description = <"Ytterligere informasjon som trengs for å kunne registrere lokalt definert innhold eller for å tilpasse til andre referansemodeller/formalismer.">
+					comment = <"For eksempel lokale informasjonsbehov eller ytterligere metadata for å kunne tilpasse til tilsvarende konsepter i FHIR.">
 				>
 				["at0016"] = <
 					text = <"Vurderingsmetode">
 					description = <"Hvilken metode som ble brukt for å fastslå individets hånddominans.">
-					comment = <"For eksempel: Edinburgh Handedness Inventory">
+					comment = <"For eksempel, Edinburgh Handedness Inventory.">
+				>
+				["at0023"] = <
+					text = <"Sist oppdatert">
+					description = <"Datoen da hånddominans sist ble oppdatert.">
 				>
 			>
 		>
