@@ -2,7 +2,7 @@
 	openEHR-EHR-EVALUATION.pregnancy_care_context.v0
 
 concept
-	[at0000]	-- Pregnancy care context
+	[at0000]	-- Pregnancy precautions
 language
 	original_language = <[ISO_639-1::en]>
 description
@@ -15,61 +15,63 @@ description
 	details = <
 		["en"] = <
 			language = <[ISO_639-1::en]>
-			purpose = <"To record the level of pregnancy-related precautions and care requirements applicable to an individual, as the basis for safe and appropriate clinical decision-making.">
-			use = <"Use to record the level of pregnancy-related precautions and care requirements applicable to an individual, as the basis for safe and appropriate clinical decision-making. The context may be reassessed and updated over time as clinical circumstances change.
+			purpose = <"To record the category of pregnancy-related precautions currently applicable to an individual.">
+			use = <"Use to record the pregnancy precaution category currently applicable to an individual, to inform their care. Applicability should be assessed from the individual's physiology, without assumptions based on gender identity or sex assigned at birth.
 
-Each of the following mutually exclusive care states reflects a distinct circumstance in which a different level of pregnancy-related precautions is required:
-- 'Baseline precautions' - the default state applying when none of the other defined states apply, requiring routine pregnancy-related precautions because an unrecognised pregnancy cannot be excluded.
-- 'Planning pregnancy' - applies when the individual is actively planning or preparing for pregnancy, such as intentional discontinuation of contraception, preconception clinical optimisation, or commencement of fertility treatment, and elevated pregnancy-related precautions are required.
-- 'Pregnant' - applies when pregnancy has been clinically confirmed and pregnancy-specific precautions apply.
-- 'Post-pregnant' - applies during the recovery period following the end of a pregnancy, regardless of gestational age or outcome, during which 'Baseline precautions' apply in addition to any specific post-pregnancy care considerations.
-- 'Not applicable' - applies when pregnancy is physiologically impossible and pregnancy-related precautions are not required in the individual's current circumstances.
+The 'Precaution category' informs, but does not itself represent, subsequent care decisions. Without an explicit category recorded as structured, coded data, pregnancy-related precautions remain implicit in the clinician's reasoning and are unavailable for reliable sharing with other clinicians or use by clinical decision support.
 
-Typical events that may trigger an update to the 'Pregnancy care context' include, but are not limited to:
-- Documentation of menarche: transition from 'Not applicable' to 'Baseline precautions'.
-- Decision to actively prepare for pregnancy, such as commencement of fertility treatment or intentional discontinuation of contraception: transition from 'Baseline precautions' to 'Planning pregnancy'.
-- Confirmation of pregnancy: transition from 'Baseline precautions' or 'Planning pregnancy' to 'Pregnant'.
-- Documented birth or pregnancy loss: transition from 'Pregnant' to 'Post-pregnant'.
-- Completion of the post-pregnant recovery period: transition from 'Post-pregnant' to 'Baseline precautions'.
-- Documentation of a formal diagnosis of menopause or a hysterectomy procedure: transition from 'Baseline precautions' to 'Not applicable'.
+Where pregnancy is physiologically possible and no category has been recorded, 'Routine' should apply by default. An unknown or absent category may prevent pregnancy-related clinical decision support from being applied, creating a potential clinical safety risk. 'Routine' provides a precautionary baseline that can be escalated as clinically necessary, or changed to 'Not applicable' where pregnancy is determined not to be physiologically possible.
 
-This archetype is intended to be used alongside the OBSERVATION.pregnancy_assertion archetype. Together they supersede the traditional representation of a single 'Pregnancy status' concept by separating pregnancy assertion from pregnancy care context. Pregnancy assertion records whether an individual is believed to be pregnant or not at a specific point in time, while Pregnancy care context records the broader and more persistent clinical context and associated pregnancy-related precautions relevant to clinical decision-making.">
-			misuse = <"Not to record pregnancy confirmation or exclusion at a specific point in time. In particular, a clinician's determination that an individual is ‘not pregnant’ is only valid as a point-in-time clinical assertion and should not be used to represent an ongoing pregnancy care context. Use the OBSERVATION.pregnancy_assertion archetype for this purpose.
+'Routine' and 'Elevated' make explicit the precautions that apply when an unrecognised pregnancy is possible, particularly in relation to potential exposure to teratogenic medications, ionising radiation or other potentially harmful interventions. 'Pregnancy' and 'Post pregnancy' make clinically relevant pregnancy or post-pregnancy circumstances explicit, including where these may not otherwise be apparent or known to the current care team. 'Not applicable' makes explicit that pregnancy-related precautions are not relevant to the individual and may be used to avoid unnecessary pregnancy-related questioning or prompts, particularly where repeated questioning may be distressing or traumatic.
 
-Not to be used to record a diagnosis of, suspicion of, or level of uncertainty about pregnancy. Use the EVALUATION.problem_diagnosis for this purpose.
+The 'Precaution category' should be reassessed as clinical circumstances change and updated where necessary. The current category persists until superseded by a new instance. A new category may be entered directly by a clinician or proposed by a clinical system in response to clinical events, such as menarche, commencing fertility treatment, confirmation of pregnancy, birth or pregnancy loss, completion of post-pregnancy recovery, menopause or hysterectomy. A system-proposed category should be confirmed by a clinician before being recorded.
 
-Not to be used to record the summary information about a single pregnancy. Use the EVALUATION.pregnancy_summary for this purpose.">
+Some categories, such as 'Elevated' or 'Post pregnancy', may reveal sensitive information about fertility treatment, pregnancy loss or family planning decisions. In some jurisdictions, disclosure of such information may have serious legal consequences for the individual. Access to and sharing of this information should therefore be subject to appropriate privacy, consent and governance controls.
+
+This 'Pregnancy precautions' archetype is intended to be used alongside OBSERVATION.pregnancy_assertion. The 'Precaution category' supports clinical decision-making while carrying a clinically acceptable level of uncertainty about pregnancy. Where a clinical decision requires that uncertainty to be resolved, further investigation can provide the basis for a point-in-time 'Pregnant' or 'Not pregnant' assertion, recorded using OBSERVATION.pregnancy_assertion. Together, these two models separate the distinct clinical meanings often conflated within a single 'Pregnancy status' concept.">
+			keywords = <"pregnancy", "precaution", "risk", "postnatal", "postpartum", "antenatal">
+			misuse = <"Not to be used to record whether an individual is pregnant at a specific point in time. A 'Not pregnant' determination is valid only at that time and must not be used as an ongoing category. Use the OBSERVATION.pregnancy_assertion archetype for this purpose.
+
+Not to be used to record a suspected pregnancy or the level of diagnostic certainty about pregnancy. Where clinically relevant, a suspected pregnancy may be recorded in the Problem List using EVALUATION.problem_diagnosis with an appropriate level of diagnostic certainty, allowing it to inform clinical decision support until pregnancy is confirmed or excluded.
+
+Not to be used to record summary information about a single pregnancy. Use the EVALUATION.pregnancy_summary archetype for this purpose.
+
+Not to be used to record lactation or breastfeeding status. Use the EVALUATION.breast_feeding_summary archetype for this purpose.
+
+Not to be used to record a precaution about a condition or state of the individual other than pregnancy. Use the EVALUATION.precaution for this purpose.
+
+Not to be used to record the specific care, education or precautions required by an individual during a pregnancy. Use specific archetypes for these purposes.">
 			copyright = <"© openEHR Foundation">
 		>
 	>
 	lifecycle_state = <"in_development">
-	other_contributors = <>
+	other_contributors = <"Vebjørn Arntzen, Oslo University Hospital, Norway", "Sparked AU, CSIRO, Australia (openEHR Editor)", "Silje Ljosland Bakke, Helse Vest IKT AS, Norway", "SB Bhattacharyya, Bhattacharyyas Clinical Records Research & Informatics LLP, India", "kim Drever, Kudos Paediatrics, Australia", "William Goossen, Results 4 Care, Netherlands", "Evelyn Hovenga, EJSH Consulting, Australia", "Heather Leslie, Atomica Informatics, Australia (openEHR Editor)", "Ian McNicoll, freshEHR Clinical Informatics, United Kingdom", "Patrick Fergal McSharry, MSMS(I) and SESLHD, Australia", "Martin Milde, Helse Vest IKT, Norway", "Olha Nikolaieva, University Hospital Basel, Switzerland", "Mikael Nyström, Cambio Healthcare Systems AB, Sweden", "Ana Pascual Segura, Catsalut, Spain", "Anton Pichugin, GKU IAC at Department of Information Technologies of the city of Moscow (DIT Moscow), Russia", "Daniel Rodrigues, VirtualCare, Portugal", "Averil Tam, CSIRO, Australia", "Nyree Taylor, CSIRO, Australia (openEHR Editor)">
 	other_details = <
 		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
 		["custodian_organisation"] = <"openEHR Foundation">
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"185EC0BBCD312C8135DBAA9A774AC003">
-		["build_uid"] = <"af1cdfa6-ac22-48f2-a0b7-576cce9de698">
+		["MD5-CAM-1.0.1"] = <"497CA51837D67F04C72A049E9DAEDAF6">
+		["build_uid"] = <"7dc00c94-6c38-47b8-b698-ede63dc98462">
 		["revision"] = <"0.0.1-alpha">
 	>
 
 definition
-	EVALUATION[at0000] matches {    -- Pregnancy care context
+	EVALUATION[at0000] matches {    -- Pregnancy precautions
 		data matches {
 			ITEM_TREE[at0001] matches {    -- Item tree
 				items cardinality matches {0..*; unordered} matches {
-					ELEMENT[at0002] matches {    -- Care context
+					ELEMENT[at0002] matches {    -- Precaution category
 						value matches {
 							DV_TEXT matches {*}
 							DV_CODED_TEXT matches {
 								defining_code matches {
 									[local::
-									at0004,    -- Baseline precautions
-									at0005,    -- Planning pregnancy
-									at0006,    -- Pregnant
-									at0007,    -- Post-pregnant
+									at0004,    -- Routine
+									at0005,    -- Elevated
+									at0006,    -- Pregnancy
+									at0007,    -- Post-pregnancy
 									at0016]    -- Not applicable
 								}
 							}
@@ -77,17 +79,17 @@ definition
 					}
 					ELEMENT[at0008] occurrences matches {0..1} matches {    -- Applicable from
 						value matches {
-							DV_DATE matches {*}
+							DV_DATE_TIME matches {*}
 						}
 					}
 					ELEMENT[at0009] occurrences matches {0..1} matches {    -- Applicable until
 						value matches {
-							DV_DATE matches {*}
+							DV_DATE_TIME matches {*}
 						}
 					}
 					ELEMENT[at0010] occurrences matches {0..1} matches {    -- Review date
 						value matches {
-							DV_DATE matches {*}
+							DV_DATE_TIME matches {*}
 						}
 					}
 					ELEMENT[at0012] occurrences matches {0..1} matches {    -- Comment
@@ -121,48 +123,48 @@ ontology
 		["en"] = <
 			items = <
 				["at0000"] = <
-					text = <"Pregnancy care context">
-					description = <"The current pregnancy care context of an individual, used to support safe and appropriate clinical decision-making.">
+					text = <"Pregnancy precautions">
+					description = <"The category of pregnancy-related precautions currently applicable to an individual, to inform their care.">
 				>
 				["at0001"] = <
 					text = <"Item tree">
 					description = <"@ internal @">
 				>
 				["at0002"] = <
-					text = <"Care context">
-					description = <"A category that identifies the level of pregnancy-related precautions applicable to an individual.">
-					comment = <"The context may be assigned by a clinician or automatically updated by a clinical system when a qualifying clinical event is documented. Examples where 'Not applicable' is appropriate include premenarchal individuals, postmenopausal individuals, and those who do not have a uterus.">
+					text = <"Precaution category">
+					description = <"The category of pregnancy-related precautions that currently applies to the individual.">
+					comment = <"The category may be recorded by a clinician or proposed by a clinical system when a relevant clinical event is documented. ‘Elevated’ may apply, for example, when an individual is sexually active without contraception, planning pregnancy, undergoing fertility treatment, or has a suspected pregnancy pending confirmation. ‘Not applicable’ may apply to individuals who are premenarchal or postmenopausal, or to those unable to carry a pregnancy following surgery, such as hysterectomy.">
 				>
 				["at0004"] = <
-					text = <"Baseline precautions">
-					description = <"The default state, which applies to individuals for whom pregnancy is physiologically possible but none of the other defined states apply, requiring routine pregnancy-related precautions because an unrecognised pregnancy cannot be excluded.">
+					text = <"Routine">
+					description = <"Default category where a pregnancy is considered physiologically possible, an unrecognised pregnancy cannot be excluded without further investigation and no defined value is applicable.">
 				>
 				["at0005"] = <
-					text = <"Planning pregnancy">
-					description = <"Applies when the individual is actively planning or preparing for pregnancy, and elevated pregnancy-related precautions are required beyond those of the 'Baseline precautions' state to support safe conception and early pregnancy.">
+					text = <"Elevated">
+					description = <"Applies in circumstances when a pregnancy is considered physiologically possible, an unrecognised pregnancy cannot be excluded without further investigation, and there is an increased likelihood of an unrecognised pregnancy.">
 				>
 				["at0006"] = <
-					text = <"Pregnant">
-					description = <"Applies when pregnancy has been clinically confirmed and pregnancy-specific precautions apply.">
+					text = <"Pregnancy">
+					description = <"Applies in circumstances when a pregnancy is confirmed.">
 				>
 				["at0007"] = <
-					text = <"Post-pregnant">
-					description = <"Applies during the recovery period following the end of a pregnancy, regardless of gestational age or outcome, during which 'Baseline precautions' apply in addition to any specific post-pregnancy care considerations.">
+					text = <"Post-pregnancy">
+					description = <"Applies when a pregnancy is known to have ended, regardless of gestational age or outcome, and the individual is in the acute recovery period and where a subsequent pregnancy is physiologically unlikely.">
 				>
 				["at0008"] = <
 					text = <"Applicable from">
-					description = <"The date from when the current care context applies.">
-					comment = <"For example: the date of delivery when initiating a 'Post-pregnant' context; the date of a menopause diagnosis for a 'Not applicable' context; and the date of menarche when recording the 'Baseline precautions' context.">
+					description = <"The date and optional time from which the category applies.">
+					comment = <"If not recorded, the 'Precaution category' applies from the time of recording. For example: the date of birth for 'Post pregnancy'; the date of a menopause diagnosis for 'Not applicable'; the date of menarche for 'Routine'.">
 				>
 				["at0009"] = <
 					text = <"Applicable until">
-					description = <"The date until which the current care context applies.">
-					comment = <"This date represents the anticipated end of the current context and does not imply that the state has been reviewed or changed. For example: 28 days after birth for a 'Post-pregnant' context.">
+					description = <"The date and optional time until which the category is anticipated to apply.">
+					comment = <"For example: 28 days after birth for 'Post pregnancy'. The category remains in effect until superseded by a new instance, regardless of this date. This date is informational only and must not be used to end the category automatically; a passed date should prompt review. Leave blank where no end is anticipated.">
 				>
 				["at0010"] = <
 					text = <"Review date">
-					description = <"The date when the care context should be reviewed and reassessed.">
-					comment = <"Review of the current 'Care context' may confirm that the current context remains applicable or result in a change to a different context. For example: a scheduled follow-up after commencing fertility treatment for a 'Planning pregnancy' context; or a postnatal review date for a 'Post-pregnant' context.">
+					description = <"The date when the category should be reassessed.">
+					comment = <"Review of the current 'Precaution category' may confirm that the category remains applicable or result in a change to a different category. For example: a scheduled review of an 'Elevated' category following commencement of embryo transfer treatment.">
 				>
 				["at0012"] = <
 					text = <"Comment">
@@ -179,11 +181,11 @@ ontology
 				>
 				["at0015"] = <
 					text = <"Last updated">
-					description = <"The date when this pregnancy care context was last updated.">
+					description = <"The date when these pregnancy precautions were last updated.">
 				>
 				["at0016"] = <
 					text = <"Not applicable">
-					description = <"Applies when pregnancy is physiologically impossible and pregnancy-related precautions are not required in the individual's current circumstances.">
+					description = <"Applies when pregnancy is physiologically not possible.">
 				>
 			>
 		>
