@@ -56,6 +56,14 @@ language
 				["email"] = <"ciglanska.alica@prosoftke.sk">
 			>
 		>
+		["fr"] = <
+			language = <[ISO_639-1::fr]>
+			author = <
+				["name"] = <"Jonas Bucher">
+				["organisation"] = <"Cistec AG">
+				["email"] = <"jonas.bucher@cistec.com">
+			>
+		>
 		["ca"] = <
 			language = <[ISO_639-1::ca]>
 			author = <
@@ -406,6 +414,52 @@ Not to be used to record the ordering of blood products, which involves a fundam
 Not to be used to record the order for insertion of implants or medical devices such as pacemakers and defibrillators. Use the INSTRUCTION.procedure for this purpose.">
 			copyright = <"© openEHR Foundation">
 		>
+		["fr"] = <
+			language = <[ISO_639-1::fr]>
+			purpose = <"Pour enregistrer tous les aspects d'une prescription de médicament, de vaccin, de produit nutritionnel ou de tout autre produit thérapeutique destinée à une personne identifiée.">
+			use = <"À utiliser pour enregistrer tous les aspects d’une prescription de médicament, de vaccin, de produit nutritionnel ou de tout autre produit thérapeutique destinée à une personne identifiée.
+
+Il est destiné à être utilisé pour tout type de médicament et de prescription associée, qu’il s’agisse d’une prescription délivrée par un professionnel de santé ou d’un produit disponible en vente libre. Le champ d’application de cet archétype de médicament inclut également les prescriptions de vaccins, de solutions parentérales ou d’autres produits thérapeutiques, tels que les pansements, les produits nutritionnels ou d’autres articles appliqués ou administrés dans un but thérapeutique et dont l’enregistrement des données suit un schéma commun.
+
+Cet archétype est conçu pour être utilisé dans divers contextes cliniques, notamment, mais sans s’y limiter :
+- un enregistrement lors d’une consultation clinique (COMPOSITION.encounter) ;
+- une ordonnance rédigée par un médecin, un dentiste, une infirmière praticienne ou tout autre professionnel de santé désigné, portant sur un médicament ou un produit nutritionnel devant être délivré et administré (au sein d’un COMPOSITION.prescription) ;
+- un élément figurant dans une liste de médicaments en cours, une ordonnance ou un tableau de médicaments (au sein de COMPOSITION.medication_list) ; et
+- un élément figurant dans un document de synthèse tel qu’un transfert de soins (COMPOSITION.transfer_summary) ou une demande de consultation (COMPOSITION.request).
+
+Dans de nombreux cas, une prescription médicamenteuse sera simple – généralement pour un seul médicament accompagné d’instructions simples concernant sa délivrance et son administration. Cependant, cet archétype est également conçu pour permettre des prescriptions thérapeutiques plus complexes. Par exemple :
+
+- une réduction progressive de la dose de prednisolone sur plusieurs semaines ;
+- un ajustement posologique de l’insuline, la posologie dépendant des résultats des analyses ;
+- plusieurs médicaments prescrits simultanément dans le cadre d’un même traitement, comme une trithérapie contre l’ulcère gastro-duodénal ; et
+- l’administration intraveineuse de médicaments ou de compléments nutritionnels, y compris la nutrition parentérale.
+
+L’archétype a donc été conçu pour s’adapter à différents niveaux de complexité, allant de :
+- de simples instructions narratives pour des prescriptions telles que « furosémide 40 mg : deux comprimés le matin et un au repas de midi » afin d’assurer la compatibilité avec les systèmes existants ; et
+- la quantité de médicament est généralement représentée par un nombre et l’unité de dose correspondante, mais il peut également y avoir une description narrative pour garantir la compatibilité avec les systèmes existants et couvrir tous les scénarios cliniques ; jusqu’à
+- des détails structurés concernant la dose, la voie d’administration et le timing de prise, afin de représenter une spécification entièrement calculable.
+
+Il a également été conçu de manière à ce qu’une seule structure de prescription médicamenteuse puisse représenter :
+- des prescriptions médicamenteuses séquentielles complexes utilisant la même concentration de préparation, prises en charge au sein d’une seule structure de prescription ; et
+- plusieurs prescriptions médicamenteuses pouvant être enchaînées dans les cas où différents médicaments ou préparations doivent être administrés de manière séquentielle.
+
+Cet archétype convient également à la prescription de liquides parentéraux, dans les établissements de soins où il est courant de rendre ces articles « prescriptibles ». Dans d’autres contextes, une « prescription de fluide parentéral » distincte peut s’avérer appropriée.
+
+Des slots contenant des archétypes CLUSTER ont été utilisés pour représenter une partie du contenu, et ce pour trois raisons :
+- Pour garantir un archétype de base pouvant être utilisé pour tous les cas d’utilisation susmentionnés, tout en permettant une certaine flexibilité lorsque cela est nécessaire, par exemple le slot « Détails de la préparation » où des détails structurés supplémentaires peuvent être ajoutés. Un archétype candidat a été proposé pour les médicaments. Il est possible que d’autres archétypes CLUSTER soient nécessaires à l’avenir à d’autres fins, telles que les ordonnances complexes de nutrition parentérale ;
+- pour favoriser la réutilisation des archétypes dans les situations où le contenu a été identifié comme étant également utilisé dans d’autres contextes cliniques, en particulier l’archétype apparié ACTION.medication destiné à enregistrer la distribution effective, l’administration, etc. ; et
+- afin d'éliminer le contenu le moins utilisé de la structure de base des archétypes.
+
+Plusieurs ordonnances peuvent être représentées comme des activités distinctes au sein de cette instance d’archétype unique afin de prendre en charge des ordonnances étroitement liées portant sur différents médicaments, par exemple un traitement contre H. pylori lorsque celui-ci n’est pas prescrit sous la forme d’un seul emballage.
+
+Il convient de noter que ces utilisations englobent à la fois les cas d’utilisation « FHIR Medication Order » et « Medication Statement ». Autrement dit, cet archétype correspond à ces deux ressources FHIR, utilisées dans le contexte approprié.">
+			keywords = <"médication", "ordonnance", "prescrire", "thérapie", "substance", "médicament", "thérapeutique", "en vente libre", "produit thérapeutique", "pharmaceutique", "produit", "posologie", "traitement", "liquide", "nutrition", "système de saisie électronique des ordonnances par les médecins (SEOM)", "médecine">
+			misuse = <"À ne pas utiliser pour enregistrer les activités liées à l’exécution de la prescription de médicaments, de vaccins, de produits nutritionnels ou d’articles thérapeutiques, telles que les détails concernant l’administration ou la distribution effective. Utilisez l’élément ACTION.medication à cette fin.
+
+À ne pas utiliser pour enregistrer la prescription de produits sanguins, qui implique un processus clinique fondamentalement différent et est susceptible de nécessiter des informations complémentaires différentes. Utilisez l’élément INSTRUCTION.transfusion à cette fin.
+
+À ne pas utiliser pour enregister la prescription de la pose d’implants ou de dispositifs médicaux tels que les stimulateurs cardiaques et les défibrillateurs. Utilisez INSTRUCTION.procedure à cette fin.">
+		>
 		["ca"] = <
 			language = <[ISO_639-1::ca]>
 			purpose = <"Enregistrar tots els aspectes d'una ordre de medicació, vacuna, producte nutricional o un altre element terapèutic per a un individu identificat.">
@@ -516,9 +570,9 @@ Standards for medication and medical device records – technical annex [Interne
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"88AFFD99A7191E8D2D5E518AE376978B">
-		["build_uid"] = <"ccb90d19-14c1-4974-bba8-3f6527879e5c">
-		["revision"] = <"3.2.0">
+		["MD5-CAM-1.0.1"] = <"07222CF9D1D4B1180BCF7C0F9B16D502">
+		["build_uid"] = <"8de91e4b-9439-4984-a9ba-feca86157628">
+		["revision"] = <"3.2.1">
 	>
 
 definition
@@ -3264,6 +3318,281 @@ The goal or target dose might be recorded here or more commonly as part of a lin
 					text = <"*Clinician guidance(en)">
 					description = <"*Advice to future prescribers/dispensers about the ongoing, long term order.(en)">
 					comment = <"*For example: 'don't allow brand substitution' or advice regarding using a specific brand to avoid fillers that cause reactions.(en)">
+				>
+			>
+		>
+		["fr"] = <
+			items = <
+				["at0000"] = <
+					text = <"Prescription de médicaments">
+					description = <"Une prescription de médicament, de vaccin, de produit nutritionnel ou de tout autre produit thérapeutique destinée à une personne identifiée.">
+				>
+				["at0001"] = <
+					text = <"Prescription">
+					description = <"Détails de la prescription.">
+				>
+				["at0002"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0004"] = <
+					text = <"Identifiant de la prescription">
+					description = <"Identifiant unique de la prescription de médicament.">
+					comment = <"Cet élément de données permet, si nécessaire, de définir plus explicitement plusieurs occurrences au moment de l'exécution.">
+				>
+				["at0005"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0008"] = <
+					text = <"Extension">
+					description = <"Informations supplémentaires nécessaires pour représenter un contenu local ou pour assurer l’alignement avec d’autres modèles de référence ou formalismes.">
+					comment = <"Par exemple: exigences d’information locales ou métadonnées supplémentaires permettant l’alignement avec des équivalents FHIR ou CIMI.">
+				>
+				["at0009"] = <
+					text = <"Description générale des instructions">
+					description = <"Description narrative complète de la manière dont le produit prescrit doit être utilisé.">
+					comment = <"Cette description doit normalement inclure les données saisies dans les champs « Quantité de la dose », « Timing de l’administration » et toute instruction d’utilisation supplémentaire. Lorsque les consignes posologiques sont entièrement reprises dans les consignes structurées et informatisables, cet élément doit contenir l’équivalent narratif, généralement généré automatiquement. S’il n’est pas possible de représenter intégralement les « consignes posologiques » prévues sous une forme informatisable, une représentation partielle n’est pas recommandée, et les consignes doivent être enregistrées uniquement sous forme narrative à l’aide de cet élément de données.">
+				>
+				["at0011"] = <
+					text = <"Critère de déclenchement de la prescription">
+					description = <"Une condition qui, une fois satisfaite, entraîne le début de l'administration ou de l'utilisation.">
+					comment = <"Par exemple : « Commencer si les symptômes réapparaissent ». Cette indication concerne une condition préalable générale devant déclencher le début du traitement complet, et non les administrations « à la demande » d’une prescription en cours.">
+				>
+				["at0012"] = <
+					text = <"Date et heure de début de la prescription">
+					description = <"La date et, éventuellement, l’heure à laquelle l’utilisation de l’article prescrit doit débuter.">
+				>
+				["at0013"] = <
+					text = <"Date et heure de fin de la prescription">
+					description = <"La date et, éventuellement, l'heure auxquelles il est prévu de cesser l'utilisation du produit prescrit.">
+				>
+				["at0016"] = <
+					text = <"Critère d’arrêt de la prescription">
+					description = <"Une condition qui, une fois satisfaite, entraîne l'arrêt de l'administration ou de l'utilisation.">
+					comment = <"Par exemple : « Arrêter le traitement dès la disparition des symptômes ».">
+				>
+				["at0018"] = <
+					text = <"Indication clinique">
+					description = <"La raison clinique justifiant l'utilisation du produit prescrit.">
+					comment = <"Par exemple : « Angine de poitrine ». Dans la mesure du possible, il est préférable de coder l’indication clinique à l’aide d’une terminologie. Cet élément de données peut apparaître plusieurs fois. Il n’est pas destiné à contenir une indication à des fins d’autorisation administrative.">
+				>
+				["at0044"] = <
+					text = <"Instructions supplémentaires">
+					description = <"Une instruction supplémentaire concernant l'utilisation ou la conservation du produit prescrit.">
+					comment = <"Par exemple : précautions telles que « à prendre avec de la nourriture », « éviter le pamplemousse », « à dissoudre dans l’eau », « à conserver dans un endroit frais et sec ». Cet élément de données peut comporter plusieurs occurrences et doit être codé à l’aide d’une terminologie de référence, dans la mesure du possible.">
+				>
+				["at0047"] = <
+					text = <"Instructions lisibles par machine">
+					description = <"Une représentation textuelle analysable et calculable des instructions.">
+					comment = <"En général, ce système n'est utilisé que pour le transfert d'informations entre des systèmes existants. Par exemple : « 10 mg deux fois par jour ; 20 mg une fois par jour », selon la syntaxe de dosage du NHS (en cours de développement).">
+				>
+				["at0050"] = <
+					text = <"Durée de la prescription exécutée">
+					description = <"Période pendant laquelle la personne/le patient utilise déjà le produit prescrit dans le cadre de la prescription globale prévue, mais avant la délivrance de cette prescription.">
+					comment = <"Par exemple : pour enregistrer que le patient prenait des antibiotiques depuis 3 jours avant son admission à l'hôpital, dans le cadre d'un traitement de 7 jours.">
+				>
+				["at0051"] = <
+					text = <"Dose maximale">
+					description = <"Informations détaillées concernant la dose maximale cumulée autorisée sur une période définie pour le produit prescrit.">
+					comment = <"Par exemple : « jusqu’à 1 gramme par jour ». Ce groupe permet des occurrences multiples afin de représenter plusieurs doses maximales s’appliquant à différentes périodes. La dose maximale sur toute la durée de vie ne doit pas figurer ici, car elle fait référence à plusieurs prescriptions échelonnées dans le temps.">
+				>
+				["at0053"] = <
+					text = <"Période autorisée">
+					description = <"Période de temps sur laquelle la dose maximale est calculée.">
+					comment = <"Exemple : 24 heures.">
+				>
+				["at0060"] = <
+					text = <"Administrations effectuées">
+					description = <"Nombre d’administrations du produit prescrit qui ont été effectuées, dans le cadre de la prescription complète prévue, mais avant la délivrance de cette prescription.">
+					comment = <"Par exemple : pour enregistrer que le patient a pris les deux premiers comprimés d’antibiotiques d’un traitement de trois jours, avant sa sortie de l’hôpital vers une maison de retraite médicalisée.">
+				>
+				["at0062"] = <
+					text = <"Sécurité des médicaments">
+					description = <"Informations détaillées sur la sécurité des médicaments concernant le produit prescrit.">
+				>
+				["at0064"] = <
+					text = <"Dérogation de sécurité exceptionnelle?">
+					description = <"Confirmation par le prescripteur que la dose normale ou toute autre limite de sécurité a été dérogée en raison de circonstances exceptionnelles.">
+				>
+				["at0065"] = <
+					text = <"Quantité délivrée">
+					description = <"Détails concernant la quantité de l'article commandé à être distribué.">
+					comment = <"Ce slot permet de gérer les variations locales entre les différentes juridictions concernant la quantité de médicaments délivrée.">
+				>
+				["at0069"] = <
+					text = <"Instructions d'autorisation">
+					description = <"Détails relatifs à l’autorisation de l’article commandé, y compris les politiques locales applicables en matière d’auto-administration, de délivrance et de validation.">
+					comment = <"Par exemple : les détails relatifs à la délivrance répétée ou au renouvellement d’une ordonnance. Ce slot permet de gérer les variations locales entre les différentes juridictions en matière d’autorisation et de réautorisation de médicaments.">
+				>
+				["at0070"] = <
+					text = <"Produit médicamenteux">
+					description = <"Nom du médicament, du vaccin ou de tout autre produit thérapeutique ou soumis à prescription faisant l'objet de la prescription.">
+					comment = <"Selon le contexte de prescription, ce champ peut être utilisé pour une prescription générique ou spécifique à un produit. Ce champ de données peut servir à enregistrer des prescriptions étroitement liées de différents médicaments lorsqu’ils sont prescrits sous la forme d’un seul emballage. Il est fortement recommandé, dans la mesure du possible, de coder le « produit médicamenteux » à l’aide d’une terminologie capable de déclencher une aide à la décision. Le niveau de détail du codage peut varier, allant du simple nom du médicament à des informations structurées concernant l’emballage du médicament à utiliser. La saisie de texte libre ne doit être utilisée que si aucune terminologie appropriée n’est disponible.">
+				>
+				["at0091"] = <
+					text = <"Voie d'administration">
+					description = <"Voie par laquelle le produit prescrit doit être administré au sujet.">
+					comment = <"Par exemple : « par voie orale », « par voie intraveineuse » ou « par voie topique ».
+Dans la mesure du possible, il est préférable de coder la voie d’administration à l’aide d’une terminologie spécifique. Plusieurs voies d’administration possibles peuvent être spécifiées.">
+				>
+				["at0092"] = <
+					text = <"Site corporel">
+					description = <"Nom du site corporel où administrer le produit prescrit.">
+					comment = <"Par exemple : « bras gauche », « cathéter intraveineux à la main droite ».
+Dans la mesure du possible, il est préférable d'utiliser une terminologie spécifique pour désigner le site corporel concerné.">
+				>
+				["at0093"] = <
+					text = <"Site corporel structuré">
+					description = <"Description structurée du site corporel où administrer le produit prescrit.">
+				>
+				["at0094"] = <
+					text = <"Mode d'administration">
+					description = <"Technique ou dispositif permettant l’administration du produit prescrit.">
+					comment = <"Par exemple : « par injection Z-track » ; « par nébuliseur ». Dans la mesure du possible, il est préférable de coder la méthode à l'aide d'une terminologie.">
+				>
+				["at0095"] = <
+					text = <"Dispositif d'administration">
+					description = <"Détails relatifs au dispositif médical utilisé pour faciliter l’administration du produit prescrit.">
+				>
+				["at0105"] = <
+					text = <"Informations pour le patient">
+					description = <"Une instruction supplémentaire s'adressant principalement à la personne/au patient ou à ses aidants.">
+					comment = <"Par exemple : « Pour réduire votre tension artérielle », « Pour fluidifier votre sang ». Cet élément de données peut apparaître plusieurs fois et doit être codé à l’aide d’une terminologie de référence, dans la mesure du possible. Si nécessaire, il est possible d’utiliser un attribut LINK pour associer cet élément, par exemple, au « diagnostic initial » figurant dans une liste de problèmes distincte ; toutefois, l’indication doit être explicitement consignée ici, car la cible du lien peut évoluer au fil du temps.">
+				>
+				["at0106"] = <
+					text = <"Instructions de délivrance">
+					description = <"Une instruction supplémentaire destinée principalement à la personne chargée de délivrer le produit prescrit.">
+					comment = <"Exemple : instructions détaillées pour la délivrance progressive d’opiacés.">
+				>
+				["at0107"] = <
+					text = <"Instructions de suivi">
+					description = <"Une instruction supplémentaire fournissant des conseils sur la surveillance recommandée ou requise concernant le produit prescrit.">
+					comment = <"Par exemple : « Veuillez contrôler la fonction rénale dans deux semaines ». Cet élément de données peut apparaître plusieurs fois.">
+				>
+				["at0112"] = <
+					text = <"Résumé de la prescription">
+					description = <"Informations synthétiques sur l'utilisation du produit prescrit, telles que son état actuel ou les dates clés, généralement utilisées dans des contextes ne relevant pas de la prescription médicale.">
+					comment = <"Un résumé du parcours de soins peut être requis lors de la transmission d’informations sur les médicaments entre différents systèmes ou lors de la représentation d’une déclaration FHIR relative aux médicaments. Par exemple : dans le cadre d’une orientation vers un spécialiste, d’un résumé de soins d’urgence ou d’une communication de sortie d’hôpital.">
+				>
+				["at0113"] = <
+					text = <"Détails de la prescription">
+					description = <"Détails concernant l'ensemble de la prescription.">
+				>
+				["at0129"] = <
+					text = <"Consignes de délivrance">
+					description = <"Instructions relatives à la délivrance du produit prescrit.">
+				>
+				["at0130"] = <
+					text = <"Quantité maximale">
+					description = <"Quantité maximale cumulée de médicament devant être administrée au cours de la période autorisée.">
+					comment = <"Par exemple : 1 ml, 1,5 mg, 0,125 g.">
+				>
+				["at0132"] = <
+					text = <"Consignes de substitution">
+					description = <"Autorisation de substitution par un produit bioéquivalent.">
+					comment = <"Dans de nombreuses juridictions, la substitution d’un produit prescrit par une forme générique ou par un produit de marque différente, dont la bioéquivalence a été établie, est autorisée au moment de la délivrance ou de la fourniture. Dans d’autres cas, la substitution est présumée et le praticien doit demander explicitement qu’il n’y ait pas de substitution.">
+				>
+				["at0139"] = <
+					text = <"Priorité">
+					description = <"Un indicateur du degré d’urgence avec lequel l’article commandé doit être délivré.">
+					comment = <"Par exemple, « Urgent ». Ce terme peut être utilisé dans un template ou spécialisé en fonction des ensembles de valeurs locaux. Certaines juridictions autorisent le fait de marquer les instructions de délivrance comme « urgentes » afin que la pharmacie les traite rapidement.">
+				>
+				["at0143"] = <
+					text = <"Détails du médicament">
+					description = <"Informations structurées sur le médicament dans son ensemble, notamment son dosage, sa forme et ses composants.">
+					comment = <"Utilisez ce slot lorsque la description détaillée du produit prescrit doit être explicitement précisée. Par exemple : la forme galénique, le dosage, les diluants éventuels ou la composition du produit.">
+				>
+				["at0148"] = <
+					text = <"Objectif thérapeutique">
+					description = <"L'objectif thérapeutique global du produit prescrit.">
+					comment = <"Par exemple : « traitement antidouleur » ; « soins palliatifs » ; « prophylaxie à faible dose » ; « réhydratation » ; « perfusion nutritionnelle ».">
+				>
+				["at0150"] = <
+					text = <"Dose quotidienne totale effective">
+					description = <"Détails concernant la quantité quotidienne totale du produit prescrit qui devrait être administrée.">
+					comment = <"La dose quotidienne totale enregistre la dose efficace attendue et permet ainsi d’ajuster progressivement la dose initiale, initialement faible, jusqu’à atteindre la dose efficace au fil du temps. Il ne s’agit pas en soi de la dose cible ou de l’objectif, mais de la dose quotidienne effective réelle par rapport à cet objectif. Dans certains cas, la dose quotidienne totale pourra être calculée à partir de consignes quantifiables ; dans d’autres, elle devra être saisie manuellement.">
+				>
+				["at0151"] = <
+					text = <"Quantité quotidienne totale">
+					description = <"La quantité du produit prescrit qui sera prise chaque jour si celui-ci est administré conformément aux prescriptions.">
+					comment = <"Par exemple « 20 mg ».">
+				>
+				["at0154"] = <
+					text = <"Motif de non-substitution">
+					description = <"La raison pour laquelle un produit prescrit ne doit pas être remplacé lors de la délivrance.">
+					comment = <"Par exemple : « Préparation générique non bioéquivalente ».">
+				>
+				["at0155"] = <
+					text = <"Date de début de la délivrance">
+					description = <"Date à partir de laquelle le produit prescrit peut être délivré pour la première fois.">
+					comment = <"Peut être utilisé pour contrôler le timing de la délivrance de médicaments présentant un risque d'abus. Par exemple : les benzodiazépines ou les analgésiques.">
+				>
+				["at0161"] = <
+					text = <"Date d'expiration de la délivrance">
+					description = <"Date à partir de laquelle le produit prescrit ne peut plus être légalement délivré.">
+					comment = <"Dans certaines juridictions, les ordonnances de délivrance peuvent comporter une date d'expiration au-delà de laquelle le médicament ne peut plus être délivré.">
+				>
+				["at0162"] = <
+					text = <"Motif de dérogation">
+					description = <"La raison justifiant une dérogation pour des raisons de sécurité clinique ou de dose maximale.">
+					comment = <"Par exemple : « Pas de réponse à la dose maximale recommandée. Situation critique. », « La pénicilline est le seul traitement valable, la probabilité d’une véritable allergie à la pénicilline est faible ».">
+				>
+				["at0165"] = <
+					text = <"Objectif">
+					description = <"Description de la raison justifiant l'enregistrement d'une dose quotidienne totale effective.">
+					comment = <"Par exemple : « Contrôle de l’hypertension », « Dose cible : 20 mg par jour ». Cette description pourrait servir à identifier un nom, une expression ou un paragraphe concernant l’objectif de l’enregistrement de la dose quotidienne totale effective, généralement afin de permettre un ajustement posologique en vue d’atteindre une dose cible spécifique.
+L’objectif ou la dose cible peut être consigné ici ou, plus couramment, dans le cadre d’un archétype « Objectif » de l’EVALUATION associé.">
+				>
+				["at0166"] = <
+					text = <"Détails supplémentaires">
+					description = <"Détails supplémentaires concernant l'article prescrit qui ne sont pas renseignés dans d'autres champs.">
+				>
+				["at0167"] = <
+					text = <"Commentaire">
+					description = <"Remarques supplémentaires concernant la prescription de médicaments qui ne sont pas reprises dans d’autres champs.">
+				>
+				["at0168"] = <
+					text = <"Autorisé">
+					description = <"La substitution du médicament par un médicament bioéquivalent est autorisée.">
+				>
+				["at0169"] = <
+					text = <"Non autorisé">
+					description = <"La substitution du médicament par un médicament bioéquivalent n'est pas autorisée.">
+				>
+				["at0170"] = <
+					text = <"Détails de la délivrance">
+					description = <"Informations complémentaires concernant les consignes de délivrance.">
+					comment = <"Ce slot tient compte des variations locales entre les différentes juridictions en matière de délivrance de médicaments.">
+				>
+				["at0171"] = <
+					text = <"Conseils de sécurité outrepassés">
+					description = <"Problème de sécurité connu ou reconnu concernant ce sujet et l’article prescrit, tel qu’une allergie, un avertissement de duplication de traitement ou une contre-indication. Cet élément n’est généralement enregistré que lorsque cette recommandation de sécurité est ignorée.">
+					comment = <"Par exemple : « Allergie à la pénicilline », « Double prescription d’aténolol ».">
+				>
+				["at0173"] = <
+					text = <"Description des instructions spécifiques">
+					description = <"Description narrative d'une partie spécifique des instructions générales.">
+					comment = <"Dans certains contextes, il est courant de diviser les instructions narratives globales en segments narratifs plus spécifiques. Par exemple, en milieu hospitalier, il est fréquent de diviser les instructions globales en « quantité de la dose » et « timing de l'administration », toutes deux sous forme de texte narratif. Ces termes peuvent être appliqués au niveau du template ou lors de l'exécution.">
+				>
+				["at0174"] = <
+					text = <"Justification de la posologie">
+					description = <"Une description de la justification utilisée pour calculer la dose ou la vitesse d’administration lorsque celle-ci dépend d’un autre facteur.">
+					comment = <"Par exemple : « Adapté en cas d'amputation ».">
+				>
+				["at0177"] = <
+					text = <"Instructions structurées concernant la posologie et le timing d'administration">
+					description = <"Détails des instructions structurées concernant la posologie et le timing d'administration.">
+					comment = <"Ce slot a été conçu pour être utilisé avec l’archétype CLUSTER.therapeutic_direction afin de permettre l’enregistrement d’un ensemble complexe d’instructions relatives à la posologie et au timing d’administration. Bien qu’il soit possible d’utiliser d’autres archétypes CLUSTER au sein de ce slot, il est fortement recommandé de ne le faire que lorsque la prévisibilité des requêtes n’est pas une priorité.">
+				>
+				["at0178"] = <
+					text = <"Dérogation de sécurité">
+					description = <"Contournement d’un problème de sécurité connu ou reconnu s’appliquant à ce sujet et à l’article prescrit, tel qu’une allergie, un avertissement de duplication de médicaments ou une contre-indication.">
+				>
+				["at0179"] = <
+					text = <"Conseils aux cliniciens">
+					description = <"Conseils à l’intention des futurs prescripteurs/délivrants concernant cette prescription continue et à long terme.">
+					comment = <"Par exemple : « ne pas autoriser la substitution de marque » ou des conseils concernant l'utilisation d'une marque spécifique afin d'éviter les excipients susceptibles de provoquer des réactions.">
 				>
 			>
 		>

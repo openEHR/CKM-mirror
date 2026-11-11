@@ -51,6 +51,14 @@ Diogo Neto, Promptly Health, Portugal">
 				["email"] = <"c.partafylla@sigmasoft.gr">
 			>
 		>
+		["fr"] = <
+			language = <[ISO_639-1::fr]>
+			author = <
+				["name"] = <"Jonas Bucher">
+				["organisation"] = <"Cistec AG">
+				["email"] = <"jonas.bucher@cistec.com">
+			>
+		>
 		["zh"] = <
 			language = <[ISO_639-1::zh]>
 			author = <
@@ -214,6 +222,28 @@ Not to be used to record the date of birth of an individual - use the 'Date of b
 Not to be used to record biometric detail or biomarkers about an individual - use a specific ENTRY archetype for this purpose.">
 			copyright = <"© openEHR Foundation">
 		>
+		["fr"] = <
+			language = <[ISO_639-1::fr]>
+			purpose = <"Pour enregistrer les informations relatives à une personne telles qu'elles sont connues ou entendues dans le cadre de la documentation clinique.">
+			use = <"À utiliser pour enregistrer les informations relatives à une personne telles qu’elles sont connues ou entendues dans le cadre de la documentation clinique, souvent de manière ponctuelle ou lorsqu’il n’est pas approprié ou possible d’utiliser un registre ou un index démographique officiel. Exemples :
+- le détenteur d’une directive anticipée de soins, en utilisant le SLOT « Copyholder » au sein de l’archétype EVALUATION.advance_care_directive ;
+- le rôle et les coordonnées d’une personne de contact désignée au sein d’une organisation, en utilisant le SLOT « Contact person » de l’archétype CLUSTER.organisation ;
+- les informations concernant un proche dans un dossier d’antécédents familiaux, en utilisant le SLOT « Family member details » de l’archétype openEHR-EHR-EVALUATION.family_history ; 
+- le nom de la personne ayant prélevé un échantillon de laboratoire sur un patient, à l’aide du SLOT « Specimen collector details » de l’archétype CLUSTER.specimen ; ou
+- un témoin d’une chute ou d’un accident, à l’aide du SLOT « Witness » de l’archétype CLUSTER.health_event.
+
+Dans la plupart des cas d’utilisation simples de la documentation clinique, l’élément non structuré « Name » de l’archétype CLUSTER.person suffira pour enregistrer le nom d’une personne dans un dossier médical. Toutefois, dans les cas où un nom structuré est nécessaire ou souhaitable à des fins de documentation clinique, imbriquez l’archétype CLUSTER.structured_name dans le SLOT « Structured name ».
+
+Cet archétype pourrait également servir de substitut aux données démographiques formelles lors de la révision d’un modèle avec des experts du domaine — par exemple, dans le cadre d’une évaluation où les évaluateurs s’attendent à voir les coordonnées d’une personne en haut du formulaire d’évaluation.">
+			keywords = <"prestataire de soins, aidant, membre du personnel, professionnel de santé, proche, parent, praticien, témoin, ami, voisin, enfant, famille, frère, sœur, parent, personne", ...>
+			misuse = <"À ne pas utiliser pour enregister la gestion formelle de l’identification, ni à des fins de tenue d’un registre ou d’un index démographique officiel. Utilisez un index principal des patients (Master Patient Index) ou un index des prestataires de soins (Health Provider Index) officiel à cette fin, ou encore des archétypes basés sur le modèle d’informations démographiques openEHR.
+
+À ne pas utiliser pour représenter le sujet des soins, les participants ou l’auteur du dossier, ni des éléments de données similaires qui doivent être représentés formellement dans le dossier de santé à l’aide des attributs du modèle de référence.
+
+À ne pas utiliser pour enregister la date de naissance d’une personne – utilisez l’élément de données « Date of birth » au sein de l'archétype EVALUATION.birth_summary à cette fin.
+
+À ne pas utiliser pour enregistrer des données biométriques ou des biomarqueurs concernant une personne – utilisez un archétype ENTRY spécifique à cette fin.">
+		>
 		["zh"] = <
 			language = <[ISO_639-1::zh]>
 			purpose = <"*To record details about a person as they are known or understood in the course of clinical documentation. (en)">
@@ -275,9 +305,9 @@ HL7 FHIR Resource - Person v4.0.1: R4 [Internet]. Health Level Seven Internation
 		["original_namespace"] = <"org.openehr">
 		["original_publisher"] = <"openEHR Foundation">
 		["custodian_namespace"] = <"org.openehr">
-		["MD5-CAM-1.0.1"] = <"DA9FD834B9864E87235D863A313D152B">
-		["build_uid"] = <"f3831a53-a61c-48d1-b1b4-e326c98e8f60">
-		["revision"] = <"1.0.4">
+		["MD5-CAM-1.0.1"] = <"CD21C16BEF470E3B1A24F31D027D3F0B">
+		["build_uid"] = <"8c7cbe6a-27d2-4889-aecc-186c4fc52428">
+		["revision"] = <"1.0.5">
 	>
 
 definition
@@ -803,6 +833,64 @@ Om individen som beskrivs med denna arketyp är den som själva journalen gälle
 				["at0011"] = <
 					text = <"Ετικέτα">
 					description = <"Μια ετικέτα για το άτομο.">
+				>
+			>
+		>
+		["fr"] = <
+			items = <
+				["at0000"] = <
+					text = <"Personne">
+					description = <"Un être humain en tant qu'individu.">
+				>
+				["at0001"] = <
+					text = <"Nom">
+					description = <"Nom non structuré de la personne.">
+					comment = <"Le contenu de cet élément de données peut être dérivé d’un ou plusieurs composants du CLUSTER.structured_name combinés sous la forme d’une chaîne de caractères. Par exemple : « John Markham », « Professeur Sir John Markham », « John Markham Jnr, député ».">
+				>
+				["at0002"] = <
+					text = <"Nom structuré">
+					description = <"Représentation alternative du nom complet d'une personne, par décomposition en éléments distincts et structurés.">
+					comment = <"Tout ou partie des éléments structurés du nom peuvent être combinés sous forme de chaîne de caractères et représentés dans l'élément de données « Nom » de cet archétype.">
+				>
+				["at0003"] = <
+					text = <"Identifiant">
+					description = <"Identifiant associé à la personne.">
+					comment = <"Le nombre d'occurrences pour cet élément de données est défini à 0..* afin de permettre l'enregistrement de plusieurs identifiants. Notez que le type de données DV_IDENTIFIER contient plusieurs sous-composants permettant d'enregistrer la valeur de l'identifiant, son type, son émetteur et son attribution. Par exemple : numéro de sécurité sociale, permis de conduire ou numéro de passeport.">
+				>
+				["at0004"] = <
+					text = <"Rôle">
+					description = <"La relation ou le rôle de la personne par rapport au sujet du dossier médical.">
+					comment = <"Par exemple : le détenteur d’un dossier de soins anticipés ; la personne de contact au sein d’une organisation ; un proche mentionné dans une entrée relative aux antécédents familiaux ; la personne chargée du prélèvement d’échantillons ; ou un témoin d’une chute ou d’un accident. Si la personne décrite à l’aide de cet archétype est le sujet du dossier médical, cet élément de données est alors redondant.">
+				>
+				["at0005"] = <
+					text = <"Adresse">
+					description = <"Informations relatives à l'adresse de la personne.">
+				>
+				["at0008"] = <
+					text = <"Détails supplémentaires">
+					description = <"Détails supplémentaires sur la personne.">
+				>
+				["at0010"] = <
+					text = <"Commentaire">
+					description = <"Informations supplémentaires sur la personne qui ne figurent pas dans les autres champs.">
+				>
+				["at0007"] = <
+					text = <"Organisation">
+					description = <"Informations relatives au contexte organisationnel de la personne.">
+					comment = <"Par exemple : identifiant l'entreprise ou l'organisation communautaire associée au « rôle » de la personne.">
+				>
+				["at0006"] = <
+					text = <"Communication électronique">
+					description = <"Informations relatives à un ou plusieurs types de communication électronique concernant cette personne.">
+				>
+				["at0009"] = <
+					text = <"Photo">
+					description = <"Photographie de la personne.">
+				>
+				["at0011"] = <
+					text = <"Étiquette">
+					description = <"Une désignation de la personne.">
+					comment = <"Par exemple : « Voisin de la maison à la porte rouge ».">
 				>
 			>
 		>
